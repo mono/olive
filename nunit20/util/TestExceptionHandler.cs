@@ -11,28 +11,23 @@ namespace NUnit.Util
 
 		public TestExceptionHandler( UnhandledExceptionEventHandler handler )
 		{
-#if !TARGET_JVM
 			this.handler = handler;
 			AppDomain.CurrentDomain.UnhandledException += handler;
-#endif
 		}
 
 		~TestExceptionHandler()
 		{
-#if  !TARGET_JVM
 			if ( handler != null )
 			{
 				AppDomain.CurrentDomain.UnhandledException -= handler;
 				handler = null;
 			}
-#endif
 		}
 
 
 
 		public void Dispose()
 		{
-#if !TARGET_JVM
 			if ( handler != null )
 			{
 				AppDomain.CurrentDomain.UnhandledException -= handler;
@@ -40,7 +35,6 @@ namespace NUnit.Util
 			}
 
 			System.GC.SuppressFinalize( this );
-#endif
 		}
 	}
 }

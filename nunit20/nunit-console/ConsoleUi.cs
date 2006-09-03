@@ -50,9 +50,7 @@ namespace NUnit.Console
 	/// </summary>
 	public class ConsoleUi
 	{
-#if !TARGET_JVM
 		[STAThread]
-#endif
 		public static int Main(string[] args)
 		{
 			ConsoleOptions options = new ConsoleOptions(args);
@@ -153,10 +151,8 @@ namespace NUnit.Console
 			Console.WriteLine();
 
 			string clrPlatform = Type.GetType("Mono.Runtime", false) == null ? ".NET" : "Mono";
-#if !TARGET_JVM			
 			Console.WriteLine( string.Format("OS Version: {0}    {1} Version: {2}",
 				Environment.OSVersion, clrPlatform, Environment.Version ) );
-#endif
 			Console.WriteLine();
 		}
 

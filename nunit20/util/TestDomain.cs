@@ -120,16 +120,12 @@ namespace NUnit.Util
 
 		private TestRunner MakeRemoteTestRunner( AppDomain runnerDomain )
 		{
-#if !TARGET_JVM
 			object obj = runnerDomain.CreateInstanceAndUnwrap(
 				typeof(RemoteTestRunner).Assembly.FullName, 
 				typeof(RemoteTestRunner).FullName,
 				false, BindingFlags.Default,null,null,null,null,null);
 			
 			RemoteTestRunner runner = (RemoteTestRunner) obj;
-#else
-			RemoteTestRunner runner = new RemoteTestRunner();
-#endif
 
 			runner.Out = this.outWriter;
 			runner.Error = this.errorWriter;
@@ -254,7 +250,7 @@ namespace NUnit.Util
 		public void Unload()
 		{
 			testRunner = null;
-#if !TARGET_JVM
+
 			if(domain != null) 
 			{
 				try
@@ -274,7 +270,6 @@ namespace NUnit.Util
 					domain = null;
 				}
 			}
-#endif
 		}
 
 		public static string GetBinPath( string[] assemblies )
@@ -440,7 +435,7 @@ namespace NUnit.Util
 			string domainName = string.Format( "domain-{0}", Path.GetFileName( testFileName ) );
 			domain = MakeAppDomain( testFileName, appBase, configFile, binPath );
 		}
-#if !TARGET_JVM
+
 		/// <summary>
 		/// This method creates appDomains for the framework.
 		/// </summary>
@@ -482,12 +477,6 @@ namespace NUnit.Util
 
 			return runnerDomain;
 		}
-#else
-		private AppDomain MakeAppDomain( string domainName, string appBase, string configFile, string binPath )
-		{
-			return AppDomain.CurrentDomain;
-		}
-#endif
 
 		/// <summary>
 		/// Set the location for caching and delete any old cache info
