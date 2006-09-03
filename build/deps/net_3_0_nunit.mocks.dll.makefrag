@@ -1,0 +1,12 @@
+../../class/lib/net_3_0/nunit.mocks.dll: ./AssemblyInfo.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./DynamicMock.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./ICall.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./ICallHandler.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./IMethod.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./IMock.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./IVerify.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./MethodSignature.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./Mock.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./MockCall.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./MockInterfaceHandler.cs
+../../class/lib/net_3_0/nunit.mocks.dll: ./MockMethod.cs

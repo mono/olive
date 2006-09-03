@@ -1,0 +1,8 @@
+System.Workflow.Runtime_test_net_3_0.dll: Test/System.Workflow.Runtime/WorkflowQueuingServiceTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/System.Workflow.Runtime/WorkflowRuntimeTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/Workflows/SingleActivityCodeTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/Workflows/SimpleWorkFlowDelayTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/System.Workflow.Runtime/TimerEventSubscriptionTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/Workflows/WorkFlowParallelTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/Workflows/WorkFlowMachineStatusTest.cs
+System.Workflow.Runtime_test_net_3_0.dll: Test/System.Workflow.Runtime/TimerEventSubscriptionCollectionTest.cs

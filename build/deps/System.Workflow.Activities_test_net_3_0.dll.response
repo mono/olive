@@ -1,0 +1,3 @@
+Test/System.Workflow.Activities/CodeActivityTest.cs
+Test/System.Workflow.Activities/IfElseActivityTest.cs
+Test/System.Workflow.Activities/RulesTest.cs

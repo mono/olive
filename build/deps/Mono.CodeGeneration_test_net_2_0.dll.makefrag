@@ -1,0 +1,4 @@
+Mono.CodeGeneration_test_net_2_0.dll: Test/standalone/test.cs
+Mono.CodeGeneration_test_net_2_0.dll: Test/standalone/test2.cs
+Mono.CodeGeneration_test_net_2_0.dll: Test/standalone/test3.cs
+Mono.CodeGeneration_test_net_2_0.dll: Test/standalone/test4.cs

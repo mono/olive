@@ -1,0 +1,3 @@
+client-proxy-gen.exe: Driver.cs
+client-proxy-gen.exe: CommandLineOptions.cs
+client-proxy-gen.exe: 

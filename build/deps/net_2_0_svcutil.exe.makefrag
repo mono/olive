@@ -1,0 +1,3 @@
+svcutil.exe: Driver.cs
+svcutil.exe: CommandLineOptions.cs
+svcutil.exe: 

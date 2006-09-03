@@ -1,0 +1,2 @@
+../../class/lib/net_3_0/nunit-console.exe: ./ConsoleUi.cs
+../../class/lib/net_3_0/nunit-console.exe: ./AssemblyInfo.cs

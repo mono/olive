@@ -1,0 +1,2 @@
+Test/System.IdentityModel.Selectors/SecurityTokenRequirementTest.cs
+Test/System.IdentityModel.Tokens/X509SecurityTokenTest.cs

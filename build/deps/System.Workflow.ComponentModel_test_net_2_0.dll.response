@@ -1,0 +1,5 @@
+Test/System.Workflow.ComponentModel/PropertyMetadataTest.cs
+Test/System.Workflow.ComponentModel/DependencyPropertyTest.cs
+Test/System.Workflow.ComponentModel/DependencyObjectTest.cs
+Test/System.Workflow.ComponentModel/ActivityTest.cs
+Test/System.Workflow.ComponentModel/ActivityCollectionTest.cs
