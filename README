@@ -1,0 +1,13 @@
+This module contains libraries that are under a different schedule than the
+rest of Mono.
+
+To build:
+
+	make
+
+To install:
+
+	make prefix=yourprefix
+
+It defaults to the Mono installation prefix
+
