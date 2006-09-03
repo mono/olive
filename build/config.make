@@ -1,4 +1,4 @@
-prefix=/usr/local
+prefix=`pkg-config mono --variable prefix`
 exec_prefix=${prefix}
 mono_libdir=${exec_prefix}/lib
 MCS_FLAGS = -debug+
