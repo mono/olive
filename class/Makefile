@@ -9,7 +9,9 @@ SUBDIRS = \
 	System.Xml.XLinq		\
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
-	System.Workflow.Runtime
+	System.Workflow.Runtime		\
+	WindowsBase			\
+	PresentationFramework
 
 DISTFILES = \
 	LICENSE 		\
