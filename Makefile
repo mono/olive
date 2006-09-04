@@ -1,8 +1,8 @@
 thisdir := .
 
-SUBDIRS := build class nunit20
+SUBDIRS := build class tools nunit20
 
-net_3_0_SUBDIRS := build class nunit20
+net_3_0_SUBDIRS := build class tools nunit20 
 
 include build/rules.make
 
