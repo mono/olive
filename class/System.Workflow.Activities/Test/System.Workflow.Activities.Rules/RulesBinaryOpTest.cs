@@ -86,7 +86,7 @@ namespace MonoTests.System.Workflow.Activities
 	}
 
 	[TestFixture]
-	public class RulesTest
+	public class RulesBinaryOpTest
 	{
 		static public bool ifelse_condition1;
 		static public bool ifelse_condition2;
