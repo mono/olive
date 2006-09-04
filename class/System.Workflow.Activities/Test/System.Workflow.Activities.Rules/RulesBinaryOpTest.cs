@@ -62,7 +62,7 @@ namespace MonoTests.System.Workflow.Activities
 			RuleConditionReference condition1 = new RuleConditionReference ();
 			condition1.ConditionName = "Condition1";
 			RuleExpressionCondition rc =  new RuleExpressionCondition ("Condition1",
-				RulesTest.check_condition);
+				RulesBinaryOpTest.check_condition);
 
 			definitions.Conditions.Add (rc);
 			branch1.Condition = condition1;
@@ -76,12 +76,12 @@ namespace MonoTests.System.Workflow.Activities
 
 		private void ExecuteCode1 (object sender, EventArgs e)
 	        {
-	        	RulesTest.executed1 = true;
+	        	RulesBinaryOpTest.executed1 = true;
 	        }
 
 	        private void ExecuteCode2 (object sender, EventArgs e)
 	        {
-	        	RulesTest.executed2 = true;
+	        	RulesBinaryOpTest.executed2 = true;
 	        }
 	}
 
