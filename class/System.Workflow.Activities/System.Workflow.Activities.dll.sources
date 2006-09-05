@@ -36,3 +36,4 @@ System.Workflow.Activities.Rules/RuleExpressionWalker.cs
 System.Workflow.Activities.Rules/IRuleExpression.cs
 System.Workflow.Activities.Rules/RuleExpressionResult.cs
 System.Workflow.Activities.Rules/RuleExpressionBinaryOperatorResolver.cs
+System.Workflow.Activities/StateMachineWorkflowInstance.cs
