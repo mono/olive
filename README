@@ -3,6 +3,8 @@ rest of Mono.
 
 To build:
 
+	./configure [--prefix=/yourprefix]
+
 	make
 
 To install:

@@ -2,4 +2,4 @@
 Name: Olive Libraries
 Description: Extended Libraries for Mono.
 Version: 0.1
-Libs: -r:/mono/lib/pkgconfig/../../lib/3.0/PresentationFramework.dll -r:/mono/lib/pkgconfig/../../lib/3.0/System.Query.dll -r:/mono/lib/pkgconfig/../../lib/3.0/System.Workflow.Activities.dll -r:/mono/lib/pkgconfig/../../lib/3.0/System.Workflow.ComponentModel.dll -r:/mono/lib/pkgconfig/../../lib/3.0/System.Workflow.Runtime.dll -r:/mono/lib/pkgconfig/../../lib/3.0/WindowsBase.dll
+Libs: -r:/mono/lib/3.0/PresentationFramework.dll -r:/mono/lib/3.0/System.Query.dll -r:/mono/lib/3.0/System.Workflow.Activities.dll -r:/mono/lib/3.0/System.Workflow.ComponentModel.dll -r:/mono/lib/3.0/System.Workflow.Runtime.dll -r:/mono/lib/3.0/WindowsBase.dll

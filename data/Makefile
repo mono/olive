@@ -6,6 +6,9 @@ olivedir = $(prefix)/lib/3.0
 all-local: olive.pc
 
 REWRITE=
-olive.pc: olive.pc.in
-	sed -e "s,@olivedir@,$(olivedir),g" < olive.pc.in > $@.tmp
+olive.pc: olive.pc.in Makefile
+	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < olive.pc.in > $@.tmp
 	mv $@.tmp $@
+
+install-local: olive.pc
+	install olive.pc $(prefix)/lib/pkgconfig
