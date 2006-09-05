@@ -5,7 +5,7 @@ SUBDIRS =
 LIBRARY = System.Workflow.Activities.dll
 
 
-LIB_MCS_FLAGS = /r:$(corlib) /nowarn:114  /r:System.dll /r:System.Workflow.ComponentModel.dll /r:System.Workflow.Runtime.dll
+LIB_MCS_FLAGS = /r:$(corlib) /nowarn:114  /r:System.dll /r:System.Workflow.ComponentModel.dll 
 
 include ../../build/library.make
 
