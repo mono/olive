@@ -1,0 +1,5 @@
+
+Name: Olive Libraries
+Description: Extended Libraries for Mono.
+Version: 0.1
+Libs: -r:@olivedir@/PresentationFramework.dll -r:@olivedir@/System.Query.dll -r:@olivedir@/System.Workflow.Activities.dll -r:@olivedir@/System.Workflow.ComponentModel.dll -r:@olivedir@/System.Workflow.Runtime.dll -r:@olivedir@/WindowsBase.dll
