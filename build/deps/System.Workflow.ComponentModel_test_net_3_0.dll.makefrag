@@ -1,5 +1,0 @@
-System.Workflow.ComponentModel_test_net_3_0.dll: Test/System.Workflow.ComponentModel/PropertyMetadataTest.cs
-System.Workflow.ComponentModel_test_net_3_0.dll: Test/System.Workflow.ComponentModel/DependencyPropertyTest.cs
-System.Workflow.ComponentModel_test_net_3_0.dll: Test/System.Workflow.ComponentModel/DependencyObjectTest.cs
-System.Workflow.ComponentModel_test_net_3_0.dll: Test/System.Workflow.ComponentModel/ActivityTest.cs
-System.Workflow.ComponentModel_test_net_3_0.dll: Test/System.Workflow.ComponentModel/ActivityCollectionTest.cs

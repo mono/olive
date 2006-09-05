@@ -1,8 +1,0 @@
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Runtime.Serialization/XmlObjectSerializerTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Runtime.Serialization/XsdDataContractImporterTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/UniqueIdTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/XmlBinaryDictionaryWriterTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/XmlDictionaryReaderAbstractTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/XmlDictionaryReaderQuotasTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/XmlDictionaryTest.cs
-System.Runtime.Serialization_test_net_2_0.dll: Test/System.Xml/XmlSimpleDictionaryWriterTest.cs

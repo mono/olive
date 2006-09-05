@@ -1,8 +1,0 @@
-Test/System.Workflow.Runtime/WorkflowQueuingServiceTest.cs
-Test/System.Workflow.Runtime/WorkflowRuntimeTest.cs
-Test/Workflows/SingleActivityCodeTest.cs
-Test/Workflows/SimpleWorkFlowDelayTest.cs
-Test/System.Workflow.Runtime/TimerEventSubscriptionTest.cs
-Test/Workflows/WorkFlowParallelTest.cs
-Test/Workflows/WorkFlowMachineStatusTest.cs
-Test/System.Workflow.Runtime/TimerEventSubscriptionCollectionTest.cs
