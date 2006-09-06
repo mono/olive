@@ -1,7 +1,7 @@
 thisdir = data
 SUBDIRS = 
 include ../build/rules.make
-olivedir = $(prefix)/lib/3.0
+olivedir = $(prefix)/lib/mono/3.0
 
 all-local: olive.pc
 
