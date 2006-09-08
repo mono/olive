@@ -1,7 +1,12 @@
 thisdir = data
 SUBDIRS = 
 include ../build/rules.make
-olivedir = $(prefix)/lib/mono/3.0
+
+ifeq ($(PLATFORM), win32)
+	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/3.0')
+else
+	olivedir = $(prefix)/lib/mono/3.0
+endif
 
 all-local: olive.pc
 
