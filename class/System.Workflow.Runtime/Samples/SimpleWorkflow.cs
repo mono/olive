@@ -32,21 +32,6 @@ using System.Workflow.Runtime;
 
 namespace MonoTests.System.Workflow.Activities
 {
-	public class WorkFlowIfElseDoubleCondition : WorkFlowIfElse
-	{
-		public WorkFlowIfElseDoubleCondition ()
-		{
-			CodeCondition ifelse_condition2 = new CodeCondition ();
-			ifelse_condition2.Condition += new EventHandler <ConditionalEventArgs> (IfElseCondition2);
-			branch2.Condition = ifelse_condition2;
-		}
-
-		private void IfElseCondition2 (object sender, ConditionalEventArgs e)
-		{
-			e.Result = true;
-		}
-	}
-
 	public class WorkFlowIfElse : SequentialWorkflowActivity
 	{
 		protected IfElseBranchActivity branch2;
