@@ -33,7 +33,6 @@ using System.Xml;
 namespace System.Workflow.Runtime
 {
 	public sealed class WorkflowRuntime : IDisposable
-
 	{
 		private bool is_started;
 		private string name;
@@ -79,11 +78,21 @@ namespace System.Workflow.Runtime
 		// Methods
 		public void AddService (object service_toadd)
 		{
+			WorkflowRuntimeService runtime_service = service_toadd as WorkflowRuntimeService;
+
+			if (service_toadd == null) {
+				throw new ArgumentNullException ("service is a null reference ");
+			}
+
 			foreach (object service in services) {
 				if (service == service_toadd) {
 					throw new InvalidOperationException ("Cannot add a service that already exists.");
 				}
 			}
+
+			if (runtime_service != null) {
+				runtime_service.SetRuntime (this);
+			}			
 
 			services.Add (service_toadd);
 		}
@@ -152,6 +161,13 @@ namespace System.Workflow.Runtime
 						services_req.Add (service);
 					}
 				}
+
+				Type[] array = typeof (T).GetInterfaces ();
+				for (int index = 0; index < array.Length; index++) {					
+					if (array [index] == typeof (T)) {
+						services_req.Add (service);
+					}
+				}
 			}
 
 			return new ReadOnlyCollection <T> (services_req);
@@ -167,6 +183,13 @@ namespace System.Workflow.Runtime
 				// check the class and its base types
 				for (Type type = service.GetType (); type != null; type = type.BaseType) {
 					if (type == serviceType) {
+						services_req.Add (service);
+					}
+				}
+
+				Type[] array = service.GetType ().GetInterfaces ();
+				for (int index = 0; index < array.Length; index++) {					
+					if (array [index] == serviceType) {
 						services_req.Add (service);
 					}
 				}
@@ -199,10 +222,12 @@ namespace System.Workflow.Runtime
 		public object GetService (Type serviceType)
 		{
 			ReadOnlyCollection <object> objs = GetAllServices (serviceType);
-
-			if (objs.Count > 1) {
+			
+			if (objs.Count > 1)
 				throw new InvalidOperationException ("More than one runtime service exists");
-			}
+
+			if (objs.Count == 0)
+				return null;
 
 			return objs[0];
 		}

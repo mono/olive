@@ -1,3 +1,12 @@
+2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* IDynamicPropertyTypeProvider.cs, WorkflowParameterBinding.cs
+	WorkflowParameterBindingCollection.cs, ActivityBind.cs,
+	Initial implementation
+
+	* DependencyObject.cs: Add binding support
+
+
 2006-09-02  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* Initial check-in

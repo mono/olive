@@ -1,3 +1,10 @@
+2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* WorkflowParameterBindingCollectionTest.cs: added
+	* WorkflowParameterBindingTest.cs: added
+	* ActivityBindTest.cs: added
+	* DependencyObjectTest.cs: Add tests for binding support
+
 2006-09-02  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* Initial check-in

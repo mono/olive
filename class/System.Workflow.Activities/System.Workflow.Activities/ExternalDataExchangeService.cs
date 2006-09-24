@@ -22,63 +22,64 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+#if RUNTIME_DEP
+
+using System;
+using System.Workflow.Runtime.Hosting;
+
+namespace System.Workflow.Activities
 {
-	public abstract class WorkflowRuntimeService
+	public class ExternalDataExchangeService : WorkflowRuntimeService
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
-
-		protected WorkflowRuntimeService ()
+		public ExternalDataExchangeService ()
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
-		}
 
-		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
 		}
-
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
 
 		// Methods
-		protected virtual void OnStarted ()
+		public void AddService (object service)
 		{
+			Object[] objs = null;
+			Type type;
+			Type[] interfaces;
 
+			if (service == null)
+				throw new ArgumentNullException ("service is a null reference ");
+
+			interfaces = service.GetType().GetInterfaces();
+
+			for (int i = 0; i < interfaces.Length; i++) {
+				objs = interfaces[i].GetCustomAttributes (typeof (ExternalDataExchangeAttribute), true);
+
+				if (objs.Length > 0)
+					break;
+			}
+
+			if (objs == null || objs.Length == 0)
+				throw new InvalidOperationException ("Service does not implement an interface with the ExternalDataExchange attribute.");
+
+			Runtime.AddService (service);
 		}
 
-		protected virtual void OnStopped ()
+		public object GetService (Type serviceType)
 		{
-
+			return Runtime.GetService (serviceType);
 		}
 
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
+		public void RemoveService (object service)
 		{
-
+			if (service == null)
+				throw new ArgumentNullException ("service is a null reference ");
+			
+			Runtime.RemoveService (service);
 		}
 
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
+		protected override void Start ()
 		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+			base.Start ();
 		}
 	}
+
 }
 
+#endif

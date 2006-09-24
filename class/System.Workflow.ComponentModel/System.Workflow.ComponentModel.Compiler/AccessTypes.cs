@@ -22,63 +22,18 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+using System;
+using System.Workflow.ComponentModel;
+
+namespace System.Workflow.ComponentModel.Compiler
 {
-	public abstract class WorkflowRuntimeService
+	[Flags]
+	public enum AccessTypes
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+		Read		= 1,
+		ReadWrite	= 2,
+		Write		= 4,
 
-		protected WorkflowRuntimeService ()
-		{
-			state = WorkflowRuntimeServiceState.Stopped;
-		}
-
-		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
-		}
-
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
-		}
 	}
 }
 

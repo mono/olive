@@ -1,3 +1,5 @@
 System.Workflow.Activities/CodeActivityTest.cs
 System.Workflow.Activities/IfElseActivityTest.cs
 System.Workflow.Activities.Rules/RulesBinaryOpTest.cs
+System.Workflow.Activities/ExternalDataExchangeServiceTest.cs
+System.Workflow.Activities/CallExternalMethodActivityTest.cs

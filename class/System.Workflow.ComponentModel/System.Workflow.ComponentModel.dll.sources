@@ -20,3 +20,10 @@ System.Workflow.ComponentModel/TerminateActivity.cs
 System.Workflow.ComponentModel/IActivityEventListener.cs
 System.Workflow.ComponentModel/QueueEventArgs.cs
 System.Workflow.ComponentModel.Compiler/ITypeProvider.cs
+System.Workflow.ComponentModel/ActivityBind.cs
+System.Workflow.ComponentModel/WorkflowParameterBinding.cs
+System.Workflow.ComponentModel.Serialization/MarkupExtension.cs
+System.Workflow.ComponentModel.Design/IPropertyValueProvider.cs
+System.Workflow.ComponentModel/IDynamicPropertyTypeProvider.cs
+System.Workflow.ComponentModel.Compiler/AccessTypes.cs
+System.Workflow.ComponentModel/WorkflowParameterBindingCollection.cs

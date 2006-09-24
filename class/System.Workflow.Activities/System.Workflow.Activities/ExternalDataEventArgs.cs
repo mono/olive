@@ -22,62 +22,64 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+using System;
+using System.ComponentModel;
+using System.Workflow.ComponentModel;
+
+#if RUNTIME_DEP
+using System.Workflow.Runtime;
+#endif
+
+namespace System.Workflow.Activities
 {
-	public abstract class WorkflowRuntimeService
+	[Serializable]
+	public class ExternalDataEventArgs : EventArgs
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+		private string identity;
+		private Guid instance_id;
+		private bool wait_idle;		
+		private object work_item;
 
-		protected WorkflowRuntimeService ()
+		public ExternalDataEventArgs (Guid instanceId)
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+
+		}
+#if RUNTIME_DEP
+		public ExternalDataEventArgs (Guid instanceId, IPendingWork workHandler, object workItem)
+		{
+
 		}
 
+		public ExternalDataEventArgs (Guid instanceId, IPendingWork workHandler, object workItem, bool waitForIdle)
+		{
+
+		}
+#endif
 		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
+		public string Identity {
+			get { return identity; }
+			set { identity = value; }
 		}
-
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
+		public Guid InstanceId {
+			get { return instance_id; }
+			set { instance_id = value; }
 		}
-
-		protected virtual void OnStopped ()
-		{
-
+		
+		public bool WaitForIdle {
+			get { return wait_idle; }
+			set { wait_idle = value; }
 		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
+#if RUNTIME_DEP		
+		private IPendingWork work_handler;
+		public IPendingWork WorkHandler {
+			get { return work_handler; }
+			set { work_handler = value; }
 		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+#endif		
+		
+		public object WorkItem {
+			get { return work_item; }
+			set { work_item = value; }
 		}
 	}
 }

@@ -153,9 +153,6 @@ namespace MonoTests.System.Workflow.ComponentModel
 
 			attributes2 = pm.GetAttributes (typeof (ParamArrayAttribute));
 			Assert.AreEqual (0, attributes2.Length, "C9#10");
-
-
-
 		}
 	}
 }

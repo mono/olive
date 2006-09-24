@@ -22,62 +22,41 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
-{
-	public abstract class WorkflowRuntimeService
-	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+using System.Workflow.ComponentModel;
 
-		protected WorkflowRuntimeService ()
+namespace System.Workflow.ComponentModel
+{
+	public sealed class WorkflowParameterBinding : DependencyObject
+	{
+		public static readonly DependencyProperty ParameterNameProperty;
+		public static readonly DependencyProperty ValueProperty;
+
+		static WorkflowParameterBinding ()
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+			ValueProperty = DependencyProperty.Register ("Value", typeof (object), typeof (WorkflowParameterBinding));
+			ParameterNameProperty = DependencyProperty.Register ("ParameterName", typeof (string), typeof (WorkflowParameterBinding));
 		}
+
+		public WorkflowParameterBinding ()
+		{
+
+		}
+
+		public WorkflowParameterBinding (string parameterName)
+		{
+			ParameterName = parameterName;
+		}
+
 
 		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
+		public string ParameterName {
+			get { return  (string) GetValue (ParameterNameProperty); }
+			set { SetValue (ParameterNameProperty, value);	}
 		}
 
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+		public object Value {
+			get { return (object) GetValue (ValueProperty); }
+			set { SetValue (ValueProperty, value); }
 		}
 	}
 }

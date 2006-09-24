@@ -31,26 +31,41 @@ using System.Workflow.ComponentModel;
 using System.Workflow.Activities;
 using System.Collections;
 using System.Collections.Generic;
+using System.Workflow.Runtime;
+using System.Threading;
 
 namespace MonoTests.System.Workflow.ComponentModel
 {
 	[TestFixture]
 	public class DependencyObjectTest
 	{
+		static AutoResetEvent waitHandle = new AutoResetEvent (false);
+
 		public sealed class ourCodeActivity : Activity
 		{
 			public static readonly DependencyProperty ExecuteCodeEvent;
+			public static readonly DependencyProperty DataProperty;
+			public static string DataValue;
 
 			static ourCodeActivity ()
 			{
 				ExecuteCodeEvent = DependencyProperty.Register ("ExecuteCode", typeof (EventHandler),
 					typeof (ourCodeActivity));
+
+				DataProperty = DependencyProperty.Register ("Data", typeof (string), typeof (ourCodeActivity));
 			}
 
 			public ourCodeActivity ()
 			{
 
 			}
+
+			protected sealed override ActivityExecutionStatus Execute (ActivityExecutionContext executionContext)
+			{
+				DataValue = (string) GetValue (DataProperty);
+				return base.Execute (executionContext);
+			}
+
 			// Event handlers
 			public event EventHandler ExecuteCode
 			{
@@ -62,6 +77,61 @@ namespace MonoTests.System.Workflow.ComponentModel
 			{
 				return GetInvocationList <T> (dependencyEvent);
 			}
+		}
+
+		public class WorkFlowDataBinding : SequentialWorkflowActivity
+		{
+			protected IfElseBranchActivity branch2;
+			private string address = "Default";
+
+			public string Address {
+				get { return address; }
+				set { address = value; }
+			}
+
+			public WorkFlowDataBinding ()
+			{
+				IfElseActivity ifelse_activity = new IfElseActivity ();
+				IfElseBranchActivity branch1 = new IfElseBranchActivity ();
+				IfElseBranchActivity branch2 = new IfElseBranchActivity ();
+				CodeCondition ifelse_condition1 = new CodeCondition ();
+				CodeActivity code_branch1 = new CodeActivity ();
+				ourCodeActivity code_branch2 = new ourCodeActivity ();
+
+				code_branch1.Name ="Code1";
+				code_branch2.Name ="Code2";
+				code_branch1.ExecuteCode += new EventHandler (ExecuteCode1);
+
+				branch1.Activities.Add (code_branch1);
+				branch2.Activities.Add (code_branch2);
+
+				ifelse_condition1.Condition += new EventHandler <ConditionalEventArgs> (IfElseCondition1);
+				branch1.Condition = ifelse_condition1;
+
+				ifelse_activity.Activities.Add (branch1);
+				ifelse_activity.Activities.Add (branch2);
+
+				ActivityBind activitybind1 = new ActivityBind ();
+	            		activitybind1.Name = "WorkFlowDataBinding";
+	            		activitybind1.Path = "Address";
+
+	            		//Console.WriteLine ("DependecyParent {0}", this.GetType ().FullName);
+	            		code_branch2.SetBinding (ourCodeActivity.DataProperty, activitybind1);
+				Activities.Add (ifelse_activity);
+			}
+
+			private void IfElseCondition1 (object sender, ConditionalEventArgs e)
+			{				
+			}
+
+			private void ExecuteCode1 (object sender, EventArgs e)
+		        {
+		        }
+
+		        static public void OnWorkflowCompleted (object sender, WorkflowCompletedEventArgs e)
+	        	{
+	          		waitHandle.Set ();
+	       		}
 		}
 
 		public class ClassProp2
@@ -142,6 +212,22 @@ namespace MonoTests.System.Workflow.ComponentModel
 			Assert.AreEqual (2, evs.Length, "C1#4");
 			Assert.AreEqual (ev, evs[0], "C1#5");
 			Assert.AreEqual (ev2, evs[1], "C1#6");
+		}
+
+		// Test ActivityBinding and DepedencyObject binding
+		[Test]
+		public void SetGetBinding ()
+		{
+			WorkflowRuntime workflowRuntime = new WorkflowRuntime ();
+
+			Type type = typeof (WorkFlowDataBinding);
+			workflowRuntime.WorkflowCompleted += WorkFlowDataBinding.OnWorkflowCompleted;
+			workflowRuntime.CreateWorkflow (type).Start ();
+            		waitHandle.WaitOne ();
+
+            		Assert.AreEqual ("Default", ourCodeActivity.DataValue, "C1#1");
+
+			workflowRuntime.Dispose ();
 		}
 
 		// Exceptions

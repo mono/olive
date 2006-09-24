@@ -22,62 +22,43 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+using System;
+using NUnit.Framework;
+using System.Workflow.ComponentModel;
+using System.Workflow.Activities;
+
+namespace MonoTests.System.Workflow.ComponentModel
 {
-	public abstract class WorkflowRuntimeService
+	[TestFixture]
+	public class WorkflowParameterBindingCollectionTest
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
-
-		protected WorkflowRuntimeService ()
+		[Test]
+		public void TestAddRemove ()
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+			WorkflowParameterBindingCollection wc = new WorkflowParameterBindingCollection (new ParallelActivity ());
+
+			WorkflowParameterBinding pb1 = new WorkflowParameterBinding ("Name1");
+			WorkflowParameterBinding pb2 = new WorkflowParameterBinding ("Name2");
+			WorkflowParameterBinding pb3 = new WorkflowParameterBinding ("Name3");
+
+			wc.Add (pb1);
+			wc.Add (pb2);
+			wc.Add (pb3);
+
+			Assert.AreEqual (3, wc.Count, "C1#1");
+			Assert.AreEqual (pb1, wc[0], "C1#2");
+			Assert.AreEqual (pb2, wc[1], "C1#3");
+			Assert.AreEqual (pb3, wc[2], "C1#4");
 		}
 
-		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
-		}
-
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
+		// Exceptions
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void TestConstructorNullException ()
 		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+			WorkflowParameterBindingCollection wc = new WorkflowParameterBindingCollection (new ParallelActivity ());
+			WorkflowParameterBinding pb1 = new WorkflowParameterBinding ();
+			wc.Add (pb1);
 		}
 	}
 }

@@ -34,6 +34,11 @@ using System.Xml;
 
 namespace MonoTests.System.Workflow.Runtime
 {
+	public interface IDump
+	{
+		void Dump ();
+	}
+
 	public class WorkflowLoaderServiceTest1 : WorkflowLoaderService
 	{
 		public WorkflowLoaderServiceTest1 ()
@@ -70,6 +75,19 @@ namespace MonoTests.System.Workflow.Runtime
 		}
 	}
 
+	public class WorkflowLoaderServiceTest3 : WorkflowLoaderServiceTest2, IDump
+	{
+		public WorkflowLoaderServiceTest3 ()
+		{
+
+		}
+
+		public void Dump ()
+		{
+
+		}
+	}
+
 	[TestFixture]
 	public class WorkflowRuntimeTest
 	{
@@ -94,11 +112,28 @@ namespace MonoTests.System.Workflow.Runtime
 			Assert.AreEqual (2, (wr3.GetAllServices (typeof (WorkflowLoaderService))).Count, "C1#3");
 			Assert.AreEqual (2, wr3.GetAllServices <WorkflowLoaderService> ().Count, "C1#3");
 
+			// An non-existant service should return null
+			Assert.AreEqual (null, wr3.GetService (typeof (string)), "C1#4");
+
 			wr.AddService (new WorkflowLoaderServiceTest1 ());
 
 			//foreach (object t in wr.GetAllServices (typeof (WorkflowLoaderService))) {
 			//	Console.WriteLine ("Types {0}", t.GetType ());
 			//}
+		}
+
+		[Test]
+		public void GetService ()
+		{
+			WorkflowRuntime wr = new WorkflowRuntime ();
+			WorkflowLoaderServiceTest3 wls = new WorkflowLoaderServiceTest3 ();
+			wr.AddService (wls);
+
+			// Asserts that GetService scans for BaseType also
+			Assert.AreEqual (wls, wr.GetService (typeof (WorkflowLoaderServiceTest2)), "C2#1");
+			
+			// Asserts that GetService scans for interfaces also
+			Assert.AreEqual (wls, wr.GetService (typeof (IDump)), "C2#2");
 		}
 
 		[Test]
@@ -108,10 +143,6 @@ namespace MonoTests.System.Workflow.Runtime
 			wr.StartRuntime ();
 
 			Assert.AreEqual (1, (wr.GetAllServices (typeof (WorkflowLoaderService))).Count, "C1#1");
-
-			foreach (object t in wr.GetAllServices (typeof (WorkflowLoaderService))) {
-				Console.WriteLine ("Types {0}", t.GetType ());
-			}
 		}
 
 		[Test]

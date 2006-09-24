@@ -22,62 +22,28 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
-{
-	public abstract class WorkflowRuntimeService
-	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+using System;
 
-		protected WorkflowRuntimeService ()
+namespace System.Workflow.Runtime
+{
+	public sealed class CorrelationTokenEventArgs : EventArgs
+	{
+		private CorrelationToken token;
+		private bool initializing;
+
+		public CorrelationTokenEventArgs (CorrelationToken token, bool Initializing)
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+			this.token = token;
+			this.initializing = initializing;
 		}
 
 		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
+		public CorrelationToken CorrelationToken {
+			get { return token; }
 		}
 
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+		public bool IsInitializing {
+			get { return initializing; }
 		}
 	}
 }

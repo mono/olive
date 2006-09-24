@@ -11,6 +11,7 @@ SUBDIRS = \
 	System.Workflow.Activities	\
 	System.Workflow.Runtime		\
 	System.Workflow.ComponentModel	\
+	System.Workflow.Activities	\
 	WindowsBase			\
 	PresentationFramework
 

@@ -19,3 +19,6 @@ System.Workflow.Runtime/TimerEventSubscription.cs
 System.Workflow.Runtime/TimerEventSubscriptionCollection.cs
 System.Workflow.Runtime/IPendingWork.cs
 System.Workflow.Runtime/WorkflowProcessor.cs
+System.Workflow.Runtime/CorrelationProperty.cs
+System.Workflow.Runtime/CorrelationToken.cs
+System.Workflow.Runtime/CorrelationTokenEventArgs.cs

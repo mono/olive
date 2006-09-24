@@ -1,3 +1,8 @@
+2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* Makefile: updated it to reflect cyclic dependency on 
+	 System.Workflow.Runtime
+	
 2006-09-02  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* Initial check-in

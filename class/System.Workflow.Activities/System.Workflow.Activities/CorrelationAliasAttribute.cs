@@ -22,63 +22,27 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+namespace System.Workflow.Activities
 {
-	public abstract class WorkflowRuntimeService
+	[AttributeUsageAttribute (AttributeTargets.Method | AttributeTargets.Event | AttributeTargets.Delegate, AllowMultiple=true)]
+	public sealed class CorrelationAliasAttribute : Attribute
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+		private string name;
+		private string path;
 
-		protected WorkflowRuntimeService ()
+		public CorrelationAliasAttribute (string name, string path)
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+			this.name = name;
+			this.path = path;
 		}
 
 		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
+		public string Name {
+			get {return name; }
 		}
 
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
-
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+		public string Path {
+			get {return path; }
 		}
 	}
 }
-

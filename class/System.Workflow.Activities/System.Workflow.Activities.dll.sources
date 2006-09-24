@@ -36,3 +36,10 @@ System.Workflow.Activities.Rules/RuleExpressionWalker.cs
 System.Workflow.Activities.Rules/IRuleExpression.cs
 System.Workflow.Activities.Rules/RuleExpressionResult.cs
 System.Workflow.Activities.Rules/RuleExpressionBinaryOperatorResolver.cs
+System.Workflow.Activities/ExternalDataEventArgs.cs
+System.Workflow.Activities/ExternalDataExchangeAttribute.cs
+System.Workflow.Activities/ExternalDataExchangeService.cs
+System.Workflow.Activities/CallExternalMethodActivity.cs
+System.Workflow.Activities/CorrelationParameterAttribute.cs
+System.Workflow.Activities/CorrelationInitializerAttribute.cs
+System.Workflow.Activities/CorrelationAliasAttribute.cs

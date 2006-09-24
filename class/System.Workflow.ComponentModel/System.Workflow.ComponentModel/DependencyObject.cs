@@ -31,11 +31,13 @@ namespace System.Workflow.ComponentModel
 	public abstract class DependencyObject : IComponent, IDisposable
 	{
 		private IDictionary <DependencyProperty, object> values;
+		private IDictionary <DependencyProperty, ActivityBind> bindings;
 
 		// Constructors
 		protected DependencyObject ()
 		{
 			values = new Dictionary <DependencyProperty, object> ();
+			bindings = new Dictionary <DependencyProperty, ActivityBind> ();
 		}
 
 		// Properties
@@ -45,6 +47,13 @@ namespace System.Workflow.ComponentModel
 				throw new NotImplementedException ();
 			}
 			set {
+				throw new NotImplementedException ();
+			}
+		}
+
+		[MonoTODO]
+		protected DependencyObject ParentDependencyObject {
+			get {
 				throw new NotImplementedException ();
 			}
 		}
@@ -80,17 +89,22 @@ namespace System.Workflow.ComponentModel
 
 		public void Dispose ()
 		{
+
 		}
 
-		/*public ActivityBind GetBinding (DependencyProperty dependencyProperty)
+		public ActivityBind GetBinding (DependencyProperty dependencyProperty)
 		{
-
+			ActivityBind binding;
+			bindings.TryGetValue (dependencyProperty, out binding);
+			return binding;
 		}
+
 
 		protected virtual object GetBoundValue (ActivityBind bind, Type targetType)
 		{
-
-		}*/
+			Activity activity = GetActivityByClassName ((Activity)this, bind.Name);
+			return bind.GetRuntimeValue (activity, targetType);
+		}
 
 		protected T[] GetInvocationList <T> (DependencyProperty dependencyEvent)
 		{
@@ -119,9 +133,16 @@ namespace System.Workflow.ComponentModel
 		public object GetValueBase (DependencyProperty dependencyProperty)
 		{
 			object obj;
+			ActivityBind bind;
 
 			if (dependencyProperty == null) {
 				throw new ArgumentNullException ("DependencyProperty cannot be null");
+			}
+
+			bind = GetBinding (dependencyProperty);
+
+			if (bind != null) {
+				 return GetBoundValue (bind, dependencyProperty.PropertyType);
 			}
 
 			values.TryGetValue (dependencyProperty, out obj);
@@ -138,15 +159,20 @@ namespace System.Workflow.ComponentModel
 
 		}
 
-		/*public bool IsBindingSet (DependencyProperty dependencyProperty)
+		public bool IsBindingSet (DependencyProperty dependencyProperty)
 		{
+			if (dependencyProperty == null) {
+				throw new ArgumentNullException ("The dependencyProperty parameter cannot be null");
+			}
 
+			return bindings.ContainsKey (dependencyProperty);
 		}
 
+		[MonoTODO]
 		public bool MetaEquals (DependencyObject dependencyObject)
 		{
-
-		}*/
+			throw new NotImplementedException ();
+		}
 
 		public void RemoveHandler (DependencyProperty dependencyEvent, object value)
 		{
@@ -166,10 +192,23 @@ namespace System.Workflow.ComponentModel
 			throw new NotImplementedException ();
 		}
 
-		/*public void SetBinding (DependencyProperty dependencyProperty, ActivityBind bind)
+		public void SetBinding (DependencyProperty dependencyProperty, ActivityBind bind)
 		{
+			if (dependencyProperty == null) {
+				throw new ArgumentNullException ("The dependencyProperty parameter cannot be null");
+			}
 
-		}*/
+			if (bind == null) {
+				throw new ArgumentNullException ("The binding parameter cannot be null");
+			}
+
+			if (bindings.ContainsKey (dependencyProperty) == true) {
+				bindings[dependencyProperty] = bind;
+			}
+			else {
+				bindings.Add (dependencyProperty, bind);
+			}
+		}
 
 		public void SetValue (DependencyProperty dependencyProperty, object value)
 		{
@@ -193,6 +232,36 @@ namespace System.Workflow.ComponentModel
                 	add { }
                 	remove { }
         	}
+
+		private Activity GetActivityByClassName (Activity start_activity, string name)
+		{
+			List <Activity> list = new List <Activity> ();
+			Activity current = start_activity.GetRootActivity ();
+
+			while (current != null) {
+
+				// TODO: Path + Name
+				if (name.Equals (current.GetType().Name)) {
+					return current;
+				}
+
+				if (Activity.IsBasedOnType (current, typeof (CompositeActivity))) {
+					CompositeActivity  composite = (CompositeActivity) current;
+					foreach (Activity activity in composite.Activities) {
+						list.Add (activity);
+					}
+				}
+
+				if (list.Count == 0) {
+					break;
+				}
+
+				current = list [0];
+				list.Remove (current);
+			}
+
+			return null;
+		}
 	}
 }
 

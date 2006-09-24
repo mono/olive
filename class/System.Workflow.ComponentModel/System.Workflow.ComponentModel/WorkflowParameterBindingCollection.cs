@@ -22,62 +22,53 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+using System.Collections.ObjectModel;
+
+namespace System.Workflow.ComponentModel
 {
-	public abstract class WorkflowRuntimeService
+	[Serializable]
+	public sealed class WorkflowParameterBindingCollection : KeyedCollection <string, WorkflowParameterBinding>
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
+		private Activity owner;
 
-		protected WorkflowRuntimeService ()
+		public WorkflowParameterBindingCollection (Activity ownerActivity)
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
+			owner = ownerActivity;
 		}
-
-		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
-		}
-
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
 
 		// Methods
-		protected virtual void OnStarted ()
+		protected override void ClearItems ()
 		{
-
+			base.ClearItems ();
 		}
 
-		protected virtual void OnStopped ()
+		public WorkflowParameterBinding GetItem (string key)
 		{
-
+			return (WorkflowParameterBinding) base[key];
 		}
 
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
+		protected override string GetKeyForItem (WorkflowParameterBinding item)
 		{
-
+			return item.ParameterName;
 		}
 
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
+		protected override void InsertItem (int index, WorkflowParameterBinding item)
 		{
+			if (Contains (item.ParameterName)) {
+				Remove (item.ParameterName);
+			}
 
+			base.InsertItem (index, item);
 		}
 
-		protected internal virtual void Start ()
+		protected override void RemoveItem (int index)
 		{
-
+			base.RemoveItem (index);
 		}
 
-		protected internal virtual void Stop ()
+		protected override void SetItem (int index, WorkflowParameterBinding item)
 		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+			SetItem (index, item);
 		}
 	}
 }

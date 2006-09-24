@@ -22,62 +22,31 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-namespace System.Workflow.Runtime.Hosting
+using System;
+using NUnit.Framework;
+using System.Workflow.ComponentModel;
+
+namespace MonoTests.System.Workflow.ComponentModel
 {
-	public abstract class WorkflowRuntimeService
+	[TestFixture]
+	public class WorkflowParameterBindingTest
 	{
-		private WorkflowRuntimeServiceState state;
-		private WorkflowRuntime runtime;
 
-		protected WorkflowRuntimeService ()
+		[Test]
+		public void Constructor1 ()
 		{
-			state = WorkflowRuntimeServiceState.Stopped;
-		}
+			WorkflowParameterBinding wmp = new WorkflowParameterBinding ();
 
-		// Properties
-		protected WorkflowRuntime Runtime {
-			get { return runtime; }
-		}
 
-      		protected WorkflowRuntimeServiceState State {
-      			get { return state; }
-      		}
+			// Default values
+			Assert.AreEqual (null, wmp.ParameterName, "C1#1");
+			Assert.AreEqual (null, wmp.Value, "C1#2");
 
-		// Methods
-		protected virtual void OnStarted ()
-		{
-
-		}
-
-		protected virtual void OnStopped ()
-		{
-
-		}
-
-		internal void RaiseExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected void RaiseServicesExceptionNotHandledEvent (Exception exception, Guid instanceId)
-		{
-
-		}
-
-		protected internal virtual void Start ()
-		{
-
-		}
-
-		protected internal virtual void Stop ()
-		{
-
-		}
-
-		// Private methods
-		internal void SetRuntime (WorkflowRuntime runtime)
-		{
-			this.runtime = runtime;
+			// Accesors setters
+			wmp.ParameterName = "Hola";
+			wmp.Value = wmp;
+			Assert.AreEqual ("Hola", wmp.ParameterName, "C1#1");
+			Assert.AreEqual (wmp, wmp.Value, "C1#2");
 		}
 	}
 }

@@ -202,6 +202,7 @@ namespace System.Workflow.ComponentModel
 
 		protected internal virtual ActivityExecutionStatus Execute (ActivityExecutionContext executionContext)
 		{
+			needs_exec = false;
 			return ActivityExecutionStatus.Closed;
 		}
 
@@ -247,6 +248,11 @@ namespace System.Workflow.ComponentModel
 			}
 
 			return null;
+		}
+
+		protected internal virtual ActivityExecutionStatus HandleFault (ActivityExecutionContext executionContext,	Exception exception)
+		{
+			  return ActivityExecutionStatus.Closed;
 		}
 
 		//public static Activity Load(Stream stream, Activity outerActivity)
@@ -315,7 +321,7 @@ namespace System.Workflow.ComponentModel
 		}
 
 		// Private methods
-		static private bool IsBasedOnType (object obj, Type target)
+		static internal bool IsBasedOnType (object obj, Type target)
 		{
 			for (Type type = obj.GetType (); type != null; type = type.BaseType) {
 				if (type == target) {
@@ -326,7 +332,7 @@ namespace System.Workflow.ComponentModel
 			return false;
 		}
 
-		private Activity GetRootActivity ()
+		internal Activity GetRootActivity ()
 		{
 			Activity activity = this;
 

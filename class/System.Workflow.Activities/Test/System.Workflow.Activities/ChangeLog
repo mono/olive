@@ -1,3 +1,8 @@
+2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* CallExternalMethodActivityTest.cs: added
+	* ExternalDataExchangeServiceTest.cs: added
+
 2006-09-02  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* Initial check-in

@@ -1,0 +1,5 @@
+2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* WorkflowRuntimeTest.cs: Add new tests for service look up
+	* CorrelationTokenTest.cs: Added
+	
