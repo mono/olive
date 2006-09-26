@@ -68,7 +68,7 @@ namespace System.Workflow.ComponentModel
 
 		protected override void SetItem (int index, WorkflowParameterBinding item)
 		{
-			SetItem (index, item);
+			base.SetItem (index, item);
 		}
 	}
 }

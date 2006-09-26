@@ -1,3 +1,7 @@
+2006-09-26  Jordi Mas i Hernandez <jordimash@gmail.com>
+
+	* WorkflowParameterBindingCollection.cs: SetItem call base method
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* IDynamicPropertyTypeProvider.cs, WorkflowParameterBinding.cs
