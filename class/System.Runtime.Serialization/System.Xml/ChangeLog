@@ -1,0 +1,173 @@
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs, XmlSimpleDictionaryReader.cs :
+	  implement IXmlNamespaceResolver.
+
+2006-07-31  Ankit Jain  <jankit@novell.com>
+
+	* UniqueId.cs (.ctor): (string overload) Implement.
+	(ToString): Prepend "urn:uuid:" instead of "uuid-".
+
+2006-07-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UniqueId.cs : some implementation.
+
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryWriter.cs, XmlSimpleDictionaryWriter.cs,
+	  XmlDictionaryReaderQuotas.cs : June CTP API update.
+
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs, IStreamProvider.cs,
+	  XmlSimpleDictionaryReader.cs, IXmlMtomReaderInitializer.cs,
+	  XmlBinaryWriterSession.cs, IXmlUTF8ReaderInitializer.cs,
+	  IXmlMtomWriterInitializer.cs, XmlDictionaryReader.cs :
+	  June CTP API updates.
+
+2006-01-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlShimWriter.cs : deleted.
+	* XmlBinaryDictionaryWriter.cs, XmlSimpleDictionaryWriter.cs :
+	  WriteProcessingInstruction() throws InvalidOperationException.
+
+2005-11-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReader.cs, XmlBinaryDictionaryWriter.cs,
+	  XmlDictionary.cs, XmlDictionaryWriter.cs, XmlC14NWriter.cs :
+	  several API fixes to Nov. CTP.
+
+2005-11-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReader.cs : CreateMtomReader() stubs.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriter.cs : use saved xml_lang and xml_space for
+	  those corresponding properties (they bork at the declaring element).
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UniqueId.cs : it does not compile.
+
+2005-10-23  Duncan Mak  <duncan@novell.com>
+
+	* UniqueId.cs (.ctor): Implement some overloads by chaining it to
+	other Unimplemented ones.
+	(operator ==, operator !=): Implemented using the Equals method.
+	(Equals, TryGetGuid): Well, at least figure the false case....
+
+2005-10-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionary.cs : fixed type of Empty.
+	* XmlDictionaryReaderQuotas.cs : Default and Max were not readonly.
+
+2005-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs : and it can GetContext().
+
+2005-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriter.cs :
+	  Fixed index for room-reserved attributes (0x22-0x3B).
+	  Added note on 0x9D.
+	* XmlBinaryDictionaryReader.cs :
+	  Several fixes to get it work fine.
+
+2005-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionary.cs : TryLookup() should use TryGetValue().
+	  Fixed incorrect upper bound check for TryLookup(int, out dictstr).
+	* XmlBinaryDictionaryWriter.cs : Use 0x8B for empty string everywhere
+	  we use 0x83.
+
+2005-10-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs : new file for CreateBinaryReader().
+	* XmlDictionaryReader.cs : use above.
+	* XmlBinaryDictionaryWriter.cs : several fixes (renamed private
+	  fields, added more notes, and much more).
+
+2005-10-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriter.cs :
+	  Added notes on dictionary string support inference. Fixed filename.
+
+2005-10-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriter.cs : new file for CreateBinaryWriter().
+	* XmlDictionaryWriter.cs : use above.
+
+2005-10-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryWriter.cs : stubby WriteNode() impl.
+	* XmlBinaryWriterSession.cs : tiny notes.
+
+2005-10-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlSimpleDictionaryWriter.cs : new file for CreateDictionaryWriter().
+	  Implemented simple XmlWriter functionality.
+	* XmlDictionaryWriter.cs : use above.
+
+2005-10-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryWriter.cs : implemented some members. Added more stubs.
+
+2005-09-29  Duncan Mak  <duncan@novell.com>
+
+	* XmlDictionaryWriter.cs (CreateBinaryWriter): Added stub.
+
+2005-09-28  Duncan Mak  <duncan@novell.com>
+
+	* XmlDictionaryWriter.cs (CreateDictionaryWriter): Added stub.
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReader.cs :
+	  Some member signature fixes.
+	  implemented CreateDictionaryReader().
+	  TryGetLocalNameAsDictionaryString() seems always returning false.
+	  IsLocalName() is not likely to use TryGet...() above.
+	* XmlSimpleDictionaryReader.cs : for CreateDictionaryReader().
+
+2005-09-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryString.cs, XmlDictionary.cs,
+	  XmlDictionaryReaderQuotas.cs, XmlDictionaryReader.cs:
+	  added some implementations.
+
+2005-09-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryString.cs, XmlShimWriter.cs,
+	  IXmlBinaryWriterInitializer.cs, IXmlUTF8WriterInitializer.cs,
+	  XmlDictionaryWriter.cs, UniqueId.cs, XmlC14NWriter.cs,
+	  XmlDictionary.cs, OnXmlDictionaryReaderClose.cs,
+	  XmlBinaryReaderSession.cs, IXmlMtomReaderInitializer.cs,
+	  IXmlDictionary.cs, IXmlBinaryReaderInitializer.cs,
+	  XmlCanonicalWriter.cs, XmlBinaryWriterSession.cs,
+	  XmlDictionaryReaderQuotas.cs, IXmlUTF8ReaderInitializer.cs,
+	  IXmlMtomWriterInitializer.cs, XmlDictionaryReader.cs :
+	  #if NET_2_0. coding style was updated.
+
+2005-09-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IXmlBinaryReaderInitializer.cs
+	  IXmlBinaryWriterInitializer.cs
+	  IXmlDictionary.cs
+	  IXmlMtomReaderInitializer.cs
+	  IXmlMtomWriterInitializer.cs
+	  IXmlUTF8ReaderInitializer.cs
+	  IXmlUTF8WriterInitializer.cs
+	  OnXmlDictionaryReaderClose.cs
+	  UniqueId.cs
+	  XmlBinaryReaderSession.cs
+	  XmlBinaryWriterSession.cs
+	  XmlC14NWriter.cs
+	  XmlCanonicalWriter.cs
+	  XmlDictionary.cs
+	  XmlDictionaryReader.cs
+	  XmlDictionaryReaderQuotas.cs
+	  XmlDictionaryString.cs
+	  XmlDictionaryWriter.cs
+	  XmlShimWriter.cs : new files.
+

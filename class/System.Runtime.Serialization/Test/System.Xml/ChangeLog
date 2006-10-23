@@ -1,0 +1,57 @@
+2006-07-31  Ankit Jain  <jankit@novell.com>
+
+	* UniqueIdTest.cs: Add new tests.
+
+2006-07-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UniqueIdTest.cs : enable it.
+
+2006-07-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReaderQuotasTest.cs : fix build.
+
+2006-03-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlSimpleDictionaryWriterTest.cs : AttributeNamespacesXmlnsXmlns()
+	  is updated to match XmlTextWriter test.
+
+2006-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UniqueIdTest.cs :
+	  It should not be in System.ServiceModel.dll test.
+
+2006-01-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlSimpleDictionaryWriterTest.cs : changed expected exceptions.
+	  Fixed one NotDotNet case (to match 2.0 RTM).
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	oops, bad file name. s:/Reader/Writer/.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriterTest.cs : new file.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlSimpleDictionaryWriterTest.cs : added test for WriteXmlAttribute()
+	  and WriteXmlnsAttribute().
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReaderAbstractTest.cs,
+	  XmlSimpleDictionaryWriterTest.cs : new files.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReaderQuotasTest.cs, XmlDictionaryTest.cs : copyrights.
+
+2005-10-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReaderQuotasTest.cs : new test.
+
+2005-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryTest.cs : new file.
+

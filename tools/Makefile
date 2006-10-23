@@ -1,6 +1,9 @@
 thisdir = tools
 SUBDIRS = \
-	xamlc
+	xamlc			\
+	client-proxy-gen	\
+	sts			\
+	svcutil
 
 include ../build/rules.make
 

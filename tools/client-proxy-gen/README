@@ -1,0 +1,45 @@
+This tool is to create client proxy types from an existing service contract
+runtime type (I believe it should be part of svcutil, but seems like it is
+not).
+
+If you have below as test.dll:
+
+--------
+	using System.ServiceModel;
+
+	[ServiceContract]
+	public interface ITestService
+	{
+		[OperationContract]
+		string Echo (string input);
+	}
+--------
+
+running "mono --debug client-proxy-gen.exe test.dll" results in
+"output.cs" like below:
+
+--------
+	[System.ServiceModel.ServiceContractAttribute()]
+	public interface ITestService {
+
+	    [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/ITestService/Echo", ReplyAction="http://tempuri.org/ITestService/EchoResponse")]
+	    string Echo(string input);
+	}
+
+	public class TestServiceProxy : System.ServiceModel.ClientBase<ITestService>, ITestService {
+
+	    TestServiceProxy() {
+	    }
+
+	    TestServiceProxy(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress endpoint) : 
+	            base(binding, endpoint) {
+	    }
+
+	    public string Echo(string input) {
+	        return base.InnerProxy.Echo(input);
+	    }
+	}
+--------
+
+Note that this tool does not assume we have working ClientBase<TChannel>.
+

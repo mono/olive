@@ -1,0 +1,20 @@
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Obsoleted : removed.
+
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : add path to referenced assemblies as gmcs always loads
+	  them from the GAC.
+
+2006-03-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added System.Web.dll.
+
+2006-02-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* now it is System.IdentityModel.dll.
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.Security.Authorization.dll.sources : all classes are added.

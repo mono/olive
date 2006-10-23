@@ -1,0 +1,16 @@
+2006-09-08  Atsushi Enomoto <atsushi@ximian.com>
+
+	* DTMXPathDocumentWriter2.cs : fill String.Empty for null ns in
+	  WriteStartElement() and WriteStartAttribute().
+
+2006-08-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DTMXPathDocumentWriter2.cs : use String.Empty instead of null for
+	  localName for those nodes which do not have own names.
+
+2006-08-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DTMXPathDocumentBuilder2.cs, DTMXPathNode2.cs,
+	  DTMXPathNavigator2.cs, DTMXPathDocumentWriter2.cs,
+	  DTMXPathDocument2.cs : initial import from System.XML and made
+	  required changes to implement SeekableXPathNavigator.

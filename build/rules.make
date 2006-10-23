@@ -162,3 +162,9 @@ dist-default:
 
 withmcs:
 	$(MAKE) MCS='$(INTERNAL_MCS)' BOOTSTRAP_MCS='$(INTERNAL_MCS)' all
+
+dll-sources:
+	echo "../../build/common/Consts.cs" > $(LIBRARY).sources
+	echo "../../build/common/MonoTODOAttribute.cs" >> $(LIBRARY).sources
+	ls */*.cs >> $(LIBRARY).sources
+	cd Test; ls */*.cs > ../$(LIBRARY:.dll=_test.dll).sources; cd ..

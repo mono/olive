@@ -1,0 +1,5 @@
+sts.cs
+Constants.cs
+WSTrustMessageConverters.cs
+WSTrustSecurityTokenService.cs
+WSTrustSTSContract.cs

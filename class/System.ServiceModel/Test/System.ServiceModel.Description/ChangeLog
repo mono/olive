@@ -1,0 +1,147 @@
+2006-10-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : added test to reject async operation
+	  whose name does not begin with "Begin".
+
+2006-10-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : added test to reject duplicate
+	  operation names.
+
+2006-10-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : added some async contract tests.
+
+2006-09-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsTest.cs : split default property value tests into
+	  each individual peoperty test, and added some more.
+
+2006-09-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsTest.cs : new test.
+
+2006-09-08  Ankit Jain  <jankit@novell.com>
+
+	* WsdlExporterTest.cs: Add more tests. Remove redundant ones.
+
+2006-09-07  Ankit Jain  <jankit@novell.com>
+
+	* WsdlExporterTest.cs (ExportContractInvalid1): Remove "NotWorking".
+
+2006-09-07  Ankit Jain  <jankit@novell.com>
+
+	* WsdlExporterTest.cs (ExportContractInvalid1): New.
+
+2006-09-07  Ankit Jain  <jankit@novell.com>
+
+	* WsdlExporterTest.cs: New. Incomplete.
+
+2006-09-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : added ignorable test that treats
+	  IRequestChannel as a service contract. We don't need that.
+
+2006-07-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsTest.cs : new file.
+
+2006-07-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypedMessageConverterTest.cs : Added StandardRoundtrip(), though
+	  NotWorking.
+
+2006-07-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypedMessageConverterTest.cs : added StandardToMessage().
+
+2006-07-13  Ankit Jain  <jankit@novell.com>
+
+	* WsdlImporterTest.cs: More June CTP updates.
+	* dump.xml: Regenerated for June CTP.
+	* MetadataResolverTest.cs: New.
+
+2006-07-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs :
+	  Added test for async pattern (IMetadataExchange).
+
+2006-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs :
+	  Added test for methods that takes and returns Message.
+	  Added test for invalid async pattern.
+
+2006-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs, TypedMessageConverterTest.cs :
+	  June CTP fixes.
+
+2006-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : [MessageBody] -> [MessageBodyMember].
+
+2006-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WsdlImporterTest.cs,
+	  ContractDescriptionTest.cs : reflect June CTP updates.
+
+2006-07-03  Ankit Jain  <jankit@novell.com>
+
+	* WsdlImporterTest.cs: Update for June CTP changes.
+
+2006-07-03  Ankit Jain  <jankit@novell.com>
+
+	* WsdlImporterTest.cs: Use
+	DataContractSerializerMessageContractImporter instead of
+	DataContractSerializerMessageContractConverter.
+
+2006-06-12  Ankit Jain  <jankit@novell.com>
+
+	* WsdlImporterTest.cs : New.
+	* dump.xml: New. Required for WsdlImporterTest.cs 
+
+2006-05-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypedMessageConverterTest.cs : new test file.
+
+2006-04-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* OperationDescriptionTest.cs : test MessageDescriptions as well.
+
+2006-04-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : test to reject operation-less contract.
+
+2006-04-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionTest.cs : moved from Test/S.SM.Dispatcher.
+	* OperationDescriptionTest.cs : new file.
+
+2006-03-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	(resumed changelogging)
+	* ChannelBuildContextTest.cs :
+	  Added tests for null ListenUri arguments.
+
+2006-02-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelBuildContextTest.cs : Feb. CTP API changes - chapter 1.
+
+2006-01-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelBuildContextTest.cs : (ConsumeBindingElements)
+	  Use BindingElements instead of non-implemented WSHttpBinding.
+
+2005-11-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelBuildContext.cs : new file.
+
+2005-10-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypeLoaderTest.cs : actually this is rather ContractDescription
+	  test, so it is being moved.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypeLoaderTest.cs : new test.

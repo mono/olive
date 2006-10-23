@@ -1,0 +1,164 @@
+2006-10-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* fixup-config2.cs, fixup-config2.xml :
+	  It is used to add svc. -> SvcHttpHandler mapping in web.config.
+
+2006-10-04  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Update.
+
+2006-09-29  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Update.
+
+2006-09-26  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Update.
+
+2006-09-07  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel_test.dll.sources: Add WsdlExporterTest.cs
+
+2006-07-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : it used to be referenced by S.IM.Selectors.dll.
+	  Nowadays it references S.IM.Selectors.dll.
+
+2006-07-13  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel_test.dll.sources: Add MetadataResolverTest.cs
+
+2006-07-12  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Update for June CTP changes. Add
+	EndpointAddress10.cs
+
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : add path to referenced assemblies as gmcs always loads
+	  them from the GAC.
+
+2006-07-03  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Update for June CTP changes.
+
+2006-07-03  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Add IMetadataExchange.cs and
+	MetadataExchangeBinding.cs . Update to match changes in June CTP.
+
+2006-06-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* fixup-config.xml : updated to match June CTP config types.
+
+2006-06-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* fixup-config.xml : bindings section has binding sub sections.
+
+2006-06-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* fixup-config.cs : now it supports updating.
+	* fixup-config.xml : "bindings" is in fact just a section.
+	  MS bad naming on class.
+
+2006-06-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* fixup-config.cs, fixup-config.xml : when you try configuration
+	  support, you can run fixup-config.exe and then supplemental
+	  config sections are added.
+
+2006-06-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : remove extra option.
+
+2006-06-12  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel.dll.sources: Add
+	System.ServiceModel.Description/MetadataSectionSerializerBase.cs
+	* System.ServiceModel_test.dll.sources: Add
+	System.ServiceModel.Description/WsdlImporterTest.cs
+
+2006-06-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : use Mono.CodeGeneration.
+
+2006-04-26  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel_test.dll.sources : Add
+	System.ServiceModel.Description/WebServiceHelper.cs .
+
+2006-02-11  Ankit Jain  <jankit@novell.com>
+
+	* System.ServiceModel_test.dll.sources : Add
+	ServiceHostTest.cs and UriSchemeKeyedCollectionTest.cs 
+
+2005-10-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* winfx.pub : new set of assembly, thus new public key.
+
+2005-10-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : eliminated some warning noises.
+
+2005-10-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : addded /r:System.Transactions.
+
+2005-09-29  Duncan Mak  <duncan@novell.com>
+
+	* Makefile (RESOURCE_FILES): Include
+	resources/WS-Addressing.schema.
+	(LIB_MCS_FLAGS): Add "/resource:" flag.
+
+2005-09-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel_test.dll.sources : required for make run-test.
+
+2005-09-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : reference to sys.configuration.dll.
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : further regen.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : regenerated to add new files.
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.dll.sources : added CommunicationErrorEventArgs.
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : so now update-dll-sources is common target to all libs.

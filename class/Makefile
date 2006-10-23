@@ -13,7 +13,11 @@ SUBDIRS = \
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
 	WindowsBase			\
-	PresentationFramework
+	PresentationFramework		\
+	System.Runtime.Serialization	\
+	System.IdentityModel		\
+	System.IdentityModel.Selectors	\
+	System.ServiceModel
 
 DISTFILES = \
 	LICENSE 		\

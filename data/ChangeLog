@@ -1,0 +1,6 @@
+2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	(started to log)
+	* olive.pc.in : added System.Runtime.Serialization,
+	  System.IdentityModel, System.IdentityModel.Selectors and
+	  System.ServiceModel.

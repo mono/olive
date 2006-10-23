@@ -1,0 +1,2 @@
+#!/bin/sh
+exec /mono $MONO_OPTIONS `cygpath -m )/mono`/3.0/all.exe "$@"

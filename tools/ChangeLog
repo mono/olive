@@ -1,0 +1,5 @@
+2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	(started to log)
+	* Makefile : added client-proxy-gen, sts and svcutil.
+	* client-proxy-gen, sts, svcutil : new indigo tools.

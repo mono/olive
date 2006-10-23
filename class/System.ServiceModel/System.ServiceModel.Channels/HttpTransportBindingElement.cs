@@ -1,0 +1,197 @@
+//
+// HttpTransportBindingElement.cs
+//
+// Author:
+//	Atsushi Enomoto <atsushi@ximian.com>
+//
+// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+using System;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Security;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+
+namespace System.ServiceModel.Channels
+{
+	[MonoTODO]
+	public class HttpTransportBindingElement : TransportBindingElement,
+		IPolicyExportExtension, IWsdlExportExtension
+	{
+		bool allow_cookies, bypass_proxy_on_local,
+			unsafe_ntlm_auth;
+		bool use_default_proxy = true, keep_alive_enabled = true;
+		int max_buffer_size = 0x10000;
+		AuthenticationSchemes auth_scheme =
+			AuthenticationSchemes.Anonymous;
+		AuthenticationSchemes proxy_auth_scheme =
+			AuthenticationSchemes.Anonymous;
+		HostNameComparisonMode host_cmp_mode;
+		Uri proxy_address;
+		string realm = String.Empty;
+		TransferMode transfer_mode;
+		IDefaultCommunicationTimeouts timeouts;
+
+		public HttpTransportBindingElement ()
+		{
+		}
+
+		protected HttpTransportBindingElement (
+			HttpTransportBindingElement other)
+			: base (other)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public bool AllowCookies {
+			get { return allow_cookies; }
+			set { allow_cookies = value; }
+		}
+
+		public AuthenticationSchemes AuthenticationScheme {
+			get { return auth_scheme; }
+			set { auth_scheme = value; }
+		}
+
+		public bool BypassProxyOnLocal {
+			get { return bypass_proxy_on_local; }
+			set { bypass_proxy_on_local = value; }
+		}
+
+		public HostNameComparisonMode HostNameComparisonMode {
+			get { return host_cmp_mode; }
+			set { host_cmp_mode = value; }
+		}
+
+		public bool KeepAliveEnabled {
+			get { return keep_alive_enabled; }
+			set { keep_alive_enabled = value; }
+		}
+
+		public int MaxBufferSize {
+			get { return max_buffer_size; }
+			set { max_buffer_size = value; }
+		}
+
+		public Uri ProxyAddress {
+			get { return proxy_address; }
+			set { proxy_address = value; }
+		}
+
+		public AuthenticationSchemes ProxyAuthenticationScheme {
+			get { return proxy_auth_scheme; }
+			set { proxy_auth_scheme = value; }
+		}
+
+		public string Realm {
+			get { return realm; }
+			set { realm = value; }
+		}
+
+		public override string Scheme {
+			get { return Uri.UriSchemeHttp; }
+		}
+
+		public TransferMode TransferMode {
+			get { return transfer_mode; }
+			set { transfer_mode = value; }
+		}
+
+		public bool UnsafeConnectionNtlmAuthentication {
+			get { return unsafe_ntlm_auth; }
+			set { unsafe_ntlm_auth = value; }
+		}
+
+		public bool UseDefaultWebProxy {
+			get { return use_default_proxy; }
+			set { use_default_proxy = value; }
+		}
+
+		[MonoTODO ("It might return true for session channels depending on the context.")]
+		public override bool CanBuildChannelFactory<TChannel> (
+			BindingContext context)
+		{
+			if (typeof (TChannel) == typeof (IRequestChannel))
+				return true;
+			return false;
+		}
+
+		[MonoTODO ("It might return true for session channels depending on the context.")]
+		public override bool CanBuildChannelListener<TChannel> (
+			BindingContext context)
+		{
+			if (typeof (TChannel) == typeof (IReplyChannel))
+				return true;
+			return false;
+		}
+
+		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (
+			BindingContext context)
+		{
+			// remaining contexts are ignored ... e.g. such binding
+			// element that always causes an error is ignored.
+			return new HttpChannelFactory<TChannel> (this, context);
+		}
+
+		public override IChannelListener<TChannel> BuildChannelListener<TChannel> (
+			BindingContext context)
+		{
+			// remaining contexts are ignored ... e.g. such binding
+			// element that always causes an error is ignored.
+			return new HttpChannelListener<TChannel> (this, context);
+		}
+
+		public override BindingElement Clone ()
+		{
+			return new HttpTransportBindingElement (this);
+		}
+
+		[MonoTODO]
+		public override T GetProperty<T> (BindingContext context)
+		{
+			return context.GetInnerProperty<T> ();
+		}
+
+		[MonoTODO]
+		void IPolicyExportExtension.ExportPolicy (
+			MetadataExporter exporter,
+			PolicyConversionContext context)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IWsdlExportExtension.ExportContract (WsdlExporter exporter,
+			WsdlContractConversionContext context)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IWsdlExportExtension.ExportEndpoint (WsdlExporter exporter,
+			WsdlEndpointConversionContext context)
+		{
+			throw new NotImplementedException ();
+		}
+	}
+}

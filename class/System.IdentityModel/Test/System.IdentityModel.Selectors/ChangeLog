@@ -1,0 +1,23 @@
+2006-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityTokenResolverTest.cs : new test.
+
+2006-09-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TestEvaluationContext.cs,
+	  CustomUserNameSecurityTokenAuthenticatorTest.cs,
+	  SamlSecurityTokenAuthenticatorTest.cs,
+	  RsaSecurityTokenAuthenticatorTest.cs,
+	  X509SecurityTokenAuthenticatorTest.cs : new tests.
+
+2006-08-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509SecurityTokenProviderTest.cs : new test.
+
+2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityTokenRequirementTest.cs : updated to match June CTP.
+
+2006-03-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityTokenRequirementTest.cs : new file.

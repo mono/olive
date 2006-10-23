@@ -1,0 +1,104 @@
+2006-10-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added test for writing
+	  EncryptedKeyIdentifierClause. It is not the thing I needed for
+	  non-included key serialization thus it's not implemented yet.
+
+2006-10-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityMessagePropertyTest.cs : new file.
+
+2006-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs :
+	  a few more lines in Ssl create authenticator test.
+
+2006-09-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs :
+	  WriteToken() test for SecurityContextSecurityToken.
+	  Incomplete/NotWorking ReadToken() test for DerivedKeyToken.
+
+2006-09-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityAlgorithmSuiteTest.cs : fixed AsymmetricSignatureAlgorithm.
+	  Use SecurityAlgorithms constants.
+
+2006-09-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added test for LocalId 
+	  ReadKeyIdentifierClause().
+
+2006-09-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs :
+	  removed some NotWorking.
+
+2006-09-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs :
+	  some are notworking yet.
+
+2006-09-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs : new test.
+
+2006-09-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : test that RsaSecurityToken is
+	  not supported.
+
+2006-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : cleaning up NotWorking.
+
+2006-08-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ScopedMessagePartSpecificationTest.cs : new test.
+
+2006-08-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelProtectionRequirementsTest.cs : new test.
+
+2006-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added GetTokenTypeUri test.
+
+2006-08-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs :
+	  Added incomplete test for WriteWrappedKeySecurityToken(), but
+	  I couldn't find any usable key identifier yet.
+
+2006-08-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs :
+	  Added test for GenericXmlSecurityToken serialization. Hmm, seems
+	  like it is also useless for ws-trust.
+
+2006-08-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs :
+	  added test for WriteToken[Core] for BinarySecurityToken.
+
+2006-08-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added test for 
+	  WriteKeyIdentifierClause[Core] though not working.
+
+2006-08-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : test some WriteToken[Core].
+
+2006-07-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : test DefaultInstance as well.
+
+2006-07-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : new test.
+
+2006-07-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityAlgorithmSuiteTest.cs,
+	  SupportingTokenParametersTest.cs : new tests.

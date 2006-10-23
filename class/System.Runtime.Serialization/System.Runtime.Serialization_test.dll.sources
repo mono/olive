@@ -1,0 +1,9 @@
+System.Runtime.Serialization/XmlObjectSerializerTest.cs
+System.Runtime.Serialization/XsdDataContractExporterTest.cs
+System.Runtime.Serialization/XsdDataContractImporterTest.cs
+System.Xml/UniqueIdTest.cs
+System.Xml/XmlBinaryDictionaryWriterTest.cs
+System.Xml/XmlDictionaryReaderAbstractTest.cs
+System.Xml/XmlDictionaryReaderQuotasTest.cs
+System.Xml/XmlDictionaryTest.cs
+System.Xml/XmlSimpleDictionaryWriterTest.cs

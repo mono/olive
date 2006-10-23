@@ -1,0 +1,5 @@
+2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	(started to log)
+	* Makefile : added scripts.
+	* scripts : new dir.

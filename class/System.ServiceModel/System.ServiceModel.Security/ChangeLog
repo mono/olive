@@ -1,0 +1,355 @@
+2006-10-12  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityAlgorithmSuite.cs : added some overrides in impl. class
+	  so that I don't forget them (they are not implemented yet).
+
+2006-09-27  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : URI attribute in o:Reference element
+	  is not mandatory.
+
+2006-09-26  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : (ReadKeyIdentifierClauseCore) remove
+	  extra consumption of Reference element.
+
+2006-09-22  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityAlgorithmSuite.cs : fixed AsymmetricSignatureAlgorithm.
+	  Use SecurityAlgorithms constants.
+
+2006-09-22  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* MessagePartSpecification.cs : default IsBodyIncluded is false.
+
+2006-09-21  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : ReadKeyIdentifierClauseCore() now handles
+	  <SecurityTokenReference> element (as LocalIdKeyIdentifierClause).
+
+2006-09-20  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretKeyIdentifierClause.cs : a few more API cleanup.
+
+2006-09-19  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretKeyIdentifierClause.cs : added missing members.
+
+2006-09-15  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SspiSecurityTokenProvider.cs : ProviderCommunicationObject-based
+	  implementation (but do we implement it?)
+	* ServiceCredentialsSecurityTokenManager.cs : more rejection in
+	  CreateSecurityTokenProvider().
+	* WindowsClientCredential.cs : implemented as long as they are
+	  required in the tests.
+
+2006-09-14  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* UserNamePasswordServiceCredential.cs,
+	  X509PeerCertificateAuthentication.cs,
+	  SecureConversationServiceCredential.cs,
+	  ServiceCredentialsSecurityTokenManager.cs,
+	  DataProtectionSecurityStateEncoder.cs,
+	  IssuedTokenServiceCredential.cs,
+	  X509ClientCertificateAuthentication.cs :
+	  several fixes for the default values.
+	* KeyNameIdentifierClause.cs : implemented Matches().
+
+2006-09-12  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs : service certificate
+	  must contain a private key.
+	* WSSecurityTokenSerializer.cs : RsaSecurityToken is not supported.
+	  Support LocalId and X509Thumbprint in WriteKeyIdentifierClause().
+
+2006-09-07  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityVersion.cs, SecurityMessageProperty.cs,
+	  ServiceCredentialsSecurityTokenManager.cs,
+	  HttpDigestClientCredential.cs : assorted RC1 API fixes.
+	* WindowsClientCredential.cs, WindowsServiceCredential.cs,
+	  SspiSecurityTokenProvider.cs, PeerCredential.cs :
+	  new files, cleaning Dummy.cs up in this namespace.
+
+2006-09-06  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* X509CertificateRecipientServiceCredential.cs :
+	  added missing SetCertificate().
+	* UserNamePasswordServiceCredential.cs,
+	  X509PeerCertificateAuthentication.cs : API fix to RC1.
+	* WSSecurityTokenSerializer.cs : ReadTokenCore() now works for X509.
+
+2006-09-06  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* UserNamePasswordServiceCredential.cs : some API fixes.
+
+2006-09-05  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* X509CertificateRecipientClientCredential.cs :
+	  added ScopedCertificates.
+
+2006-09-05  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityStateEncoder.cs, DataProtectionSecurityStateEncoder.cs :
+	  new files.
+
+2006-09-01  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : fixed namespace URI for BinarySecret.
+
+2006-08-30  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs : implemented some members,
+	  actually as copy of ClientCredentialsSecurityTokenManager.
+
+2006-08-29  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* ScopedMessagePartSpecification.cs : partly implemented.
+
+2006-08-29  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs :
+	  some ReadToken()/CanReadToken() implementation.
+
+2006-08-28  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : support BinarySecret WriteToken().
+
+2006-08-25  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SupportingTokenSpecification.cs, IEndpointIdentityProvider.cs,
+	  ISecuritySession.cs, X509PeerCertificateAuthentication.cs,
+	  ISecureConversationSession.cs, SecurityTokenSpecification.cs :
+	  new files.
+	* X509CertificateInitiatorServiceCredential.cs,
+	  X509ServiceCertificateAuthentication.cs : removed extra properties.
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  It implements IEndpointIdentityProvider.
+
+2006-08-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : some constant renamings.
+
+2006-08-22  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecureConversationServiceCredential.cs,
+	  MessagePartSpecification.cs : new files.
+	* ChannelProtectionRequirements.cs,
+	  ScopedMessagePartSpecification.cs : largely implemented.
+	* SecurityCredentialsManager.cs : CreateSecurityTokenManager() is
+	  public indeed. Thus removed internal caller as well.
+
+2006-08-17  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : removed SamlSerializer and
+	  SecurityStateEncoder. Added GetTokenTypeUri(). 
+
+2006-08-14  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityCredentialsManager.cs : add internal helper method to call
+	  CreateSecurityTokenManager().
+
+2006-08-11  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityCredentialsManager.cs : no need to be internal.
+	* ServiceCredentialsSecurityTokenManager.cs : new file.
+
+2006-08-10  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* X509CertificateRecipientClientCredential.cs :
+	  implemented get_Authentication().
+
+2006-08-04  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* KeyNameIdentifierClause.cs, BinarySecretKeyIdentifierClause.cs :
+	  new files.
+
+2006-08-03  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretSecurityTokenAuthenticator.cs,
+	  FederationServiceIssuedSecurityTokenProvider.cs : removed old code.
+
+2006-08-02  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* KeyType.cs : removed obsolete type.
+
+2006-08-01  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : implemented 
+	  WriteKeyIdentifierClauseCore() for X509IssuerSerial (though
+	  notworking due to X509IssuerSerialKeyIdentifierClause).
+
+2006-08-01  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : implemented WriteTokenCore() for
+	  UserNameSecurityToken and X509SecurityToken.
+
+2006-07-31  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs :
+	  DefaultInstance is a property, not a field.
+
+2006-07-31  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : new file.
+
+2006-07-28  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* X509CertificateInitiatorServiceCredential.cs :
+	  added missing Authentication property.
+	* X509ServiceCertificateAuthentication.cs,
+	  X509ClientCertificateAuthentication.cs,
+	  MessageSecurityException.cs :
+	  new files.
+
+2006-07-28  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* IssuedTokenClientCredential.cs : some field initialization.
+	* IdentityVerifier.cs : added DefaultIdentityVerifier, though it
+	  does not work.
+
+2006-07-28  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* IdentityVerifier.cs : new file.
+
+2006-07-27  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* InfocardInteractiveChannelInitializer.cs,
+	  IssuedTokenServiceCredential.cs : new files.
+	* IssuedTokenClientCredential.cs,
+	  X509CertificateInitiatorClientCredential.cs,
+	  X509CertificateRecipientServiceCredential.cs,
+	  X509CertificateInitiatorServiceCredential.cs :
+	  some June CTP updates.
+
+2006-07-21  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* X509CertificateRecipientClientCredential.cs : July CTP API update.
+
+2006-07-21  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityTokenReferenceStyle.cs : it will be moved to S.SM.S.Tokens.
+
+2006-07-10  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* RequestSecurityToken.cs, RequestSecurityTokenResponse.cs :
+	  removed old code.
+
+2006-07-10  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BasicSecurityProfileVersion.cs : new file.
+	* SecurityAlgorithmSuite.cs : implemented properties.
+	* SecurityVersion.cs : In June CTP it became a class. Implemented
+	  as long as it covers the public API.
+
+2006-07-05  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* IKeySizeValidator.cs : removed unused code.
+
+2006-05-29  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityStandardsManager.cs : vanished in beta2.
+	* FederationServiceIssuedSecurityTokenProvider.cs,
+	  RequestSecurityToken.cs, RequestSecurityTokenResponse.cs :
+	  SecurityStandardsManager -> SecurityTokenSerializer.
+
+2006-03-29  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretSecurityTokenAuthenticator.cs : added overrides, fix
+	  the build.
+
+2006-03-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* FederationServiceIssuedSecurityTokenProvider.cs : make it compile
+	  with the latest S.IM.dll.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretSecurityTokenAuthenticator.cs
+	  FederationServiceIssuedSecurityTokenProvider.cs
+	  RequestSecurityToken.cs RequestSecurityTokenResponse.cs
+	  SecurityCredentialsManager.cs SecurityMessageProperty.cs
+	  SecurityStandardsManager.cs :
+
+	  Dependent fixes for System.IdentityModel reorgainzation.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* FederationServiceIssuedSecurityTokenProvider.cs :
+	  System.IdentityModel dependent fix.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* Dummy.cs : due to the big move between sys.servicemodel.dll and
+	  sys.identitymodel.dll, moved some dummy classes as well.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* ChangeLog-System.ServiceModel.Security.Protocols :
+	  moved old ChangeLog in that dir to here.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* BinarySecretSecurityTokenAuthenticator.cs RequestSecurityToken.cs
+	  FederationServiceIssuedSecurityTokenProvider.cs
+	  ChannelProtectionRequirements.cs SecurityNegotiationException.cs
+	  RequestSecurityTokenResponse.cs IKeySizeValidator.cs
+	  ScopedMessagePartSpecification.cs :
+	  Moved from obsoleted System.ServiceModel.Security.Protocols.
+
+2006-02-23  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* KeyEntropyMode.cs KeyType.cs MessageProtectionOrder.cs
+	  SecurityAlgorithmSuite.cs SecurityAlgorithms.cs
+	  SecurityCredentialsManager.cs SecurityMessageProperty.cs
+	  SecurityStandardsManager.cs SecurityTokenAttachmentMode.cs
+	  SecurityTokenReferenceStyle.cs SecurityVersion.cs :
+	  Feb. CTP API changes - chapter 1.
+
+2005-11-20  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityTokenProvider.cs, SecurityTokenAttachmentMode.cs,
+	  MessageProtectionOrder.cs, SecurityStandardsManager.cs :
+	  Dummy.cs : updated to beta2.
+	* IssuedTokenProvider.cs : removed in beta2.
+
+2005-11-02  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityTokenAttachmentMode.cs, MessageProtectionOrder.cs,
+	  KeyType.cs, SecurityTokenReferenceStyle.cs : added missing enums.
+	* Dummy.cs : removed above.
+	* SecurityVersion.cs, KeyEntropyMode.cs : value fixes.
+
+2005-11-01  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* KeyEntropyMode.cs : new file.
+	* Dummy.cs : removed.
+
+2005-10-31  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityTokenProvider.cs : added missing bits and MonoTODO.
+
+2005-10-31  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityVersion.cs, SecurityAlgorithms.cs,
+	  SecurityStandardsManager.cs, SecurityAlgorithmSuite.cs,
+	  SecurityTokenResolver.cs : new files.
+	* Dummy.cs : removed above.
+	* IssuedTokenProvider.cs : tiny method signature fix.
+
+2005-10-18  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityMessageProperty.cs : new file.
+	* Dummy.cs : removed above.
+
+2005-10-12  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityCredentialsManager.cs : new file.
+	* Dummy.cs : removed above.
+
+2005-09-28  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* SecurityTokenProvider.cs, IssuedTokenProvider.cs : new files.
+	* Dummy.cs : removed those new classes.
+

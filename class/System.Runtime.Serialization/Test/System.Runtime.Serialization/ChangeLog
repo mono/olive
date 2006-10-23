@@ -1,0 +1,81 @@
+2006-09-05  Ankit Jain  <jankit@novell.com>
+
+	* XsdDataContractImporterTest.cs (PrimitiveType): Add a check for number
+	of schemas.
+
+2006-09-04  Ankit Jain  <jankit@novell.com>
+
+	* XsdDataContractExporterTest.cs (Ctor1): Remove 'NotWorking'.
+	(PrimitiveType): New.
+	(CanExportTest): New.
+	(GetSchemaTypeTest): New.
+	(Test2): Ensure that exception is "expected" from the second Export.
+
+2006-09-01  Ankit Jain  <jankit@novell.com>
+
+	* XsdDataContractExporterTest.cs: New.
+	* XmlObjectSerializerTest.cs: New tests for serializing arrays.
+
+2006-08-31  Ankit Jain  <jankit@novell.com>
+
+	* XmlObjectSerializerTest.cs: Add tests for serializing/deserializing
+	enums.
+
+2006-08-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added non-setter collection case.
+	  (I was just curious how DataContractSerializer is useless here.)
+
+2006-07-27  Ankit Jain  <jankit@novell.com>
+
+	* one.xml: New. Used by XsdDataContractImporterTest.cs
+	* XsdDataContractImporterTest.cs: New.
+
+2006-07-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : the previous test is working now.
+
+2006-07-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : finally I found out why non-
+	  datacontract .ctor() does not fail while SerializeNonDC() fails.
+
+2006-05-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added more .ctor() tests.
+
+2006-05-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs :
+	  Added test for nested class serialization.
+
+2006-05-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added some .ctor() tests.
+
+2006-04-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added test for string serialization.
+	  QName as well but [Ignore] right now.
+
+2006-03-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added test for WriteObjectContent()
+	  without WriteStartObject().
+
+2006-03-08  Ankit Jain  <jankit@novell.com>
+
+	* XmlObjectSerializerTest.cs (SerializeDCWithName):
+	(SerializeDCWithEmptyName1):
+	(SerializeDCWithEmptyName2):
+	(SerializeDCWithNullName): 
+	(SerializeDCWithEmptyNamespace1): New serialization tests.
+
+2006-03-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added more serialization tests.
+
+2006-03-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : new file for serialization tests.
+
