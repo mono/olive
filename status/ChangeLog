@@ -1,0 +1,72 @@
+2006-07-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : Put S.SM.dll after S.IM.Selectors.dll.
+
+2006-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api.xsl, deploy/cm/cormissing.js : added filters.
+
+2006-02-23  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api.xsl, Makefile :
+	  System.Security.Authorization -> System.IdentityModel
+	* transform.cs : use XPathDocument (faster).
+
+2006-02-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api.xsl : case sensitivity badness ;)
+
+2006-01-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs, mono-api-diff.cs : imported from mcs.
+
+2005-10-25  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs, mono-api-diff.cs : It now reports abstract/static/
+	  sealed differences on methods. (For now it resides in this module,
+	  but will be ported to mcs/tools/corcompare.)
+
+2005-10-25  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs : changed generic method argument format. Store
+	  generic type attribute of parameter types.
+	* mono-api-diff.cs : warn generic type attribute differences.
+
+2005-10-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs : now it also prints generic method arguments.
+
+2005-10-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs : MethodData now outputs generic arguments for
+	  MethodInfo onto the signature.
+
+2005-10-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api.xsl : ... and add a legend for ":" ;-)
+
+2005-10-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* deploy/cm/cormissing.js, deploy/cm/cormissing.css, deploy/cm/w.gif:
+	  corcompare generic constraints support is complete.
+
+2005-10-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, mono-api-info.cs, mono-api-diff.cs, mono-api.xsl :
+	  not-complete support for generic constraints.
+
+2005-09-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added MS.InfoCards.dll, and slower file later ;-)
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : tiny build-dep fix (mono-api-info).
+
+2005-09-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api-info.cs, mono-api-diff.cs: copied from corcompare.
+	* mono-api.xsl : copied from corcompare, then edited a bit.
+	* Makefile : use local corcompare tools here.
+	* transform.cs : now it takes arguments.
+	* deploy/cm, deploy/images: copied from mono/web/web/deploy.
