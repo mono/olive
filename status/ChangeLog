@@ -1,5 +1,9 @@
 2006-10-25  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* status.txt : added.
+
+2006-10-25  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* src, infos : they are also needed.
 	* Makefile : actually we have net_3_0 in olive.
 
