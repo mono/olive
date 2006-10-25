@@ -32,7 +32,6 @@
 	<li><a href="System.IdentityModel.html">IdentityModel</a></li>
 	<li><a href="System.IdentityModel.Selectors.html">IdentityModel.Selectors</a></li>
 	<li><a href="System.ServiceModel.html">ServiceModel</a></li>
-	<li><a href="System.Transactions.html">Transactions</a></li>
 	</ul>
 </div>
 			<div class="main">
