@@ -1,3 +1,9 @@
+2006-10-29  Joel Reed <joelwreed@gmail.com>
+
+	* System.Workflow.Runtime/WorkflowRuntimeSection.cs
+	* System.Workflow.Runtime/WorkflowRuntimeServiceElement.cs
+	* System.Workflow.Runtime/WorkflowRuntimeServiceElementCollection.cs
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* WorkflowRuntime.cs: fixes, include interfaces in the services search

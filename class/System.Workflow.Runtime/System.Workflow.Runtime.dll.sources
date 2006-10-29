@@ -5,6 +5,9 @@ Assembly/AssemblyInfo.cs
 System.Workflow.Runtime/WorkflowQueuingService.cs
 System.Workflow.Runtime/WorkflowQueue.cs
 System.Workflow.Runtime/WorkflowRuntime.cs
+System.Workflow.Runtime/WorkflowRuntimeSection.cs
+System.Workflow.Runtime/WorkflowRuntimeServiceElement.cs
+System.Workflow.Runtime/WorkflowRuntimeServiceElementCollection.cs
 System.Workflow.Runtime/WorkflowInstance.cs
 System.Workflow.Hosting/WorkflowRuntimeService.cs
 System.Workflow.Hosting/WorkflowRuntimeServiceState.cs

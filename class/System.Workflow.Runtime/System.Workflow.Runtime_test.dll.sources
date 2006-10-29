@@ -7,3 +7,5 @@ Workflows/WorkFlowParallelTest.cs
 Workflows/WorkFlowMachineStatusTest.cs
 System.Workflow.Runtime/TimerEventSubscriptionCollectionTest.cs
 System.Workflow.Runtime/CorrelationTokenTest.cs
+System.Workflow.Runtime/WorkflowRuntimeSectionTest.cs
+System.Workflow.Runtime/WorkflowRuntimeServiceElementTest.cs
