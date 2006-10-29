@@ -1,3 +1,15 @@
+2006-10-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SamlAssertionTest.cs : some more .ctor() tests and WriteXml() test.
+	* SamlSubjectTest.cs
+	  SamlAuthorizationDecisionStatementTest.cs
+	  SamlAuthenticationStatementTest.cs
+	  SamlConditionsTest.cs
+	  SamlAudienceRestrictionConditionTest.cs
+	  SamlActionTest.cs
+	  SamlEvidenceTest.cs
+	  SamlAuthorityBindingTest.cs : new tests.
+
 2006-10-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509AsymmetricSecurityKeyTest.cs : added tests for

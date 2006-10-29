@@ -97,6 +97,14 @@ namespace MonoTests.System.IdentityModel.Tokens
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
+		public void ConstructorStatementsContainNull ()
+		{
+			new SamlAssertion ("SamlSecurityToken-" + Guid.NewGuid (),
+				"dummy-issuer", DateTime.UtcNow, null, null, new SamlStatement [] {null});
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
 		public void ConstructorNoStatement ()
 		{
 			new SamlAssertion ("SamlSecurityToken-" + Guid.NewGuid (),
@@ -146,7 +154,6 @@ namespace MonoTests.System.IdentityModel.Tokens
 
 		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
-		[Category ("NotWorking")]
 		public void WriteXmlWithoutSamlSubject ()
 		{
 			SamlAssertion a = new SamlAssertion ();
@@ -160,7 +167,6 @@ namespace MonoTests.System.IdentityModel.Tokens
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void WriteXmlValid ()
 		{
 			SamlAssertion a = new SamlAssertion ();
@@ -171,6 +177,10 @@ namespace MonoTests.System.IdentityModel.Tokens
 			SamlAttribute attr = new SamlAttribute (Claim.CreateNameClaim ("myname"));
 			SamlAttributeStatement statement =
 				new SamlAttributeStatement (subject, new SamlAttribute [] {attr});
+			a.Advice = new SamlAdvice (new string [] {"urn:testadvice1"});
+			DateTime notBefore = DateTime.SpecifyKind (new DateTime (2000, 1, 1), DateTimeKind.Utc);
+			DateTime notOnAfter = DateTime.SpecifyKind (new DateTime (2006, 1, 1), DateTimeKind.Utc);
+			a.Conditions = new SamlConditions (notBefore, notOnAfter);
 			a.Statements.Add (statement);
 			a.Issuer = "my_hero";
 			StringWriter sw = new StringWriter ();
@@ -179,7 +189,13 @@ namespace MonoTests.System.IdentityModel.Tokens
 			using (XmlDictionaryWriter dw = CreateWriter (sw)) {
 				a.WriteXml (dw, new SamlSerializer (), null);
 			}
-			Assert.AreEqual (String.Format ("<?xml version=\"1.0\" encoding=\"utf-16\"?><saml:Assertion MajorVersion=\"1\" MinorVersion=\"1\" AssertionID=\"{0}\" Issuer=\"my_hero\" IssueInstant=\"{1}\" xmlns:saml=\"urn:oasis:names:tc:SAML:1.0:assertion\"><saml:AttributeStatement><saml:Subject><saml:NameIdentifier Format=\"urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName\" NameQualifier=\"urn:myqualifier\">myname</saml:NameIdentifier></saml:Subject><saml:Attribute AttributeName=\"name\" AttributeNamespace=\"{2}\"><saml:AttributeValue>myname</saml:AttributeValue></saml:Attribute></saml:AttributeStatement></saml:Assertion>", id, instant.ToString ("yyyy-MM-ddTHH:mm:ss.fff'Z'", CultureInfo.InvariantCulture), "http://schemas.xmlsoap.org/ws/2005/05/identity/claims"), sw.ToString ());
+			string expected = String.Format ("<?xml version=\"1.0\" encoding=\"utf-16\"?><saml:Assertion MajorVersion=\"1\" MinorVersion=\"1\" AssertionID=\"{0}\" Issuer=\"my_hero\" IssueInstant=\"{1}\" xmlns:saml=\"urn:oasis:names:tc:SAML:1.0:assertion\"><saml:Conditions NotBefore=\"{3}\" NotOnOrAfter=\"{4}\" /><saml:Advice><saml:AssertionIDReference>urn:testadvice1</saml:AssertionIDReference></saml:Advice><saml:AttributeStatement><saml:Subject><saml:NameIdentifier Format=\"urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName\" NameQualifier=\"urn:myqualifier\">myname</saml:NameIdentifier></saml:Subject><saml:Attribute AttributeName=\"name\" AttributeNamespace=\"{2}\"><saml:AttributeValue>myname</saml:AttributeValue></saml:Attribute></saml:AttributeStatement></saml:Assertion>",
+				id,
+				instant.ToString ("yyyy-MM-ddTHH:mm:ss.fff'Z'", CultureInfo.InvariantCulture),
+				"http://schemas.xmlsoap.org/ws/2005/05/identity/claims",
+				notBefore.ToString ("yyyy-MM-ddTHH:mm:ss.fff'Z'", CultureInfo.InvariantCulture),
+				notOnAfter.ToString ("yyyy-MM-ddTHH:mm:ss.fff'Z'", CultureInfo.InvariantCulture));
+			Assert.AreEqual (expected, sw.ToString ());
 		}
 	}
 }

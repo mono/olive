@@ -60,13 +60,17 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void WriteXml (
 			XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoSerializer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+			writer.WriteStartElement ("saml", "DoNotCacheCondition", SamlConstants.Namespace);
+			writer.WriteEndElement ();
 		}
 	}
 }

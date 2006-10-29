@@ -48,9 +48,11 @@ namespace System.IdentityModel.Tokens
 
 		public SamlAuthorityBinding (XmlQualifiedName kind, string binding, string location)
 		{
-			this.kind = kind;
-			this.binding = binding;
-			this.location = location;
+			if (kind == null)
+				throw new ArgumentNullException ("kind");
+			AuthorityKind = kind;
+			Binding = binding;
+			Location = location;
 		}
 
 		[DataMember]
@@ -58,6 +60,10 @@ namespace System.IdentityModel.Tokens
 			get { return kind; }
 			set {
 				CheckReadOnly ();
+				if (value == null)
+					throw new ArgumentNullException ("value");
+				if (value.Equals (XmlQualifiedName.Empty))
+					throw new ArgumentException ("non-empty XmlQualifiedName must be set to AuthorityKind of SamlAuthorityBinding.");
 				kind = value;
 			}
 		}
@@ -67,6 +73,8 @@ namespace System.IdentityModel.Tokens
 			get { return binding; }
 			set {
 				CheckReadOnly ();
+				if (value == null || value.Length == 0)
+					throw new ArgumentException ("non-zero length string must be set to Binding of SamlAuthorityBinding.");
 				binding = value;
 			}
 		}
@@ -76,6 +84,8 @@ namespace System.IdentityModel.Tokens
 			get { return location; }
 			set {
 				CheckReadOnly ();
+				if (value == null || value.Length == 0)
+					throw new ArgumentException ("non-zero length string must be set to Location of SamlAuthorityBinding.");
 				location = value;
 			}
 		}
@@ -104,13 +114,29 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public virtual void WriteXml (
 			XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoSerializer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+
+			if (AuthorityKind == null)
+				throw new SecurityTokenException ("AuthorityKind must be set to SAML AuthorityBinding before being written.");
+			if (Binding == null)
+				throw new SecurityTokenException ("non-zero length Binding must be set to SAML AuthorityBinding before being written.");
+			if (Location == null)
+				throw new SecurityTokenException ("non-zero length Location must be set to SAML AuthorityBinding before being written.");
+
+			writer.WriteStartElement ("saml", "AuthorityBinding", SamlConstants.Namespace);
+			writer.WriteXmlnsAttribute (String.Empty, AuthorityKind.Namespace);
+			writer.WriteAttributeString ("AuthorityKind", AuthorityKind.Name);
+			writer.WriteAttributeString ("Location", Location);
+			writer.WriteAttributeString ("Binding", Binding);
+			writer.WriteEndElement ();
 		}
 	}
 }

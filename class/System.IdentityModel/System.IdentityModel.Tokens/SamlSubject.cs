@@ -34,7 +34,6 @@ using System.Xml;
 
 namespace System.IdentityModel.Tokens
 {
-	[MonoTODO]
 	public class SamlSubject
 	{
 		public static string NameClaimType {
@@ -54,6 +53,8 @@ namespace System.IdentityModel.Tokens
 
 		public SamlSubject (string nameFormat, string nameQualifier, string name)
 		{
+			if (name == null || name.Length == 0)
+				throw new ArgumentException ("non-zero length string must be specified for name of SAML Subject.");
 			name_format = nameFormat;
 			name_qualifier = nameQualifier;
 			this.name = name;
@@ -83,6 +84,8 @@ namespace System.IdentityModel.Tokens
 			get { return name; }
 			set {
 				CheckReadOnly ();
+				if (value == null || value.Length == 0)
+					throw new ArgumentException ("non-zero length string must be specified for name of SAML Subject.");
 				name = value;
 			}
 		}
@@ -139,20 +142,38 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-
-		[MonoTODO]
 		public virtual void ReadXml (XmlDictionaryReader reader,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoTokenSerializer,
 			SecurityTokenResolver outOfBandTokenResolver)
 		{
-			throw new NotImplementedException ();
+			if (reader == null)
+				throw new ArgumentNullException ("reader");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+
+			reader.ReadStartElement ("Subject", SamlConstants.Namespace);
+			NameFormat = reader.GetAttribute ("Format");
+			NameQualifier = reader.GetAttribute ("NameQualifier");
+			Name = reader.ReadElementContentAsString ("NameIdentifier", SamlConstants.Namespace);
+			reader.ReadEndElement ();
+
+			if (Name == null || Name.Length == 0)
+				throw new SecurityTokenException ("non-zero length string must be exist for Name.");
 		}
 
 		public virtual void WriteXml (XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoTokenSerializer)
 		{
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+
+			if (Name == null || Name.Length == 0)
+				throw new SecurityTokenException ("non-zero length string must be set to Name of SAML Subject before being written.");
+
 			writer.WriteStartElement ("saml", "Subject", SamlConstants.Namespace);
 			writer.WriteStartElement ("saml", "NameIdentifier", SamlConstants.Namespace);
 			writer.WriteAttributeString ("Format", NameFormat);

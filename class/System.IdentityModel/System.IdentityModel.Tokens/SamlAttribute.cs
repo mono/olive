@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2006 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Xml;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
@@ -129,6 +130,12 @@ namespace System.IdentityModel.Tokens
 			foreach (string s in AttributeValues)
 				writer.WriteElementString ("saml", "AttributeValue", SamlConstants.Namespace, s);
 			writer.WriteEndElement ();
+		}
+
+		[MonoTODO]
+		public virtual ReadOnlyCollection<Claim> ExtractClaims ()
+		{
+			throw new NotImplementedException ();
 		}
 	}
 }

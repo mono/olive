@@ -73,13 +73,22 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void WriteXml (
 			XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoSerializer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+			if (Audiences.Count == 0)
+				throw new SecurityTokenException ("SAML AudienceRestrictionCondition must contain at least one Audience.");
+
+			writer.WriteStartElement ("saml", "AudienceRestrictionCondition", SamlConstants.Namespace);
+			foreach (Uri a in Audiences)
+				writer.WriteElementString ("saml", "Audience", SamlConstants.Namespace, a.AbsoluteUri);
+			writer.WriteEndElement ();
 		}
 	}
 }

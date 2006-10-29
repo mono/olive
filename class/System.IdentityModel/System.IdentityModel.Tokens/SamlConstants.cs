@@ -31,6 +31,8 @@ namespace System.IdentityModel.Tokens
 {
 	public static class SamlConstants
 	{
+		internal const string DateFormat = "yyyy-MM-ddTHH:mm:ss.fff'Z'";
+
 		public static string EmailName {
 			get { return "EmailName"; }
 		}

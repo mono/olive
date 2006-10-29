@@ -45,17 +45,16 @@ namespace System.IdentityModel.Tokens
 
 		protected SamlSubjectStatement (SamlSubject samlSubject)
 		{
-			if (samlSubject == null)
-				throw new ArgumentNullException ("samlSubject");
-
-			subject = samlSubject;
+			SetSubject (samlSubject);
 		}
 
 		public SamlSubject SamlSubject {
 			get { return subject; }
 			set {
 				CheckReadOnly ();
-				subject = value;
+				if (value == null)
+					throw new ArgumentNullException ("value");
+				SetSubject (value);
 			}
 		}
 
@@ -83,10 +82,12 @@ namespace System.IdentityModel.Tokens
 
 		protected abstract void AddClaimsToList (IList<Claim> claims);
 
-		[MonoTODO]
+		// MSDN says that it ignores IsReadOnly
 		protected void SetSubject (SamlSubject samlSubject)
 		{
-			throw new NotImplementedException ();
+			if (samlSubject == null)
+				throw new ArgumentNullException ("samlSubject");
+			subject = samlSubject;
 		}
 	}
 }

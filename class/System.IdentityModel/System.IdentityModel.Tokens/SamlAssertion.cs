@@ -33,7 +33,6 @@ using System.IdentityModel.Selectors;
 
 namespace System.IdentityModel.Tokens
 {
-	[MonoTODO]
 	public class SamlAssertion
 	{
 		bool is_readonly;
@@ -73,7 +72,11 @@ namespace System.IdentityModel.Tokens
 			issue_instant = issueInstant;
 			this.conditions = conditions;
 			this.advice = advice;
-			this.statements.AddRange (statements);
+			foreach (SamlStatement s in statements) {
+				if (s == null)
+					throw new ArgumentException ("statements contain null item.");
+				this.statements.Add (s);
+			}
 			if (this.statements.Count == 0)
 				throw new ArgumentException ("At least one assertion statement is required.");
 		}
@@ -183,7 +186,6 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public virtual void WriteXml (XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoTokenSerializer)
@@ -203,11 +205,15 @@ namespace System.IdentityModel.Tokens
 			writer.WriteStartElement ("saml", "Assertion", SamlConstants.Namespace);
 			writer.WriteAttributeString ("MajorVersion", MajorVersion.ToString (invariant));
 			writer.WriteAttributeString ("MinorVersion", MinorVersion.ToString (invariant));
-			writer.WriteAttributeString ("AssertionId", AssertionId);
+			writer.WriteAttributeString ("AssertionID", AssertionId);
 			writer.WriteAttributeString ("Issuer", Issuer);
-			writer.WriteAttributeString ("IssueInstant", IssueInstant.ToString ("yyyy-MM-ddTHH:mm:ss.fff'Z'", invariant));
+			writer.WriteAttributeString ("IssueInstant", IssueInstant.ToString (SamlConstants.DateFormat, invariant));
 
 			try {
+				if (Conditions != null)
+					Conditions.WriteXml (writer, samlSerializer, keyInfoTokenSerializer);
+				if (Advice != null)
+					Advice.WriteXml (writer, samlSerializer, keyInfoTokenSerializer);
 				foreach (SamlStatement statement in Statements)
 					statement.WriteXml (writer, samlSerializer, keyInfoTokenSerializer);
 			} catch (NotImplementedException) {

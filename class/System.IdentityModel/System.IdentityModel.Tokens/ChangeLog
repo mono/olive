@@ -1,3 +1,21 @@
+2006-10-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SamlSubject.cs
+	  SamlAuthorizationDecisionStatement.cs
+	  SamlAssertion.cs
+	  SamlConditions.cs
+	  SamlAudienceRestrictionCondition.cs
+	  SamlDoNotCacheCondition.cs
+	  SamlEvidence.cs
+	  SamlSubjectStatement.cs
+	  SamlAdvice.cs
+	  SamlAttribute.cs
+	  SamlAuthenticationStatement.cs
+	  SamlConstants.cs
+	  SamlAction.cs
+	  SamlAuthorityBinding.cs : implemented all WriteXml() and some of
+	  ReadXml(). A couple of more API fixes.
+
 2006-10-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509AsymmetricSecurityKey.cs : implemented IsSupportedAlgorithm().

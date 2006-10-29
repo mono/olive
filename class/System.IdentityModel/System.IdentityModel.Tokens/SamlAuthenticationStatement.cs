@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
@@ -36,11 +37,12 @@ namespace System.IdentityModel.Tokens
 	public class SamlAuthenticationStatement : SamlSubjectStatement
 	{
 		public static string ClaimType {
-			get { return "http://schemas.microsoft.com/mb/2005/09/ClaimType/SamlAuthentication"; }
+			get { return "http://schemas.xmlsoap.org/ws/2005/05/identity/claims/authentication"; }
 		}
 
 		bool is_readonly;
-		string auth_method, dns, ip;
+		string auth_method = "urn:oasis:names:tc:SAML:1.0:am:unspecified";
+		string dns, ip;
 		new IList<SamlAuthorityBinding> bindings;
 		DateTime instant;
 
@@ -54,12 +56,16 @@ namespace System.IdentityModel.Tokens
 			DateTime authenticationInstant,
 			string dnsAddress, string ipAddress,
 			IEnumerable<SamlAuthorityBinding> authorityBindings)
+			: base (samlSubject)
 		{
-			auth_method = authenticationMethod;
+			AuthenticationMethod = authenticationMethod;
 			instant = authenticationInstant;
 			dns = dnsAddress;
 			ip = ipAddress;
-			bindings = new List<SamlAuthorityBinding> (authorityBindings);
+			if (authorityBindings != null)
+				bindings = new List<SamlAuthorityBinding> (authorityBindings);
+			else
+				bindings = new List<SamlAuthorityBinding> ();
 		}
 
 		public DateTime AuthenticationInstant {
@@ -74,6 +80,8 @@ namespace System.IdentityModel.Tokens
 			get { return auth_method; }
 			set {
 				CheckReadOnly ();
+				if (value == null || value.Length == 0)
+					throw new ArgumentException ("Authentication method must be non-zero length string.");
 				auth_method = value;
 			}
 		}
@@ -122,12 +130,31 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void WriteXml (XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoTokenSerializer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+			if (SamlSubject == null)
+				throw new SecurityTokenException ("SAML Subject must be set to AuthenticationStatement before it is written.");
+
+			writer.WriteStartElement ("saml", "AuthenticationStatement", SamlConstants.Namespace);
+			writer.WriteAttributeString ("AuthenticationMethod", AuthenticationMethod);
+			writer.WriteAttributeString ("AuthenticationInstant", 
+				AuthenticationInstant.ToString (SamlConstants.DateFormat, CultureInfo.InvariantCulture));
+			SamlSubject.WriteXml (writer, samlSerializer, keyInfoTokenSerializer);
+			if (DnsAddress != null || IPAddress != null) {
+				writer.WriteStartElement ("saml", "SubjectLocality", SamlConstants.Namespace);
+				if (IPAddress != null)
+					writer.WriteAttributeString ("IPAddress", IPAddress);
+				if (DnsAddress != null)
+					writer.WriteAttributeString ("DNSAddress", DnsAddress);
+				writer.WriteEndElement ();
+			}
+			writer.WriteEndElement ();
 		}
 
 		[MonoTODO]

@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Xml;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
@@ -36,50 +37,61 @@ namespace System.IdentityModel.Tokens
 {
 	public class SamlConditions
 	{
-		DateTime not_before, not_on_after;
-		bool is_readonly;
+		DateTime not_before = DateTime.SpecifyKind (DateTime.MinValue.AddDays (1), DateTimeKind.Utc);
+		DateTime not_on_after = DateTime.SpecifyKind (DateTime.MaxValue.AddDays (-1), DateTimeKind.Utc);
+		bool is_readonly, has_not_before, has_not_on_after;
 		List<SamlCondition> conditions = new List<SamlCondition> ();
 
-		[MonoTODO]
 		public SamlConditions ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		public SamlConditions (DateTime notBefore, DateTime notOnOrAfter)
 		{
-			this.not_before = notBefore;
-			this.not_on_after = notOnOrAfter;
+			this.NotBefore = notBefore;
+			this.NotOnOrAfter = notOnOrAfter;
 		}
 
 		public SamlConditions (DateTime notBefore, DateTime notOnOrAfter,
 			IEnumerable<SamlCondition> conditions)
 			: this (notBefore, notOnOrAfter)
 		{
-			if (conditions == null)
-				throw new ArgumentNullException ("conditions");
-			foreach (SamlCondition cond in conditions)
-				this.conditions.Add (cond);
+			if (conditions != null) {
+				foreach (SamlCondition cond in conditions)
+					this.conditions.Add (cond);
+			}
 		}
 
 		public IList<SamlCondition> Conditions {
 			get { return conditions; }
 		}
 
-		[MonoTODO]
 		public DateTime NotBefore {
 			get { return not_before; }
-			set { not_before = value; }
+			set {
+				CheckReadOnly ();
+				not_before = value;
+				has_not_before = true;
+			}
 		}
 
-		[MonoTODO]
 		public DateTime NotOnOrAfter {
 			get { return not_on_after; }
-			set { not_on_after = value; }
+			set {
+				CheckReadOnly ();
+				not_on_after = value;
+				has_not_on_after = true;
+			}
 		}
 
 		public bool IsReadOnly {
 			get { return is_readonly; }
+		}
+
+		private void CheckReadOnly ()
+		{
+			if (is_readonly)
+				throw new InvalidOperationException ("This SAML 'Conditions' is read-only.");
 		}
 
 		public void MakeReadOnly ()
@@ -96,12 +108,23 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public virtual void WriteXml (XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer,
 			SecurityTokenSerializer keyInfoTokenSerializer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+			writer.WriteStartElement ("saml", "Conditions", SamlConstants.Namespace);
+			CultureInfo invariant = CultureInfo.InvariantCulture;
+			if (has_not_before)
+				writer.WriteAttributeString ("NotBefore", NotBefore.ToString (SamlConstants.DateFormat, invariant));
+			if (has_not_on_after)
+				writer.WriteAttributeString ("NotOnOrAfter", NotOnOrAfter.ToString (SamlConstants.DateFormat, invariant));
+			foreach (SamlCondition cond in Conditions)
+				cond.WriteXml (writer, samlSerializer, keyInfoTokenSerializer);
+			writer.WriteEndElement ();
 		}
 	}
 }

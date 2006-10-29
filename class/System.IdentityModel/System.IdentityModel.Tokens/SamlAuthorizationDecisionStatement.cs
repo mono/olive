@@ -48,8 +48,19 @@ namespace System.IdentityModel.Tokens
 			SamlSubject samlSubject, string resource,
 			SamlAccessDecision accessDecision,
 			IEnumerable<SamlAction> samlActions)
-			: this (samlSubject, resource, accessDecision, samlActions, null)
+			: base (samlSubject)
 		{
+			if (samlActions == null)
+				throw new ArgumentNullException ("samlActions");
+			if (resource == null || resource.Length == 0)
+				throw new SecurityTokenException ("non-zero length string must be set to Resource of SAML AuthorizationDecisionStatement.");
+			Resource = resource;
+			AccessDecision = accessDecision;
+			foreach (SamlAction a in samlActions) {
+				if (a == null)
+					throw new ArgumentException ("samlActions contain null item.");
+				actions.Add (a);
+			}
 		}
 
 		public SamlAuthorizationDecisionStatement (
@@ -57,12 +68,8 @@ namespace System.IdentityModel.Tokens
 			SamlAccessDecision accessDecision,
 			IEnumerable<SamlAction> samlActions,
 			SamlEvidence samlEvidence)
-			: base (samlSubject)
+			: this (samlSubject, resource, accessDecision, samlActions)
 		{
-			this.resource = resource;
-			this.access_decision = accessDecision;
-			foreach (SamlAction a in samlActions)
-				actions.Add (a);
 			evidence = samlEvidence;
 		}
 
@@ -95,6 +102,8 @@ namespace System.IdentityModel.Tokens
 			get { return resource; }
 			set {
 				CheckReadOnly ();
+				if (value == null || value.Length == 0)
+					throw new ArgumentException ("non-zero length string must be set to Resource of SAML AuthorizationDecisionStatement.");
 				resource = value;
 			}
 		}
@@ -120,22 +129,106 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void ReadXml (XmlDictionaryReader reader,
 			SamlSerializer samlSerializer, 
 			SecurityTokenSerializer keyInfoSerializer, 
 			SecurityTokenResolver resolver)
 		{
-			throw new NotImplementedException ();
+			if (reader == null)
+				throw new ArgumentNullException ("reader");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+
+			string decision = reader.GetAttribute ("Decision");
+			switch (decision) {
+			case "Permit":
+				AccessDecision = SamlAccessDecision.Permit;
+				break;
+			case "Deny":
+				AccessDecision = SamlAccessDecision.Deny;
+				break;
+			case "Indeterminate":
+				AccessDecision = SamlAccessDecision.Indeterminate;
+				break;
+			default:
+				throw new SecurityTokenException (String.Format ("AccessDecision value is wrong: {0}", decision));
+			}
+			Resource = reader.GetAttribute ("Resource");
+
+			reader.ReadStartElement ("AuthorizationDecisionStatement", SamlConstants.Namespace);
+
+			reader.MoveToContent ();
+			SamlSubject = new SamlSubject ();
+			SamlSubject.ReadXml (reader, samlSerializer, keyInfoSerializer, resolver);
+			SamlActions.Clear ();
+			for (reader.MoveToContent ();
+			     reader.LocalName == "Action" &&
+			     reader.NamespaceURI == SamlConstants.Namespace;
+			     reader.MoveToContent ()) {
+				SamlAction action = new SamlAction ();
+				action.ReadXml (reader, samlSerializer, keyInfoSerializer, resolver);
+				SamlActions.Add (action);
+			}
+			if (reader.LocalName == "Evidence" &&
+			    reader.NamespaceURI == SamlConstants.Namespace) {
+				Evidence = new SamlEvidence ();
+				Evidence.ReadXml (reader, samlSerializer, keyInfoSerializer, resolver);
+				reader.MoveToContent ();
+			}
+			reader.ReadEndElement ();
+
+			// verify contents
+			if (SamlActions.Count == 0)
+				throw new SecurityTokenException ("SAML AuthorizationDecisionStatement must contain at least one Action.");
+
+			if (SamlSubject == null)
+				throw new SecurityTokenException ("SAML Subject must be set to SAML AuthorizationDecisionStatement before being written.");
+			if (Resource == null || Resource.Length == 0)
+				throw new SecurityTokenException ("non-zero string must be set to Resource on SAML AuthorizationDecisionStatement.");
 		}
 
-		[MonoTODO]
 		public override void WriteXml (XmlDictionaryWriter writer,
 			SamlSerializer samlSerializer, 
 			SecurityTokenSerializer keyInfoSerializer)
 		{
-			throw new NotImplementedException ();
-		}
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (samlSerializer == null)
+				throw new ArgumentNullException ("samlSerializer");
+			if (SamlActions.Count == 0)
+				throw new SecurityTokenException ("SAML AuthorizationDecisionStatement must contain at least one Action.");
 
+			if (SamlSubject == null)
+				throw new SecurityTokenException ("SAML Subject must be set to SAML AuthorizationDecisionStatement before being written.");
+			if (Resource == null || Resource.Length == 0)
+				throw new SecurityTokenException ("non-zero string must be set to Resource on SAML AuthorizationDecisionStatement.");
+
+			writer.WriteStartElement ("saml", "AuthorizationDecisionStatement", SamlConstants.Namespace);
+
+			writer.WriteStartAttribute ("Decision");
+			switch (AccessDecision) {
+			case SamlAccessDecision.Permit:
+				writer.WriteString ("Permit");
+				break;
+			case SamlAccessDecision.Deny:
+				writer.WriteString ("Deny");
+				break;
+			case SamlAccessDecision.Indeterminate:
+				writer.WriteString ("Indeterminate");
+				break;
+			default:
+				throw new ArgumentOutOfRangeException ("AccessDecision value is wrong.");
+			}
+			writer.WriteEndAttribute ();
+
+			writer.WriteAttributeString ("Resource", Resource);
+			SamlSubject.WriteXml (writer, samlSerializer, keyInfoSerializer);
+			foreach (SamlAction action in SamlActions)
+				action.WriteXml (writer, samlSerializer, keyInfoSerializer);
+			if (Evidence != null)
+				Evidence.WriteXml (writer, samlSerializer, keyInfoSerializer);
+
+			writer.WriteEndElement ();
+		}
 	}
 }
