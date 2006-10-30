@@ -1,0 +1,20 @@
+* How to create status pages
+
+	Create masterinfos for Indigo. The following assemblies are targeted:
+
+	- System.Runtime.Serialization.dll
+	- System.IdentityModel.dll
+	- System.IdentityModel.Selectrors.dll
+	- System.ServiceModel.dll
+
+	They are in .NET GAC (%WINDOWS%\assembly\GAC_MSIL). Note that usually
+	you cannot access there from Explorer. Use cygwin or cmd.exe.
+
+	Copy those files to masterinfos.
+
+	Once run "make" here ("status" directory). Ignore missing file error.
+	Move "masterinfos" directory and run gen-all.sh.
+
+	Move back here and run "make".
+
+	Status pages are under ./deploy.

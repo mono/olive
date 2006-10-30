@@ -1,3 +1,10 @@
+2006-10-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* deploy/cm/*
+	  deploy/images/* : added missing files for status pages.
+	* masterinfos/gen-all.sh : added status page generator helper script.
+	* create-status-pages.txt : added how to create status pages.
+
 2006-10-25  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* status.txt : added.
