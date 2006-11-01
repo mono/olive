@@ -21,12 +21,11 @@
 //
 
 using System;
+using System.Collections;
 
 namespace System.Query
 {
-        public delegate T Func<T> ();
-        public delegate T Func<A0, T> (A0 arg0);
-        public delegate T Func<A0, A1, T> (A0 arg0, A1 arg1);
-        public delegate T Func<A0, A1, A2, T> (A0 arg0, A1 arg1, A2 arg2);
-        public delegate T Func<A0, A1, A2, A3, T> (A0 arg0, A1 arg1, A2 arg2, A3 arg3);
+        public interface IOrderedQueryable : IEnumerable //, IQueryable
+        {
+        }
 }

@@ -21,12 +21,16 @@
 //
 
 using System;
+using System.Collections.Generic;
+// using System.Expressions;
 
 namespace System.Query
 {
-        public delegate T Func<T> ();
-        public delegate T Func<A0, T> (A0 arg0);
-        public delegate T Func<A0, A1, T> (A0 arg0, A1 arg1);
-        public delegate T Func<A0, A1, A2, T> (A0 arg0, A1 arg1, A2 arg2);
-        public delegate T Func<A0, A1, A2, A3, T> (A0 arg0, A1 arg1, A2 arg2, A3 arg3);
+        /*public interface IQueryable<T> : IQueryable, IEnumerable<T>
+        {
+                IQueryable<S> CreateExpression<S> (Expression expression);
+                S Execute<S> (Expression expression);
+                Type ElementType { get; }
+                Expression Expression { get; }
+        }*/
 }

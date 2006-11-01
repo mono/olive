@@ -46,6 +46,11 @@ namespace System.Query
                         return groups.ContainsKey (key);
                 }
                 
+                public IEnumerable<T> this [K key]
+                {
+                        get { return groups[key]; }
+                }
+                
                 public IEnumerator<IGrouping<K, T>> GetEnumerator ()
                 {
                         return groups.Values.GetEnumerator ();

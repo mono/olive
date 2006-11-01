@@ -2900,19 +2900,20 @@ namespace System.Query
                                 innerKeySelector == null || resultSelector == null)
                                 throw new ArgumentNullException ();
                         
-                        Dictionary<K, List<U>> innerKeys = new Dictionary<K, List<U>> ();
+                        Lookup<K, U> innerKeys = ToLookup<U, K> (inner, innerKeySelector);                       
+                        /*Dictionary<K, List<U>> innerKeys = new Dictionary<K, List<U>> ();
                         foreach (U element in inner)
                         {
                                 K innerKey = innerKeySelector (element);
                                 if (!innerKeys.ContainsKey (innerKey))
                                         innerKeys.Add (innerKey, new List<U> ());
                                 innerKeys[innerKey].Add (element);
-                        }
+                        }*/
                         
                         foreach (T element in outer)
                         {
                                 K outerKey = outerKeySelector (element);
-                                if (innerKeys.ContainsKey (outerKey))
+                                if (innerKeys.Contains (outerKey))
                                 {
                                         foreach (U innerElement in innerKeys [outerKey])
                                                 yield return resultSelector (element, innerElement);
@@ -2936,26 +2937,27 @@ namespace System.Query
                                 innerKeySelector == null || resultSelector == null)
                                 throw new ArgumentNullException ();
                         
-                        Dictionary<K, List<U>> innerKeys = new Dictionary<K, List<U>> ();
+                        Lookup<K, U> innerKeys = ToLookup<U, K> (inner, innerKeySelector);
+                        /*Dictionary<K, List<U>> innerKeys = new Dictionary<K, List<U>> ();
                         foreach (U element in inner)
                         {
                                 K innerKey = innerKeySelector (element);
                                 if (!innerKeys.ContainsKey (innerKey))
                                         innerKeys.Add (innerKey, new List<U> ());
                                 innerKeys[innerKey].Add (element);
-                        }
+                        }*/
                         
                         foreach (T element in outer)
                         {
                                 K outerKey = outerKeySelector (element);
-                                if (innerKeys.ContainsKey (outerKey))
+                                if (innerKeys.Contains (outerKey))
                                         yield return resultSelector (element, innerKeys [outerKey]);
                         }
                 }
                 
                 # endregion
 
-                // This methods are not included in the
+                // These methods are not included in the
                 // .NET Standard Query Operators Specification,
                 // but they provide additional useful commands
                 
