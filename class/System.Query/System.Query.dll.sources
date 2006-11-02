@@ -11,3 +11,5 @@
 ./System.Query/Lookup.cs
 ./System.Query/OrderedSequence.cs
 ./System.Query/Sequence.cs
+System.Expressions/Expression.cs
+System.Expressions/ParameterExpression.cs

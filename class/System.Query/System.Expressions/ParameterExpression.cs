@@ -17,15 +17,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //
 // Authors:
-//        Alejandro Serrano "Serras" (trupill@yahoo.es)
+//        Marek Safar (marek.safar@seznam.cz)
 //
 
 using System;
+using System.Collections.Generic;
 
-namespace System.Runtime.CompilerServices
+namespace System.Expressions
 {
-        [AttributeUsage (AttributeTargets.Method | AttributeTargets.Class | AttributeTargets.Assembly)]
-        public sealed class ExtensionAttribute : Attribute
+        public class ParameterExpression
         {
         }
 }
