@@ -74,7 +74,7 @@ namespace System.Workflow.Runtime
 			int left = 0;
 			int right = range-1;
 
-			// Adds items always in a stored order
+			// Adds items always in a sorted order
 			while (left <= right) {
 
 				middle = (left + right) >> 1;
