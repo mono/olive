@@ -1,0 +1,28 @@
+2006-09-17  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplecli.cs : ChannelFactory<IRequestChannel> is a misuse.
+	  Considering the purpose of this test, just build channels without
+	  ChannelFactory.
+
+2006-06-20  Atsushi Enomoto <atsushi@ximian.com>
+
+	* Makefile : added.
+	* samplecli.cs : removed extra code.
+
+2006-06-20  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplesvc.cs : removed some extra debugging stuff.
+	* samplecli.cs : finally I sorted out why the client and the server
+	  did not cooperate on .NET. WCF generates a dummy DataContract type
+	  for OperationContract (in this example EchoType) and it is used
+	  to be serialized in CreateMessage(). Now it interops.
+
+2006-04-05  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplecli.cs samplesvc.cs : making things verbose.
+	  Request Action must contain the namespace (it is still useful for
+	  ActionNotSupported fault though).
+
+2006-03-02  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplecli.cs samplesvc.cs : updated to work with Feb. CTP.

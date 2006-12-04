@@ -1,0 +1,41 @@
+2006-10-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplecli5.cs, samplesvc5.cs : basically the same as
+	  sample 4, but the contract is Message-based.
+	* samplesvc4.cs : tiny additional comment.
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs, samplesvc4.cs : reduced several lines to simplify
+	  sample 3 (and they still work together).
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs, samplesvc4.cs : new files, for now just copy of
+	  sample 3.
+	* Makefile : added above. Added Inspector.cs to sample 1.
+	* Inspector.cs : indent output.
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli.cs, samplesvc.cs, samplecli3.cs, samplesvc3.cs :
+	  finally got sample 3 working fine on .NET, by making its ws-policy
+	  equivalent to sample (1).
+
+2006-09-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplecli3.cs, samplesvc3.cs : new low-level example 
+	  (without WSHttpBinding), but the reply is still invalid (on .NET).
+	  Anyways now mono service can decrypt the message from .NET client.
+	* samplecli2.cs, samplesvc2.cs : removed metadata behavior and
+	  added inspector instead.
+
+2006-09-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli2.cs, samplesvc2.cs : added UserNamePassword example.
+	* Makefile : added above.
+	* samplecli.cs, samplesvc.cs, Inspector.cs : added some debug stuff.
+
+2006-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplesvc.cs, samplecli.cs, test.pfx : new sample files.
