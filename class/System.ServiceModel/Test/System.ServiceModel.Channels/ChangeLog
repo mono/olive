@@ -1,3 +1,7 @@
+2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* FaultConverterTest.cs : new test.
+
 2006-10-13  Ankit Jain  <jankit@novell.com>
 
 	* MessageVersionTest.cs : Add test for MessageVersion.None

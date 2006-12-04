@@ -92,6 +92,7 @@ System.ServiceModel.Channels/CustomBinding.cs
 System.ServiceModel.Channels/DeliveryFailure.cs
 System.ServiceModel.Channels/DeliveryStatus.cs
 System.ServiceModel.Channels/DirectionalAction.cs
+System.ServiceModel.Channels/FaultConverter.cs
 System.ServiceModel.Channels/HostedTransportConfiguration.cs
 System.ServiceModel.Channels/HtmlizedException.cs
 System.ServiceModel.Channels/HttpChannelFactory.cs

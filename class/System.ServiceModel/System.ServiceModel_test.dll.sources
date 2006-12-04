@@ -9,6 +9,7 @@ System.ServiceModel.Channels/CustomBindingTest.cs
 System.ServiceModel.Channels/DebugBindingElement.cs
 System.ServiceModel.Channels/EmptyFaultExceptionTest.cs
 System.ServiceModel.Channels/EnvelopeVersionTest.cs
+System.ServiceModel.Channels/FaultConverterTest.cs
 System.ServiceModel.Channels/FaultExceptionTest.cs
 System.ServiceModel.Channels/HandlerBodyWriter.cs
 System.ServiceModel.Channels/HandlerTransportBindingElement.cs
