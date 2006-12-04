@@ -1101,27 +1101,27 @@ namespace System.ServiceModel.Description
 		}
 	}
 
-	internal class XmlSerializerContract : System.Xml.Serialization.IXmlSerializerImplementation
+	internal class XmlSerializerContract : System.Xml.Serialization.XmlSerializerImplementation
 	{
 		System.Collections.Hashtable readMethods = null;
 		System.Collections.Hashtable writeMethods = null;
 		System.Collections.Hashtable typedSerializers = null;
 
-		public System.Xml.Serialization.XmlSerializationReader Reader {
+		public override System.Xml.Serialization.XmlSerializationReader Reader {
 			get {
 				return new MetadataSectionReaderBase();
 			}
 		}
 
-		public System.Xml.Serialization.XmlSerializationWriter Writer {
+		public override System.Xml.Serialization.XmlSerializationWriter Writer {
 			get {
 				return new MetadataSectionWriterBase();
 			}
 		}
 
-		public System.Collections.Hashtable ReadMethods {
+		public override System.Collections.Hashtable ReadMethods {
 			get {
-				lock (System.Xml.Serialization.XmlSerializationGeneratedCode.InternalSyncObject) {
+				lock (this) {
 					if (readMethods == null) {
 						readMethods = new System.Collections.Hashtable ();
 						readMethods.Add (@"", @"ReadRoot_MetadataSection");
@@ -1131,9 +1131,9 @@ namespace System.ServiceModel.Description
 			}
 		}
 
-		public System.Collections.Hashtable WriteMethods {
+		public override System.Collections.Hashtable WriteMethods {
 			get {
-				lock (System.Xml.Serialization.XmlSerializationGeneratedCode.InternalSyncObject) {
+				lock (this) {
 					if (writeMethods == null) {
 						writeMethods = new System.Collections.Hashtable ();
 						writeMethods.Add (@"", @"WriteRoot_MetadataSection");
@@ -1143,9 +1143,9 @@ namespace System.ServiceModel.Description
 			}
 		}
 
-		public System.Collections.Hashtable TypedSerializers {
+		public override System.Collections.Hashtable TypedSerializers {
 			get {
-				lock (System.Xml.Serialization.XmlSerializationGeneratedCode.InternalSyncObject) {
+				lock (this) {
 					if (typedSerializers == null) {
 						typedSerializers = new System.Collections.Hashtable ();
 						typedSerializers.Add (@"", new MetadataSectionSerializer());
