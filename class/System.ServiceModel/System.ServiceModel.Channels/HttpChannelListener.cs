@@ -127,7 +127,9 @@ namespace System.ServiceModel.Channels
 			if (listener != null)
 				throw new InvalidOperationException ("This listener is already waiting for connection.");
 			listener = new HttpListener ();
-			listener.Prefixes.Add (Uri.AbsoluteUri);
+			string uri = Uri.AbsoluteUri;
+			uri = uri.EndsWith ("/") ? uri : uri + "/";
+			listener.Prefixes.Add (uri);
 			listener.Start ();
 		}
 

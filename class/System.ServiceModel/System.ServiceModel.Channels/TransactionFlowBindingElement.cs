@@ -136,13 +136,11 @@ namespace System.ServiceModel.Channels
 		protected override TChannel OnCreateChannel (
 			EndpointAddress remoteAddress, Uri via)
 		{
-			ThrowIfDisposedOrImmutable ();
 			return inner_factory.CreateChannel (remoteAddress, via);
 		}
 
 		protected override void OnClose (TimeSpan timeout)
 		{
-			ThrowIfDisposedOrNotOpen ();
 			inner_factory.Close (timeout);
 			txscope.Complete ();
 		}
@@ -171,7 +169,6 @@ namespace System.ServiceModel.Channels
 
 		protected override void OnOpen (TimeSpan timeout)
 		{
-			ThrowIfDisposedOrImmutable ();
 			CommittableTransaction tx = new CommittableTransaction ();
 			txscope = new TransactionScope (tx);
 			inner_listener.Open (timeout);
@@ -189,7 +186,6 @@ namespace System.ServiceModel.Channels
 
 		protected override void OnClose (TimeSpan timeout)
 		{
-			ThrowIfDisposedOrNotOpen ();
 			inner_listener.Close (timeout);
 			txscope.Complete ();
 		}

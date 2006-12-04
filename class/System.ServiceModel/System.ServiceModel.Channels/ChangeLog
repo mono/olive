@@ -1,5 +1,12 @@
 2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* TransactionFlowBindingElement.cs : OnOpen()/OnClose() should not
+	  check state by themselves (btw it's not really working).
+	* HttpChannelListener.cs : If the url does not end with '/' add it
+	  so that it could be fed to HttpListener.
+
+2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* HttpChannelFactory.cs : check scheme on CreateChannel.
 	* MessageHeader.cs : finish IsMessageVersionSupported().
 
