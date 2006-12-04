@@ -187,7 +187,7 @@ namespace System.ServiceModel
 			// is the exception case that does not require full
 			// type name. Hence I treat it as a special case.
 			if (typeName == ServiceMetadataBehavior.MexContractName) {
-				if (!Description.Behaviors.Contains (typeof (ServiceMetadataBehavior)))
+				if (!Description.Behaviors.Contains (typeof (ServiceMetadataBehavior)) && Array.IndexOf (Description.ServiceType.GetInterfaces (), typeof (IMetadataExchange)) < 0)
 					throw new InvalidOperationException (
 						"Add ServiceMetadataBehavior to the ServiceHost to add a endpoint for IMetadataExchange contract.");
 					

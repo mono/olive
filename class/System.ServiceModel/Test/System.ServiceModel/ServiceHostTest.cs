@@ -173,6 +173,16 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddServiceEndpointMex ()
+		{
+			using (ServiceHost h = new ServiceHost (typeof (Foo), new Uri ("http://localhost:8080"))) {
+				// it expects ServiceMetadataBehavior
+				h.AddServiceEndpoint (ServiceMetadataBehavior.MexContractName, MetadataExchangeBindings.CreateMexHttpBinding (), "mex");
+			}
+		}
+
+		[Test]
 		public void AddServiceEndpointMetadataExchange ()
 		{
 			ServiceHost host = new ServiceHost (typeof (MyMetadataExchange));
