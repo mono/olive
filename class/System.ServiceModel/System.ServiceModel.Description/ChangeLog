@@ -1,5 +1,12 @@
 2006-12-04  Atsushi Emomoto  <atsushi@ximian.com>
 
+	* DataContractSerializerMessageContractImporter.cs :
+	  The latest XmlSchemaImporter.ImportTypeMapping() correctly reports
+	  an error for xs:* primitive type argument. So it should not do
+	  that as well.
+
+2006-12-04  Atsushi Emomoto  <atsushi@ximian.com>
+
 	* MetadataSectionSerializerBase.cs : Build fix.
 	  It was based on old 2.0 beta API
 

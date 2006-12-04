@@ -235,7 +235,8 @@ namespace System.ServiceModel.Description
 				XmlSchemaSimpleType simple = elem.ElementSchemaType as XmlSchemaSimpleType;
 				msg_part = new MessagePartDescription (
 						elem.Name, ns);
-				msg_part.XmlTypeMapping = schema_importer.ImportTypeMapping (elem.SchemaTypeName);
+				if (elem.SchemaTypeName.Namespace != XmlSchema.Namespace)
+					msg_part.XmlTypeMapping = schema_importer.ImportTypeMapping (elem.SchemaTypeName);
 				msg_part.TypeName = new QName (GetCLRTypeName (elem.SchemaTypeName), "");
 				parts.Add (msg_part);
 
