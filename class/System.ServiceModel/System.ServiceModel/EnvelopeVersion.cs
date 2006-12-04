@@ -33,6 +33,8 @@ namespace System.ServiceModel
 
 	public sealed class EnvelopeVersion
 	{
+		internal const string Soap12UltimateReceiver = "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver";
+
 		string name, uri, next_destination;
 		string [] ultimate_destination;
 
@@ -45,7 +47,7 @@ namespace System.ServiceModel
 								     "http://www.w3.org/2003/05/soap-envelope",
 								     "http://www.w3.org/2003/05/soap-envelope/role/next",
 								     String.Empty,
-								     "http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver");
+								     Soap12UltimateReceiver);
 
 		static EnvelopeVersion none = new EnvelopeVersion ("None",
 								     String.Empty,

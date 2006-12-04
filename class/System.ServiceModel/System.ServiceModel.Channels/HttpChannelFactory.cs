@@ -59,6 +59,9 @@ namespace System.ServiceModel.Channels
 		{
 			ThrowIfDisposedOrNotOpen ();
 
+			if (source.Scheme != address.Uri.Scheme)
+				throw new ArgumentException (String.Format ("Argument EndpointAddress has unsupported URI scheme: {0}", address.Uri.Scheme));
+
 			Type t = typeof (TChannel);
 			if (t == typeof (IRequestChannel))
 				return (TChannel) (object) new HttpRequestChannel ((HttpChannelFactory<IRequestChannel>) (object) this, address, via);

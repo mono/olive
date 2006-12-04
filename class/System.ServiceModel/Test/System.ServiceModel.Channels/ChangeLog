@@ -1,5 +1,12 @@
 2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* HttpTransportBindingElementTest.cs :
+	  enable CreateChannelInvalidScheme().
+	* MessageHeaderTest.cs :
+	  enable TestIsMessageVersionSupported() and mark IDs.
+
+2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* FaultConverterTest.cs : new test.
 
 2006-10-13  Ankit Jain  <jankit@novell.com>

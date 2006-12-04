@@ -107,7 +107,6 @@ namespace System.ServiceModel.Channels
 			return new DefaultMessageHeader (name, ns, value, formatter, default_is_ref, must_understand, actor, relay);
 		}
 
-		[MonoTODO]
 		public virtual bool IsMessageVersionSupported (MessageVersion version)
 		{
 			if (version.Envelope == EnvelopeVersion.Soap12)
@@ -115,7 +114,8 @@ namespace System.ServiceModel.Channels
 					return false;
 
 			if (version.Envelope == EnvelopeVersion.Soap11)
-				if (Actor == EnvelopeVersion.Soap12.NextDestinationActorValue)
+				if (Actor == EnvelopeVersion.Soap12.NextDestinationActorValue ||
+				    Actor == EnvelopeVersion.Soap12UltimateReceiver)
 					return false;
 
 			// by default, it's always supported

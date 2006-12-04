@@ -191,7 +191,6 @@ namespace MonoTests.System.ServiceModel.Channels
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateChannelInvalidScheme ()
 		{
 			IChannelFactory<IRequestChannel> f = new BasicHttpBinding ().BuildChannelFactory<IRequestChannel> (new BindingParameterCollection ());

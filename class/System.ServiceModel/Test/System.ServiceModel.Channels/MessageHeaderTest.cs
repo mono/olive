@@ -23,30 +23,29 @@ namespace MonoTests.System.ServiceModel.Channels
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void TestIsMessageVersionSupported ()
 		{
 			MessageHeader h;
 
 			// by default, both versions are supported.
 			h = MessageHeader.CreateHeader ("foo", "bar", 1);
-			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10));
-			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10));
+			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10), "#1");
+			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10), "#2");
 
 			// SOAP 1.1 is not supported if Actor == Soap12.NextDestinationActorValue
 			h = MessageHeader.CreateHeader ("foo", "bar", 1, false, MessageVersion.Soap12WSAddressing10.Envelope.NextDestinationActorValue);
-			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10));
-			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10));
+			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10), "#3");
+			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10), "#4");
 
 			// SOAP 1.1 is not supported if Actor == Soap12's UltimateDestinationActor
 			h = MessageHeader.CreateHeader ("foo", "bar", 1, false, MessageVersion.Soap12WSAddressing10.Envelope.GetUltimateDestinationActorValues () [1]);
-			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10));
-			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10));
+			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10), "#5");
+			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10), "#6");
 
 			// SOAP 1.2 is not supported if Actor == Soap11.NextDestinationActorValue
 			h = MessageHeader.CreateHeader ("foo", "bar", 1, false, MessageVersion.Soap11WSAddressing10.Envelope.NextDestinationActorValue);
-			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10));
-			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10));
+			Assert.IsTrue (h.IsMessageVersionSupported (MessageVersion.Soap11WSAddressing10), "#7");
+			Assert.IsFalse (h.IsMessageVersionSupported (MessageVersion.Soap12WSAddressing10), "#8");
 		}
 
 		[Test]

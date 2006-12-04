@@ -1,5 +1,10 @@
 2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* EnvelopeVersion.cs : added Soap12UltimateReceiver to be used in
+	  MessageHeader.
+
+2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ServiceHostBase.cs : (GetContract) If the service type is
 	  IMetadataExchange, don't require ServiceMetadataBehavior.
 
