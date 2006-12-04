@@ -180,7 +180,9 @@ namespace System.ServiceModel.Description
 					"Binding for ServiceEndpoint named '{0}' is null",
 					endpoint.Name));
 
-			bool msg_version_none = endpoint.Binding.MessageVersion.Equals (MessageVersion.None);
+			bool msg_version_none =
+				endpoint.Binding.MessageVersion != null &&
+				endpoint.Binding.MessageVersion.Equals (MessageVersion.None);
 			//ExportBinding
 			WSBinding ws_binding = new WSBinding ();
 			
