@@ -1,3 +1,10 @@
+2006-12-05  Atsushi Emomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs :
+	  Added EncryptedKeyIdentifier clause writer.
+	  Fixed thumbprint writer. WS-Security X509 Certificate Token Profile
+	  does allows direct cetificate info only with IssuerSerial.
+
 2006-10-12  Atsushi Emomoto  <atsushi@ximian.com>
 
 	* SecurityAlgorithmSuite.cs : added some overrides in impl. class

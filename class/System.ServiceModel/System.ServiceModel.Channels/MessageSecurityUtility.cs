@@ -120,7 +120,7 @@ namespace System.ServiceModel.Channels
 				encToken.ResolveKeyIdentifierClause (encClause);
 			AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) 
 				signToken.ResolveKeyIdentifierClause (signClause);
-			string messageId = "uuid:" + Guid.NewGuid ();
+			string messageId = "urn:uuid:" + Guid.NewGuid ();
 			int identForMessageId = 1;
 
 			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
@@ -147,6 +147,20 @@ namespace System.ServiceModel.Channels
 			EncryptedData sigenc = null;
 
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
+
+			// wss:Security
+			WSSecurityMessageHeader header =
+				new WSSecurityMessageHeader (serializer);
+			// wss:Security/wsu:Timestamp
+			if (element.IncludeTimestamp) {
+				WsuTimestamp timestamp = new WsuTimestamp ();
+				timestamp.Id = messageId + "-" + identForMessageId++;
+				timestamp.Created = DateTime.Now;
+				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
+				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
+				header.Contents.Add (timestamp);
+			}
+			msg.Headers.Add (header);
 
 			// FIXME: it needs to choose message parts by 
 			// ChannelProtectionRequirements.
@@ -224,20 +238,8 @@ namespace System.ServiceModel.Channels
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
 
-			WSSecurityMessageHeader header =
-				new WSSecurityMessageHeader (serializer);
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
-
-			// wsu:Timestamp
-			if (element.IncludeTimestamp) {
-				WsuTimestamp timestamp = new WsuTimestamp ();
-				timestamp.Id = messageId + "-" + identForMessageId++;
-				timestamp.Created = DateTime.Now;
-				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
-				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
-				header.Contents.Add (timestamp);
-			}
 
 			if (sig != null && msgIncludesToken)
 				header.Contents.Add (signToken);
@@ -251,8 +253,6 @@ namespace System.ServiceModel.Channels
 				header.Contents.Add (sigenc);
 			else if (sig != null)
 				header.Contents.Add (sig);
-
-			ret.Headers.Add (header);
 
 			return ret;
 		}
@@ -305,6 +305,11 @@ namespace System.ServiceModel.Channels
 			edata.Id = GenerateId (doc);
 			edata.Type = EncryptedXml.XmlEncElementUrl;
 			edata.EncryptionMethod = new EncryptionMethod (suite.DefaultEncryptionAlgorithm);
+			// FIXME: here wsse:DigestMethod should be embedded 
+			// inside EncryptionMethod. Since it is not possible 
+			// with S.S.C.Xml.EncryptionMethod, we will have to
+			// build our own XML encryption classes.
+
 			edata.KeyInfo.AddClause (new KeyInfoEncryptedKey (ekey));
 			edata.KeyInfo = new KeyInfo ();
 			SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);

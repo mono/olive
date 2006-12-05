@@ -212,7 +212,17 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
-		[Category ("NotWorking")]
+		public void WriteX509ThumbprintKeyIdentifierClause1 ()
+		{
+			StringWriter sw = new StringWriter ();
+			X509ThumbprintKeyIdentifierClause ic = new X509ThumbprintKeyIdentifierClause (cert);
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:KeyIdentifier ValueType=\"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1\">GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier></o:SecurityTokenReference>", sw.ToString ());
+		}
+
+		[Test]
 		public void WriteEncryptedKeyIdentifierClause ()
 		{
 			StringWriter sw = new StringWriter ();

@@ -30,6 +30,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
 
@@ -318,6 +319,8 @@ namespace System.ServiceModel.Security
 				WriteX509IssuerSerialKeyIdentifierClause (writer, (X509IssuerSerialKeyIdentifierClause) keyIdentifierClause);
 			else if (keyIdentifierClause is X509ThumbprintKeyIdentifierClause)
 				WriteX509ThumbprintKeyIdentifierClause (writer, (X509ThumbprintKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is EncryptedKeyIdentifierClause)
+				WriteEncryptedKeyIdentifierClause (writer, (EncryptedKeyIdentifierClause) keyIdentifierClause);
 			else
 				throw new NotImplementedException (String.Format ("Security key identifier clause '{0}' is not either implemented or supported.", keyIdentifierClause.GetType ()));
 		}
@@ -343,10 +346,9 @@ namespace System.ServiceModel.Security
 			XmlWriter w, X509ThumbprintKeyIdentifierClause ic)
 		{
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
-			w.WriteStartElement ("X509Data", Constants.XmlDsig);
-			w.WriteStartElement ("X509Thumbprint", Constants.XmlDsig);
+			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
+			w.WriteAttributeString ("ValueType", Constants.WssX509ThumbptintValueType);
 			w.WriteString (Convert.ToBase64String (ic.GetX509Thumbprint ()));
-			w.WriteEndElement ();
 			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}
@@ -357,6 +359,21 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "Reference", Constants.WssNamespace);
 			w.WriteAttributeString ("URI", "#" + ic.LocalId);
+			w.WriteEndElement ();
+			w.WriteEndElement ();
+		}
+
+		void WriteEncryptedKeyIdentifierClause (
+			XmlWriter w, EncryptedKeyIdentifierClause ic)
+		{
+			w.WriteStartElement ("e", "EncryptedKey", EncryptedXml.XmlEncNamespaceUrl);
+			w.WriteStartElement ("EncryptionMethod", EncryptedXml.XmlEncNamespaceUrl);
+			w.WriteAttributeString ("Algorithm", ic.EncryptionMethod);
+			w.WriteEndElement ();
+			w.WriteStartElement ("CipherData", EncryptedXml.XmlEncNamespaceUrl);
+			w.WriteStartElement ("CipherValue", EncryptedXml.XmlEncNamespaceUrl);
+			w.WriteString (Convert.ToBase64String (ic.GetEncryptedKey ()));
+			w.WriteEndElement ();
 			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}

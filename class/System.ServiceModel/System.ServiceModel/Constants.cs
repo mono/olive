@@ -39,6 +39,8 @@ namespace System.ServiceModel
 
 		public const string WSSX509Token = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
 
+		public const string WssX509ThumbptintValueType = "http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1";
+
 		public const string XmlDsig = "http://www.w3.org/2000/09/xmldsig#";
 
 		public const string WSSSamlToken = "http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1";
