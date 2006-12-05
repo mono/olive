@@ -1,3 +1,7 @@
+2006-12-05  Rafael Teixeira <rafaelteixeirabr@hotmail.com> 
+	* Makefile:	add -rf to rm so that it doesn't break on clean a half-built project
+		add a test-local dummy target so that it doesn't break make test
+
 2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	(started to log)

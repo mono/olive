@@ -19,4 +19,6 @@ install-local: olive.pc
 	install olive.pc $(prefix)/lib/pkgconfig
 
 clean-local:
-	rm olive.pc
+	rm -rf olive.pc
+
+test-local:
