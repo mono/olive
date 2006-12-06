@@ -226,13 +226,20 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		{
 			StringWriter sw = new StringWriter ();
 			byte [] bytes = new byte [32];
+			SecurityKeyIdentifier cki = new SecurityKeyIdentifier ();
+			cki.Add (new X509ThumbprintKeyIdentifierClause (cert));
 			EncryptedKeyIdentifierClause ic =
-				new EncryptedKeyIdentifierClause (bytes, SecurityAlgorithms.Aes256KeyWrap);
+				new EncryptedKeyIdentifierClause (bytes, SecurityAlgorithms.Aes256KeyWrap, cki);
 			
 			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
 				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
 			}
-			Assert.AreEqual (String.Format ("<e:EncryptedKey xmlns:e=\"{0}\"><e:EncryptionMethod Algorithm=\"{1}\" /><e:CipherData><e:CipherValue>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</e:CipherValue></e:CipherData></e:EncryptedKey>", EncryptedXml.XmlEncNamespaceUrl, SecurityAlgorithms.Aes256KeyWrap), sw.ToString ());
+			string expected = String.Format ("<e:EncryptedKey xmlns:e=\"{0}\"><e:EncryptionMethod Algorithm=\"{1}\" /><KeyInfo xmlns=\"{2}\"><o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:KeyIdentifier ValueType=\"{3}\">GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier></o:SecurityTokenReference></KeyInfo><e:CipherData><e:CipherValue>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</e:CipherValue></e:CipherData></e:EncryptedKey>",
+				EncryptedXml.XmlEncNamespaceUrl,
+				SecurityAlgorithms.Aes256KeyWrap,
+				SignedXml.XmlDsigNamespaceUrl,
+				"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1");
+			Assert.AreEqual (expected, sw.ToString ());
 		}
 
 		[Test]
@@ -246,6 +253,43 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
 				SecurityKeyIdentifierClause kic = serializer.ReadKeyIdentifierClause (xr);
 				Assert.IsTrue (kic is LocalIdKeyIdentifierClause, "#1");
+			}
+		}
+
+		[Test]
+		public void ReadEncryptedKeyIdentifierClause ()
+		{
+			string xml = @"<e:EncryptedKey xmlns:ds='http://www.w3.org/2000/09/xmldsig#' xmlns:e='http://www.w3.org/2001/04/xmlenc#' Id='ID_EncryptedKeyClause'>  <e:EncryptionMethod Algorithm='http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p'>  <ds:DigestMethod Algorithm='http://www.w3.org/2000/09/xmldsig#sha1' />  </e:EncryptionMethod>  <ds:KeyInfo>  <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>  <o:Reference URI='#uuid-9c90d2c7-c82f-4c63-9b28-fc24479ee3a7-2' />  </o:SecurityTokenReference>  </ds:KeyInfo>  <e:CipherData>  <e:CipherValue>Iwg585s5eQP5If4/bY/PPBmHVFt23z6MaHDaD9/u1Ua7hveRfoER3d6sJTk7PL4LoLHjwaAa6EGHZyrgq7He+efvsiAhJYTeh/C/RYO7jKdSr8Gp1IIY7wA+/CBhV7SUhRZs4YJ1GE+rIQ/No6FPk/MbpIALEZ6RpqiLYVVCvUI=</e:CipherValue>  </e:CipherData></e:EncryptedKey>";
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			EncryptedKeyIdentifierClause kic;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				kic = serializer.ReadKeyIdentifierClause (xr) as EncryptedKeyIdentifierClause;
+			}
+			Assert.IsNotNull (kic, "#1");
+			Assert.IsNull (kic.CarriedKeyName, "#2");
+			Assert.AreEqual (EncryptedXml.XmlEncRSAOAEPUrl, kic.EncryptionMethod, "#3");
+			Assert.AreEqual (1, kic.EncryptingKeyIdentifier.Count, "#4");
+			LocalIdKeyIdentifierClause ekic = kic.EncryptingKeyIdentifier [0] as LocalIdKeyIdentifierClause;
+			Assert.IsNotNull (ekic, "#5");
+			Assert.AreEqual ("uuid-9c90d2c7-c82f-4c63-9b28-fc24479ee3a7-2", ekic.LocalId, "#6");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))] // KeyIdentifier is not the expected element.
+		public void ReadKeyIdentifierReference ()
+		{
+			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+            <o:KeyIdentifier ValueType='http://docs.oasis-open.org/wss/oasis-wss
+-soap-message-security-1.1#ThumbprintSHA1' EncodingType='http://docs.oasis-open.
+org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary'>xr42fAK
+DBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
+          </o:SecurityTokenReference>";
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				SecurityKeyIdentifierClause kic = serializer.ReadKeyIdentifierClause (xr);
+				Assert.IsTrue (kic is X509ThumbprintKeyIdentifierClause, "#1");
 			}
 		}
 

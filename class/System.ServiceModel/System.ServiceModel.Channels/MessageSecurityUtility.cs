@@ -99,6 +99,9 @@ namespace System.ServiceModel.Channels
 				direction == MessageDirection.Input ?
 				security.ChannelRequirements.IncomingSignatureParts :
 				security.ChannelRequirements.OutgoingSignatureParts;
+			SecurityTokenParameters securingParams =
+				direction == MessageDirection.Input ?
+				initiatorParams : recipientParams;
 
 			// SecurityTokenInclusionMode
 			// - Initiator or Recipient
@@ -106,9 +109,7 @@ namespace System.ServiceModel.Channels
 			// It also affects on key reference output
 
 			SecurityTokenInclusionMode appliedMode =
-				direction == MessageDirection.Input ?
-				recipientParams.InclusionMode :
-				initiatorParams.InclusionMode;
+				securingParams.InclusionMode;
 			bool msgIncludesToken = ShouldIncludeToken (appliedMode, direction, false);
 
 			SecurityKeyIdentifierClause encClause =
@@ -220,6 +221,7 @@ namespace System.ServiceModel.Channels
 				// encrypt
 				EncryptedXml exml = new EncryptedXml ();
 				ekey = new EncryptedKey ();
+				ekey.Id = new UniqueId ().ToString ();
 				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
 				ekey.KeyInfo.AddClause (encKeyInfo);
 				byte [] encKeyBytes = encKey.EncryptKey (suite.DefaultAsymmetricKeyWrapAlgorithm, aes.Key);
@@ -250,6 +252,24 @@ namespace System.ServiceModel.Channels
 
 			if (ekey != null)
 				header.Contents.Add (ekey);
+
+			// generate derived key if needed
+			if (initiatorParams.RequireDerivedKeys) {
+				RijndaelManaged deriv = new RijndaelManaged ();
+				deriv.KeySize = 128;
+				deriv.Mode = CipherMode.CBC;
+				deriv.Padding = PaddingMode.ISO10126;
+				deriv.GenerateKey ();
+				WsscDerivedKeyToken derivedKey =
+					new WsscDerivedKeyToken ();
+				derivedKey.Id = "urn:uuid:" + Guid.NewGuid ();
+				derivedKey.Offset = 0;
+				derivedKey.Nonce = deriv.Key;
+				derivedKey.Length = derivedKey.Nonce.Length;
+				derivedKey.SecurityTokenReference =
+					new LocalIdKeyIdentifierClause (ekey.Id);
+				header.Contents.Add (derivedKey);
+			}
 
 			if (sigenc != null)
 				header.Contents.Add (sigenc);

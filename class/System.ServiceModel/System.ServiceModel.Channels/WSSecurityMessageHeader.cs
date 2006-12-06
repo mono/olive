@@ -149,7 +149,7 @@ namespace System.ServiceModel.Channels
 				case Constants.WssNamespace:
 					switch (reader.LocalName) {
 					case "SecurityTokenReference":
-						dkt.SecurityKeyReference = serializer.ReadKeyIdentifierClause (reader);
+						dkt.SecurityTokenReference = serializer.ReadKeyIdentifierClause (reader);
 						continue;
 					}
 					break;
@@ -253,11 +253,13 @@ namespace System.ServiceModel.Channels
 				} else if (obj is WsscDerivedKeyToken) {
 					WsscDerivedKeyToken dk = (WsscDerivedKeyToken) obj;
 					writer.WriteStartElement ("DerivedKeyToken", Constants.WsscNamespace);
-
-					writer.WriteStartElement ("SecurityKeyReference", Constants.WsscNamespace);
-					serializer.WriteKeyIdentifierClause (writer, dk.SecurityKeyReference);
+					if (dk.Id != null)
+						writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, dk.Id);
+					if (dk.Algorithm != null)
+						writer.WriteAttributeString ("Algorithm", dk.Algorithm);
+					writer.WriteStartElement ("SecurityTokenReference", Constants.WsscNamespace);
+					serializer.WriteKeyIdentifierClause (writer, dk.SecurityTokenReference);
 					writer.WriteEndElement ();
-
 					writer.WriteStartElement ("Offset", Constants.WsscNamespace);
 					writer.WriteValue (dk.Offset);
 					writer.WriteEndElement ();
@@ -312,7 +314,7 @@ namespace System.ServiceModel.Channels
 	{
 		public string Id;
 		public string Algorithm;
-		public SecurityKeyIdentifierClause SecurityKeyReference;
+		public SecurityKeyIdentifierClause SecurityTokenReference;
 		public int Length;
 		public int Offset;
 		public byte [] Nonce;

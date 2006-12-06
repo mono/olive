@@ -210,13 +210,19 @@ namespace System.ServiceModel.Security
 		{
 			reader.MoveToContent ();
 			switch (reader.NamespaceURI) {
+			case EncryptedXml.XmlEncNamespaceUrl:
+				switch (reader.LocalName) {
+				case "EncryptedKey":
+					return ReadEncryptedKeyIdentifierClause (reader);
+				}
+				break;
 			case Constants.WssNamespace:
 				switch (reader.LocalName) {
 				case "SecurityTokenReference":
 					reader.ReadStartElement ();
 					reader.MoveToContent ();
 					if (reader.LocalName != "Reference" || reader.NamespaceURI != Constants.WssNamespace)
-						throw new ArgumentException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
+						throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
 					string uri = reader.GetAttribute ("URI");
 					if (uri == null)
 						uri = "#";
@@ -229,7 +235,58 @@ namespace System.ServiceModel.Security
 				break;
 			}
 
-			throw new NotImplementedException ();
+			throw new NotImplementedException (String.Format ("Security key identifier clause element '{0}' in namespace '{1}' is either not implemented or not supported.", reader.LocalName, reader.NamespaceURI));
+		}
+
+		EncryptedKeyIdentifierClause ReadEncryptedKeyIdentifierClause (
+			XmlReader reader)
+		{
+			string encNS = EncryptedXml.XmlEncNamespaceUrl;
+
+			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
+			reader.Read ();
+			reader.MoveToContent ();
+			string encMethod = reader.GetAttribute ("Algorithm");
+			bool isEmpty = reader.IsEmptyElement;
+			reader.ReadStartElement ("EncryptionMethod", encNS);
+			string digMethod = null;
+			if (!isEmpty) {
+				reader.MoveToContent ();
+				if (reader.LocalName == "DigestMethod" && reader.NamespaceURI == SignedXml.XmlDsigNamespaceUrl)
+					digMethod = reader.GetAttribute ("Algorithm");
+				while (reader.NodeType != XmlNodeType.EndElement) {
+					reader.Skip ();
+					reader.MoveToContent ();
+				}
+				reader.ReadEndElement ();
+			}
+			reader.MoveToContent ();
+			SecurityKeyIdentifier ki = null;
+			if (!reader.IsEmptyElement) {
+				reader.ReadStartElement ("KeyInfo", SignedXml.XmlDsigNamespaceUrl);
+				reader.MoveToContent ();
+				SecurityKeyIdentifierClause kic = ReadKeyIdentifierClauseCore (reader);
+				ki = new SecurityKeyIdentifier ();
+				ki.Add (kic);
+				reader.MoveToContent ();
+				reader.ReadEndElement (); // </ds:KeyInfo>
+				reader.MoveToContent ();
+			}
+			byte [] keyValue = null;
+			if (!reader.IsEmptyElement) {
+				reader.ReadStartElement ("CipherData", encNS);
+				reader.MoveToContent ();
+				keyValue = Convert.FromBase64String (reader.ReadElementContentAsString ("CipherValue", encNS));
+				reader.MoveToContent ();
+				reader.ReadEndElement (); // CipherData
+			}
+			string carriedKeyName = null;
+			if (!reader.IsEmptyElement && reader.LocalName == "CarriedKeyName" && reader.NamespaceURI == encNS) {
+				carriedKeyName = reader.ReadElementContentAsString ();
+				reader.MoveToContent ();
+			}
+			// FIXME: handle derived keys??
+			return new EncryptedKeyIdentifierClause (keyValue, encMethod, ki, carriedKeyName);
 		}
 
 		[MonoTODO]
@@ -370,11 +427,19 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("EncryptionMethod", EncryptedXml.XmlEncNamespaceUrl);
 			w.WriteAttributeString ("Algorithm", ic.EncryptionMethod);
 			w.WriteEndElement ();
+			if (ic.EncryptingKeyIdentifier != null) {
+				w.WriteStartElement ("KeyInfo", SignedXml.XmlDsigNamespaceUrl);
+				foreach (SecurityKeyIdentifierClause ckic in ic.EncryptingKeyIdentifier)
+					WriteKeyIdentifierClause (w, ckic);
+				w.WriteEndElement ();
+			}
 			w.WriteStartElement ("CipherData", EncryptedXml.XmlEncNamespaceUrl);
 			w.WriteStartElement ("CipherValue", EncryptedXml.XmlEncNamespaceUrl);
 			w.WriteString (Convert.ToBase64String (ic.GetEncryptedKey ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();
+			if (ic.CarriedKeyName != null)
+				w.WriteElementString ("CarriedKeyName", EncryptedXml.XmlEncNamespaceUrl, ic.CarriedKeyName);
 			w.WriteEndElement ();
 		}
 
