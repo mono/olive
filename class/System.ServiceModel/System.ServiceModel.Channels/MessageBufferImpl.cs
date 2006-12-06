@@ -78,6 +78,7 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
+	/*
 	internal class XmlReaderMessageBuffer : MessageBuffer
 	{
 		MessageVersion version;
@@ -118,6 +119,7 @@ namespace System.ServiceModel.Channels
 			get { throw new NotImplementedException (); }
 		}
 	}
+	*/
 
 	internal class XPathMessageBuffer : MessageBuffer
 	{
