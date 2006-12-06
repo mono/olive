@@ -276,6 +276,11 @@ namespace System.ServiceModel.Channels
 					serializer.WriteToken (writer, (SecurityToken) obj);
 				} else if (obj is EncryptedKey) {
 					((EncryptedKey) obj).GetXml ().WriteTo (writer);
+				} else if (obj is ReferenceList) {
+					writer.WriteStartElement ("ReferenceList", EncryptedXml.XmlEncNamespaceUrl);
+					foreach (EncryptedReference er in (ReferenceList) obj)
+						er.GetXml ().WriteTo (writer);
+					writer.WriteEndElement ();
 				} else if (obj is EncryptedData) {
 					((EncryptedData) obj).GetXml ().WriteTo (writer);
 				} else if (obj is Signature) {

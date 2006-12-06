@@ -144,6 +144,7 @@ namespace System.ServiceModel.Channels
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
 
 			EncryptedKey ekey = null;
+			ReferenceList encRefList = null;
 			Signature sig = null;
 			EncryptedData sigenc = null;
 
@@ -221,6 +222,7 @@ namespace System.ServiceModel.Channels
 				// encrypt
 				EncryptedXml exml = new EncryptedXml ();
 				ekey = new EncryptedKey ();
+				encRefList = new ReferenceList ();
 				ekey.Id = new UniqueId ().ToString ();
 				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
 				ekey.KeyInfo.AddClause (encKeyInfo);
@@ -228,14 +230,14 @@ namespace System.ServiceModel.Channels
 				ekey.CipherData = new CipherData (encKeyBytes);
 				ekey.EncryptionMethod = new EncryptionMethod (suite.DefaultAsymmetricKeyWrapAlgorithm);
 
-				EncryptedData edata = Encrypt (body, aes, suite, ekey, encClause, serializer, exml, doc);
+				EncryptedData edata = Encrypt (body, aes, suite, ekey, encRefList, encClause, serializer, exml, doc);
 				edata.KeyInfo = null;
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, aes, suite, ekey, encClause, serializer, exml, doc);
+					sigenc = Encrypt (sigxml, aes, suite, ekey, encRefList, encClause, serializer, exml, doc);
 				}
 				break;
 			}
@@ -270,6 +272,8 @@ namespace System.ServiceModel.Channels
 					new LocalIdKeyIdentifierClause (ekey.Id);
 				header.Contents.Add (derivedKey);
 			}
+			if (encRefList != null)
+				header.Contents.Add (encRefList);
 
 			if (sigenc != null)
 				header.Contents.Add (sigenc);
@@ -320,7 +324,7 @@ namespace System.ServiceModel.Channels
 			throw new Exception (String.Format ("INTERNAL ERROR: Invalid canonicalization URL: {0}", url));
 		}
 
-		static EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm aes, SecurityAlgorithmSuite suite, EncryptedKey ekey, SecurityKeyIdentifierClause encClause, SecurityTokenSerializer serializer, EncryptedXml exml, XmlDocument doc)
+		static EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm aes, SecurityAlgorithmSuite suite, EncryptedKey ekey, ReferenceList refList, SecurityKeyIdentifierClause encClause, SecurityTokenSerializer serializer, EncryptedXml exml, XmlDocument doc)
 		{
 			byte [] encrypted = exml.EncryptData (target, aes, false);
 			EncryptedData edata = new EncryptedData ();
@@ -332,13 +336,16 @@ namespace System.ServiceModel.Channels
 			// with S.S.C.Xml.EncryptionMethod, we will have to
 			// build our own XML encryption classes.
 
-			edata.KeyInfo.AddClause (new KeyInfoEncryptedKey (ekey));
 			edata.KeyInfo = new KeyInfo ();
+			LocalIdKeyIdentifierClause ident =
+				new LocalIdKeyIdentifierClause ("#" + ekey.Id);
+			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (ident, serializer, doc);
+			edata.KeyInfo.AddClause (kic);
 			edata.CipherData.CipherValue = encrypted;
 
 			DataReference dr = new DataReference ();
 			dr.Uri = "#" + edata.Id;
-			ekey.AddReference (dr);
+			refList.Add (dr);
 			return edata;
 		}
 
@@ -422,8 +429,6 @@ Console.WriteLine (buf.CreateMessage ());
 		{
 			SecurityKey securityKey = MessageSecurityUtility.ResolveKey (token, parameters);
 
-			// decrypt the key with service certificate privkey
-			EncryptedXml encXml = new EncryptedXml (doc);
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
 			nsmgr.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
 			nsmgr.AddNamespace ("c", Constants.WsscNamespace);
@@ -432,14 +437,25 @@ Console.WriteLine (buf.CreateMessage ());
 			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
 			nsmgr.AddNamespace ("dsig", SignedXml.XmlDsigNamespaceUrl);
 
-			if (doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security", nsmgr) == null)
+			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
+			if (securityHeaders.Count == 0)
 				throw new MessageSecurityException ("In this service that contains the security binding element, a security header is required in the reply message.");
 
+			foreach (XmlElement security in securityHeaders)
+				DecryptSingleSecurity (security, token, element, parameters, protectionOrder, secProp, securityKey, nsmgr);
+		}
+
+		static void DecryptSingleSecurity (XmlElement security, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityKey securityKey, XmlNamespaceManager nsmgr)
+		{
+			XmlDocument doc = security.OwnerDocument;
+			// decrypt the key with service certificate privkey
+			EncryptedXml encXml = new EncryptedXml (doc);
+
 			if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature &&
-			    doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security/dsig:Signature", nsmgr) != null)
+			    security.SelectSingleNode ("dsig:Signature", nsmgr) != null)
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
-			XmlElement keyElem = doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security/e:EncryptedKey", nsmgr) as XmlElement;
+			XmlElement keyElem = security.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
 			EncryptedKey encryptedKey = new EncryptedKey ();
 			encryptedKey.LoadXml (keyElem);
 
@@ -452,17 +468,26 @@ Console.WriteLine (buf.CreateMessage ());
 			// FIXME: an alternative approach is to make use of
 			// EncryptedXml.AddKeyNameMapping().
 			Dictionary<string,byte[]> map = GetUriKeyMappings (doc, nsmgr, decryptedKey);
-			foreach (EncryptedReference er in encryptedKey.ReferenceList)
-				map [StripUri (er.Uri)] = decryptedKey;
-
+			//foreach (EncryptedReference er in encryptedKey.ReferenceList)
+			//	map [StripUri (er.Uri)] = decryptedKey;
+			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
+				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
+					map [StripUri (encref.GetAttribute ("URI"))] = decryptedKey;
 			Rijndael aes = RijndaelManaged.Create ();
 			aes.Key = map [String.Empty];
 			aes.Mode = CipherMode.CBC;
 
 			// decrypt the body with the decrypted key
 			Collection<XmlElement> list = new Collection<XmlElement> ();
-			foreach (XmlElement el in doc.SelectNodes ("//e:EncryptedData", nsmgr))
-				list.Add (el);
+			foreach (string uri in map.Keys) {
+				if (uri == String.Empty)
+					continue; // skip
+				XmlElement el = doc.SelectSingleNode ("//e:EncryptedData [@Id='" + uri + "' or @u:Id='" + uri + "']", nsmgr) as XmlElement;
+				if (el != null)
+					list.Add (el);
+				else
+					throw new MessageSecurityException (String.Format ("On decrypting EncryptedData, a referenced element with Id '{0}' was not found.", uri));
+}
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
@@ -473,7 +498,7 @@ Console.WriteLine (buf.CreateMessage ());
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
 
-			if (doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security/dsig:Signature", nsmgr) == null)
+			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 		}
 
