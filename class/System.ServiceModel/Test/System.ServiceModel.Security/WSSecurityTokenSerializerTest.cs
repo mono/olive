@@ -200,7 +200,6 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void WriteX509IssuerSerialKeyIdentifierClause1 ()
 		{
 			StringWriter sw = new StringWriter ();
