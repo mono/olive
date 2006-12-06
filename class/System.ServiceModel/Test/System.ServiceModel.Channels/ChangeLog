@@ -1,3 +1,10 @@
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityBindingElementTest.cs,
+	  SymmetricSecurityBindingElementTest.cs,
+	  AsymmetricSecurityBindingElementTest.cs :
+	  added test for SetKeyDerivation().
+
 2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* HttpTransportBindingElementTest.cs :

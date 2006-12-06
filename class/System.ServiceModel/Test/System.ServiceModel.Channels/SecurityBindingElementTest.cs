@@ -365,6 +365,44 @@ namespace MonoTests.System.ServiceModel.Channels
 				true, tp, "Protection");
 		}
 
+		[Test]
+		public void SetKeyDerivation ()
+		{
+			SetKeyDerivationCorrect (new TransportSecurityBindingElement (), "transport");
+			SetKeyDerivationIncorrect (new TransportSecurityBindingElement (), "transport");
+			SetKeyDerivationCorrect (new SymmetricSecurityBindingElement (), "symmetric");
+			SetKeyDerivationIncorrect (new SymmetricSecurityBindingElement (), "symmetric");
+			SetKeyDerivationCorrect (new AsymmetricSecurityBindingElement (), "asymmetric");
+			SetKeyDerivationIncorrect (new AsymmetricSecurityBindingElement (), "asymmetric");
+		}
+
+		void SetKeyDerivationCorrect (SecurityBindingElement be, string label)
+		{
+			X509SecurityTokenParameters p, p2;
+			p = new X509SecurityTokenParameters ();
+			p2 = new X509SecurityTokenParameters ();
+			Assert.AreEqual (true, p.RequireDerivedKeys, label + "#1");
+			Assert.AreEqual (true, p2.RequireDerivedKeys, label + "#2");
+			be.EndpointSupportingTokenParameters.Endorsing.Add (p);
+			be.EndpointSupportingTokenParameters.Endorsing.Add (p2);
+			be.SetKeyDerivation (false);
+			Assert.AreEqual (false, p.RequireDerivedKeys, label + "#3");
+			Assert.AreEqual (false, p2.RequireDerivedKeys, label + "#4");
+		}
+
+		void SetKeyDerivationIncorrect (SecurityBindingElement be, string label)
+		{
+			X509SecurityTokenParameters p, p2;
+			p = new X509SecurityTokenParameters ();
+			p2 = new X509SecurityTokenParameters ();
+			// setting in prior - makes no sense
+			be.SetKeyDerivation (false);
+			be.EndpointSupportingTokenParameters.Endorsing.Add (p);
+			be.EndpointSupportingTokenParameters.Endorsing.Add (p2);
+			Assert.AreEqual (true, p.RequireDerivedKeys, label + "#5");
+			Assert.AreEqual (true, p2.RequireDerivedKeys, label + "#6");
+		}
+
 		#endregion
 
 	}

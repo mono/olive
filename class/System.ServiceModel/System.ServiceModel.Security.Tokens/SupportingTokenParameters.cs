@@ -76,10 +76,16 @@ namespace System.ServiceModel.Security.Tokens
 			return new SupportingTokenParameters (this);
 		}
 
-		[MonoTODO]
 		public void SetKeyDerivation (bool requireDerivedKeys)
 		{
-			throw new NotImplementedException ();
+			foreach (SecurityTokenParameters p in endorsing)
+				p.RequireDerivedKeys = requireDerivedKeys;
+			foreach (SecurityTokenParameters p in signed)
+				p.RequireDerivedKeys = requireDerivedKeys;
+			foreach (SecurityTokenParameters p in signed_encrypted)
+				p.RequireDerivedKeys = requireDerivedKeys;
+			foreach (SecurityTokenParameters p in signed_endorsing)
+				p.RequireDerivedKeys = requireDerivedKeys;
 		}
 
 		[MonoTODO]

@@ -152,10 +152,14 @@ namespace System.ServiceModel.Channels
 			return BuildChannelListenerCore<TChannel> (context);
 		}
 
-		[MonoTODO]
 		public virtual void SetKeyDerivation (bool requireDerivedKeys)
 		{
-			throw new NotImplementedException ();
+			endpoint.SetKeyDerivation (requireDerivedKeys);
+			opt_endpoint.SetKeyDerivation (requireDerivedKeys);
+			foreach (SupportingTokenParameters p in operation.Values)
+				p.SetKeyDerivation (requireDerivedKeys);
+			foreach (SupportingTokenParameters p in opt_operation.Values)
+				p.SetKeyDerivation (requireDerivedKeys);
 		}
 
 		[MonoTODO]

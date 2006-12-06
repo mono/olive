@@ -70,7 +70,6 @@ namespace System.ServiceModel.Channels
 				initiator_token_params = other.initiator_token_params.Clone ();
 			if (other.recipient_token_params != null)
 				recipient_token_params = other.recipient_token_params.Clone ();
-			derive_keys = other.derive_keys;
 			allow_serialized_sign = other.allow_serialized_sign;
 		}
 
@@ -78,7 +77,6 @@ namespace System.ServiceModel.Channels
 		SecurityTokenParameters initiator_token_params,
 			recipient_token_params;
 		bool allow_serialized_sign, require_sig_confirm;
-		bool derive_keys = true;
 
 		public bool AllowSerializedSigningTokenOnReply {
 			get { return allow_serialized_sign; }
@@ -105,10 +103,13 @@ namespace System.ServiceModel.Channels
 			set { require_sig_confirm = value; }
 		}
 
-		[MonoTODO]
 		public override void SetKeyDerivation (bool requireDerivedKeys)
 		{
-			derive_keys = requireDerivedKeys;
+			base.SetKeyDerivation (requireDerivedKeys);
+			if (InitiatorTokenParameters != null)
+				InitiatorTokenParameters.RequireDerivedKeys = requireDerivedKeys;
+			if (RecipientTokenParameters != null)
+				RecipientTokenParameters.RequireDerivedKeys = requireDerivedKeys;
 		}
 
 		[MonoTODO]

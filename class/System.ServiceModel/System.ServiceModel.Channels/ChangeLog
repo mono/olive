@@ -1,5 +1,12 @@
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecurityBindingElement.cs,
+	  SymmetricSecurityBindingElement.cs,
+	  AsymmetricSecurityBindingElement.cs :
+	  implemented SetKeyDerivation().
+
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityUtility.cs : don't add KeyInfoClause to EncryptedKey
 	  more than once.
 

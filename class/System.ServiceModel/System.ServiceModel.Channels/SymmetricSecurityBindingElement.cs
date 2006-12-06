@@ -61,13 +61,12 @@ namespace System.ServiceModel.Channels
 			require_sig_confirm = other.require_sig_confirm;
 			if (other.protection_token_params != null)
 				protection_token_params = other.protection_token_params.Clone ();
-			derive_keys = other.derive_keys;
 		}
 
 		MessageProtectionOrder msg_protection_order =
 			MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature;
 		SecurityTokenParameters protection_token_params;
-		bool require_sig_confirm, derive_keys = true;
+		bool require_sig_confirm;
 		// make sure that they are also cloned.
 
 		[MonoTODO]
@@ -87,10 +86,11 @@ namespace System.ServiceModel.Channels
 			set { require_sig_confirm = value; }
 		}
 
-		[MonoTODO]
 		public override void SetKeyDerivation (bool requireDerivedKeys)
 		{
-			derive_keys = requireDerivedKeys;
+			base.SetKeyDerivation (requireDerivedKeys);
+			if (ProtectionTokenParameters != null)
+				ProtectionTokenParameters.RequireDerivedKeys = requireDerivedKeys;
 		}
 
 		[MonoTODO]

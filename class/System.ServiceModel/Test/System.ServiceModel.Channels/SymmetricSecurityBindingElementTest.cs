@@ -598,6 +598,25 @@ settings.Indent = true;
 			Console.Error.WriteLine ("**** request started. ****");
 			Message res = ch.EndRequest (async);
 		}
+
+		[Test]
+		public void SetKeyDerivation ()
+		{
+			SymmetricSecurityBindingElement be;
+			X509SecurityTokenParameters p;
+
+			be = new SymmetricSecurityBindingElement ();
+			p = new X509SecurityTokenParameters ();
+			be.ProtectionTokenParameters = p;
+			be.SetKeyDerivation (false);
+			Assert.AreEqual (false, p.RequireDerivedKeys, "#1");
+
+			be = new SymmetricSecurityBindingElement ();
+			p = new X509SecurityTokenParameters ();
+			be.SetKeyDerivation (false); // set in prior - makes no sense
+			be.ProtectionTokenParameters = p;
+			Assert.AreEqual (true, p.RequireDerivedKeys, "#2");
+		}
 	}
 
 	class MyOwnSecurityTokenParameters : SecurityTokenParameters

@@ -272,5 +272,30 @@ namespace MonoTests.System.ServiceModel.Channels
 					host.Close ();
 			}
 		}
+
+		[Test]
+		public void SetKeyDerivation ()
+		{
+			AsymmetricSecurityBindingElement be;
+			X509SecurityTokenParameters p, p2;
+
+			be = new AsymmetricSecurityBindingElement ();
+			p = new X509SecurityTokenParameters ();
+			p2 = new X509SecurityTokenParameters ();
+			be.InitiatorTokenParameters = p;
+			be.RecipientTokenParameters = p2;
+			be.SetKeyDerivation (false);
+			Assert.AreEqual (false, p.RequireDerivedKeys, "#1");
+			Assert.AreEqual (false, p2.RequireDerivedKeys, "#2");
+
+			be = new AsymmetricSecurityBindingElement ();
+			p = new X509SecurityTokenParameters ();
+			p2 = new X509SecurityTokenParameters ();
+			be.SetKeyDerivation (false); // set in prior - makes no sense
+			be.InitiatorTokenParameters = p;
+			be.RecipientTokenParameters = p2;
+			Assert.AreEqual (true, p.RequireDerivedKeys, "#3");
+			Assert.AreEqual (true, p2.RequireDerivedKeys, "#4");
+		}
 	}
 }
