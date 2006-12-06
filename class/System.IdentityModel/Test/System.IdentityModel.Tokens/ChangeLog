@@ -1,3 +1,7 @@
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509IssuerSerialKeyIdentifierClauseTest.cs : new test.
+
 2006-10-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SamlAssertionTest.cs : some more .ctor() tests and WriteXml() test.

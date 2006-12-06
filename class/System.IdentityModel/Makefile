@@ -8,6 +8,7 @@ LIB_MCS_FLAGS = \
 	        /r:System.Xml.dll \
 	        /r:System.Security.dll \
 		/r:System.Web.dll \
+		/r:Mono.Security.dll \
 	        /r:../lib/net_3_0/System.Runtime.Serialization.dll
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)

@@ -28,19 +28,37 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+using Mono.Math;
 
 namespace System.IdentityModel.Tokens
 {
 	public class X509IssuerSerialKeyIdentifierClause : SecurityKeyIdentifierClause
 	{
-		[MonoTODO ("msdn says IssuerSerialNumber is the serial number of the certificate, but seems like it isn't.")]
+		static byte [] FromBinHex (string s)
+		{
+			byte [] bytes = new byte [s.Length / 2];
+			for (int i = 0; i < bytes.Length; i++)
+				bytes [i] = (byte) (DecodeHex (s [i * 2]) * 16 + DecodeHex (s [i * 2 + 1]));
+			return bytes;
+		}
+
+		static byte DecodeHex (char c)
+		{
+			return  (byte) (c <= '9' ? c - '0' : c <= 'F' ? c - 'A' + 10 : c - 'a' + 10);
+		}
+
+		static string ToDecimalString (string hexString)
+		{
+			return new BigInteger (FromBinHex (hexString)).ToString ();
+		}
+
 		public X509IssuerSerialKeyIdentifierClause (X509Certificate2 certificate)
-			: this (certificate.IssuerName.Name, certificate.SerialNumber)
+			: this (certificate.IssuerName.Name, ToDecimalString (certificate.SerialNumber))
 		{
 		}
 
 		public X509IssuerSerialKeyIdentifierClause (string issuerName, string issuerSerialNumber)
-			: base (issuerName)
+			: base (null)
 		{
 			name = issuerName;
 			serial = issuerSerialNumber;
@@ -65,7 +83,8 @@ namespace System.IdentityModel.Tokens
 
 		public bool Matches (X509Certificate2 certificate)
 		{
-			return Matches (certificate.IssuerName.Name, certificate.SerialNumber);
+			return name == certificate.IssuerName.Name &&
+			       serial == ToDecimalString (certificate.SerialNumber);
 		}
 
 		public bool Matches (string issuerName, string issuerSerialNumber)

@@ -1,3 +1,7 @@
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added Mono.Security dependency.
+
 2006-07-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Obsoleted : removed.

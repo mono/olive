@@ -1,3 +1,8 @@
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509IssuerSerialKeyIdentifierClause.cs : IssuerSerialNumber is a
+	  decimal string.
+
 2006-10-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SamlSubject.cs
