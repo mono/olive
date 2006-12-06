@@ -220,6 +220,8 @@ namespace System.ServiceModel.Channels
 				// encrypt
 				EncryptedXml exml = new EncryptedXml ();
 				ekey = new EncryptedKey ();
+				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
+				ekey.KeyInfo.AddClause (encKeyInfo);
 				byte [] encKeyBytes = encKey.EncryptKey (suite.DefaultAsymmetricKeyWrapAlgorithm, aes.Key);
 				ekey.CipherData = new CipherData (encKeyBytes);
 				ekey.EncryptionMethod = new EncryptionMethod (suite.DefaultAsymmetricKeyWrapAlgorithm);
@@ -312,8 +314,6 @@ namespace System.ServiceModel.Channels
 
 			edata.KeyInfo.AddClause (new KeyInfoEncryptedKey (ekey));
 			edata.KeyInfo = new KeyInfo ();
-			SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
-			ekey.KeyInfo.AddClause (encKeyInfo);
 			edata.CipherData.CipherValue = encrypted;
 
 			DataReference dr = new DataReference ();

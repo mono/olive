@@ -1,5 +1,10 @@
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityUtility.cs : don't add KeyInfoClause to EncryptedKey
+	  more than once.
+
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageBufferImpl.cs : XmlReader-based buffer is not possible, so
 	  don't use it.
 
