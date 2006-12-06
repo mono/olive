@@ -1,5 +1,10 @@
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityMessageHeader.cs : don't write o:SecurityTokenReference
+	  manually (and actually the namespace URI was wrong).
+
+2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityMessageHeader.cs : improved DerivedKeyToken writing
 	  and reading.
 	* MessageSecurityUtility.cs : DerivedKeyToken creation.

@@ -257,9 +257,7 @@ namespace System.ServiceModel.Channels
 						writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, dk.Id);
 					if (dk.Algorithm != null)
 						writer.WriteAttributeString ("Algorithm", dk.Algorithm);
-					writer.WriteStartElement ("SecurityTokenReference", Constants.WsscNamespace);
 					serializer.WriteKeyIdentifierClause (writer, dk.SecurityTokenReference);
-					writer.WriteEndElement ();
 					writer.WriteStartElement ("Offset", Constants.WsscNamespace);
 					writer.WriteValue (dk.Offset);
 					writer.WriteEndElement ();
