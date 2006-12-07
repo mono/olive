@@ -467,9 +467,7 @@ Console.WriteLine (buf.CreateMessage ());
 			// create derived keys
 			// FIXME: an alternative approach is to make use of
 			// EncryptedXml.AddKeyNameMapping().
-			Dictionary<string,byte[]> map = GetUriKeyMappings (doc, nsmgr, decryptedKey);
-			//foreach (EncryptedReference er in encryptedKey.ReferenceList)
-			//	map [StripUri (er.Uri)] = decryptedKey;
+			Dictionary<string,byte[]> map = GetUriKeyMappings (security, nsmgr, decryptedKey);
 			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					map [StripUri (encref.GetAttribute ("URI"))] = decryptedKey;
@@ -504,8 +502,10 @@ Console.WriteLine (buf.CreateMessage ());
 
 		// FIXME: this should consider the referent SecurityToken of
 		// each DerivedKeyToken element.
-		static Dictionary<string,byte[]> GetUriKeyMappings (XmlDocument doc, XmlNamespaceManager nsmgr, byte [] decryptedKey)
+		static Dictionary<string,byte[]> GetUriKeyMappings (XmlElement security, XmlNamespaceManager nsmgr, byte [] decryptedKey)
 		{
+			XmlDocument doc = security.OwnerDocument;
+
 			// create derived keys
 			Dictionary<string,byte[]> keys = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
@@ -516,7 +516,10 @@ Console.WriteLine (buf.CreateMessage ());
 
 			byte [] currentKey = decryptedKey;
 			bool hasSpecificMap = false;
-			foreach (XmlElement el in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/*", nsmgr)) {
+			foreach (XmlNode n in security.ChildNodes) {
+				XmlElement el = n as XmlElement;
+				if (el == null)
+					continue;
 				if (el.LocalName == "DerivedKeyToken" &&
 				    el.NamespaceURI == Constants.WsscNamespace) {
 					if (!hasSpecificMap)

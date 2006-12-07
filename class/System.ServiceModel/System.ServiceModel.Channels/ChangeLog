@@ -1,5 +1,10 @@
 2006-12-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityUtility.cs :
+	  handle key mapping for each wsse:Security.
+
+2006-12-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityMessageHeader.cs : use prefix "c" for ws-secureconv.
 
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
