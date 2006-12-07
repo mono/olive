@@ -252,7 +252,7 @@ namespace System.ServiceModel.Channels
 					writer.WriteEndElement ();
 				} else if (obj is WsscDerivedKeyToken) {
 					WsscDerivedKeyToken dk = (WsscDerivedKeyToken) obj;
-					writer.WriteStartElement ("DerivedKeyToken", Constants.WsscNamespace);
+					writer.WriteStartElement ("c", "DerivedKeyToken", Constants.WsscNamespace);
 					if (dk.Id != null)
 						writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, dk.Id);
 					if (dk.Algorithm != null)
