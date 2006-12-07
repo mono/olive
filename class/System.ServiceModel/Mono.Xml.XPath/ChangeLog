@@ -1,3 +1,8 @@
+2006-12-07  Atsushi Enomoto <atsushi@ximian.com>
+
+	* DTMXPathDocumentWriter2.cs : implemented several members that threw
+	  NotSupportedException. Unlike inside sys.xml they could be invoked.
+
 2006-09-08  Atsushi Enomoto <atsushi@ximian.com>
 
 	* DTMXPathDocumentWriter2.cs : fill String.Empty for null ns in
