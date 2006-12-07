@@ -365,6 +365,8 @@ namespace MonoTests.System.ServiceModel.Channels
 				true, tp, "Protection");
 		}
 
+		#endregion
+
 		[Test]
 		public void SetKeyDerivation ()
 		{
@@ -403,7 +405,29 @@ namespace MonoTests.System.ServiceModel.Channels
 			Assert.AreEqual (true, p2.RequireDerivedKeys, label + "#6");
 		}
 
-		#endregion
-
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		[Category ("NotWorking")]
+		public void CheckDuplicateAuthenticatorTypes ()
+		{
+			SymmetricSecurityBindingElement be =
+				new SymmetricSecurityBindingElement ();
+			be.ProtectionTokenParameters =
+				new X509SecurityTokenParameters ();
+			be.EndpointSupportingTokenParameters.Endorsing.Add (
+				new X509SecurityTokenParameters ());
+			// This causes multiple supporting token authenticator
+			// of the same type.
+			be.OptionalEndpointSupportingTokenParameters.Endorsing.Add (
+				new X509SecurityTokenParameters ());
+			Binding b = new CustomBinding (be, new HttpTransportBindingElement ());
+			ServiceCredentials cred = new ServiceCredentials ();
+			cred.ServiceCertificate.Certificate =
+				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			IChannelListener<IReplyChannel> ch = b.BuildChannelListener<IReplyChannel> (new Uri ("http://localhost:37564"), cred);
+			ch.Open ();
+			// in case Open() failed to raise an error...
+			ch.Close ();
+		}
 	}
 }
