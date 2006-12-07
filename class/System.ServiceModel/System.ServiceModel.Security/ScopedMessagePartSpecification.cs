@@ -69,16 +69,28 @@ namespace System.ServiceModel.Security
 
 		public void AddParts (MessagePartSpecification parts)
 		{
-			AddParts (parts, null);
+			if (parts == null)
+				throw new ArgumentNullException ("parts");
+			if (IsReadOnly)
+				throw new InvalidOperationException ("This ScopedMessagePartSpecification is read-only.");
+			ChannelParts.Union (parts);
 		}
 
 		public void AddParts (MessagePartSpecification parts,
 			string action)
 		{
+			if (parts == null)
+				throw new ArgumentNullException ("parts");
+			if (action == null)
+				throw new ArgumentNullException ("action");
 			if (IsReadOnly)
 				throw new InvalidOperationException ("This ScopedMessagePartSpecification is read-only.");
 
-			table.Add (action, parts);
+			MessagePartSpecification existing;
+			if (table.TryGetValue (action, out existing))
+				existing.Union (parts);
+			else
+				table.Add (action, parts);
 		}
 
 		public void MakeReadOnly ()

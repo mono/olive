@@ -63,6 +63,7 @@ System.ServiceModel.Security.Tokens/UserNameSecurityTokenParametersTest.cs
 System.ServiceModel.Security.Tokens/X509ListedCertificateValidator.cs
 System.ServiceModel.Security.Tokens/X509SecurityTokenParametersTest.cs
 System.ServiceModel.Security/ChannelProtectionRequirementsTest.cs
+System.ServiceModel.Security/MessagePartSpecificationTest.cs
 System.ServiceModel.Security/ScopedMessagePartSpecificationTest.cs
 System.ServiceModel.Security/SecurityAlgorithmSuiteTest.cs
 System.ServiceModel.Security/SecurityMessagePropertyTest.cs

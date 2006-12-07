@@ -30,6 +30,8 @@ using System.ServiceModel;
 
 namespace System.ServiceModel.Security
 {
+	// Represents sp:SignedParts and sp:EncryptedParts in
+	// sp:SupportingTokens/ws:Policy/.
 	public class ChannelProtectionRequirements
 	{
 		bool is_readonly;

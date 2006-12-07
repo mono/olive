@@ -33,6 +33,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Security
 {
+	// Represents WS-SecurityPolicy SignedParts or EncryptedParts.
 	public class MessagePartSpecification
 	{
 		static XmlQualifiedName [] empty = new XmlQualifiedName [0];
@@ -94,10 +95,17 @@ namespace System.ServiceModel.Security
 				header_types = new ReadOnlyCollection<XmlQualifiedName> (header_types);
 		}
 
-		[MonoTODO]
 		public void Union (MessagePartSpecification other)
 		{
-			throw new NotImplementedException ();
+			if (other == null)
+				throw new ArgumentNullException ("other");
+			if (header_types.IsReadOnly)
+				throw new InvalidOperationException ("This MessagePartSpecification is read-only.");
+			body |= other.body;
+			foreach (XmlQualifiedName q in other.header_types)
+				// Sigh. It could be much better here.
+				//if (!header_types.Contains (q))
+					header_types.Add (q);
 		}
 	}
 }
