@@ -41,6 +41,9 @@ namespace System.IdentityModel.Policy
 		public static AuthorizationContext 
 			CreateDefaultAuthorizationContext (IList<IAuthorizationPolicy> policies)
 		{
+			if (policies == null)
+				throw new ArgumentNullException ("policies");
+
 			string id = new UniqueId ().ToString ();
 			DefaultEvaluationContext ctx =
 				new DefaultEvaluationContext ();
