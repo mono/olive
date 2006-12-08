@@ -14,6 +14,7 @@ System.ServiceModel.Channels/FaultExceptionTest.cs
 System.ServiceModel.Channels/HandlerBodyWriter.cs
 System.ServiceModel.Channels/HandlerTransportBindingElement.cs
 System.ServiceModel.Channels/HttpTransportBindingElementTest.cs
+System.ServiceModel.Channels/InterceptorBindingElement.cs
 System.ServiceModel.Channels/InvalidBindingElement.cs
 System.ServiceModel.Channels/LocalClientSecuritySettingsTest.cs
 System.ServiceModel.Channels/MessageBufferTest.cs
@@ -68,6 +69,7 @@ System.ServiceModel.Security/ScopedMessagePartSpecificationTest.cs
 System.ServiceModel.Security/SecurityAlgorithmSuiteTest.cs
 System.ServiceModel.Security/SecurityMessagePropertyTest.cs
 System.ServiceModel.Security/ServiceCredentialsSecurityTokenManagerTest.cs
+System.ServiceModel.Security/ServiceSecurityContextTest.cs
 System.ServiceModel.Security/SupportingTokenParametersTest.cs
 System.ServiceModel.Security/WSSecurityTokenSerializerTest.cs
 System.ServiceModel/BasicHttpBindingTest.cs

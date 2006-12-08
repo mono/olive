@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2006 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,32 +35,34 @@ using System.ServiceModel.Security.Tokens;
 
 namespace System.ServiceModel.Security
 {
-	public class SecurityMessageProperty : IMessageProperty
+	public class SecurityMessageProperty : IMessageProperty, IDisposable
 	{
 		SecurityTokenSpecification initiator_token, protection_token,
 			recipient_token, transport_token;
+		Collection<SupportingTokenSpecification> incoming_supp_tokens =
+			new Collection<SupportingTokenSpecification> ();
+		ReadOnlyCollection<IAuthorizationPolicy> policies;
 		string sender_id_prefix;
 		ServiceSecurityContext context;
 
 		public SecurityMessageProperty ()
 		{
+			context = ServiceSecurityContext.Anonymous;
 		}
 
-		[MonoTODO]
 		public bool HasIncomingSupportingTokens {
-			get { throw new NotImplementedException (); }
+			get { return incoming_supp_tokens != null && incoming_supp_tokens.Count > 0; }
 		}
 
-		[MonoTODO]
 		public ReadOnlyCollection<IAuthorizationPolicy>
 			ExternalAuthorizationPolicies {
-			get { throw new NotImplementedException (); }
+			get { return policies; }
+			set { policies = value; }
 		}
 
-		[MonoTODO]
 		public Collection<SupportingTokenSpecification>
 			IncomingSupportingTokens {
-			get { throw new NotImplementedException (); }
+			get { return incoming_supp_tokens; }
 		}
 
 		public SecurityTokenSpecification InitiatorToken {
@@ -98,10 +100,20 @@ namespace System.ServiceModel.Security
 			return (SecurityMessageProperty) MemberwiseClone ();
 		}
 
-		[MonoTODO]
+		public void Dispose ()
+		{
+			context = null;
+			policies = null;
+		}
+
 		public static SecurityMessageProperty GetOrCreate (Message message)
 		{
-			throw new NotImplementedException ();
+			SecurityMessageProperty s = message.Properties.Security;
+			if (s == null) {
+				s = new SecurityMessageProperty ();
+				message.Properties.Add ("Security", s);
+			}
+			return s;
 		}
 	}
 }

@@ -36,44 +36,46 @@ namespace System.ServiceModel
 {
 	public class ServiceSecurityContext
 	{
-		static ServiceSecurityContext anonymous;
+		static ServiceSecurityContext anonymous = new ServiceSecurityContext (new ReadOnlyCollection<IAuthorizationPolicy> (new IAuthorizationPolicy [0]));
 		static ServiceSecurityContext current;
 
 		[MonoTODO]
 		public static ServiceSecurityContext Anonymous {
-			get { throw new NotImplementedException (); }
+			get { return anonymous; }
 		}
 
-		[MonoTODO]
+		[MonoTODO] // null by default?
 		public static ServiceSecurityContext Current {
-			get { throw new NotImplementedException (); }
+			get { return current; }
 		}
 
 		AuthorizationContext context;
 		ReadOnlyCollection<IAuthorizationPolicy> policies;
+		IIdentity primary_identity;
 
-		[MonoTODO]
 		public ServiceSecurityContext (AuthorizationContext authorizationContext)
 			: this (authorizationContext, new ReadOnlyCollection<IAuthorizationPolicy> (new IAuthorizationPolicy [0]))
 		{
 		}
 
-		[MonoTODO]
 		public ServiceSecurityContext (
 			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
-			: this (null, authorizationPolicies)
+			: this (AuthorizationContext.CreateDefaultAuthorizationContext (authorizationPolicies), authorizationPolicies)
 		{
 		}
 
-		[MonoTODO]
 		public ServiceSecurityContext (AuthorizationContext authorizationContext,
 			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
 		{
+			if (authorizationContext == null)
+				throw new ArgumentNullException ("authorizationContext");
+			if (authorizationPolicies == null)
+				throw new ArgumentNullException ("authorizationPolicies");
 			this.policies = authorizationPolicies;
-			this.context = AuthorizationContext.CreateDefaultAuthorizationContext (authorizationPolicies);
-			if (authorizationContext != null)
-				foreach (string key in authorizationContext.Properties.Keys)
-					context.Properties.Add (key, authorizationContext.Properties [key]);
+			this.context = authorizationContext;
+
+			// FIXME: get correct identity
+			primary_identity = new GenericIdentity (String.Empty);
 		}
 
 		public AuthorizationContext AuthorizationContext {
@@ -86,12 +88,12 @@ namespace System.ServiceModel
 
 		[MonoTODO]
 		public bool IsAnonymous {
-			get { throw new NotImplementedException (); }
+			get { return policies.Count == 0; }
 		}
 
 		[MonoTODO]
 		public IIdentity PrimaryIdentity {
-			get { throw new NotImplementedException (); }
+			get { return primary_identity; }
 		}
 
 		[MonoTODO]

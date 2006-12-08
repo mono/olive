@@ -42,13 +42,13 @@ using NUnit.Framework;
 
 using MonoTests.System.ServiceModel.Channels;
 
-namespace MonoTests.System.ServiceModel
+namespace MonoTests.System.ServiceModel.Security
 {
 	[TestFixture]
 	public class SecurityMessagePropertyTest
 	{
 		static X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
-		static X509Certificate2 cert2 = new X509Certificate2 ("Test/Resources/test.cer");
+		static X509Certificate2 cert2 = new X509Certificate2 ("Test/Resources/test2.pfx", "mono");
 
 		[ServiceContract]
 		public interface ICalc
@@ -136,7 +136,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void GetOrCreateNonSecureMessage ()
 		{
 			Message m = Message.CreateMessage (MessageVersion.Default, "urn:myaction");
@@ -144,6 +143,103 @@ namespace MonoTests.System.ServiceModel
 				SecurityMessageProperty.GetOrCreate (m);
 			Assert.IsNull (p.InitiatorToken, "#1");
 			Assert.IsNull (p.RecipientToken, "#2");
+			Assert.IsNull (p.ProtectionToken, "#3");
+			Assert.IsNull (p.TransportToken, "#4");
+			Assert.IsNull (p.ExternalAuthorizationPolicies, "#5");
+//			Assert.AreEqual (0, p.ExternalAuthorizationPolicies.Count, "#5");
+			Assert.IsFalse (p.HasIncomingSupportingTokens, "#6");
+			Assert.IsNotNull (p.IncomingSupportingTokens, "#6-2");
+			ServiceSecurityContext ssc = p.ServiceSecurityContext;
+			Assert.IsNotNull (ssc, "#7");
+
+			// not sure if it is worthy of testing though ...
+			GenericIdentity identity = ssc.PrimaryIdentity as GenericIdentity;
+			Assert.IsNotNull (identity, "#8-1");
+			Assert.AreEqual ("", identity.Name, "#8-2");
+			Assert.AreEqual ("", identity.AuthenticationType, "#8-3");
+
+			Assert.AreEqual (0, ssc.AuthorizationPolicies.Count, "#9");
+			Assert.IsTrue (ssc.IsAnonymous, "#10");
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		// not sure how "good" this test is ... if it fails at
+		// service side, it just results in timeout error.
+		// The assertion makes sure that it passes all the tests, but
+		// in case it failed, there is almost no hint ...
+		public void GetOrCreateSecureMessage ()
+		{
+			bool passed = false;
+			ServiceHost host = new ServiceHost (typeof (CalcService));
+			InterceptorRequestContextHandler handler = delegate (MessageBuffer src) {
+				Message msg = src.CreateMessage ();
+				GetOrCreateSecureMessageAtService (msg);
+				passed = true;
+			};
+
+			try {
+				SymmetricSecurityBindingElement clisbe =
+					new SymmetricSecurityBindingElement ();
+				clisbe.ProtectionTokenParameters =
+					new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);
+				BindingElement transport = new HttpTransportBindingElement ();
+				BindingElement sintercept = new InterceptorBindingElement (handler);
+				CustomBinding b_res = new CustomBinding (clisbe,
+					sintercept,
+					transport);
+				b_res.ReceiveTimeout = b_res.SendTimeout = TimeSpan.FromSeconds (5);
+				host.AddServiceEndpoint (typeof (ICalc), b_res, "http://localhost:37564");
+
+				ServiceCredentials cred = new ServiceCredentials ();
+				cred.ServiceCertificate.Certificate = cert;
+				cred.ClientCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
+				host.Description.Behaviors.Add (cred);
+
+				host.Open ();
+
+				ProcessClient ();
+
+			} finally {
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
+			}
+			if (!passed)
+				Assert.Fail ("Didn't pass the interceptor.");
+		}
+
+		void ProcessClient ()
+		{
+			SymmetricSecurityBindingElement svcsbe =
+				new SymmetricSecurityBindingElement ();
+			svcsbe.ProtectionTokenParameters =
+				new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);
+
+			BindingElement cintercept = new InterceptorBindingElement (null);
+			CustomBinding b_req = new CustomBinding (svcsbe,
+				cintercept,
+				new HttpTransportBindingElement ());
+
+			b_req.ReceiveTimeout = b_req.SendTimeout = TimeSpan.FromSeconds (5);
+			EndpointAddress remaddr = new EndpointAddress (
+				new Uri ("http://localhost:37564"),
+				new X509CertificateEndpointIdentity (cert));
+			CalcProxy proxy = new CalcProxy (b_req, remaddr);
+			proxy.ClientCredentials.ClientCertificate.Certificate = cert2;
+
+			proxy.Sum (1, 2);
+			proxy.Close ();
+		}
+
+		static void GetOrCreateSecureMessageAtClient (Message msg)
+		{
+			foreach (object o in msg.Properties)
+				if (o is SecurityMessageProperty)
+					Assert.Fail ("The input msg should not contain SecurityMessageProperty yet.");
+			SecurityMessageProperty p = SecurityMessageProperty.GetOrCreate (msg);
+
+			Assert.AreEqual (null, p.InitiatorToken, "#1");
+			Assert.AreEqual (null, p.RecipientToken, "#2");
 			Assert.IsNull (p.ProtectionToken, "#3");
 			Assert.IsNull (p.TransportToken, "#4");
 			Assert.IsNull (p.ExternalAuthorizationPolicies, "#5");
@@ -162,66 +258,14 @@ namespace MonoTests.System.ServiceModel
 			Assert.IsTrue (ssc.IsAnonymous, "#10");
 		}
 
-		[Test]
-		[Ignore ("incomplete")]
-//		[ExpectedException (typeof (Exception))]
-		public void GetOrCreateSecureMessage ()
+		static void GetOrCreateSecureMessageAtService (Message msg)
 		{
-			AsymmetricSecurityBindingElement svcsbe =
-				new AsymmetricSecurityBindingElement ();
-			svcsbe.InitiatorTokenParameters =
-				new X509SecurityTokenParameters ();
-			svcsbe.RecipientTokenParameters =
-				new X509SecurityTokenParameters ();
-
-			RequestSender sender = delegate (Message msg) {
-				GetOrCreateSecureMessageCore (msg);
-				return null;
-			};
-
-			CustomBinding b_req = new CustomBinding (svcsbe,
-				new HttpTransportBindingElement ());
-
-			b_req.ReceiveTimeout = b_req.SendTimeout = TimeSpan.FromSeconds (5);
-			EndpointAddress remaddr = new EndpointAddress (
-				new Uri ("http://localhost:37564"),
-				new X509CertificateEndpointIdentity (cert2));
-			CalcProxy proxy = new CalcProxy (b_req, remaddr);
-			proxy.ClientCredentials.ClientCertificate.Certificate = cert;
-			ServiceHost host = new ServiceHost (typeof (CalcService));
-			try {
-				AsymmetricSecurityBindingElement clisbe =
-					new AsymmetricSecurityBindingElement ();
-				clisbe.InitiatorTokenParameters =
-					new X509SecurityTokenParameters ();
-				clisbe.RecipientTokenParameters =
-					new X509SecurityTokenParameters ();
-				BindingElement transport = new HttpTransportBindingElement ();
-				CustomBinding b_res = new CustomBinding (clisbe, transport);
-				b_res.ReceiveTimeout = b_res.SendTimeout = TimeSpan.FromSeconds (5);
-				host.AddServiceEndpoint (typeof (ICalc), b_res, "http://localhost:37564");
-
-				ServiceCredentials cred = new ServiceCredentials ();
-				cred.ServiceCertificate.Certificate = cert;
-				host.Description.Behaviors.Add (cred);
-
-				host.Open ();
-
-				proxy.Sum (1, 2);
-			} finally {
-				if (proxy.State == CommunicationState.Opened)
-					proxy.Close ();
-				if (host.State == CommunicationState.Opened)
-					host.Close ();
-			}
-		}
-
-		void GetOrCreateSecureMessageCore (Message msg)
-		{
+			Assert.IsNull (msg.Properties.Security, "#0");
 			foreach (object o in msg.Properties)
 				if (o is SecurityMessageProperty)
 					Assert.Fail ("The input msg should not contain SecurityMessageProperty yet.");
 			SecurityMessageProperty p = SecurityMessageProperty.GetOrCreate (msg);
+			Assert.IsNotNull (msg.Properties.Security, "#0-2");
 
 			Assert.AreEqual (null, p.InitiatorToken, "#1");
 			Assert.AreEqual (null, p.RecipientToken, "#2");
