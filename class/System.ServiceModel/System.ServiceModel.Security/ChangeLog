@@ -1,5 +1,13 @@
 2006-12-08  Atsushi Emomoto  <atsushi@ximian.com>
 
+	* SecurityContextKeyIdentifierClause.cs,
+	  SecurityAccessDeniedException.cs,
+	  ExpiredSecurityTokenException.cs : added missing types.
+	* SecurityNegotiationException.cs, MessageSecurityException.cs :
+	  minor API fixes.
+
+2006-12-08  Atsushi Emomoto  <atsushi@ximian.com>
+
 	* SecurityMessageProperty.cs : implemented, though not in actual use.
 	* ServiceSecurityContext.cs : implemented some members.
 

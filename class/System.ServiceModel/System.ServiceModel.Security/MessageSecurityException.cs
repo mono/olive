@@ -50,10 +50,15 @@ namespace System.ServiceModel.Security
 		{
 		}
 
-		public MessageSecurityException (SerializationInfo info,
+		protected MessageSecurityException (SerializationInfo info,
 			StreamingContext context)
 			: base (info, context)
 		{
+		}
+
+		public override void GetObjectData (SerializationInfo info,  StreamingContext ctx)
+		{
+			base.GetObjectData (info, ctx);
 		}
 	}
 }

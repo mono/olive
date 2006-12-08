@@ -1,10 +1,10 @@
 //
-// SecurityNegotiationException.cs
+// SecurityAccessDeniedException.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,25 +32,25 @@ using System.ServiceModel.Channels;
 namespace System.ServiceModel.Security
 {
 	[Serializable]
-	public class SecurityNegotiationException : CommunicationException
+	public class SecurityAccessDeniedException : CommunicationException
 	{
-		public SecurityNegotiationException ()
-			: this ("Failed to process security negotiation.")
+		public SecurityAccessDeniedException ()
+			: this ("Access is denied for some security reason.")
 		{
 		}
 
-		public SecurityNegotiationException (string message)
+		public SecurityAccessDeniedException (string message)
 			: base (message)
 		{
 		}
 
-		public SecurityNegotiationException (string message,
+		public SecurityAccessDeniedException (string message,
 			Exception innerException)
 			: base (message, innerException)
 		{
 		}
 
-		protected SecurityNegotiationException (SerializationInfo info,
+		protected SecurityAccessDeniedException (SerializationInfo info,
 			StreamingContext context)
 			: base (info, context)
 		{

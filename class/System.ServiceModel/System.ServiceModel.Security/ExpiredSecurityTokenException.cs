@@ -1,10 +1,10 @@
 //
-// SecurityNegotiationException.cs
+// ExpiredSecurityTokenException.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -26,34 +26,40 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IdentityModel.Tokens;
 using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Security
 {
 	[Serializable]
-	public class SecurityNegotiationException : CommunicationException
+	public class ExpiredSecurityTokenException : MessageSecurityException
 	{
-		public SecurityNegotiationException ()
-			: this ("Failed to process security negotiation.")
+		public ExpiredSecurityTokenException ()
+			: this ("The security token is expired.")
 		{
 		}
 
-		public SecurityNegotiationException (string message)
+		public ExpiredSecurityTokenException (string message)
 			: base (message)
 		{
 		}
 
-		public SecurityNegotiationException (string message,
+		public ExpiredSecurityTokenException (string message,
 			Exception innerException)
 			: base (message, innerException)
 		{
 		}
 
-		protected SecurityNegotiationException (SerializationInfo info,
+		protected ExpiredSecurityTokenException (SerializationInfo info,
 			StreamingContext context)
 			: base (info, context)
 		{
+		}
+
+		public override void GetObjectData (SerializationInfo info,  StreamingContext ctx)
+		{
+			base.GetObjectData (info, ctx);
 		}
 	}
 }
