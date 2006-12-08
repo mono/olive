@@ -1,5 +1,10 @@
 2006-12-08  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityUtility.cs : reducing DOM dependency. Use KeyInfoNode
+	  for SecurityTokenReference resolution.
+
+2006-12-08  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityUtility.cs : fixed EncryptedData decryption to
 	  consider DerivedKeyTokens correctly.
 	  When creating LocalId, don't add '#' here.

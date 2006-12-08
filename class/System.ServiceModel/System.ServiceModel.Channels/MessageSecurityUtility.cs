@@ -398,7 +398,7 @@ Console.WriteLine (buf.CreateMessage ());
 				buf.CreateMessage ().WriteMessage (writer);
 			}
 
-			DecryptDocument (doc, token, element, parameters, protectionOrder, secProp);
+			DecryptDocument (doc, token, element, parameters, protectionOrder, secProp, serializer);
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
 
@@ -425,7 +425,7 @@ Console.WriteLine (buf.CreateMessage ());
 			return msg;
 		}
 
-		static void DecryptDocument (XmlDocument doc, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp)
+		static void DecryptDocument (XmlDocument doc, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityTokenSerializer serializer)
 		{
 			SecurityKey securityKey = MessageSecurityUtility.ResolveKey (token, parameters);
 
@@ -442,10 +442,10 @@ Console.WriteLine (buf.CreateMessage ());
 				throw new MessageSecurityException ("In this service that contains the security binding element, a security header is required in the reply message.");
 
 			foreach (XmlElement security in securityHeaders)
-				DecryptSingleSecurity (security, token, element, parameters, protectionOrder, secProp, securityKey, nsmgr);
+				DecryptSingleSecurity (security, token, element, parameters, protectionOrder, secProp, securityKey, nsmgr, serializer);
 		}
 
-		static void DecryptSingleSecurity (XmlElement security, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityKey securityKey, XmlNamespaceManager nsmgr)
+		static void DecryptSingleSecurity (XmlElement security, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityKey securityKey, XmlNamespaceManager nsmgr, SecurityTokenSerializer serializer)
 		{
 			XmlDocument doc = security.OwnerDocument;
 			// decrypt the key with service certificate privkey
@@ -491,17 +491,37 @@ Console.WriteLine (buf.CreateMessage ());
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
-				XmlElement keyRefNode = el.SelectSingleNode ("dsig:KeyInfo/o:SecurityTokenReference/o:Reference", nsmgr) as XmlElement;
-				string keyUri = (keyRefNode != null) ? StripUri (keyRefNode.GetAttribute ("URI")) : String.Empty;
-				if (map.ContainsKey (keyUri))
-					aes.Key = map [keyUri];
-				else
-					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
+				byte [] key = GetEncryptionKeyForData (ed2, encXml, map, serializer);
+				aes.Key = key != null ? key : decryptedKey;
+				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
 
 			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
+		}
+
+		static byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map, SecurityTokenSerializer serializer)
+		{
+			if (ed2.KeyInfo == null)
+				return null;
+			foreach (KeyInfoClause kic in ed2.KeyInfo) {
+				KeyInfoNode n = kic as KeyInfoNode;
+				if (n == null)
+					continue; // FIXME: probably other kinds of KeyInfoClause could be used.
+				if (n.Value == null || n.Value.LocalName != "SecurityTokenReference" || n.Value.NamespaceURI != Constants.WssNamespace)
+					continue; // FIXME: probably other kinds of KeyInfoClause could be used.
+
+				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (n.Value));
+				LocalIdKeyIdentifierClause lskic = skic as LocalIdKeyIdentifierClause;
+				string keyUri = (lskic != null) ?
+					lskic.LocalId : String.Empty;
+				if (lskic != null && map.ContainsKey (keyUri))
+					return map [keyUri];
+				else
+					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
+			}
+			return null; // no applicable key info clause.
 		}
 
 		// FIXME: this should consider the referent SecurityToken of
