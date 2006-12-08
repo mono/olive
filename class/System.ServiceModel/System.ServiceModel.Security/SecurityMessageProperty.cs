@@ -42,12 +42,11 @@ namespace System.ServiceModel.Security
 		Collection<SupportingTokenSpecification> incoming_supp_tokens =
 			new Collection<SupportingTokenSpecification> ();
 		ReadOnlyCollection<IAuthorizationPolicy> policies;
-		string sender_id_prefix;
-		ServiceSecurityContext context;
+		string sender_id_prefix = "_";
+		ServiceSecurityContext context = ServiceSecurityContext.Anonymous;
 
 		public SecurityMessageProperty ()
 		{
-			context = ServiceSecurityContext.Anonymous;
 		}
 
 		public bool HasIncomingSupportingTokens {

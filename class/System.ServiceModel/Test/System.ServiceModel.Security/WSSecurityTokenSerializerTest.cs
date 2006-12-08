@@ -243,6 +243,29 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
+		public void WriteLocalIdKeyIdentifierClause1 ()
+		{
+			StringWriter sw = new StringWriter ();
+			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("urn:myIDValue");
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference URI=\"#urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+		}
+
+		[Test]
+		public void WriteLocalIdKeyIdentifierClause2 ()
+		{
+			StringWriter sw = new StringWriter ();
+			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("#urn:myIDValue");
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			// ... so, specifying an URI including '#' does not make sense
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference URI=\"##urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#2");
+		}
+
+		[Test]
 		public void ReadKeyIdentifierClause ()
 		{
 			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>

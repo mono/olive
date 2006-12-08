@@ -149,6 +149,7 @@ namespace MonoTests.System.ServiceModel.Security
 //			Assert.AreEqual (0, p.ExternalAuthorizationPolicies.Count, "#5");
 			Assert.IsFalse (p.HasIncomingSupportingTokens, "#6");
 			Assert.IsNotNull (p.IncomingSupportingTokens, "#6-2");
+			Assert.AreEqual ("_", p.SenderIdPrefix, "#6-3");
 			ServiceSecurityContext ssc = p.ServiceSecurityContext;
 			Assert.IsNotNull (ssc, "#7");
 
@@ -245,6 +246,8 @@ namespace MonoTests.System.ServiceModel.Security
 			Assert.IsNull (p.ExternalAuthorizationPolicies, "#5");
 //			Assert.AreEqual (0, p.ExternalAuthorizationPolicies.Count, "#5");
 			Assert.IsFalse (p.HasIncomingSupportingTokens, "#6");
+			Assert.IsNotNull (p.IncomingSupportingTokens, "#6-2");
+			Assert.AreEqual ("_", p.SenderIdPrefix, "#6-3");
 			ServiceSecurityContext ssc = p.ServiceSecurityContext;
 			Assert.IsNotNull (ssc, "#7");
 
@@ -274,6 +277,8 @@ namespace MonoTests.System.ServiceModel.Security
 			Assert.IsNull (p.ExternalAuthorizationPolicies, "#5");
 //			Assert.AreEqual (0, p.ExternalAuthorizationPolicies.Count, "#5");
 			Assert.IsFalse (p.HasIncomingSupportingTokens, "#6");
+			Assert.IsNotNull (p.IncomingSupportingTokens, "#6-2");
+			Assert.AreEqual ("_", p.SenderIdPrefix, "#6-3");
 			ServiceSecurityContext ssc = p.ServiceSecurityContext;
 			Assert.IsNotNull (ssc, "#7");
 

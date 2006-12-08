@@ -1,5 +1,9 @@
 2006-12-08  Atsushi Emomoto  <atsushi@ximian.com>
 
+	* SecurityMessageProperty.cs : initialize SenderIdPrefix as "_".
+
+2006-12-08  Atsushi Emomoto  <atsushi@ximian.com>
+
 	* SecurityContextKeyIdentifierClause.cs,
 	  SecurityAccessDeniedException.cs,
 	  ExpiredSecurityTokenException.cs : added missing types.

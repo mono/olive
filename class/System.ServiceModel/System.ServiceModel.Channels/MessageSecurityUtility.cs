@@ -338,7 +338,7 @@ namespace System.ServiceModel.Channels
 
 			edata.KeyInfo = new KeyInfo ();
 			LocalIdKeyIdentifierClause ident =
-				new LocalIdKeyIdentifierClause ("#" + ekey.Id);
+				new LocalIdKeyIdentifierClause (ekey.Id);
 			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (ident, serializer, doc);
 			edata.KeyInfo.AddClause (kic);
 			edata.CipherData.CipherValue = encrypted;
@@ -467,32 +467,36 @@ Console.WriteLine (buf.CreateMessage ());
 			// create derived keys
 			// FIXME: an alternative approach is to make use of
 			// EncryptedXml.AddKeyNameMapping().
-			Dictionary<string,byte[]> map = GetUriKeyMappings (security, nsmgr, decryptedKey);
-			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
-				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
-					map [StripUri (encref.GetAttribute ("URI"))] = decryptedKey;
-			Rijndael aes = RijndaelManaged.Create ();
+			Dictionary<string,byte[]> map = ResolveDerivedKeys (security, nsmgr, decryptedKey);
+			if (encryptedKey.Id != null)
+				map [encryptedKey.Id] = decryptedKey;
+			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
 			aes.Key = map [String.Empty];
 			aes.Mode = CipherMode.CBC;
 
 			// decrypt the body with the decrypted key
+			Collection<string> references = new Collection<string> ();
+			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
+				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
+					references.Add (StripUri (encref.GetAttribute ("URI")));
+
 			Collection<XmlElement> list = new Collection<XmlElement> ();
-			foreach (string uri in map.Keys) {
-				if (uri == String.Empty)
-					continue; // skip
+			foreach (string uri in references) {
 				XmlElement el = doc.SelectSingleNode ("//e:EncryptedData [@Id='" + uri + "' or @u:Id='" + uri + "']", nsmgr) as XmlElement;
 				if (el != null)
 					list.Add (el);
 				else
-					throw new MessageSecurityException (String.Format ("On decrypting EncryptedData, a referenced element with Id '{0}' was not found.", uri));
-}
+					throw new MessageSecurityException (String.Format ("On decryption, EncryptedData with Id '{0}', referenced by ReferenceData, was not found.", uri));
+			}
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
-				if (map.ContainsKey (ed2.Id))
-					aes.Key = map [ed2.Id];
+				XmlElement keyRefNode = el.SelectSingleNode ("dsig:KeyInfo/o:SecurityTokenReference/o:Reference", nsmgr) as XmlElement;
+				string keyUri = (keyRefNode != null) ? StripUri (keyRefNode.GetAttribute ("URI")) : String.Empty;
+				if (map.ContainsKey (keyUri))
+					aes.Key = map [keyUri];
 				else
-					throw new XmlException (String.Format ("Encryption key for '{0}' was not found.", ed2.Id));
+					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
 
@@ -502,11 +506,11 @@ Console.WriteLine (buf.CreateMessage ());
 
 		// FIXME: this should consider the referent SecurityToken of
 		// each DerivedKeyToken element.
-		static Dictionary<string,byte[]> GetUriKeyMappings (XmlElement security, XmlNamespaceManager nsmgr, byte [] decryptedKey)
+		static Dictionary<string,byte[]> ResolveDerivedKeys (XmlElement security, XmlNamespaceManager nsmgr, byte [] decryptedKey)
 		{
 			XmlDocument doc = security.OwnerDocument;
 
-			// create derived keys
+			// create mapping from Id to derived keys
 			Dictionary<string,byte[]> keys = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
 			keys [String.Empty] = decryptedKey;
@@ -515,25 +519,16 @@ Console.WriteLine (buf.CreateMessage ());
 				new InMemorySymmetricSecurityKey (decryptedKey);
 
 			byte [] currentKey = decryptedKey;
-			bool hasSpecificMap = false;
 			foreach (XmlNode n in security.ChildNodes) {
 				XmlElement el = n as XmlElement;
 				if (el == null)
 					continue;
 				if (el.LocalName == "DerivedKeyToken" &&
 				    el.NamespaceURI == Constants.WsscNamespace) {
-					if (!hasSpecificMap)
-						keys [String.Empty] = currentKey;
-					hasSpecificMap = false;
-					currentKey = GetDerivedKeyBytes (el, skey, nsmgr);
-				} else if (el.LocalName == "ReferenceList" &&
-					   el.NamespaceURI == EncryptedXml.XmlEncNamespaceUrl) {
-					hasSpecificMap = true;
-
-					foreach (XmlElement r in el.SelectNodes ("e:DataReference", nsmgr))
-						keys [StripUri (r.GetAttribute ("URI"))] = currentKey;
-					foreach (XmlElement r in el.SelectNodes ("e:KeyReference", nsmgr))
-						keys [StripUri (r.GetAttribute ("URI"))] = currentKey;
+					byte [] key = GetDerivedKeyBytes (el, skey, nsmgr);
+					string id = el.GetAttribute ("Id", Constants.WsuNamespace);
+					id = (id == null) ? String.Empty : id;
+					keys [id] = key;
 				}
 			}
 
