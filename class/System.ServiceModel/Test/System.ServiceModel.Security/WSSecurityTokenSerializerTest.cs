@@ -159,28 +159,40 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
-		[Ignore ("it's just not working")]
-		[Category ("NotWorking")]
 		public void WriteWrappedKeySecurityToken ()
 		{
 			StringWriter sw = new StringWriter ();
-			byte [] bytes = new byte [] {0, 1, 2, 3, 4, 5, 6, 7};
+			byte [] bytes = new byte [64];
+			for (byte i = 1; i < 64; i++)
+				bytes [i] = i;
 
-			SecurityToken wt = new RsaSecurityToken (RSA.Create ());
-			SecurityKeyIdentifierClause skic =
-				wt.CreateKeyIdentifierClause< RsaKeyIdentifierClause> ();
-			Assert.IsNotNull (skic.ClauseType, "ClauseType is null");
-			// FIXME: there are very few identifier clauses that
-			// can be created, and this one is still not supported.
+			SecurityToken wt = new X509SecurityToken (cert);
+			SecurityKeyIdentifier ski = new SecurityKeyIdentifier (
+				wt.CreateKeyIdentifierClause< X509ThumbprintKeyIdentifierClause> ());
 			WrappedKeySecurityToken t = new WrappedKeySecurityToken (
-				"urn:wrapper-key:1", bytes, skic.ClauseType, wt,
-				new SecurityKeyIdentifier (skic));
+				"urn:wrapper-key:1", bytes, SecurityAlgorithms.RsaOaepKeyWrap, wt, ski);
 
 			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
 				WSSecurityTokenSerializer.DefaultInstance.WriteToken (w, t);
 			}
-			string rawdata = Convert.ToBase64String (cert.RawData);
-			Assert.AreEqual ("", sw.ToString ());
+			string actual = sw.ToString ();
+			int idx = actual.IndexOf ("<e:CipherValue>", StringComparison.Ordinal);
+			Assert.IsTrue (idx >= 0, "No <CipherValue>");
+			actual = 
+				actual.Substring (0, idx) +
+				"<e:CipherValue>removed here" +
+				actual.Substring (actual.IndexOf ("</e:CipherValue>", StringComparison.Ordinal));
+			Assert.AreEqual ("GQ3YHlGQhDF1bvMixHliX4uLjlY=", Convert.ToBase64String (cert.GetCertHash ()), "premise#1");
+			Assert.AreEqual (
+				String.Format ("<e:EncryptedKey Id=\"urn:wrapper-key:1\" xmlns:e=\"{0}\"><e:EncryptionMethod Algorithm=\"{1}\"><DigestMethod Algorithm=\"{2}\" xmlns=\"{3}\" /></e:EncryptionMethod><KeyInfo xmlns=\"{3}\"><o:SecurityTokenReference xmlns:o=\"{4}\"><o:KeyIdentifier ValueType=\"{5}\">{6}</o:KeyIdentifier></o:SecurityTokenReference></KeyInfo><e:CipherData><e:CipherValue>removed here</e:CipherValue></e:CipherData></e:EncryptedKey>",
+					EncryptedXml.XmlEncNamespaceUrl,
+					SecurityAlgorithms.RsaOaepKeyWrap,
+					SignedXml.XmlDsigSHA1Url,
+					SignedXml.XmlDsigNamespaceUrl,
+					"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd",
+					"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1",
+					Convert.ToBase64String (cert.GetCertHash ())),// "GQ3YHlGQhDF1bvMixHliX4uLjlY="
+				actual);
 		}
 
 		[Test]

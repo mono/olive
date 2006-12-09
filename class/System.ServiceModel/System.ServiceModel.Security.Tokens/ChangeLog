@@ -1,3 +1,11 @@
+2006-12-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityToken.cs : implemented missing members, except for
+	  incomplete MatchKeyIdentifierClause().
+	* SecureConversationSecurityTokenParameters.cs : default
+	  ChannelProtectionRequirements should cover all body parts i.e.
+	  IsBodyIncluded should be true.
+
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SupportingTokenParameters.cs : implemented SetKeyDerivation().

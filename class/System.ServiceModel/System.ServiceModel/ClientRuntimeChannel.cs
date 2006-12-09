@@ -26,14 +26,11 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections.Generic;
-using System.Net.Security;
 using System.Reflection;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
-using System.Xml;
 
 namespace System.ServiceModel
 {
@@ -233,61 +230,12 @@ namespace System.ServiceModel
 				new BindingParameterCollection ();
 
 			ContractDescription cd = factory.Endpoint.Contract;
-			ChannelProtectionRequirements cp =
-				new ChannelProtectionRequirements ();
-			List<XmlQualifiedName> enc = new List<XmlQualifiedName> ();
-			List<XmlQualifiedName> sig = new List<XmlQualifiedName> ();
-			foreach (OperationDescription od in cd.Operations) {
-				foreach (MessageDescription md in od.Messages) {
-					enc.Clear ();
-					sig.Clear ();
-					ProtectionLevel mplv =
-						md.HasProtectionLevel ? md.ProtectionLevel :
-						od.HasProtectionLevel ? od.ProtectionLevel :
-						cd.HasProtectionLevel ? cd.ProtectionLevel :
-						ProtectionLevel.EncryptAndSign; // default
-					foreach (MessagePartDescription pd in md.Body.Parts)
-						AddPartProtectionRequirements (enc, sig, pd, cp);
-					if (md.Body.ReturnValue != null)
-						AddPartProtectionRequirements (enc, sig, md.Body.ReturnValue, cp);
-
-					ScopedMessagePartSpecification spec;
-					bool includeBodyEnc = mplv == ProtectionLevel.EncryptAndSign;
-					bool includeBodySig = mplv != ProtectionLevel.None;
-
-					// enc
-					spec = md.Direction == MessageDirection.Input ?
-						cp.IncomingEncryptionParts :
-						cp.OutgoingEncryptionParts;
-					spec.AddParts (new MessagePartSpecification (includeBodyEnc, enc.ToArray ()), md.Action);
-					// sig
-					spec = md.Direction == MessageDirection.Input ?
-						cp.IncomingSignatureParts :
-						cp.OutgoingSignatureParts;
-					spec.AddParts (new MessagePartSpecification (includeBodySig, sig.ToArray ()), md.Action);
-				}
-			}
-			pl.Add (cp);
+			pl.Add (ChannelProtectionRequirements.CreateFromContract (cd));
 
 			foreach (IEndpointBehavior behavior in factory.Endpoint.Behaviors)
 				behavior.AddBindingParameters (factory.Endpoint, pl);
 
 			return pl;
-		}
-
-		void AddPartProtectionRequirements (List<XmlQualifiedName> enc,
-			List<XmlQualifiedName> sig,
-			MessagePartDescription pd,
-			ChannelProtectionRequirements cp)
-		{
-			switch (pd.ProtectionLevel) {
-			case ProtectionLevel.EncryptAndSign:
-				enc.Add (new XmlQualifiedName (pd.Name, pd.Namespace));
-				goto case ProtectionLevel.Sign;
-			case ProtectionLevel.Sign:
-				sig.Add (new XmlQualifiedName (pd.Name, pd.Namespace));
-				break;
-			}
 		}
 
 		void SetupOutputChannel ()

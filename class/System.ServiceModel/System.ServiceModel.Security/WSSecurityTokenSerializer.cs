@@ -475,7 +475,7 @@ namespace System.ServiceModel.Security
 			else if (token is GenericXmlSecurityToken)
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is WrappedKeySecurityToken)
-				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
+				WriteWrappedKeySecurityToken (writer, (WrappedKeySecurityToken) token);
 			else if (token is SecurityContextSecurityToken)
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is SspiSecurityToken)
@@ -515,6 +515,33 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("t", "BinarySecret", Constants.WstNamespace);
 			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace, token.Id);
 			w.WriteString (Convert.ToBase64String (token.GetKeyBytes ()));
+			w.WriteEndElement ();
+		}
+
+		void WriteWrappedKeySecurityToken (XmlWriter w, WrappedKeySecurityToken token)
+		{
+			string encNS = EncryptedXml.XmlEncNamespaceUrl;
+			w.WriteStartElement ("e", "EncryptedKey", encNS);
+			w.WriteAttributeString ("Id", token.Id);
+			w.WriteStartElement ("EncryptionMethod", encNS);
+			w.WriteAttributeString ("Algorithm", token.WrappingAlgorithm);
+			w.WriteStartElement ("DigestMethod", SignedXml.XmlDsigNamespaceUrl);
+			w.WriteAttributeString ("Algorithm", SignedXml.XmlDsigSHA1Url);
+			w.WriteEndElement ();
+			w.WriteEndElement ();
+
+			w.WriteStartElement ("KeyInfo", SignedXml.XmlDsigNamespaceUrl);
+			if (token.WrappingTokenReference != null)
+				foreach (SecurityKeyIdentifierClause kic in token.WrappingTokenReference)
+					WriteKeyIdentifierClause (w, kic);
+			else if (token.WrappingToken != null)
+				WriteToken (w, token.WrappingToken);
+			w.WriteEndElement ();
+			w.WriteStartElement ("CipherData", encNS);
+			w.WriteStartElement ("CipherValue", encNS);
+			w.WriteString ("blah");
+			w.WriteEndElement ();
+			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}
 	}

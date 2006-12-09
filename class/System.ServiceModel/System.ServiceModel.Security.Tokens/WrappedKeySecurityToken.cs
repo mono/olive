@@ -37,9 +37,9 @@ namespace System.ServiceModel.Security.Tokens
 	{
 		string id;
 		byte [] key;
-		string wrapper_alg;
-		SecurityToken wrapper_token;
-		SecurityKeyIdentifier wrapper_token_ref;
+		string wrap_alg;
+		SecurityToken wrap_token;
+		SecurityKeyIdentifier wrap_token_ref;
 		DateTime valid_from = DateTime.Now.ToUniversalTime ();
 		ReadOnlyCollection<SecurityKey> keys;
 
@@ -52,9 +52,9 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			this.id = id;
 			this.key = keyToWrap;
-			wrapper_alg = wrappingAlgorithm;
-			wrapper_token = wrappingToken;
-			wrapper_token_ref = wrappingTokenReference;
+			wrap_alg = wrappingAlgorithm;
+			wrap_token = wrappingToken;
+			wrap_token_ref = wrappingTokenReference;
 			keys = new ReadOnlyCollection<SecurityKey> (
 				new SecurityKey [] {new InMemorySymmetricSecurityKey (key)});
 		}
@@ -74,6 +74,53 @@ namespace System.ServiceModel.Security.Tokens
 
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
 			get { return keys; }
+		}
+
+		public string WrappingAlgorithm {
+			get { return wrap_alg; }
+		}
+
+		public SecurityToken WrappingToken {
+			get { return wrap_token; }
+		}
+
+		public SecurityKeyIdentifier WrappingTokenReference {
+			get { return wrap_token_ref; }
+		}
+
+		public byte [] GetWrappedKey ()
+		{
+			return (byte []) key.Clone ();
+		}
+
+		public override bool CanCreateKeyIdentifierClause<T> ()
+		{
+			foreach (SecurityKeyIdentifierClause k in WrappingTokenReference) {
+				Type t = k.GetType ();
+				if (t == typeof (T) || t.IsSubclassOf (typeof (T)))
+					return true;
+			}
+			return false;
+		}
+
+		public override T CreateKeyIdentifierClause<T> ()
+		{
+			foreach (SecurityKeyIdentifierClause k in WrappingTokenReference) {
+				Type t = k.GetType ();
+				if (t == typeof (T) || t.IsSubclassOf (typeof (T)))
+					return (T) k;
+			}
+			throw new InvalidOperationException (String.Format ("WrappedKeySecurityToken cannot create '{0}'. The WrappingTokenReference type is '{1}'.", typeof (T), WrappingTokenReference.GetType ()));
+		}
+
+		[MonoTODO]
+		public override bool MatchesKeyIdentifierClause (SecurityKeyIdentifierClause keyIdentifierClause)
+		{
+			if (keyIdentifierClause is LocalIdKeyIdentifierClause &&
+			    ((LocalIdKeyIdentifierClause) keyIdentifierClause).LocalId == Id)
+				return true;
+			// FIXME: no other possibilities to match?
+			return false;
 		}
 	}
 }

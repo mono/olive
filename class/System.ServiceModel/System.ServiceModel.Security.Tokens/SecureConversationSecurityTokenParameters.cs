@@ -36,6 +36,20 @@ namespace System.ServiceModel.Security.Tokens
 {
 	public class SecureConversationSecurityTokenParameters : SecurityTokenParameters
 	{
+		static readonly ChannelProtectionRequirements default_channel_protection_requirements;
+
+		static SecureConversationSecurityTokenParameters ()
+		{
+			ChannelProtectionRequirements r =
+				new ChannelProtectionRequirements ();
+			r.IncomingSignatureParts.ChannelParts.IsBodyIncluded = true;
+			r.OutgoingSignatureParts.ChannelParts.IsBodyIncluded = true;
+			r.IncomingEncryptionParts.ChannelParts.IsBodyIncluded = true;
+			r.OutgoingEncryptionParts.ChannelParts.IsBodyIncluded = true;
+			r.MakeReadOnly ();
+			default_channel_protection_requirements = r;
+		}
+
 		SecurityBindingElement element;
 		ChannelProtectionRequirements requirements;
 		bool cancellable;
@@ -66,7 +80,7 @@ namespace System.ServiceModel.Security.Tokens
 			this.element = element;
 			this.cancellable = requireCancellation;
 			if (requirements == null)
-				this.requirements = new ChannelProtectionRequirements ();
+				this.requirements = new ChannelProtectionRequirements (default_channel_protection_requirements);
 			else
 				this.requirements = new ChannelProtectionRequirements (requirements);
 		}

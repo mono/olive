@@ -108,6 +108,13 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (false, p.Client, "#2-5");
 			Assert.AreEqual (false, p.Win, "#2-6");
 			Assert.AreEqual (false, p.Server, "#2-7");
+
+			ChannelProtectionRequirements r =
+				p.BootstrapProtectionRequirements;
+			Assert.IsTrue (r.IncomingSignatureParts.ChannelParts.IsBodyIncluded, "#3-1");
+			Assert.IsTrue (r.OutgoingSignatureParts.ChannelParts.IsBodyIncluded, "#3-2");
+			Assert.IsTrue (r.IncomingEncryptionParts.ChannelParts.IsBodyIncluded, "#3-3");
+			Assert.IsTrue (r.OutgoingEncryptionParts.ChannelParts.IsBodyIncluded, "#3-4");
 		}
 
 		[Test]
