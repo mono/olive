@@ -103,6 +103,12 @@ namespace System.ServiceModel.Channels
 			HttpReplyChannel channel,
 			Message msg, HttpListenerContext ctx)
 		{
+			if (channel == null)
+				throw new ArgumentNullException ("channel");
+			if (msg == null)
+				throw new ArgumentNullException ("msg");
+			if (ctx == null)
+				throw new ArgumentNullException ("ctx");
 			this.channel = channel;
 			this.msg = msg;
 			this.ctx = ctx;
@@ -158,6 +164,8 @@ namespace System.ServiceModel.Channels
 
 		protected virtual void ProcessReply (Message msg, TimeSpan timeout)
 		{
+			if (msg == null)
+				throw new ArgumentNullException ("msg");
 			MemoryStream ms = new MemoryStream ();
 			channel.Encoder.WriteMessage (msg, ms);
 			ctx.Response.ContentType = channel.Encoder.ContentType;

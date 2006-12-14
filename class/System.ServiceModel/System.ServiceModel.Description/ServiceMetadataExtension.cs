@@ -186,7 +186,7 @@ namespace System.ServiceModel.Description
 		{
 			//FIXME Check for ServiceDebugBehavior.HttpHelpPage
 			//else do what? Check
-			return null;
+			throw new NotImplementedException ();
 		}
 
 		SMMessage CreateWsdlMessage (WSServiceDescription wsdl)

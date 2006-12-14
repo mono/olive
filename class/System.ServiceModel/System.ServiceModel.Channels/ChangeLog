@@ -1,3 +1,8 @@
+2006-12-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* HttpRequestContext.cs, TextMessageEncoder.cs :
+	  some null arg check.
+
 2006-12-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityUtility.cs : reducing DOM dependency. Use KeyInfoNode

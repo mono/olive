@@ -84,6 +84,10 @@ namespace System.ServiceModel.Channels
 
 		public override void WriteMessage (Message message, Stream stream)
 		{
+			if (message == null)
+				throw new ArgumentNullException ("message");
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
 			VerifyMessageVersion (message);
 
 			XmlWriterSettings s = new XmlWriterSettings ();

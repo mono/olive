@@ -226,6 +226,8 @@ namespace System.ServiceModel.Dispatcher
 			Message req = rctx.RequestMessage;
 			DispatchOperation op = GetOperation (req);
 			Message res = op.ProcessRequest (req, octx);
+			if (res == null)
+				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
 			rctx.Reply (res, sendTimeout);
 		}
 
