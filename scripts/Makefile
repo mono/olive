@@ -1,3 +1,6 @@
+thisdir = scripts
+include ../build/rules.make
+
 bin_SCRIPTS = \
 	$(scripts_3_0)
 
@@ -34,14 +37,16 @@ REWRITE3 = $(REWRITE) -e 's,@''framework_version@,3.0,g'
 REWRITE3_DEBUG = $(REWRITE_DEBUG) -e 's,@''framework_version@,3.0,g'
 
 .PHONY: $(scripts_3_0)
-all $(scripts_3_0): script.in Makefile
+all-local:  $(scripts_3_0)
+
+$(scripts_3_0): script.in Makefile
 	n=`echo $@ | sed 's,2$$,,'`; \
 	$(REWRITE3) -e "s,@""exe_name@,$$n,g" script.in > $@.tmp
 	mv $@.tmp $@
 
-install:
+install-local:
 	cp $(scripts_3_0) $(prefix)/bin
 
-clean:
+clean-local:
 	rm -f $(scripts_3_0)
 
