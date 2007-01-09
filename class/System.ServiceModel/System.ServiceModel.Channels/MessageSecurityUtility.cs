@@ -143,7 +143,7 @@ namespace System.ServiceModel.Channels
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
 
-			EncryptedKey ekey = null;
+			WrappedKeySecurityToken ekey = null;
 			ReferenceList encRefList = null;
 			Signature sig = null;
 			EncryptedData sigenc = null;
@@ -220,24 +220,25 @@ namespace System.ServiceModel.Channels
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
-				EncryptedXml exml = new EncryptedXml ();
-				ekey = new EncryptedKey ();
-				encRefList = new ReferenceList ();
-				ekey.Id = new UniqueId ().ToString ();
-				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
-				ekey.KeyInfo.AddClause (encKeyInfo);
-				byte [] encKeyBytes = encKey.EncryptKey (suite.DefaultAsymmetricKeyWrapAlgorithm, aes.Key);
-				ekey.CipherData = new CipherData (encKeyBytes);
-				ekey.EncryptionMethod = new EncryptionMethod (suite.DefaultAsymmetricKeyWrapAlgorithm);
+				string ekeyId = "uuid-" + header.Guid + "-1";
 
-				EncryptedData edata = Encrypt (body, aes, suite, ekey, encRefList, encClause, serializer, exml, doc);
+				EncryptedXml exml = new EncryptedXml ();
+				ekey = new WrappedKeySecurityToken (ekeyId,
+					aes.Key,
+					suite.DefaultAsymmetricKeyWrapAlgorithm,
+					encToken,
+					new SecurityKeyIdentifier (encClause));
+				encRefList = new ReferenceList ();
+				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
+
+				EncryptedData edata = Encrypt (body, aes, suite, ekeyId, encRefList, encClause, serializer, exml, doc);
 				edata.KeyInfo = null;
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, aes, suite, ekey, encRefList, encClause, serializer, exml, doc);
+					sigenc = Encrypt (sigxml, aes, suite, ekeyId, encRefList, encClause, serializer, exml, doc);
 				}
 				break;
 			}
@@ -268,8 +269,9 @@ namespace System.ServiceModel.Channels
 				derivedKey.Offset = 0;
 				derivedKey.Nonce = deriv.Key;
 				derivedKey.Length = derivedKey.Nonce.Length;
-				derivedKey.SecurityTokenReference =
-					new LocalIdKeyIdentifierClause (ekey.Id);
+				if (ekey != null)
+					derivedKey.SecurityTokenReference =
+						new LocalIdKeyIdentifierClause (ekey.Id);
 				header.Contents.Add (derivedKey);
 			}
 			if (encRefList != null)
@@ -324,7 +326,7 @@ namespace System.ServiceModel.Channels
 			throw new Exception (String.Format ("INTERNAL ERROR: Invalid canonicalization URL: {0}", url));
 		}
 
-		static EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm aes, SecurityAlgorithmSuite suite, EncryptedKey ekey, ReferenceList refList, SecurityKeyIdentifierClause encClause, SecurityTokenSerializer serializer, EncryptedXml exml, XmlDocument doc)
+		static EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm aes, SecurityAlgorithmSuite suite, string ekeyId, ReferenceList refList, SecurityKeyIdentifierClause encClause, SecurityTokenSerializer serializer, EncryptedXml exml, XmlDocument doc)
 		{
 			byte [] encrypted = exml.EncryptData (target, aes, false);
 			EncryptedData edata = new EncryptedData ();
@@ -338,7 +340,7 @@ namespace System.ServiceModel.Channels
 
 			edata.KeyInfo = new KeyInfo ();
 			LocalIdKeyIdentifierClause ident =
-				new LocalIdKeyIdentifierClause (ekey.Id);
+				new LocalIdKeyIdentifierClause (ekeyId);
 			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (ident, serializer, doc);
 			edata.KeyInfo.AddClause (kic);
 			edata.CipherData.CipherValue = encrypted;

@@ -1,3 +1,7 @@
+2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityTokenTest.cs : new test.
+
 2006-12-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureConversationSecurityTokenParametersTest.cs :

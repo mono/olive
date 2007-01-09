@@ -1,3 +1,8 @@
+2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : write correct wrapped key. Don't
+	  output WrappingToken.
+
 2006-12-09  Atsushi Emomoto  <atsushi@ximian.com>
 
 	* ChannelProtectionRequirements.cs : moved code for population from

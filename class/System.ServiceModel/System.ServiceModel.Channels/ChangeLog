@@ -1,3 +1,10 @@
+2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityUtility.cs : replaced EncryptedKey with
+	  WrappedKeySecurityToken, which seems to be in actual use in .net.
+	* WSSecurityMessageHeader.cs : added internal Guid so that it
+	  could be shared between header items.
+
 2006-12-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* HttpRequestContext.cs, TextMessageEncoder.cs :

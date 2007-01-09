@@ -534,12 +534,10 @@ namespace System.ServiceModel.Security
 			if (token.WrappingTokenReference != null)
 				foreach (SecurityKeyIdentifierClause kic in token.WrappingTokenReference)
 					WriteKeyIdentifierClause (w, kic);
-			else if (token.WrappingToken != null)
-				WriteToken (w, token.WrappingToken);
 			w.WriteEndElement ();
 			w.WriteStartElement ("CipherData", encNS);
 			w.WriteStartElement ("CipherValue", encNS);
-			w.WriteString ("blah");
+			w.WriteString (Convert.ToBase64String (token.GetWrappedKey ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();
 			w.WriteEndElement ();

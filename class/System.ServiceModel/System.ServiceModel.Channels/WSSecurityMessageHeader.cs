@@ -210,6 +210,11 @@ namespace System.ServiceModel.Channels
 
 		SecurityTokenSerializer serializer;
 		Collection<object> contents = new Collection<object> ();
+		Guid guid = Guid.NewGuid ();
+
+		internal Guid Guid {
+			get { return guid; }
+		}
 
 		// Timestamp, BinarySecurityToken, EncryptedKey,
 		// [DerivedKeyToken]*, ReferenceList, EncryptedData

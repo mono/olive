@@ -50,15 +50,31 @@ namespace System.ServiceModel.Security.Tokens
 			SecurityToken wrappingToken,
 			SecurityKeyIdentifier wrappingTokenReference)
 		{
+			if (id == null)
+				throw new ArgumentNullException ("id");
+			if (keyToWrap == null)
+				throw new ArgumentNullException ("keyToWrap");
+			if (wrappingAlgorithm == null)
+				throw new ArgumentNullException ("wrappingAlgorithm");
+			if (wrappingToken == null)
+				throw new ArgumentNullException ("wrappingToken");
+
 			this.id = id;
-			this.key = keyToWrap;
 			wrap_alg = wrappingAlgorithm;
 			wrap_token = wrappingToken;
 			wrap_token_ref = wrappingTokenReference;
-			keys = new ReadOnlyCollection<SecurityKey> (
-				new SecurityKey [] {new InMemorySymmetricSecurityKey (key)});
+			Collection<SecurityKey> l = new Collection<SecurityKey> ();
+			foreach (SecurityKey sk in wrappingToken.SecurityKeys) {
+				if (sk.IsSupportedAlgorithm (wrappingAlgorithm)) {
+					key = sk.EncryptKey (wrappingAlgorithm, keyToWrap);
+					l.Add (new InMemorySymmetricSecurityKey (key));
+					break;
+				}
+			}
+			keys = new ReadOnlyCollection<SecurityKey> (l);
+			if (key == null)
+				throw new ArgumentException (String.Format ("None of the security keys in the argument token supports specified wrapping algorithm '{0}'", wrappingAlgorithm));
 		}
-
 
 		public override DateTime ValidFrom {
 			get { return valid_from; }

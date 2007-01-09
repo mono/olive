@@ -1,3 +1,9 @@
+2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityToken.cs : GetWrappedKey() return value should
+	  be the encrypted value of argument keyToWrap. Added several argument
+	  check.
+
 2006-12-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WrappedKeySecurityToken.cs : implemented missing members, except for
