@@ -101,7 +101,7 @@ namespace System.ServiceModel.Security
 			int maximumKeyDerivationLabelLength,
 			int maximumKeyDerivationNonceLength)
 		{
-			version = securityVersion;
+			security_version = securityVersion;
 			emit_bsp = emitBspRequiredAttributes;
 			saml_serializer = samlSerializer;
 			encoder = securityStateEncoder;
@@ -111,21 +111,24 @@ namespace System.ServiceModel.Security
 			max_nonce_length = maximumKeyDerivationNonceLength;
 		}
 
-		SecurityVersion version;
+		SecurityVersion security_version;
 		bool emit_bsp;
 		SamlSerializer saml_serializer;
 		SecurityStateEncoder encoder;
 		List<Type> known_types;
 		int max_offset, max_label_length, max_nonce_length;
 
+		bool WSS1_0 {
+			get { return SecurityVersion == SecurityVersion.WSSecurity10; }
+		}
+
 		[MonoTODO]
 		public bool EmitBspRequiredAttributes {
 			get { return emit_bsp; }
 		}
 
-		[MonoTODO]
 		public SecurityVersion SecurityVersion {
-			get { return version; }
+			get { return security_version; }
 		}
 
 		[MonoTODO]
@@ -368,18 +371,27 @@ namespace System.ServiceModel.Security
 			XmlWriter writer,
 			SecurityKeyIdentifierClause keyIdentifierClause)
 		{
+			string errorReason = null;
+
 			if (keyIdentifierClause == null)
 				throw new ArgumentNullException ("keyIdentifierClause");
 			if (keyIdentifierClause is LocalIdKeyIdentifierClause)
 				WriteLocalIdKeyIdentifierClause (writer, (LocalIdKeyIdentifierClause) keyIdentifierClause);
 			else if (keyIdentifierClause is X509IssuerSerialKeyIdentifierClause)
 				WriteX509IssuerSerialKeyIdentifierClause (writer, (X509IssuerSerialKeyIdentifierClause) keyIdentifierClause);
-			else if (keyIdentifierClause is X509ThumbprintKeyIdentifierClause)
-				WriteX509ThumbprintKeyIdentifierClause (writer, (X509ThumbprintKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is X509ThumbprintKeyIdentifierClause) {
+				if (WSS1_0)
+					errorReason = String.Format ("Security key identifier clause '{0}' is not supported in this serializer.", keyIdentifierClause.GetType ());
+				else
+					WriteX509ThumbprintKeyIdentifierClause (writer, (X509ThumbprintKeyIdentifierClause) keyIdentifierClause);
+			}
 			else if (keyIdentifierClause is EncryptedKeyIdentifierClause)
 				WriteEncryptedKeyIdentifierClause (writer, (EncryptedKeyIdentifierClause) keyIdentifierClause);
 			else
 				throw new NotImplementedException (String.Format ("Security key identifier clause '{0}' is not either implemented or supported.", keyIdentifierClause.GetType ()));
+
+			if (errorReason != null)
+				throw new InvalidOperationException (errorReason);
 		}
 
 		void WriteX509IssuerSerialKeyIdentifierClause (
@@ -405,6 +417,8 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
 			w.WriteAttributeString ("ValueType", Constants.WssX509ThumbptintValueType);
+			// FIXME: in some cases it seems to write this attribute...
+			//w.WriteAttributeString ("EncodingType", Constants.WssBase64BinaryEncodingType);
 			w.WriteString (Convert.ToBase64String (ic.GetX509Thumbprint ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();

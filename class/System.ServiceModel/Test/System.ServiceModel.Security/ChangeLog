@@ -1,3 +1,8 @@
+2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added a few x509 tests for
+	  SecurityVersion.WSSecurity10.
+
 2006-12-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs : finished incomplete

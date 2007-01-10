@@ -1,3 +1,8 @@
+2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Constants.cs : added WssBase64BinaryEncodingType (but I cannot
+	  enable the code that uses it :| )
+
 2006-12-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientRuntimeChannel.cs : moved ChannelProtectionRequirements

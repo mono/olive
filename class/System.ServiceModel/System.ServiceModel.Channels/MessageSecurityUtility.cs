@@ -121,7 +121,7 @@ namespace System.ServiceModel.Channels
 				encToken.ResolveKeyIdentifierClause (encClause);
 			AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) 
 				signToken.ResolveKeyIdentifierClause (signClause);
-			string messageId = "urn:uuid:" + Guid.NewGuid ();
+			string messageId = "uuid:" + Guid.NewGuid ();
 			int identForMessageId = 1;
 
 			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
@@ -220,7 +220,7 @@ namespace System.ServiceModel.Channels
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
-				string ekeyId = "uuid-" + header.Guid + "-1";
+				string ekeyId = messageId + "-" + identForMessageId++;;
 
 				EncryptedXml exml = new EncryptedXml ();
 				ekey = new WrappedKeySecurityToken (ekeyId,

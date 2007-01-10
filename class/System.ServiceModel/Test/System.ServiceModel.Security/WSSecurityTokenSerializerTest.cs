@@ -216,10 +216,18 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		{
 			StringWriter sw = new StringWriter ();
 			X509IssuerSerialKeyIdentifierClause ic = new X509IssuerSerialKeyIdentifierClause  (cert);
+			string expected = "<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><X509Data xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509IssuerSerial><X509IssuerName>CN=Mono Test Root Agency</X509IssuerName><X509SerialNumber>22491767666218099257720700881460366085</X509SerialNumber></X509IssuerSerial></X509Data></o:SecurityTokenReference>";
+
 			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
 				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
 			}
-			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><X509Data xmlns=\"http://www.w3.org/2000/09/xmldsig#\"><X509IssuerSerial><X509IssuerName>CN=Mono Test Root Agency</X509IssuerName><X509SerialNumber>22491767666218099257720700881460366085</X509SerialNumber></X509IssuerSerial></X509Data></o:SecurityTokenReference>", sw.ToString ());
+			Assert.AreEqual (expected, sw.ToString (), "WSS1.1");
+
+			sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				new WSSecurityTokenSerializer (SecurityVersion.WSSecurity10).WriteKeyIdentifierClause (w, ic);
+			Assert.AreEqual (expected, sw.ToString (), "WSS1.0");
+			}
 		}
 
 		[Test]
@@ -231,6 +239,16 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
 			}
 			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:KeyIdentifier ValueType=\"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1\">GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier></o:SecurityTokenReference>", sw.ToString ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void WriteX509ThumbprintKeyIdentifierClause2 ()
+		{
+			using (XmlWriter w = XmlWriter.Create (TextWriter.Null)) {
+				new WSSecurityTokenSerializer (SecurityVersion.WSSecurity10)
+					.WriteKeyIdentifierClause (w, new X509ThumbprintKeyIdentifierClause (cert));
+			}
 		}
 
 		[Test]

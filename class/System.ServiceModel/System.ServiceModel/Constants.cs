@@ -41,6 +41,8 @@ namespace System.ServiceModel
 
 		public const string WssX509ThumbptintValueType = "http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1";
 
+		public const string WssBase64BinaryEncodingType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary";
+
 		public const string XmlDsig = "http://www.w3.org/2000/09/xmldsig#";
 
 		public const string WSSSamlToken = "http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1";

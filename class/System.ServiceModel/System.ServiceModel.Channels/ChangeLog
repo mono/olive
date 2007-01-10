@@ -1,3 +1,8 @@
+2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityMessageHeader.cs : reverted previous unnecessary change.
+	* MessageSecurityUtility.cs : there already was uuid.
+
 2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityUtility.cs : replaced EncryptedKey with

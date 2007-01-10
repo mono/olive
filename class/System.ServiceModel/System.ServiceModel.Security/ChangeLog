@@ -1,5 +1,10 @@
 2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityTokenSerializer.cs : X509Thumbprint is not supported
+	  when SecurityVersion is WSS 1.0.
+
+2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityTokenSerializer.cs : write correct wrapped key. Don't
 	  output WrappingToken.
 
