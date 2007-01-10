@@ -265,7 +265,7 @@ namespace System.ServiceModel.Channels
 				deriv.GenerateKey ();
 				WsscDerivedKeyToken derivedKey =
 					new WsscDerivedKeyToken ();
-				derivedKey.Id = "urn:uuid:" + Guid.NewGuid ();
+				derivedKey.Id = GenerateId (doc);
 				derivedKey.Offset = 0;
 				derivedKey.Nonce = deriv.Key;
 				derivedKey.Length = derivedKey.Nonce.Length;
@@ -477,10 +477,13 @@ Console.WriteLine (buf.CreateMessage ());
 			aes.Mode = CipherMode.CBC;
 
 			// decrypt the body with the decrypted key
+			bool hasReferenceList = false;
 			Collection<string> references = new Collection<string> ();
-			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
+			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr)) {
+				hasReferenceList = true;
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					references.Add (StripUri (encref.GetAttribute ("URI")));
+			}
 
 			Collection<XmlElement> list = new Collection<XmlElement> ();
 			foreach (string uri in references) {
@@ -490,6 +493,13 @@ Console.WriteLine (buf.CreateMessage ());
 				else
 					throw new MessageSecurityException (String.Format ("On decryption, EncryptedData with Id '{0}', referenced by ReferenceData, was not found.", uri));
 			}
+			// sometimes .net does not seem to give ReferenceList
+			// (not sure if it is spec requirement; reading WS-
+			// buzzspec is too boring)
+			if (!hasReferenceList)
+				foreach (XmlElement el in doc.SelectNodes ("//e:EncryptedData", nsmgr))
+					list.Add (el);
+
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
@@ -498,6 +508,8 @@ Console.WriteLine (buf.CreateMessage ());
 				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
+//Console.WriteLine ("======== Decrypted Document ========");
+//doc.Save (Console.Out);
 
 			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
