@@ -270,10 +270,10 @@ namespace System.ServiceModel.Channels
 			SupportingTokenParameters supp;
 
 			CollectInitiatorSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, to, true);
-			if (!Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
+			if (Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
 				CollectInitiatorSupportingTokensCore (tokens, supp, to, true);
 			CollectInitiatorSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, to, false);
-			if (!Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
+			if (Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
 				CollectInitiatorSupportingTokensCore (tokens, supp, to, false);
 
 			return tokens;
@@ -293,6 +293,41 @@ namespace System.ServiceModel.Channels
 				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
 			foreach (SecurityTokenParameters p in s.SignedEncrypted)
 				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
+		}
+
+		public SupportingTokenInfoCollection CollectRecipientSupportingTokens (
+			string action,
+			Uri listenUri)
+		{
+			SupportingTokenInfoCollection tokens =
+				new SupportingTokenInfoCollection ();
+
+			SupportingTokenParameters supp;
+
+			CollectRecipientSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, listenUri, true);
+			if (Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectRecipientSupportingTokensCore (tokens, supp, listenUri, true);
+			CollectRecipientSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, listenUri, false);
+			if (Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectRecipientSupportingTokensCore (tokens, supp, listenUri, false);
+
+			return tokens;
+		}
+
+		void CollectRecipientSupportingTokensCore (
+			SupportingTokenInfoCollection l,
+			SupportingTokenParameters s,
+			Uri listenUri,
+			bool required)
+		{
+			foreach (SecurityTokenParameters p in s.Signed)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.Signed, required));
+			foreach (SecurityTokenParameters p in s.Endorsing)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.Endorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEndorsing)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEncrypted)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
 		}
 
 		SecurityToken GetSigningToken (Uri listenUri, SecurityTokenParameters targetParams)

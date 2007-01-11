@@ -1,5 +1,11 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs :
+	  Fixed incorrect TrgGetValue() use.
+	  Added CollectRecipientSupportingTokens().
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityUtility.cs: acctually ReferenceList was inside
 	  EncryptedKey. So, when a key itself is used to encrypt data,
 	  ReferenceList is contained by itself.
