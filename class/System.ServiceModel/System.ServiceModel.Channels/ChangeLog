@@ -1,5 +1,12 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs :
+	  Now ID generation process does not modify input message.
+	  Moved derived key generation part into (virtual) signing loop.
+	  MessagePartSpecification support for signing is done.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : some reordering to handle signing and
 	  encryption with supporting tokens. Fixed XPath query bug for
 	  soap header contents (we want s:Header/*, not s:Header).

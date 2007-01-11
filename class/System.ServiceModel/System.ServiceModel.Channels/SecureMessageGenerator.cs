@@ -160,6 +160,7 @@ namespace System.ServiceModel.Channels
 	{
 		Message msg;
 		MessageSecurityBindingSupport security;
+		int idbase;
 
 		public MessageSecurityGenerator (Message msg, 
 			MessageSecurityBindingSupport security)
@@ -272,6 +273,9 @@ namespace System.ServiceModel.Channels
 			SupportingTokenInfoCollection tokens =
 				CollectInitiatorSupportingTokens ();
 
+			List<WsscDerivedKeyToken> derivedKeys =
+				new List<WsscDerivedKeyToken> ();
+
 {
 
 			// SecurityTokenInclusionMode
@@ -293,9 +297,47 @@ namespace System.ServiceModel.Channels
 			AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) 
 				signToken.ResolveKeyIdentifierClause (signClause);
 
-			// FIXME: it needs to choose message parts by 
-			// ChannelProtectionRequirements.
 			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
+
+			MessagePartSpecification sigSpec = SignaturePart;
+			MessagePartSpecification encSpec = EncryptionPart;
+
+			WsscDerivedKeyToken derivedKey = null;
+
+			// encryption key (possibly also used for signing)
+			// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
+			RijndaelManaged aes = new RijndaelManaged ();
+			aes.KeySize = 256;
+			aes.Mode = CipherMode.CBC;
+			aes.Padding = PaddingMode.ISO10126;
+
+			// generate derived key if needed
+			if (initiatorParams.RequireDerivedKeys) {
+				// FIXME: it should replace aes
+				RijndaelManaged deriv = new RijndaelManaged ();
+				deriv.KeySize = 128;
+				deriv.Mode = CipherMode.CBC;
+				deriv.Padding = PaddingMode.ISO10126;
+				deriv.GenerateKey ();
+				derivedKey = new WsscDerivedKeyToken ();
+				derivedKey.Id = GenerateId (doc);
+				derivedKey.Offset = 0;
+				derivedKey.Nonce = deriv.Key;
+				derivedKey.Length = derivedKey.Nonce.Length;
+				if (ekey != null)
+					derivedKey.SecurityTokenReference =
+						new LocalIdKeyIdentifierClause (encToken.Id);
+				derivedKeys.Add (derivedKey);
+			}
+
+			string ekeyId = messageId + "-" + identForMessageId++;
+
+			ekey = new WrappedKeySecurityToken (ekeyId,
+				aes.Key,
+				suite.DefaultAsymmetricKeyWrapAlgorithm,
+				encToken,
+				new SecurityKeyIdentifier (encClause));
+
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -303,15 +345,6 @@ namespace System.ServiceModel.Channels
 				throw new NotImplementedException ();
 			case MessageProtectionOrder.SignBeforeEncrypt:
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
-
-				MessagePartSpecification sigSpec = SignaturePart;
-
-				// encryption key (possibly also used for signing)
-				// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
-				RijndaelManaged aes = new RijndaelManaged ();
-				aes.KeySize = 256;
-				aes.Mode = CipherMode.CBC;
-				aes.Padding = PaddingMode.ISO10126;
 
 				// sign
 				SignedXml sxml = new SignedXml (body);
@@ -329,15 +362,13 @@ namespace System.ServiceModel.Channels
 					XmlElement el = n as XmlElement;
 					if (el == null)
 						continue;
-					// FIXME: check sigSpec.HeaderTypes and skip it if not included.
-					sig.SignedInfo.AddReference (CreateReference (el, suite));
+					if (sigSpec.HeaderTypes.Count == 0 ||
+					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (el.LocalName, el.NamespaceURI)))
+						sig.SignedInfo.AddReference (CreateReference (el, suite));
 				}
-				foreach (XmlNode n in body.ChildNodes) {
-					XmlElement el = n as XmlElement;
-					if (el == null)
-						continue;
-					sig.SignedInfo.AddReference (CreateReference (el, suite));
-				}
+				if (sigSpec.IsBodyIncluded)
+					sig.SignedInfo.AddReference (CreateReference (body, suite));
+
 				if (sigHash != null)
 					sxml.ComputeSignature (sigHash);
 				else
@@ -347,14 +378,8 @@ namespace System.ServiceModel.Channels
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
-				string ekeyId = messageId + "-" + identForMessageId++;
 
 				EncryptedXml exml = new EncryptedXml ();
-				ekey = new WrappedKeySecurityToken (ekeyId,
-					aes.Key,
-					suite.DefaultAsymmetricKeyWrapAlgorithm,
-					encToken,
-					new SecurityKeyIdentifier (encClause));
 				ReferenceList refList = new ReferenceList ();
 				if (!initiatorParams.RequireDerivedKeys)
 					ekey.ReferenceList = refList;
@@ -388,25 +413,8 @@ namespace System.ServiceModel.Channels
 			if (ekey != null)
 				header.Contents.Add (ekey);
 
-			// FIXME: it should be moved to encryption loop inside.
-			// generate derived key if needed
-			if (initiatorParams.RequireDerivedKeys) {
-				RijndaelManaged deriv = new RijndaelManaged ();
-				deriv.KeySize = 128;
-				deriv.Mode = CipherMode.CBC;
-				deriv.Padding = PaddingMode.ISO10126;
-				deriv.GenerateKey ();
-				WsscDerivedKeyToken derivedKey =
-					new WsscDerivedKeyToken ();
-				derivedKey.Id = GenerateId (doc);
-				derivedKey.Offset = 0;
-				derivedKey.Nonce = deriv.Key;
-				derivedKey.Length = derivedKey.Nonce.Length;
-				if (ekey != null)
-					derivedKey.SecurityTokenReference =
-						new LocalIdKeyIdentifierClause (ekey.Id);
-				header.Contents.Add (derivedKey);
-			}
+			foreach (WsscDerivedKeyToken dk in derivedKeys)
+				header.Contents.Add (dk);
 
 			if (sigenc != null)
 				header.Contents.Add (sigenc);
@@ -421,9 +429,10 @@ namespace System.ServiceModel.Channels
 
 		Reference CreateReference (XmlElement el, SecurityAlgorithmSuite suite)
 		{
-			if (el.GetAttribute ("Id") == String.Empty)
-				el.SetAttribute ("Id", GenerateId (el.OwnerDocument));
-			Reference r = new Reference ("#" + el.GetAttribute ("Id"));
+			string id = el.GetAttribute ("Id");
+			if (id == String.Empty)
+				id = GenerateId (el.OwnerDocument);
+			Reference r = new Reference ("#" + id);
 			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
 			r.DigestMethod = suite.DefaultDigestAlgorithm;
 			return r;
@@ -472,13 +481,10 @@ namespace System.ServiceModel.Channels
 			return edata;
 		}
 
-		static string GenerateId (XmlDocument doc)
+		string GenerateId (XmlDocument doc)
 		{
-			int i = 1;
-			while (doc.SelectSingleNode (String.Format (CultureInfo.InvariantCulture, "//*[@Id = '_{0}']", i)) != null ||
-			       doc.SelectSingleNode (String.Format (CultureInfo.InvariantCulture, "//*[@Id = '_{0}']", i)) != null)
-				i++;
-			return "_" + i;
+			idbase++;
+			return "_" + idbase;
 		}
 
 		public string GetAction ()
