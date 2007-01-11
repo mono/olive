@@ -42,17 +42,17 @@ namespace System.ServiceModel.Channels
 		  where TChannel : class, IChannel
 	{
 		IChannelListener<TChannel> inner;
-		MessageSecurityBindingSupport security;
+		RecipientMessageSecurityBindingSupport security;
 
 		public SecurityChannelListener (
 			IChannelListener<TChannel> innerListener, 
-			MessageSecurityBindingSupport security)
+			RecipientMessageSecurityBindingSupport security)
 		{
 			inner = innerListener;
 			this.security = security;
 		}
 
-		public MessageSecurityBindingSupport SecuritySupport {
+		public RecipientMessageSecurityBindingSupport SecuritySupport {
 			get { return security; }
 		}
 
@@ -65,12 +65,12 @@ namespace System.ServiceModel.Channels
 
 		void AcquireTokens ()
 		{
-			security.ServicePrepare (inner.Uri, this);
+			security.Prepare (inner.Uri, this);
 		}
 
 		void ReleaseTokens ()
 		{
-			security.ServiceRelease ();
+			security.Release ();
 		}
 
 		// ChannelListenerBase

@@ -50,17 +50,17 @@ namespace System.ServiceModel.Channels
 	internal class SecurityChannelFactory<TChannel> : ChannelFactoryBase<TChannel>
 	{
 		IChannelFactory<TChannel> inner;
-		MessageSecurityBindingSupport security;
+		InitiatorMessageSecurityBindingSupport security;
 
 		public SecurityChannelFactory (
 			IChannelFactory<TChannel> innerFactory, 
-			MessageSecurityBindingSupport security)
+			InitiatorMessageSecurityBindingSupport security)
 		{
 			this.inner = innerFactory;
 			this.security = security;
 		}
 
-		public MessageSecurityBindingSupport SecuritySupport {
+		public InitiatorMessageSecurityBindingSupport SecuritySupport {
 			get { return security; }
 		}
 

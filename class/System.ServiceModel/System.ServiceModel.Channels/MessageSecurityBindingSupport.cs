@@ -66,36 +66,25 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	internal class MessageSecurityBindingSupport
+	internal abstract class MessageSecurityBindingSupport
 	{
 		SecurityTokenManager manager;
 		ChannelProtectionRequirements requirements;
 		SecurityTokenSerializer serializer;
-
-		// only filled at prepared state.
-		SecurityToken encryption_token;
-		SecurityToken signing_token;
-		SecurityTokenAuthenticator authenticator;
-		SecurityTokenResolver auth_token_resolver;
-		ChannelFactoryBase factory; // only for client
-		ChannelListenerBase listener; // only for service
 		SecurityBindingElementSupport element_support;
 
-		public MessageSecurityBindingSupport (
-			AsymmetricSecurityBindingElement element,
-			SecurityTokenManager manager,
-			ChannelProtectionRequirements requirements)
-		{
-			element_support = new AsymmetricSecurityBindingElementSupport (element);
-			Initialize (manager, requirements);
-		}
+		// only filled at prepared state.
+		internal SecurityToken encryption_token;
+		internal SecurityToken signing_token;
+		internal SecurityTokenAuthenticator authenticator;
+		internal SecurityTokenResolver auth_token_resolver;
 
-		public MessageSecurityBindingSupport (
-			SymmetricSecurityBindingElement element,
+		protected MessageSecurityBindingSupport (
+			SecurityBindingElementSupport elementSupport,
 			SecurityTokenManager manager,
 			ChannelProtectionRequirements requirements)
 		{
-			element_support = new SymmetricSecurityBindingElementSupport (element);
+			element_support = elementSupport;
 			Initialize (manager, requirements);
 		}
 
@@ -181,8 +170,21 @@ namespace System.ServiceModel.Channels
 		{
 			return manager.CreateSecurityTokenAuthenticator (requirement, out resolver);
 		}
+	}
 
-		public void ClientPrepare (ChannelFactoryBase factory, EndpointAddress address)
+	internal class InitiatorMessageSecurityBindingSupport : MessageSecurityBindingSupport
+	{
+		ChannelFactoryBase factory;
+
+		public InitiatorMessageSecurityBindingSupport (
+			SecurityBindingElementSupport elementSupport,
+			SecurityTokenManager manager,
+			ChannelProtectionRequirements requirements)
+			: base (elementSupport, manager, requirements)
+		{
+		}
+
+		public void Prepare (ChannelFactoryBase factory, EndpointAddress address)
 		{
 			this.factory = factory;
 
@@ -195,7 +197,7 @@ namespace System.ServiceModel.Channels
 			signing_token = GetSigningToken (address, InitiatorParameters);
 		}
 
-		public void ClientRelease ()
+		public void Release ()
 		{
 			authenticator = null;
 
@@ -271,36 +273,6 @@ namespace System.ServiceModel.Channels
 			}
 		}
 
-		public void ServicePrepare (Uri listenUri, ChannelListenerBase listener)
-		{
-			this.listener = listener;
-
-			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
-			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-
-			authenticator = CreateTokenAuthenticator (r, out auth_token_resolver);
-
-			encryption_token = GetEncryptionToken (listenUri, InitiatorParameters);
-			signing_token = GetSigningToken (listenUri, RecipientParameters);
-		}
-
-		public void ServiceRelease ()
-		{
-			authenticator = null;
-
-			IDisposable disposable = signing_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			signing_token = null;
-
-			disposable = encryption_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			encryption_token = null;
-
-			this.listener = null;
-		}
-
 		public SupportingTokenInfoCollection CollectInitiatorSupportingTokens (
 			string action,
 			EndpointAddress to)
@@ -334,6 +306,49 @@ namespace System.ServiceModel.Channels
 				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
 			foreach (SecurityTokenParameters p in s.SignedEncrypted)
 				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
+		}
+	}
+
+	class RecipientMessageSecurityBindingSupport : MessageSecurityBindingSupport
+	{
+		ChannelListenerBase listener;
+
+		public RecipientMessageSecurityBindingSupport (
+			SecurityBindingElementSupport elementSupport,
+			SecurityTokenManager manager,
+			ChannelProtectionRequirements requirements)
+			: base (elementSupport, manager, requirements)
+		{
+		}
+
+		public void Prepare (Uri listenUri, ChannelListenerBase listener)
+		{
+			this.listener = listener;
+
+			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
+			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
+
+			authenticator = CreateTokenAuthenticator (r, out auth_token_resolver);
+
+			encryption_token = GetEncryptionToken (listenUri, InitiatorParameters);
+			signing_token = GetSigningToken (listenUri, RecipientParameters);
+		}
+
+		public void Release ()
+		{
+			authenticator = null;
+
+			IDisposable disposable = signing_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			signing_token = null;
+
+			disposable = encryption_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			encryption_token = null;
+
+			this.listener = null;
 		}
 
 		public SupportingTokenInfoCollection CollectRecipientSupportingTokens (

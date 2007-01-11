@@ -52,7 +52,7 @@ namespace System.ServiceModel.Channels
 		MessageSecurityBindingSupport Support { get; }
 	}
 
-	class SecurityRequestChannel : SecurityRequestChannelBase, ISecurityChannelSource
+	class SecurityRequestChannel : SecurityRequestChannelBase
 	{
 		SecurityChannelFactory<IRequestChannel> source;
 
@@ -60,19 +60,15 @@ namespace System.ServiceModel.Channels
 			: base (innerChannel)
 		{
 			this.source = source;
-			InitializeSecurityFunctionality (this);
+			InitializeSecurityFunctionality (source.SecuritySupport);
 		}
 
 		public override ChannelFactoryBase Factory {
 			get { return source; }
 		}
-
-		public MessageSecurityBindingSupport Support {
-			get { return source.SecuritySupport; }
-		}
 	}
 
-	class SecurityRequestSessionChannel : SecurityRequestChannelBase, ISecurityChannelSource
+	class SecurityRequestSessionChannel : SecurityRequestChannelBase
 	{
 		SecurityChannelFactory<IRequestSessionChannel> source;
 
@@ -80,21 +76,17 @@ namespace System.ServiceModel.Channels
 			: base (innerChannel)
 		{
 			this.source = source;
-			InitializeSecurityFunctionality (this);
+			InitializeSecurityFunctionality (source.SecuritySupport);
 		}
 
 		public override ChannelFactoryBase Factory {
 			get { return source; }
 		}
-
-		public MessageSecurityBindingSupport Support {
-			get { return source.SecuritySupport; }
-		}
 	}
 
 	abstract class SecurityRequestChannelBase : LayeredRequestChannel
 	{
-		ISecurityChannelSource security;
+		InitiatorMessageSecurityBindingSupport security;
 
 		protected SecurityRequestChannelBase (IRequestChannel innerChannel)
 			: base (innerChannel)
@@ -103,9 +95,9 @@ namespace System.ServiceModel.Channels
 			Closing += new EventHandler (ReleaseSecurityKey);
 		}
 
-		protected void InitializeSecurityFunctionality (ISecurityChannelSource source)
+		protected void InitializeSecurityFunctionality (InitiatorMessageSecurityBindingSupport security)
 		{
-			this.security = source;
+			this.security = security;
 		}
 
 		protected override IAsyncResult OnBeginRequest (Message message, TimeSpan timeout, AsyncCallback callback, object state)
@@ -137,17 +129,17 @@ namespace System.ServiceModel.Channels
 		{
 			// FIXME: provide correct parameters
 			return MessageSecurityUtility.DecryptMessage (
-				message, security.Support);
+				message, security);
 		}
 
 		void AcquireSecurityKey (object o, EventArgs e)
 		{
-			security.Support.ClientPrepare (Factory, RemoteAddress);
+			security.Prepare (Factory, RemoteAddress);
 		}
 
 		void ReleaseSecurityKey (object o, EventArgs e)
 		{
-			security.Support.ClientRelease ();
+			security.Release ();
 		}
 	}
 }

@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
 {
 	internal class SecurityRequestContext : RequestContext
 	{
-		MessageSecurityBindingSupport security;
+		RecipientMessageSecurityBindingSupport security;
 		SecurityReplyChannel channel;
 		RequestContext source;
 		Message msg;

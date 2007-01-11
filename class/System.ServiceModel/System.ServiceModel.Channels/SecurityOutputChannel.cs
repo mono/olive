@@ -47,7 +47,7 @@ using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenReq
 
 namespace System.ServiceModel.Channels
 {
-	class SecurityOutputChannel : SecurityOutputChannelBase, ISecurityChannelSource
+	class SecurityOutputChannel : SecurityOutputChannelBase
 	{
 		SecurityChannelFactory<IOutputChannel> source;
 
@@ -55,19 +55,15 @@ namespace System.ServiceModel.Channels
 			: base (innerChannel)
 		{
 			this.source = source;
-			InitializeSecurityFunctionality (this);
+			InitializeSecurityFunctionality (source.SecuritySupport);
 		}
 
 		public override ChannelFactoryBase Factory {
 			get { return source; }
 		}
-
-		public MessageSecurityBindingSupport Support {
-			get { return source.SecuritySupport; }
-		}
 	}
 
-	class SecurityOutputSessionChannel : SecurityOutputChannelBase, ISecurityChannelSource
+	class SecurityOutputSessionChannel : SecurityOutputChannelBase
 	{
 		SecurityChannelFactory<IOutputSessionChannel> source;
 
@@ -75,21 +71,17 @@ namespace System.ServiceModel.Channels
 			: base (innerChannel)
 		{
 			this.source = source;
-			InitializeSecurityFunctionality (this);
+			InitializeSecurityFunctionality (source.SecuritySupport);
 		}
 
 		public override ChannelFactoryBase Factory {
 			get { return source; }
 		}
-
-		public MessageSecurityBindingSupport Support {
-			get { return source.SecuritySupport; }
-		}
 	}
 
 	abstract class SecurityOutputChannelBase : LayeredOutputChannel
 	{
-		ISecurityChannelSource security;
+		InitiatorMessageSecurityBindingSupport security;
 
 		protected SecurityOutputChannelBase (IOutputChannel innerChannel)
 			: base (innerChannel)
@@ -98,9 +90,9 @@ namespace System.ServiceModel.Channels
 			Closing += new EventHandler (ReleaseSecurityKey);
 		}
 
-		protected void InitializeSecurityFunctionality (ISecurityChannelSource source)
+		protected void InitializeSecurityFunctionality (InitiatorMessageSecurityBindingSupport security)
 		{
-			this.security = source;
+			this.security = security;
 		}
 
 		protected override IAsyncResult OnBeginSend (Message message, TimeSpan timeout, AsyncCallback callback, object state)
@@ -128,12 +120,12 @@ namespace System.ServiceModel.Channels
 
 		void AcquireSecurityKey (object o, EventArgs e)
 		{
-			security.Support.ClientPrepare (Factory, RemoteAddress);
+			security.Prepare (Factory, RemoteAddress);
 		}
 
 		void ReleaseSecurityKey (object o, EventArgs e)
 		{
-			security.Support.ClientRelease ();
+			security.Release ();
 		}
 	}
 }

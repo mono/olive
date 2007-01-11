@@ -1,5 +1,18 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs : more refactoring.
+	  Made it abstract and added Initiator- and Recipient- classes.
+	  Several members were moved to those derived types.
+	* AsymmetricSecurityBindingElement.cs, 
+	  SymmetricSecurityBindingElement.cs
+	  SecurityChannelFactory.cs, SecurityChannelListener.cs,
+	  SecurityRequestChannel.cs, SecurityOutputChannel.cs,
+	  SecurityRequestContext.cs, SecureMessageGenerator.cs :
+	  All dependent changes by above. Removed ISecurityChannelSource
+	  which became useless.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : encryption parts should exist too.
 	* AsymmetricSecurityBindingElement.cs
 	  SymmetricSecurityBindingElement.cs,

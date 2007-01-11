@@ -52,18 +52,11 @@ namespace System.ServiceModel.Channels
 	internal class InitiatorMessageSecurityGenerator : MessageSecurityGenerator
 	{
 		EndpointAddress message_to;
+		InitiatorMessageSecurityBindingSupport security;
 
 		public InitiatorMessageSecurityGenerator (
 			Message msg,
-			ISecurityChannelSource securitySource,
-			EndpointAddress remoteAddress)
-			: this (msg, securitySource.Support, remoteAddress)
-		{
-		}
-
-		public InitiatorMessageSecurityGenerator (
-			Message msg,
-			MessageSecurityBindingSupport security,
+			InitiatorMessageSecurityBindingSupport security,
 			EndpointAddress messageTo)
 			: base (msg, security)
 		{
@@ -72,6 +65,7 @@ namespace System.ServiceModel.Channels
 			if (!security.InitiatorParameters.InternalHasAsymmetricKey)
 				throw new InvalidOperationException ("Wrong security token parameters: it must have an asymmetric key (HasAsymmetricKey). There is likely a misconfiguration in the custom security binding element.");
 
+			this.security = security;
 			this.message_to = messageTo;
 		}
 
@@ -107,20 +101,22 @@ namespace System.ServiceModel.Channels
 
 		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
 		{
-			return Security.CollectInitiatorSupportingTokens (GetAction (), MessageTo);
+			return security.CollectInitiatorSupportingTokens (GetAction (), MessageTo);
 		}
 	}
 
 	internal class RecipientMessageSecurityGenerator : MessageSecurityGenerator
 	{
+		RecipientMessageSecurityBindingSupport security;
 		Uri listen_uri;
 
 		public RecipientMessageSecurityGenerator (
 			Message msg,
-			MessageSecurityBindingSupport security,
+			RecipientMessageSecurityBindingSupport security,
 			Uri listenUri)
 			: base (msg, security)
 		{
+			this.security = security;
 			this.listen_uri = listenUri;
 		}
 
@@ -156,7 +152,7 @@ namespace System.ServiceModel.Channels
 
 		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
 		{
-			return Security.CollectRecipientSupportingTokens (GetAction (), listen_uri);
+			return security.CollectRecipientSupportingTokens (GetAction (), listen_uri);
 		}
 	}
 
