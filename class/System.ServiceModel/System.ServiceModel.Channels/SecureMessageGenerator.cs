@@ -229,8 +229,50 @@ namespace System.ServiceModel.Channels
 				Direction == MessageDirection.Input ?
 				initiatorParams : recipientParams;
 
+			string messageId = "uuid:" + Guid.NewGuid ();
+			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
+			int identForMessageId = 1;
+
+			// FIXME: get correct ReplyTo value
+			msg.Headers.Add (MessageHeader.CreateHeader ("ReplyTo", msg.Version.Addressing.Namespace, EndpointAddress10.FromEndpointAddress (new EndpointAddress (Constants.WsaAnonymousUri))));
+
+			if (MessageTo != null)
+				msg.Headers.Add (MessageHeader.CreateHeader ("To", msg.Version.Addressing.Namespace, MessageTo.Uri.AbsoluteUri, true));
+
+			// wss:Security
+			WSSecurityMessageHeader header =
+				new WSSecurityMessageHeader (serializer);
+			// wss:Security/wsu:Timestamp
+			if (element.IncludeTimestamp) {
+				WsuTimestamp timestamp = new WsuTimestamp ();
+				timestamp.Id = messageId + "-" + identForMessageId++;
+				timestamp.Created = DateTime.Now;
+				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
+				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
+				header.Contents.Add (timestamp);
+			}
+			msg.Headers.Add (header);
+
+
+			XmlDocument doc = new XmlDocument ();
+			doc.PreserveWhitespace = true;
+			XPathNavigator nav = doc.CreateNavigator ();
+			using (XmlWriter w = nav.AppendChild ()) {
+				msg.WriteMessage (w);
+			}
+			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
+			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
+
+			WrappedKeySecurityToken ekey = null;
+			ReferenceList encRefList = null;
+			Signature sig = null;
+			EncryptedData sigenc = null;
+
+
 			SupportingTokenInfoCollection tokens =
 				CollectInitiatorSupportingTokens ();
+
+{
 
 			// SecurityTokenInclusionMode
 			// - Initiator or Recipient
@@ -250,46 +292,6 @@ namespace System.ServiceModel.Channels
 				encToken.ResolveKeyIdentifierClause (encClause);
 			AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) 
 				signToken.ResolveKeyIdentifierClause (signClause);
-			string messageId = "uuid:" + Guid.NewGuid ();
-			int identForMessageId = 1;
-
-			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
-
-			// FIXME: get correct ReplyTo value
-			msg.Headers.Add (MessageHeader.CreateHeader ("ReplyTo", msg.Version.Addressing.Namespace, EndpointAddress10.FromEndpointAddress (new EndpointAddress (Constants.WsaAnonymousUri))));
-
-			if (MessageTo != null)
-				msg.Headers.Add (MessageHeader.CreateHeader ("To", msg.Version.Addressing.Namespace, MessageTo.Uri.AbsoluteUri, true));
-
-			// addition except for wsse:Security is done. Start securing...
-
-			XmlDocument doc = new XmlDocument ();
-			doc.PreserveWhitespace = true;
-			XPathNavigator nav = doc.CreateNavigator ();
-			using (XmlWriter w = nav.AppendChild ()) {
-				msg.WriteMessage (w);
-			}
-			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
-			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
-
-			WrappedKeySecurityToken ekey = null;
-			ReferenceList encRefList = null;
-			Signature sig = null;
-			EncryptedData sigenc = null;
-
-			// wss:Security
-			WSSecurityMessageHeader header =
-				new WSSecurityMessageHeader (serializer);
-			// wss:Security/wsu:Timestamp
-			if (element.IncludeTimestamp) {
-				WsuTimestamp timestamp = new WsuTimestamp ();
-				timestamp.Id = messageId + "-" + identForMessageId++;
-				timestamp.Created = DateTime.Now;
-				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
-				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
-				header.Contents.Add (timestamp);
-			}
-			msg.Headers.Add (header);
 
 			// FIXME: it needs to choose message parts by 
 			// ChannelProtectionRequirements.
@@ -323,7 +325,7 @@ namespace System.ServiceModel.Channels
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
-				foreach (XmlNode n in doc.SelectNodes ("/s:Envelope/s:Header", nsmgr)) {
+				foreach (XmlNode n in doc.SelectNodes ("/s:Envelope/s:Header/*", nsmgr)) {
 					XmlElement el = n as XmlElement;
 					if (el == null)
 						continue;
@@ -353,35 +355,40 @@ namespace System.ServiceModel.Channels
 					suite.DefaultAsymmetricKeyWrapAlgorithm,
 					encToken,
 					new SecurityKeyIdentifier (encClause));
-				encRefList = new ReferenceList ();
+				ReferenceList refList = new ReferenceList ();
 				if (!initiatorParams.RequireDerivedKeys)
-					ekey.ReferenceList = encRefList;
+					ekey.ReferenceList = refList;
+				else
+					encRefList = refList;
 
-				EncryptedData edata = Encrypt (body, aes, ekeyId, encRefList, encClause, exml, doc);
+				EncryptedData edata = Encrypt (body, aes, ekeyId, refList, encClause, exml, doc);
 				edata.KeyInfo = null;
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, aes, ekeyId, encRefList, encClause, exml, doc);
+					sigenc = Encrypt (sigxml, aes, ekeyId, refList, encClause, exml, doc);
 				}
 				break;
 			}
-
-			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
-
-			ret.Headers.Clear ();
-			ret.Headers.CopyHeadersFrom (msg);
 
 			if (sig != null && msgIncludesToken)
 				header.Contents.Add (signToken);
 			if (signToken != encToken && msgIncludesToken)
 				header.Contents.Add (encToken);
 
+}
+
+			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
+
+			ret.Headers.Clear ();
+			ret.Headers.CopyHeadersFrom (msg);
+
 			if (ekey != null)
 				header.Contents.Add (ekey);
 
+			// FIXME: it should be moved to encryption loop inside.
 			// generate derived key if needed
 			if (initiatorParams.RequireDerivedKeys) {
 				RijndaelManaged deriv = new RijndaelManaged ();
@@ -399,14 +406,15 @@ namespace System.ServiceModel.Channels
 					derivedKey.SecurityTokenReference =
 						new LocalIdKeyIdentifierClause (ekey.Id);
 				header.Contents.Add (derivedKey);
-				if (encRefList != null)
-					header.Contents.Add (encRefList);
 			}
 
 			if (sigenc != null)
 				header.Contents.Add (sigenc);
 			else if (sig != null)
 				header.Contents.Add (sig);
+
+			if (encRefList != null)
+				header.Contents.Add (encRefList);
 
 			return ret;
 		}
