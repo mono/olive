@@ -103,6 +103,10 @@ namespace System.ServiceModel.Channels
 				direction == MessageDirection.Input ?
 				initiatorParams : recipientParams;
 
+			SupportingTokenInfoCollection tokens =
+				security.CollectInitiatorSupportingTokens (msg.Headers.Action, messageTo);
+
+
 			// SecurityTokenInclusionMode
 			// - Initiator or Recipient
 			// - done or notyet. FIXME: not implemented yet
@@ -220,7 +224,7 @@ namespace System.ServiceModel.Channels
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
-				string ekeyId = messageId + "-" + identForMessageId++;;
+				string ekeyId = messageId + "-" + identForMessageId++;
 
 				EncryptedXml exml = new EncryptedXml ();
 				ekey = new WrappedKeySecurityToken (ekeyId,
@@ -229,7 +233,8 @@ namespace System.ServiceModel.Channels
 					encToken,
 					new SecurityKeyIdentifier (encClause));
 				encRefList = new ReferenceList ();
-				SecurityTokenReferenceKeyInfo encKeyInfo = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
+				if (!initiatorParams.RequireDerivedKeys)
+					ekey.ReferenceList = encRefList;
 
 				EncryptedData edata = Encrypt (body, aes, suite, ekeyId, encRefList, encClause, serializer, exml, doc);
 				edata.KeyInfo = null;
@@ -273,9 +278,9 @@ namespace System.ServiceModel.Channels
 					derivedKey.SecurityTokenReference =
 						new LocalIdKeyIdentifierClause (ekey.Id);
 				header.Contents.Add (derivedKey);
+				if (encRefList != null)
+					header.Contents.Add (encRefList);
 			}
-			if (encRefList != null)
-				header.Contents.Add (encRefList);
 
 			if (sigenc != null)
 				header.Contents.Add (sigenc);
@@ -477,13 +482,12 @@ Console.WriteLine (buf.CreateMessage ());
 			aes.Mode = CipherMode.CBC;
 
 			// decrypt the body with the decrypted key
-			bool hasReferenceList = false;
 			Collection<string> references = new Collection<string> ();
-			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr)) {
-				hasReferenceList = true;
+			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					references.Add (StripUri (encref.GetAttribute ("URI")));
-			}
+			foreach (EncryptedReference er in encryptedKey.ReferenceList)
+				references.Add (StripUri (er.Uri));
 
 			Collection<XmlElement> list = new Collection<XmlElement> ();
 			foreach (string uri in references) {
@@ -493,12 +497,6 @@ Console.WriteLine (buf.CreateMessage ());
 				else
 					throw new MessageSecurityException (String.Format ("On decryption, EncryptedData with Id '{0}', referenced by ReferenceData, was not found.", uri));
 			}
-			// sometimes .net does not seem to give ReferenceList
-			// (not sure if it is spec requirement; reading WS-
-			// buzzspec is too boring)
-			if (!hasReferenceList)
-				foreach (XmlElement el in doc.SelectNodes ("//e:EncryptedData", nsmgr))
-					list.Add (el);
 
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
@@ -508,9 +506,12 @@ Console.WriteLine (buf.CreateMessage ());
 				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
-//Console.WriteLine ("======== Decrypted Document ========");
-//doc.Save (Console.Out);
-
+/*
+Console.WriteLine ("======== Decrypted Document ========");
+doc.PreserveWhitespace = false;
+doc.Save (Console.Out);
+doc.PreserveWhitespace = true;
+*/
 			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 		}

@@ -1,3 +1,8 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityToken.cs : added internal ReferenceList, to
+	  output e:ReferenceList (kind of compromised solution; see comments).
+
 2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WrappedKeySecurityToken.cs : GetWrappedKey() return value should

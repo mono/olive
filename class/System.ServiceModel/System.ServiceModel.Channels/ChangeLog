@@ -1,3 +1,11 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityUtility.cs: acctually ReferenceList was inside
+	  EncryptedKey. So, when a key itself is used to encrypt data,
+	  ReferenceList is contained by itself.
+	* MessageSecurityBindingSupport.cs :
+	  added CollectInitiatorSupportingTokens().
+
 2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityUtility.cs: it should support ReferenceList-less

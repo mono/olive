@@ -1,3 +1,7 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : add e:ReferenceList output.
+
 2007-01-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializer.cs : X509Thumbprint is not supported

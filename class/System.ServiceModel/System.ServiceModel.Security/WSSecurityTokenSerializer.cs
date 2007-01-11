@@ -554,6 +554,15 @@ namespace System.ServiceModel.Security
 			w.WriteString (Convert.ToBase64String (token.GetWrappedKey ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();
+			if (token.ReferenceList != null) {
+				w.WriteStartElement ("e", "ReferenceList", encNS);
+				foreach (DataReference er in token.ReferenceList) {
+					w.WriteStartElement ("DataReference", encNS);
+					w.WriteAttributeString ("URI", er.Uri);
+					w.WriteEndElement ();
+				}
+				w.WriteEndElement ();
+			}
 			w.WriteEndElement ();
 		}
 	}

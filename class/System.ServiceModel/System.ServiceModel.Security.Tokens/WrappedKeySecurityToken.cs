@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography.Xml;
 using System.Xml;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Tokens;
@@ -42,6 +43,7 @@ namespace System.ServiceModel.Security.Tokens
 		SecurityKeyIdentifier wrap_token_ref;
 		DateTime valid_from = DateTime.Now.ToUniversalTime ();
 		ReadOnlyCollection<SecurityKey> keys;
+		ReferenceList reference_list;
 
 		public WrappedKeySecurityToken (
 			string id,
@@ -74,6 +76,14 @@ namespace System.ServiceModel.Security.Tokens
 			keys = new ReadOnlyCollection<SecurityKey> (l);
 			if (key == null)
 				throw new ArgumentException (String.Format ("None of the security keys in the argument token supports specified wrapping algorithm '{0}'", wrappingAlgorithm));
+		}
+
+		// FIXME: it is kind of compromised solution to output
+		// ReferenceList inside e:EncryptedKey and might disappear
+		// when non-wrapped key is represented by another token type.
+		internal ReferenceList ReferenceList {
+			get { return reference_list; }
+			set { reference_list = value; }
 		}
 
 		public override DateTime ValidFrom {

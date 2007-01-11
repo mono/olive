@@ -100,7 +100,10 @@ namespace System.ServiceModel.Description
 
 		public ClientCredentials Clone ()
 		{
-			return CloneCore ();
+			ClientCredentials ret = CloneCore ();
+			if (ret.GetType () != GetType ())
+				throw new NotImplementedException ("CloneCore() must be implemented to return an instance of the same type in this custom ClientCredentials type.");
+			return ret;
 		}
 
 		protected virtual ClientCredentials CloneCore ()

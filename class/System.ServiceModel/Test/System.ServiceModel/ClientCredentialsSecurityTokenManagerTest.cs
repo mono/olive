@@ -28,6 +28,7 @@
 using System;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -46,25 +47,12 @@ namespace MonoTests.System.ServiceModel
 	[TestFixture]
 	public class ClientCredentialsSecurityTokenManagerTest
 	{
-		class MyManager : ClientCredentialsSecurityTokenManager
-		{
-			public MyManager ()
-				: base (new ClientCredentials ())
-			{
-			}
-
-			public bool IsIssued (SecurityTokenRequirement r)
-			{
-				return IsIssuedSecurityTokenRequirement (r);
-			}
-		}
-
 		MyManager def_c;
 
 		[SetUp]
 		public void Initialize ()
 		{
-			def_c = new MyManager ();
+			def_c = new MyManager (new MyClientCredentials ());
 		}
 
 /*
@@ -575,6 +563,150 @@ namespace MonoTests.System.ServiceModel
 				def_c.CreateSecurityTokenAuthenticator (r, out resolver)
 				as RsaSecurityTokenAuthenticator;
 			Assert.IsNotNull (rsa, "#1");
+		}
+
+		[Test]
+		[Ignore ("this test is not fully written yet.")]
+		public void OtherParameterInEndorsingSupport ()
+		{
+			SymmetricSecurityBindingElement be =
+				new SymmetricSecurityBindingElement ();
+			be.ProtectionTokenParameters =
+				new X509SecurityTokenParameters ();
+			be.EndpointSupportingTokenParameters.Endorsing.Add (
+				new MyEndorsingTokenParameters ());
+			Binding b = new CustomBinding (be, new HttpTransportBindingElement ());
+			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			EndpointAddress ea = new EndpointAddress (new Uri ("http://localhost:37564"), new X509CertificateEndpointIdentity (cert));
+			CalcProxy client = new CalcProxy (b, ea);
+			client.Endpoint.Behaviors.RemoveAll<ClientCredentials> ();
+			client.Endpoint.Behaviors.Add (new MyClientCredentials ());
+			client.Sum (1, 2);
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotImplementedException))]
+		public void MissingCloneCore ()
+		{
+			new MyClientCredentials2 ().Clone ();
+		}
+	}
+
+	class MyClientCredentials : ClientCredentials
+	{
+		public override SecurityTokenManager CreateSecurityTokenManager ()
+		{
+			return new MyManager (this);
+		}
+
+		protected override ClientCredentials CloneCore ()
+		{
+			return new MyClientCredentials ();
+		}
+	}
+
+	class MyClientCredentials2 : ClientCredentials
+	{
+		public override SecurityTokenManager CreateSecurityTokenManager ()
+		{
+			return null;
+		}
+	}
+
+	class MyManager : ClientCredentialsSecurityTokenManager
+	{
+		public MyManager (MyClientCredentials cred)
+			: base (cred)
+		{
+		}
+
+		public bool IsIssued (SecurityTokenRequirement r)
+		{
+			return IsIssuedSecurityTokenRequirement (r);
+		}
+
+		public override SecurityTokenProvider CreateSecurityTokenProvider (SecurityTokenRequirement tokenRequirement
+)
+		{
+			if (tokenRequirement.TokenType == "urn:my")
+				return new MySecurityTokenProvider ();
+			return base.CreateSecurityTokenProvider (tokenRequirement);
+		}
+
+		public override SecurityTokenSerializer CreateSecurityTokenSerializer (SecurityTokenVersion ver)
+		{
+			return new MySecurityTokenSerializer ();
+		}
+	}
+
+	class MySecurityTokenProvider : SecurityTokenProvider
+	{
+		public MySecurityTokenProvider ()
+		{
+		}
+
+		protected override SecurityToken GetTokenCore (TimeSpan timeout)
+		{
+			return new RsaSecurityToken (RSA.Create ());
+		}
+	}
+
+	class MySecurityTokenSerializer : WSSecurityTokenSerializer
+	{
+		protected override void WriteTokenCore (XmlWriter w, SecurityToken token)
+		{
+			RsaSecurityToken r = token as RsaSecurityToken;
+			w.Flush ();
+			if (r != null)
+				w.WriteRaw (r.Rsa.ToXmlString (false));
+			else
+				base.WriteTokenCore (w, token);
+		}
+	}
+
+	class MyEndorsingTokenParameters : SecurityTokenParameters
+	{
+		public MyEndorsingTokenParameters ()
+		{
+		}
+
+		protected MyEndorsingTokenParameters (MyEndorsingTokenParameters source)
+		{
+		}
+
+		protected override bool HasAsymmetricKey {
+			get { return true; }
+		}
+
+		protected override bool SupportsClientAuthentication {
+			get { return true; }
+		}
+
+		protected override bool SupportsClientWindowsIdentity {
+			get { return false; }
+		}
+
+		protected override bool SupportsServerAuthentication {
+			get { return true; }
+		}
+
+		protected override SecurityTokenParameters CloneCore ()
+		{
+			return new MyEndorsingTokenParameters (this);
+		}
+
+		protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause (
+			SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+		{
+			RsaSecurityToken r = token as RsaSecurityToken;
+			return r.CreateKeyIdentifierClause <RsaKeyIdentifierClause> ();
+		}
+
+		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
+		{
+			// If there were another token type that supports protection
+			// and does not require X509, it should be used instead ...
+			requirement.TokenType = "urn:my";
 		}
 	}
 }

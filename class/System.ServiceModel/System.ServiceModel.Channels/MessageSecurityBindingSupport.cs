@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005-2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -39,6 +39,33 @@ using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenReq
 
 namespace System.ServiceModel.Channels
 {
+	internal class SupportingTokenInfo
+	{
+		public SupportingTokenInfo (SecurityToken token,
+			SecurityTokenAttachmentMode mode,
+			bool isOptional)
+		{
+			Token = token;
+			Mode = mode;
+			IsOptional = isOptional;
+		}
+
+		public SecurityToken Token;
+		public SecurityTokenAttachmentMode Mode;
+		public bool IsOptional;
+	}
+
+	internal class SupportingTokenInfoCollection : Collection<SupportingTokenInfo>
+	{
+		protected override void InsertItem (int index, SupportingTokenInfo item)
+		{
+			foreach (SupportingTokenInfo i in this)
+				if (i.Token.GetType () == item.Token.GetType ())
+					throw new ArgumentException (String.Format ("Supporting tokens do not allow multiple SecurityTokens of the same type: {0}", i.Token.GetType ()));
+			base.InsertItem (index, item);
+		}
+	}
+
 	internal abstract class MessageSecurityBindingSupport
 	{
 		SecurityTokenManager manager;
@@ -231,6 +258,41 @@ namespace System.ServiceModel.Channels
 			encryption_token = null;
 
 			this.listener = null;
+		}
+
+		public SupportingTokenInfoCollection CollectInitiatorSupportingTokens (
+			string action,
+			EndpointAddress to)
+		{
+			SupportingTokenInfoCollection tokens =
+				new SupportingTokenInfoCollection ();
+
+			SupportingTokenParameters supp;
+
+			CollectInitiatorSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, to, true);
+			if (!Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectInitiatorSupportingTokensCore (tokens, supp, to, true);
+			CollectInitiatorSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, to, false);
+			if (!Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectInitiatorSupportingTokensCore (tokens, supp, to, false);
+
+			return tokens;
+		}
+
+		void CollectInitiatorSupportingTokensCore (
+			SupportingTokenInfoCollection l,
+			SupportingTokenParameters s,
+			EndpointAddress to,
+			bool required)
+		{
+			foreach (SecurityTokenParameters p in s.Signed)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.Signed, required));
+			foreach (SecurityTokenParameters p in s.Endorsing)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.Endorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEndorsing)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEncrypted)
+				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
 		}
 
 		SecurityToken GetSigningToken (Uri listenUri, SecurityTokenParameters targetParams)

@@ -1,3 +1,9 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentials.cs, ServiceCredentials.cs : Clone() throws
+	  NotImplementedException when it returns an instance of different
+	  type.
+
 2006-12-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceMetadataExtension.cs : raising an NIE than returning null

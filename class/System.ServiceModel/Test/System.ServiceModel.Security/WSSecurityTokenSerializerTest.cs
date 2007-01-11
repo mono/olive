@@ -355,7 +355,6 @@ DBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
 				SecurityToken token = serializer.ReadToken (xr, null);
-				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
 			}
 		}
 
@@ -367,9 +366,7 @@ DBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
-				SecurityToken token = serializer.ReadToken (xr,
-					SecurityTokenResolver.CreateDefaultSecurityTokenResolver (new ReadOnlyCollection<SecurityToken> (new SecurityToken [0]), false));
-				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
+				SecurityToken token = serializer.ReadToken (xr, GetResolver ());
 			}
 		}
 
@@ -381,7 +378,30 @@ DBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
 				SecurityToken token = serializer.ReadToken (xr,
-					new MyResolver ());
+					GetResolver (new X509SecurityToken (cert, "uuid:urn:abc")));
+				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
+			}
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void ReadSecurityContextSecurityTokenNoRegisteredToken ()
+		{
+			try {
+				ReadSecurityContextSecurityTokenNoRegisteredTokenCore ();
+				Assert.Fail ("Exception expected.");
+			} catch (SecurityTokenException) {
+			}
+		}
+
+		void ReadSecurityContextSecurityTokenNoRegisteredTokenCore ()
+		{
+			string xml = "<c:SecurityContextToken u:Id=\"urn:securitycontext:1\" xmlns:u=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd\" xmlns:c=\"http://schemas.xmlsoap.org/ws/2005/02/sc\"><c:Identifier>urn:unique-id:securitycontext:1</c:Identifier></c:SecurityContextToken>";
+
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				SecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert, "urn:unique-id:securitycontext:1")));
 				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
 			}
 		}

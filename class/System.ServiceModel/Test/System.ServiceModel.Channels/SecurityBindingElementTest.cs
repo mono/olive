@@ -408,7 +408,32 @@ namespace MonoTests.System.ServiceModel.Channels
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
 		[Category ("NotWorking")]
-		public void CheckDuplicateAuthenticatorTypes ()
+		public void CheckDuplicateAuthenticatorTypesClient ()
+		{
+			SymmetricSecurityBindingElement be =
+				new SymmetricSecurityBindingElement ();
+			be.ProtectionTokenParameters =
+				new X509SecurityTokenParameters ();
+			be.EndpointSupportingTokenParameters.Endorsing.Add (
+				new X509SecurityTokenParameters ());
+			// This causes multiple supporting token authenticator
+			// of the same type.
+			be.OptionalEndpointSupportingTokenParameters.Endorsing.Add (
+				new X509SecurityTokenParameters ());
+			Binding b = new CustomBinding (be, new HttpTransportBindingElement ());
+			ClientCredentials cred = new ClientCredentials ();
+			cred.ClientCertificate.Certificate =
+				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			IChannelFactory<IReplyChannel> ch = b.BuildChannelFactory<IReplyChannel> (new Uri ("http://localhost:37564"), cred);
+			ch.Open ();
+			// in case Open() failed to raise an error...
+			ch.Close ();
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		[Category ("NotWorking")]
+		public void CheckDuplicateAuthenticatorTypesService ()
 		{
 			SymmetricSecurityBindingElement be =
 				new SymmetricSecurityBindingElement ();
@@ -428,6 +453,24 @@ namespace MonoTests.System.ServiceModel.Channels
 			ch.Open ();
 			// in case Open() failed to raise an error...
 			ch.Close ();
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void NonEndorsibleParameterInEndorsingSupport ()
+		{
+			SymmetricSecurityBindingElement be =
+				new SymmetricSecurityBindingElement ();
+			be.ProtectionTokenParameters =
+				new X509SecurityTokenParameters ();
+			be.EndpointSupportingTokenParameters.Endorsing.Add (
+				new UserNameSecurityTokenParameters ());
+			Binding b = new CustomBinding (be, new HttpTransportBindingElement ());
+			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			EndpointAddress ea = new EndpointAddress (new Uri ("http://localhost:37564"), new X509CertificateEndpointIdentity (cert));
+			CalcProxy client = new CalcProxy (b, ea);
+			client.ClientCredentials.UserName.UserName = "rupert";
+			client.Sum (1, 2);
 		}
 	}
 }

@@ -1,3 +1,8 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsSecurityTokenManagerTest.cs : added custom token
+	  classes and non-finished test. Added Clone() test.
+
 2006-12-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceHostTest.cs : added test for ServiceMetadataBehavior

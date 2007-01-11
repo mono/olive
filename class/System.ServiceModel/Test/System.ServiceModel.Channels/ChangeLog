@@ -1,3 +1,10 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AsymmetricSecurityBindingElement.cs, CalcSampleProxy.cs : moved
+	  sample proxy type to new file.
+	* SecurityBindingElementTest.cs : some tests for
+	  SupportingTokenParameters.
+
 2006-12-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* InterceptorBindingElement.cs : new utility binding element for
