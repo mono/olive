@@ -1,5 +1,5 @@
 //
-// X509ThumbprintKeyIdentifierClause.cs
+// X509ThumbprintKeyIdentifierClauseTest.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
@@ -26,44 +26,32 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections.Generic;
-using System.Security.Cryptography.X509Certificates;
 using System.IdentityModel.Claims;
+using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
+using System.Security.Cryptography.X509Certificates;
+using System.Xml;
+using NUnit.Framework;
 
-namespace System.IdentityModel.Tokens
+namespace MonoTests.System.IdentityModel.Selectors
 {
-	public class X509ThumbprintKeyIdentifierClause : BinaryKeyIdentifierClause
+	[TestFixture]
+	public class X509ThumbprintKeyIdentifierClauseTest
 	{
-		public X509ThumbprintKeyIdentifierClause (byte [] certificateThumbprint)
-			: base (null, certificateThumbprint, true)
-		{
-			thumbprint = Convert.ToBase64String (certificateThumbprint);
-		}
+		static readonly X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+		static readonly X509Certificate2 cert2 = new X509Certificate2 ("Test/Resources/test2.pfx", "mono");
 
-		public X509ThumbprintKeyIdentifierClause (X509Certificate2 certificate)
-			: base (null, certificate.GetCertHash (), true)
+		[Test]
+		public void Properties ()
 		{
-			thumbprint = certificate.Thumbprint;
-		}
+			X509ThumbprintKeyIdentifierClause ic =
+				new X509ThumbprintKeyIdentifierClause (cert);
+			Assert.AreEqual (cert.GetCertHash (), ic.GetX509Thumbprint (), "#1-1");
+			Assert.AreEqual (null, ic.ClauseType, "#1-2");
 
-		string thumbprint;
-
-		public byte [] GetX509Thumbprint ()
-		{
-			return GetBuffer ();
-		}
-
-		public bool Matches (X509Certificate2 certificate)
-		{
-			if (certificate == null)
-				throw new ArgumentNullException ("certificate");
-			return thumbprint == certificate.Thumbprint;
-		}
-
-		[MonoTODO]
-		public override string ToString ()
-		{
-			return base.ToString ();
+			ic = new X509SecurityToken (cert).CreateKeyIdentifierClause<X509ThumbprintKeyIdentifierClause> ();
+			Assert.AreEqual (cert.GetCertHash (), ic.GetX509Thumbprint (), "#2-1");
+			Assert.AreEqual (null, ic.ClauseType, "#2-2");
 		}
 	}
 }

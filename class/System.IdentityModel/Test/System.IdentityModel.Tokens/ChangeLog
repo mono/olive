@@ -1,3 +1,8 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509IssuerSerialKeyIdentifierClauseTest.cs : test ClauseType.
+	* X509ThumbprintKeyIdentifierClauseTest.cs : new test.
+
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509IssuerSerialKeyIdentifierClauseTest.cs : new test.

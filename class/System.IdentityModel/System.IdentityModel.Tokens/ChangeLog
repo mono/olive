@@ -1,3 +1,8 @@
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509IssuerSerialKeyIdentifierClause.cs,
+	  X509ThumbprintKeyIdentifierClause.cs : clause type is null.
+
 2006-12-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509IssuerSerialKeyIdentifierClause.cs : IssuerSerialNumber is a

@@ -32,3 +32,4 @@ System.IdentityModel.Tokens/UserNameSecurityTokenTest.cs
 System.IdentityModel.Tokens/X509AsymmetricSecurityKeyTest.cs
 System.IdentityModel.Tokens/X509IssuerSerialKeyIdentifierClauseTest.cs
 System.IdentityModel.Tokens/X509SecurityTokenTest.cs
+System.IdentityModel.Tokens/X509ThumbprintKeyIdentifierClauseTest.cs

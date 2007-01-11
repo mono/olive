@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
@@ -47,6 +48,7 @@ namespace MonoTests.System.IdentityModel.Selectors
 				new X509IssuerSerialKeyIdentifierClause (cert);
 			Assert.AreEqual ("CN=Mono Test Root Agency", ic.IssuerName, "#1");
 			Assert.AreEqual ("22491767666218099257720700881460366085", ic.IssuerSerialNumber, "#2");
+			Assert.AreEqual (null, ic.ClauseType, "#3");
 		}
 	}
 }
