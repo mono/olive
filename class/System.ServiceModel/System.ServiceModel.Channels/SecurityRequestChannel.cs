@@ -130,10 +130,7 @@ namespace System.ServiceModel.Channels
 
 		Message SecureMessage (Message msg)
 		{
-			return MessageSecurityUtility.SecureMessage (
-				msg,
-				security,
-				RemoteAddress);
+			return new InitiatorMessageSecurityGenerator (msg, security, RemoteAddress).SecureMessage ();
 		}
 
 		Message ProcessReply (Message message)

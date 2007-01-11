@@ -123,10 +123,7 @@ namespace System.ServiceModel.Channels
 
 		Message SecureMessage (Message msg)
 		{
-			return MessageSecurityUtility.SecureMessage (
-				msg,
-				security,
-				RemoteAddress);
+			return new InitiatorMessageSecurityGenerator (msg, security, RemoteAddress).SecureMessage ();
 		}
 
 		void AcquireSecurityKey (object o, EventArgs e)

@@ -1,5 +1,13 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityUtility.cs, SecureMessageGenerator.cs :
+	  split encryptor part in the former file into latter file, and
+	  make it nonstatic.
+	* SecurityRequestChannel.cs, SecurityOutputChannel.cs,
+	  SecurityRequestContext.cs : apply the change above.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityBindingSupport.cs :
 	  Fixed incorrect TrgGetValue() use.
 	  Added CollectRecipientSupportingTokens().

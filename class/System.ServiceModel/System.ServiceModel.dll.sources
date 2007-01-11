@@ -163,6 +163,7 @@ System.ServiceModel.Channels/ReliableSessionBindingElementImporter.cs
 System.ServiceModel.Channels/ReplyChannelBase.cs
 System.ServiceModel.Channels/RequestChannelBase.cs
 System.ServiceModel.Channels/RequestContext.cs
+System.ServiceModel.Channels/SecureMessageGenerator.cs
 System.ServiceModel.Channels/SecurityBindingElement.cs
 System.ServiceModel.Channels/SecurityBindingElementImporter.cs
 System.ServiceModel.Channels/SecurityChannelFactory.cs

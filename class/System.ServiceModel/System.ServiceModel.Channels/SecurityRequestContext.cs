@@ -109,11 +109,7 @@ namespace System.ServiceModel.Channels
 
 		Message SecureMessage (Message input)
 		{
-			return MessageSecurityUtility.SecureMessage (
-				input,
-				null,
-				security,
-				MessageDirection.Output);
+			return new RecipientMessageSecurityGenerator (input, security, channel.Source.Uri).SecureMessage ();
 		}
 	}
 }
