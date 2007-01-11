@@ -1,5 +1,9 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceCredentials.cs : oops.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ClientCredentials.cs, ServiceCredentials.cs : Clone() throws
 	  NotImplementedException when it returns an instance of different
 	  type.

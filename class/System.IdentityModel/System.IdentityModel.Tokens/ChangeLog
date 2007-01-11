@@ -1,5 +1,10 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* X509IssuerSerialKeyIdentifierClause.cs : fixed previous change,
+	  and check null argument.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* X509IssuerSerialKeyIdentifierClause.cs,
 	  X509ThumbprintKeyIdentifierClause.cs : clause type is null.
 

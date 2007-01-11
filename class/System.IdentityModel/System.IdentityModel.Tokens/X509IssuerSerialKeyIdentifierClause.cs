@@ -53,8 +53,12 @@ namespace System.IdentityModel.Tokens
 		}
 
 		public X509IssuerSerialKeyIdentifierClause (X509Certificate2 certificate)
-			: this (null, ToDecimalString (certificate.SerialNumber))
+			: base (null)
 		{
+			if (certificate == null)
+				throw new ArgumentNullException ("certificate");
+			name = certificate.IssuerName.Name;
+			serial = ToDecimalString (certificate.SerialNumber);
 		}
 
 		public X509IssuerSerialKeyIdentifierClause (string issuerName, string issuerSerialNumber)

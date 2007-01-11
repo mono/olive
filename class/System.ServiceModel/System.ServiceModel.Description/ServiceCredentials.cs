@@ -95,7 +95,7 @@ namespace System.ServiceModel.Description
 
 		public ServiceCredentials Clone ()
 		{
-			ClientCredentials ret = CloneCore ();
+			ServiceCredentials ret = CloneCore ();
 			if (ret.GetType () != GetType ())
 				throw new NotImplementedException ("CloneCore() must be implemented to return an instance of the same type in this custom ServiceCredentials type.");
 			return ret;
