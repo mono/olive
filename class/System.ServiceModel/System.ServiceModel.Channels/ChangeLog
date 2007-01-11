@@ -1,5 +1,15 @@
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs : encryption parts should exist too.
+	* AsymmetricSecurityBindingElement.cs
+	  SymmetricSecurityBindingElement.cs,
+	  MessageSecurityBindingSupport.cs : some refactoring.
+	  Split MessageSecurityBindingSupport into security binding element
+	  specific parts and made MessageSecurityBindingSupport concrete.
+	  It is likely split again, next time based on initiator/recipient.
+
+2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityUtility.cs, SecureMessageGenerator.cs :
 	  split encryptor part in the former file into latter file, and
 	  make it nonstatic.

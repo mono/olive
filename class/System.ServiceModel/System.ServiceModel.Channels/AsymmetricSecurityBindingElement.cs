@@ -140,7 +140,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelFactory<TChannel> (
-				context.BuildInnerChannelFactory<TChannel> (), new AsymmetricSecurityBindingSupport (this, manager, requirements));
+				context.BuildInnerChannelFactory<TChannel> (), new MessageSecurityBindingSupport (this, manager, requirements));
 		}
 
 		[MonoTODO]
@@ -165,7 +165,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelListener<TChannel> (
-				context.BuildInnerChannelListener<TChannel> (), new AsymmetricSecurityBindingSupport (this, manager, requirements));
+				context.BuildInnerChannelListener<TChannel> (), new MessageSecurityBindingSupport (this, manager, requirements));
 		}
 
 		public override BindingElement Clone ()

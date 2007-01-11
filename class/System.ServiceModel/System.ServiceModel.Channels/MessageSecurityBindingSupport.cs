@@ -66,7 +66,7 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	internal abstract class MessageSecurityBindingSupport
+	internal class MessageSecurityBindingSupport
 	{
 		SecurityTokenManager manager;
 		ChannelProtectionRequirements requirements;
@@ -79,9 +79,27 @@ namespace System.ServiceModel.Channels
 		SecurityTokenResolver auth_token_resolver;
 		ChannelFactoryBase factory; // only for client
 		ChannelListenerBase listener; // only for service
+		SecurityBindingElementSupport element_support;
 
-		protected MessageSecurityBindingSupport (
+		public MessageSecurityBindingSupport (
+			AsymmetricSecurityBindingElement element,
 			SecurityTokenManager manager,
+			ChannelProtectionRequirements requirements)
+		{
+			element_support = new AsymmetricSecurityBindingElementSupport (element);
+			Initialize (manager, requirements);
+		}
+
+		public MessageSecurityBindingSupport (
+			SymmetricSecurityBindingElement element,
+			SecurityTokenManager manager,
+			ChannelProtectionRequirements requirements)
+		{
+			element_support = new SymmetricSecurityBindingElementSupport (element);
+			Initialize (manager, requirements);
+		}
+
+		public void Initialize (SecurityTokenManager manager,
 			ChannelProtectionRequirements requirements)
 		{
 			this.manager = manager;
@@ -122,14 +140,37 @@ namespace System.ServiceModel.Channels
 			get { return signing_token; }
 		}
 
-		public abstract SecurityBindingElement Element { get; }
-		public abstract bool AllowSerializedSigningTokenOnReply { get; }
-		public abstract MessageProtectionOrder MessageProtectionOrder { get; }
-		public abstract SecurityTokenParameters InitiatorParameters { get; }
-		public abstract SecurityTokenParameters RecipientParameters { get; }
-		public abstract bool RequireSignatureConfirmation { get; }
+		#region element_support
 
-		public abstract string DefaultSignatureAlgorithm { get; }
+		public SecurityBindingElement Element {
+			get { return element_support.Element; }
+		}
+
+		public bool AllowSerializedSigningTokenOnReply {
+			get { return element_support.AllowSerializedSigningTokenOnReply; }
+		}
+
+		public MessageProtectionOrder MessageProtectionOrder { 
+			get { return element_support.MessageProtectionOrder; }
+		}
+
+		public SecurityTokenParameters InitiatorParameters { 
+			get { return element_support.InitiatorParameters; }
+		}
+
+		public SecurityTokenParameters RecipientParameters { 
+			get { return element_support.RecipientParameters; }
+		}
+
+		public bool RequireSignatureConfirmation {
+			get { return element_support.RequireSignatureConfirmation; }
+		}
+
+		public string DefaultSignatureAlgorithm {
+			get { return element_support.DefaultSignatureAlgorithm; }
+		}
+
+		#endregion
 
 		public SecurityTokenProvider CreateTokenProvider (SecurityTokenRequirement requirement)
 		{
@@ -381,17 +422,29 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	// concrete implementations
+	internal abstract class SecurityBindingElementSupport
+	{
+		public abstract SecurityBindingElement Element { get; }
 
-	internal class SymmetricSecurityBindingSupport : MessageSecurityBindingSupport
+		public abstract bool AllowSerializedSigningTokenOnReply { get; }
+
+		public abstract MessageProtectionOrder MessageProtectionOrder { get; }
+
+		public abstract SecurityTokenParameters InitiatorParameters { get; }
+
+		public abstract SecurityTokenParameters RecipientParameters { get; }
+
+		public abstract bool RequireSignatureConfirmation { get; }
+
+		public abstract string DefaultSignatureAlgorithm { get; }
+	}
+
+	internal class SymmetricSecurityBindingElementSupport : SecurityBindingElementSupport
 	{
 		SymmetricSecurityBindingElement element;
 
-		public SymmetricSecurityBindingSupport (
-			SymmetricSecurityBindingElement element,
-			SecurityTokenManager manager,
-			ChannelProtectionRequirements requirements)
-			: base (manager, requirements)
+		public SymmetricSecurityBindingElementSupport (
+			SymmetricSecurityBindingElement element)
 		{
 			this.element = element;
 		}
@@ -426,15 +479,12 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	internal class AsymmetricSecurityBindingSupport : MessageSecurityBindingSupport
+	internal class AsymmetricSecurityBindingElementSupport : SecurityBindingElementSupport
 	{
 		AsymmetricSecurityBindingElement element;
 
-		public AsymmetricSecurityBindingSupport (
-			AsymmetricSecurityBindingElement element,
-			SecurityTokenManager manager,
-			ChannelProtectionRequirements requirements)
-			: base (manager, requirements)
+		public AsymmetricSecurityBindingElementSupport (
+			AsymmetricSecurityBindingElement element)
 		{
 			this.element = element;
 		}

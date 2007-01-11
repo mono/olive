@@ -97,8 +97,12 @@ namespace System.ServiceModel.Channels
 			throw new Exception ("Internal Error: should not happen.");
 		}
 
-		public override ScopedMessagePartSpecification MessageParts { 
+		public override ScopedMessagePartSpecification SignatureParts { 
 			get { return Security.ChannelRequirements.IncomingSignatureParts; }
+		}
+
+		public override ScopedMessagePartSpecification EncryptionParts { 
+			get { return Security.ChannelRequirements.IncomingEncryptionParts; }
 		}
 
 		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
@@ -142,8 +146,12 @@ namespace System.ServiceModel.Channels
 			throw new Exception ("Internal Error: should not happen.");
 		}
 
-		public override ScopedMessagePartSpecification MessageParts { 
+		public override ScopedMessagePartSpecification SignatureParts { 
 			get { return Security.ChannelRequirements.OutgoingSignatureParts; }
+		}
+
+		public override ScopedMessagePartSpecification EncryptionParts { 
+			get { return Security.ChannelRequirements.OutgoingEncryptionParts; }
 		}
 
 		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
@@ -176,7 +184,27 @@ namespace System.ServiceModel.Channels
 
 		public abstract EndpointAddress MessageTo { get; }
 
-		public abstract ScopedMessagePartSpecification MessageParts { get; }
+		public abstract ScopedMessagePartSpecification SignatureParts { get; }
+
+		public abstract ScopedMessagePartSpecification EncryptionParts { get; }
+
+		public MessagePartSpecification SignaturePart {
+			get {
+				MessagePartSpecification spec;
+				if (!SignatureParts.TryGetParts (GetAction (), false, out spec))
+					spec = SignatureParts.ChannelParts;
+				return spec;
+			}
+		}
+
+		public MessagePartSpecification EncryptionPart {
+			get {
+				MessagePartSpecification spec;
+				if (!EncryptionParts.TryGetParts (GetAction (), false, out spec))
+					spec = EncryptionParts.ChannelParts;
+				return spec;
+			}
+		}
 
 		public abstract SupportingTokenInfoCollection CollectInitiatorSupportingTokens ();
 
@@ -200,7 +228,6 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
-			ScopedMessagePartSpecification spec = MessageParts;
 			// FIXME: is it correct? anyways we need to encrypt parts based on supporting tokens too.
 			SecurityTokenParameters securingParams =
 				Direction == MessageDirection.Input ?
@@ -279,9 +306,7 @@ namespace System.ServiceModel.Channels
 			case MessageProtectionOrder.SignBeforeEncrypt:
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
-				MessagePartSpecification sigSpec;
-				if (!spec.TryGetParts (GetAction (), false, out sigSpec))
-					sigSpec = spec.ChannelParts;
+				MessagePartSpecification sigSpec = SignaturePart;
 
 				// encryption key (possibly also used for signing)
 				// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
