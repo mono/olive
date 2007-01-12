@@ -1,5 +1,13 @@
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityVersion.cs, Constants.cs :
+	  Use constants in MessageSecurityTokenVersion.
+	* ClientCredentialsSecurityTokenManager.cs :
+	  CreateSecurityTokenSerializer() should consider securityVersion
+	  and emitBspRequiredAttributes based on SecurityTokenVersion.
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Constants.cs : added WSSEncryptedKeyToken.
 
 2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>

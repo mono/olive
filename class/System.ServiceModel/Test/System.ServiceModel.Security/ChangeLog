@@ -1,5 +1,10 @@
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityTokenSerializerTest.cs : added some tests for 
+	  EmitBspRequiredAttributes.
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityTokenSerializerTest.cs : added somewhat wrong test for
 	  serialization for LocalIdKeyIdentifierClause with OwnerType.
 

@@ -1,5 +1,14 @@
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  CreateSecurityTokenSerializer() should consider securityVersion
+	  and emitBspRequiredAttributes based on SecurityTokenVersion.
+	* WSSecurityTokenSerializer.cs : EmitBspRequiredAttributes is the
+	  magic key to determine to output some attributes or not.
+	  Added CreateKeyIdentifierClauseFromTokenXml() stub.
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityTokenSerializer.cs : handle WrappedKeySecurityToken in
 	  GetTokenTypeUri().
 

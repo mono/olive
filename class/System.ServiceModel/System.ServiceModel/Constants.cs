@@ -33,6 +33,8 @@ namespace System.ServiceModel
 	{
 		public const string WSA1 = "http://www.w3.org/2005/08/addressing";
 
+		public const string WSBasicSecurityProfileCore1 = "http://ws-i.org/profiles/basic-security/core/1.0";
+
 		public const string WsaAnonymousUri = "http://www.w3.org/2005/08/addressing/anonymous";
 
 		public const string MSSerialization = "http://schemas.microsoft.com/2003/10/Serialization/";
@@ -57,6 +59,7 @@ namespace System.ServiceModel
 
 		public const string WstNamespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
 		public const string WssNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+		public const string Wss11Namespace = "http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd";
 		public const string WspNamespace = "http://schemas.xmlsoap.org/ws/2004/09/policy";
 		public const string WsaNamespace = "http://www.w3.org/2005/08/addressing";
 		public const string WsuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";

@@ -245,10 +245,23 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		[ExpectedException (typeof (InvalidOperationException))]
 		public void WriteX509ThumbprintKeyIdentifierClause2 ()
 		{
+			// WS-Security1.0 x thumbprint = death
 			using (XmlWriter w = XmlWriter.Create (TextWriter.Null)) {
 				new WSSecurityTokenSerializer (SecurityVersion.WSSecurity10)
 					.WriteKeyIdentifierClause (w, new X509ThumbprintKeyIdentifierClause (cert));
 			}
+		}
+
+		[Test]
+		public void WriteX509ThumbprintKeyIdentifierClause3 ()
+		{
+			// EmitBspRequiredAttributes
+			StringWriter sw = new StringWriter ();
+			X509ThumbprintKeyIdentifierClause ic = new X509ThumbprintKeyIdentifierClause (cert);
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				new WSSecurityTokenSerializer (true).WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:KeyIdentifier ValueType=\"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1\" EncodingType=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary\">GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier></o:SecurityTokenReference>", sw.ToString ());
 		}
 
 		[Test]
@@ -296,7 +309,6 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
-		[Category ("NotWorking")] // I believe it should output ValueType attribute, but .net does not.
 		public void WriteLocalIdKeyIdentifierClause3 ()
 		{
 			StringWriter sw = new StringWriter ();
@@ -305,6 +317,17 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
 			}
 			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference URI=\"#urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+		}
+
+		[Test]
+		public void WriteLocalIdKeyIdentifierClause4 () // EmitBsp
+		{
+			StringWriter sw = new StringWriter ();
+			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("urn:myIDValue", typeof (WrappedKeySecurityToken));
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				new WSSecurityTokenSerializer (true).WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference ValueType=\"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey\" URI=\"#urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#1");
 		}
 
 		[Test]

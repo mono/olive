@@ -48,21 +48,21 @@ namespace System.ServiceModel
 			static MessageSecurityTokenVersion ()
 			{
 				specs10_profile_source = new string [] {
-					"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd",
-					"http://schemas.xmlsoap.org/ws/2005/02/trust",
-					"http://schemas.xmlsoap.org/ws/2005/02/sc",
-					"http://ws-i.org/profiles/basic-security/core/1.0",
+					Constants.WssNamespace,
+					Constants.WstNamespace,
+					Constants.WsscNamespace,
+					Constants.WSBasicSecurityProfileCore1,
 					};
 				specs11_source = new string [] {
-					"http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd",
-					"http://schemas.xmlsoap.org/ws/2005/02/trust",
-					"http://schemas.xmlsoap.org/ws/2005/02/sc",
+					Constants.Wss11Namespace,
+					Constants.WstNamespace,
+					Constants.WsscNamespace,
 					};
 				specs11_profile_source = new string [] {
-					"http://docs.oasis-open.org/wss/oasis-wss-wssecurity-secext-1.1.xsd",
-					"http://schemas.xmlsoap.org/ws/2005/02/trust",
-					"http://schemas.xmlsoap.org/ws/2005/02/sc",
-					"http://ws-i.org/profiles/basic-security/core/1.0",
+					Constants.Wss11Namespace,
+					Constants.WstNamespace,
+					Constants.WsscNamespace,
+					Constants.WSBasicSecurityProfileCore1,
 					};
 
 				wss10basic = new MessageSecurityTokenVersion (false, true);

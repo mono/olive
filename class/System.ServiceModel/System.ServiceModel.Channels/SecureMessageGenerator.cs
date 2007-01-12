@@ -312,7 +312,7 @@ namespace System.ServiceModel.Channels
 			if (initiatorParams.RequireDerivedKeys) {
 				// FIXME: it should replace aes
 				RijndaelManaged deriv = new RijndaelManaged ();
-				deriv.KeySize = 128;
+				deriv.KeySize = 192;
 				deriv.Mode = CipherMode.CBC;
 				deriv.Padding = PaddingMode.ISO10126;
 				deriv.GenerateKey ();
@@ -321,9 +321,6 @@ namespace System.ServiceModel.Channels
 				derivedKey.Offset = 0;
 				derivedKey.Nonce = deriv.Key;
 				derivedKey.Length = derivedKey.Nonce.Length;
-				if (ekey != null)
-					derivedKey.SecurityTokenReference =
-						new LocalIdKeyIdentifierClause (encToken.Id);
 				derivedKeys.Add (derivedKey);
 			}
 
@@ -334,6 +331,10 @@ namespace System.ServiceModel.Channels
 				suite.DefaultAsymmetricKeyWrapAlgorithm,
 				encToken,
 				new SecurityKeyIdentifier (encClause));
+
+			if (derivedKey != null)
+				derivedKey.SecurityTokenReference =
+					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
 			SecurityKeyIdentifierClause ekeyClause =
 				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
@@ -346,7 +347,7 @@ namespace System.ServiceModel.Channels
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
 				// sign
-				SignedXml sxml = new SignedXml (doc);
+				SignedXml sxml = new SignedXml ();
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
@@ -426,13 +427,13 @@ namespace System.ServiceModel.Channels
 			foreach (WsscDerivedKeyToken dk in derivedKeys)
 				header.Contents.Add (dk);
 
+			if (encRefList != null)
+				header.Contents.Add (encRefList);
+
 			if (sigenc != null)
 				header.Contents.Add (sigenc);
 			else if (sig != null)
 				header.Contents.Add (sig);
-
-			if (encRefList != null)
-				header.Contents.Add (encRefList);
 
 			return ret;
 		}

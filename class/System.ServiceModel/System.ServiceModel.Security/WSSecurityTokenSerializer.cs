@@ -122,7 +122,6 @@ namespace System.ServiceModel.Security
 			get { return SecurityVersion == SecurityVersion.WSSecurity10; }
 		}
 
-		[MonoTODO]
 		public bool EmitBspRequiredAttributes {
 			get { return emit_bsp; }
 		}
@@ -201,6 +200,13 @@ namespace System.ServiceModel.Security
 				break;
 			}
 			return false;
+		}
+
+		[MonoTODO]
+		public SecurityKeyIdentifierClause CreateKeyIdentifierClauseFromTokenXml (
+			XmlElement tokenXml, SecurityTokenReferenceStyle referenceStyle)
+		{
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
@@ -419,8 +425,8 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
 			w.WriteAttributeString ("ValueType", Constants.WssX509ThumbptintValueType);
-			// FIXME: in some cases it seems to write this attribute...
-			//w.WriteAttributeString ("EncodingType", Constants.WssBase64BinaryEncodingType);
+			if (EmitBspRequiredAttributes)
+				w.WriteAttributeString ("EncodingType", Constants.WssBase64BinaryEncodingType);
 			w.WriteString (Convert.ToBase64String (ic.GetX509Thumbprint ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();
@@ -431,9 +437,11 @@ namespace System.ServiceModel.Security
 		{
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "Reference", Constants.WssNamespace);
-			string valueType = ic.OwnerType != null ? GetTokenTypeUri (ic.OwnerType) : null;
-			if (valueType != null)
-				w.WriteAttributeString ("ValueType", valueType);
+			if (EmitBspRequiredAttributes && ic.OwnerType != null) {
+				string vt = GetTokenTypeUri (ic.OwnerType);
+				if (vt != null)
+					w.WriteAttributeString ("ValueType", vt);
+			}
 			w.WriteAttributeString ("URI", "#" + ic.LocalId);
 			w.WriteEndElement ();
 			w.WriteEndElement ();

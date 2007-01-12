@@ -1,5 +1,12 @@
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs : fixed derived keysize. derived key was
+	  causing NRE due to the lack of token reference.
+	  No need to pass doc to SignedXml.ctor() anymore.
+	  Moved ReferenceList before the signature(s).
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : add wsu:Timestamp to signing target.
 	  Moved signing key generation code to non-HMACSHA1 signing part.
 	  Don't try to sign wss:Security.

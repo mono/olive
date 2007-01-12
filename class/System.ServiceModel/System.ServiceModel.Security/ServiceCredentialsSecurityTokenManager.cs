@@ -254,10 +254,14 @@ namespace System.ServiceModel.Security
 
 		#endregion
 
-		[MonoTODO]
 		public override SecurityTokenSerializer CreateSecurityTokenSerializer (SecurityTokenVersion version)
 		{
-			return new WSSecurityTokenSerializer (SecurityVersion.WSSecurity11);
+			bool bsp = version.GetSecuritySpecifications ().Contains (Constants.WSBasicSecurityProfileCore1);
+			SecurityVersion ver =
+				version.GetSecuritySpecifications ().Contains (Constants.Wss11Namespace) ?
+				SecurityVersion.WSSecurity11 :
+				SecurityVersion.WSSecurity10;
+			return new WSSecurityTokenSerializer (ver, bsp);
 		}
 
 		protected bool IsIssuedSecurityTokenRequirement (
