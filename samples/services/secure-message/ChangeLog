@@ -1,3 +1,8 @@
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs, samplecli6.cs: be less restrictive (still does not
+	  interoperate).
+
 2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc6.cs, samplecli6.cs, Makefile: added almost identical

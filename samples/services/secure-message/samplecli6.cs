@@ -38,14 +38,15 @@ public class Tset
 	{
 		SymmetricSecurityBindingElement sbe =
 			new SymmetricSecurityBindingElement ();
-		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11BasicSecurityProfile10;
+		sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
+		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
 		sbe.RequireSignatureConfirmation = true;
 		//sbe.IncludeTimestamp = false;
 
 		X509SecurityTokenParameters p =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.IssuerSerial, SecurityTokenInclusionMode.AlwaysToRecipient);
 		p.RequireDerivedKeys = false;
-		sbe.EndpointSupportingTokenParameters.Endorsing.Add (p);
+		//sbe.EndpointSupportingTokenParameters.Endorsing.Add (p);
 		sbe.ProtectionTokenParameters =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);
 		sbe.SetKeyDerivation (false);
