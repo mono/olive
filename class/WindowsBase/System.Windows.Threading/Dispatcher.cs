@@ -58,18 +58,23 @@ namespace System.Windows.Threading {
 		static Dictionary<Thread, Dispatcher> dispatchers = new Dictionary<Thread, Dispatcher> ();
 		static object olock = new object ();
 		static DispatcherFrame main_execution_frame = new DispatcherFrame ();
-		
+
+		const int TOP_PRIO = (int)DispatcherPriority.Send;
 		Thread base_thread;
-		Queue [] priority_queues = new Queue [(int)DispatcherPriority.Send];
+		Queue [] priority_queues = new Queue [TOP_PRIO];
 
 		Flags flags;
-		int events;
+		int queue_bits;
+		EventWaitHandle wait;
+		Queue async_tasks;
 		
 		Dispatcher (Thread t)
 		{
 			base_thread = t;
 			for (int i = 1; i < (int) DispatcherPriority.Send; i++)
 				priority_queues [i] = new Queue ();
+			wait = new EventWaitHandle (false, EventResetMode.AutoReset);
+			async_tasks = new Queue ();
 		}
 
 		public bool CheckAccess ()
@@ -133,8 +138,20 @@ namespace System.Windows.Threading {
 
 		void Queue (DispatcherPriority priority, object x)
 		{
-			priority_queues [(int) priority].Enqueue (x);
-			Interlocked.Increment (ref events);
+			int p = ((int) priority)-TOP_PRIO;
+			Queue q = priority_queues [p];
+			int flag = 1 << p;
+			q.Enqueue (x);
+			queue_bits |= flag;
+		}
+
+		void QueueAsync (DispatcherPriority priority, object x)
+		{
+			lock (async_tasks){
+				async_tasks.Enqueue (priority);
+				async_tasks.Enqueue (x);
+			}
+			wait.Reset ();
 		}
 		
 		public static Dispatcher CurrentDispatcher {
@@ -213,25 +230,26 @@ namespace System.Windows.Threading {
 		{
 			bool done = false;
 			do {
-				//
-				// FIXME: instead of going top to bottom, we should
-				// actually keep a pointer on each iteration and maintain
-				// it, to always pick the highest-priority item.
-				//
-				for (int i = (int) DispatcherPriority.Send; i >= 1; i++){
-					Queue queue = priority_queues [i];
-
-					while (queue.Count != 0){
-						object x = queue.Dequeue ();
-						Interlocked.Decrement (ref events);
-						InvokeTask (x);
+				while (queue_bits != 0){
+					for (int i = 0; i < TOP_PRIO; i++){
+						if ((queue_bits & (1 << i)) != 0){
+							object task;
+							
+							Queue q = priority_queues [i];
+							task = q.Dequeue ();
+							if (q.Count == 0)
+								queue_bits &= ~(1 << i);
+							InvokeTask (q);
+							break;
+						}
 					}
 				}
-				//
-				// TODO: add event handling, to avoid busy looping
-				//
-				// TODO: What about Shutdown?
-				//
+				wait.WaitOne ();
+				lock (async_tasks){
+					DispatcherPriority p = (DispatcherPriority) async_tasks.Dequeue ();
+					object task = async_tasks.Dequeue ();
+					Queue (p, task);
+				}
 			} while (frame.Continue);
 		}
 		
