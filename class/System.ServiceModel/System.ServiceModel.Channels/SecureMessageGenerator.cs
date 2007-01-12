@@ -243,9 +243,10 @@ namespace System.ServiceModel.Channels
 			// wss:Security
 			WSSecurityMessageHeader header =
 				new WSSecurityMessageHeader (serializer);
+			WsuTimestamp timestamp = null;
 			// wss:Security/wsu:Timestamp
 			if (element.IncludeTimestamp) {
-				WsuTimestamp timestamp = new WsuTimestamp ();
+				timestamp = new WsuTimestamp ();
 				timestamp.Id = messageId + "-" + identForMessageId++;
 				timestamp.Created = DateTime.Now;
 				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
@@ -345,37 +346,43 @@ namespace System.ServiceModel.Channels
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
 				// sign
-				SignedXml sxml = new SignedXml (body);
-
-				HMACSHA1 sigHash = null;
-				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
-					sigHash = new HMACSHA1 (aes.Key);
-				else {
-					// not sure if it is correct ...
-					SecurityKeyIdentifierClause signClause =
-						recipientParams.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? recipientParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
-					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
-					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
-				}
+				SignedXml sxml = new SignedXml (doc);
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
 				foreach (XmlNode n in doc.SelectNodes ("/s:Envelope/s:Header/*", nsmgr)) {
 					XmlElement el = n as XmlElement;
-					if (el == null)
+					if (el == null || el.LocalName == "Security" && el.NamespaceURI == Constants.WssNamespace)
 						continue;
 					if (sigSpec.HeaderTypes.Count == 0 ||
 					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (el.LocalName, el.NamespaceURI)))
-						sig.SignedInfo.AddReference (CreateReference (el, suite));
+						CreateReference (sig, el, suite);
 				}
 				if (sigSpec.IsBodyIncluded)
-					sig.SignedInfo.AddReference (CreateReference (body, suite));
+					CreateReference (sig, body, suite);
+				if (timestamp != null) {
+					XmlElement dummy = doc.CreateElement ("dummy");
+					using (XmlWriter w = dummy.CreateNavigator ().AppendChild ()) {
+						timestamp.WriteTo (w);
+					}
+					CreateReference (sig, dummy.FirstChild as XmlElement, suite);
+				}
 
-				if (sigHash != null)
-					sxml.ComputeSignature (sigHash);
-				else
+				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
+					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
+				else {
+					SecurityKeyIdentifierClause signClause =
+						recipientParams.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? recipientParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
+					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
+					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
 					sxml.ComputeSignature ();
+				}
+
+				// FIXME: It is kind of hack that it uses and
+				// clears temporary DataObjects.
+				sxml.Signature.ObjectList.Clear ();
+
 				sxml.KeyInfo = new KeyInfo ();
 				SecurityTokenReferenceKeyInfo sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
 				sxml.KeyInfo.AddClause (sigKeyInfo);
@@ -430,15 +437,33 @@ namespace System.ServiceModel.Channels
 			return ret;
 		}
 
-		Reference CreateReference (XmlElement el, SecurityAlgorithmSuite suite)
+		string GetId (XmlElement el)
 		{
-			string id = el.GetAttribute ("Id");
+			string id = el.GetAttribute ("Id", Constants.WsuNamespace);
+			if (id == String.Empty)
+				id = el.GetAttribute ("Id");
+			return id;
+		}
+
+		void CreateReference (Signature sig, XmlElement el, SecurityAlgorithmSuite suite)
+		{
+			string id = GetId (el);
 			if (id == String.Empty)
 				id = GenerateId (el.OwnerDocument);
 			Reference r = new Reference ("#" + id);
 			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
 			r.DigestMethod = suite.DefaultDigestAlgorithm;
-			return r;
+#if true
+			DataObject d = new DataObject ();
+			// FIXME: creating my own XmlNodeList would be much better
+			d.Data = el.SelectNodes (".");
+			d.Id = id;
+			sig.AddObject (d);
+#else
+			if (GetId (el) != id)
+				el.SetAttribute ("Id", id);
+#endif
+			sig.SignedInfo.AddReference (r);
 		}
 
 		Transform CreateTransform (string url)

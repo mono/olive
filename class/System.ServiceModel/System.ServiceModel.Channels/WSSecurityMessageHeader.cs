@@ -229,27 +229,12 @@ namespace System.ServiceModel.Channels
 			get { return Constants.WssNamespace; }
 		}
 
-		string FormatAsUtc (DateTime date)
-		{
-			return date.ToUniversalTime ().ToString (
-				"yyyy-MM-dd'T'HH:mm:ss.fff'Z'",
-				CultureInfo.InvariantCulture);
-		}
-
 		protected override void OnWriteHeaderContents (XmlDictionaryWriter writer, MessageVersion version)
 		{
 			foreach (object obj in Contents) {
 				if (obj is WsuTimestamp) {
 					WsuTimestamp ts = (WsuTimestamp) obj;
-					writer.WriteStartElement ("u", "Timestamp", Constants.WsuNamespace);
-					writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, ts.Id);
-					writer.WriteStartElement ("u", "Created", Constants.WsuNamespace);
-					writer.WriteValue (FormatAsUtc (ts.Created));
-					writer.WriteEndElement ();
-					writer.WriteStartElement ("u", "Expires", Constants.WsuNamespace);
-					writer.WriteValue (FormatAsUtc (ts.Expires));
-					writer.WriteEndElement ();
-					writer.WriteEndElement ();
+					ts.WriteTo (writer);
 				} else if (obj is WsscDerivedKeyToken) {
 					WsscDerivedKeyToken dk = (WsscDerivedKeyToken) obj;
 					writer.WriteStartElement ("c", "DerivedKeyToken", Constants.WsscNamespace);
@@ -310,6 +295,27 @@ namespace System.ServiceModel.Channels
 		public DateTime Expires {
 			get { return expires; }
 			set { expires = value; }
+		}
+
+		public void WriteTo (XmlWriter writer)
+		{
+			writer.WriteStartElement ("u", "Timestamp", Constants.WsuNamespace);
+			//writer.WriteAttributeString ("Id", Id);
+			writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, Id);
+			writer.WriteStartElement ("u", "Created", Constants.WsuNamespace);
+			writer.WriteValue (FormatAsUtc (Created));
+			writer.WriteEndElement ();
+			writer.WriteStartElement ("u", "Expires", Constants.WsuNamespace);
+			writer.WriteValue (FormatAsUtc (Expires));
+			writer.WriteEndElement ();
+			writer.WriteEndElement ();
+		}
+
+		string FormatAsUtc (DateTime date)
+		{
+			return date.ToUniversalTime ().ToString (
+				"yyyy-MM-dd'T'HH:mm:ss.fff'Z'",
+				CultureInfo.InvariantCulture);
 		}
 	}
 

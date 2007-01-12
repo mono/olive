@@ -1,5 +1,16 @@
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs : add wsu:Timestamp to signing target.
+	  Moved signing key generation code to non-HMACSHA1 signing part.
+	  Don't try to sign wss:Security.
+	  Pass document itself to SignedXml.ctor().
+	  Use temporary DataObjects to avoid adding Ids (not sure what is the
+	  expected processing yet).
+	* WSSecurityMessageHeader.cs : to support timestamp signing, add
+	  WriteTo() method in WsuTimestamp.
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : wrong key was used for signing.
 	  Omit KeyInfo for now - it seems that .net (sometimes?) omits it.
 
