@@ -1,3 +1,8 @@
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : wrong key was used for signing.
+	  Omit KeyInfo for now - it seems that .net (sometimes?) omits it.
+
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs :

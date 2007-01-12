@@ -289,13 +289,9 @@ namespace System.ServiceModel.Channels
 
 			SecurityKeyIdentifierClause encClause =
 				initiatorParams.CallCreateKeyIdentifierClause (encToken, msgIncludesToken ? initiatorParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
-			SecurityKeyIdentifierClause signClause =
-				recipientParams.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? recipientParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
 
 			AsymmetricSecurityKey encKey = (AsymmetricSecurityKey) 
 				encToken.ResolveKeyIdentifierClause (encClause);
-			AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) 
-				signToken.ResolveKeyIdentifierClause (signClause);
 
 			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
 
@@ -338,6 +334,8 @@ namespace System.ServiceModel.Channels
 				encToken,
 				new SecurityKeyIdentifier (encClause));
 
+			SecurityKeyIdentifierClause ekeyClause =
+				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -352,8 +350,13 @@ namespace System.ServiceModel.Channels
 				HMACSHA1 sigHash = null;
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
 					sigHash = new HMACSHA1 (aes.Key);
-				else
+				else {
+					// not sure if it is correct ...
+					SecurityKeyIdentifierClause signClause =
+						recipientParams.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? recipientParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
+					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
 					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
+				}
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
@@ -374,7 +377,7 @@ namespace System.ServiceModel.Channels
 				else
 					sxml.ComputeSignature ();
 				sxml.KeyInfo = new KeyInfo ();
-				SecurityTokenReferenceKeyInfo sigKeyInfo = new SecurityTokenReferenceKeyInfo (signClause, serializer, doc);
+				SecurityTokenReferenceKeyInfo sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
@@ -393,7 +396,7 @@ namespace System.ServiceModel.Channels
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, aes, ekeyId, refList, encClause, exml, doc);
+					sigenc = Encrypt (sigxml, aes, ekeyId, refList, ekeyClause, exml, doc);
 				}
 				break;
 			}
@@ -468,11 +471,11 @@ namespace System.ServiceModel.Channels
 			// with S.S.C.Xml.EncryptionMethod, we will have to
 			// build our own XML encryption classes.
 
-			edata.KeyInfo = new KeyInfo ();
-			LocalIdKeyIdentifierClause ident =
-				new LocalIdKeyIdentifierClause (ekeyId);
-			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (ident, serializer, doc);
-			edata.KeyInfo.AddClause (kic);
+// FIXME: sometimes? always? it is omitted.
+//			edata.KeyInfo = new KeyInfo ();
+//			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
+//			edata.KeyInfo.AddClause (kic);
+edata.KeyInfo = null;
 			edata.CipherData.CipherValue = encrypted;
 
 			DataReference dr = new DataReference ();

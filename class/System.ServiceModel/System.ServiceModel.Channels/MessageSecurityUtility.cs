@@ -197,12 +197,12 @@ Console.WriteLine (buf.CreateMessage ());
 				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
-/*
+
 Console.WriteLine ("======== Decrypted Document ========");
 doc.PreserveWhitespace = false;
 doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
-*/
+
 			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 		}
