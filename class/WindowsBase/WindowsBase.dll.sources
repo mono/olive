@@ -7,6 +7,9 @@ System.Windows/LocalValueEntry.cs
 System.Windows/LocalValueEnumerator.cs
 System.Windows/PropertyMetadata.cs
 System.Windows/RoutedEvent.cs
+System.Windows.Threading/Dispatcher.cs
+System.Windows.Threading/DispatcherObject.cs
+System.Windows.Threading/DispatcherPriority.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs

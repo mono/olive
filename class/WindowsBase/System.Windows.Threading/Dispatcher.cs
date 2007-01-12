@@ -1,0 +1,246 @@
+//
+// Just starting stubs, a deeper understanding is required before work
+// here can continue.
+//
+// Very confusing information about Shutdown: it states that shutdown is
+// not over, until all events are unwinded, and also states that all events
+// are aborted at that point.  Which is it?
+//
+// The documentation for the Dispatcher family is poorly written, complete
+// sections are cut-and-pasted that add no value and the important pieces
+// like (what is a frame) is not on the APIs, but scattered everywhere else
+// 
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// Copyright (c) 2006 Novell, Inc. (http://www.novell.com)
+//
+// Authors:
+//	Miguel de Icaza (miguel@novell.com)
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Threading;
+
+namespace System.Windows.Threading {
+
+	[Flags]
+	internal enum Flags {
+		ShutdownStarted = 1,
+		Shutdown = 2
+	}
+	
+	public sealed class Dispatcher {
+		static Dictionary<Thread, Dispatcher> dispatchers = new Dictionary<Thread, Dispatcher> ();
+		static object olock = new object ();
+
+		Thread base_thread;
+		Queue [] priority_queues = new Queue [(int)DispatcherPriority.Send];
+
+		Flags flags;
+		int events;
+		
+		Dispatcher (Thread t)
+		{
+			base_thread = t;
+			for (int i = 1; i < (int) DispatcherPriority.Send; i++)
+				priority_queues [i] = new Queue ();
+		}
+
+		public bool CheckAccess ()
+		{
+			return Thread.CurrentThread == base_thread;
+		}
+
+		public void VerifyAccess ()
+		{
+			if (Thread.CurrentThread != base_thread)
+				throw new InvalidOperationException ("Invoked from a different thread");
+		}
+		
+		public object Invoke (DispatcherPriority priority, Delegate method)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			VerifyAccess ();
+
+			Queue (priority, method);
+
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (DispatcherPriority priority, Delegate method, object arg)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			VerifyAccess ();
+
+			Queue (priority, new Task (method, arg));
+
+			throw new NotImplementedException ();
+		}
+		
+		public object Invoke (DispatcherPriority priority, Delegate method, object arg, params object [] args)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			VerifyAccess ();
+			
+			Queue (priority, new Task (method, arg));
+
+			throw new NotImplementedException ();
+		}
+
+		void Queue (DispatcherPriority priority, object x)
+		{
+			priority_queues [(int) priority].Enqueue (x);
+			Interlocked.Increment (ref events);
+		}
+		
+		public static Dispatcher CurrentDispatcher {
+			get {
+				lock (olock){
+					Thread t = Thread.CurrentThread;
+					Dispatcher dis = FromThread (t);
+
+					if (dis != null)
+						return dis;
+				
+					dis = new Dispatcher (t);
+					dispatchers [t] = dis;
+					return dis;
+				}
+			}
+		}
+
+		public static Dispatcher FromThread (Thread thread)
+		{
+			Dispatcher dis;
+			
+			if (dispatchers.TryGetValue (thread, out dis))
+				return dis;
+
+			return null;
+		}
+
+		public Thread Thread {
+			get {
+				return base_thread;
+			}
+		}
+
+		//
+		// Invokes a task that has been pushed into the queue, the tasks
+		// are delegates or "Tasks" (we use delegates directly to save
+		// memory, no need to create tasks when delegates are parameterless.
+		//
+		void InvokeTask (object x)
+		{
+			Task t = x as Task;
+			if (t != null){
+				t.delegate_method.DynamicInvoke (t.args);
+			} else {
+				Delegate d = (Delegate) x;
+				d.DynamicInvoke (null);
+			}
+		}
+
+#if false
+		//
+		// Ok, this currently does not work, because its supposed to
+		// "push" the current frame, and that probably is what contains
+		// the actual Dispatchers
+		//
+		public static void Run ()
+		{
+			bool done = false;
+			
+			do {
+				for (int i = 1; i < DispatcherPriority.Send; i++){
+					queue = priority_queues [i];
+
+					while (queue.Count != 0){
+						object x = queue.Dequeue ();
+						Interlocked.Decrement (ref events);
+						Invoke (x);
+					}
+				}
+			} while (true);
+		}
+#endif
+		
+		public bool HasShutdownStarted {
+			get {
+				return (flags & Flags.ShutdownStarted) != 0;
+			}
+		}
+
+		public bool HasShutdownFinished {
+			get {
+				return (flags & Flags.Shutdown) != 0;
+			}
+		}
+
+		public void InvokeShutdown ()
+		{
+			flags |= Flags.ShutdownStarted;
+			if (ShutdownStarted != null)
+				ShutdownStarted (this, new EventArgs ());
+		}
+
+		
+		class Task {
+			public Delegate delegate_method;
+			public object [] args;
+			
+			public Task (Delegate d, object arg)
+			{
+				delegate_method = d;
+				this.args = new object [1];
+				this.args [0] = arg;
+			}
+
+			public Task (Delegate d, object arg, object [] args)
+			{
+				delegate_method = d;
+				this.args = new object [args.Length + 1];
+				this.args [0] = arg;
+				Array.Copy (args, 1, this.args, 0, args.Length);
+			}
+		}
+
+		public event EventHandler ShutdownStarted;
+	}
+}
