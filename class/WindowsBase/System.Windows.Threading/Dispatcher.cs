@@ -9,7 +9,12 @@
 // The documentation for the Dispatcher family is poorly written, complete
 // sections are cut-and-pasted that add no value and the important pieces
 // like (what is a frame) is not on the APIs, but scattered everywhere else
+//
+// TODO:
+//    Add support for disabling the dispatcher and resuming it.
+//    Add support for Waiting for new tasks to be pushed, so that we dont busy loop.
 // 
+// -----------------------------------------------------------------------
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -33,6 +38,7 @@
 //
 // Authors:
 //	Miguel de Icaza (miguel@novell.com)
+//
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -44,13 +50,15 @@ namespace System.Windows.Threading {
 	[Flags]
 	internal enum Flags {
 		ShutdownStarted = 1,
-		Shutdown = 2
+		Shutdown = 2,
+		Disabled = 4
 	}
 	
 	public sealed class Dispatcher {
 		static Dictionary<Thread, Dispatcher> dispatchers = new Dictionary<Thread, Dispatcher> ();
 		static object olock = new object ();
-
+		static DispatcherFrame main_execution_frame = new DispatcherFrame ();
+		
 		Thread base_thread;
 		Queue [] priority_queues = new Queue [(int)DispatcherPriority.Send];
 
@@ -177,29 +185,55 @@ namespace System.Windows.Threading {
 			}
 		}
 
-#if false
-		//
-		// Ok, this currently does not work, because its supposed to
-		// "push" the current frame, and that probably is what contains
-		// the actual Dispatchers
-		//
 		public static void Run ()
 		{
-			bool done = false;
+			PushFrame (main_execution_frame);
+		}
+		
+		public static void PushFrame (DispatcherFrame frame)
+		{
+			if (frame == null)
+				throw new ArgumentNullException ("frame");
+
+			Dispatcher dis = CurrentDispatcher;
+
+			if (dis.HasShutdownFinished)
+				throw new InvalidOperationException ("The Dispatcher has shut down");
+			if (frame.dispatcher != null)
+				throw new InvalidOperationException ("Frame is already running on a different dispatcher");
+			if ((dis.flags & Flags.Disabled) != 0)
+				throw new InvalidOperationException ("Dispatcher processing has been disabled");
 			
+			frame.dispatcher = dis;
+
+			dis.RunFrame (frame);
+		}
+
+		void RunFrame (DispatcherFrame frame)
+		{
+			bool done = false;
 			do {
-				for (int i = 1; i < DispatcherPriority.Send; i++){
-					queue = priority_queues [i];
+				//
+				// FIXME: instead of going top to bottom, we should
+				// actually keep a pointer on each iteration and maintain
+				// it, to always pick the highest-priority item.
+				//
+				for (int i = (int) DispatcherPriority.Send; i >= 1; i++){
+					Queue queue = priority_queues [i];
 
 					while (queue.Count != 0){
 						object x = queue.Dequeue ();
 						Interlocked.Decrement (ref events);
-						Invoke (x);
+						InvokeTask (x);
 					}
 				}
-			} while (true);
+				//
+				// TODO: add event handling, to avoid busy looping
+				//
+				// TODO: What about Shutdown?
+				//
+			} while (frame.Continue);
 		}
-#endif
 		
 		public bool HasShutdownStarted {
 			get {
