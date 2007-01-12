@@ -296,6 +296,18 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
+		[Category ("NotWorking")] // I believe it should output ValueType attribute, but .net does not.
+		public void WriteLocalIdKeyIdentifierClause3 ()
+		{
+			StringWriter sw = new StringWriter ();
+			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("urn:myIDValue", typeof (WrappedKeySecurityToken));
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference URI=\"#urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+		}
+
+		[Test]
 		public void ReadKeyIdentifierClause ()
 		{
 			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
@@ -461,6 +473,8 @@ throw new Exception ("3");
 			Assert.IsNull (GetTokenTypeUri (typeof (GenericXmlSecurityToken)), "#8");
 			Assert.AreEqual ("http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#GSS_Kerberosv5_AP_REQ",
 				GetTokenTypeUri (typeof (KerberosRequestorSecurityToken)), "#9");
+			Assert.AreEqual ("http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey",
+				GetTokenTypeUri (typeof (WrappedKeySecurityToken)), "#10");
 		}
 	}
 }

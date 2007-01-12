@@ -53,6 +53,8 @@ namespace System.ServiceModel
 
 		public const string WSSKerberosToken = "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#GSS_Kerberosv5_AP_REQ";
 
+		public const string WSSEncryptedKeyToken = "http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey";
+
 		public const string WstNamespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
 		public const string WssNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
 		public const string WspNamespace = "http://schemas.xmlsoap.org/ws/2004/09/policy";

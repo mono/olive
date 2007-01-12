@@ -1,3 +1,8 @@
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : handle WrappedKeySecurityToken in
+	  GetTokenTypeUri().
+
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializer.cs : add e:ReferenceList output.

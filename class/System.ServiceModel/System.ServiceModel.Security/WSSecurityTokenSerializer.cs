@@ -148,6 +148,8 @@ namespace System.ServiceModel.Security
 
 		protected virtual string GetTokenTypeUri (Type tokenType)
 		{
+			if (tokenType == typeof (WrappedKeySecurityToken))
+				return Constants.WSSEncryptedKeyToken;
 			if (tokenType == typeof (X509SecurityToken))
 				return Constants.WSSX509Token;
 //			if (tokenType == typeof (RsaSecurityToken))
@@ -429,6 +431,9 @@ namespace System.ServiceModel.Security
 		{
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "Reference", Constants.WssNamespace);
+			string valueType = ic.OwnerType != null ? GetTokenTypeUri (ic.OwnerType) : null;
+			if (valueType != null)
+				w.WriteAttributeString ("ValueType", valueType);
 			w.WriteAttributeString ("URI", "#" + ic.LocalId);
 			w.WriteEndElement ();
 			w.WriteEndElement ();
