@@ -48,7 +48,7 @@ test-installed-compiler:
 	$(MAKE) TEST_SUBDIRS="tests errors" PROFILE=default TEST_RUNTIME=mono MCS=mcs run-test
 	$(MAKE) TEST_SUBDIRS="tests errors" PROFILE=net_2_0 TEST_RUNTIME=mono MCS=gmcs run-test
 
-package := infocard
+package := olive
 
 dist-local: dist-default
 
