@@ -67,6 +67,7 @@ namespace System.Windows.Threading {
 		int queue_bits;
 		EventWaitHandle wait;
 		Queue async_tasks;
+		bool want_async_lookup;
 		
 		Dispatcher (Thread t)
 		{
@@ -138,7 +139,7 @@ namespace System.Windows.Threading {
 
 		void Queue (DispatcherPriority priority, object x)
 		{
-			int p = ((int) priority)-TOP_PRIO;
+			int p = ((int) priority);
 			Queue q = priority_queues [p];
 			int flag = 1 << p;
 			q.Enqueue (x);
@@ -148,6 +149,7 @@ namespace System.Windows.Threading {
 		void QueueAsync (DispatcherPriority priority, object x)
 		{
 			lock (async_tasks){
+				want_async_lookup = true;
 				async_tasks.Enqueue (priority);
 				async_tasks.Enqueue (x);
 			}
@@ -231,24 +233,39 @@ namespace System.Windows.Threading {
 			bool done = false;
 			do {
 				while (queue_bits != 0){
-					for (int i = 0; i < TOP_PRIO; i++){
-						if ((queue_bits & (1 << i)) != 0){
+					for (int i = TOP_PRIO; i > 0 && queue_bits != 0; i--){
+						int current_bit = queue_bits & (1 << i);
+						if (current_bit != 0){
 							object task;
-							
 							Queue q = priority_queues [i];
-							task = q.Dequeue ();
-							if (q.Count == 0)
-								queue_bits &= ~(1 << i);
-							InvokeTask (q);
-							break;
+
+							do {
+								task = q.Dequeue ();
+
+								// if we are done with this queue, leave.
+								if (q.Count == 0){
+									queue_bits &= ~(1 << i);
+									break;
+								}
+								InvokeTask (q);
+
+								//
+								// If a higher-priority task comes in, go do that
+								//
+								if (current_bit < (queue_bits & ~current_bit))
+									break;
+							} while (true);
 						}
 					}
 				}
 				wait.WaitOne ();
-				lock (async_tasks){
-					DispatcherPriority p = (DispatcherPriority) async_tasks.Dequeue ();
-					object task = async_tasks.Dequeue ();
-					Queue (p, task);
+				if (want_async_lookup){
+					lock (async_tasks){
+						DispatcherPriority p = (DispatcherPriority) async_tasks.Dequeue ();
+						object task = async_tasks.Dequeue ();
+						Queue (p, task);
+						want_async_lookup = false;
+					}
 				}
 			} while (frame.Continue);
 		}
