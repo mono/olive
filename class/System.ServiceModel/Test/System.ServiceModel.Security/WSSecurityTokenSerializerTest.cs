@@ -286,6 +286,27 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
+		public void WriteEncryptedKeyIdentifierClause2 () // derived key
+		{
+			StringWriter sw = new StringWriter ();
+			byte [] bytes = new byte [32];
+			SecurityKeyIdentifier cki = new SecurityKeyIdentifier ();
+			cki.Add (new X509ThumbprintKeyIdentifierClause (cert));
+			EncryptedKeyIdentifierClause ic =
+				new EncryptedKeyIdentifierClause (bytes, SecurityAlgorithms.Aes256KeyWrap, cki, "carriedKeyNaaaaame", new byte [32], 32);
+			
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			string expected = String.Format ("<e:EncryptedKey xmlns:e=\"{0}\"><e:EncryptionMethod Algorithm=\"{1}\" /><KeyInfo xmlns=\"{2}\"><o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:KeyIdentifier ValueType=\"{3}\">GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier></o:SecurityTokenReference></KeyInfo><e:CipherData><e:CipherValue>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</e:CipherValue></e:CipherData><e:CarriedKeyName>carriedKeyNaaaaame</e:CarriedKeyName></e:EncryptedKey>",
+				EncryptedXml.XmlEncNamespaceUrl,
+				SecurityAlgorithms.Aes256KeyWrap,
+				SignedXml.XmlDsigNamespaceUrl,
+				"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1");
+			Assert.AreEqual (expected, sw.ToString ());
+		}
+
+		[Test]
 		public void WriteLocalIdKeyIdentifierClause1 ()
 		{
 			StringWriter sw = new StringWriter ();
@@ -324,6 +345,18 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		{
 			StringWriter sw = new StringWriter ();
 			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("urn:myIDValue", typeof (WrappedKeySecurityToken));
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				new WSSecurityTokenSerializer (true).WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual ("<o:SecurityTokenReference xmlns:o=\"http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd\"><o:Reference ValueType=\"http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey\" URI=\"#urn:myIDValue\" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+		}
+
+		[Test]
+		[Ignore ("fails on .net; no further verification")]
+		public void WriteLocalIdKeyIdentifierClause5 () // derivedKey
+		{
+			StringWriter sw = new StringWriter ();
+			LocalIdKeyIdentifierClause ic = new LocalIdKeyIdentifierClause ("urn:myIDValue", new byte [32], 16, typeof (WrappedKeySecurityToken));
 			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
 				new WSSecurityTokenSerializer (true).WriteKeyIdentifierClause (w, ic);
 			}

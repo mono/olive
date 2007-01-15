@@ -33,7 +33,6 @@ using System.ServiceModel.Security.Tokens;
 
 namespace System.ServiceModel.Security
 {
-	[MonoTODO]
 	public abstract class SecurityAlgorithmSuite
 	{
 		#region Internal Class
@@ -44,6 +43,48 @@ namespace System.ServiceModel.Security
 				: base (size, sha, rsa, false)
 			{
 			}
+
+			public override int DefaultSignatureKeyDerivationLength {
+				get { return Size > 192 ? 192 : Size; }
+			}
+
+			public override bool IsAsymmetricKeyLengthSupported (int length)
+			{
+				switch (length) {
+				case 128:
+				case 192:
+					return Size >= length;
+				}
+				return false;
+			}
+
+			public override bool IsSymmetricKeyLengthSupported (int length)
+			{
+				switch (length) {
+				case 128:
+				case 192:
+				case 256:
+					return Size >= length;
+				}
+				return false;
+			}
+
+			public override bool IsSymmetricKeyWrapAlgorithmSupported (string algorithm)
+			{
+				switch (Size) {
+				case 256:
+					if (algorithm == EncryptedXml.XmlEncAES256KeyWrapUrl)
+						return true;
+					goto case 192;
+				case 192:
+					if (algorithm == EncryptedXml.XmlEncAES192KeyWrapUrl)
+						return true;
+					goto case 128;
+				case 128:
+					return algorithm == EncryptedXml.XmlEncAES128KeyWrapUrl;
+				}
+				return false;
+			}
 		}
 
 		class TripleDESSecurityAlgorithmSuite : SecurityAlgorithmSuiteImplBase
@@ -52,19 +93,39 @@ namespace System.ServiceModel.Security
 				: base (192, sha, rsa, true)
 			{
 			}
+
+			public override int DefaultSignatureKeyDerivationLength {
+				get { return 192; }
+			}
+
+			public override bool IsAsymmetricKeyLengthSupported (int length)
+			{
+				return length == 192;
+			}
+
+			public override bool IsSymmetricKeyLengthSupported (int length)
+			{
+				return length == 192;
+			}
+
+			public override bool IsSymmetricKeyWrapAlgorithmSupported (
+				string algorithm)
+			{
+				return algorithm == EncryptedXml.XmlEncTripleDESKeyWrapUrl;
+			}
 		}
 
-		class SecurityAlgorithmSuiteImplBase : SecurityAlgorithmSuite
+		abstract class SecurityAlgorithmSuiteImplBase : SecurityAlgorithmSuite
 		{
 			int size;
-			bool rsa, sha, tdes;
+			bool rsa15, sha256, tdes;
 
 			public SecurityAlgorithmSuiteImplBase (
-				int size, bool sha, bool rsa, bool tripleDes)
+				int size, bool sha256, bool rsa15, bool tripleDes)
 			{
 				this.size = size;
-				this.sha = sha;
-				this.rsa = rsa;
+				this.sha256 = sha256;
+				this.rsa15 = rsa15;
 				this.tdes = tripleDes;
 			}
 
@@ -72,20 +133,20 @@ namespace System.ServiceModel.Security
 				get { return size; }
 			}
 
-			public bool Rsa {
-				get { return rsa; }
+			public bool Rsa15 {
+				get { return rsa15; }
 			}
 
-			public bool Sha {
-				get { return sha; }
+			public bool Sha256 {
+				get { return sha256; }
 			}
 
 			public override string DefaultAsymmetricKeyWrapAlgorithm {
-				get { return rsa ? EncryptedXml.XmlEncRSA15Url : EncryptedXml.XmlEncRSAOAEPUrl; }
+				get { return rsa15 ? EncryptedXml.XmlEncRSA15Url : EncryptedXml.XmlEncRSAOAEPUrl; }
 			}
 
 			public override string DefaultAsymmetricSignatureAlgorithm {
-				get { return sha ? SecurityAlgorithms.RsaSha256Signature : SignedXml.XmlDsigRSASHA1Url; }
+				get { return sha256 ? SecurityAlgorithms.RsaSha256Signature : SignedXml.XmlDsigRSASHA1Url; }
 			}
 
 			public override string DefaultCanonicalizationAlgorithm {
@@ -94,7 +155,7 @@ namespace System.ServiceModel.Security
 
 
 			public override string DefaultDigestAlgorithm {
-				get { return sha ? EncryptedXml.XmlEncSHA256Url : SignedXml.XmlDsigSHA1Url; }
+				get { return sha256 ? EncryptedXml.XmlEncSHA256Url : SignedXml.XmlDsigSHA1Url; }
 			}
 
 			public override string DefaultEncryptionAlgorithm {
@@ -115,11 +176,6 @@ namespace System.ServiceModel.Security
 
 			public override int DefaultEncryptionKeyDerivationLength {
 				get { return size; }
-			}
-
-			public override int DefaultSignatureKeyDerivationLength {
-				// FIXME: find out the reason why.
-				get { return size == 256 ? 192 : size; }
 			}
 
 			public override int DefaultSymmetricKeyLength {
@@ -143,24 +199,7 @@ namespace System.ServiceModel.Security
 			}
 
 			public override string DefaultSymmetricSignatureAlgorithm {
-				get { return sha ? SecurityAlgorithms.HmacSha256Signature : SignedXml.XmlDsigHMACSHA1Url; }
-			}
-
-			public override bool IsAsymmetricKeyLengthSupported (int length)
-			{
-				throw new NotImplementedException ();
-			}
-
-			public override bool IsSymmetricKeyLengthSupported (int length)
-			{
-				throw new NotImplementedException ();
-			}
-
-			[MonoTODO]
-			public override bool IsAsymmetricKeyWrapAlgorithmSupported (
-				string algorithm)
-			{
-				throw new NotImplementedException ();
+				get { return sha256 ? SecurityAlgorithms.HmacSha256Signature : SignedXml.XmlDsigHMACSHA1Url; }
 			}
 
 			[MonoTODO]
@@ -205,13 +244,6 @@ namespace System.ServiceModel.Security
 			}
 
 			[MonoTODO]
-			public override bool IsSymmetricKeyWrapAlgorithmSupported (
-				string algorithm)
-			{
-				throw new NotImplementedException ();
-			}
-
-			[MonoTODO]
 			public override bool IsSymmetricSignatureAlgorithmSupported (
 				string algorithm)
 			{
@@ -248,87 +280,70 @@ namespace System.ServiceModel.Security
 			tdes_sr = new TripleDESSecurityAlgorithmSuite (true, true);
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Default {
 			get { return Basic256; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic128 {
 			get { return b128; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic128Rsa15 {
 			get { return b128r; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic128Sha256 {
 			get { return b128s; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic128Sha256Rsa15 {
 			get { return b128sr; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic192 {
 			get { return b192; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic192Rsa15 {
 			get { return b192r; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic192Sha256 {
 			get { return b192s; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic192Sha256Rsa15 {
 			get { return b192sr; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic256 {
 			get { return b256; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic256Rsa15 {
 			get { return b256r; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic256Sha256 {
 			get { return b256s; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite Basic256Sha256Rsa15 {
 			get { return b256sr; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite TripleDes {
 			get { return tdes; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite TripleDesRsa15 {
 			get { return tdes_r; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite TripleDesSha256 {
 			get { return tdes_s; }
 		}
 
-		[MonoTODO]
 		public static SecurityAlgorithmSuite TripleDesSha256Rsa15 {
 			get { return tdes_sr; }
 		}
@@ -361,20 +376,18 @@ namespace System.ServiceModel.Security
 
 		public abstract string DefaultSymmetricSignatureAlgorithm { get; }
 
+			public virtual bool IsAsymmetricKeyWrapAlgorithmSupported (
+				string algorithm)
+			{
+				return algorithm == DefaultAsymmetricKeyWrapAlgorithm;
+			}
+
 		public abstract bool IsAsymmetricKeyLengthSupported (int length);
 
-		[MonoTODO]
-		public virtual bool IsAsymmetricKeyWrapAlgorithmSupported (
-			string algorithm)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		public virtual bool IsAsymmetricSignatureAlgorithmSupported (
 			string algorithm)
 		{
-			throw new NotImplementedException ();
+				return algorithm == DefaultAsymmetricSignatureAlgorithm;
 		}
 
 		[MonoTODO]

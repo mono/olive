@@ -1,3 +1,10 @@
+2007-01-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityAlgorithmSuite.cs : give more meaningful field names.
+	  Implemented some Is[blah]Supported() methods.
+	* WSSecurityTokenSerializer.cs : corcompare fix.
+	* SecurityVersion : removed MonoTODO.
+
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :

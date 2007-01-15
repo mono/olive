@@ -28,7 +28,6 @@
 
 namespace System.ServiceModel.Security
 {
-	[MonoTODO]
 	public abstract class SecurityVersion
 	{
 		static SecurityVersion wss10, wss11;
