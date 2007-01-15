@@ -149,7 +149,6 @@ System.ServiceModel.Channels/MessageHeaders.cs
 System.ServiceModel.Channels/MessageImpl.cs
 System.ServiceModel.Channels/MessageProperties.cs
 System.ServiceModel.Channels/MessageSecurityBindingSupport.cs
-System.ServiceModel.Channels/MessageSecurityUtility.cs
 System.ServiceModel.Channels/MessageVersion.cs
 System.ServiceModel.Channels/MtomMessageEncoder.cs
 System.ServiceModel.Channels/MtomMessageEncoderFactory.cs
@@ -163,6 +162,7 @@ System.ServiceModel.Channels/ReliableSessionBindingElementImporter.cs
 System.ServiceModel.Channels/ReplyChannelBase.cs
 System.ServiceModel.Channels/RequestChannelBase.cs
 System.ServiceModel.Channels/RequestContext.cs
+System.ServiceModel.Channels/SecureMessageDecryptor.cs
 System.ServiceModel.Channels/SecureMessageGenerator.cs
 System.ServiceModel.Channels/SecurityBindingElement.cs
 System.ServiceModel.Channels/SecurityBindingElementImporter.cs
