@@ -69,6 +69,14 @@ namespace System.ServiceModel.Channels
 			this.message_to = messageTo;
 		}
 
+		public override SecurityTokenParameters Parameters {
+			get { return security.InitiatorParameters; }
+		}
+
+		public override SecurityTokenParameters CounterParameters {
+			get { return security.RecipientParameters; }
+		}
+
 		public override MessageDirection Direction {
 			get { return MessageDirection.Input; }
 		}
@@ -118,6 +126,14 @@ namespace System.ServiceModel.Channels
 		{
 			this.security = security;
 			this.listen_uri = listenUri;
+		}
+
+		public override SecurityTokenParameters Parameters {
+			get { return security.RecipientParameters; }
+		}
+
+		public override SecurityTokenParameters CounterParameters {
+			get { return security.InitiatorParameters; }
 		}
 
 		public override MessageDirection Direction {
@@ -177,6 +193,10 @@ namespace System.ServiceModel.Channels
 			get { return security; }
 		}
 
+		public abstract SecurityTokenParameters Parameters { get; }
+
+		public abstract SecurityTokenParameters CounterParameters { get; }
+
 		public abstract MessageDirection Direction { get; }
 
 		public abstract EndpointAddress MessageTo { get; }
@@ -209,10 +229,6 @@ namespace System.ServiceModel.Channels
 
 		public Message SecureMessage ()
 		{
-			SecurityTokenParameters initiatorParams =
-				security.InitiatorParameters;
-			SecurityTokenParameters recipientParams =
-				security.RecipientParameters;
 			SecurityToken encToken =
 				security.EncryptionToken;
 			SecurityToken signToken =
@@ -224,11 +240,6 @@ namespace System.ServiceModel.Channels
 			SecurityBindingElement element =
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
-
-			// FIXME: is it correct? anyways we need to encrypt parts based on supporting tokens too.
-			SecurityTokenParameters securingParams =
-				Direction == MessageDirection.Input ?
-				initiatorParams : recipientParams;
 
 			string messageId = "uuid:" + Guid.NewGuid ();
 			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
@@ -244,7 +255,7 @@ namespace System.ServiceModel.Channels
 			WSSecurityMessageHeader header =
 				new WSSecurityMessageHeader (serializer);
 			WsuTimestamp timestamp = null;
-			// wss:Security/wsu:Timestamp
+			// 1. [Timestamp]
 			if (element.IncludeTimestamp) {
 				timestamp = new WsuTimestamp ();
 				timestamp.Id = messageId + "-" + identForMessageId++;
@@ -278,18 +289,18 @@ namespace System.ServiceModel.Channels
 				new List<WsscDerivedKeyToken> ();
 
 {
+			// 2. [Encryption Token]
 
 			// SecurityTokenInclusionMode
 			// - Initiator or Recipient
 			// - done or notyet. FIXME: not implemented yet
 			// It also affects on key reference output
 
-			SecurityTokenInclusionMode appliedMode =
-				securingParams.InclusionMode;
-			bool msgIncludesToken = ShouldIncludeToken (appliedMode, false);
+			bool msgIncludesToken = ShouldIncludeToken (
+				Parameters.InclusionMode, false);
 
 			SecurityKeyIdentifierClause encClause =
-				initiatorParams.CallCreateKeyIdentifierClause (encToken, msgIncludesToken ? initiatorParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
+				Parameters.CallCreateKeyIdentifierClause (encToken, msgIncludesToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 
 			AsymmetricSecurityKey encKey = (AsymmetricSecurityKey) 
 				encToken.ResolveKeyIdentifierClause (encClause);
@@ -303,16 +314,17 @@ namespace System.ServiceModel.Channels
 
 			// encryption key (possibly also used for signing)
 			// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
+			// FIXME: probably when asymmetric binding use asymmetric algorithm
 			RijndaelManaged aes = new RijndaelManaged ();
-			aes.KeySize = 256;
+			aes.KeySize = suite.DefaultSymmetricKeyLength;
 			aes.Mode = CipherMode.CBC;
 			aes.Padding = PaddingMode.ISO10126;
 
 			// generate derived key if needed
-			if (initiatorParams.RequireDerivedKeys) {
+			if (Parameters.RequireDerivedKeys) {
 				// FIXME: it should replace aes
 				RijndaelManaged deriv = new RijndaelManaged ();
-				deriv.KeySize = 192;
+				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
 				deriv.Mode = CipherMode.CBC;
 				deriv.Padding = PaddingMode.ISO10126;
 				deriv.GenerateKey ();
@@ -374,7 +386,7 @@ namespace System.ServiceModel.Channels
 					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
 				else {
 					SecurityKeyIdentifierClause signClause =
-						recipientParams.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? recipientParams.ReferenceStyle : SecurityTokenReferenceStyle.External);
+						CounterParameters.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
 					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
 					sxml.ComputeSignature ();
@@ -392,7 +404,7 @@ namespace System.ServiceModel.Channels
 
 				EncryptedXml exml = new EncryptedXml ();
 				ReferenceList refList = new ReferenceList ();
-				if (!initiatorParams.RequireDerivedKeys)
+				if (!Parameters.RequireDerivedKeys)
 					ekey.ReferenceList = refList;
 				else
 					encRefList = refList;
@@ -421,6 +433,27 @@ namespace System.ServiceModel.Channels
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
 
+			// Header contents:
+			//	- Timestamp
+			//	- EncryptionToken if included
+			//	- derived key token for EncryptionToken
+			//	- ReferenceList for encrypted items
+			//	- signed supporting tokens
+			//	- signed endorsing supporting tokens
+			//	- Signature Token if != EncryptionToken
+			//	- derived key token for SignatureToken
+			//	- Signature for:
+			//		- Timestamp
+			//		- supporting tokens (regardless of
+			//		  its inclusion)
+			//		- message parts in SignedParts
+			//		- SignatureToken if TokenProtection
+			//		  (regardless of its inclusion)
+			//	- Signatures for the main signature (above),
+			//	  for every endorsing token and signed
+			//	  endorsing token.
+			//	
+
 			if (ekey != null)
 				header.Contents.Add (ekey);
 
@@ -430,9 +463,9 @@ namespace System.ServiceModel.Channels
 			if (encRefList != null)
 				header.Contents.Add (encRefList);
 
-			if (sigenc != null)
+			if (sigenc != null) // [Signature Protection]
 				header.Contents.Add (sigenc);
-			else if (sig != null)
+			else if (sig != null) // ![Signature Protection]
 				header.Contents.Add (sig);
 
 			return ret;

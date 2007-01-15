@@ -49,8 +49,64 @@ using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenReq
 
 namespace System.ServiceModel.Channels
 {
-	internal static class MessageSecurityUtility
+	internal class RecipientSecureMessageDecryptor : SecureMessageDecryptor
 	{
+		RecipientMessageSecurityBindingSupport security;
+
+		public RecipientSecureMessageDecryptor (
+			Message source, RecipientMessageSecurityBindingSupport security)
+			: base (source, security)
+		{
+			this.security = security;
+		}
+	}
+
+	internal class InitiatorSecureMessageDecryptor : SecureMessageDecryptor
+	{
+		InitiatorMessageSecurityBindingSupport security;
+
+		public InitiatorSecureMessageDecryptor (
+			Message source, InitiatorMessageSecurityBindingSupport security)
+			: base (source, security)
+		{
+			this.security = security;
+		}
+	}
+
+	internal abstract class SecureMessageDecryptor
+	{
+		Message source_message;
+		MessageBuffer buf;
+		MessageSecurityBindingSupport security;
+
+		XmlDocument doc;
+		XmlNamespaceManager nsmgr; // for XPath query
+
+		SecurityMessageProperty sec_prop =
+			new SecurityMessageProperty ();
+
+		protected SecureMessageDecryptor (
+			Message source, MessageSecurityBindingSupport security)
+		{
+			source_message = source;
+			this.security = security;
+
+			// FIXME: use proper max buffer
+			buf = source.CreateBufferedCopy (int.MaxValue);
+
+			doc = new XmlDocument ();
+			doc.PreserveWhitespace = true;
+
+			nsmgr = new XmlNamespaceManager (doc.NameTable);
+			nsmgr.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+			nsmgr.AddNamespace ("c", Constants.WsscNamespace);
+			nsmgr.AddNamespace ("o", Constants.WssNamespace);
+			nsmgr.AddNamespace ("e", EncryptedXml.XmlEncNamespaceUrl);
+			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
+			nsmgr.AddNamespace ("dsig", SignedXml.XmlDsigNamespaceUrl);
+
+		}
+
 		static SecurityKey ResolveKey (SecurityToken token, SecurityTokenParameters p)
 		{
 			SecurityKeyIdentifierClause clause =
@@ -58,11 +114,8 @@ namespace System.ServiceModel.Channels
 			return token.ResolveKeyIdentifierClause (clause);
 		}
 
-		public static Message DecryptMessage (Message inputMessage,
-			MessageSecurityBindingSupport security)
+		public Message DecryptMessage ()
 		{
-			SecurityBindingElement element =
-				security.Element;
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
 			SecurityTokenResolver resolver =
@@ -71,32 +124,23 @@ namespace System.ServiceModel.Channels
 				security.EncryptionToken;
 			SecurityTokenParameters parameters =
 				security.RecipientParameters;
-			MessageProtectionOrder protectionOrder =
-				security.MessageProtectionOrder;
-
-			MessageBuffer buf = inputMessage.CreateBufferedCopy (int.MaxValue);
 
 Console.WriteLine (buf.CreateMessage ());
 
-			SecurityMessageProperty secProp =
-				new SecurityMessageProperty ();
-
 			Message srcmsg = buf.CreateMessage ();
 			if (srcmsg.Version.Envelope == EnvelopeVersion.None)
-				throw new ArgumentException ("The request is not a SOAP envelope.");
+				throw new ArgumentException ("The message to decrypt is not an expected SOAP envelope.");
 
-			string action = GetAction (srcmsg);
+			string action = GetAction ();
 			if (action == null)
-				throw new ArgumentException ("SOAP action could not be retrieved from the request message.");
+				throw new ArgumentException ("SOAP action could not be retrieved from the message to decrypt.");
 
-			XmlDocument doc = new XmlDocument ();
-			doc.PreserveWhitespace = true;
 			XPathNavigator nav = doc.CreateNavigator ();
 			using (XmlWriter writer = nav.AppendChild ()) {
 				buf.CreateMessage ().WriteMessage (writer);
 			}
 
-			DecryptDocument (doc, token, element, parameters, protectionOrder, secProp, serializer);
+			DecryptDocument (token, parameters);
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
 
@@ -123,49 +167,39 @@ Console.WriteLine (buf.CreateMessage ());
 			return msg;
 		}
 
-		static void DecryptDocument (XmlDocument doc, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityTokenSerializer serializer)
+		void DecryptDocument (SecurityToken token, SecurityTokenParameters parameters)
 		{
-			SecurityKey securityKey = MessageSecurityUtility.ResolveKey (token, parameters);
-
-			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
-			nsmgr.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
-			nsmgr.AddNamespace ("c", Constants.WsscNamespace);
-			nsmgr.AddNamespace ("o", Constants.WssNamespace);
-			nsmgr.AddNamespace ("e", EncryptedXml.XmlEncNamespaceUrl);
-			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
-			nsmgr.AddNamespace ("dsig", SignedXml.XmlDsigNamespaceUrl);
+			SecurityKey securityKey = ResolveKey (token, parameters);
 
 			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
 			if (securityHeaders.Count == 0)
 				throw new MessageSecurityException ("In this service that contains the security binding element, a security header is required in the reply message.");
 
-			foreach (XmlElement security in securityHeaders)
-				DecryptSingleSecurity (security, token, element, parameters, protectionOrder, secProp, securityKey, nsmgr, serializer);
+			foreach (XmlElement secElem in securityHeaders)
+				DecryptSingleSecurity (secElem, token, parameters, securityKey);
 		}
 
-		static void DecryptSingleSecurity (XmlElement security, SecurityToken token, SecurityBindingElement element, SecurityTokenParameters parameters, MessageProtectionOrder protectionOrder, SecurityMessageProperty secProp, SecurityKey securityKey, XmlNamespaceManager nsmgr, SecurityTokenSerializer serializer)
+		void DecryptSingleSecurity (XmlElement secElem, SecurityToken token, SecurityTokenParameters parameters, SecurityKey securityKey)
 		{
-			XmlDocument doc = security.OwnerDocument;
 			// decrypt the key with service certificate privkey
 			EncryptedXml encXml = new EncryptedXml (doc);
 
-			if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature &&
-			    security.SelectSingleNode ("dsig:Signature", nsmgr) != null)
+			if (security.MessageProtectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature &&
+			    secElem.SelectSingleNode ("dsig:Signature", nsmgr) != null)
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
-			XmlElement keyElem = security.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
+			XmlElement keyElem = secElem.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
 			EncryptedKey encryptedKey = new EncryptedKey ();
 			encryptedKey.LoadXml (keyElem);
 
 			byte [] decryptedKey = securityKey.DecryptKey (
 				encryptedKey.EncryptionMethod.KeyAlgorithm,
 				encryptedKey.CipherData.CipherValue);
-			string id = encryptedKey.Id;
 
 			// create derived keys
 			// FIXME: an alternative approach is to make use of
 			// EncryptedXml.AddKeyNameMapping().
-			Dictionary<string,byte[]> map = ResolveDerivedKeys (security, nsmgr, decryptedKey);
+			Dictionary<string,byte[]> map = ResolveDerivedKeys (secElem, decryptedKey);
 			if (encryptedKey.Id != null)
 				map [encryptedKey.Id] = decryptedKey;
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
@@ -174,7 +208,7 @@ Console.WriteLine (buf.CreateMessage ());
 
 			// decrypt the body with the decrypted key
 			Collection<string> references = new Collection<string> ();
-			foreach (XmlElement rlist in security.SelectNodes ("e:ReferenceList", nsmgr))
+			foreach (XmlElement rlist in secElem.SelectNodes ("e:ReferenceList", nsmgr))
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					references.Add (StripUri (encref.GetAttribute ("URI")));
 			foreach (EncryptedReference er in encryptedKey.ReferenceList)
@@ -192,7 +226,7 @@ Console.WriteLine (buf.CreateMessage ());
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
-				byte [] key = GetEncryptionKeyForData (ed2, encXml, map, serializer);
+				byte [] key = GetEncryptionKeyForData (ed2, encXml, map);
 				aes.Key = key != null ? key : decryptedKey;
 				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
@@ -203,12 +237,15 @@ doc.PreserveWhitespace = false;
 doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
 
-			if (security.SelectSingleNode ("dsig:Signature", nsmgr) == null)
+			if (secElem.SelectSingleNode ("dsig:Signature", nsmgr) == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 		}
 
-		static byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map, SecurityTokenSerializer serializer)
+		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map)
 		{
+			SecurityTokenSerializer serializer =
+				security.TokenSerializer;
+
 			if (ed2.KeyInfo == null)
 				return null;
 			foreach (KeyInfoClause kic in ed2.KeyInfo) {
@@ -232,10 +269,8 @@ doc.PreserveWhitespace = true;
 
 		// FIXME: this should consider the referent SecurityToken of
 		// each DerivedKeyToken element.
-		static Dictionary<string,byte[]> ResolveDerivedKeys (XmlElement security, XmlNamespaceManager nsmgr, byte [] decryptedKey)
+		Dictionary<string,byte[]> ResolveDerivedKeys (XmlElement secElem, byte [] decryptedKey)
 		{
-			XmlDocument doc = security.OwnerDocument;
-
 			// create mapping from Id to derived keys
 			Dictionary<string,byte[]> keys = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
@@ -245,13 +280,13 @@ doc.PreserveWhitespace = true;
 				new InMemorySymmetricSecurityKey (decryptedKey);
 
 			byte [] currentKey = decryptedKey;
-			foreach (XmlNode n in security.ChildNodes) {
+			foreach (XmlNode n in secElem.ChildNodes) {
 				XmlElement el = n as XmlElement;
 				if (el == null)
 					continue;
 				if (el.LocalName == "DerivedKeyToken" &&
 				    el.NamespaceURI == Constants.WsscNamespace) {
-					byte [] key = GetDerivedKeyBytes (el, skey, nsmgr);
+					byte [] key = GetDerivedKeyBytes (el, skey);
 					string id = el.GetAttribute ("Id", Constants.WsuNamespace);
 					id = (id == null) ? String.Empty : id;
 					keys [id] = key;
@@ -261,7 +296,7 @@ doc.PreserveWhitespace = true;
 			return keys;
 		}
 
-		static string StripUri (string src)
+		string StripUri (string src)
 		{
 			if (src == null || src.Length == 0)
 				return String.Empty;
@@ -270,7 +305,7 @@ doc.PreserveWhitespace = true;
 			return src.Substring (1);
 		}
 
-		static byte [] GetDerivedKeyBytes (XmlElement el, InMemorySymmetricSecurityKey skey, XmlNamespaceManager nsmgr)
+		byte [] GetDerivedKeyBytes (XmlElement el, InMemorySymmetricSecurityKey skey)
 		{
 			XmlNode n = el.SelectSingleNode ("c:Offset", nsmgr);
 			int offset = (n == null) ? 0 :
@@ -294,7 +329,7 @@ doc.PreserveWhitespace = true;
 		// proper padding bytes. For such cases, use PaddingMode.None
 		// instead. It must not be done in EncryptedXml class as it
 		// correctly rejects improper ISO10126 padding.
-		static byte [] DecryptLax (EncryptedXml encXml, EncryptedData ed, SymmetricAlgorithm symAlg)
+		byte [] DecryptLax (EncryptedXml encXml, EncryptedData ed, SymmetricAlgorithm symAlg)
 		{
 			PaddingMode bak = symAlg.Padding;
 			try {
@@ -310,12 +345,12 @@ doc.PreserveWhitespace = true;
 			}
 		}
 
-		static string GetAction (Message msg)
+		string GetAction ()
 		{
-			string ret = msg.Headers.Action;
+			string ret = source_message.Headers.Action;
 			if (ret == null) {
 				HttpRequestMessageProperty reqprop =
-					msg.Properties ["Action"] as HttpRequestMessageProperty;
+					source_message.Properties ["Action"] as HttpRequestMessageProperty;
 				if (reqprop != null)
 					ret = reqprop.Headers ["Action"];
 			}

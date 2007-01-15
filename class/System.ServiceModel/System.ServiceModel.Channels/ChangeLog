@@ -1,3 +1,11 @@
+2007-01-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : some more refactoring and code comments.
+	* MessageSecurityUtility.cs : made decryptor into an instance class,
+	  like I've done for SecureMessageGenerator.
+	* SecurityRequestContext.cs, SecurityRequestChannel.cs :
+	  dependent changes for above.
+
 2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : fixed derived keysize. derived key was
