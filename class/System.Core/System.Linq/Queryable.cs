@@ -22,41 +22,42 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace System.Linq
 {
         [System.Runtime.CompilerServices.Extension]
-        public static class Sequence
+        public static class Queryable
         {
                 #region Count
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int Count<T> (
-                        IEnumerable<T> source)
+                public static int Count<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        if (source is ICollection<T>)
-                                return ((ICollection<T>)source).Count;
+                        if (source is ICollection<TSource>)
+                                return ((ICollection<TSource>)source).Count;
                         else {
                                 int counter = 0;
-                                foreach (T element in source)
+                                foreach (TSource element in source)
                                         counter++;
                                 return counter;
                         }
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int Count<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> selector)
+                public static int Count<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int counter = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 if (selector(element))
                                         counter++;
                         
@@ -68,28 +69,28 @@ namespace System.Linq
                 #region LongCount
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long LongCount<T> (
-                        IEnumerable<T> source)
+                public static long LongCount<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         long counter = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 counter++;
                         return counter;
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long LongCount<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> selector)
+                public static long LongCount<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long counter = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 if (selector(element))
                                         counter++;
                         
@@ -102,7 +103,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int Sum (
-                        IEnumerable<int> source)
+                        IQueryable<int> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -115,15 +116,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, int> selector)
+                public static int Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int sum = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 sum += selector (element);
                         
                         return sum;
@@ -131,7 +132,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int? Sum (
-                        IEnumerable<int?> source)
+                        IQueryable<int?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -145,15 +146,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int? Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, int?> selector)
+                public static int? Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int? sum = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 int? item = selector (element);
                                 if (item.HasValue)
                                         sum += item.Value;
@@ -164,7 +165,7 @@ namespace System.Linq
 
                 [System.Runtime.CompilerServices.Extension]
                 public static long Sum (
-                        IEnumerable<long> source)
+                        IQueryable<long> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -177,15 +178,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, long> selector)
+                public static long Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long sum = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 sum += selector (element);
                         
                         return sum;
@@ -193,7 +194,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static long? Sum (
-                        IEnumerable<long?> source)
+                        IQueryable<long?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -207,15 +208,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long? Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, long?> selector)
+                public static long? Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long? sum = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 long? item = selector (element);
                                 if (item.HasValue)
                                         sum += item.Value;
@@ -226,7 +227,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Sum (
-                        IEnumerable<double> source)
+                        IQueryable<double> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -239,15 +240,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, double> selector)
+                public static double Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         double sum = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 sum += selector (element);
                         
                         return sum;
@@ -255,7 +256,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Sum (
-                        IEnumerable<double?> source)
+                        IQueryable<double?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -269,15 +270,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, double?> selector)
+                public static double? Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         double? sum = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 double? item = selector (element);
                                 if (item.HasValue)
                                         sum += item.Value;
@@ -288,7 +289,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal Sum (
-                        IEnumerable<decimal> source)
+                        IQueryable<decimal> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -301,15 +302,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal> selector)
+                public static decimal Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         decimal sum = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 sum += selector (element);
                         
                         return sum;
@@ -317,7 +318,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal? Sum (
-                        IEnumerable<decimal?> source)
+                        IQueryable<decimal?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -331,15 +332,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal? Sum<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal?> selector)
+                public static decimal? Sum<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         decimal? sum = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 decimal? item = selector (element);
                                 if (item.HasValue)
                                         sum += item.Value;
@@ -354,7 +355,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int Min (
-                        IEnumerable<int> source)
+                        IQueryable<int> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -375,7 +376,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int? Min (
-                        IEnumerable<int?> source)
+                        IQueryable<int?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -394,7 +395,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static long Min (
-                        IEnumerable<long> source)
+                        IQueryable<long> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -415,7 +416,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static long? Min (
-                        IEnumerable<long?> source)
+                        IQueryable<long?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -434,7 +435,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Min (
-                        IEnumerable<double> source)
+                        IQueryable<double> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -455,7 +456,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Min (
-                        IEnumerable<double?> source)
+                        IQueryable<double?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -474,7 +475,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal Min (
-                        IEnumerable<decimal> source)
+                        IQueryable<decimal> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -495,7 +496,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal? Min (
-                        IEnumerable<decimal?> source)
+                        IQueryable<decimal?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -513,24 +514,24 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Min<T> (
-                        IEnumerable<T> source)
+                public static TSource Min<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool notAssigned = true;
-                        T minimum = default (T);
+                        TSource minimum = default (TSource);
                         int counter = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (notAssigned) {
                                         minimum = element;
                                         notAssigned = false;
                                 }
                                 else {
                                         int comparison;
-                                        if (element is IComparable<T>)
-                                                comparison = ((IComparable<T>)element).CompareTo (minimum);
+                                        if (element is IComparable<TSource>)
+                                                comparison = ((IComparable<TSource>)element).CompareTo (minimum);
                                         else if (element is System.IComparable)
                                                 comparison = ((System.IComparable)element).CompareTo (minimum);
                                         else
@@ -549,16 +550,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, int> selector)
+                public static int Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int minimum = int.MaxValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 int element = selector (item);
                                 if (element < minimum)
                                         minimum = element;
@@ -572,16 +573,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int? Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, int?> selector)
+                public static int? Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         int? minimum = int.MaxValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 int? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -593,16 +594,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, long> selector)
+                public static long Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long minimum = long.MaxValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 long element = selector (item);
                                 if (element < minimum)
                                         minimum = element;
@@ -616,16 +617,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long? Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, long?> selector)
+                public static long? Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         long? minimum = long.MaxValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 long? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -637,16 +638,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, double> selector)
+                public static double Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         double minimum = double.MaxValue;
                         int counter = 0;
-                        foreach (T item in source)
+                        foreach (TSource item in source)
                         {
                                 double element = selector (item);
                                 if (element < minimum)
@@ -661,16 +662,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, double?> selector)
+                public static double? Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         double? minimum = double.MaxValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 double? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -682,16 +683,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal> selector)
+                public static decimal Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         decimal minimum = decimal.MaxValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 decimal element = selector (item);
                                 if (element < minimum)
                                         minimum = element;
@@ -705,16 +706,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal? Min<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal?> selector)
+                public static decimal? Min<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         decimal? minimum = decimal.MaxValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 decimal? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -726,26 +727,26 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static S Min<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, S> selector)
+                public static TResult Min<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, TResult> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool notAssigned = true;
-                        S minimum = default (S);
+                        TResult minimum = default (TResult);
                         int counter = 0;
-                        foreach (T item in source) {
-                                S element = selector (item);
+                        foreach (TSource item in source) {
+                                TResult element = selector (item);
                                 if (notAssigned) {
                                         minimum = element;
                                         notAssigned = false;
                                 }
                                 else {
                                         int comparison;
-                                        if (element is IComparable<S>)
-                                                comparison = ((IComparable<S>)element).CompareTo (minimum);
+                                        if (element is IComparable<TResult>)
+                                                comparison = ((IComparable<TResult>)element).CompareTo (minimum);
                                         else if (element is System.IComparable)
                                                 comparison = ((System.IComparable)element).CompareTo (minimum);
                                         else
@@ -769,7 +770,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int Max (
-                        IEnumerable<int> source)
+                        IQueryable<int> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -790,7 +791,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static int? Max (
-                        IEnumerable<int?> source)
+                        IQueryable<int?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -809,7 +810,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static long Max (
-                        IEnumerable<long> source)
+                        IQueryable<long> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -830,7 +831,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static long? Max (
-                        IEnumerable<long?> source)
+                        IQueryable<long?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -849,7 +850,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Max (
-                        IEnumerable<double> source)
+                        IQueryable<double> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -870,7 +871,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Max (
-                        IEnumerable<double?> source)
+                        IQueryable<double?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -889,7 +890,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal Max (
-                        IEnumerable<decimal> source)
+                        IQueryable<decimal> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -910,7 +911,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal? Max (
-                        IEnumerable<decimal?> source)
+                        IQueryable<decimal?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -928,24 +929,24 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Max<T> (
-                        IEnumerable<T> source)
+                public static TSource Max<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool notAssigned = true;
-                        T maximum = default (T);
+                        TSource maximum = default (TSource);
                         int counter = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (notAssigned) {
                                         maximum = element;
                                         notAssigned = false;
                                 }
                                 else {
                                         int comparison;
-                                        if (element is IComparable<T>)
-                                                comparison = ((IComparable<T>)element).CompareTo (maximum);
+                                        if (element is IComparable<TSource>)
+                                                comparison = ((IComparable<TSource>)element).CompareTo (maximum);
                                         else if (element is System.IComparable)
                                                 comparison = ((System.IComparable)element).CompareTo (maximum);
                                         else
@@ -964,16 +965,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, int> selector)
+                public static int Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int maximum = int.MinValue;
                         int counter = 0;
-                        foreach (T item in source)
+                        foreach (TSource item in source)
                         {
                                 int element = selector (item);
                                 if (element > maximum)
@@ -988,16 +989,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int? Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, int?> selector)
+                public static int? Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         int? maximum = int.MinValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 int? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1009,16 +1010,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, long> selector)
+                public static long Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long maximum = long.MinValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 long element = selector (item);
                                 if (element > maximum)
                                         maximum = element;
@@ -1032,16 +1033,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static long? Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, long?> selector)
+                public static long? Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         long? maximum = long.MinValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 long? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1053,16 +1054,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, double> selector)
+                public static double Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         double maximum = double.MinValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 double element = selector (item);
                                 if (element > maximum)
                                         maximum = element;
@@ -1076,16 +1077,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, double?> selector)
+                public static double? Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         double? maximum = double.MinValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 double? element = selector(item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1097,16 +1098,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal> selector)
+                public static decimal Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         decimal maximum = decimal.MinValue;
                         int counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 decimal element = selector(item);
                                 if (element > maximum)
                                         maximum = element;
@@ -1120,16 +1121,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal? Max<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal?> selector)
+                public static decimal? Max<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool onlyNull = true;
                         decimal? maximum = decimal.MinValue;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 decimal? element = selector(item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1141,27 +1142,27 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static S Max<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, S> selector)
+                public static TResult Max<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, TResult> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         bool notAssigned = true;
-                        S maximum = default (S);
+                        TResult maximum = default (TResult);
                         int counter = 0;
-                        foreach (T item in source)
+                        foreach (TSource item in source)
                         {
-                                S element = selector (item);
+                                TResult element = selector (item);
                                 if (notAssigned)  {
                                         maximum = element;
                                         notAssigned = false;
                                 }
                                 else  {
                                         int comparison;
-                                        if (element is IComparable<S>)
-                                                comparison = ((IComparable<S>)element).CompareTo (maximum);
+                                        if (element is IComparable<TResult>)
+                                                comparison = ((IComparable<TResult>)element).CompareTo (maximum);
                                         else if (element is System.IComparable)
                                                 comparison = ((System.IComparable)element).CompareTo (maximum);
                                         else
@@ -1185,7 +1186,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Average (
-                        IEnumerable<int> source)
+                        IQueryable<int> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1205,7 +1206,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Average (
-                        IEnumerable<int?> source)
+                        IQueryable<int?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1225,7 +1226,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Average (
-                        IEnumerable<long> source)
+                        IQueryable<long> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1245,7 +1246,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Average (
-                        IEnumerable<long?> source)
+                        IQueryable<long?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1265,7 +1266,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double Average (
-                        IEnumerable<double> source)
+                        IQueryable<double> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1285,7 +1286,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static double? Average (
-                        IEnumerable<double?> source)
+                        IQueryable<double?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1305,7 +1306,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal Average (
-                        IEnumerable<decimal> source)
+                        IQueryable<decimal> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1325,7 +1326,7 @@ namespace System.Linq
                 
                 [System.Runtime.CompilerServices.Extension]
                 public static decimal? Average (
-                        IEnumerable<decimal?> source)
+                        IQueryable<decimal?> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
@@ -1344,16 +1345,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, int> selector)
+                public static double Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long sum = 0;
                         long counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 sum += selector (item);
                                 counter++;
                         }
@@ -1365,9 +1366,9 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, int?> selector)
+                public static double? Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
@@ -1375,7 +1376,7 @@ namespace System.Linq
                         bool onlyNull = true;
                         long sum = 0;
                         long counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 int? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1387,16 +1388,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, long> selector)
+                public static double Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         long sum = 0;
                         long counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 sum += selector (item);
                                 counter++;
                         }
@@ -1408,9 +1409,9 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, long?> selector)
+                public static double? Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, long?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
@@ -1418,7 +1419,7 @@ namespace System.Linq
                         bool onlyNull = true;
                         long sum = 0;
                         long counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 long? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1430,16 +1431,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, double> selector)
+                public static double Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         double sum = 0;
                         double counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 sum += selector (item);
                                 counter++;
                         }
@@ -1451,9 +1452,9 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static double? Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, double?> selector)
+                public static double? Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, double?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
@@ -1461,7 +1462,7 @@ namespace System.Linq
                         bool onlyNull = true;
                         double sum = 0;
                         double counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 double? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1473,16 +1474,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal> selector)
+                public static decimal Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         decimal sum = 0;
                         decimal counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 sum += selector(item);
                                 counter++;
                         }
@@ -1494,9 +1495,9 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static decimal? Average<T> (
-                        IEnumerable<T> source,
-                        Func<T, decimal?> selector)
+                public static decimal? Average<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, decimal?> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
@@ -1504,7 +1505,7 @@ namespace System.Linq
                         bool onlyNull = true;
                         decimal sum = 0;
                         decimal counter = 0;
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 decimal? element = selector (item);
                                 if (element.HasValue) {
                                         onlyNull = false;
@@ -1521,21 +1522,21 @@ namespace System.Linq
                 
                 [Obsolete ("Use Aggregate instead")]
                 [System.Runtime.CompilerServices.Extension]
-                public static T Fold<T> (
-                        IEnumerable<T> source,
-                        Func<T, T, T> func)
+                public static TSource Fold<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, TSource, TSource> func)
                 {
-                        return Fold<T> (source, func);
+                        return Fold<TSource> (source, func);
                 }
                 
                 [Obsolete ("Use Aggregate instead")]
                 [System.Runtime.CompilerServices.Extension]
-                public static U Fold<T, U> (
-                        IEnumerable<T> source,
+                public static U Fold<TSource, U> (
+                        IQueryable<TSource> source,
                         U seed,
-                        Func<U, T, U> func)
+                        Func<U, TSource, U> func)
                 {
-                        return Fold<T, U> (source, seed, func);
+                        return Fold<TSource, U> (source, seed, func);
                 }
                 
                 #endregion
@@ -1543,17 +1544,17 @@ namespace System.Linq
                 #region Aggregate
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Aggregate<T> (
-                        IEnumerable<T> source,
-                        Func<T, T, T> func)
+                public static TSource Aggregate<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, TSource, TSource> func)
                 {
                         if (source == null || func == null)
                                 throw new ArgumentNullException ();
                         
                         int counter = 0;
-                        T folded = default (T);
+                        TSource folded = default (TSource);
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (counter == 0)
                                         folded = element;
                                 else
@@ -1567,16 +1568,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static U Aggregate<T, U> (
-                        IEnumerable<T> source,
+                public static U Aggregate<TSource, U> (
+                        IQueryable<TSource> source,
                         U seed,
-                        Func<U, T, U> func)
+                        Func<U, TSource, U> func)
                 {
                         if (source == null || func == null)
                                 throw new ArgumentNullException ();
                         
                         U folded = seed;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 folded = func (folded, element);
                         return folded;
                 }
@@ -1586,16 +1587,16 @@ namespace System.Linq
                 #region Concat
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Concat<T> (
-                        IEnumerable<T> first,
-                        IEnumerable<T> second)
+                public static IEnumerable<TSource> Concat<TSource> (
+                        IQueryable<TSource> first,
+                        IQueryable<TSource> second)
                 {
                         if (first == null || second == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in first)
+                        foreach (TSource element in first)
                                 yield return element;
-                        foreach (T element in second)
+                        foreach (TSource element in second)
                                 yield return element;
                 }
                 
@@ -1604,10 +1605,10 @@ namespace System.Linq
                 #region ToSequence
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> ToSequence<T> (
-                        IEnumerable<T> source)
+                public static IQueryable<TSource> ToSequence<TSource> (
+                        IQueryable<TSource> source)
                 {
-                        return (IEnumerable<T>)source;
+                        return (IQueryable<TSource>)source;
                 }
                 
                 #endregion
@@ -1615,13 +1616,13 @@ namespace System.Linq
                 #region ToArray
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T[] ToArray<T> (
-                        IEnumerable<T> source)
+                public static TSource[] ToArray<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        List<T> list = new List<T> (source);
+                        List<TSource> list = new List<TSource> (source);
                         return list.ToArray ();
                 }
                 
@@ -1630,13 +1631,13 @@ namespace System.Linq
                 #region ToList
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static List<T> ToList<T> (
-                        IEnumerable<T> source)
+                public static List<TSource> ToList<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        return new List<T> (source);
+                        return new List<TSource> (source);
                 }
                 
                 #endregion
@@ -1644,24 +1645,24 @@ namespace System.Linq
                 #region ToDictionary
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Dictionary<K, T> ToDictionary<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector)
+                public static Dictionary<K, TSource> ToDictionary<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return ToDictionary<T, K> (source, keySelector, null);
+                        return ToDictionary<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Dictionary<K, T> ToDictionary<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
+                public static Dictionary<K, TSource> ToDictionary<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        Dictionary<K, T> dictionary = new Dictionary<K, T> (comparer ?? EqualityComparer<K>.Default);
-                        foreach (T element in source) {
+                        Dictionary<K, TSource> dictionary = new Dictionary<K, TSource> (comparer ?? EqualityComparer<K>.Default);
+                        foreach (TSource element in source) {
                                 K key = keySelector (element);
                                 if (key == null)
                                         throw new ArgumentNullException ();
@@ -1674,26 +1675,26 @@ namespace System.Linq
                 }
 
                 [System.Runtime.CompilerServices.Extension]
-                public static Dictionary<K, E> ToDictionary<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector)
+                public static Dictionary<K, E> ToDictionary<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector)
                 {
-                        return ToDictionary<T, K, E> (source, keySelector, elementSelector, null);
+                        return ToDictionary<TSource, K, E> (source, keySelector, elementSelector, null);
                 }
                                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Dictionary<K, E> ToDictionary<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector,
+                public static Dictionary<K, E> ToDictionary<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null || elementSelector == null)
                                 throw new ArgumentNullException ();
                         
                         Dictionary<K, E> dictionary = new Dictionary<K, E>(comparer ?? EqualityComparer<K>.Default);
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                         {
                                 K key = keySelector (element);
                                 if (key == null)
@@ -1711,55 +1712,55 @@ namespace System.Linq
                 #region ToLookup
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Lookup<K, T> ToLookup<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector)
+                public static Lookup<K, TSource> ToLookup<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return ToLookup<T, K> (source, keySelector, null);
+                        return ToLookup<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Lookup<K, T> ToLookup<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
+                public static Lookup<K, TSource> ToLookup<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        Dictionary<K, List<T>> dictionary = new Dictionary<K, List<T>> (comparer ?? EqualityComparer<K>.Default);
-                        foreach (T element in source) {
+                        Dictionary<K, List<TSource>> dictionary = new Dictionary<K, List<TSource>> (comparer ?? EqualityComparer<K>.Default);
+                        foreach (TSource element in source) {
                                 K key = keySelector (element);
                                 if (key == null)
                                         throw new ArgumentNullException ();
                                 if (!dictionary.ContainsKey (key))
-                                        dictionary.Add (key, new List<T> ());
+                                        dictionary.Add (key, new List<TSource> ());
                                 dictionary[key].Add (element);
                         }
-                        return new Lookup<K, T> (dictionary);
+                        return new Lookup<K, TSource> (dictionary);
                 }
 
                 [System.Runtime.CompilerServices.Extension]
-                public static Lookup<K, E> ToLookup<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector)
+                public static Lookup<K, E> ToLookup<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector)
                 {
-                        return ToLookup<T, K, E> (source, keySelector, elementSelector, null);
+                        return ToLookup<TSource, K, E> (source, keySelector, elementSelector, null);
                 }
                                 
                 [System.Runtime.CompilerServices.Extension]
-                public static Lookup<K, E> ToLookup<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector,
+                public static Lookup<K, E> ToLookup<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null || elementSelector == null)
                                 throw new ArgumentNullException ();
                         
                         Dictionary<K, List<E>> dictionary = new Dictionary<K, List<E>>(comparer ?? EqualityComparer<K>.Default);
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                         {
                                 K key = keySelector (element);
                                 if (key == null)
@@ -1776,15 +1777,15 @@ namespace System.Linq
                 #region OfType
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> OfType<T> (
-                        System.Collections.IEnumerable source)
+                public static IEnumerable<TSource> OfType<TSource> (
+                        IQueryable source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         foreach (object element in source)
-                                if (element is T)
-                                        yield return (T)element;
+                                if (element is TSource)
+                                        yield return (TSource)element;
                 }
                 
                 #endregion
@@ -1792,14 +1793,14 @@ namespace System.Linq
                 #region Cast
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Cast<T> (
-                        System.Collections.IEnumerable source)
+                public static IEnumerable<TSource> Cast<TSource> (
+                        IQueryable source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         foreach (object element in source)
-                                yield return (T)element;
+                                yield return (TSource)element;
                 }
                 
                 #endregion
@@ -1807,27 +1808,27 @@ namespace System.Linq
                 #region First
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T First<T> (
-                        IEnumerable<T> source)
+                public static TSource First<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 return element;
                         
                         throw new InvalidOperationException ();
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T First<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource First<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                         return element;
                         }
@@ -1840,32 +1841,32 @@ namespace System.Linq
                 #region FirstOrDefault
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T FirstOrDefault<T> (
-                        IEnumerable<T> source)
+                public static TSource FirstOrDefault<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 return element;
                         
-                        return default (T);
+                        return default (TSource);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T FirstOrDefault<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource FirstOrDefault<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                         return element;
                         }
                         
-                        return default (T);
+                        return default (TSource);
                 }
                 
                 #endregion
@@ -1873,15 +1874,15 @@ namespace System.Linq
                 #region Last
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Last<T> (
-                        IEnumerable<T> source)
+                public static TSource Last<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool noElements = true;
-                        T lastElement = default (T);
-                        foreach (T element in source)
+                        TSource lastElement = default (TSource);
+                        foreach (TSource element in source)
                         {
                                 if (noElements) noElements = false;
                                 lastElement = element;
@@ -1894,16 +1895,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Last<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource Last<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
                         bool noElements = true;
-                        T lastElement = default (T);
-                        foreach (T element in source) {
+                        TSource lastElement = default (TSource);
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                 {
                                         if (noElements) noElements = false;
@@ -1922,29 +1923,29 @@ namespace System.Linq
                 #region LastOrDefault
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T LastOrDefault<T> (
-                        IEnumerable<T> source)
+                public static TSource LastOrDefault<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        T lastElement = default (T);
-                        foreach (T element in source)
+                        TSource lastElement = default (TSource);
+                        foreach (TSource element in source)
                                 lastElement = element;
                         
                         return lastElement;
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T LastOrDefault<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource LastOrDefault<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        T lastElement = default (T);
-                        foreach (T element in source) {
+                        TSource lastElement = default (TSource);
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                         lastElement = element;
                         }
@@ -1957,15 +1958,15 @@ namespace System.Linq
                 #region Single
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Single<T> (
-                        IEnumerable<T> source)
+                public static TSource Single<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool otherElement = false;
-                        T singleElement = default (T);
-                        foreach (T element in source)
+                        TSource singleElement = default (TSource);
+                        foreach (TSource element in source)
                         {
                                 if (otherElement) throw new InvalidOperationException ();
                                 if (!otherElement) otherElement = true;
@@ -1979,16 +1980,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T Single<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource Single<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
                         bool otherElement = false;
-                        T singleElement = default (T);
-                        foreach (T element in source) {
+                        TSource singleElement = default (TSource);
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                 {
                                         if (otherElement) throw new InvalidOperationException ();
@@ -2008,15 +2009,15 @@ namespace System.Linq
                 #region SingleOrDefault
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T SingleOrDefault<T> (
-                        IEnumerable<T> source)
+                public static TSource SingleOrDefault<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool otherElement = false;
-                        T singleElement = default (T);
-                        foreach (T element in source)
+                        TSource singleElement = default (TSource);
+                        foreach (TSource element in source)
                         {
                                 if (otherElement) throw new InvalidOperationException ();
                                 if (!otherElement) otherElement = true;
@@ -2027,16 +2028,16 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T SingleOrDefault<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static TSource SingleOrDefault<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
                         bool otherElement = false;
-                        T singleElement = default (T);
-                        foreach (T element in source) {
+                        TSource singleElement = default (TSource);
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                 {
                                         if (otherElement) throw new InvalidOperationException ();
@@ -2053,8 +2054,8 @@ namespace System.Linq
                 #region ElementAt
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T ElementAt<T> (
-                        IEnumerable<T> source,
+                public static TSource ElementAt<TSource> (
+                        IQueryable<TSource> source,
                         int index)
                 {
                         if (source == null)
@@ -2062,11 +2063,11 @@ namespace System.Linq
                         if (index < 0)
                                 throw new ArgumentOutOfRangeException ();
                         
-                        if (source is IList<T>)
-                                return ((IList<T>)source)[index];
+                        if (source is IList<TSource>)
+                                return ((IList<TSource>)source)[index];
                         else {
                                 int counter = 0;
-                                foreach (T element in source) {
+                                foreach (TSource element in source) {
                                         if (counter == index)
                                                 return element;
                                         counter++;
@@ -2080,30 +2081,30 @@ namespace System.Linq
                 #region ElementAtOrDefault
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static T ElementAtOrDefault<T> (
-                        IEnumerable<T> source,
+                public static TSource ElementAtOrDefault<TSource> (
+                        IQueryable<TSource> source,
                         int index)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         if (index < 0)
-                                return default(T);
+                                return default(TSource);
                         
-                        if (source is IList<T>)
+                        if (source is IList<TSource>)
                         {
-                                if (((IList<T>)source).Count >= index)
-                                        return default(T);
+                                if (((IList<TSource>)source).Count >= index)
+                                        return default(TSource);
                                 else
-                                        return ((IList<T>)source)[index];
+                                        return ((IList<TSource>)source)[index];
                         }
                         else {
                                 int counter = 0;
-                                foreach (T element in source) {
+                                foreach (TSource element in source) {
                                         if (counter == index)
                                                 return element;
                                         counter++;
                                 }
-                                return default (T);
+                                return default (TSource);
                         }
                 }
                 
@@ -2112,33 +2113,33 @@ namespace System.Linq
                 #region DefaultIfEmpty
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> DefaultIfEmpty<T> (
-                        IEnumerable<T> source)
+                public static IEnumerable<TSource> DefaultIfEmpty<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool noYield = true;
-                        foreach (T item in source)
+                        foreach (TSource item in source)
                         {
                                 noYield = false;
                                 yield return item;
                         }
                         
                         if (noYield)
-                                yield return default (T);
+                                yield return default (TSource);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> DefaultIfEmpty<T> (
-                        IEnumerable<T> source,
-                        T defaultValue)
+                public static IEnumerable<TSource> DefaultIfEmpty<TSource> (
+                        IQueryable<TSource> source,
+                        TSource defaultValue)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
                         bool noYield = true;
-                        foreach (T item in source)
+                        foreach (TSource item in source)
                         {
                                 noYield = false;
                                 yield return item;
@@ -2153,15 +2154,15 @@ namespace System.Linq
                 #region EqualAll
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static bool EqualAll<T> (
-                        IEnumerable<T> first,
-                        IEnumerable<T> second)
+                public static bool EqualAll<TSource> (
+                        IQueryable<TSource> first,
+                        IQueryable<TSource> second)
                 {
                         if (first == null || second == null)
                                 throw new ArgumentNullException ();
                         
-                        List<T> firstList = new List<T> (first);
-                        List<T> secondList = new List<T> (second);
+                        List<TSource> firstList = new List<TSource> (first);
+                        List<TSource> secondList = new List<TSource> (second);
                         
                         if (firstList.Count != firstList.Count)
                                 return false;
@@ -2194,8 +2195,8 @@ namespace System.Linq
                 #region Repeat
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Repeat<T> (
-                        T element, int count)
+                public static IEnumerable<TSource> Repeat<TSource> (
+                        TSource element, int count)
                 {
                         if (count < 0)
                                 throw new ArgumentOutOfRangeException ();
@@ -2205,24 +2206,14 @@ namespace System.Linq
                 }
                 
                 #endregion
-
-                #region Empty
-                
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Empty<T> ()
-                {
-                        return new List<T> ();
-                }
-                
-                #endregion
                 
                 /** A NOTE ON IMPLEMENTATION REGARDING NULL KEYS
                  * 
                  *  GroupBy specification states that null-key values
                  *  are allowed. However, all implementations of 
-                 *  Dictionary<K, T> ban null keys.
+                 *  Dictionary<K, TSource> ban null keys.
                  *  Because of this, a small trick has to be done:
-                 *  a special List<T> variable is created in order to
+                 *  a special List<TSource> variable is created in order to
                  *  be filled with this null-key values.
                  *  Also, groups must be yielded in the order their
                  *  keys were found for first time, so we need to keep
@@ -2232,18 +2223,18 @@ namespace System.Linq
                  *  mantain a counter and if null-key values were
                  *  found, they are yielded in the order needed.
                  *  Because K can be a valuetype, compilers expose a
-                 *  restriction on null values, that's why default(T)
-                 *  is used. However, default(T) is null for
+                 *  restriction on null values, that's why default(TSource)
+                 *  is used. However, default(TSource) is null for
                  *  reference types, and values with selectors that
                  *  return value types can't return null. **/
                 
                 #region GroupBy
                 
-                private static List<T> ContainsGroup<K, T>(
-                        Dictionary<K, List<T>> items, K key, IEqualityComparer<K> comparer)
+                private static List<TSource> ContainsGroup<K, TSource>(
+                        Dictionary<K, List<TSource>> items, K key, IEqualityComparer<K> comparer)
                 {
                         IEqualityComparer<K> comparerInUse = (comparer ?? EqualityComparer<K>.Default);
-                        foreach (KeyValuePair<K, List<T>> value in items) {
+                        foreach (KeyValuePair<K, List<TSource>> value in items) {
                                 if (comparerInUse.Equals(value.Key, key))
                                     return value.Value;
                         }
@@ -2251,28 +2242,29 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<IGrouping<K, T>> GroupBy<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector)
+                public static IQueryable<IGrouping<K, TSource>> GroupBy<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return GroupBy<T, K> (source, keySelector, null);
+                        throw new NotImplementedException ();
+                        //return GroupBy<TSource, K> (source, keySelector, null);
                 }
-                
+/*                
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<IGrouping<K, T>> GroupBy<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
+                public static IQueryable<IGrouping<K, TSource>> GroupBy<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        Dictionary<K, List<T>> groups = new Dictionary<K, List<T>> ();
-                        List<T> nullList = new List<T> ();
+                        Dictionary<K, List<TSource>> groups = new Dictionary<K, List<TSource>> ();
+                        List<TSource> nullList = new List<TSource> ();
                         int counter = 0;
                         int nullCounter = -1;
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 K key = keySelector (element);
                                 if (key == null) {
                                         nullList.Add (element);
@@ -2282,9 +2274,9 @@ namespace System.Linq
                                         }
                                 }
                                 else {
-                                        List<T> group = ContainsGroup<K, T> (groups, key, comparer);
+                                        List<TSource> group = ContainsGroup<K, TSource> (groups, key, comparer);
                                         if (group == null) {
-                                                group = new List<T> ();
+                                                group = new List<TSource> ();
                                                 groups.Add (key, group);
                                                 counter++;
                                         }
@@ -2293,32 +2285,32 @@ namespace System.Linq
                         }
                         
                         counter = 0;
-                        foreach (KeyValuePair<K, List<T>> group in groups) {
+                        foreach (KeyValuePair<K, List<TSource>> group in groups) {
                                 if (counter == nullCounter) {
-                                        Grouping<K, T> nullGroup = new Grouping<K, T> (default (K), nullList);
+                                        Grouping<K, TSource> nullGroup = new Grouping<K, TSource> (default (K), nullList);
                                         yield return nullGroup;
                                         counter++;
                                 }
-                                Grouping<K, T> grouping = new Grouping<K, T> (group.Key, group.Value);
+                                Grouping<K, TSource> grouping = new Grouping<K, TSource> (group.Key, group.Value);
                                 yield return grouping;
                                 counter++;
                         }
                 }
-                
+*/                
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<IGrouping<K, E>> GroupBy<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector)
+                public static IQueryable<IGrouping<K, E>> GroupBy<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector)
                 {
-                        return GroupBy<T, K, E> (source, keySelector, elementSelector);
+                        return GroupBy<TSource, K, E> (source, keySelector, elementSelector);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<IGrouping<K, E>> GroupBy<T, K, E> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
-                        Func<T, E> elementSelector,
+                public static IEnumerable<IGrouping<K, E>> GroupBy<TSource, K, E> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
+                        Func<TSource, E> elementSelector,
                         IEqualityComparer<K> comparer)
                 {
                         if (source == null || keySelector == null || elementSelector == null)
@@ -2329,7 +2321,7 @@ namespace System.Linq
                         int counter = 0;
                         int nullCounter = -1;
 
-                        foreach (T item in source) {
+                        foreach (TSource item in source) {
                                 K key = keySelector (item);
                                 E element = elementSelector (item);
                                 if (key == null) {
@@ -2368,23 +2360,23 @@ namespace System.Linq
                 #region OrderBy
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> OrderBy<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector)
+                public static OrderedSequence<TSource> OrderBy<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return OrderBy<T, K> (source, keySelector, null);
+                        return OrderBy<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> OrderBy<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
+                public static OrderedSequence<TSource> OrderBy<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
                         IComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        return new InternalOrderedSequence<T, K> (
+                        return new InternalOrderedSequence<TSource, K> (
                                 source, keySelector, (comparer ?? Comparer<K>.Default), false, null);
                 }
                 
@@ -2393,23 +2385,23 @@ namespace System.Linq
                 #region OrderByDescending
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> OrderByDescending<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector)
+                public static OrderedSequence<TSource> OrderByDescending<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return OrderByDescending<T, K> (source, keySelector, null);
+                        return OrderByDescending<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> OrderByDescending<T, K> (
-                        IEnumerable<T> source,
-                        Func<T, K> keySelector,
+                public static OrderedSequence<TSource> OrderByDescending<TSource, K> (
+                        IQueryable<TSource> source,
+                        Func<TSource, K> keySelector,
                         IComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        return new InternalOrderedSequence<T, K> (
+                        return new InternalOrderedSequence<TSource, K> (
                                 source, keySelector, (comparer ?? Comparer<K>.Default), true, null);
                 }
                 
@@ -2418,23 +2410,23 @@ namespace System.Linq
                 #region ThenBy
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> ThenBy<T, K> (
-                        OrderedSequence<T> source,
-                        Func<T, K> keySelector)
+                public static OrderedSequence<TSource> ThenBy<TSource, K> (
+                        OrderedSequence<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return ThenBy<T, K> (source, keySelector, null);
+                        return ThenBy<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> ThenBy<T, K> (
-                        OrderedSequence<T> source,
-                        Func<T, K> keySelector,
+                public static OrderedSequence<TSource> ThenBy<TSource, K> (
+                        OrderedSequence<TSource> source,
+                        Func<TSource, K> keySelector,
                         IComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        return new InternalOrderedSequence<T, K> (
+                        return new InternalOrderedSequence<TSource, K> (
                                 source, keySelector, (comparer ?? Comparer<K>.Default), false, source);
                 }
                 
@@ -2443,23 +2435,23 @@ namespace System.Linq
                 #region ThenByDescending
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> ThenByDescending<T, K> (
-                        OrderedSequence<T> source,
-                        Func<T, K> keySelector)
+                public static OrderedSequence<TSource> ThenByDescending<TSource, K> (
+                        OrderedSequence<TSource> source,
+                        Func<TSource, K> keySelector)
                 {
-                        return ThenByDescending<T, K> (source, keySelector, null);
+                        return ThenByDescending<TSource, K> (source, keySelector, null);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static OrderedSequence<T> ThenByDescending<T, K> (
-                        OrderedSequence<T> source,
-                        Func<T, K> keySelector,
+                public static OrderedSequence<TSource> ThenByDescending<TSource, K> (
+                        OrderedSequence<TSource> source,
+                        Func<TSource, K> keySelector,
                         IComparer<K> comparer)
                 {
                         if (source == null || keySelector == null)
                                 throw new ArgumentNullException ();
                         
-                        return new InternalOrderedSequence<T, K> (
+                        return new InternalOrderedSequence<TSource, K> (
                                 source, keySelector, (comparer ?? Comparer<K>.Default), true, source);
                 }
                 
@@ -2468,15 +2460,16 @@ namespace System.Linq
                 #region Reverse
 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Reverse<T> (
-                        IEnumerable<T> source)
+                public static IQueryable<TSource> Reverse<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        List<T> list = new List<T> (source);
-                        list.Reverse ();
-                        return list;
+                        //List<TSource> list = new List<TSource> (source);
+                        //list.Reverse ();
+                        //return list;
+                        throw new NotImplementedException ();
                 }
                 
                 #endregion
@@ -2484,8 +2477,8 @@ namespace System.Linq
                 #region Take
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Take<T> (
-                        IEnumerable<T> source,
+                public static IEnumerable<TSource> Take<TSource> (
+                        IQueryable<TSource> source,
                         int count)
                 {
                         if (source == null)
@@ -2495,7 +2488,7 @@ namespace System.Linq
                                 yield break;
                         else {
                                 int counter = 0;
-                                foreach (T element in source) {
+                                foreach (TSource element in source) {
                                         yield return element;
                                         counter++;
                                         if (counter == count)
@@ -2509,8 +2502,8 @@ namespace System.Linq
                 #region Skip
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Skip<T> (
-                        IEnumerable<T> source,
+                public static IEnumerable<TSource> Skip<TSource> (
+                        IQueryable<TSource> source,
                         int count)
                 {
                         if (source == null)
@@ -2521,7 +2514,7 @@ namespace System.Linq
                         if (count <= 0)
                                 yield = true;
 
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (yield)
                                         yield return element;
                                 else {
@@ -2537,14 +2530,14 @@ namespace System.Linq
                 #region TakeWhile
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> TakeWhile<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static IEnumerable<TSource> TakeWhile<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (predicate (element))
                                         yield return element;
                                 else
@@ -2553,15 +2546,15 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> TakeWhile<T> (
-                        IEnumerable<T> source,
-                        Func<T, int, bool> predicate)
+                public static IEnumerable<TSource> TakeWhile<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
                         int counter = 0;
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                         {
                                 if (predicate (element, counter))
                                         yield return element;
@@ -2576,16 +2569,16 @@ namespace System.Linq
                 #region SkipWhile
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> SkipWhile<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static IEnumerable<TSource> SkipWhile<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
                         bool yield = false;
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (yield)
                                         yield return element;
                                 else
@@ -2597,9 +2590,9 @@ namespace System.Linq
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> SkipWhile<T> (
-                        IEnumerable<T> source,
-                        Func<T, int, bool> predicate)
+                public static IEnumerable<TSource> SkipWhile<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException();
@@ -2607,7 +2600,7 @@ namespace System.Linq
                         int counter = 0;
                         bool yield = false;
                         
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (yield)
                                         yield return element;
                                 else
@@ -2624,27 +2617,27 @@ namespace System.Linq
                 #region Select
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<S> Select<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, S> selector)
+                public static IEnumerable<TResult> Select<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, TResult> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 yield return selector (element);
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<S> Select<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, int, S> selector)
+                public static IEnumerable<TResult> Select<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int, TResult> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int counter = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 yield return selector (element, counter);
                                 counter++;
                         }
@@ -2655,29 +2648,29 @@ namespace System.Linq
                 #region SelectMany
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<S> SelectMany<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, IEnumerable<S>> selector)
+                public static IEnumerable<TResult> SelectMany<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, IQueryable<TResult>> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
-                                foreach (S item in selector (element))
+                        foreach (TSource element in source)
+                                foreach (TResult item in selector (element))
                                         yield return item;
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<S> SelectMany<T, S> (
-                        IEnumerable<T> source,
-                        Func<T, int, IEnumerable<S>> selector)
+                public static IEnumerable<TResult> SelectMany<TSource, TResult> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int, IQueryable<TResult>> selector)
                 {
                         if (source == null || selector == null)
                                 throw new ArgumentNullException ();
                         
                         int counter = 0;
-                        foreach (T element in source) {
-                                foreach (S item in selector (element, counter))
+                        foreach (TSource element in source) {
+                                foreach (TResult item in selector (element, counter))
                                         yield return item;
                                 counter++;
                         }
@@ -2688,26 +2681,26 @@ namespace System.Linq
                 #region Any
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static bool Any<T> (
-                        IEnumerable<T> source)
+                public static bool Any<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 return true;
                         return false;
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static bool Any<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static bool Any<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 if (predicate(element))
                                         return true;
                         return false;
@@ -2718,14 +2711,14 @@ namespace System.Linq
                 #region All
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static bool All<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static bool All<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 if (!predicate(element))
                                         return false;
                         return true;
@@ -2736,16 +2729,16 @@ namespace System.Linq
                 #region Contains
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static bool Contains<T> (
-                        IEnumerable<T> source,
-                        T value)
+                public static bool Contains<TSource> (
+                        IQueryable<TSource> source,
+                        TSource value)
                 {
-                        if (source is ICollection<T>) {
-                                ICollection<T> collection = (ICollection<T>)source;
+                        if (source is ICollection<TSource>) {
+                                ICollection<TSource> collection = (ICollection<TSource>)source;
                                 return collection.Contains(value);
                         }
                         else {
-                                foreach (T element in source)
+                                foreach (TSource element in source)
                                         if (Equals(element, value))
                                                 return true;
                                 return false;
@@ -2757,28 +2750,28 @@ namespace System.Linq
                 #region Where
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Where<T> (
-                        IEnumerable<T> source,
-                        Func<T, bool> predicate)
+                public static IEnumerable<TSource> Where<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
                         
-                        foreach (T element in source)
+                        foreach (TSource element in source)
                                 if (predicate (element))
                                         yield return element;
                 }
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Where<T> (
-                        IEnumerable<T> source,
-                        Func<T, int, bool> predicate)
+                public static IEnumerable<TSource> Where<TSource> (
+                        IQueryable<TSource> source,
+                        Func<TSource, int, bool> predicate)
                 {
                         if (source == null || predicate == null)
                                 throw new ArgumentNullException ();
 
                         int counter = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (predicate (element, counter))
                                         yield return element;
                                 counter++;
@@ -2789,67 +2782,67 @@ namespace System.Linq
 
                 #region Distinct
                 
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Distinct<T> (
-                        IEnumerable<T> source)
+/*                [System.Runtime.CompilerServices.Extension]
+                public static IQueryable<TSource> Distinct<TSource> (
+                        IQueryable<TSource> source)
                 {
                         if (source == null)
                                 throw new ArgumentNullException ();
                         
-                        List<T> items = new List<T> ();
-                        foreach (T element in source) {
+                        List<TSource> items = new List<TSource> ();
+                        foreach (TSource element in source) {
                                 if (IndexOf (items, element) == -1) {
                                         items.Add (element);
                                         yield return element;
                                 }
                         }
-                }
+                }*/
                 
                 #endregion
                 
                 #region Union
                 
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Union<T> (
-                        IEnumerable<T> first,
-                        IEnumerable<T> second)
+/*                [System.Runtime.CompilerServices.Extension]
+                public static IQueryable<TSource> Union<TSource> (
+                        IQueryable<TSource> first,
+                        IQueryable<TSource> second)
                 {
                         if (first == null || second == null)
                                 throw new ArgumentNullException ();
                         
-                        List<T> items = new List<T> ();
-                        foreach (T element in first)  {
+                        List<TSource> items = new List<TSource> ();
+                        foreach (TSource element in first)  {
                                 if (IndexOf (items, element) == -1) {
                                         items.Add (element);
                                         yield return element;
                                 }
                         }
-                        foreach (T element in second)  {
+                        foreach (TSource element in second)  {
                                 if (IndexOf (items, element) == -1) {
                                         items.Add (element);
                                         yield return element;
                                 }
                         }
-                }
+                }*/
                 
                 #endregion
                 
                 #region Intersect
                 
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Intersect<T> (
-                        IEnumerable<T> first,
-                        IEnumerable<T> second)
+/*                [System.Runtime.CompilerServices.Extension]
+                public static IQueryable<TSource> Intersect<TSource> (
+                        IQueryable<TSource> first,
+                        IQueryable<TSource> second)
                 {
                         if (first == null || second == null)
                                 throw new ArgumentNullException ();
 
-                        List<T> items = new List<T> (Distinct (first));
+                        List<TSource> items = new List<TSource> (Distinct (first));
                         bool[] marked = new bool [items.Count];
                         for (int i = 0; i < marked.Length; i++)
                                 marked[i] = false;
                         
-                        foreach (T element in second) {
+                        foreach (TSource element in second) {
                                 int index = IndexOf (items, element);
                                 if (index != -1)
                                         marked [index] = true;
@@ -2858,43 +2851,43 @@ namespace System.Linq
                                 if (marked [i])
                                         yield return items [i];
                         }
-                }
+                }*/
                 
                 #endregion
                 
                 #region Except
                 
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<T> Except<T> (
-                        IEnumerable<T> first,
-                        IEnumerable<T> second)
+                /*[System.Runtime.CompilerServices.Extension]
+                public static IQueryable<TSource> Except<TSource> (
+                        IQueryable<TSource> first,
+                        IQueryable<TSource> second)
                 {
                         if (first == null || second == null)
                                 throw new ArgumentNullException ();
 
-                        List<T> items = new List<T> (Distinct (first));
-                        foreach (T element in second) {
+                        List<TSource> items = new List<TSource> (Distinct (first));
+                        foreach (TSource element in second) {
                                 int index = IndexOf (items, element);
                                 if (index == -1)
                                         items.Add (element);
                                 else
                                         items.RemoveAt (index);
                         }
-                        foreach (T item in items)
+                        foreach (TSource item in items)
                                 yield return item;
-                }
+                }*/
                 
                 #endregion
                 
                 # region Join
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<V> Join<T, U, K, V> (
-                        IEnumerable<T> outer,
-                        IEnumerable<U> inner,
-                        Func<T, K> outerKeySelector,
+                public static IEnumerable<V> Join<TSource, U, K, V> (
+                        IQueryable<TSource> outer,
+                        IQueryable<U> inner,
+                        Func<TSource, K> outerKeySelector,
                         Func<U, K> innerKeySelector,
-                        Func<T, U, V> resultSelector)
+                        Func<TSource, U, V> resultSelector)
                 {
                         if (outer == null || inner == null || outerKeySelector == null || 
                                 innerKeySelector == null || resultSelector == null)
@@ -2910,7 +2903,7 @@ namespace System.Linq
                                 innerKeys[innerKey].Add (element);
                         }*/
                         
-                        foreach (T element in outer)
+                        foreach (TSource element in outer)
                         {
                                 K outerKey = outerKeySelector (element);
                                 if (innerKeys.Contains (outerKey))
@@ -2925,13 +2918,13 @@ namespace System.Linq
                 
                 # region GroupJoin
                 
-                [System.Runtime.CompilerServices.Extension]
-                public static IEnumerable<V> GroupJoin<T, U, K, V> (
-                        IEnumerable<T> outer,
-                        IEnumerable<U> inner,
-                        Func<T, K> outerKeySelector,
+                /*[System.Runtime.CompilerServices.Extension]
+                public static IQueryable<V> GroupJoin<TSource, U, K, V> (
+                        IQueryable<TSource> outer,
+                        IQueryable<U> inner,
+                        Func<TSource, K> outerKeySelector,
                         Func<U, K> innerKeySelector,
-                        Func<T, IEnumerable<U>, V> resultSelector)
+                        Func<TSource, IQueryable<U>, V> resultSelector)
                 {
                         if (outer == null || inner == null || outerKeySelector == null || 
                                 innerKeySelector == null || resultSelector == null)
@@ -2947,13 +2940,13 @@ namespace System.Linq
                                 innerKeys[innerKey].Add (element);
                         }*/
                         
-                        foreach (T element in outer)
+                        /*foreach (TSource element in outer)
                         {
                                 K outerKey = outerKeySelector (element);
                                 if (innerKeys.Contains (outerKey))
                                         yield return resultSelector (element, innerKeys [outerKey]);
                         }
-                }
+                }*/
                 
                 # endregion
 
@@ -2964,10 +2957,10 @@ namespace System.Linq
                 #region Compare
                 
                 [System.Runtime.CompilerServices.Extension]
-                private static bool Equals<T> (
-                        T first, T second)
+                private static bool Equals<TSource> (
+                        TSource first, TSource second)
                 {
-                        // Mostly, values in Enumerable<T> 
+                        // Mostly, values in Enumerable<TSource> 
                         // sequences need to be compared using
                         // Equals and GetHashCode
                         
@@ -2983,12 +2976,12 @@ namespace System.Linq
                 #region IndexOf
                 
                 [System.Runtime.CompilerServices.Extension]
-                public static int IndexOf<T>(
-                        IEnumerable<T> source,
-                        T item)
+                public static int IndexOf<TSource>(
+                        IQueryable<TSource> source,
+                        TSource item)
                 {
                         int counter = 0;
-                        foreach (T element in source) {
+                        foreach (TSource element in source) {
                                 if (Equals(element, item))
                                         return counter;
                                 counter++;

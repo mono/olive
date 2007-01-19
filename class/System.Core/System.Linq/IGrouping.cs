@@ -25,8 +25,8 @@ using System.Collections.Generic;
 
 namespace System.Linq
 {
-        public interface IGrouping<K, T> : IEnumerable<T>
+        public interface IGrouping<TKey, TElement> : IEnumerable<TElement>
         {
-                K Key { get; }
+                TKey Key { get; }
         }
 }

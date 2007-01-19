@@ -26,32 +26,32 @@ using System.Collections.Generic;
 
 namespace System.Linq
 {
-        public class Lookup<K, T> : IEnumerable<IGrouping<K, T>>
+        public class Lookup<TKey, TElement> : IEnumerable<IGrouping<TKey, TElement>>
         {
-                Dictionary<K, IGrouping<K, T>> groups;
+                Dictionary<TKey, IGrouping<TKey, TElement>> groups;
                 
-                internal Lookup (Dictionary<K, List<T>> groups)
+                internal Lookup (Dictionary<TKey, List<TElement>> groups)
                 {
-                        this.groups = new Dictionary<K, IGrouping<K, T>> ();
-                        foreach (KeyValuePair<K, List<T>> group in groups)
-                                this.groups.Add (group.Key, new Grouping<K, T>(group.Key, group.Value));
+                        this.groups = new Dictionary<TKey, IGrouping<TKey, TElement>> ();
+                        foreach (KeyValuePair<TKey, List<TElement>> group in groups)
+                                this.groups.Add (group.Key, new Grouping<TKey, TElement>(group.Key, group.Value));
                 }
                 
                 public int Count {
                         get { return groups.Count; }
                 }
                 
-                public bool Contains (K key)
+                public bool Contains (TKey key)
                 {
                         return groups.ContainsKey (key);
                 }
                 
-                public IEnumerable<T> this [K key]
+                public IEnumerable<TElement> this [TKey key]
                 {
                         get { return groups[key]; }
                 }
                 
-                public IEnumerator<IGrouping<K, T>> GetEnumerator ()
+                public IEnumerator<IGrouping<TKey, TElement>> GetEnumerator ()
                 {
                         return groups.Values.GetEnumerator ();
                 }

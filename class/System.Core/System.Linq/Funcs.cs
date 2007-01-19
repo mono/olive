@@ -11,7 +11,7 @@
 // 
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
-// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// MERCHANTABILITY, FITNESS FOR TArg PARTICULAR PURPOSE AND
 // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
@@ -20,13 +20,11 @@
 //        Alejandro Serrano "Serras" (trupill@yahoo.es)
 //
 
-using System;
-
 namespace System.Linq
 {
-        public delegate T Func<T> ();
-        public delegate T Func<A0, T> (A0 arg0);
-        public delegate T Func<A0, A1, T> (A0 arg0, A1 arg1);
-        public delegate T Func<A0, A1, A2, T> (A0 arg0, A1 arg1, A2 arg2);
-        public delegate T Func<A0, A1, A2, A3, T> (A0 arg0, A1 arg1, A2 arg2, A3 arg3);
+        public delegate TResult Func<TResult> ();
+        public delegate TResult Func<TArg0, TResult> (TArg0 arg0);
+        public delegate TResult Func<TArg0, TArg1, TResult> (TArg0 arg0, TArg1 arg1);
+        public delegate TResult Func<TArg0, TArg1, TArg2, TResult> (TArg0 arg0, TArg1 arg1, TArg2 arg2);
+        public delegate TResult Func<TArg0, TArg1, TArg2, TArg3, TResult> (TArg0 arg0, TArg1 arg1, TArg2 arg2, TArg3 arg3);
 }

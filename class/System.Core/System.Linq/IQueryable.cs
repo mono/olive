@@ -18,19 +18,20 @@
 //
 // Authors:
 //        Alejandro Serrano "Serras" (trupill@yahoo.es)
+//        Marek Safar (marek.safar@gmail.com)
 //
 
 using System;
-using System.Collections.Generic;
-// using System.Expressions;
+using System.Collections;
+using System.Linq.Expressions;
 
 namespace System.Linq
 {
-        /*public interface IQueryable : IEnumerable
+        public interface IQueryable : IEnumerable
         {
                 IQueryable CreateQuery (Expression expression);
                 object Execute (Expression expression);
                 Type ElementType { get; }
                 Expression Expression { get; }
-        }*/
+        }
 }
