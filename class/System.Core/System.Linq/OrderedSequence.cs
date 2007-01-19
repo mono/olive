@@ -24,41 +24,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Query
+namespace System.Linq
 {
-        public class Lookup<K, T> : IEnumerable<IGrouping<K, T>>
+        public abstract class OrderedSequence<T> : IEnumerable<T>
         {
-                Dictionary<K, IGrouping<K, T>> groups;
-                
-                internal Lookup (Dictionary<K, List<T>> groups)
+                public IEnumerator<T> GetEnumerator ()
                 {
-                        this.groups = new Dictionary<K, IGrouping<K, T>> ();
-                        foreach (KeyValuePair<K, List<T>> group in groups)
-                                this.groups.Add (group.Key, new Grouping<K, T>(group.Key, group.Value));
-                }
-                
-                public int Count {
-                        get { return groups.Count; }
-                }
-                
-                public bool Contains (K key)
-                {
-                        return groups.ContainsKey (key);
-                }
-                
-                public IEnumerable<T> this [K key]
-                {
-                        get { return groups[key]; }
-                }
-                
-                public IEnumerator<IGrouping<K, T>> GetEnumerator ()
-                {
-                        return groups.Values.GetEnumerator ();
+                        return EnumeratorImplementation ();
                 }
                 
                 IEnumerator IEnumerable.GetEnumerator ()
                 {
-                        return groups.Values.GetEnumerator ();
+                        return EnumeratorImplementation ();
                 }
+                
+                protected abstract IEnumerator<T> EnumeratorImplementation ();
+                
+                protected internal abstract IEnumerable<T> Sort (IEnumerable<T> previousSource);
         }
 }

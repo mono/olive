@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace System.Query
+namespace System.Linq
 {
         internal class InternalOrderedSequence<T, K> : OrderedSequence<T>
         {

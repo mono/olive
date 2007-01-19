@@ -17,15 +17,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //
 // Authors:
-//        Marek Safar (marek.safar@seznam.cz)
+//        Alejandro Serrano "Serras" (trupill@yahoo.es)
 //
 
 using System;
 using System.Collections.Generic;
+// using System.Expressions;
 
-namespace System.Expressions
+namespace System.Linq
 {
-        public class ParameterExpression
+        /*public interface IQueryable : IEnumerable
         {
-        }
+                IQueryable CreateQuery (Expression expression);
+                object Execute (Expression expression);
+                Type ElementType { get; }
+                Expression Expression { get; }
+        }*/
 }

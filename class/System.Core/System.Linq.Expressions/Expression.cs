@@ -17,16 +17,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 //
 // Authors:
-//        Alejandro Serrano "Serras" (trupill@yahoo.es)
+//        Marek Safar (marek.safar@seznam.cz)
 //
 
 using System;
 using System.Collections.Generic;
 
-namespace System.Query
+namespace System.Linq.Expressions
 {
-        public interface IGrouping<K, T> : IEnumerable<T>
+        public abstract class Expression
         {
-                K Key { get; }
         }
 }

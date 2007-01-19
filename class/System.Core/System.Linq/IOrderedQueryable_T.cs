@@ -22,15 +22,10 @@
 
 using System;
 using System.Collections.Generic;
-// using System.Expressions;
 
-namespace System.Query
+namespace System.Linq
 {
-        /*public interface IQueryable : IEnumerable
+        public interface IOrderedQueryable<T> : IOrderedQueryable, IEnumerable<T> //, IQueryable<T>
         {
-                IQueryable CreateQuery (Expression expression);
-                object Execute (Expression expression);
-                Type ElementType { get; }
-                Expression Expression { get; }
-        }*/
+        }
 }

@@ -2,8 +2,8 @@ using System;
 using System.Reflection;
 using System.Runtime.CompilerServices;
 
-[assembly: AssemblyTitle("System.Query")]
-[assembly: AssemblyDescription("System.Query.dll")]
+[assembly: AssemblyTitle("System.Core.dll")]
+[assembly: AssemblyDescription("System.Core.dll")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Mono Development Team")]
 [assembly: AssemblyProduct("System.Query")]

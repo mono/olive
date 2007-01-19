@@ -24,22 +24,32 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace System.Query
+namespace System.Linq
 {
-        public abstract class OrderedSequence<T> : IEnumerable<T>
+        public class Grouping<K, T> : IGrouping<K, T>
         {
+                K key;
+                IEnumerable<T> group;
+                
+                public Grouping (K key, IEnumerable<T> group)
+                {
+                        this.group = group;
+                        this.key = key;
+                }
+                
+                public K Key {
+                        get { return key; }
+                        set { key = value; }
+                }
+                
                 public IEnumerator<T> GetEnumerator ()
                 {
-                        return EnumeratorImplementation ();
+                        return group.GetEnumerator ();
                 }
                 
                 IEnumerator IEnumerable.GetEnumerator ()
                 {
-                        return EnumeratorImplementation ();
+                        return group.GetEnumerator ();
                 }
-                
-                protected abstract IEnumerator<T> EnumeratorImplementation ();
-                
-                protected internal abstract IEnumerable<T> Sort (IEnumerable<T> previousSource);
         }
 }

@@ -23,7 +23,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace System.Query
+namespace System.Linq
 {
         [System.Runtime.CompilerServices.Extension]
         public static class Sequence
