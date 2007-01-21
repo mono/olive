@@ -72,7 +72,6 @@ namespace System.Windows.Threading {
 		internal void Invoke ()
 		{
 			status = DispatcherOperationStatus.Executing;
-			Console.WriteLine ("delegate_args={0}", delegate_args);
 			delegate_method.DynamicInvoke (delegate_args);
 				
 			status = DispatcherOperationStatus.Completed;

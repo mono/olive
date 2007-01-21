@@ -98,7 +98,7 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			DispatcherOperation op = new DispatcherOperation (this, priority, method, null);
+			DispatcherOperation op = new DispatcherOperation (this, priority, method);
 			Queue (priority, op);
 			Run ();
 			
