@@ -1,0 +1,19 @@
+2007-01-20  Miguel de Icaza  <miguel@novell.com>
+
+	* DispatcherOperation.cs, DispatcherOperationStatus.cs: Add new
+	files. 
+
+	* Dispatcher.cs: Make our class `Task' internal, so we can pass
+	that to DispatcherOperation.
+
+	* Dispatcher.cs: Queue will now queue
+	locally (if same thread) or post to the dispatcher queue if
+	invoked from a different thread. 
+
+2007-01-13  Miguel de Icaza  <miguel@novell.com>
+
+	* Dispatcher.cs: Initially I thought this
+	was a stroke of genius.   Looking at the actual results, it does
+	not seem as brilliant as I had hoped.
+
+

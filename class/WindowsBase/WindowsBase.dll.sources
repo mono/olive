@@ -10,6 +10,8 @@ System.Windows/RoutedEvent.cs
 System.Windows.Threading/Dispatcher.cs
 System.Windows.Threading/DispatcherFrame.cs
 System.Windows.Threading/DispatcherObject.cs
+System.Windows.Threading/DispatcherOperation.cs
+System.Windows.Threading/DispatcherOperationStatus.cs
 System.Windows.Threading/DispatcherPriority.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs

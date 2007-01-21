@@ -283,26 +283,27 @@ namespace System.Windows.Threading {
 		}
 
 		
-		class Task {
-			public Delegate delegate_method;
-			public object [] args;
-			
-			public Task (Delegate d, object arg)
-			{
-				delegate_method = d;
-				this.args = new object [1];
-				this.args [0] = arg;
-			}
-
-			public Task (Delegate d, object arg, object [] args)
-			{
-				delegate_method = d;
-				this.args = new object [args.Length + 1];
-				this.args [0] = arg;
-				Array.Copy (args, 1, this.args, 0, args.Length);
-			}
-		}
-
 		public event EventHandler ShutdownStarted;
 	}
+
+	internal class Task {
+		public Delegate delegate_method;
+		public object [] args;
+		
+		public Task (Delegate d, object arg)
+		{
+			delegate_method = d;
+			this.args = new object [1];
+			this.args [0] = arg;
+		}
+		
+		public Task (Delegate d, object arg, object [] args)
+		{
+			delegate_method = d;
+			this.args = new object [args.Length + 1];
+			this.args [0] = arg;
+			Array.Copy (args, 1, this.args, 0, args.Length);
+		}
+	}
+	
 }

@@ -1,15 +1,3 @@
-2007-01-20  Miguel de Icaza  <miguel@novell.com>
-
-	* System.Windows.Threading/Dispatcher.cs: Queue will now queue
-	locally (if same thread) or post to the dispatcher queue if
-	invoked from a different thread. 
-
-2007-01-13  Miguel de Icaza  <miguel@novell.com>
-
-	* System.Windows.Threading/Dispatcher.cs: Initially I thought this
-	was a stroke of genius.   Looking at the actual results, it does
-	not seem as brilliant as I had hoped.
-
 2005-07-24  Iain McCoy  <iain@mccoy.id.au>
 
 	* Test/AttachedProperties.cs: made LocalValueEnumerator test not
