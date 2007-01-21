@@ -100,7 +100,7 @@ namespace System.Windows.Threading {
 
 			DispatcherOperation op = new DispatcherOperation (this, priority, method);
 			Queue (priority, op);
-			Run ();
+			PushFrame (new DispatcherFrame ());
 			
 			throw new NotImplementedException ();
 		}
