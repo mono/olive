@@ -1,3 +1,9 @@
+2007-01-20  Miguel de Icaza  <miguel@novell.com>
+
+	* System.Windows.Threading/Dispatcher.cs: Queue will now queue
+	locally (if same thread) or post to the dispatcher queue if
+	invoked from a different thread. 
+
 2007-01-13  Miguel de Icaza  <miguel@novell.com>
 
 	* System.Windows.Threading/Dispatcher.cs: Initially I thought this

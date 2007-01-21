@@ -98,9 +98,7 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			VerifyAccess ();
-
-			Queue (priority, method);
+			Queue (priority, new Task (method, null));
 
 			throw new NotImplementedException ();
 		}
@@ -113,8 +111,6 @@ namespace System.Windows.Threading {
 				throw new ArgumentException ("priority can not be inactive", "priority");
 			if (method == null)
 				throw new ArgumentNullException ("method");
-
-			VerifyAccess ();
 
 			Queue (priority, new Task (method, arg));
 
@@ -130,30 +126,27 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			VerifyAccess ();
-			
-			Queue (priority, new Task (method, arg));
+			Queue (priority, new Task (method, arg, args));
 
 			throw new NotImplementedException ();
 		}
 
 		void Queue (DispatcherPriority priority, object x)
 		{
-			int p = ((int) priority);
-			Queue q = priority_queues [p];
-			int flag = 1 << p;
-			q.Enqueue (x);
-			queue_bits |= flag;
-		}
-
-		void QueueAsync (DispatcherPriority priority, object x)
-		{
-			lock (async_tasks){
-				want_async_lookup = true;
-				async_tasks.Enqueue (priority);
-				async_tasks.Enqueue (x);
+			if (CheckAccess ()){
+				int p = ((int) priority);
+				Queue q = priority_queues [p];
+				int flag = 1 << p;
+				q.Enqueue (x);
+				queue_bits |= flag;
+			} else {
+				lock (async_tasks){
+					want_async_lookup = true;
+					async_tasks.Enqueue (priority);
+					async_tasks.Enqueue (x);
+				}
+				wait.Reset ();
 			}
-			wait.Reset ();
 		}
 		
 		public static Dispatcher CurrentDispatcher {
