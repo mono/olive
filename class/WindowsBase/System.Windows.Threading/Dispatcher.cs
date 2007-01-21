@@ -98,8 +98,10 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			Queue (priority, new Task (method, null));
-
+			DispatcherOperation op = new DispatcherOperation (this, priority, method, null);
+			Queue (priority, op);
+			Run ();
+			
 			throw new NotImplementedException ();
 		}
 
@@ -112,8 +114,7 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			Queue (priority, new Task (method, arg));
-
+			Queue (priority, new DispatcherOperation (this, priority, method, arg));
 			throw new NotImplementedException ();
 		}
 		
@@ -126,7 +127,7 @@ namespace System.Windows.Threading {
 			if (method == null)
 				throw new ArgumentNullException ("method");
 
-			Queue (priority, new Task (method, arg, args));
+			Queue (priority, new DispatcherOperation (this, priority, method, arg, args));
 
 			throw new NotImplementedException ();
 		}
@@ -142,7 +143,6 @@ namespace System.Windows.Threading {
 			} else {
 				lock (async_tasks){
 					want_async_lookup = true;
-					async_tasks.Enqueue (priority);
 					async_tasks.Enqueue (x);
 				}
 				wait.Reset ();
@@ -181,22 +181,6 @@ namespace System.Windows.Threading {
 			}
 		}
 
-		//
-		// Invokes a task that has been pushed into the queue, the tasks
-		// are delegates or "Tasks" (we use delegates directly to save
-		// memory, no need to create tasks when delegates are parameterless.
-		//
-		void InvokeTask (object x)
-		{
-			Task t = x as Task;
-			if (t != null){
-				t.delegate_method.DynamicInvoke (t.args);
-			} else {
-				Delegate d = (Delegate) x;
-				d.DynamicInvoke (null);
-			}
-		}
-
 		public static void Run ()
 		{
 			PushFrame (main_execution_frame);
@@ -229,18 +213,17 @@ namespace System.Windows.Threading {
 					for (int i = TOP_PRIO; i > 0 && queue_bits != 0; i--){
 						int current_bit = queue_bits & (1 << i);
 						if (current_bit != 0){
-							object task;
 							Queue q = priority_queues [i];
 
 							do {
-								task = q.Dequeue ();
+								DispatcherOperation task = (DispatcherOperation) q.Dequeue ();
+								task.Invoke ();
 
 								// if we are done with this queue, leave.
 								if (q.Count == 0){
 									queue_bits &= ~(1 << i);
 									break;
 								}
-								InvokeTask (q);
 
 								//
 								// If a higher-priority task comes in, go do that
@@ -254,9 +237,10 @@ namespace System.Windows.Threading {
 				wait.WaitOne ();
 				if (want_async_lookup){
 					lock (async_tasks){
-						DispatcherPriority p = (DispatcherPriority) async_tasks.Dequeue ();
-						object task = async_tasks.Dequeue ();
-						Queue (p, task);
+						DispatcherOperation op;
+
+						while ((op = (DispatcherOperation) async_tasks.Dequeue ()) != null)
+							Queue (op.Priority, op);
 						want_async_lookup = false;
 					}
 				}
@@ -285,25 +269,4 @@ namespace System.Windows.Threading {
 		
 		public event EventHandler ShutdownStarted;
 	}
-
-	internal class Task {
-		public Delegate delegate_method;
-		public object [] args;
-		
-		public Task (Delegate d, object arg)
-		{
-			delegate_method = d;
-			this.args = new object [1];
-			this.args [0] = arg;
-		}
-		
-		public Task (Delegate d, object arg, object [] args)
-		{
-			delegate_method = d;
-			this.args = new object [args.Length + 1];
-			this.args [0] = arg;
-			Array.Copy (args, 1, this.args, 0, args.Length);
-		}
-	}
-	
 }

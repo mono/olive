@@ -1,5 +1,11 @@
 2007-01-20  Miguel de Icaza  <miguel@novell.com>
 
+	* Dispatcher.cs: Move all tasks, not only the first one from the
+	async queue into the proper priority queues.
+
+	Eliminate the `Task' class, it is mostly redundant, instead move
+	all the data into DispatcherOperation.
+	
 	* DispatcherOperation.cs, DispatcherOperationStatus.cs: Add new
 	files. 
 

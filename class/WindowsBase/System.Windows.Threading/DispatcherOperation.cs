@@ -35,17 +35,52 @@ namespace System.Windows.Threading {
 		DispatcherOperationStatus status;
 		DispatcherPriority priority;
 		Dispatcher dispatcher;
-		Task task;
 		object result;
-		
-		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio, Task t)
+		Delegate delegate_method;
+		object [] delegate_args;
+
+		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio)
 		{
 			dispatcher = dis;
 			priority = prio;
 			status = DispatcherOperationStatus.Pending;
-			task = t;
 		}
-	
+		
+		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio, Delegate d)
+			: this (dis, prio)
+		{
+			delegate_method = d;
+		}
+
+		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio, Delegate d, object arg)
+			: this (dis, prio)
+		{
+			delegate_method = d;
+			delegate_args = new object [1];
+			delegate_args [0] = arg;
+		}
+
+		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio, Delegate d, object arg, object [] args)
+			: this (dis, prio)
+		{
+			delegate_method = d;
+			delegate_args = new object [args.Length + 1];
+			delegate_args [0] = arg;
+			Array.Copy (args, 1, delegate_args, 0, args.Length);
+		}
+
+		internal void Invoke ()
+		{
+			status = DispatcherOperationStatus.Executing;
+			Console.WriteLine ("delegate_args={0}", delegate_args);
+			delegate_method.DynamicInvoke (delegate_args);
+				
+			status = DispatcherOperationStatus.Completed;
+
+			if (Completed != null)
+				Completed (this, EventArgs.Empty);
+		}
+		
 		public bool Abort ()
 		{
 			throw new NotImplementedException ();
@@ -96,5 +131,6 @@ namespace System.Windows.Threading {
 		}
 		
 		public event EventHandler Aborted;
-		public event EventHandler Completed;	}
+		public event EventHandler Completed;
+	}
 }
