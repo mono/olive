@@ -43,7 +43,10 @@ namespace System.Windows.Threading {
 		{
 			dispatcher = dis;
 			priority = prio;
-			status = DispatcherOperationStatus.Pending;
+			if (Dispatcher.HasShutdownFinished)
+				status = DispatcherOperationStatus.Aborted;
+			else
+				status = DispatcherOperationStatus.Pending;
 		}
 		
 		internal DispatcherOperation (Dispatcher dis, DispatcherPriority prio, Delegate d)
@@ -89,6 +92,10 @@ namespace System.Windows.Threading {
 			get {
 				return status;
 			}
+
+			internal set {
+				status = value;
+			}
 		}
 
 		public Dispatcher Dispatcher {
@@ -103,7 +110,11 @@ namespace System.Windows.Threading {
 			}
 
 			set {
-				priority = value;
+				if (priority != value){
+					DispatcherPriority old = priority;
+					priority = value;
+					dispatcher.Reprioritize (this, old);
+				}
 			}
 		}
 

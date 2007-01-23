@@ -1,3 +1,7 @@
+2007-01-23  Miguel de Icaza  <miguel@novell.com>
+
+	* Dispatcher.cs: Start with the Async methods.
+
 2007-01-20  Miguel de Icaza  <miguel@novell.com>
 
 	* Dispatcher.cs: Move all tasks, not only the first one from the

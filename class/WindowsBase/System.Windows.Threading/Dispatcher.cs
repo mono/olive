@@ -1,19 +1,28 @@
+// TODO:
+//    DispatcherObject returned by BeginInvoke must allow:
+//       * Reprioritization
+//       * Waiting until delegate is invoked.
+//       * Removing delegate from queue
+//       * Obtaining the return value from the delegate upon return
+//       See: BeginInvoke documentation for details
 //
-// Just starting stubs, a deeper understanding is required before work
-// here can continue.
+//    Add support for disabling the dispatcher and resuming it.
+//    Add support for Waiting for new tasks to be pushed, so that we dont busy loop.
+// 
 //
 // Very confusing information about Shutdown: it states that shutdown is
 // not over, until all events are unwinded, and also states that all events
-// are aborted at that point.  Which is it?
+// are aborted at that point.  See 'Dispatcher.InvokeShutdown' docs,
+//
+// Testing reveals that 
+//     -> InvokeShutdown() stops processing, even if events are available,
+//        there is no "unwinding" of events, even of higher priority events,
+//        they are just ignored.
 //
 // The documentation for the Dispatcher family is poorly written, complete
 // sections are cut-and-pasted that add no value and the important pieces
 // like (what is a frame) is not on the APIs, but scattered everywhere else
 //
-// TODO:
-//    Add support for disabling the dispatcher and resuming it.
-//    Add support for Waiting for new tasks to be pushed, so that we dont busy loop.
-// 
 // -----------------------------------------------------------------------
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -61,7 +70,7 @@ namespace System.Windows.Threading {
 
 		const int TOP_PRIO = (int)DispatcherPriority.Send;
 		Thread base_thread;
-		Queue [] priority_queues = new Queue [TOP_PRIO];
+		Queue [] priority_queues = new Queue [TOP_PRIO+1];
 
 		Flags flags;
 		int queue_bits;
@@ -72,7 +81,7 @@ namespace System.Windows.Threading {
 		Dispatcher (Thread t)
 		{
 			base_thread = t;
-			for (int i = 1; i < (int) DispatcherPriority.Send; i++)
+			for (int i = 1; i <= (int) DispatcherPriority.Send; i++)
 				priority_queues [i] = new Queue ();
 			wait = new EventWaitHandle (false, EventResetMode.AutoReset);
 			async_tasks = new Queue ();
@@ -88,7 +97,59 @@ namespace System.Windows.Threading {
 			if (Thread.CurrentThread != base_thread)
 				throw new InvalidOperationException ("Invoked from a different thread");
 		}
+
+		public static void ValidatePriority (DispatcherPriority priority, string parameterName)
+		{
+			if (priority < DispatcherPriority.Inactive || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException (parameterName);
+		}
 		
+		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			DispatcherOperation op = new DispatcherOperation (this, priority, method);
+			Queue (priority, op);
+
+			return op;
+		}
+
+		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method, object arg)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			DispatcherOperation op = new DispatcherOperation (this, priority, method, arg);
+			
+			Queue (priority, op);
+			
+			return op;
+		}
+		
+		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method, object arg, params object [] args)
+		{
+			if (priority < 0 || priority > DispatcherPriority.Send)
+				throw new InvalidEnumArgumentException ("priority");
+			if (priority == DispatcherPriority.Inactive)
+				throw new ArgumentException ("priority can not be inactive", "priority");
+			if (method == null)
+				throw new ArgumentNullException ("method");
+
+			DispatcherOperation op = new DispatcherOperation (this, priority, method, arg, args);
+			Queue (priority, op);
+
+			return op;
+		}
+
 		public object Invoke (DispatcherPriority priority, Delegate method)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -148,6 +209,19 @@ namespace System.Windows.Threading {
 				wait.Reset ();
 			}
 		}
+
+		internal void Reprioritize (DispatcherOperation op, DispatcherPriority oldpriority)
+		{
+			if (CheckAccess ()){
+				int np = (int) op.Priority;
+				int oldp = (int) oldpriority;
+				Queue q = priority_queues [oldp];
+
+				// TODO: replace queue, with a queue that we can manipulate
+				
+			} else {
+			}
+		}
 		
 		public static Dispatcher CurrentDispatcher {
 			get {
@@ -205,6 +279,25 @@ namespace System.Windows.Threading {
 			dis.RunFrame (frame);
 		}
 
+		void PerformShutdown ()
+		{
+			EventHandler h;
+			
+			h = ShutdownStarted;
+			if (h != null)
+				h (this, new EventArgs ());
+			
+			flags |= Flags.Shutdown;
+			
+			h = ShutdownFinished;
+			if (h != null)
+				h (this, new EventArgs ());
+
+			priority_queues = null;
+			wait = null;
+			async_tasks = null;
+		}
+		
 		void RunFrame (DispatcherFrame frame)
 		{
 			bool done = false;
@@ -219,6 +312,11 @@ namespace System.Windows.Threading {
 								DispatcherOperation task = (DispatcherOperation) q.Dequeue ();
 								task.Invoke ();
 
+								if (HasShutdownStarted){
+									PerformShutdown ();
+									return;
+								}
+								
 								// if we are done with this queue, leave.
 								if (q.Count == 0){
 									queue_bits &= ~(1 << i);
@@ -259,14 +357,16 @@ namespace System.Windows.Threading {
 			}
 		}
 
+		//
+		// Do no work here, so that any events are thrown on the owning thread
+		//
 		public void InvokeShutdown ()
 		{
 			flags |= Flags.ShutdownStarted;
-			if (ShutdownStarted != null)
-				ShutdownStarted (this, new EventArgs ());
 		}
 
 		
 		public event EventHandler ShutdownStarted;
+		public event EventHandler ShutdownFinished;
 	}
 }
