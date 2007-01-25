@@ -1,3 +1,8 @@
+2007-01-25  Miguel de Icaza  <miguel@novell.com>
+
+	* Assembly/AssemblyInfo.cs: Use the right key to sign things so we
+	can test on Windows the resulting nunit tests.
+
 2005-07-24  Iain McCoy  <iain@mccoy.id.au>
 
 	* Test/AttachedProperties.cs: made LocalValueEnumerator test not

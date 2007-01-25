@@ -70,21 +70,18 @@ namespace System.Windows.Threading {
 
 		const int TOP_PRIO = (int)DispatcherPriority.Send;
 		Thread base_thread;
-		Queue [] priority_queues = new Queue [TOP_PRIO+1];
+		PokableQueue [] priority_queues = new PokableQueue [TOP_PRIO+1];
 
 		Flags flags;
 		int queue_bits;
 		EventWaitHandle wait;
-		Queue async_tasks;
-		bool want_async_lookup;
 		
 		Dispatcher (Thread t)
 		{
 			base_thread = t;
 			for (int i = 1; i <= (int) DispatcherPriority.Send; i++)
-				priority_queues [i] = new Queue ();
+				priority_queues [i] = new PokableQueue ();
 			wait = new EventWaitHandle (false, EventResetMode.AutoReset);
-			async_tasks = new Queue ();
 		}
 
 		public bool CheckAccess ()
@@ -195,32 +192,28 @@ namespace System.Windows.Threading {
 
 		void Queue (DispatcherPriority priority, object x)
 		{
-			if (CheckAccess ()){
-				int p = ((int) priority);
-				Queue q = priority_queues [p];
+			int p = ((int) priority);
+			PokableQueue q = priority_queues [p];
+			
+			lock (q){
 				int flag = 1 << p;
 				q.Enqueue (x);
 				queue_bits |= flag;
-			} else {
-				lock (async_tasks){
-					want_async_lookup = true;
-					async_tasks.Enqueue (x);
-				}
-				wait.Reset ();
 			}
+			if (Thread.CurrentThread != base_thread)
+				wait.Reset ();
 		}
 
 		internal void Reprioritize (DispatcherOperation op, DispatcherPriority oldpriority)
 		{
-			if (CheckAccess ()){
-				int np = (int) op.Priority;
-				int oldp = (int) oldpriority;
-				Queue q = priority_queues [oldp];
+			int np = (int) op.Priority;
+			int oldp = (int) oldpriority;
+			PokableQueue q = priority_queues [oldp];
 
-				// TODO: replace queue, with a queue that we can manipulate
-				
-			} else {
+			lock (q){
+				q.Remove (op);
 			}
+			Queue (op.Priority, op);
 		}
 		
 		public static Dispatcher CurrentDispatcher {
@@ -295,7 +288,6 @@ namespace System.Windows.Threading {
 
 			priority_queues = null;
 			wait = null;
-			async_tasks = null;
 		}
 		
 		void RunFrame (DispatcherFrame frame)
@@ -306,21 +298,31 @@ namespace System.Windows.Threading {
 					for (int i = TOP_PRIO; i > 0 && queue_bits != 0; i--){
 						int current_bit = queue_bits & (1 << i);
 						if (current_bit != 0){
-							Queue q = priority_queues [i];
+							PokableQueue q = priority_queues [i];
 
 							do {
-								DispatcherOperation task = (DispatcherOperation) q.Dequeue ();
+								DispatcherOperation task;
+								
+								lock (q){
+									task = (DispatcherOperation) q.Dequeue ();
+								}
+								
 								task.Invoke ();
 
+								if (!frame.Continue)
+									return;
+								
 								if (HasShutdownStarted){
 									PerformShutdown ();
 									return;
 								}
 								
 								// if we are done with this queue, leave.
-								if (q.Count == 0){
-									queue_bits &= ~(1 << i);
-									break;
+								lock (q){
+									if (q.Count == 0){
+										queue_bits &= ~(1 << i);
+										break;
+									}
 								}
 
 								//
@@ -333,15 +335,6 @@ namespace System.Windows.Threading {
 					}
 				}
 				wait.WaitOne ();
-				if (want_async_lookup){
-					lock (async_tasks){
-						DispatcherOperation op;
-
-						while ((op = (DispatcherOperation) async_tasks.Dequeue ()) != null)
-							Queue (op.Priority, op);
-						want_async_lookup = false;
-					}
-				}
 			} while (frame.Continue);
 		}
 		
@@ -368,5 +361,70 @@ namespace System.Windows.Threading {
 		
 		public event EventHandler ShutdownStarted;
 		public event EventHandler ShutdownFinished;
+	}
+
+	internal class PokableQueue {
+		const int initial_capacity = 32;
+
+		int size, head, tail;
+		object [] array;
+
+		internal PokableQueue (int capacity) 
+		{
+			array = new object [capacity];
+		}
+
+		internal PokableQueue () : this (initial_capacity)
+		{
+		}
+
+		public void Enqueue (object obj)
+		{
+                        if (size == array.Length)
+                                Grow ();
+                        array[tail] = obj;
+                        tail = (tail+1) % array.Length;
+                        size++;
+		}
+
+		public object Dequeue ()
+                {
+                        if (size < 1)
+                                throw new InvalidOperationException ();
+                        object result = array[head];
+                        array [head] = null;
+                        head = (head + 1) % array.Length;
+                        size--;
+                        return result;
+                }
+
+		void Grow () {
+                        int newc = array.Length * 2;
+                        object[] new_contents = new object[newc];
+                        array.CopyTo (new_contents, 0);
+                        array = new_contents;
+                        head = 0;
+                        tail = head + size;
+                }
+
+		public int Count {
+			get {
+				return size;
+			}
+		}
+
+		public void Remove (object obj)
+		{
+			for (int i = 0; i < size; i++){
+				if (array [(head+i) % array.Length] == obj){
+					for (int j = i; j < size-i; j++)
+						array [(head +j) % array.Length] = array [(head+j+1) % array.Length];
+					size--;
+					if (size < 0)
+						size = array.Length-1;
+					tail--;
+				}
+			}
+		}
 	}
 }
