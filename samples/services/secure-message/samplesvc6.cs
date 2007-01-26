@@ -35,7 +35,9 @@ public class Test
 		sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
 		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
 		sbe.RequireSignatureConfirmation = true;
-		//sbe.IncludeTimestamp = false;
+
+		sbe.LocalServiceSettings.DetectReplays = false;
+		sbe.IncludeTimestamp = false;
 
 		sbe.ProtectionTokenParameters =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);
@@ -44,7 +46,7 @@ public class Test
 		p.RequireDerivedKeys = false;
 		//sbe.EndpointSupportingTokenParameters.Endorsing.Add (p);
 		sbe.SetKeyDerivation (false);
-		//sbe.MessageProtectionOrder = MessageProtectionOrder.SignBeforeEncrypt;
+		sbe.MessageProtectionOrder = MessageProtectionOrder.SignBeforeEncrypt;
 		ServiceHost host = new ServiceHost (typeof (Foo));
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();

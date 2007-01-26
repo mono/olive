@@ -41,7 +41,9 @@ public class Tset
 		sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
 		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
 		sbe.RequireSignatureConfirmation = true;
-		//sbe.IncludeTimestamp = false;
+
+		sbe.LocalClientSettings.DetectReplays = false;
+		sbe.IncludeTimestamp = false;
 
 		X509SecurityTokenParameters p =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.IssuerSerial, SecurityTokenInclusionMode.AlwaysToRecipient);
@@ -50,7 +52,7 @@ public class Tset
 		sbe.ProtectionTokenParameters =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);
 		sbe.SetKeyDerivation (false);
-		//sbe.MessageProtectionOrder = MessageProtectionOrder.SignBeforeEncrypt;
+		sbe.MessageProtectionOrder = MessageProtectionOrder.SignBeforeEncrypt;
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();
 		CustomBinding binding = new CustomBinding (new XBE (), sbe, hbe);
