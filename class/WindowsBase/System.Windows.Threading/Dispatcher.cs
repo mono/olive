@@ -1,14 +1,13 @@
 // TODO:
 //    DispatcherObject returned by BeginInvoke must allow:
-//       * Reprioritization
 //       * Waiting until delegate is invoked.
-//       * Removing delegate from queue
-//       * Obtaining the return value from the delegate upon return
 //       See: BeginInvoke documentation for details
+//
+//    Implement the "Invoke" methods, they are currently not working.
 //
 //    Add support for disabling the dispatcher and resuming it.
 //    Add support for Waiting for new tasks to be pushed, so that we dont busy loop.
-// 
+//    Add support for aborting an operation (emit the hook.operationaborted too) 
 //
 // Very confusing information about Shutdown: it states that shutdown is
 // not over, until all events are unwinded, and also states that all events
@@ -67,14 +66,29 @@ namespace System.Windows.Threading {
 		static Dictionary<Thread, Dispatcher> dispatchers = new Dictionary<Thread, Dispatcher> ();
 		static object olock = new object ();
 		static DispatcherFrame main_execution_frame = new DispatcherFrame ();
-
+		
 		const int TOP_PRIO = (int)DispatcherPriority.Send;
 		Thread base_thread;
 		PokableQueue [] priority_queues = new PokableQueue [TOP_PRIO+1];
 
 		Flags flags;
 		int queue_bits;
+
+		//
+		// Used to notify the dispatcher thread that new data is available
+		//
 		EventWaitHandle wait;
+
+		//
+		// The hooks for this Dispatcher
+		//
+		DispatcherHooks hooks;
+
+		//
+		// The current DispatcherFrame active in a given Dispatcher, we use this to
+		// keep a linked list of all active frames, so we can "ExitAll" frames when
+		// requested
+		DispatcherFrame current_frame;
 		
 		Dispatcher (Thread t)
 		{
@@ -82,6 +96,7 @@ namespace System.Windows.Threading {
 			for (int i = 1; i <= (int) DispatcherPriority.Send; i++)
 				priority_queues [i] = new PokableQueue ();
 			wait = new EventWaitHandle (false, EventResetMode.AutoReset);
+			hooks = new DispatcherHooks (this);
 		}
 
 		public bool CheckAccess ()
@@ -190,7 +205,7 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 
-		void Queue (DispatcherPriority priority, object x)
+		void Queue (DispatcherPriority priority, DispatcherOperation x)
 		{
 			int p = ((int) priority);
 			PokableQueue q = priority_queues [p];
@@ -200,13 +215,14 @@ namespace System.Windows.Threading {
 				q.Enqueue (x);
 				queue_bits |= flag;
 			}
+			hooks.EmitOperationPosted (x);
+
 			if (Thread.CurrentThread != base_thread)
-				wait.Reset ();
+				wait.Set ();
 		}
 
 		internal void Reprioritize (DispatcherOperation op, DispatcherPriority oldpriority)
 		{
-			int np = (int) op.Priority;
 			int oldp = (int) oldpriority;
 			PokableQueue q = priority_queues [oldp];
 
@@ -214,6 +230,7 @@ namespace System.Windows.Threading {
 				q.Remove (op);
 			}
 			Queue (op.Priority, op);
+			hooks.EmitOperationPriorityChanged (op);
 		}
 		
 		public static Dispatcher CurrentDispatcher {
@@ -266,6 +283,9 @@ namespace System.Windows.Threading {
 				throw new InvalidOperationException ("Frame is already running on a different dispatcher");
 			if ((dis.flags & Flags.Disabled) != 0)
 				throw new InvalidOperationException ("Dispatcher processing has been disabled");
+
+			frame.ParentFrame = dis.current_frame;
+			dis.current_frame = frame;
 			
 			frame.dispatcher = dis;
 
@@ -292,7 +312,6 @@ namespace System.Windows.Threading {
 		
 		void RunFrame (DispatcherFrame frame)
 		{
-			bool done = false;
 			do {
 				while (queue_bits != 0){
 					for (int i = TOP_PRIO; i > 0 && queue_bits != 0; i--){
@@ -308,6 +327,14 @@ namespace System.Windows.Threading {
 								}
 								
 								task.Invoke ();
+
+								//
+								// call hooks.
+								//
+								if (task.Status == DispatcherOperationStatus.Aborted)
+									hooks.EmitOperationAborted (task);
+								else
+									hooks.EmitOperationCompleted (task);
 
 								if (!frame.Continue)
 									return;
@@ -334,7 +361,10 @@ namespace System.Windows.Threading {
 						}
 					}
 				}
+				hooks.EmitInactive ();
+				
 				wait.WaitOne ();
+				wait.Reset ();
 			} while (frame.Continue);
 		}
 		
@@ -358,7 +388,22 @@ namespace System.Windows.Threading {
 			flags |= Flags.ShutdownStarted;
 		}
 
-		
+		public static void ExitAllFrames ()
+		{
+			Dispatcher dis = CurrentDispatcher;
+			
+			for (DispatcherFrame frame = dis.current_frame; frame != null; frame = frame.ParentFrame){
+				if (frame.exit_on_request)
+					frame.Continue = false;
+				else {
+					//
+					// Stop unwinding the frames at the first frame that is
+					// long running
+					break;
+				}
+			}
+		}
+
 		public event EventHandler ShutdownStarted;
 		public event EventHandler ShutdownFinished;
 	}

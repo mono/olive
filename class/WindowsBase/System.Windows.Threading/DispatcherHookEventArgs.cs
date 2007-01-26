@@ -22,33 +22,27 @@
 // Authors:
 //	Miguel de Icaza (miguel@novell.com)
 //
-
 using System;
-using System.Threading;
 
 namespace System.Windows.Threading {
 
-	public abstract class DispatcherObject {
-		Thread base_thread;
+	public sealed class DispatcherHookEventArgs : EventArgs {
+		DispatcherOperation operation;
 		
-		protected DispatcherObject ()
+		public DispatcherHookEventArgs (DispatcherOperation operation)
 		{
-			base_thread = Thread.CurrentThread;
-		}
-		
-		public bool CheckAccess ()
-		{
-			return Thread.CurrentThread == base_thread;
-		}
-
-		public void VerifyAccess ()
-		{
-			throw new InvalidOperationException ("The calling thread is not the same as the creation thread");
+			this.operation = operation;
 		}
 
 		public Dispatcher Dispatcher {
 			get {
-				return Dispatcher.FromThread (base_thread);
+				return operation.Dispatcher;
+			}
+		}
+
+		public DispatcherOperation Operation {
+			get {
+				return operation;
 			}
 		}
 	}

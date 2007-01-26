@@ -1,6 +1,16 @@
 2007-01-25  Miguel de Icaza  <miguel@novell.com>
 
-	* Dispatcher.cs: Check frame.Continue for early termination.
+	* DispatcherTimer.cs: Add new class.
+
+	* Dispatcher.cs (ExitAllframes): Implement. 
+	(everywhere): Add support for hooks.
+
+	* DispatcherHooks: Implement
+	
+	* DispatcherOperation.cs: Store result. 
+
+	* Dispatcher.cs: 
+	Check frame.Continue for early termination.
 
 	PokableQueue: new class used so we can move DispatcherOperation
 	tasks from one thread to another. 

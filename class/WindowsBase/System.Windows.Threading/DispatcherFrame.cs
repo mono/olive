@@ -31,7 +31,9 @@ using System.Threading;
 namespace System.Windows.Threading {
 
 	public class DispatcherFrame : DispatcherObject  {
-		bool exit_on_request;
+		DispatcherFrame parent_frame;
+		
+		internal bool exit_on_request;
 		bool cont;
 		internal Dispatcher dispatcher;
 		
@@ -54,6 +56,16 @@ namespace System.Windows.Threading {
 
 			set {
 				cont = value;
+			}
+		}
+
+		internal DispatcherFrame ParentFrame {
+			get {
+				return parent_frame;
+			}
+
+			set {
+				parent_frame = value;
 			}
 		}
 	}

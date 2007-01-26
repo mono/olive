@@ -27,9 +27,10 @@
 //
 
 using System.Collections;
+using System.Windows.Threading;
 
 namespace System.Windows {
-	public class DependencyObject {
+	public class DependencyObject : DispatcherObject {
 		private static Hashtable propertyDeclarations = new Hashtable();
 		private Hashtable properties = new Hashtable();
 		

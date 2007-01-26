@@ -75,7 +75,7 @@ namespace System.Windows.Threading {
 		internal void Invoke ()
 		{
 			status = DispatcherOperationStatus.Executing;
-			delegate_method.DynamicInvoke (delegate_args);
+			result = delegate_method.DynamicInvoke (delegate_args);
 				
 			status = DispatcherOperationStatus.Completed;
 
@@ -85,6 +85,7 @@ namespace System.Windows.Threading {
 		
 		public bool Abort ()
 		{
+			status = DispatcherOperationStatus.Aborted;
 			throw new NotImplementedException ();
 		}
 

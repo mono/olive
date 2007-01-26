@@ -13,6 +13,10 @@ System.Windows.Threading/DispatcherObject.cs
 System.Windows.Threading/DispatcherOperation.cs
 System.Windows.Threading/DispatcherOperationStatus.cs
 System.Windows.Threading/DispatcherPriority.cs
+System.Windows.Threading/DispatcherHookEventArgs.cs
+System.Windows.Threading/DispatcherHookEventHandler.cs
+System.Windows.Threading/DispatcherHooks.cs
+System.Windows.Threading/DispatcherTimer.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs
