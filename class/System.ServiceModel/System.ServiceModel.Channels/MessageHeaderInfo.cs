@@ -36,5 +36,11 @@ namespace System.ServiceModel.Channels
 		public abstract string Name { get; }
 		public abstract string Namespace { get; }
 		public abstract bool Relay { get; }
+
+		string id;
+		internal string Id {
+			get { return id; }
+			set { id = value; }
+		}
 	}
 }

@@ -275,6 +275,11 @@ namespace System.ServiceModel.Channels
 			writer.WriteStartElement ("s", "Envelope", Version.Envelope.Namespace);
 			if (Headers.Action != null)
 				writer.WriteXmlnsAttribute ("a", Version.Addressing.Namespace);
+			foreach (MessageHeaderInfo h in Headers)
+				if (h.Id != null) {
+					writer.WriteXmlnsAttribute ("u", Constants.WsuNamespace);
+					break;
+				}
 		}
 
 		protected virtual void OnWriteStartHeaders (

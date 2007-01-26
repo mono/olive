@@ -130,7 +130,6 @@ namespace System.ServiceModel.Channels
 			WriteHeaderAttributes (writer, version);
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
 			StringBuilder sb = new StringBuilder ();
@@ -167,6 +166,8 @@ namespace System.ServiceModel.Channels
 
 		protected void WriteHeaderAttributes (XmlDictionaryWriter writer, MessageVersion version)
 		{
+			if (Id != null)
+				writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, Id);
 			if (Actor != String.Empty) {
 				if (version.Envelope == EnvelopeVersion.Soap11) 
 					writer.WriteAttributeString ("s", "actor", version.Envelope.Namespace, Actor);
@@ -212,6 +213,11 @@ namespace System.ServiceModel.Channels
 			public RawMessageHeader (XmlElement source, string soap_ns)
 			{
 				this.source = source;
+
+				Id = source.HasAttribute ("Id", Constants.WsuNamespace) ?
+					source.GetAttribute ("Id", Constants.WsuNamespace) :
+					null;
+
 				// FIXME: fill is_ref
 				string s = source.GetAttribute ("relay", soap_ns);
 				relay = s.Length > 0 ? XmlConvert.ToBoolean (s) : false;

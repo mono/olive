@@ -241,7 +241,7 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
-			string messageId = "uuid:" + Guid.NewGuid ();
+			string messageId = "uuid-" + Guid.NewGuid ();
 			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
 			int identForMessageId = 1;
 
@@ -364,24 +364,26 @@ namespace System.ServiceModel.Channels
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
-				foreach (XmlNode n in doc.SelectNodes ("/s:Envelope/s:Header/*", nsmgr)) {
-					XmlElement el = n as XmlElement;
-					if (el == null || el.LocalName == "Security" && el.NamespaceURI == Constants.WssNamespace)
+				for (int i = 0; i < msg.Headers.Count; i++) {
+					MessageHeaderInfo h = msg.Headers [i];
+					if (h.Name == "Security" && h.Namespace == Constants.WssNamespace)
 						continue;
 					if (sigSpec.HeaderTypes.Count == 0 ||
-					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (el.LocalName, el.NamespaceURI)))
-						CreateReference (sig, el, suite);
+					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (h.Name, h.Namespace))) {
+						string id = GenerateId (doc);
+						h.Id = id;
+						CreateReference (doc, sig, id, delegate (XmlWriter w) {
+							msg.Headers.WriteHeader (i, w);
+						});
+					}
 				}
 				if (sigSpec.IsBodyIncluded)
 					CreateReference (sig, body, suite);
 				if (timestamp != null) {
-					XmlElement dummy = doc.CreateElement ("dummy");
-					using (XmlWriter w = dummy.CreateNavigator ().AppendChild ()) {
+					CreateReference (doc, sig, timestamp.Id, delegate (XmlWriter w) {
 						timestamp.WriteTo (w);
-					}
-					CreateReference (sig, dummy.FirstChild as XmlElement, suite);
+					});
 				}
-
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
 					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
 				else {
@@ -432,8 +434,9 @@ namespace System.ServiceModel.Channels
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
+foreach (MessageHeaderInfo i in ret.Headers) if (i.Id == null && i.Name != "Security") throw new Exception (i.Name);
 
-			// Header contents:
+			// FIXME: Header contents should be:
 			//	- Timestamp
 			//	- EncryptionToken if included
 			//	- derived key token for EncryptionToken
@@ -479,6 +482,25 @@ namespace System.ServiceModel.Channels
 			return id;
 		}
 
+		delegate void XmlWriterDelegate (XmlWriter w);
+
+		void CreateReference (XmlDocument doc, Signature sig, string id, XmlWriterDelegate writerDelegate)
+		{
+			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
+			Reference r = new Reference ("#" + id);
+			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
+			r.DigestMethod = suite.DefaultDigestAlgorithm;
+			sig.SignedInfo.AddReference (r);
+			XmlElement el = doc.CreateElement ("dummy");
+			XmlWriter w = el.CreateNavigator ().AppendChild ();
+			writerDelegate (w);
+			w.Close ();
+			DataObject o = new DataObject ();
+			o.Data = el.SelectNodes (".");
+			o.Id = id;
+			sig.AddObject (o);
+		}
+
 		void CreateReference (Signature sig, XmlElement el, SecurityAlgorithmSuite suite)
 		{
 			string id = GetId (el);
@@ -494,8 +516,10 @@ namespace System.ServiceModel.Channels
 			d.Id = id;
 			sig.AddObject (d);
 #else
-			if (GetId (el) != id)
+			if (GetId (el) != id) {
+				el.SetAttribute ("Id", Constants.WsuNamespace, id);
 				el.SetAttribute ("Id", id);
+			}
 #endif
 			sig.SignedInfo.AddReference (r);
 		}
@@ -523,7 +547,7 @@ namespace System.ServiceModel.Channels
 			byte [] encrypted = exml.EncryptData (target, aes, false);
 			EncryptedData edata = new EncryptedData ();
 			edata.Id = GenerateId (doc);
-			edata.Type = EncryptedXml.XmlEncElementUrl;
+			edata.Type = EncryptedXml.XmlEncElementContentUrl;
 			edata.EncryptionMethod = new EncryptionMethod (suite.DefaultEncryptionAlgorithm);
 			// FIXME: here wsse:DigestMethod should be embedded 
 			// inside EncryptionMethod. Since it is not possible 

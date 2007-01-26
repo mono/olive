@@ -147,49 +147,6 @@ namespace System.ServiceModel.Channels
 
 			XmlDocument doc = null;
 			while (!reader.EOF && reader.NodeType != XmlNodeType.EndElement) {
-/*
-				bool mustUnderstand = false;
-				if (reader.MoveToAttribute ("mustUnderstand", envNS))
-					mustUnderstand = XmlConvert.ToBoolean (reader.Value.Trim (whitespaceChars));
-				bool relay = false;
-				if (Version.Envelope == EnvelopeVersion.Soap12 && reader.MoveToAttribute ("relay", envNS))
-					relay = XmlConvert.ToBoolean (reader.Value.Trim (whitespaceChars));
-				string actor = String.Empty;
-				if (reader.MoveToAttribute ("actor", envNS))
-					actor = reader.Value.Trim (whitespaceChars);
-				reader.MoveToElement ();
-				string name = reader.LocalName;
-				string ns = reader.NamespaceURI;
-				object value = String.Empty;
-				switch (name) {
-				case "From":
-				case "FaultTo":
-				case "ReplyTo":
-					value = EndpointAddress.ReadFrom (reader);
-					break;
-				default:
-					if (!reader.IsEmptyElement) {
-						reader.Read ();
-						reader.MoveToContent ();
-						if (reader.NodeType == XmlNodeType.Element && reader.ValueType == null) {
-							// FIXME: not sure what should be done here.
-							if (doc == null)
-								doc = new XmlDocument ();
-							value = doc.ReadNode (reader);
-						}
-						else
-							value = reader.ReadContentAsObject ();
-						reader.MoveToContent ();
-						reader.ReadEndElement ();
-					}
-					else
-						reader.Skip ();
-					break;
-				}
-				headers.Add (MessageHeader.CreateHeader (
-					name, ns, value,
-					mustUnderstand, actor, relay));
-*/
 				if (doc == null)
 					doc = new XmlDocument ();
 				XmlElement el = doc.ReadNode (reader) as XmlElement;

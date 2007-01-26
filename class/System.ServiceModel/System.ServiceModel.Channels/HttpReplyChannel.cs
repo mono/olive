@@ -110,6 +110,14 @@ namespace System.ServiceModel.Channels
 			// FIXME: prop.SuppressEntityBody
 			prop.Headers.Add (ctx.Request.Headers);
 			msg.Properties.Add (HttpRequestMessageProperty.Name, prop);
+/*
+MessageBuffer buf = msg.CreateBufferedCopy (0x10000);
+msg = buf.CreateMessage ();
+System.Xml.XmlTextWriter w = new System.Xml.XmlTextWriter (Console.Out);
+w.Formatting = System.Xml.Formatting.Indented;
+buf.CreateMessage ().WriteMessage (w);
+w.Close ();
+*/
 			context = new HttpRequestContext (this, msg, ctx);
 			return true;
 		}

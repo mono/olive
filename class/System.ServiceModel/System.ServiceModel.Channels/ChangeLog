@@ -1,3 +1,15 @@
+2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageHeaderInfo.cs : added internal Id.
+	* MessageHeader.cs : read and write wsu:Id.
+	* Message.cs : output wsu namespace if Id exists in any header.
+	* HttpReplyChannel.cs : (some debugging lines.)
+	* SecureMessageDecryptor.cs : (remove debugging lines.)
+	* MessageImpl.cs : removed obsolete code.
+	* WSSecurityMessageHeader.cs : output "o" prefix.
+	* SecureMessageGenerator.cs : replaced XmlElement-based header
+	  signing with MessageHeader-based signing, to support Id correctly.
+
 2007-01-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : some more refactoring and code comments.

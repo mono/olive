@@ -229,6 +229,12 @@ namespace System.ServiceModel.Channels
 			get { return Constants.WssNamespace; }
 		}
 
+		protected override void OnWriteStartHeader (XmlDictionaryWriter writer, MessageVersion version)
+		{
+			writer.WriteStartElement ("o", this.Name, this.Namespace);
+			WriteHeaderAttributes (writer, version);
+		}
+
 		protected override void OnWriteHeaderContents (XmlDictionaryWriter writer, MessageVersion version)
 		{
 			foreach (object obj in Contents) {

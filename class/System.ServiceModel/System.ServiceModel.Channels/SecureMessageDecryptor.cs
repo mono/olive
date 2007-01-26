@@ -1,10 +1,10 @@
 //
-// MessageSecurityUtility.cs
+// SecureMessageDecryptor.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2006-2007 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -125,8 +125,6 @@ namespace System.ServiceModel.Channels
 			SecurityTokenParameters parameters =
 				security.RecipientParameters;
 
-Console.WriteLine (buf.CreateMessage ());
-
 			Message srcmsg = buf.CreateMessage ();
 			if (srcmsg.Version.Envelope == EnvelopeVersion.None)
 				throw new ArgumentException ("The message to decrypt is not an expected SOAP envelope.");
@@ -161,6 +159,8 @@ Console.WriteLine (buf.CreateMessage ());
 				else
 					msg.Headers.CopyHeaderFrom (srcmsg.Headers, i);
 			}
+
+			// FIXME: verify signature.
 
 			if (sheader == null)
 				throw new InvalidOperationException ("Message security header was not found in the request message.");
