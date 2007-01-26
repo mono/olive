@@ -288,6 +288,9 @@ namespace System.ServiceModel.Channels
 			List<WsscDerivedKeyToken> derivedKeys =
 				new List<WsscDerivedKeyToken> ();
 
+			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
+			string bodyId = null;
+
 {
 			// 2. [Encryption Token]
 
@@ -304,8 +307,6 @@ namespace System.ServiceModel.Channels
 
 			AsymmetricSecurityKey encKey = (AsymmetricSecurityKey) 
 				encToken.ResolveKeyIdentifierClause (encClause);
-
-			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
 
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
@@ -359,11 +360,12 @@ namespace System.ServiceModel.Channels
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
 				// sign
-				SignedXml sxml = new SignedXml ();
+				SignedXml sxml = new SignedXml (doc);
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
+				XmlNodeList nodes = doc.SelectNodes ("/s:Envelope/s:Header/*", nsmgr);
 				for (int i = 0; i < msg.Headers.Count; i++) {
 					MessageHeaderInfo h = msg.Headers [i];
 					if (h.Name == "Security" && h.Namespace == Constants.WssNamespace)
@@ -372,14 +374,15 @@ namespace System.ServiceModel.Channels
 					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (h.Name, h.Namespace))) {
 						string id = GenerateId (doc);
 						h.Id = id;
-						CreateReference (doc, sig, id, delegate (XmlWriter w) {
-							msg.Headers.WriteHeader (i, w);
-						});
+						CreateReference (sig, nodes [i] as XmlElement, suite, id);
 					}
 				}
-				if (sigSpec.IsBodyIncluded)
-					CreateReference (sig, body, suite);
+				if (sigSpec.IsBodyIncluded) {
+					bodyId = GenerateId (doc);
+					CreateReference (sig, body.ParentNode as XmlElement, suite, bodyId);
+				}
 				if (timestamp != null) {
+					// FIXME: timestamp signing is not done.
 					CreateReference (doc, sig, timestamp.Id, delegate (XmlWriter w) {
 						timestamp.WriteTo (w);
 					});
@@ -431,10 +434,10 @@ namespace System.ServiceModel.Channels
 }
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
+			ret.BodyId = bodyId;
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
-foreach (MessageHeaderInfo i in ret.Headers) if (i.Id == null && i.Name != "Security") throw new Exception (i.Name);
 
 			// FIXME: Header contents should be:
 			//	- Timestamp
@@ -495,21 +498,19 @@ foreach (MessageHeaderInfo i in ret.Headers) if (i.Id == null && i.Name != "Secu
 			XmlWriter w = el.CreateNavigator ().AppendChild ();
 			writerDelegate (w);
 			w.Close ();
-			DataObject o = new DataObject ();
-			o.Data = el.SelectNodes (".");
-			o.Id = id;
-			sig.AddObject (o);
+			XmlElement obj = el.FirstChild as XmlElement;
+			obj.SetAttribute ("Id", id);
+			obj.SetAttribute ("Id", Constants.WsuNamespace, id);
 		}
 
-		void CreateReference (Signature sig, XmlElement el, SecurityAlgorithmSuite suite)
+		void CreateReference (Signature sig, XmlElement el, SecurityAlgorithmSuite suite, string id)
 		{
-			string id = GetId (el);
 			if (id == String.Empty)
 				id = GenerateId (el.OwnerDocument);
 			Reference r = new Reference ("#" + id);
 			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
 			r.DigestMethod = suite.DefaultDigestAlgorithm;
-#if true
+#if false
 			DataObject d = new DataObject ();
 			// FIXME: creating my own XmlNodeList would be much better
 			d.Data = el.SelectNodes (".");
@@ -517,7 +518,9 @@ foreach (MessageHeaderInfo i in ret.Headers) if (i.Id == null && i.Name != "Secu
 			sig.AddObject (d);
 #else
 			if (GetId (el) != id) {
-				el.SetAttribute ("Id", Constants.WsuNamespace, id);
+				XmlAttribute a = el.SetAttributeNode ("Id", Constants.WsuNamespace);
+				a.Prefix = "u";
+				a.Value = id;
 				el.SetAttribute ("Id", id);
 			}
 #endif

@@ -166,8 +166,10 @@ namespace System.ServiceModel.Channels
 
 		protected void WriteHeaderAttributes (XmlDictionaryWriter writer, MessageVersion version)
 		{
-			if (Id != null)
+			if (Id != null) {
 				writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, Id);
+				writer.WriteAttributeString ("Id", Id);
+			}
 			if (Actor != String.Empty) {
 				if (version.Envelope == EnvelopeVersion.Soap11) 
 					writer.WriteAttributeString ("s", "actor", version.Envelope.Namespace, Actor);

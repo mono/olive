@@ -169,6 +169,10 @@ namespace System.ServiceModel.Channels
 			body_started = true;
 			is_empty = reader.IsEmptyElement;
 			reader.ReadStartElement ("Body", Version.Envelope.Namespace);
+			if (reader.MoveToAttribute ("Id", Constants.WsuNamespace)) {
+				BodyId = reader.Value;
+				reader.MoveToElement ();
+			}
 			if (reader.NodeType == XmlNodeType.EndElement) {
 				is_empty = true;
 				reader.Read ();

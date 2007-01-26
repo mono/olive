@@ -1,5 +1,21 @@
 2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
 
+	Woohoo! Here is a very basic WS-Security compliant message which could
+	be allowed by Indigo.
+	* MessageHeader.cs : added Id support for writing.
+	* Message.cs : added internal BodyId for signature reference.
+	* MessageImpl.cs : write Body Id if required.
+	* SecureMessageGenerator.cs : Before signing, the target elements must
+	  be given wsu:Id. Since I still use System.Security.dll, I need some
+	  trick for signing (I give both Id and wsu:Id, former to sign and
+	  latter to be consumed). Maybe I will have to replace xmldsig/xmlenc
+	  implementation later. Now singning mechanism works except for
+	  wsu:Timestamp (which is kind of mandatory).
+
+	I can's still consume replies from Indigo but it's a big progress :)
+
+2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageHeaderInfo.cs : added internal Id.
 	* MessageHeader.cs : read and write wsu:Id.
 	* Message.cs : output wsu namespace if Id exists in any header.

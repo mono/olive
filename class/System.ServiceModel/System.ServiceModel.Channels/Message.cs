@@ -38,12 +38,18 @@ namespace System.ServiceModel.Channels
 	{
 		bool disposed;
 		MessageState state = MessageState.Created;
+		string body_id;
 
 		protected Message ()
 		{
 		}
 
 		public abstract MessageHeaders Headers { get; }
+
+		internal string BodyId {
+			get { return body_id; }
+			set { body_id = value; }
+		}
 
 		[MonoTODO]
 		public virtual bool IsEmpty {
@@ -267,6 +273,10 @@ namespace System.ServiceModel.Channels
 			XmlDictionaryWriter writer)
 		{
 			writer.WriteStartElement ("s", "Body", Version.Envelope.Namespace);
+			if (BodyId != null) {
+				writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, BodyId);
+				writer.WriteAttributeString ("Id", BodyId);
+			}
 		}
 
 		protected virtual void OnWriteStartEnvelope (
