@@ -1,5 +1,11 @@
 2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs : support Timestamp signature.
+	  Removed unused code, and extra argument in CreateReference().
+	* WSSecurityMessageHeader.cs : Timestamp also needs Id for SignedXml.
+
+2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs :
 	  Several fixes to make asymmetric binding working:
 	  - Differentiate signing and encryption token in several areas.

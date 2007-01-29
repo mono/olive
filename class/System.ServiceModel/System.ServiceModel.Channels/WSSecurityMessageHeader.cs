@@ -306,7 +306,7 @@ namespace System.ServiceModel.Channels
 		public void WriteTo (XmlWriter writer)
 		{
 			writer.WriteStartElement ("u", "Timestamp", Constants.WsuNamespace);
-			//writer.WriteAttributeString ("Id", Id);
+			writer.WriteAttributeString ("Id", Id);
 			writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, Id);
 			writer.WriteStartElement ("u", "Created", Constants.WsuNamespace);
 			writer.WriteValue (FormatAsUtc (Created));

@@ -258,6 +258,7 @@ namespace System.ServiceModel.Channels
 			// wss:Security
 			WSSecurityMessageHeader header =
 				new WSSecurityMessageHeader (serializer);
+			msg.Headers.Add (header);
 			WsuTimestamp timestamp = null;
 			// 1. [Timestamp]
 			if (element.IncludeTimestamp) {
@@ -268,7 +269,6 @@ namespace System.ServiceModel.Channels
 				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
 				header.Contents.Add (timestamp);
 			}
-			msg.Headers.Add (header);
 
 
 			XmlDocument doc = new XmlDocument ();
@@ -279,6 +279,8 @@ namespace System.ServiceModel.Channels
 			}
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
+			nsmgr.AddNamespace ("o", Constants.WssNamespace);
+			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
 
 			WrappedKeySecurityToken ekey = null;
 			ReferenceList encRefList = null;
@@ -382,18 +384,17 @@ namespace System.ServiceModel.Channels
 					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (h.Name, h.Namespace))) {
 						string id = GenerateId (doc);
 						h.Id = id;
-						CreateReference (sig, nodes [i] as XmlElement, suite, id);
+						CreateReference (sig, nodes [i] as XmlElement, id);
 					}
 				}
 				if (sigSpec.IsBodyIncluded) {
 					bodyId = GenerateId (doc);
-					CreateReference (sig, body.ParentNode as XmlElement, suite, bodyId);
+					CreateReference (sig, body.ParentNode as XmlElement, bodyId);
 				}
 				if (timestamp != null) {
 					// FIXME: timestamp signing is not done.
-					CreateReference (doc, sig, timestamp.Id, delegate (XmlWriter w) {
-						timestamp.WriteTo (w);
-					});
+					XmlElement tsElem = doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security/u:Timestamp", nsmgr) as XmlElement;
+					CreateReference (sig, tsElem, timestamp.Id);
 				}
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
 					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
@@ -509,26 +510,9 @@ namespace System.ServiceModel.Channels
 			return id;
 		}
 
-		delegate void XmlWriterDelegate (XmlWriter w);
-
-		void CreateReference (XmlDocument doc, Signature sig, string id, XmlWriterDelegate writerDelegate)
+		void CreateReference (Signature sig, XmlElement el, string id)
 		{
 			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
-			Reference r = new Reference ("#" + id);
-			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
-			r.DigestMethod = suite.DefaultDigestAlgorithm;
-			sig.SignedInfo.AddReference (r);
-			XmlElement el = doc.CreateElement ("dummy");
-			XmlWriter w = el.CreateNavigator ().AppendChild ();
-			writerDelegate (w);
-			w.Close ();
-			XmlElement obj = el.FirstChild as XmlElement;
-			obj.SetAttribute ("Id", id);
-			obj.SetAttribute ("Id", Constants.WsuNamespace, id);
-		}
-
-		void CreateReference (Signature sig, XmlElement el, SecurityAlgorithmSuite suite, string id)
-		{
 			if (id == String.Empty)
 				id = GenerateId (el.OwnerDocument);
 			Reference r = new Reference ("#" + id);
