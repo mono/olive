@@ -175,6 +175,7 @@ namespace System.ServiceModel.Channels
 	internal abstract class MessageSecurityGenerator
 	{
 		Message msg;
+		SecurityMessageProperty secprop;
 		MessageSecurityBindingSupport security;
 		int idbase;
 
@@ -241,8 +242,11 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
+			// FIXME: it should be created from the message to return (GetOrCreate).
+			secprop = new SecurityMessageProperty ();
+
 			string messageId = "uuid-" + Guid.NewGuid ();
-			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, messageId));
+			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, "urn:" + messageId));
 			int identForMessageId = 1;
 
 			// FIXME: get correct ReplyTo value
@@ -299,12 +303,15 @@ namespace System.ServiceModel.Channels
 			// - done or notyet. FIXME: not implemented yet
 			// It also affects on key reference output
 
-			bool msgIncludesToken = ShouldIncludeToken (
-				Parameters.InclusionMode, false);
+			bool includeEncToken = ShouldIncludeToken (
+				Security.RecipientParameters.InclusionMode, false);
+			bool includeSigToken = ShouldIncludeToken (
+				Security.InitiatorParameters.InclusionMode, false);
 
 			SecurityKeyIdentifierClause encClause =
-				Parameters.CallCreateKeyIdentifierClause (encToken, msgIncludesToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
+				CounterParameters.CallCreateKeyIdentifierClause (encToken, includeEncToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 
+			// FIXME: it is not used
 			AsymmetricSecurityKey encKey = (AsymmetricSecurityKey) 
 				encToken.ResolveKeyIdentifierClause (encClause);
 
@@ -322,7 +329,7 @@ namespace System.ServiceModel.Channels
 			aes.Padding = PaddingMode.ISO10126;
 
 			// generate derived key if needed
-			if (Parameters.RequireDerivedKeys) {
+			if (CounterParameters.RequireDerivedKeys) {
 				// FIXME: it should replace aes
 				RijndaelManaged deriv = new RijndaelManaged ();
 				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
@@ -361,6 +368,7 @@ namespace System.ServiceModel.Channels
 
 				// sign
 				SignedXml sxml = new SignedXml (doc);
+				SecurityTokenReferenceKeyInfo sigKeyInfo;
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
@@ -387,14 +395,19 @@ namespace System.ServiceModel.Channels
 						timestamp.WriteTo (w);
 					});
 				}
-				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
+				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
 					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
+					sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
+				}
 				else {
 					SecurityKeyIdentifierClause signClause =
-						CounterParameters.CallCreateKeyIdentifierClause (signToken, msgIncludesToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
+						CounterParameters.CallCreateKeyIdentifierClause (signToken, includeSigToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
 					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
 					sxml.ComputeSignature ();
+					SecurityKeyIdentifierClause skeyClause =
+						new LocalIdKeyIdentifierClause (signToken.Id, signToken.GetType ());
+					sigKeyInfo = new SecurityTokenReferenceKeyInfo (skeyClause, serializer, doc);
 				}
 
 				// FIXME: It is kind of hack that it uses and
@@ -402,14 +415,13 @@ namespace System.ServiceModel.Channels
 				sxml.Signature.ObjectList.Clear ();
 
 				sxml.KeyInfo = new KeyInfo ();
-				SecurityTokenReferenceKeyInfo sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				// encrypt
 
 				EncryptedXml exml = new EncryptedXml ();
 				ReferenceList refList = new ReferenceList ();
-				if (!Parameters.RequireDerivedKeys)
+				if (!CounterParameters.RequireDerivedKeys)
 					ekey.ReferenceList = refList;
 				else
 					encRefList = refList;
@@ -426,15 +438,27 @@ namespace System.ServiceModel.Channels
 				break;
 			}
 
-			if (sig != null && msgIncludesToken)
+			if (sig != null && includeSigToken)
 				header.Contents.Add (signToken);
-			if (signToken != encToken && msgIncludesToken)
+			if (signToken != encToken && includeEncToken)
 				header.Contents.Add (encToken);
 
 }
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
 			ret.BodyId = bodyId;
+
+			// FIXME: set below items:
+			//	- ExternalAuthorizationPolicies
+			//	- IncomingSupportingTokens (? only for incoming?)
+			//	- TransportToken (can we support it here?)
+			//	- ServiceSecurityContext
+			if (element is AsymmetricSecurityBindingElement) {
+				secprop.InitiatorToken = new SecurityTokenSpecification (encToken, null); // FIXME: second argument
+				secprop.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
+			}
+			else
+				secprop.ProtectionToken = new SecurityTokenSpecification (encToken, null);
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
@@ -573,7 +597,7 @@ edata.KeyInfo = null;
 		string GenerateId (XmlDocument doc)
 		{
 			idbase++;
-			return "_" + idbase;
+			return secprop.SenderIdPrefix + idbase;
 		}
 
 		public string GetAction ()

@@ -112,9 +112,18 @@ namespace System.ServiceModel.Channels
 					}
 					ms.Seek (0, SeekOrigin.Begin);
 
-					return Encoder.ReadMessage (
+					Message ret = Encoder.ReadMessage (
 						//responseStream, MaxSizeOfHeaders);
 						ms, MaxSizeOfHeaders);
+/*
+MessageBuffer buf = ret.CreateBufferedCopy (0x10000);
+ret = buf.CreateMessage ();
+System.Xml.XmlTextWriter w = new System.Xml.XmlTextWriter (Console.Out);
+w.Formatting = System.Xml.Formatting.Indented;
+buf.CreateMessage ().WriteMessage (w);
+w.Close ();
+*/
+					return ret;
 				}
 			} finally {
 				res.Close ();

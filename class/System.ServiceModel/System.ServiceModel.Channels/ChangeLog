@@ -1,3 +1,14 @@
+2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs :
+	  Several fixes to make asymmetric binding working:
+	  - Differentiate signing and encryption token in several areas.
+	  - Fixed signing keyinfo.
+	  Use SenderIdPrefix.
+	  Added initial SecurityMessageProperty handling, not sure if it is
+	  appropriate here though.
+	* HttpRequestChannel.cs : (some debugging lines)
+
 2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	Woohoo! Here is a very basic WS-Security compliant message which could
