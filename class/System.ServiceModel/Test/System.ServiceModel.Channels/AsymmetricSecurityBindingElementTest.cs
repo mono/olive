@@ -212,5 +212,33 @@ namespace MonoTests.System.ServiceModel.Channels
 			Assert.AreEqual (true, p.RequireDerivedKeys, "#3");
 			Assert.AreEqual (true, p2.RequireDerivedKeys, "#4");
 		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		[Category ("NotWorking")]
+		public void RejectInclusionModeNever ()
+		{
+			AsymmetricSecurityBindingElement sbe =
+				new AsymmetricSecurityBindingElement ();
+			sbe.InitiatorTokenParameters = sbe.RecipientTokenParameters =
+				new X509SecurityTokenParameters (
+					X509KeyIdentifierClauseType.Thumbprint,
+					// this leads to the failure.
+					SecurityTokenInclusionMode.Never);
+			ServiceHost host = new ServiceHost (typeof (Foo));
+			HttpTransportBindingElement hbe =
+				new HttpTransportBindingElement ();
+			CustomBinding binding = new CustomBinding (sbe, hbe);
+			host.AddServiceEndpoint (typeof (IFoo),
+				binding, new Uri ("http://localhost:37564"));
+			ServiceCredentials cred = new ServiceCredentials ();
+			cred.ServiceCertificate.Certificate =
+				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			cred.ClientCertificate.Authentication.CertificateValidationMode =
+				X509CertificateValidationMode.None;
+			host.Description.Behaviors.Add (cred);
+			host.Open ();
+			host.Close (); // in case it didn't fail.
+		}
 	}
 }

@@ -1,6 +1,11 @@
+2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AsymmetricSecurityBindingElementTest.cs : added notworking
+	  RejectInclusionModeNever() case.
+
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
-	* AsymmetricSecurityBindingElement.cs, CalcSampleProxy.cs : moved
+	* AsymmetricSecurityBindingElementTest.cs, CalcSampleProxy.cs : moved
 	  sample proxy type to new file.
 	* SecurityBindingElementTest.cs : some tests for
 	  SupportingTokenParameters.
