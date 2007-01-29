@@ -4,7 +4,14 @@ all: \
 	samplesvc3.exe samplecli3.exe \
 	samplesvc4.exe samplecli4.exe \
 	samplesvc5.exe samplecli5.exe \
-	samplesvc6.exe samplecli6.exe
+	samplesvc6.exe samplecli6.exe \
+	samplesvc7.exe samplecli7.exe
+
+samplesvc7.exe : samplesvc7.cs
+	gmcs -pkg:olive samplesvc7.cs Inspector.cs
+
+samplecli7.exe : samplecli7.cs
+	gmcs -pkg:olive samplecli7.cs Inspector.cs
 
 samplesvc6.exe : samplesvc6.cs
 	gmcs -pkg:olive samplesvc6.cs Inspector.cs
@@ -49,4 +56,5 @@ clean:
 	rm -f samplesvc4.exe samplesvc4.exe.mdb samplecli4.exe samplecli4.exe.mdb 
 	rm -f samplesvc5.exe samplesvc5.exe.mdb samplecli5.exe samplecli5.exe.mdb 
 	rm -f samplesvc6.exe samplesvc6.exe.mdb samplecli6.exe samplecli6.exe.mdb 
+	rm -f samplesvc7.exe samplesvc7.exe.mdb samplecli7.exe samplecli7.exe.mdb 
 

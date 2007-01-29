@@ -1,3 +1,11 @@
+2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.exe.config : trace support (it works only under .NET
+	  for now.)
+	* samplesvc7.cs, samplecli7.cs, samplesvc7.exe.config :
+	  new sample - asymmetric version of samplesvc6.
+	* Makefile: add above.
+
 2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc6.cs, samplecli6.cs: they are even made simpler.
