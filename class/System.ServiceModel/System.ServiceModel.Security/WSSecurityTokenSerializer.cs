@@ -256,15 +256,18 @@ namespace System.ServiceModel.Security
 				reader.ReadEndElement ();
 				return local;
 			case "KeyIdentifier":
-				switch (reader.GetAttribute ("ValueType")) {
-				case Constants.WssX509ThumbptintValueType:
-					string value = reader.ReadElementContentAsString ();
-					reader.MoveToContent ();
-					reader.ReadEndElement (); // consume </Reference>
+				string valueType = reader.GetAttribute ("ValueType");
+				string value = reader.ReadElementContentAsString ();
+				reader.MoveToContent ();
+				reader.ReadEndElement (); // consume </Reference>
+				switch (valueType) {
+				case Constants.WssKeyIdentifierX509Thumbptint:
 					return new X509ThumbprintKeyIdentifierClause (Convert.FromBase64String (value));
+				case Constants.WssKeyIdentifierEncryptedKey:
+					return new EncryptedKeyIdentifierClause (Convert.FromBase64String (value), SecurityAlgorithms.Sha1Digest);
 				default:
 					// It is kinda weird but it throws XmlException here ...
-					throw new XmlException (String.Format ("KeyIdentifier type '{0}' is not supported in WSSecurityTokenSerializer.", reader.GetAttribute ("ValueType")));
+					throw new XmlException (String.Format ("KeyIdentifier type '{0}' is not supported in WSSecurityTokenSerializer.", valueType));
 				}
 			default:
 				throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
@@ -446,7 +449,7 @@ namespace System.ServiceModel.Security
 		{
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
-			w.WriteAttributeString ("ValueType", Constants.WssX509ThumbptintValueType);
+			w.WriteAttributeString ("ValueType", Constants.WssKeyIdentifierX509Thumbptint);
 			if (EmitBspRequiredAttributes)
 				w.WriteAttributeString ("EncodingType", Constants.WssBase64BinaryEncodingType);
 			w.WriteString (Convert.ToBase64String (ic.GetX509Thumbprint ()));

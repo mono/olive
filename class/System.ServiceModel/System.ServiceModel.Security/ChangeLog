@@ -1,6 +1,11 @@
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
-	* WSSecurityTokenSerializer.cs : not ReadKeyIdentifierClause() supports
+	* WSSecurityTokenSerializer.cs : handle EncryptedKeySHA1 for
+	  SecurityTokenReference reader too.
+
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : now ReadKeyIdentifierClause() supports
 	  wsse:KeyIdentifier (only with X509Thumbprint for now).
 
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
