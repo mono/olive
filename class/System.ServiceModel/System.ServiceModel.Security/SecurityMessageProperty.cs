@@ -45,6 +45,9 @@ namespace System.ServiceModel.Security
 		string sender_id_prefix = "_";
 		ServiceSecurityContext context = ServiceSecurityContext.Anonymous;
 
+		// internal
+		internal Collection<string> ConfirmedSignatures = new Collection<string> ();
+
 		public SecurityMessageProperty ()
 		{
 		}

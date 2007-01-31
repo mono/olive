@@ -84,6 +84,9 @@ namespace System.ServiceModel.Channels
 
 		SecurityMessageProperty sec_prop =
 			new SecurityMessageProperty ();
+		WSSecurityMessageHeader wss_header = null;
+		List<MessageHeaderInfo> headers = new List<MessageHeaderInfo> ();
+		SecurityTokenResolver in_band_resolver;
 
 		protected SecureMessageDecryptor (
 			Message source, MessageSecurityBindingSupport security)
@@ -116,15 +119,6 @@ namespace System.ServiceModel.Channels
 
 		public Message DecryptMessage ()
 		{
-			SecurityTokenSerializer serializer =
-				security.TokenSerializer;
-			SecurityTokenResolver resolver =
-				security.OutOfBandTokenResolver;
-			SecurityToken token =
-				security.EncryptionToken;
-			SecurityTokenParameters parameters =
-				security.RecipientParameters;
-
 			Message srcmsg = buf.CreateMessage ();
 			if (srcmsg.Version.Envelope == EnvelopeVersion.None)
 				throw new ArgumentException ("The message to decrypt is not an expected SOAP envelope.");
@@ -138,48 +132,77 @@ namespace System.ServiceModel.Channels
 				buf.CreateMessage ().WriteMessage (writer);
 			}
 
-			DecryptDocument (token, parameters);
+			// read and store headers, wsse:Security and setup in-band resolver.
+			ReadHeaders (srcmsg);
+
+			ExtractPlainDocument ();
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
+			for (int i = 0; i < srcmsg.Headers.Count; i++) {
+				MessageHeaderInfo header = srcmsg.Headers [i];
+				if (header == wss_header)
+					msg.Headers.Add (wss_header);
+				else
+					msg.Headers.CopyHeaderFrom (srcmsg, i);
+			}
 
 			// FIXME: when Local[Client|Service]SecuritySettings.DetectReplays
 			// is true, reject such messages which don't have <wsu:Timestamp>
 
-			WSSecurityMessageHeader sheader = null;
-
-			for (int i = 0; i < srcmsg.Headers.Count; i++) {
-				MessageHeaderInfo header = srcmsg.Headers [i];
-				if (header.Namespace == Constants.WssNamespace &&
-				    header.Name == "Security") {
-					sheader = WSSecurityMessageHeader.Read (
-						srcmsg.Headers.GetReaderAtHeader (i),
-						serializer, resolver);
-					msg.Headers.Add (sheader);
-				}
-				else
-					msg.Headers.CopyHeaderFrom (srcmsg.Headers, i);
-			}
-
-			// FIXME: verify signature.
-
-			if (sheader == null)
-				throw new InvalidOperationException ("Message security header was not found in the request message.");
+			msg.Properties.Add ("Security", sec_prop);
 			return msg;
 		}
 
-		void DecryptDocument (SecurityToken token, SecurityTokenParameters parameters)
+		void ReadHeaders (Message srcmsg)
 		{
+			SecurityTokenSerializer serializer =
+				security.TokenSerializer;
+			SecurityTokenResolver resolver =
+				security.OutOfBandTokenResolver;
+
+			for (int i = 0; i < srcmsg.Headers.Count; i++) {
+				MessageHeaderInfo header = srcmsg.Headers [i];
+				// FIXME: check SOAP Actor.
+				// MessageHeaderDescription.Actor needs to be accessible from here.
+				if (header.Namespace == Constants.WssNamespace &&
+				    header.Name == "Security") {
+					wss_header = WSSecurityMessageHeader.Read (
+						srcmsg.Headers.GetReaderAtHeader (i),
+						serializer, resolver);
+					headers.Add (wss_header);
+				}
+				else
+					headers.Add (header);
+			}
+			if (wss_header == null)
+				throw new InvalidOperationException ("In this service contract, a WS-Security header is required in the Message, but was not found.");
+
+			List<SecurityToken> tokens = new List<SecurityToken> ();
+			foreach (object obj in wss_header.Contents)
+				if (obj is SecurityToken)
+					tokens.Add ((SecurityToken) obj);
+			in_band_resolver = SecurityTokenResolver.CreateDefaultSecurityTokenResolver (
+				new ReadOnlyCollection <SecurityToken> (tokens),
+				true);
+		}
+
+		void ExtractPlainDocument ()
+		{
+			SecurityToken token =
+				security.EncryptionToken;
+			SecurityTokenParameters parameters =
+				security.RecipientParameters;
+
 			SecurityKey securityKey = ResolveKey (token, parameters);
 
 			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
-			if (securityHeaders.Count == 0)
-				throw new MessageSecurityException ("In this service that contains the security binding element, a security header is required in the reply message.");
 
 			foreach (XmlElement secElem in securityHeaders)
-				DecryptSingleSecurity (secElem, token, parameters, securityKey);
+				// FIXME: check Actor.
+				ExtractSingleSecurity (secElem, token, parameters, securityKey);
 		}
 
-		void DecryptSingleSecurity (XmlElement secElem, SecurityToken token, SecurityTokenParameters parameters, SecurityKey securityKey)
+		void ExtractSingleSecurity (XmlElement secElem, SecurityToken token, SecurityTokenParameters parameters, SecurityKey securityKey)
 		{
 			// decrypt the key with service certificate privkey
 			EncryptedXml encXml = new EncryptedXml (doc);
@@ -237,8 +260,43 @@ doc.PreserveWhitespace = false;
 doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
 
-			if (secElem.SelectSingleNode ("dsig:Signature", nsmgr) == null)
+/*
+			// signature confirmation
+			XmlElement sigElem = secElem.SelectSingleNode ("dsig:Signature", nsmgr) as XmlElement;
+			if (sigElem == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
+
+			SignedXml sxml = new SignedXml (doc);
+			sxml.LoadXml (sigElem);
+			SecurityTokenSerializer serializer =
+				security.TokenSerializer;
+			// FIXME: it should be put inside some proper class.
+			WSSecurityMessageHeader.UpdateSignature (sxml.Signature, doc, serializer);
+			SecurityKeyIdentifierClause sigClause = null;
+			foreach (KeyInfoClause kic in sxml.KeyInfo) {
+				SecurityTokenReferenceKeyInfo r = kic as SecurityTokenReferenceKeyInfo;
+				if (r != null)
+					sigClause = r.Clause;
+			}
+			if (sigClause == null)
+				throw new MessageSecurityException ("SecurityTokenReference was not found in dsig:Signature KeyInfo.");
+			bool confirmed = false;
+			if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
+				confirmed = sxml.CheckSignature (new HMACSHA1 (aes.Key));
+			else {
+				SecurityKey signKey;
+				SecurityTokenResolver outband = security.OutOfBandTokenResolver;
+				if (!in_band_resolver.TryResolveSecurityKey (sigClause, out signKey) &&
+				    (outband == null || !outband.TryResolveSecurityKey (sigClause, out signKey)))
+					throw new MessageSecurityException (String.Format ("The signing key could not be resolved: {0}", signKey));
+				sxml.SigningKey = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
+				confirmed = sxml.CheckSignature ();
+			}
+			// FIXME: It seems that we still cannot verify signature conformantly.
+			if (!confirmed)
+				throw new MessageSecurityException ("Message signature is invalid.");
+			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
+*/
 		}
 
 		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map)

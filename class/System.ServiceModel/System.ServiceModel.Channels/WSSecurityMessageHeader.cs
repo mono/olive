@@ -70,17 +70,23 @@ namespace System.ServiceModel.Channels
 					switch (reader.LocalName) {
 					case "DerivedKeyToken":
 						// FIXME: actually DerivedKeyToken should be read via WSSecurityTokenSerializer, but o
-						ret.Contents.Add (ReadDerivedKeyToken (reader, doc, serializer, resolver));
+						ret.Contents.Add (ReadDerivedKeyToken (reader, doc, serializer));
 						continue;
 					}
 					break;
 				//case Constants.WstNamespace:
-				//case Constants.WssNamespace:
+				case Constants.Wss11Namespace:
+					if (reader.LocalName == "SignatureConfirmation") {
+						ret.Contents.Add (ReadSignatureConfirmation (reader, doc));
+						continue;
+					}
+					break;
 				case SignedXml.XmlDsigNamespaceUrl:
 					switch (reader.LocalName) {
 					case "Signature":
 						Signature sig = new Signature ();
 						sig.LoadXml ((XmlElement) doc.ReadNode (reader));
+						UpdateSignature (sig, doc, serializer);
 						ret.Contents.Add (sig);
 						continue;
 					}
@@ -133,7 +139,32 @@ namespace System.ServiceModel.Channels
 			return ret;
 		}
 
-		static WsscDerivedKeyToken ReadDerivedKeyToken (XmlReader reader, XmlDocument doc, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
+		internal static void UpdateSignature (Signature sig, XmlDocument doc, SecurityTokenSerializer serializer)
+		{
+			KeyInfo ki = new KeyInfo ();
+			ki.Id = sig.KeyInfo.Id;
+			foreach (KeyInfoClause kic in sig.KeyInfo) {
+				KeyInfoNode kin = kic as KeyInfoNode;
+				if (kin != null) {
+					SecurityTokenReferenceKeyInfo r = new SecurityTokenReferenceKeyInfo (serializer, doc);
+					r.LoadXml (kin.Value);
+					ki.AddClause (r);
+				}
+				else
+					ki.AddClause (kic);
+			}
+			sig.KeyInfo = ki;
+		}
+
+		static Wss11SignatureConfirmation ReadSignatureConfirmation (XmlReader reader, XmlDocument doc)
+		{
+			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
+			string value = reader.GetAttribute ("Value");
+			reader.Skip ();
+			return new Wss11SignatureConfirmation (id, value);
+		}
+
+		static WsscDerivedKeyToken ReadDerivedKeyToken (XmlReader reader, XmlDocument doc, SecurityTokenSerializer serializer)
 		{
 			WsscDerivedKeyToken dkt = new WsscDerivedKeyToken ();
 			dkt.Id = reader.GetAttribute ("Id", Constants.WsuNamespace);
@@ -276,6 +307,13 @@ namespace System.ServiceModel.Channels
 					((EncryptedData) obj).GetXml ().WriteTo (writer);
 				} else if (obj is Signature) {
 					((Signature) obj).GetXml ().WriteTo (writer);
+				} else if (obj is Wss11SignatureConfirmation) {
+					Wss11SignatureConfirmation sc = (Wss11SignatureConfirmation) obj;
+					writer.WriteStartElement ("k", "SignatureConfirmation", Constants.Wss11Namespace);
+					writer.WriteAttributeString ("Id", sc.Id);
+					writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, sc.Id);
+					writer.WriteAttributeString ("Value", sc.Value);
+					writer.WriteEndElement ();
 				}
 				else
 					throw new ArgumentException (String.Format ("Unrecognized header item {0}", obj));
@@ -378,6 +416,25 @@ namespace System.ServiceModel.Channels
 		public override void LoadXml (XmlElement element)
 		{
 			clause = serializer.ReadKeyIdentifierClause (new XmlNodeReader (element));
+		}
+	}
+
+	internal class Wss11SignatureConfirmation
+	{
+		string id, value;
+
+		public Wss11SignatureConfirmation (string id, string value)
+		{
+		}
+
+		public string Id {
+			get { return id; }
+			set { id = value; }
+		}
+
+		public string Value {
+			get { return value; }
+			set { this.value = value; }
 		}
 	}
 }

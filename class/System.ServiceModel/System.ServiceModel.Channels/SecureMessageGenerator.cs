@@ -178,6 +178,7 @@ namespace System.ServiceModel.Channels
 		SecurityMessageProperty secprop;
 		MessageSecurityBindingSupport security;
 		int idbase;
+		string signature_confirmation;
 
 		public MessageSecurityGenerator (Message msg, 
 			MessageSecurityBindingSupport security)
@@ -192,6 +193,11 @@ namespace System.ServiceModel.Channels
 
 		public MessageSecurityBindingSupport Security {
 			get { return security; }
+		}
+
+		public string SignatureConfirmation {
+			get { return signature_confirmation; }
+			set { signature_confirmation = value; }
 		}
 
 		public abstract SecurityTokenParameters Parameters { get; }
@@ -246,11 +252,15 @@ namespace System.ServiceModel.Channels
 			secprop = new SecurityMessageProperty ();
 
 			string messageId = "uuid-" + Guid.NewGuid ();
-			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, "urn:" + messageId));
 			int identForMessageId = 1;
+			XmlDocument doc = new XmlDocument ();
+			doc.PreserveWhitespace = true;
+
+			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, "urn:" + messageId));
 
 			// FIXME: get correct ReplyTo value
-			msg.Headers.Add (MessageHeader.CreateHeader ("ReplyTo", msg.Version.Addressing.Namespace, EndpointAddress10.FromEndpointAddress (new EndpointAddress (Constants.WsaAnonymousUri))));
+			if (Direction == MessageDirection.Input)
+				msg.Headers.Add (MessageHeader.CreateHeader ("ReplyTo", msg.Version.Addressing.Namespace, EndpointAddress10.FromEndpointAddress (new EndpointAddress (Constants.WsaAnonymousUri))));
 
 			if (MessageTo != null)
 				msg.Headers.Add (MessageHeader.CreateHeader ("To", msg.Version.Addressing.Namespace, MessageTo.Uri.AbsoluteUri, true));
@@ -269,10 +279,14 @@ namespace System.ServiceModel.Channels
 				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
 				header.Contents.Add (timestamp);
 			}
+			// 1.5 [Signature Confirmation]
+			if (security.RequireSignatureConfirmation && SignatureConfirmation != null) {
+				Wss11SignatureConfirmation sc =
+					new Wss11SignatureConfirmation (GenerateId (doc), SignatureConfirmation);
+				header.Contents.Add (sc);
+			}
 
-
-			XmlDocument doc = new XmlDocument ();
-			doc.PreserveWhitespace = true;
+			// populate DOM to sign.
 			XPathNavigator nav = doc.CreateNavigator ();
 			using (XmlWriter w = nav.AppendChild ()) {
 				msg.WriteMessage (w);

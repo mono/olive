@@ -1,3 +1,18 @@
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	Ongoing changes to support signature confirmation
+	* SecureMessageGenerator.cs :
+	  Don't output ReplyTo onto reply message.
+	  Write SignatureConfirmation if needed.
+	* SecureMessageDecryptor.cs :
+	  Some refactoring for header cunsumption. Added commented-out
+	  signature verification part (not working yet, on client side due
+	  to incorrect reply from service and insufficient clause reader).
+	* WSSecurityMessageHeader.cs :
+	  Added SignatureConfirmation support.
+	  KeyInfoClause for o:SecurityTokenReference should be replaced with
+	  SecurityTokenReferenceKeyInfo.
+
 2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : support Timestamp signature.
