@@ -1,5 +1,10 @@
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityTokenSerializer.cs : not ReadKeyIdentifierClause() supports
+	  wsse:KeyIdentifier (only with X509Thumbprint for now).
+
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecurityMessageProperty.cs : added internal ConfirmedSignatures.
 
 2007-01-15  Atsushi Enomoto  <atsushi@ximian.com>

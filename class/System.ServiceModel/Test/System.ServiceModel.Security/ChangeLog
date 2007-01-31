@@ -1,3 +1,8 @@
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added correct reader test for
+	  SecurityTokenReference with KeyIdentifier. Existing test was broken.
+
 2007-01-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs: some tests for writing derived-

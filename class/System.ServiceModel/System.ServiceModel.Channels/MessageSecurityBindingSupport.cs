@@ -76,8 +76,8 @@ namespace System.ServiceModel.Channels
 		// only filled at prepared state.
 		internal SecurityToken encryption_token;
 		internal SecurityToken signing_token;
-		internal SecurityTokenAuthenticator authenticator;
-		internal SecurityTokenResolver auth_token_resolver;
+		SecurityTokenAuthenticator authenticator;
+		SecurityTokenResolver auth_token_resolver;
 
 		protected MessageSecurityBindingSupport (
 			SecurityBindingElementSupport elementSupport,
@@ -166,10 +166,29 @@ namespace System.ServiceModel.Channels
 			return manager.CreateSecurityTokenProvider (requirement);
 		}
 
-		public SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenRequirement requirement, out SecurityTokenResolver resolver)
+		public void CreateTokenAuthenticator (SecurityTokenRequirement requirement)
 		{
-			return manager.CreateSecurityTokenAuthenticator (requirement, out resolver);
+			authenticator = manager.CreateSecurityTokenAuthenticator (requirement, out auth_token_resolver);
 		}
+
+		public void Release ()
+		{
+			ReleaseCore ();
+
+			authenticator = null;
+
+			IDisposable disposable = signing_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			signing_token = null;
+
+			disposable = encryption_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			encryption_token = null;
+		}
+
+		protected abstract void ReleaseCore ();
 	}
 
 	internal class InitiatorMessageSecurityBindingSupport : MessageSecurityBindingSupport
@@ -191,26 +210,14 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 
-			authenticator = CreateTokenAuthenticator (r, out auth_token_resolver);
+			CreateTokenAuthenticator (r);
 
 			encryption_token = GetEncryptionToken (address, RecipientParameters);
 			signing_token = GetSigningToken (address, InitiatorParameters);
 		}
 
-		public void Release ()
+		protected override void ReleaseCore ()
 		{
-			authenticator = null;
-
-			IDisposable disposable = signing_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			signing_token = null;
-
-			disposable = encryption_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			encryption_token = null;
-
 			this.factory = null;
 		}
 
@@ -328,26 +335,14 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 
-			authenticator = CreateTokenAuthenticator (r, out auth_token_resolver);
+			CreateTokenAuthenticator (r);
 
 			encryption_token = GetEncryptionToken (listenUri, InitiatorParameters);
 			signing_token = GetSigningToken (listenUri, RecipientParameters);
 		}
 
-		public void Release ()
+		protected override void ReleaseCore ()
 		{
-			authenticator = null;
-
-			IDisposable disposable = signing_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			signing_token = null;
-
-			disposable = encryption_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			encryption_token = null;
-
 			this.listener = null;
 		}
 

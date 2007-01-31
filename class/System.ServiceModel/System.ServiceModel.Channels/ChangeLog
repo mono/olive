@@ -1,5 +1,12 @@
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs : some Release() refactoring.
+	* SecureMessageGenerator.cs : use correct signing key clause for
+	  SecurityTokenReferenceKeyInfo to be serialized.
+	* SecureMessageDecryptor.cs : now it can try to parse signature.
+
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
 	Ongoing changes to support signature confirmation
 	* SecureMessageGenerator.cs :
 	  Don't output ReplyTo onto reply message.

@@ -398,13 +398,24 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 
 		[Test]
 		[ExpectedException (typeof (XmlException))] // KeyIdentifier is not the expected element.
+		public void ReadKeyIdentifierReferenceWrongVallueType ()
+		{
+			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+            <o:KeyIdentifier ValueType='hogehoge'>xr42fAKDBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
+          </o:SecurityTokenReference>";
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				SecurityKeyIdentifierClause kic = serializer.ReadKeyIdentifierClause (xr);
+				Assert.IsTrue (kic is X509ThumbprintKeyIdentifierClause, "#1");
+			}
+		}
+
+		[Test]
 		public void ReadKeyIdentifierReference ()
 		{
 			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
-            <o:KeyIdentifier ValueType='http://docs.oasis-open.org/wss/oasis-wss
--soap-message-security-1.1#ThumbprintSHA1' EncodingType='http://docs.oasis-open.
-org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary'>xr42fAK
-DBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
+            <o:KeyIdentifier ValueType='http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1' EncodingType='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary'>xr42fAKDBNItO0aRPKFqc0kaiiU=</o:KeyIdentifier>
           </o:SecurityTokenReference>";
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;

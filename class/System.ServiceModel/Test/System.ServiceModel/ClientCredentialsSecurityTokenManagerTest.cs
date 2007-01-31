@@ -48,6 +48,8 @@ namespace MonoTests.System.ServiceModel
 	public class ClientCredentialsSecurityTokenManagerTest
 	{
 		MyManager def_c;
+		X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+		X509Certificate2 certpub = new X509Certificate2 ("Test/Resources/test.cer");
 
 		[SetUp]
 		public void Initialize ()
@@ -144,7 +146,6 @@ namespace MonoTests.System.ServiceModel
 			r.TokenType = SecurityTokenTypes.X509Certificate;
 			// X509CertificateEndpointIdentity does not work like
 			// a client certificate; it still requires client cert
-			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 			r.TargetAddress = new EndpointAddress (
 				new Uri ("http://localhost:8080"),
 				new X509CertificateEndpointIdentity (cert));
@@ -160,7 +161,6 @@ namespace MonoTests.System.ServiceModel
 			// ... however when it is KeyExchange mode, this
 			// endpoint identity is used.
 			r.KeyUsage = SecurityKeyUsage.Exchange;
-			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 			r.TargetAddress = new EndpointAddress (
 				new Uri ("http://localhost:8080"),
 				new X509CertificateEndpointIdentity (cert));
@@ -176,8 +176,7 @@ namespace MonoTests.System.ServiceModel
 			r.TokenType = SecurityTokenTypes.X509Certificate;
 			// ... and in such case ClientCertificate makes no sense.
 			r.KeyUsage = SecurityKeyUsage.Exchange;
-			def_c.ClientCredentials.ClientCertificate.Certificate =
-				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			def_c.ClientCredentials.ClientCertificate.Certificate = cert;
 			r.TargetAddress = new EndpointAddress ("http://localhost:8080");
 			def_c.CreateSecurityTokenProvider (r);
 		}
@@ -188,8 +187,7 @@ namespace MonoTests.System.ServiceModel
 			SecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
 			r.TokenType = SecurityTokenTypes.X509Certificate;
-			def_c.ClientCredentials.ClientCertificate.Certificate =
-				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			def_c.ClientCredentials.ClientCertificate.Certificate = cert;
 			X509SecurityTokenProvider p =
 				def_c.CreateSecurityTokenProvider (r)
 				as X509SecurityTokenProvider;
@@ -203,8 +201,7 @@ namespace MonoTests.System.ServiceModel
 			RecipientServiceModelSecurityTokenRequirement r =
 				new RecipientServiceModelSecurityTokenRequirement ();
 			r.TokenType = SecurityTokenTypes.X509Certificate;
-			def_c.ClientCredentials.ClientCertificate.Certificate =
-				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			def_c.ClientCredentials.ClientCertificate.Certificate = cert;
 
 			def_c.CreateSecurityTokenProvider (r);
 		}
@@ -216,8 +213,7 @@ namespace MonoTests.System.ServiceModel
 				new RecipientServiceModelSecurityTokenRequirement ();
 			r.TokenType = SecurityTokenTypes.X509Certificate;
 			r.KeyUsage = SecurityKeyUsage.Exchange;
-			def_c.ClientCredentials.ClientCertificate.Certificate =
-				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
+			def_c.ClientCredentials.ClientCertificate.Certificate = cert;
 
 			X509SecurityTokenProvider p =
 				def_c.CreateSecurityTokenProvider (r)
@@ -281,10 +277,7 @@ namespace MonoTests.System.ServiceModel
 		EndpointAddress CreateEndpointAddress (string s, bool publicOnly)
 		{
 			return new EndpointAddress (new Uri (s),
-				new X509CertificateEndpointIdentity (
-					publicOnly ?
-					new X509Certificate2 ("Test/Resources/test.cer") :
-					new X509Certificate2 ("Test/Resources/test.pfx", "mono")));
+				new X509CertificateEndpointIdentity (publicOnly ? certpub : cert));
 		}
 
 		InitiatorServiceModelSecurityTokenRequirement  GetAnonSslProviderRequirement (bool useTransport)
@@ -371,15 +364,13 @@ namespace MonoTests.System.ServiceModel
 				GetAnonSslProviderRequirement (true);
 
 			// What causes NRE!?
-			def_c.ClientCredentials.ClientCertificate.Certificate =
-				new X509Certificate2 ("Test/Resources/test.cer");
+			def_c.ClientCredentials.ClientCertificate.Certificate = certpub;
 			r.Properties [ReqType.IssuedSecurityTokenParametersProperty] =
 				new X509SecurityTokenParameters ();
 			r.TargetAddress = CreateEndpointAddress ("http://localhost:8080", true);
 			r.IssuerAddress = CreateEndpointAddress ("http://localhost:8080", true);
 			r.IssuerBinding = new CustomBinding (new HandlerTransportBindingElement (null));
-			def_c.ClientCredentials.ServiceCertificate.DefaultCertificate =
-				new X509Certificate2 ("Test/Resources/test.cer");
+			def_c.ClientCredentials.ServiceCertificate.DefaultCertificate = certpub;
 
 			SecurityTokenProvider p =
 				def_c.CreateSecurityTokenProvider (r);
@@ -491,8 +482,6 @@ namespace MonoTests.System.ServiceModel
 		[Ignore ("it ends up to require running service on .NET, and it's anyways too implementation dependent.")]
 		public void SecureConvProviderGetToken ()
 		{
-			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
-
 			InitiatorServiceModelSecurityTokenRequirement r =
 				CreateRequirement ();
 			// it still requires SecurityAlgorithmSuite on GetToken().
@@ -563,6 +552,26 @@ namespace MonoTests.System.ServiceModel
 				def_c.CreateSecurityTokenAuthenticator (r, out resolver)
 				as RsaSecurityTokenAuthenticator;
 			Assert.IsNotNull (rsa, "#1");
+			Assert.IsNull (resolver, "#2"); // but probably non-null if there is RsaSecurityToken that could be somehow created from the credential.
+		}
+
+		[Test]
+		public void CreateAuthenticatorX509 ()
+		{
+			InitiatorServiceModelSecurityTokenRequirement r =
+				new InitiatorServiceModelSecurityTokenRequirement ();
+			r.TokenType = SecurityTokenTypes.X509Certificate;
+			def_c.ClientCredentials.ClientCertificate.Certificate = cert;
+			SecurityTokenResolver resolver;
+			SecurityTokenAuthenticator x509 =
+				def_c.CreateSecurityTokenAuthenticator (r, out resolver);
+			Assert.IsNotNull (x509, "#1");
+			Assert.IsNull (resolver, "#2"); // hmm...
+
+			def_c.ClientCredentials.ServiceCertificate.DefaultCertificate = cert;
+			x509 = def_c.CreateSecurityTokenAuthenticator (r, out resolver);
+			Assert.IsNotNull (x509, "#3");
+			Assert.IsNull (resolver, "#4"); // hmmm...
 		}
 
 		[Test]
@@ -576,7 +585,6 @@ namespace MonoTests.System.ServiceModel
 			be.EndpointSupportingTokenParameters.Endorsing.Add (
 				new MyEndorsingTokenParameters ());
 			Binding b = new CustomBinding (be, new HttpTransportBindingElement ());
-			X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 			EndpointAddress ea = new EndpointAddress (new Uri ("http://localhost:37564"), new X509CertificateEndpointIdentity (cert));
 			CalcProxy client = new CalcProxy (b, ea);
 			client.Endpoint.Behaviors.RemoveAll<ClientCredentials> ();

@@ -420,9 +420,9 @@ namespace System.ServiceModel.Channels
 					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
 					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
 					sxml.ComputeSignature ();
-					SecurityKeyIdentifierClause skeyClause =
-						new LocalIdKeyIdentifierClause (signToken.Id, signToken.GetType ());
-					sigKeyInfo = new SecurityTokenReferenceKeyInfo (skeyClause, serializer, doc);
+//					SecurityKeyIdentifierClause skeyClause =
+//						new LocalIdKeyIdentifierClause (signToken.Id, signToken.GetType ());
+					sigKeyInfo = new SecurityTokenReferenceKeyInfo (signClause, serializer, doc);
 				}
 
 				// FIXME: It is kind of hack that it uses and

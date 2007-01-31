@@ -178,9 +178,14 @@ namespace System.ServiceModel.Channels
 				throw new InvalidOperationException ("In this service contract, a WS-Security header is required in the Message, but was not found.");
 
 			List<SecurityToken> tokens = new List<SecurityToken> ();
+			// Add relevant protection token and supporting tokens.
+			tokens.Add (security.SigningToken);
+			// FIXME: handle supporting tokens
+
 			foreach (object obj in wss_header.Contents)
 				if (obj is SecurityToken)
 					tokens.Add ((SecurityToken) obj);
+
 			in_band_resolver = SecurityTokenResolver.CreateDefaultSecurityTokenResolver (
 				new ReadOnlyCollection <SecurityToken> (tokens),
 				true);
@@ -260,7 +265,6 @@ doc.PreserveWhitespace = false;
 doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
 
-/*
 			// signature confirmation
 			XmlElement sigElem = secElem.SelectSingleNode ("dsig:Signature", nsmgr) as XmlElement;
 			if (sigElem == null)
@@ -293,10 +297,9 @@ doc.PreserveWhitespace = true;
 				confirmed = sxml.CheckSignature ();
 			}
 			// FIXME: It seems that we still cannot verify signature conformantly.
-			if (!confirmed)
-				throw new MessageSecurityException ("Message signature is invalid.");
+//			if (!confirmed)
+//				throw new MessageSecurityException ("Message signature is invalid.");
 			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
-*/
 		}
 
 		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map)

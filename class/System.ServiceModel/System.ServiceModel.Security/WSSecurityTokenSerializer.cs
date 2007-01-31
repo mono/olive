@@ -230,23 +230,45 @@ namespace System.ServiceModel.Security
 			case Constants.WssNamespace:
 				switch (reader.LocalName) {
 				case "SecurityTokenReference":
-					reader.ReadStartElement ();
-					reader.MoveToContent ();
-					if (reader.LocalName != "Reference" || reader.NamespaceURI != Constants.WssNamespace)
-						throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
-					string uri = reader.GetAttribute ("URI");
-					if (uri == null)
-						uri = "#";
-					LocalIdKeyIdentifierClause local = new LocalIdKeyIdentifierClause (uri.Substring (1));
-					reader.Skip ();
-					reader.MoveToContent ();
-					reader.ReadEndElement ();
-					return local;
+					return ReadSecurityTokenReference (reader);
 				}
 				break;
 			}
 
 			throw new NotImplementedException (String.Format ("Security key identifier clause element '{0}' in namespace '{1}' is either not implemented or not supported.", reader.LocalName, reader.NamespaceURI));
+		}
+
+		SecurityKeyIdentifierClause ReadSecurityTokenReference (XmlReader reader)
+		{
+			reader.ReadStartElement ();
+			reader.MoveToContent ();
+			if (reader.NamespaceURI != Constants.WssNamespace)
+				throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
+
+			switch (reader.LocalName) {
+			case "Reference":
+				string uri = reader.GetAttribute ("URI");
+				if (uri == null)
+					uri = "#";
+				LocalIdKeyIdentifierClause local = new LocalIdKeyIdentifierClause (uri.Substring (1));
+				reader.Skip ();
+				reader.MoveToContent ();
+				reader.ReadEndElement ();
+				return local;
+			case "KeyIdentifier":
+				switch (reader.GetAttribute ("ValueType")) {
+				case Constants.WssX509ThumbptintValueType:
+					string value = reader.ReadElementContentAsString ();
+					reader.MoveToContent ();
+					reader.ReadEndElement (); // consume </Reference>
+					return new X509ThumbprintKeyIdentifierClause (Convert.FromBase64String (value));
+				default:
+					// It is kinda weird but it throws XmlException here ...
+					throw new XmlException (String.Format ("KeyIdentifier type '{0}' is not supported in WSSecurityTokenSerializer.", reader.GetAttribute ("ValueType")));
+				}
+			default:
+				throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
+			}
 		}
 
 		EncryptedKeyIdentifierClause ReadEncryptedKeyIdentifierClause (
