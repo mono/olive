@@ -107,38 +107,57 @@ namespace System.IdentityModel.Tokens
 			return (byte []) key.Clone ();
 		}
 
-		[MonoTODO]
 		public override KeyedHashAlgorithm GetKeyedHashAlgorithm (
 			string algorithm)
 		{
-			throw new NotImplementedException ();
+			if (algorithm == SecurityAlgorithms.HmacSha1Signature)
+				return new HMACSHA1 (key);
+			//if (algorithm == SecurityAlgorithms.HmacSha256Signature)
+			//	return new HMACSHA256 (key);
+			throw new NotSupportedException ();
 		}
 
-		[MonoTODO]
 		public override SymmetricAlgorithm GetSymmetricAlgorithm (string algorithm)
 		{
+			SymmetricAlgorithm s = null;
 			switch (algorithm) {
 			case SecurityAlgorithms.Aes128Encryption:
 			case SecurityAlgorithms.Aes192Encryption:
 			case SecurityAlgorithms.Aes256Encryption:
-				AES aes = new AES ();
-				aes.GenerateIV ();
-				aes.Key = key;
-				return aes;
+				s = new AES ();
+				break;
+			case SecurityAlgorithms.TripleDesEncryption:
+				s = TripleDES.Create ();
+				break;
+			case SecurityAlgorithms.Aes128KeyWrap:
+			case SecurityAlgorithms.Aes192KeyWrap:
+			case SecurityAlgorithms.Aes256KeyWrap:
+			case SecurityAlgorithms.TripleDesKeyWrap:
+				throw new NotImplementedException ();
+			default:
+				throw new NotSupportedException ();
 			}
-			throw new NotImplementedException ();
+			s.GenerateIV ();
+			s.Key = key;
+			return s;
 		}
 
-		[MonoTODO]
 		public override ICryptoTransform GetDecryptionTransform (string algorithm, byte [] iv)
 		{
-			throw new NotImplementedException ();
+			if (iv == null)
+				throw new ArgumentNullException ("iv");
+			SymmetricAlgorithm alg = GetSymmetricAlgorithm (algorithm);
+			alg.IV = iv;
+			return alg.CreateDecryptor ();
 		}
 
-		[MonoTODO]
 		public override ICryptoTransform GetEncryptionTransform (string algorithm, byte [] iv)
 		{
-			throw new NotImplementedException ();
+			if (iv == null)
+				throw new ArgumentNullException ("iv");
+			SymmetricAlgorithm alg = GetSymmetricAlgorithm (algorithm);
+			alg.IV = iv;
+			return alg.CreateEncryptor ();
 		}
 
 		[MonoTODO]
@@ -171,10 +190,23 @@ namespace System.IdentityModel.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override bool IsSupportedAlgorithm (string algorithm)
 		{
-			throw new NotImplementedException ();
+			switch (algorithm) {
+			case SecurityAlgorithms.HmacSha1Signature:
+			case SecurityAlgorithms.Psha1KeyDerivation:
+			case SecurityAlgorithms.Aes128Encryption:
+			case SecurityAlgorithms.Aes128KeyWrap:
+			case SecurityAlgorithms.Aes192Encryption:
+			case SecurityAlgorithms.Aes192KeyWrap:
+			case SecurityAlgorithms.Aes256Encryption:
+			case SecurityAlgorithms.Aes256KeyWrap:
+			case SecurityAlgorithms.TripleDesEncryption:
+			case SecurityAlgorithms.TripleDesKeyWrap:
+				return true;
+			default:
+				return false;
+			}
 		}
 
 		[MonoTODO]

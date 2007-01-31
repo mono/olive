@@ -37,16 +37,12 @@ namespace System.IdentityModel.Tokens
 		public X509ThumbprintKeyIdentifierClause (byte [] certificateThumbprint)
 			: base (null, certificateThumbprint, true)
 		{
-			thumbprint = Convert.ToBase64String (certificateThumbprint);
 		}
 
 		public X509ThumbprintKeyIdentifierClause (X509Certificate2 certificate)
 			: base (null, certificate.GetCertHash (), true)
 		{
-			thumbprint = certificate.Thumbprint;
 		}
-
-		string thumbprint;
 
 		public byte [] GetX509Thumbprint ()
 		{
@@ -57,7 +53,14 @@ namespace System.IdentityModel.Tokens
 		{
 			if (certificate == null)
 				throw new ArgumentNullException ("certificate");
-			return thumbprint == certificate.Thumbprint;
+			byte [] b1 = GetRawBuffer ();
+			byte [] b2 = certificate.GetCertHash ();
+			if (b1.Length != b2.Length)
+				return false;
+			for (int i = 0; i < b1.Length; i++)
+				if (b1 [i] != b2 [i])
+					return false;
+			return true;
 		}
 
 		[MonoTODO]

@@ -37,7 +37,6 @@ namespace System.IdentityModel.Selectors
 		{
 		}
 
-		[MonoTODO ("handle canMatchLocalId")]
 		public static SecurityTokenResolver  CreateDefaultSecurityTokenResolver (
 			ReadOnlyCollection<SecurityToken> tokens,
 			bool canMatchLocalId)
@@ -111,7 +110,6 @@ namespace System.IdentityModel.Selectors
 			out SecurityToken token);
 
 
-		// FIXME: handle canMatchLocalId
 		class DefaultSecurityTokenResolver : SecurityTokenResolver
 		{
 			ReadOnlyCollection<SecurityToken> tokens;

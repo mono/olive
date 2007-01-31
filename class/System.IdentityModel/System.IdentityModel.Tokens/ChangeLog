@@ -1,3 +1,11 @@
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* InMemorySymmetricSecurityKey.cs : implemented some algorithm related
+	  members.
+	* X509ThumbprintKeyIdentifierClause.cs : thumbprint comparison was
+	  broken. Now it compares byte sequences.
+	* SecurityTokenResolver.cs : (removed MonoTODO.)
+
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509IssuerSerialKeyIdentifierClause.cs : fixed previous change,
