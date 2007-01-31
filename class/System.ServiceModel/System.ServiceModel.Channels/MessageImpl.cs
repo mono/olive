@@ -168,11 +168,11 @@ namespace System.ServiceModel.Channels
 			// SOAP Body
 			body_started = true;
 			is_empty = reader.IsEmptyElement;
-			reader.ReadStartElement ("Body", Version.Envelope.Namespace);
 			if (reader.MoveToAttribute ("Id", Constants.WsuNamespace)) {
 				BodyId = reader.Value;
 				reader.MoveToElement ();
 			}
+			reader.ReadStartElement ("Body", Version.Envelope.Namespace);
 			if (reader.NodeType == XmlNodeType.EndElement) {
 				is_empty = true;
 				reader.Read ();

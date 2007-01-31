@@ -1,5 +1,9 @@
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageImpl.cs : don't read attribute after ReadStartElement().
+
+2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityBindingSupport.cs : some Release() refactoring.
 	* SecureMessageGenerator.cs : use correct signing key clause for
 	  SecurityTokenReferenceKeyInfo to be serialized.
