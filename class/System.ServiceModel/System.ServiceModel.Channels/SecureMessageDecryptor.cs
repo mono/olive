@@ -270,6 +270,8 @@ doc.PreserveWhitespace = true;
 			if (sigElem == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 
+			// FIXME: the security tokens must be authenticated.
+
 			SignedXml sxml = new SignedXml (doc);
 			sxml.LoadXml (sigElem);
 			SecurityTokenSerializer serializer =
@@ -284,6 +286,7 @@ doc.PreserveWhitespace = true;
 			}
 			if (sigClause == null)
 				throw new MessageSecurityException ("SecurityTokenReference was not found in dsig:Signature KeyInfo.");
+
 			bool confirmed = false;
 			if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
 				confirmed = sxml.CheckSignature (new HMACSHA1 (aes.Key));
@@ -293,8 +296,8 @@ doc.PreserveWhitespace = true;
 				if (!in_band_resolver.TryResolveSecurityKey (sigClause, out signKey) &&
 				    (outband == null || !outband.TryResolveSecurityKey (sigClause, out signKey)))
 					throw new MessageSecurityException (String.Format ("The signing key could not be resolved: {0}", signKey));
-				sxml.SigningKey = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
-				confirmed = sxml.CheckSignature ();
+				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
+				confirmed = sxml.CheckSignature (sigalg);
 			}
 			// FIXME: It seems that we still cannot verify signature conformantly.
 //			if (!confirmed)

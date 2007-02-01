@@ -1,3 +1,8 @@
+2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageDecryptor.cs : The signing key must be passed as
+	  CheckSignature() argument, not SigningKey.
+
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageImpl.cs : don't read attribute after ReadStartElement().
