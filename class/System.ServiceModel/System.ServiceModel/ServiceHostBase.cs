@@ -32,6 +32,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
@@ -304,6 +305,8 @@ namespace System.ServiceModel
 					new BindingParameterCollection ();
 				foreach (object p in commonParams)
 					parameters.Add (p);
+
+				parameters.Add (ChannelProtectionRequirements.CreateFromContract (se.Contract));
 
 				foreach (IEndpointBehavior b in se.Behaviors)
 					b.AddBindingParameters (se, parameters);

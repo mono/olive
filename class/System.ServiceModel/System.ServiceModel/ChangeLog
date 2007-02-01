@@ -1,3 +1,8 @@
+2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceHostBase.cs : so, we didn't add ChannelProtectionRequirements
+	  and subsequently the reply message was not signed at all.
+
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Constants.cs : added wsse EncryptedKeySHA1.
