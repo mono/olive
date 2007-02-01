@@ -272,7 +272,7 @@ doc.PreserveWhitespace = true;
 
 			// FIXME: the security tokens must be authenticated.
 
-			SignedXml sxml = new SignedXml (doc);
+			WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
 			sxml.LoadXml (sigElem);
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
@@ -299,9 +299,8 @@ doc.PreserveWhitespace = true;
 				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
 				confirmed = sxml.CheckSignature (sigalg);
 			}
-			// FIXME: It seems that we still cannot verify signature conformantly.
-//			if (!confirmed)
-//				throw new MessageSecurityException ("Message signature is invalid.");
+			if (!confirmed)
+				throw new MessageSecurityException ("Message signature is invalid.");
 			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
 		}
 

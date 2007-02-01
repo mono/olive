@@ -310,7 +310,6 @@ namespace System.ServiceModel.Channels
 				} else if (obj is Wss11SignatureConfirmation) {
 					Wss11SignatureConfirmation sc = (Wss11SignatureConfirmation) obj;
 					writer.WriteStartElement ("k", "SignatureConfirmation", Constants.Wss11Namespace);
-					writer.WriteAttributeString ("Id", sc.Id);
 					writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, sc.Id);
 					writer.WriteAttributeString ("Value", sc.Value);
 					writer.WriteEndElement ();
@@ -344,7 +343,6 @@ namespace System.ServiceModel.Channels
 		public void WriteTo (XmlWriter writer)
 		{
 			writer.WriteStartElement ("u", "Timestamp", Constants.WsuNamespace);
-			writer.WriteAttributeString ("Id", Id);
 			writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, Id);
 			writer.WriteStartElement ("u", "Created", Constants.WsuNamespace);
 			writer.WriteValue (FormatAsUtc (Created));

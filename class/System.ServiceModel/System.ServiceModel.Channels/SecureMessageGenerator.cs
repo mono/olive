@@ -383,7 +383,7 @@ namespace System.ServiceModel.Channels
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
 				// sign
-				SignedXml sxml = new SignedXml (doc);
+				WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
 				SecurityTokenReferenceKeyInfo sigKeyInfo;
 
 				sig = sxml.Signature;
@@ -518,10 +518,7 @@ namespace System.ServiceModel.Channels
 
 		string GetId (XmlElement el)
 		{
-			string id = el.GetAttribute ("Id", Constants.WsuNamespace);
-			if (id == String.Empty)
-				id = el.GetAttribute ("Id");
-			return id;
+			return el.GetAttribute ("Id", Constants.WsuNamespace);
 		}
 
 		void CreateReference (Signature sig, XmlElement el, string id)
@@ -543,7 +540,6 @@ namespace System.ServiceModel.Channels
 				XmlAttribute a = el.SetAttributeNode ("Id", Constants.WsuNamespace);
 				a.Prefix = "u";
 				a.Value = id;
-				el.SetAttribute ("Id", id);
 			}
 #endif
 			sig.SignedInfo.AddReference (r);

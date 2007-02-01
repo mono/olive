@@ -1,5 +1,15 @@
 2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSignedXml.cs:
+	  MessageHeader.cs, Message.cs, WSSecurityMessageHeader.cs,
+	  SecureMessageDecryptor.cs, SecureMessageGenerator.cs:
+	  use new WSSignedXml instead of SignedXml, and remove coexisting
+	  Id and wsu:Id. Now we can live only with wsu:Id and therefore
+	  - our reply messages could be consumed by .NET, and
+	  - .NET signature could be verified.
+
+2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageDecryptor.cs : The signing key must be passed as
 	  CheckSignature() argument, not SigningKey.
 

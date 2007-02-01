@@ -273,10 +273,8 @@ namespace System.ServiceModel.Channels
 			XmlDictionaryWriter writer)
 		{
 			writer.WriteStartElement ("s", "Body", Version.Envelope.Namespace);
-			if (BodyId != null) {
+			if (BodyId != null)
 				writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, BodyId);
-				writer.WriteAttributeString ("Id", BodyId);
-			}
 		}
 
 		protected virtual void OnWriteStartEnvelope (
