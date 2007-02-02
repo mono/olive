@@ -1,0 +1,8 @@
+../../build/common/Consts.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+System.Web.Script.Serialization/JavaScriptConverter.cs
+System.Web.Script.Serialization/JavaScriptSerializer.cs
+System.Web.Script.Serialization/JavaScriptTypeResolver.cs
+System.Web.Script.Serialization/ScriptIgnoreAttribute.cs
+System.Web.Script.Serialization/SimpleTypeResolver.cs
