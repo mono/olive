@@ -74,8 +74,8 @@ namespace System.ServiceModel.Channels
 		SecurityBindingElementSupport element_support;
 
 		// only filled at prepared state.
-		internal SecurityToken encryption_token;
-		internal SecurityToken signing_token;
+		SecurityToken encryption_token;
+		SecurityToken signing_token;
 		SecurityTokenAuthenticator authenticator;
 		SecurityTokenResolver auth_token_resolver;
 
@@ -125,10 +125,12 @@ namespace System.ServiceModel.Channels
 
 		public SecurityToken EncryptionToken {
 			get { return encryption_token; }
+			set { encryption_token = value; }
 		}
 
 		public SecurityToken SigningToken {
 			get { return signing_token; }
+			set { signing_token = value; }
 		}
 
 		#region element_support
@@ -284,10 +286,10 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 			CreateTokenAuthenticator (r); // FIXME: is it correct??
-			encryption_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
+			EncryptionToken = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
 			r = CreateRequirement ();
 			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
-			signing_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
+			SigningToken = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
 		}
 
 		protected override void ReleaseCore ()
@@ -328,11 +330,11 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 			CreateTokenAuthenticator (r);
-			signing_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
+			SigningToken = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
 
 			r = CreateRequirement ();
 			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
-			encryption_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
+			EncryptionToken = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
 		}
 
 		protected override void ReleaseCore ()

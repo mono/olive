@@ -1,5 +1,20 @@
 2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs : cosmetic refactoring.
+	* SecureMessageDecryptor.cs : store token and its authentication
+	  policies into the security property, and reuse it on reply.
+	  Some code refactoring; there is at most one o:Security to solve at
+	  one endpoint (depends on Actor). Some attempt to use correct
+	  token parameters (but for now I have only samples that use x509).
+	* SecureMessageGenerator.cs : For replying message, use initiator's
+	  signing token as the encryption token. Simply reuse security
+	  property from the input message.
+
+	  I have some nasty workaround at decryptor for initiator that could
+	  not retrieve decryption key.
+
+2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs, SecurityChannelListener.cs,
 	  SecurityRequestContext.cs, MessageSecurityBindingSupport.cs:
 	  several refactoring on token acquisition. Large part of

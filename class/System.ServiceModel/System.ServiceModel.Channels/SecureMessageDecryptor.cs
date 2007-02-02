@@ -59,6 +59,14 @@ namespace System.ServiceModel.Channels
 		{
 			this.security = security;
 		}
+
+		public override SecurityTokenParameters Parameters {
+			get { return security.RecipientParameters; }
+		}
+
+		public override SecurityTokenParameters CounterParameters {
+			get { return security.InitiatorParameters; }
+		}
 	}
 
 	internal class InitiatorSecureMessageDecryptor : SecureMessageDecryptor
@@ -70,6 +78,14 @@ namespace System.ServiceModel.Channels
 			: base (source, security)
 		{
 			this.security = security;
+		}
+
+		public override SecurityTokenParameters Parameters {
+			get { return security.InitiatorParameters; }
+		}
+
+		public override SecurityTokenParameters CounterParameters {
+			get { return security.RecipientParameters; }
 		}
 	}
 
@@ -110,12 +126,8 @@ namespace System.ServiceModel.Channels
 
 		}
 
-		static SecurityKey ResolveKey (SecurityToken token, SecurityTokenParameters p)
-		{
-			SecurityKeyIdentifierClause clause =
-				p.CallCreateKeyIdentifierClause (token, p.ReferenceStyle);
-			return token.ResolveKeyIdentifierClause (clause);
-		}
+		public abstract SecurityTokenParameters Parameters { get; }
+		public abstract SecurityTokenParameters CounterParameters { get; }
 
 		public Message DecryptMessage ()
 		{
@@ -135,7 +147,10 @@ namespace System.ServiceModel.Channels
 			// read and store headers, wsse:Security and setup in-band resolver.
 			ReadHeaders (srcmsg);
 
-			ExtractPlainDocument ();
+			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
+			foreach (XmlElement secElem in securityHeaders)
+				// FIXME: check Actor.
+				ExtractSecurity (secElem);
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
 			for (int i = 0; i < srcmsg.Headers.Count; i++) {
@@ -179,7 +194,9 @@ namespace System.ServiceModel.Channels
 
 			List<SecurityToken> tokens = new List<SecurityToken> ();
 			// Add relevant protection token and supporting tokens.
-			tokens.Add (security.SigningToken);
+			// FIXME: it is totally illogical, just a workaround for initiator's decryption for mono-mono communication. So, it is simply wrong.
+			if (Parameters == security.InitiatorParameters)
+				tokens.Add (security.EncryptionToken);
 			// FIXME: handle supporting tokens
 
 			foreach (object obj in wss_header.Contents)
@@ -191,24 +208,15 @@ namespace System.ServiceModel.Channels
 				true);
 		}
 
-		void ExtractPlainDocument ()
+		void ExtractSecurity (XmlElement secElem)
 		{
-			SecurityToken token =
-				security.EncryptionToken;
-			SecurityTokenParameters parameters =
-				security.RecipientParameters;
+			SecurityToken token = security.SigningToken;
 
-			SecurityKey securityKey = ResolveKey (token, parameters);
+			// FIXME: I doubt this is correct.
+			SecurityKeyIdentifierClause clause =
+				security.InitiatorParameters.CallCreateKeyIdentifierClause (token, Parameters.ReferenceStyle);
+			SecurityKey securityKey = token.ResolveKeyIdentifierClause (clause);
 
-			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
-
-			foreach (XmlElement secElem in securityHeaders)
-				// FIXME: check Actor.
-				ExtractSingleSecurity (secElem, token, parameters, securityKey);
-		}
-
-		void ExtractSingleSecurity (XmlElement secElem, SecurityToken token, SecurityTokenParameters parameters, SecurityKey securityKey)
-		{
 			// decrypt the key with service certificate privkey
 			EncryptedXml encXml = new EncryptedXml (doc);
 
@@ -293,9 +301,14 @@ doc.PreserveWhitespace = true;
 			else {
 				SecurityKey signKey;
 				SecurityTokenResolver outband = security.OutOfBandTokenResolver;
-				if (!in_band_resolver.TryResolveSecurityKey (sigClause, out signKey) &&
-				    (outband == null || !outband.TryResolveSecurityKey (sigClause, out signKey)))
+				SecurityToken signToken;
+				if (!in_band_resolver.TryResolveToken (sigClause, out signToken) &&
+				    (outband == null || !outband.TryResolveToken (sigClause, out signToken)))
 					throw new MessageSecurityException (String.Format ("The signing key could not be resolved: {0}", signKey));
+				sec_prop.InitiatorToken = new SecurityTokenSpecification (
+					signToken,
+					security.TokenAuthenticator.ValidateToken (signToken));
+				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
 				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
 				confirmed = sxml.CheckSignature (sigalg);
 			}

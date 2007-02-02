@@ -124,12 +124,9 @@ namespace System.ServiceModel.Channels
 			: base (msg, security)
 		{
 			this.security = security;
-			SecurityMessageProperty secprop = SecurityMessageProperty.GetOrCreate (msg);
-			secprop.ServiceSecurityContext = inputSecurityProperty.ServiceSecurityContext;
-			secprop.ExternalAuthorizationPolicies =
-				inputSecurityProperty.ExternalAuthorizationPolicies;
-			foreach (string sc in inputSecurityProperty.ConfirmedSignatures)
-				secprop.ConfirmedSignatures.Add (sc);
+			SecurityMessageProperty secprop = 
+				(SecurityMessageProperty) inputSecurityProperty.CreateCopy ();
+			msg.Properties.Security = secprop;
 		}
 
 		public override SecurityTokenParameters Parameters {
@@ -234,8 +231,10 @@ namespace System.ServiceModel.Channels
 
 		public Message SecureMessage ()
 		{
+			secprop = SecurityMessageProperty.GetOrCreate (Message);
+
 			SecurityToken encToken =
-				security.EncryptionToken;
+				secprop.InitiatorToken != null ? secprop.InitiatorToken.SecurityToken : security.EncryptionToken;
 			SecurityToken signToken =
 				security.SigningToken;
 			MessageProtectionOrder protectionOrder =
@@ -245,8 +244,6 @@ namespace System.ServiceModel.Channels
 			SecurityBindingElement element =
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
-
-			secprop = SecurityMessageProperty.GetOrCreate (Message);
 
 			string messageId = "uuid-" + Guid.NewGuid ();
 			int identForMessageId = 1;
@@ -319,7 +316,7 @@ namespace System.ServiceModel.Channels
 				Security.InitiatorParameters.InclusionMode, false);
 
 			SecurityKeyIdentifierClause encClause =
-				CounterParameters.CallCreateKeyIdentifierClause (encToken, includeEncToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
+				CounterParameters.CallCreateKeyIdentifierClause (encToken, includeEncToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
@@ -412,10 +409,6 @@ namespace System.ServiceModel.Channels
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (signClause, serializer, doc);
 				}
 
-				// FIXME: It is kind of hack that it uses and
-				// clears temporary DataObjects.
-				sxml.Signature.ObjectList.Clear ();
-
 				sxml.KeyInfo = new KeyInfo ();
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
@@ -500,6 +493,9 @@ namespace System.ServiceModel.Channels
 			else if (sig != null) // ![Signature Protection]
 				header.Contents.Add (sig);
 
+//MessageBuffer zzz = ret.CreateBufferedCopy (100000);
+//ret = zzz.CreateMessage ();
+//Console.WriteLine (zzz.CreateMessage ());
 			return ret;
 		}
 
