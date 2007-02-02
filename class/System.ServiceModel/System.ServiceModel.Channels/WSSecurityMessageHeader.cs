@@ -423,6 +423,8 @@ namespace System.ServiceModel.Channels
 
 		public Wss11SignatureConfirmation (string id, string value)
 		{
+			this.id = id;
+			this.value = value;
 		}
 
 		public string Id {

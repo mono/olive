@@ -35,20 +35,22 @@ namespace System.ServiceModel.Channels
 	internal class DefaultMessageBuffer : MessageBuffer
 	{
 		MessageHeaders headers;
+		MessageProperties properties;
 		BodyWriter body;
 		bool closed, is_fault;
 		
-		internal DefaultMessageBuffer (MessageHeaders headers)
-			: this (headers, null, false)
+		internal DefaultMessageBuffer (MessageHeaders headers, MessageProperties properties)
+			: this (headers, properties, null, false)
 		{
 		}
 
-		internal DefaultMessageBuffer (MessageHeaders headers, BodyWriter body, bool isFault)
+		internal DefaultMessageBuffer (MessageHeaders headers, MessageProperties properties, BodyWriter body, bool isFault)
 		{
 			this.headers = headers;
 			this.body = body;
 			this.closed = false;
 			this.is_fault = isFault;
+			this.properties = properties;
 		}
 
 		public override void Close ()
@@ -66,11 +68,13 @@ namespace System.ServiceModel.Channels
 		{
 			if (closed)
 				throw new ObjectDisposedException ("The message buffer has already been closed.");
-			
+			Message msg;
 			if (body == null)
-				return new EmptyMessage (headers.MessageVersion, headers.Action);
+				msg = new EmptyMessage (headers.MessageVersion, headers.Action);
 			else
-				return new SimpleMessage (headers.MessageVersion, headers.Action, body, is_fault);
+				msg = new SimpleMessage (headers.MessageVersion, headers.Action, body, is_fault);
+			msg.Properties.CopyProperties (properties);
+			return msg;
 		}
 
 		public override int BufferSize {
@@ -78,60 +82,19 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	/*
-	internal class XmlReaderMessageBuffer : MessageBuffer
-	{
-		MessageVersion version;
-		XmlDictionaryReader reader;
-		int max_headers;
-
-		bool closed;
-		
-		internal XmlReaderMessageBuffer (MessageVersion version, XmlDictionaryReader reader, int maxSizeOfHeaders)
-		{
-			this.version = version;
-			this.reader = reader;
-			this.max_headers = maxSizeOfHeaders;
-			this.closed = false;
-		}
-
-		public override void Close ()
-		{
-			if (closed)
-				return;
-
-			version = null;
-			reader = null;
-			max_headers = 0;
-			closed = true;
-		}
-
-		public override Message CreateMessage ()
-		{
-			if (closed)
-				throw new ArgumentNullException ();
-
-			return new XmlReaderMessage (version, reader, max_headers);
-		}
-		
-
-		public override int BufferSize {
-			get { throw new NotImplementedException (); }
-		}
-	}
-	*/
-
 	internal class XPathMessageBuffer : MessageBuffer
 	{
 		IXPathNavigable source;
 		MessageVersion version;
 		int max_header_size;
+		MessageProperties properties;
 
-		public XPathMessageBuffer (IXPathNavigable source, MessageVersion version, int maxSizeOfHeaders)
+		public XPathMessageBuffer (IXPathNavigable source, MessageVersion version, int maxSizeOfHeaders, MessageProperties properties)
 		{
 			this.source = source;
 			this.version = version;
 			this.max_header_size = maxSizeOfHeaders;
+			this.properties = properties;
 		}
 
 		public override void Close ()
@@ -141,7 +104,9 @@ namespace System.ServiceModel.Channels
 		public override Message CreateMessage ()
 		{
 			XmlDictionaryReader r = XmlDictionaryReader.CreateDictionaryReader (source.CreateNavigator ().ReadSubtree ());
-			return new XmlReaderMessage (version, r, max_header_size);
+			Message msg = new XmlReaderMessage (version, r, max_header_size);
+			msg.Properties.CopyProperties (properties);
+			return msg;
 		}
 
 		public override int BufferSize {

@@ -42,7 +42,6 @@ namespace System.ServiceModel.Channels
 	{
 		bool allow_output_batch;
 		MessageEncoder encoder;
-		SecurityMessageProperty security;
 		Uri via;
 		List<Pair> list;
 
@@ -56,6 +55,7 @@ namespace System.ServiceModel.Channels
 			properties.CopyProperties (this);
 		}
 
+		[MonoTODO ("This should actually be internal of a property.")]
 		public bool AllowOutputBatching {
 			get { return allow_output_batch; }
 			set { allow_output_batch = value; }
@@ -65,6 +65,7 @@ namespace System.ServiceModel.Channels
 			get { return list.Count; }
 		}
 
+		[MonoTODO ("This should actually be internal of a property.")]
 		public MessageEncoder Encoder {
 			get { return encoder; }
 			set { encoder = value; }
@@ -100,14 +101,15 @@ namespace System.ServiceModel.Channels
 		}
 
 		public SecurityMessageProperty Security {
-			get { return security; }
-			set { security = value; }
+			get { return (SecurityMessageProperty) this ["Security"]; }
+			set { this ["Security"] = value; }
 		}
 
 		public ICollection<object> Values {
 			get { return new ParameterValueCollection (list); }
 		}
 
+		[MonoTODO ("This should actually be internal of a property.")]
 		public Uri Via {
 			get { return via; }
 			set { via = value; }

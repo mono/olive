@@ -230,7 +230,7 @@ namespace System.ServiceModel.Channels
 		protected override MessageBuffer OnCreateBufferedCopy (
 			int maxBufferSize)
 		{
-			return new DefaultMessageBuffer (Headers);
+			return new DefaultMessageBuffer (Headers, Properties);
 		}
 	}
 

@@ -214,7 +214,7 @@ namespace System.ServiceModel.Channels
 			DTMXPathDocumentWriter2 pw = new DTMXPathDocumentWriter2 (new NameTable (), 100);
 			XmlDictionaryWriter w = XmlDictionaryWriter.CreateDictionaryWriter (pw);
 			WriteMessage (w);
-			return new XPathMessageBuffer (pw.CreateDocument (), Version, Headers.Count);
+			return new XPathMessageBuffer (pw.CreateDocument (), Version, Headers.Count, this.Properties);
 		}
 
 		protected virtual string OnGetBodyAttribute (

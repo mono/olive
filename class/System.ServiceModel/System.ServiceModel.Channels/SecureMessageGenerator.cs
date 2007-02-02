@@ -120,11 +120,18 @@ namespace System.ServiceModel.Channels
 
 		public RecipientMessageSecurityGenerator (
 			Message msg,
+			SecurityMessageProperty inputSecurityProperty,
 			RecipientMessageSecurityBindingSupport security,
 			Uri listenUri)
 			: base (msg, security)
 		{
 			this.security = security;
+			SecurityMessageProperty secprop = SecurityMessageProperty.GetOrCreate (msg);
+			secprop.ServiceSecurityContext = inputSecurityProperty.ServiceSecurityContext;
+			secprop.ExternalAuthorizationPolicies =
+				inputSecurityProperty.ExternalAuthorizationPolicies;
+			foreach (string sc in inputSecurityProperty.ConfirmedSignatures)
+				secprop.ConfirmedSignatures.Add (sc);
 			this.listen_uri = listenUri;
 		}
 
@@ -178,7 +185,6 @@ namespace System.ServiceModel.Channels
 		SecurityMessageProperty secprop;
 		MessageSecurityBindingSupport security;
 		int idbase;
-		string signature_confirmation;
 
 		public MessageSecurityGenerator (Message msg, 
 			MessageSecurityBindingSupport security)
@@ -193,11 +199,6 @@ namespace System.ServiceModel.Channels
 
 		public MessageSecurityBindingSupport Security {
 			get { return security; }
-		}
-
-		public string SignatureConfirmation {
-			get { return signature_confirmation; }
-			set { signature_confirmation = value; }
 		}
 
 		public abstract SecurityTokenParameters Parameters { get; }
@@ -248,8 +249,7 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
-			// FIXME: it should be created from the message to return (GetOrCreate).
-			secprop = new SecurityMessageProperty ();
+			secprop = SecurityMessageProperty.GetOrCreate (Message);
 
 			string messageId = "uuid-" + Guid.NewGuid ();
 			int identForMessageId = 1;
@@ -269,10 +269,9 @@ namespace System.ServiceModel.Channels
 			WSSecurityMessageHeader header =
 				new WSSecurityMessageHeader (serializer);
 			msg.Headers.Add (header);
-			WsuTimestamp timestamp = null;
 			// 1. [Timestamp]
 			if (element.IncludeTimestamp) {
-				timestamp = new WsuTimestamp ();
+				WsuTimestamp timestamp = new WsuTimestamp ();
 				timestamp.Id = messageId + "-" + identForMessageId++;
 				timestamp.Created = DateTime.Now;
 				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
@@ -280,11 +279,9 @@ namespace System.ServiceModel.Channels
 				header.Contents.Add (timestamp);
 			}
 			// 1.5 [Signature Confirmation]
-			if (security.RequireSignatureConfirmation && SignatureConfirmation != null) {
-				Wss11SignatureConfirmation sc =
-					new Wss11SignatureConfirmation (GenerateId (doc), SignatureConfirmation);
-				header.Contents.Add (sc);
-			}
+			if (security.RequireSignatureConfirmation && secprop.ConfirmedSignatures.Count > 0)
+				foreach (string value in secprop.ConfirmedSignatures)
+					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
 
 			// populate DOM to sign.
 			XPathNavigator nav = doc.CreateNavigator ();
@@ -295,6 +292,7 @@ namespace System.ServiceModel.Channels
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
 			nsmgr.AddNamespace ("o", Constants.WssNamespace);
 			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
+			nsmgr.AddNamespace ("o11", Constants.Wss11Namespace);
 
 			WrappedKeySecurityToken ekey = null;
 			ReferenceList encRefList = null;
@@ -326,10 +324,6 @@ namespace System.ServiceModel.Channels
 
 			SecurityKeyIdentifierClause encClause =
 				CounterParameters.CallCreateKeyIdentifierClause (encToken, includeEncToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
-
-			// FIXME: it is not used
-			AsymmetricSecurityKey encKey = (AsymmetricSecurityKey) 
-				encToken.ResolveKeyIdentifierClause (encClause);
 
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
@@ -405,11 +399,8 @@ namespace System.ServiceModel.Channels
 					bodyId = GenerateId (doc);
 					CreateReference (sig, body.ParentNode as XmlElement, bodyId);
 				}
-				if (timestamp != null) {
-					// FIXME: timestamp signing is not done.
-					XmlElement tsElem = doc.SelectSingleNode ("/s:Envelope/s:Header/o:Security/u:Timestamp", nsmgr) as XmlElement;
-					CreateReference (sig, tsElem, timestamp.Id);
-				}
+				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/*", nsmgr))
+					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
 					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);

@@ -1,3 +1,15 @@
+2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageProperties.cs : Security property should be one of the items.
+	  Actually many other properties should be similar as well.
+	* MessageImpl.cs, MessageBufferImpl.cs, Message.cs :
+	  when copying a message, copy properties as well.
+	* SecurityRequestContext.cs : on replying, pass input 
+	  SecurityMessageProperty to the security generator.
+	* SecureMessageGenerator.cs : both of above, for SignatureConfirmation
+	  support.
+	* WSSecurityMessageHeader.cs : fixed lazy .ctor() that did nothing.
+
 2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSignedXml.cs:
