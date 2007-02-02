@@ -11,33 +11,18 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
 
-	public class GodUserNamePasswordValidator : UserNamePasswordValidator
-	{
-		public override void Validate (string userName, string password)
-		{
-			// God allows everyone.
-		}
-	}
-
-	public class AllowAllX509CertificateValidator : X509CertificateValidator
-	{
-		public override void Validate(X509Certificate2 certificate)
-		{
-		}
-	}
-
 public class Test
 {
 	public static void Main ()
 	{
 		AsymmetricSecurityBindingElement sbe =
 			new AsymmetricSecurityBindingElement ();
-		sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
-		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
-		sbe.RequireSignatureConfirmation = false;//true;
+		//sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
+		//sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
+		//sbe.RequireSignatureConfirmation = true;
 
-		sbe.LocalServiceSettings.DetectReplays = false;
-		sbe.IncludeTimestamp = false;
+		//sbe.LocalServiceSettings.DetectReplays = false;
+		//sbe.IncludeTimestamp = false;
 
 		sbe.RecipientTokenParameters =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.Never);

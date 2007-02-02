@@ -38,12 +38,12 @@ public class Tset
 	{
 		AsymmetricSecurityBindingElement sbe =
 			new AsymmetricSecurityBindingElement ();
-		sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
-		sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
-		sbe.RequireSignatureConfirmation = false; //true;
+		//sbe.SecurityHeaderLayout = SecurityHeaderLayout.Lax;
+		//sbe.MessageSecurityVersion = MessageSecurityVersion.WSSecurity11WSTrustFebruary2005WSSecureConversationFebruary2005WSSecurityPolicy11;
+		//sbe.RequireSignatureConfirmation = true;
 
-		sbe.LocalClientSettings.DetectReplays = false;
-		sbe.IncludeTimestamp = false;
+		//sbe.LocalClientSettings.DetectReplays = false;
+		//sbe.IncludeTimestamp = false;
 
 		X509SecurityTokenParameters p =
 			new X509SecurityTokenParameters (X509KeyIdentifierClauseType.IssuerSerial, SecurityTokenInclusionMode.AlwaysToRecipient);
@@ -59,11 +59,11 @@ public class Tset
 			new HttpTransportBindingElement ();
 		CustomBinding binding = new CustomBinding (new XBE (), sbe, hbe);
 		X509Certificate2 cert = new X509Certificate2 ("test.pfx", "mono");
-		X509Certificate2 cert2 = cert;//new X509Certificate2 ("test2.cer");
+		X509Certificate2 cert2 = new X509Certificate2 ("test2.pfx", "mono");
 		FooProxy proxy = new FooProxy (binding,
-			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert2)));
+			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert)));
 		//proxy.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-		proxy.ClientCredentials.ClientCertificate.Certificate = cert;
+		proxy.ClientCredentials.ClientCertificate.Certificate = cert2;
 		proxy.Endpoint.Behaviors.Add (new StdErrInspectionBehavior ());
 		proxy.Open ();
 		Console.WriteLine (proxy.Echo ("TEST FOR ECHO"));
