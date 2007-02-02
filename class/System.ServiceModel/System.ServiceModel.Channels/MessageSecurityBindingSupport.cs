@@ -97,6 +97,8 @@ namespace System.ServiceModel.Channels
 			this.requirements = requirements;
 		}
 
+		public abstract IDefaultCommunicationTimeouts Timeouts { get; }
+
 		public ChannelProtectionRequirements ChannelRequirements {
 			get { return requirements; }
 		}
@@ -189,11 +191,78 @@ namespace System.ServiceModel.Channels
 		}
 
 		protected abstract void ReleaseCore ();
+
+		public SupportingTokenInfoCollection CollectSupportingTokens (string action)
+		{
+			SupportingTokenInfoCollection tokens =
+				new SupportingTokenInfoCollection ();
+
+			SupportingTokenParameters supp;
+
+			CollectSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, true);
+			if (Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectSupportingTokensCore (tokens, supp, true);
+			CollectSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, false);
+			if (Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
+				CollectSupportingTokensCore (tokens, supp, false);
+
+			return tokens;
+		}
+
+		void CollectSupportingTokensCore (
+			SupportingTokenInfoCollection l,
+			SupportingTokenParameters s,
+			bool required)
+		{
+			foreach (SecurityTokenParameters p in s.Signed)
+				l.Add (new SupportingTokenInfo (GetExchangeToken (p), SecurityTokenAttachmentMode.Signed, required));
+			foreach (SecurityTokenParameters p in s.Endorsing)
+				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.Endorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEndorsing)
+				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.SignedEndorsing, required));
+			foreach (SecurityTokenParameters p in s.SignedEncrypted)
+				l.Add (new SupportingTokenInfo (GetExchangeToken (p), SecurityTokenAttachmentMode.SignedEncrypted, required));
+		}
+
+		SecurityToken GetSigningToken (SecurityTokenParameters p)
+		{
+			return GetToken (CreateRequirement (), p, SecurityKeyUsage.Signature);
+		}
+
+		SecurityToken GetExchangeToken (SecurityTokenParameters p)
+		{
+			return GetToken (CreateRequirement (), p, SecurityKeyUsage.Exchange);
+		}
+
+		public SecurityToken GetToken (SecurityTokenRequirement requirement, SecurityTokenParameters targetParams, SecurityKeyUsage usage)
+		{
+			requirement.KeyUsage = usage;
+			requirement.Properties [ReqType.SecurityBindingElementProperty] = Element;
+			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
+				Element.MessageSecurityVersion.SecurityTokenVersion;
+
+			targetParams.CallInitializeSecurityTokenRequirement (requirement);
+
+			SecurityTokenProvider provider =
+				CreateTokenProvider (requirement);
+			ICommunicationObject obj = provider as ICommunicationObject;
+			try {
+				if (obj != null)
+					obj.Open (Timeouts.OpenTimeout);
+				return provider.GetToken (Timeouts.SendTimeout);
+			} finally {
+				if (obj != null && obj.State == CommunicationState.Opened)
+					obj.Close ();
+			}
+		}
+		
+		public abstract SecurityTokenRequirement CreateRequirement ();
 	}
 
 	internal class InitiatorMessageSecurityBindingSupport : MessageSecurityBindingSupport
 	{
 		ChannelFactoryBase factory;
+		EndpointAddress message_to;
 
 		public InitiatorMessageSecurityBindingSupport (
 			SecurityBindingElementSupport elementSupport,
@@ -203,116 +272,36 @@ namespace System.ServiceModel.Channels
 		{
 		}
 
+		public override IDefaultCommunicationTimeouts Timeouts {
+			get { return factory; }
+		}
+
 		public void Prepare (ChannelFactoryBase factory, EndpointAddress address)
 		{
 			this.factory = factory;
+			this.message_to = address;
 
-			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
+			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-
-			CreateTokenAuthenticator (r);
-
-			encryption_token = GetEncryptionToken (address, RecipientParameters);
-			signing_token = GetSigningToken (address, InitiatorParameters);
+			CreateTokenAuthenticator (r); // FIXME: is it correct??
+			encryption_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
+			r = CreateRequirement ();
+			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
+			signing_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
 		}
 
 		protected override void ReleaseCore ()
 		{
 			this.factory = null;
+			this.message_to = null;
 		}
 
-		SecurityToken GetEncryptionToken (EndpointAddress targetAddress, SecurityTokenParameters targetParams)
+		public override SecurityTokenRequirement CreateRequirement ()
 		{
-			SecurityTokenRequirement requirement =
-				new InitiatorServiceModelSecurityTokenRequirement ();
-//			requirement.Properties [ReqType.IssuerAddressProperty] = targetAddress;
-			requirement.Properties [ReqType.TargetAddressProperty] = targetAddress;
-			requirement.KeyUsage = SecurityKeyUsage.Exchange;
-			requirement.Properties [ReqType.SecurityBindingElementProperty] = Element;
-			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
-				Element.MessageSecurityVersion.SecurityTokenVersion;
-
-			targetParams.CallInitializeSecurityTokenRequirement (requirement);
-
-			SecurityTokenProvider provider =
-				CreateTokenProvider (requirement);
-			ICommunicationObject obj = provider as ICommunicationObject;
-			try {
-				if (obj != null)
-					obj.Open (factory.DefaultSendTimeout);
-				return provider.GetToken (factory.DefaultSendTimeout);
-			} finally {
-				if (obj != null && obj.State == CommunicationState.Opened)
-					obj.Close ();
-			}
-		}
-
-		SecurityToken GetSigningToken (EndpointAddress address, SecurityTokenParameters targetParams)
-		{
-			if (!targetParams.InternalSupportsClientAuthentication ||
-			    !targetParams.InternalHasAsymmetricKey) {
-				if (RequireSignatureConfirmation)
-					throw new InvalidOperationException ("The security token parameters do not support signing.");
-				return null;
-			}
-
-			SecurityTokenRequirement requirement =
-				new InitiatorServiceModelSecurityTokenRequirement ();
-//			requirement.Properties [ReqType.IssuerAddressProperty] = address;
-			requirement.Properties [ReqType.TargetAddressProperty] = address;
-			requirement.KeyUsage = SecurityKeyUsage.Signature;
-			requirement.Properties [ReqType.SecurityBindingElementProperty] = Element;
-			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
-				Element.MessageSecurityVersion.SecurityTokenVersion;
-
-			targetParams.CallInitializeSecurityTokenRequirement (requirement);
-
-			SecurityTokenProvider provider =
-				CreateTokenProvider (requirement);
-			ICommunicationObject obj = provider as ICommunicationObject;
-			try {
-				if (obj != null)
-					obj.Open (factory.DefaultSendTimeout);
-				return provider.GetToken (factory.DefaultSendTimeout);
-			} finally {
-				if (obj != null && obj.State == CommunicationState.Opened)
-					obj.Close ();
-			}
-		}
-
-		public SupportingTokenInfoCollection CollectInitiatorSupportingTokens (
-			string action,
-			EndpointAddress to)
-		{
-			SupportingTokenInfoCollection tokens =
-				new SupportingTokenInfoCollection ();
-
-			SupportingTokenParameters supp;
-
-			CollectInitiatorSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, to, true);
-			if (Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
-				CollectInitiatorSupportingTokensCore (tokens, supp, to, true);
-			CollectInitiatorSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, to, false);
-			if (Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
-				CollectInitiatorSupportingTokensCore (tokens, supp, to, false);
-
-			return tokens;
-		}
-
-		void CollectInitiatorSupportingTokensCore (
-			SupportingTokenInfoCollection l,
-			SupportingTokenParameters s,
-			EndpointAddress to,
-			bool required)
-		{
-			foreach (SecurityTokenParameters p in s.Signed)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.Signed, required));
-			foreach (SecurityTokenParameters p in s.Endorsing)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.Endorsing, required));
-			foreach (SecurityTokenParameters p in s.SignedEndorsing)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
-			foreach (SecurityTokenParameters p in s.SignedEncrypted)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (to, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
+			SecurityTokenRequirement r = new InitiatorServiceModelSecurityTokenRequirement ();
+//			r.Properties [ReqType.IssuerAddressProperty] = message_to;
+			r.Properties [ReqType.TargetAddressProperty] = message_to;
+			return r;
 		}
 	}
 
@@ -328,17 +317,22 @@ namespace System.ServiceModel.Channels
 		{
 		}
 
-		public void Prepare (Uri listenUri, ChannelListenerBase listener)
+		public override IDefaultCommunicationTimeouts Timeouts {
+			get { return listener; }
+		}
+
+		public void Prepare (ChannelListenerBase listener)
 		{
 			this.listener = listener;
 
-			SecurityTokenRequirement r = new RecipientServiceModelSecurityTokenRequirement ();
+			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-
 			CreateTokenAuthenticator (r);
+			signing_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
 
-			encryption_token = GetEncryptionToken (listenUri, InitiatorParameters);
-			signing_token = GetSigningToken (listenUri, RecipientParameters);
+			r = CreateRequirement ();
+			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
+			encryption_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
 		}
 
 		protected override void ReleaseCore ()
@@ -346,89 +340,12 @@ namespace System.ServiceModel.Channels
 			this.listener = null;
 		}
 
-		public SupportingTokenInfoCollection CollectRecipientSupportingTokens (
-			string action,
-			Uri listenUri)
-		{
-			SupportingTokenInfoCollection tokens =
-				new SupportingTokenInfoCollection ();
-
-			SupportingTokenParameters supp;
-
-			CollectRecipientSupportingTokensCore (tokens, Element.EndpointSupportingTokenParameters, listenUri, true);
-			if (Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
-				CollectRecipientSupportingTokensCore (tokens, supp, listenUri, true);
-			CollectRecipientSupportingTokensCore (tokens, Element.OptionalEndpointSupportingTokenParameters, listenUri, false);
-			if (Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
-				CollectRecipientSupportingTokensCore (tokens, supp, listenUri, false);
-
-			return tokens;
-		}
-
-		void CollectRecipientSupportingTokensCore (
-			SupportingTokenInfoCollection l,
-			SupportingTokenParameters s,
-			Uri listenUri,
-			bool required)
-		{
-			foreach (SecurityTokenParameters p in s.Signed)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.Signed, required));
-			foreach (SecurityTokenParameters p in s.Endorsing)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.Endorsing, required));
-			foreach (SecurityTokenParameters p in s.SignedEndorsing)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.SignedEndorsing, required));
-			foreach (SecurityTokenParameters p in s.SignedEncrypted)
-				l.Add (new SupportingTokenInfo (GetEncryptionToken (listenUri, p), SecurityTokenAttachmentMode.SignedEncrypted, required));
-		}
-
-		SecurityToken GetSigningToken (Uri listenUri, SecurityTokenParameters targetParams)
+		public override SecurityTokenRequirement CreateRequirement ()
 		{
 			SecurityTokenRequirement requirement =
 				new RecipientServiceModelSecurityTokenRequirement ();
-			requirement.Properties [ReqType.ListenUriProperty] = listenUri;
-			requirement.KeyUsage = SecurityKeyUsage.Signature;
-			requirement.Properties [ReqType.SecurityBindingElementProperty] = Element;
-			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
-				Element.MessageSecurityVersion.SecurityTokenVersion;
-
-			targetParams.CallInitializeSecurityTokenRequirement (requirement);
-
-			SecurityTokenProvider provider =
-				CreateTokenProvider (requirement);
-			ICommunicationObject obj = provider as ICommunicationObject;
-			try {
-				if (obj != null)
-					obj.Open (listener.DefaultSendTimeout);
-				return provider.GetToken (listener.DefaultSendTimeout);
-			} finally {
-				if (obj != null && obj.State == CommunicationState.Opened)
-					obj.Close ();
-			}
-		}
-
-		SecurityToken GetEncryptionToken (Uri listenUri, SecurityTokenParameters targetParams)
-		{
-			SecurityTokenRequirement requirement =
-				new RecipientServiceModelSecurityTokenRequirement ();
-			requirement.Properties [ReqType.ListenUriProperty] = listenUri;
-			requirement.KeyUsage = SecurityKeyUsage.Exchange;
-			requirement.Properties [ReqType.SecurityBindingElementProperty] = Element;
-			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
-				Element.MessageSecurityVersion.SecurityTokenVersion;
-
-			targetParams.CallInitializeSecurityTokenRequirement (requirement);
-
-			SecurityTokenProvider provider =
-				CreateTokenProvider (requirement);
-			ICommunicationObject obj = provider as ICommunicationObject;
-			try {
-				if (obj != null)
-					obj.Open (listener.DefaultSendTimeout);
-				return provider.GetToken (listener.DefaultSendTimeout);
-			} finally {
-				if (obj != null && obj.State == CommunicationState.Opened)
-					obj.Close ();
-			}
+			requirement.Properties [ReqType.ListenUriProperty] = listener.Uri;
+			return requirement;
 		}
 	}
 

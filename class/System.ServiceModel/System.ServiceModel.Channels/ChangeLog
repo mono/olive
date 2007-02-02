@@ -1,5 +1,12 @@
 2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs, SecurityChannelListener.cs,
+	  SecurityRequestContext.cs, MessageSecurityBindingSupport.cs:
+	  several refactoring on token acquisition. Large part of
+	  MessageSecurityBindingSupport code is unified.
+
+2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageProperties.cs : Security property should be one of the items.
 	  Actually many other properties should be similar as well.
 	* MessageImpl.cs, MessageBufferImpl.cs, Message.cs :

@@ -108,7 +108,7 @@ namespace System.ServiceModel.Channels
 
 		Message SecureMessage (Message input)
 		{
-			return new RecipientMessageSecurityGenerator (input, RequestMessage.Properties.Security, security, channel.Source.Uri).SecureMessage ();
+			return new RecipientMessageSecurityGenerator (input, RequestMessage.Properties.Security, security).SecureMessage ();
 		}
 	}
 }

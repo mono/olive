@@ -65,7 +65,7 @@ namespace System.ServiceModel.Channels
 
 		void AcquireTokens ()
 		{
-			security.Prepare (inner.Uri, this);
+			security.Prepare (this);
 		}
 
 		void ReleaseTokens ()

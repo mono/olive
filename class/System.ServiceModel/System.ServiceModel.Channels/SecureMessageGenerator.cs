@@ -107,22 +107,20 @@ namespace System.ServiceModel.Channels
 			get { return Security.ChannelRequirements.IncomingEncryptionParts; }
 		}
 
-		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
+		public override SupportingTokenInfoCollection CollectSupportingTokens ()
 		{
-			return security.CollectInitiatorSupportingTokens (GetAction (), MessageTo);
+			return security.CollectSupportingTokens (GetAction ());
 		}
 	}
 
 	internal class RecipientMessageSecurityGenerator : MessageSecurityGenerator
 	{
 		RecipientMessageSecurityBindingSupport security;
-		Uri listen_uri;
 
 		public RecipientMessageSecurityGenerator (
 			Message msg,
 			SecurityMessageProperty inputSecurityProperty,
-			RecipientMessageSecurityBindingSupport security,
-			Uri listenUri)
+			RecipientMessageSecurityBindingSupport security)
 			: base (msg, security)
 		{
 			this.security = security;
@@ -132,7 +130,6 @@ namespace System.ServiceModel.Channels
 				inputSecurityProperty.ExternalAuthorizationPolicies;
 			foreach (string sc in inputSecurityProperty.ConfirmedSignatures)
 				secprop.ConfirmedSignatures.Add (sc);
-			this.listen_uri = listenUri;
 		}
 
 		public override SecurityTokenParameters Parameters {
@@ -173,9 +170,9 @@ namespace System.ServiceModel.Channels
 			get { return Security.ChannelRequirements.OutgoingEncryptionParts; }
 		}
 
-		public override SupportingTokenInfoCollection CollectInitiatorSupportingTokens ()
+		public override SupportingTokenInfoCollection CollectSupportingTokens ()
 		{
-			return security.CollectRecipientSupportingTokens (GetAction (), listen_uri);
+			return security.CollectSupportingTokens (GetAction ());
 		}
 	}
 
@@ -231,7 +228,7 @@ namespace System.ServiceModel.Channels
 			}
 		}
 
-		public abstract SupportingTokenInfoCollection CollectInitiatorSupportingTokens ();
+		public abstract SupportingTokenInfoCollection CollectSupportingTokens ();
 
 		public abstract bool ShouldIncludeToken (SecurityTokenInclusionMode mode, bool isInitialized);
 
@@ -300,8 +297,7 @@ namespace System.ServiceModel.Channels
 			EncryptedData sigenc = null;
 
 
-			SupportingTokenInfoCollection tokens =
-				CollectInitiatorSupportingTokens ();
+			SupportingTokenInfoCollection tokens = CollectSupportingTokens ();
 
 			List<WsscDerivedKeyToken> derivedKeys =
 				new List<WsscDerivedKeyToken> ();
@@ -507,11 +503,6 @@ namespace System.ServiceModel.Channels
 			return ret;
 		}
 
-		string GetId (XmlElement el)
-		{
-			return el.GetAttribute ("Id", Constants.WsuNamespace);
-		}
-
 		void CreateReference (Signature sig, XmlElement el, string id)
 		{
 			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
@@ -520,19 +511,11 @@ namespace System.ServiceModel.Channels
 			Reference r = new Reference ("#" + id);
 			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
 			r.DigestMethod = suite.DefaultDigestAlgorithm;
-#if false
-			DataObject d = new DataObject ();
-			// FIXME: creating my own XmlNodeList would be much better
-			d.Data = el.SelectNodes (".");
-			d.Id = id;
-			sig.AddObject (d);
-#else
-			if (GetId (el) != id) {
+			if (el.GetAttribute ("Id", Constants.WsuNamespace) != id) {
 				XmlAttribute a = el.SetAttributeNode ("Id", Constants.WsuNamespace);
 				a.Prefix = "u";
 				a.Value = id;
 			}
-#endif
 			sig.SignedInfo.AddReference (r);
 		}
 
