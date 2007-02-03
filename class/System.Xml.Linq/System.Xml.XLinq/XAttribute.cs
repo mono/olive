@@ -7,10 +7,10 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using XPI = System.Xml.XLinq.XProcessingInstruction;
+using XPI = System.Xml.Linq.XProcessingInstruction;
 
 
-namespace System.Xml.XLinq
+namespace System.Xml.Linq
 {
 	public class XAttribute
 	{

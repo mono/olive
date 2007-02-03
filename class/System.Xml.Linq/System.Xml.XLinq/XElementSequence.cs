@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 
-namespace System.Xml.XLinq
+namespace System.Xml.Linq
 {
 	[ExtensionAttribute]
 	public static class XElementSequence
