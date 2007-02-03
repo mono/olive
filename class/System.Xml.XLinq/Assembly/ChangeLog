@@ -1,3 +1,7 @@
+2007-02-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AssemblyInfo.cs : System.Xml.XLinq.dll -> System.Xml.Linq.dll
+
 2005-09-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AssemblyInfo.cs : new file.

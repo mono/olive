@@ -1,8 +1,8 @@
-thisdir = class/System.Xml.XLinq
+thisdir = class/System.Xml.Linq
 SUBDIRS = 
 include ../../build/rules.make
 
-LIBRARY = System.Xml.XLinq.dll
+LIBRARY = System.Xml.Linq.dll
 LIB_MCS_FLAGS = \
 	        /r:System.dll \
 	        /r:System.Query.dll \
@@ -16,7 +16,7 @@ EXTRA_DISTFILES =
 # This is a .NET 3.0 only assembly
 VALID_PROFILE := $(filter net_3_0, $(PROFILE))
 ifndef VALID_PROFILE
-LIBRARY_NAME = dummy-System.Xml.XLinq.dll
+LIBRARY_NAME = dummy-System.Xml.Linq.dll
 NO_INSTALL = yes
 NO_SIGN_ASSEMBLY = yes
 NO_TEST = yes

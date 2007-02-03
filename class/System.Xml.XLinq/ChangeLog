@@ -1,3 +1,8 @@
+2007-02-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : System.Xml.XLinq.dll -> System.Xml.Linq.dll
+	* System.Xml.XLinq.dll.sources, System.Xml.Linq.dll.sources : renamed
+
 2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : now the build profile is net_3_0, so don't skip it.
