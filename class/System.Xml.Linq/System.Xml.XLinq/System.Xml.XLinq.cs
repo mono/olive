@@ -145,11 +145,9 @@ namespace System.Xml.Linq
 			this.value = value;
 		}
 
-		public XComment (XmlReader r)
+		public XComment (XComment other)
 		{
-			if (r.NodeType != XmlNodeType.Comment)
-				throw new ArgumentException ();
-			value = r.Value;
+			this.value = other.value;
 		}
 
 		public override XmlNodeType NodeType {
@@ -159,17 +157,6 @@ namespace System.Xml.Linq
 		public string Value {
 			get { return value; }
 			set { this.value = value; }
-		}
-
-		public override bool Equals (object obj)
-		{
-			XComment c = obj as XComment;
-			return c != null && c.value == value;
-		}
-
-		public override int GetHashCode ()
-		{
-			return value.GetHashCode () ^ (int) NodeType;
 		}
 
 		public override void WriteTo (XmlWriter w)
@@ -183,6 +170,7 @@ namespace System.Xml.Linq
 
 	#region CharacterData
 
+	/*
 	public abstract class XCharacterNode : XNode
 	{
 		public override bool Equals (object obj)
@@ -199,9 +187,10 @@ namespace System.Xml.Linq
 			return ((int) NodeType) ^ ToString ().GetHashCode ();
 		}
 	}
+	*/
 
 	// It is documented to exist, but I use it only in !LIST_BASED mode.
-	internal class XText : XCharacterNode
+	public class XText : XNode
 	{
 		string value;
 
@@ -210,11 +199,9 @@ namespace System.Xml.Linq
 			this.value = value;
 		}
 
-		public XText (XmlReader r)
+		public XText (XText other)
 		{
-			if (r.NodeType != XmlNodeType.Text)
-				throw new ArgumentException ();
-			value = r.Value;
+			value = other.value;
 		}
 
 		public override XmlNodeType NodeType {
@@ -231,47 +218,39 @@ namespace System.Xml.Linq
 		}
 	}
 
-	public class XCData : XCharacterNode
+	public class XCData : XText
 	{
-		string value;
-
 		public XCData (string value)
+			: base (value)
 		{
-			this.value = value;
 		}
 
-		public XCData (XmlReader r)
+		public XCData (XCData other)
+			: base (other)
 		{
-			if (r.NodeType != XmlNodeType.CDATA)
-				throw new ArgumentException ();
-			value = r.Value;
 		}
 
 		public override XmlNodeType NodeType {
 			get { return XmlNodeType.CDATA; }
 		}
 
-		public string Value {
-			get { return value; }
-		}
-
 		public override void WriteTo (XmlWriter w)
 		{
 			int start = 0;
 			StringBuilder sb = null;
-			for (int i = 0; i < value.Length - 2; i++) {
-				if (value [i] == ']' && value [i + 1] == ']'
-					&& value [i + 2] == '>') {
+			for (int i = 0; i < Value.Length - 2; i++) {
+				if (Value [i] == ']' && Value [i + 1] == ']'
+					&& Value [i + 2] == '>') {
 					if (sb == null)
 						sb = new StringBuilder ();
-					sb.Append (value, start, i - start);
+					sb.Append (Value, start, i - start);
 					sb.Append ("]]&gt;");
 					start = i + 3;
 				}
 			}
-			if (start != 0 && start != value.Length)
-				sb.Append (value, start, value.Length - start);
-			w.WriteCData (sb == null ? value : sb.ToString ());
+			if (start != 0 && start != Value.Length)
+				sb.Append (Value, start, Value.Length - start);
+			w.WriteCData (sb == null ? Value : sb.ToString ());
 		}
 	}
 
@@ -1064,14 +1043,14 @@ namespace System.Xml.Linq
 
 		public override void WriteTo (XmlWriter w)
 		{
-			w.WriteStartElement (name.LocalName, name.NamespaceName);
+			w.WriteStartElement (name.LocalName, name.Namespace.Uri);
 
 			if (attributes != null) {
 				foreach (XAttribute a in attributes) {
-					if (a.Name.NamespaceName == XUtil.XmlnsNamespace && a.Name.LocalName != String.Empty)
-						w.WriteAttributeString ("xmlns", a.Name.LocalName, XUtil.XmlnsNamespace, a.Value);
+					if (a.Name.Namespace == XNamespace.Xmlns && a.Name.LocalName != String.Empty)
+						w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.Uri, a.Value);
 					else
-						w.WriteAttributeString (a.Name.LocalName, a.Name.NamespaceName, a.Value);
+						w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.Uri, a.Value);
 				}
 			}
 
@@ -1242,11 +1221,11 @@ namespace System.Xml.Linq
 			case XmlNodeType.Text:
 				throw new InvalidOperationException ();
 			case XmlNodeType.CDATA:
-				return new XCData (r);
+				return new XCData (r.Value);
 			case XmlNodeType.ProcessingInstruction:
-				return new XPI (r);
+				return new XPI (r.Name, r.Value);
 			case XmlNodeType.Comment:
-				return new XComment (r);
+				return new XComment (r.Value);
 			case XmlNodeType.XmlDeclaration:
 				return new XDeclaration (r);
 			case XmlNodeType.DocumentType:

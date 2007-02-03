@@ -11,14 +11,15 @@ using XPI = System.Xml.Linq.XProcessingInstruction;
 
 namespace System.Xml.Linq
 {
-	public class XName
+	public sealed class XName
 	{
 		string expanded;
 		string local;
-		string ns;
+		XNamespace ns;
 
 		private XName (string expanded)
 		{
+			string ns = null;
 			if (expanded == null || expanded.Length == 0)
 				throw ErrorInvalidExpandedName ();
 			this.expanded = expanded;
@@ -37,12 +38,13 @@ namespace System.Xml.Linq
 				local = expanded;
 				ns = String.Empty;
 			}
+			this.ns = XNamespace.Get (ns);
 		}
 
 		private XName (string local, string ns)
 		{
 			this.local = local;
-			this.ns = ns;
+			this.ns = XNamespace.Get (ns);
 		}
 
 		private Exception ErrorInvalidExpandedName ()
@@ -50,19 +52,21 @@ namespace System.Xml.Linq
 			return new ArgumentException ("Invalid expanded name.");
 		}
 
-		public string ExpandedName {
+/*
+		string ExpandedName {
 			get {
 				if (expanded == null)
 					expanded = ns != null ? String.Concat ("{", ns, "}", local) : local;
 				return expanded;
 			}
 		}
+*/
 
 		public string LocalName {
 			get { return local; }
 		}
 
-		public string NamespaceName {
+		public XNamespace Namespace {
 			get { return ns; }
 		}
 
@@ -107,9 +111,11 @@ namespace System.Xml.Linq
 			return ! (n1 == n2);
 		}
 
+		[MonoTODO]
 		public override string ToString ()
 		{
-			return ExpandedName;
+			return base.ToString ();
+			//return ExpandedName;
 		}
 	}
 }

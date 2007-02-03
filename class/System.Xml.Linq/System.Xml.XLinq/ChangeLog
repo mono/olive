@@ -1,5 +1,10 @@
 2007-02-03  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* System.Xml.XLinq.cs, XName.cs : a few updates from years ago.
+	* XNamespace.cs : new file. not correct at all for now.
+
+2007-02-03  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XAttribute.cs, System.Xml.XLinq.cs, XIterators.cs, XUtil.cs,
 	  XName.cs, XElementSequence.cs: namespaces have chanced as well.
 
