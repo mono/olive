@@ -1,5 +1,11 @@
 2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* InMemorySymmetricSecurityKeyTest.cs,
+	  X509AsymmetricSecurityKeyTest.cs : added algorithm issupported/
+	  issymmetric/isasymmetric tests.
+
+2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* X509AsymmetricSecurityKeyTest.cs : added get hash algorithm tests.
 
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>

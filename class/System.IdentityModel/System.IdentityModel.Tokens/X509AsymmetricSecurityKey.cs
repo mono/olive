@@ -60,10 +60,10 @@ namespace System.IdentityModel.Tokens
 				cert.PrivateKey : cert.PublicKey.Key;
 
 			switch (algorithm) {
-			case SignedXml.XmlDsigDSAUrl:
-				if (alg is DSA)
-					return alg;
-				throw new NotSupportedException (String.Format ("The certificate does not contain DSA private key while '{0}' requires it.", algorithm));
+//			case SignedXml.XmlDsigDSAUrl:
+//				if (alg is DSA)
+//					return alg;
+//				throw new NotSupportedException (String.Format ("The certificate does not contain DSA private key while '{0}' requires it.", algorithm));
 			case EncryptedXml.XmlEncRSA15Url:
 			case EncryptedXml.XmlEncRSAOAEPUrl:
 			case SignedXml.XmlDsigRSASHA1Url:
@@ -162,26 +162,27 @@ namespace System.IdentityModel.Tokens
 			return EncryptedXml.EncryptKey (keyData, cert.PublicKey.Key as RSA, useOAEP);
 		}
 
-		[MonoTODO]
 		public override bool IsAsymmetricAlgorithm (string algorithm)
 		{
-			throw new NotImplementedException ();
+			return GetAlgorithmSupportType (algorithm) == AlgorithmSupportType.Asymmetric;
 		}
 
 		public override bool IsSupportedAlgorithm (string algorithm)
 		{
 			switch (algorithm) {
-			case EncryptedXml.XmlEncRSA15Url:
-			case EncryptedXml.XmlEncRSAOAEPUrl:
+			case SecurityAlgorithms.RsaV15KeyWrap:
+			case SecurityAlgorithms.RsaOaepKeyWrap:
+			case SecurityAlgorithms.RsaSha1Signature:
+			case SecurityAlgorithms.RsaSha256Signature:
 				return true;
+			default:
+				return false;
 			}
-			return false;
 		}
 
-		[MonoTODO]
 		public override bool IsSymmetricAlgorithm (string algorithm)
 		{
-			throw new NotImplementedException ();
+			return GetAlgorithmSupportType (algorithm) == AlgorithmSupportType.Symmetric;
 		}
 	}
 }

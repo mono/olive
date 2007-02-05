@@ -29,11 +29,45 @@ using System;
 using System.Collections.Generic;
 using System.Xml;
 using System.IdentityModel.Policy;
+using System.Security.Cryptography.Xml;
 
 namespace System.IdentityModel.Tokens
 {
+	enum AlgorithmSupportType
+	{
+		Symmetric,
+		Asymmetric,
+		Unsupported,
+	}
+
 	public abstract class SecurityKey
 	{
+		internal static AlgorithmSupportType GetAlgorithmSupportType (string algorithm)
+		{
+			switch (algorithm) {
+			case SecurityAlgorithms.HmacSha1Signature:
+			case SecurityAlgorithms.Psha1KeyDerivation:
+			case SecurityAlgorithms.Aes128Encryption:
+			case SecurityAlgorithms.Aes128KeyWrap:
+			case SecurityAlgorithms.Aes192Encryption:
+			case SecurityAlgorithms.Aes192KeyWrap:
+			case SecurityAlgorithms.Aes256Encryption:
+			case SecurityAlgorithms.Aes256KeyWrap:
+			case SecurityAlgorithms.TripleDesEncryption:
+			case SecurityAlgorithms.TripleDesKeyWrap:
+			case SecurityAlgorithms.DesEncryption:
+				return AlgorithmSupportType.Symmetric;
+			case SecurityAlgorithms.DsaSha1Signature:
+			case SecurityAlgorithms.RsaV15KeyWrap:
+			case SecurityAlgorithms.RsaOaepKeyWrap:
+			case SecurityAlgorithms.RsaSha1Signature:
+			case SecurityAlgorithms.RsaSha256Signature:
+				return AlgorithmSupportType.Asymmetric;
+			default:
+				return AlgorithmSupportType.Unsupported;
+			}
+		}
+
 		[MonoTODO]
 		protected SecurityKey ()
 		{

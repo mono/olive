@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@ using System.IO;
 using System.Xml;
 using System.IdentityModel.Policy;
 using System.Security.Cryptography;
+using System.Security.Cryptography.Xml;
 
 using M = Mono.Security.Cryptography;
 using AES = System.Security.Cryptography.RijndaelManaged;
@@ -124,19 +125,21 @@ namespace System.IdentityModel.Tokens
 			case SecurityAlgorithms.Aes128Encryption:
 			case SecurityAlgorithms.Aes192Encryption:
 			case SecurityAlgorithms.Aes256Encryption:
-				s = new AES ();
-				break;
-			case SecurityAlgorithms.TripleDesEncryption:
-				s = TripleDES.Create ();
-				break;
 			case SecurityAlgorithms.Aes128KeyWrap:
 			case SecurityAlgorithms.Aes192KeyWrap:
 			case SecurityAlgorithms.Aes256KeyWrap:
+				s = new AES ();
+				break;
+			case SecurityAlgorithms.TripleDesEncryption:
 			case SecurityAlgorithms.TripleDesKeyWrap:
-				throw new NotImplementedException ();
+				if (key.Length == 24)
+					throw new CryptographicException ("The key size is 24 bytes, which known as vulnerable and thus not allowed.");
+				s = TripleDES.Create ();
+				break;
 			default:
-				throw new NotSupportedException ();
+				throw new NotSupportedException (String.Format ("This symmetric security key does not support specified algorithm '{0}'", algorithm));
 			}
+			s.Mode = CipherMode.CBC;
 			s.GenerateIV ();
 			s.Key = key;
 			return s;
@@ -172,22 +175,27 @@ namespace System.IdentityModel.Tokens
 			get { return key.Length << 3; }
 		}
 
-		[MonoTODO]
-		public override byte[] DecryptKey (string algorithm, byte [] keyData)
+		public override byte [] DecryptKey (string algorithm, byte [] keyData)
 		{
-			throw new NotImplementedException ();
+			if (algorithm == null)
+				throw new ArgumentNullException ("algorithm");
+			if (keyData == null)
+				throw new ArgumentNullException ("keyData");
+			return EncryptedXml.DecryptKey (keyData, GetSymmetricAlgorithm (algorithm));
 		}
 
-		[MonoTODO]
-		public override byte[] EncryptKey (string algorithm, byte [] keyData)
+		public override byte [] EncryptKey (string algorithm, byte [] keyData)
 		{
-			throw new NotImplementedException ();
+			if (algorithm == null)
+				throw new ArgumentNullException ("algorithm");
+			if (keyData == null)
+				throw new ArgumentNullException ("keyData");
+			return EncryptedXml.EncryptKey (keyData, GetSymmetricAlgorithm (algorithm));
 		}
 
-		[MonoTODO]
 		public override bool IsAsymmetricAlgorithm (string algorithm)
 		{
-			throw new NotImplementedException ();
+			return GetAlgorithmSupportType (algorithm) == AlgorithmSupportType.Asymmetric;
 		}
 
 		public override bool IsSupportedAlgorithm (string algorithm)
@@ -209,10 +217,9 @@ namespace System.IdentityModel.Tokens
 			}
 		}
 
-		[MonoTODO]
 		public override bool IsSymmetricAlgorithm (string algorithm)
 		{
-			throw new NotImplementedException ();
+			return GetAlgorithmSupportType (algorithm) == AlgorithmSupportType.Symmetric;
 		}
 	}
 }

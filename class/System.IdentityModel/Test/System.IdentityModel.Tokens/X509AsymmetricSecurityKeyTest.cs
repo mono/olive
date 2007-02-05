@@ -102,6 +102,15 @@ namespace MonoTests.System.IdentityModel.Selectors
 		}
 
 		[Test]
+		public void IsAsymmetricAlgorithm ()
+		{
+			X509AsymmetricSecurityKey key = new X509AsymmetricSecurityKey (cert);
+			Assert.IsTrue (key.IsAsymmetricAlgorithm (EncryptedXml.XmlEncRSA15Url), "#1");
+			Assert.IsTrue (key.IsAsymmetricAlgorithm (SignedXml.XmlDsigDSAUrl), "#2"); // It is asymmetric but not supported.
+			Assert.IsFalse (key.IsAsymmetricAlgorithm (SignedXml.XmlDsigHMACSHA1Url), "#3");
+		}
+
+		[Test]
 		// huh?
 		//[ExpectedException (typeof (ArgumentNullException))]
 		public void IsSupportedAlgorithmNullAlgName ()

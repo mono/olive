@@ -64,19 +64,80 @@ namespace MonoTests.System.IdentityModel.Tokens
 		}
 
 		[Test]
-		public void GetSymmetricAlgorithm ()
+		public void GetSymmetricAlgorithmAES ()
+		{
+			byte [] bytes = new byte [32];
+			Key key = new Key (bytes);
+			SymmetricAlgorithm alg = key.GetSymmetricAlgorithm (
+				SecurityAlgorithms.Aes128Encryption);
+			Assert.AreEqual (256, alg.KeySize, "#1-1");
+			Assert.AreEqual (CipherMode.CBC, alg.Mode, "#1-2");
+			Assert.AreEqual (PaddingMode.PKCS7, alg.Padding, "#1-3");
+			alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes192Encryption);
+			Assert.AreEqual (256, alg.KeySize, "#2-1");
+			Assert.AreEqual (CipherMode.CBC, alg.Mode, "#2-2");
+			Assert.AreEqual (PaddingMode.PKCS7, alg.Padding, "#2-3");
+			alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes256Encryption);
+			Assert.AreEqual (256, alg.KeySize, "#3-1");
+			Assert.AreEqual (CipherMode.CBC, alg.Mode, "#3-2");
+			Assert.AreEqual (PaddingMode.PKCS7, alg.Padding, "#3-3");
+
+			alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes128KeyWrap);
+			Assert.IsTrue (alg is AES, "#4");
+			alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes192KeyWrap);
+			Assert.IsTrue (alg is AES, "#5");
+			alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes256KeyWrap);
+			Assert.IsTrue (alg is AES, "#6");
+			//alg = key.GetSymmetricAlgorithm (SecurityAlgorithms.TripleDesKeyWrap);
+			//Assert.IsTrue (alg is TripleDES, "#7");
+		}
+
+		[Test]
+		[ExpectedException (typeof (CryptographicException))]
+		public void GetSymmetricAlgorithm3VulnerableTDESEnc ()
+		{
+			byte [] bytes = new byte [24];
+			Key key = new Key (bytes);
+			// strange, TripleDesEncryption works with 32bytes key,
+			// but TripleDesKeyWrap doesn't.
+			key.GetSymmetricAlgorithm (SecurityAlgorithms.TripleDesEncryption);
+		}
+
+		[Test]
+		[ExpectedException (typeof (CryptographicException))]
+		public void GetSymmetricAlgorithm3VulnerableTDESWrap ()
+		{
+			byte [] bytes = new byte [24];
+			Key key = new Key (bytes);
+			// strange, TripleDesEncryption works with 32bytes key,
+			// but TripleDesKeyWrap doesn't.
+			key.GetSymmetricAlgorithm (SecurityAlgorithms.TripleDesKeyWrap);
+		}
+
+		// ... so, after all what is the valid key size for TDES?
+
+		[Test]
+		public void GetSymmetricAlgorithmNullKey ()
 		{
 			Key key = new Key (raw);
-			AES aes = key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes256Encryption) as AES;
-			Assert.IsNotNull (aes, "#1");
+			Assert.IsNotNull (key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes192Encryption));
 		}
 
 		[Test]
 		// hmm, no error
 		public void GetSymmetricAlgorithmWrongSize ()
 		{
-			Key key = new Key (raw);
+			Key key = new Key (new byte [32]);
 			Assert.IsNotNull (key.GetSymmetricAlgorithm (SecurityAlgorithms.Aes192Encryption));
+		}
+
+		[Test]
+		// hmm, error?
+		[ExpectedException (typeof (CryptographicException))]
+		public void GetSymmetricAlgorithmWrongSizeDES ()
+		{
+			Key key = new Key (new byte [32]);
+			Assert.IsNotNull (key.GetSymmetricAlgorithm (SecurityAlgorithms.TripleDesKeyWrap));
 		}
 
 		[Test]
@@ -103,6 +164,26 @@ namespace MonoTests.System.IdentityModel.Tokens
 			// the precomputed derivation value.
 			byte [] expected = Convert.FromBase64String ("50UfLeg58TbfADujVeafUAS8typGX9LvqLOXezK/eJY=");
 			Assert.AreEqual (Convert.ToBase64String (expected), Convert.ToBase64String (derived), "#5");
+		}
+
+		[Test]
+		public void IsAsymmetricAlgorithm ()
+		{
+			Key key = new Key (raw);
+			Assert.IsFalse (key.IsAsymmetricAlgorithm (SecurityAlgorithms.Aes256KeyWrap), "#1");
+			Assert.IsFalse (key.IsAsymmetricAlgorithm (SecurityAlgorithms.TripleDesEncryption), "#2");
+			Assert.IsTrue (key.IsAsymmetricAlgorithm (SecurityAlgorithms.RsaOaepKeyWrap), "#3");
+			Assert.IsFalse (key.IsAsymmetricAlgorithm (SecurityAlgorithms.Psha1KeyDerivation), "#4");
+		}
+
+		[Test]
+		public void IsSymmetricAlgorithm ()
+		{
+			Key key = new Key (raw);
+			Assert.IsTrue (key.IsSymmetricAlgorithm (SecurityAlgorithms.Aes256KeyWrap), "#1");
+			Assert.IsTrue (key.IsSymmetricAlgorithm (SecurityAlgorithms.TripleDesEncryption), "#2");
+			Assert.IsFalse (key.IsSymmetricAlgorithm (SecurityAlgorithms.RsaOaepKeyWrap), "#3");
+			Assert.IsTrue (key.IsSymmetricAlgorithm (SecurityAlgorithms.Psha1KeyDerivation), "#4");
 		}
 	}
 }
