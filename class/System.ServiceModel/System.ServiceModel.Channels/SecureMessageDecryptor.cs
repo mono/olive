@@ -60,6 +60,10 @@ namespace System.ServiceModel.Channels
 			this.security = security;
 		}
 
+		public override byte [] ActiveKey {
+			get { return null; }
+		}
+
 		public override SecurityTokenParameters Parameters {
 			get { return security.RecipientParameters; }
 		}
@@ -72,12 +76,18 @@ namespace System.ServiceModel.Channels
 	internal class InitiatorSecureMessageDecryptor : SecureMessageDecryptor
 	{
 		InitiatorMessageSecurityBindingSupport security;
+		byte [] active_key;
 
 		public InitiatorSecureMessageDecryptor (
-			Message source, InitiatorMessageSecurityBindingSupport security)
+			Message source, SecurityMessageProperty secprop, InitiatorMessageSecurityBindingSupport security)
 			: base (source, security)
 		{
 			this.security = security;
+			active_key = secprop.EncryptionKey;
+		}
+
+		public override byte [] ActiveKey {
+			get { return active_key; }
 		}
 
 		public override SecurityTokenParameters Parameters {
@@ -128,6 +138,7 @@ namespace System.ServiceModel.Channels
 
 		public abstract SecurityTokenParameters Parameters { get; }
 		public abstract SecurityTokenParameters CounterParameters { get; }
+		public abstract byte [] ActiveKey { get; }
 
 		public Message DecryptMessage ()
 		{
@@ -226,21 +237,27 @@ namespace System.ServiceModel.Channels
 
 			XmlElement keyElem = secElem.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
 			EncryptedKey encryptedKey = new EncryptedKey ();
-			encryptedKey.LoadXml (keyElem);
-
-			byte [] decryptedKey = securityKey.DecryptKey (
+			byte [] decryptedKey = ActiveKey; // default
+			Dictionary<string,byte[]> map = new Dictionary<string,byte[]> ();
+			// default, unless overriden by the default DerivedKeyToken.
+			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
+			aes.Mode = CipherMode.CBC;
+			if (keyElem != null) {
+				encryptedKey.LoadXml (keyElem);
+				decryptedKey = securityKey.DecryptKey (
 				encryptedKey.EncryptionMethod.KeyAlgorithm,
 				encryptedKey.CipherData.CipherValue);
+			}
+			map [String.Empty] = aes.Key = decryptedKey;
 
-			// create derived keys
-			// FIXME: an alternative approach is to make use of
-			// EncryptedXml.AddKeyNameMapping().
-			Dictionary<string,byte[]> map = ResolveDerivedKeys (secElem, decryptedKey);
-			if (encryptedKey.Id != null)
-				map [encryptedKey.Id] = decryptedKey;
-			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
-			aes.Key = map [String.Empty];
-			aes.Mode = CipherMode.CBC;
+			if (keyElem != null) {
+				// create derived keys
+				// FIXME: an alternative approach is to make use
+				// of EncryptedXml.AddKeyNameMapping().
+				ResolveDerivedKeys (secElem, decryptedKey, map);
+				if (encryptedKey.Id != null)
+					map [encryptedKey.Id] = decryptedKey;
+			}
 
 			// decrypt the body with the decrypted key
 			Collection<string> references = new Collection<string> ();
@@ -304,7 +321,7 @@ doc.PreserveWhitespace = true;
 				SecurityToken signToken;
 				if (!in_band_resolver.TryResolveToken (sigClause, out signToken) &&
 				    (outband == null || !outband.TryResolveToken (sigClause, out signToken)))
-					throw new MessageSecurityException (String.Format ("The signing key could not be resolved: {0}", signKey));
+					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", signKey));
 				sec_prop.InitiatorToken = new SecurityTokenSpecification (
 					signToken,
 					security.TokenAuthenticator.ValidateToken (signToken));
@@ -314,6 +331,7 @@ doc.PreserveWhitespace = true;
 			}
 			if (!confirmed)
 				throw new MessageSecurityException ("Message signature is invalid.");
+			sec_prop.EncryptionKey = decryptedKey;
 			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
 		}
 
@@ -321,6 +339,7 @@ doc.PreserveWhitespace = true;
 		{
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
+			SecurityTokenResolver outband = security.OutOfBandTokenResolver;
 
 			if (ed2.KeyInfo == null)
 				return null;
@@ -332,6 +351,7 @@ doc.PreserveWhitespace = true;
 					continue; // FIXME: probably other kinds of KeyInfoClause could be used.
 
 				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (n.Value));
+#if false
 				LocalIdKeyIdentifierClause lskic = skic as LocalIdKeyIdentifierClause;
 				string keyUri = (lskic != null) ?
 					lskic.LocalId : String.Empty;
@@ -339,19 +359,28 @@ doc.PreserveWhitespace = true;
 					return map [keyUri];
 				else
 					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
+#else
+				// FIXME: this is kind of hack. Probably it should not be parsed as EncryptedKeyIdentifierClause
+				EncryptedKeyIdentifierClause eskic = skic as EncryptedKeyIdentifierClause;
+				if (eskic != null)
+					return ActiveKey;
+
+				SecurityKey skey = null;
+				if (!in_band_resolver.TryResolveSecurityKey (skic, out skey) &&
+				    (outband == null || !outband.TryResolveSecurityKey (skic, out skey)))
+					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", skic));
+				SymmetricSecurityKey ssk = skey as SymmetricSecurityKey;
+				if (ssk != null)
+					return ssk.GetSymmetricKey ();
+#endif
 			}
 			return null; // no applicable key info clause.
 		}
 
 		// FIXME: this should consider the referent SecurityToken of
 		// each DerivedKeyToken element.
-		Dictionary<string,byte[]> ResolveDerivedKeys (XmlElement secElem, byte [] decryptedKey)
+		void ResolveDerivedKeys (XmlElement secElem, byte [] decryptedKey, Dictionary<string,byte[]> keys)
 		{
-			// create mapping from Id to derived keys
-			Dictionary<string,byte[]> keys = new Dictionary<string,byte[]> ();
-			// default, unless overriden by the default DerivedKeyToken.
-			keys [String.Empty] = decryptedKey;
-
 			InMemorySymmetricSecurityKey skey =
 				new InMemorySymmetricSecurityKey (decryptedKey);
 
@@ -368,8 +397,6 @@ doc.PreserveWhitespace = true;
 					keys [id] = key;
 				}
 			}
-
-			return keys;
 		}
 
 		string StripUri (string src)

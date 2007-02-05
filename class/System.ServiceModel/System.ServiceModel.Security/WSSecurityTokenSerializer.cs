@@ -420,6 +420,10 @@ namespace System.ServiceModel.Security
 			}
 			else if (keyIdentifierClause is EncryptedKeyIdentifierClause)
 				WriteEncryptedKeyIdentifierClause (writer, (EncryptedKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is BinarySecretKeyIdentifierClause)
+				WriteBinarySecretKeyIdentifierClause (writer, (BinarySecretKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is InternalEncryptedKeyIdentifierClause)
+				WriteInternalEncryptedKeyIdentifierClause (writer, (InternalEncryptedKeyIdentifierClause) keyIdentifierClause);
 			else
 				throw new NotImplementedException (String.Format ("Security key identifier clause '{0}' is not either implemented or supported.", keyIdentifierClause.GetType ()));
 
@@ -492,6 +496,25 @@ namespace System.ServiceModel.Security
 			w.WriteEndElement ();
 			if (ic.CarriedKeyName != null)
 				w.WriteElementString ("CarriedKeyName", EncryptedXml.XmlEncNamespaceUrl, ic.CarriedKeyName);
+			w.WriteEndElement ();
+		}
+
+		void WriteBinarySecretKeyIdentifierClause (
+			XmlWriter w, BinarySecretKeyIdentifierClause ic)
+		{
+			w.WriteStartElement ("t", "BinarySecret", Constants.WstNamespace);
+			w.WriteString (Convert.ToBase64String (ic.GetBuffer ()));
+			w.WriteEndElement ();
+		}
+
+		void WriteInternalEncryptedKeyIdentifierClause (
+			XmlWriter w, InternalEncryptedKeyIdentifierClause ic)
+		{
+			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
+			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
+			w.WriteAttributeString ("ValueType", Constants.WssKeyIdentifierEncryptedKey);
+			w.WriteString (Convert.ToBase64String (ic.GetRawBuffer ()));
+			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}
 

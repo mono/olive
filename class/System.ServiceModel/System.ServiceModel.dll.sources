@@ -538,6 +538,7 @@ System.ServiceModel.Security.Tokens/CommunicationSecurityTokenProvider.cs
 System.ServiceModel.Security.Tokens/IIssuanceSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/ISecurityContextSecurityTokenCache.cs
 System.ServiceModel.Security.Tokens/InitiatorServiceModelSecurityTokenRequirement.cs
+System.ServiceModel.Security.Tokens/InternalEncryptedKeyIdentifierClause.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenHandler.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenProvider.cs

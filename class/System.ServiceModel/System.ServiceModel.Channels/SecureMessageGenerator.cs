@@ -69,6 +69,10 @@ namespace System.ServiceModel.Channels
 			this.message_to = messageTo;
 		}
 
+		public override UniqueId RelatesTo {
+			get { return null; }
+		}
+
 		public override SecurityTokenParameters Parameters {
 			get { return security.InitiatorParameters; }
 		}
@@ -116,17 +120,23 @@ namespace System.ServiceModel.Channels
 	internal class RecipientMessageSecurityGenerator : MessageSecurityGenerator
 	{
 		RecipientMessageSecurityBindingSupport security;
+		SecurityRequestContext req_ctx;
 
 		public RecipientMessageSecurityGenerator (
 			Message msg,
-			SecurityMessageProperty inputSecurityProperty,
+			SecurityRequestContext requestContext,
 			RecipientMessageSecurityBindingSupport security)
 			: base (msg, security)
 		{
 			this.security = security;
-			SecurityMessageProperty secprop = 
-				(SecurityMessageProperty) inputSecurityProperty.CreateCopy ();
+			req_ctx = requestContext;
+			SecurityMessageProperty secprop =
+				(SecurityMessageProperty) req_ctx.RequestMessage.Properties.Security.CreateCopy ();
 			msg.Properties.Security = secprop;
+		}
+
+		public override UniqueId RelatesTo {
+			get { return req_ctx.RequestMessage.Headers.MessageId; }
 		}
 
 		public override SecurityTokenParameters Parameters {
@@ -229,6 +239,12 @@ namespace System.ServiceModel.Channels
 
 		public abstract bool ShouldIncludeToken (SecurityTokenInclusionMode mode, bool isInitialized);
 
+		public bool ShouldOutputEncryptedKey {
+			get { return security.Element is AsymmetricSecurityBindingElement || secprop.EncryptionKey == null; }
+		}
+
+		public abstract UniqueId RelatesTo { get; }
+
 		public Message SecureMessage ()
 		{
 			secprop = SecurityMessageProperty.GetOrCreate (Message);
@@ -245,12 +261,20 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
+//if (secprop.EncryptionKey != null)
+if (!ShouldOutputEncryptedKey)
+	encToken = new BinarySecretSecurityToken (secprop.EncryptionKey);
+
 			string messageId = "uuid-" + Guid.NewGuid ();
 			int identForMessageId = 1;
 			XmlDocument doc = new XmlDocument ();
 			doc.PreserveWhitespace = true;
 
-			msg.Headers.Add (MessageHeader.CreateHeader ("MessageID", msg.Version.Addressing.Namespace, "urn:" + messageId));
+			UniqueId relatesTo = RelatesTo;
+			if (relatesTo != null)
+				msg.Headers.RelatesTo = relatesTo;
+			else // FIXME: probably it is always added when it is stateful ?
+				msg.Headers.MessageId = new UniqueId ("urn:" + messageId);
 
 			// FIXME: get correct ReplyTo value
 			if (Direction == MessageDirection.Input)
@@ -302,6 +326,12 @@ namespace System.ServiceModel.Channels
 			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
 			string bodyId = null;
 
+			SymmetricAlgorithm masterKey = new RijndaelManaged ();
+			masterKey.KeySize = suite.DefaultSymmetricKeyLength;
+			masterKey.Mode = CipherMode.CBC;
+			masterKey.Padding = PaddingMode.ISO10126;
+			SymmetricAlgorithm pkey = masterKey;
+
 {
 			// 2. [Encryption Token]
 
@@ -316,7 +346,7 @@ namespace System.ServiceModel.Channels
 				Security.InitiatorParameters.InclusionMode, false);
 
 			SecurityKeyIdentifierClause encClause =
-				CounterParameters.CallCreateKeyIdentifierClause (encToken, includeEncToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
+				CounterParameters.CallCreateKeyIdentifierClause (encToken, !ShouldOutputEncryptedKey ? SecurityTokenReferenceStyle.Internal : includeEncToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
@@ -325,15 +355,12 @@ namespace System.ServiceModel.Channels
 
 			// encryption key (possibly also used for signing)
 			// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
-			// FIXME: probably when asymmetric binding use asymmetric algorithm
-			RijndaelManaged aes = new RijndaelManaged ();
-			aes.KeySize = suite.DefaultSymmetricKeyLength;
-			aes.Mode = CipherMode.CBC;
-			aes.Padding = PaddingMode.ISO10126;
+			if (secprop.EncryptionKey != null)
+				pkey.Key = secprop.EncryptionKey;
 
 			// generate derived key if needed
 			if (CounterParameters.RequireDerivedKeys) {
-				// FIXME: it should replace aes
+				// FIXME: it should replace pkey
 				RijndaelManaged deriv = new RijndaelManaged ();
 				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
 				deriv.Mode = CipherMode.CBC;
@@ -350,8 +377,11 @@ namespace System.ServiceModel.Channels
 			string ekeyId = messageId + "-" + identForMessageId++;
 
 			ekey = new WrappedKeySecurityToken (ekeyId,
-				aes.Key,
-				suite.DefaultAsymmetricKeyWrapAlgorithm,
+				pkey.Key,
+				// security.DefaultKeyWrapAlgorithm,
+				ShouldOutputEncryptedKey ?
+					suite.DefaultAsymmetricKeyWrapAlgorithm :
+					suite.DefaultSymmetricKeyWrapAlgorithm,
 				encToken,
 				new SecurityKeyIdentifier (encClause));
 
@@ -360,7 +390,9 @@ namespace System.ServiceModel.Channels
 					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
 			SecurityKeyIdentifierClause ekeyClause =
-				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
+				ShouldOutputEncryptedKey ? (SecurityKeyIdentifierClause)
+				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
+				new InternalEncryptedKeyIdentifierClause (ekey.GetWrappedKey ());
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -395,7 +427,7 @@ namespace System.ServiceModel.Channels
 				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/*", nsmgr))
 					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
-					sxml.ComputeSignature (new HMACSHA1 (aes.Key));
+					sxml.ComputeSignature (new HMACSHA1 (pkey.Key));
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
 				}
 				else {
@@ -416,19 +448,26 @@ namespace System.ServiceModel.Channels
 
 				EncryptedXml exml = new EncryptedXml ();
 				ReferenceList refList = new ReferenceList ();
-				if (!CounterParameters.RequireDerivedKeys)
+				// FIXME: it is currently disabled. ReferenceList might just be written according to key's output state.
+				//if (!CounterParameters.RequireDerivedKeys)
 					ekey.ReferenceList = refList;
-				else
-					encRefList = refList;
+				//else
+				//	encRefList = refList;
 
-				EncryptedData edata = Encrypt (body, aes, ekeyId, refList, encClause, exml, doc);
-				edata.KeyInfo = null;
+				EncryptedData edata = Encrypt (body, pkey, ekeyId, refList, encClause, exml, doc);
+				if (ShouldOutputEncryptedKey)
+					edata.KeyInfo = null;
+				else {
+					edata.KeyInfo = new KeyInfo ();
+					edata.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc));
+				}
+edata.KeyInfo = null;
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, aes, ekeyId, refList, ekeyClause, exml, doc);
+					sigenc = Encrypt (sigxml, pkey, ekeyId, refList, ekeyClause, exml, doc);
 				}
 				break;
 			}
@@ -441,6 +480,8 @@ namespace System.ServiceModel.Channels
 }
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
+			ret.Properties.Security = (SecurityMessageProperty) secprop.CreateCopy ();
+			ret.Properties.Security.EncryptionKey = masterKey.Key;
 			ret.BodyId = bodyId;
 
 			// FIXME: set below items:
@@ -479,14 +520,16 @@ namespace System.ServiceModel.Channels
 			//	  endorsing token.
 			//	
 
-			if (ekey != null)
+			// If it reuses request's encryption key, do not output.
+			if (ShouldOutputEncryptedKey)
 				header.Contents.Add (ekey);
 
 			foreach (WsscDerivedKeyToken dk in derivedKeys)
 				header.Contents.Add (dk);
 
-			if (encRefList != null)
-				header.Contents.Add (encRefList);
+			// When we do not output EncryptedKey, output ReferenceList here.
+			if (!ShouldOutputEncryptedKey)
+				header.Contents.Add (ekey.ReferenceList);
 
 			if (sigenc != null) // [Signature Protection]
 				header.Contents.Add (sigenc);
@@ -530,12 +573,12 @@ namespace System.ServiceModel.Channels
 			throw new Exception (String.Format ("INTERNAL ERROR: Invalid canonicalization URL: {0}", url));
 		}
 
-		EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm aes, string ekeyId, ReferenceList refList, SecurityKeyIdentifierClause encClause, EncryptedXml exml, XmlDocument doc)
+		EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm pkey, string ekeyId, ReferenceList refList, SecurityKeyIdentifierClause encClause, EncryptedXml exml, XmlDocument doc)
 		{
 			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
 			SecurityTokenSerializer serializer = security.TokenSerializer;
 
-			byte [] encrypted = exml.EncryptData (target, aes, false);
+			byte [] encrypted = exml.EncryptData (target, pkey, false);
 			EncryptedData edata = new EncryptedData ();
 			edata.Id = GenerateId (doc);
 			edata.Type = EncryptedXml.XmlEncElementContentUrl;
@@ -545,11 +588,6 @@ namespace System.ServiceModel.Channels
 			// with S.S.C.Xml.EncryptionMethod, we will have to
 			// build our own XML encryption classes.
 
-// FIXME: sometimes? always? it is omitted.
-//			edata.KeyInfo = new KeyInfo ();
-//			KeyInfoClause kic = new SecurityTokenReferenceKeyInfo (encClause, serializer, doc);
-//			edata.KeyInfo.AddClause (kic);
-edata.KeyInfo = null;
 			edata.CipherData.CipherValue = encrypted;
 
 			DataReference dr = new DataReference ();

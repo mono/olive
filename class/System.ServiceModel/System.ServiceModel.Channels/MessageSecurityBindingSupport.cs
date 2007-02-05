@@ -163,6 +163,10 @@ namespace System.ServiceModel.Channels
 			get { return element_support.DefaultSignatureAlgorithm; }
 		}
 
+		public string DefaultKeyWrapAlgorithm {
+			get { return element_support.DefaultKeyWrapAlgorithm; }
+		}
+
 		#endregion
 
 		public SecurityTokenProvider CreateTokenProvider (SecurityTokenRequirement requirement)
@@ -365,6 +369,8 @@ namespace System.ServiceModel.Channels
 
 		public abstract bool RequireSignatureConfirmation { get; }
 
+		public abstract string DefaultKeyWrapAlgorithm { get; }
+
 		public abstract string DefaultSignatureAlgorithm { get; }
 	}
 
@@ -406,6 +412,10 @@ namespace System.ServiceModel.Channels
 		public override string DefaultSignatureAlgorithm {
 			get { return element.DefaultAlgorithmSuite.DefaultSymmetricSignatureAlgorithm; }
 		}
+
+		public override string DefaultKeyWrapAlgorithm {
+			get { return element.DefaultAlgorithmSuite.DefaultSymmetricKeyWrapAlgorithm; }
+		}
 	}
 
 	internal class AsymmetricSecurityBindingElementSupport : SecurityBindingElementSupport
@@ -444,6 +454,10 @@ namespace System.ServiceModel.Channels
 
 		public override string DefaultSignatureAlgorithm {
 			get { return element.DefaultAlgorithmSuite.DefaultAsymmetricSignatureAlgorithm; }
+		}
+
+		public override string DefaultKeyWrapAlgorithm {
+			get { return element.DefaultAlgorithmSuite.DefaultAsymmetricKeyWrapAlgorithm; }
 		}
 	}
 }

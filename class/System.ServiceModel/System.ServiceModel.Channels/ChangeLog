@@ -1,3 +1,21 @@
+2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityBindingSupport.cs : added DefaultKeyWrapAlgorithm
+	  to switch asymmetric and symmetric. Not used yet.
+	* SecurityRequestChannel.cs : now it pass the request security
+	  property to reply receiver so that it could use the primary key
+	  used at request phase.
+	* SecurityRequestContext.cs : now it pass the context itself to
+	  reply sender so that it could embed related MessageID.
+	* SecureMessageGenerator.cs : ongoing changes to support symmetric
+	  binding element. Add RelatesTo output and remove MessageID when
+	  replying to the sender. Added some hacks to get symmetric binding
+	  (kind of) working.
+	* SecureMessageDecryptor.cs : ditto. Handle embedded encryption key
+	  in SecurityTokenReference (it also involved existing encrypted key 
+	  retrieval). In reply receiver, reuse the key that was used at
+	  request phase. It needs significant token resolution refactoring.
+
 2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs : cosmetic refactoring.

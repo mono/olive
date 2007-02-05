@@ -100,9 +100,13 @@ namespace System.ServiceModel.Channels
 			this.security = security;
 		}
 
+		SecurityMessageProperty secprop;
+
 		protected override IAsyncResult OnBeginRequest (Message message, TimeSpan timeout, AsyncCallback callback, object state)
 		{
+			// FIXME: make it really async
 			Message secure = SecureMessage (message);
+			secprop = secure.Properties.Security;
 			return base.BeginRequest (secure, timeout, callback, state);
 		}
 
@@ -110,14 +114,14 @@ namespace System.ServiceModel.Channels
 		{
 			// FIXME: it must be also asynchronized.
 			Message raw = base.EndRequest (result);
-			return ProcessReply (raw);
+			return ProcessReply (raw, secprop);
 		}
 
 		protected override Message OnRequest (Message message, TimeSpan timeout)
 		{
 			Message secure = SecureMessage (message);
 			Message raw = base.OnRequest (secure, timeout);
-			return ProcessReply (raw);
+			return ProcessReply (raw, secure.Properties.Security);
 		}
 
 		Message SecureMessage (Message msg)
@@ -125,10 +129,10 @@ namespace System.ServiceModel.Channels
 			return new InitiatorMessageSecurityGenerator (msg, security, RemoteAddress).SecureMessage ();
 		}
 
-		Message ProcessReply (Message message)
+		Message ProcessReply (Message message, SecurityMessageProperty secprop)
 		{
 			// FIXME: provide correct parameters
-			return new InitiatorSecureMessageDecryptor (message, security).DecryptMessage ();
+			return new InitiatorSecureMessageDecryptor (message, secprop, security).DecryptMessage ();
 		}
 
 		void AcquireSecurityKey (object o, EventArgs e)

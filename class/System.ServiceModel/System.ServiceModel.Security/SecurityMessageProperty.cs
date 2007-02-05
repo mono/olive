@@ -47,6 +47,7 @@ namespace System.ServiceModel.Security
 
 		// internal
 		internal Collection<string> ConfirmedSignatures = new Collection<string> ();
+		internal byte [] EncryptionKey;
 
 		public SecurityMessageProperty ()
 		{
@@ -113,7 +114,7 @@ namespace System.ServiceModel.Security
 			SecurityMessageProperty s = message.Properties.Security;
 			if (s == null) {
 				s = new SecurityMessageProperty ();
-				message.Properties.Add ("Security", s);
+				message.Properties.Security = s;
 			}
 			return s;
 		}

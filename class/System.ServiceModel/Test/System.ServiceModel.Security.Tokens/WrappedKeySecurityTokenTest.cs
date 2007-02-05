@@ -115,10 +115,48 @@ namespace MonoTests.System.ServiceModel
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		public void UnsupportedAlgorithmByKeys ()
+		public void UserNameToken ()
 		{
 			byte [] bytes = new byte [32];
 			SecurityToken wt = new UserNameSecurityToken ("eno", "enopass");
+			SecurityKeyIdentifierClause kic =
+				new X509ThumbprintKeyIdentifierClause (cert);
+			new WrappedKeySecurityToken ("urn:gyabo",
+				bytes, SecurityAlgorithms.RsaOaepKeyWrap, wt,
+				new SecurityKeyIdentifier (kic));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void X509TokenForSymmetricKeyWrap ()
+		{
+			byte [] bytes = new byte [32];
+			SecurityToken wt = new X509SecurityToken (cert);
+			SecurityKeyIdentifierClause kic =
+				new X509ThumbprintKeyIdentifierClause (cert);
+			new WrappedKeySecurityToken ("urn:gyabo",
+				bytes, SecurityAlgorithms.Aes256KeyWrap, wt,
+				new SecurityKeyIdentifier (kic));
+		}
+
+		[Test]
+		public void BinarySecretTokenForSymmetricKeyWrap ()
+		{
+			byte [] bytes = new byte [32];
+			SecurityToken wt = new BinarySecretSecurityToken (bytes);
+			SecurityKeyIdentifierClause kic =
+				new X509ThumbprintKeyIdentifierClause (cert);
+			new WrappedKeySecurityToken ("urn:gyabo",
+				bytes, SecurityAlgorithms.Aes256KeyWrap, wt,
+				new SecurityKeyIdentifier (kic));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void BinarySecretTokenForAsymmetricKeyWrap ()
+		{
+			byte [] bytes = new byte [32];
+			SecurityToken wt = new BinarySecretSecurityToken (bytes);
 			SecurityKeyIdentifierClause kic =
 				new X509ThumbprintKeyIdentifierClause (cert);
 			new WrappedKeySecurityToken ("urn:gyabo",
