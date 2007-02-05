@@ -58,8 +58,8 @@ namespace System.IdentityModel.Claims
 			Claim ident = new Claim (ClaimTypes.Thumbprint, cert.Thumbprint, Rights.Identity);
 			issuer = new X509IdentityClaimSet (ident);
 			claims.Add (ident);
-			claims.Add (Claim.CreateX500DistinguishedNameClaim (cert.SubjectName));
-			claims.Add (Claim.CreateNameClaim (cert.SubjectName.Name));
+			//claims.Add (Claim.CreateX500DistinguishedNameClaim (cert.SubjectName));
+			//claims.Add (Claim.CreateNameClaim (cert.SubjectName.Name));
 			RSA rsa = cert.PublicKey.Key as RSA;
 			if (rsa != null)
 				claims.Add (Claim.CreateRsaClaim (rsa));

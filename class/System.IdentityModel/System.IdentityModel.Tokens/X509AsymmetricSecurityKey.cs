@@ -76,11 +76,20 @@ namespace System.IdentityModel.Tokens
 			throw new NotSupportedException (String.Format ("The asymmetric algorithm '{0}' is not supported.", algorithm));
 		}
 
-		[MonoTODO]
 		public override HashAlgorithm GetHashAlgorithmForSignature (
 			string algorithm)
 		{
-			throw new NotImplementedException ();
+			if (algorithm == null)
+				throw new ArgumentNullException ("algorithm");
+			switch (algorithm) {
+			//case SignedXml.XmlDsigDSAUrl: // it is documented as supported, but it isn't in reality and it wouldn't be possible.
+			case SignedXml.XmlDsigRSASHA1Url:
+				return new HMACSHA1 ();
+			case SecurityAlgorithms.RsaSha256Signature:
+				return new HMACSHA256 ();
+			default:
+				throw new NotSupportedException (String.Format ("'{0}' Hash algorithm is not supported in this security key.", algorithm));
+			}
 		}
 
 		[MonoTODO]

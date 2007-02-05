@@ -48,7 +48,7 @@ namespace MonoTests.System.IdentityModel.Claims
 			ClaimSet cs = new X509CertificateClaimSet (cert);
 			ClaimSet ident = cs.Issuer;
 			Assert.AreEqual (6, cs.Count, "#1");
-			Assert.AreEqual (ident, ident.Issuer, "#2");
+			Assert.AreEqual (0, ident.Issuer.Count, "#2");
 			Assert.IsFalse (cs.ContainsClaim (Claim.System), "#3");
 			List<string> d = new List<string> ();
 			foreach (Claim c in cs) {

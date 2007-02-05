@@ -109,5 +109,29 @@ namespace MonoTests.System.IdentityModel.Selectors
 			X509AsymmetricSecurityKey key = new X509AsymmetricSecurityKey (cert);
 			Assert.IsFalse (key.IsSupportedAlgorithm (null));
 		}
+
+		[Test]
+		[Category ("NotDotNet")] // it throws FormatException, probably internal error message string formatting error.
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void GetHashAlgorithmForSignatureNull ()
+		{
+			new X509AsymmetricSecurityKey (cert).GetHashAlgorithmForSignature (null);
+		}
+
+		[Test]
+		[Category ("NotDotNet")] // it throws FormatException, probably internal error message string formatting error.
+		[ExpectedException (typeof (NotSupportedException))]
+		public void GetHashAlgorithmForSignatureUnsupported ()
+		{
+			new X509AsymmetricSecurityKey (cert).GetHashAlgorithmForSignature (new HMACMD5 ().HashName);
+		}
+
+		[Test]
+		public void GetHashAlgorithmForSignatureFine ()
+		{
+			X509AsymmetricSecurityKey k = new X509AsymmetricSecurityKey (cert);
+			k.GetHashAlgorithmForSignature (SignedXml.XmlDsigRSASHA1Url);
+			k.GetHashAlgorithmForSignature (SecurityAlgorithms.RsaSha256Signature);
+		}
 	}
 }
