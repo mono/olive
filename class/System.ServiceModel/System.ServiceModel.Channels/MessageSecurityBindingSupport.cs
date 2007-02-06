@@ -174,6 +174,13 @@ namespace System.ServiceModel.Channels
 			return manager.CreateSecurityTokenProvider (requirement);
 		}
 
+		public SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
+		{
+			SecurityTokenRequirement r = CreateRequirement ();
+			p.CallInitializeSecurityTokenRequirement (r);
+			return manager.CreateSecurityTokenAuthenticator (r, out resolver);
+		}
+
 		public void CreateTokenAuthenticator (SecurityTokenRequirement requirement)
 		{
 			authenticator = manager.CreateSecurityTokenAuthenticator (requirement, out auth_token_resolver);

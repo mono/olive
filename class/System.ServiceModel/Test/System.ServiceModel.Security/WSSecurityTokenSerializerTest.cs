@@ -46,6 +46,9 @@ namespace MonoTests.System.ServiceModel.Security
 	[TestFixture]
 	public class WSSecurityTokenSerializerTest
 	{
+		const string wssNS = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd";
+		const string wsuNS = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
+
 		static X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 
 		const string derived_key_token1 = @"<c:DerivedKeyToken xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc'>
@@ -549,6 +552,17 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
 				SecurityKeyIdentifierClause kic = serializer.ReadKeyIdentifierClause (xr);
 				Assert.IsTrue (kic is BinaryKeyIdentifierClause, "#1");
+			}
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))] // not sure how this exception type makes sense...
+		public void ReadEmptyUsernameToken ()
+		{
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (String.Format ("<o:UsernameToken u:Id='urn:foo' xmlns:o='{0}' xmlns:u='{1}' />", wssNS, wsuNS)))) {
+				SecurityToken token = serializer.ReadToken (xr, null);
 			}
 		}
 

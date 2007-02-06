@@ -1,5 +1,16 @@
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs : added CreateTokenAuthenticator()
+	  for supporting 'supporting tokens' .
+	* SecureMessageGenerator.cs : Supporting token creation is done only
+	  at initiator (not sure if it is supposed that, but for now it is).
+	  Removed extraneous CollectSupportingTokens().
+	* SecureMessageDecryptor.cs : implemented supporting token
+	  authentication (partly). "Signed" supporting tokens are expected
+	  to work fine.
+
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs :
 	  make SignBeforeEncryptAndEncryptSignature working.
 

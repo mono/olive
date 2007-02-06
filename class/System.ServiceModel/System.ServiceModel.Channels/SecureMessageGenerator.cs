@@ -110,11 +110,6 @@ namespace System.ServiceModel.Channels
 		public override ScopedMessagePartSpecification EncryptionParts { 
 			get { return Security.ChannelRequirements.IncomingEncryptionParts; }
 		}
-
-		public override SupportingTokenInfoCollection CollectSupportingTokens ()
-		{
-			return security.CollectSupportingTokens (GetAction ());
-		}
 	}
 
 	internal class RecipientMessageSecurityGenerator : MessageSecurityGenerator
@@ -176,11 +171,6 @@ namespace System.ServiceModel.Channels
 		public override ScopedMessagePartSpecification EncryptionParts { 
 			get { return Security.ChannelRequirements.OutgoingEncryptionParts; }
 		}
-
-		public override SupportingTokenInfoCollection CollectSupportingTokens ()
-		{
-			return security.CollectSupportingTokens (GetAction ());
-		}
 	}
 
 	internal abstract class MessageSecurityGenerator
@@ -234,8 +224,6 @@ namespace System.ServiceModel.Channels
 				return spec;
 			}
 		}
-
-		public abstract SupportingTokenInfoCollection CollectSupportingTokens ();
 
 		public abstract bool ShouldIncludeToken (SecurityTokenInclusionMode mode, bool isInitialized);
 
@@ -300,6 +288,14 @@ if (!ShouldOutputEncryptedKey)
 				foreach (string value in secprop.ConfirmedSignatures)
 					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
 
+			SupportingTokenInfoCollection tokenInfos =
+				Direction == MessageDirection.Input ?
+				security.CollectSupportingTokens (GetAction ()) :
+				new SupportingTokenInfoCollection (); // empty
+			foreach (SupportingTokenInfo tokenInfo in tokenInfos)
+				if (tokenInfo.Mode != SecurityTokenAttachmentMode.Endorsing)
+					header.Contents.Add (tokenInfo.Token);
+
 			// populate DOM to sign.
 			XPathNavigator nav = doc.CreateNavigator ();
 			using (XmlWriter w = nav.AppendChild ()) {
@@ -316,8 +312,6 @@ if (!ShouldOutputEncryptedKey)
 			Signature sig = null;
 			EncryptedData sigenc = null;
 
-
-			SupportingTokenInfoCollection tokens = CollectSupportingTokens ();
 
 			List<WsscDerivedKeyToken> derivedKeys =
 				new List<WsscDerivedKeyToken> ();

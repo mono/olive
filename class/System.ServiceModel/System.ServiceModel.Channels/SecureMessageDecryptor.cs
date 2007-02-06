@@ -60,6 +60,10 @@ namespace System.ServiceModel.Channels
 			this.security = security;
 		}
 
+		public override MessageDirection Direction {
+			get { return MessageDirection.Input; }
+		}
+
 		public override byte [] ActiveKey {
 			get { return null; }
 		}
@@ -88,6 +92,10 @@ namespace System.ServiceModel.Channels
 
 		public override byte [] ActiveKey {
 			get { return active_key; }
+		}
+
+		public override MessageDirection Direction {
+			get { return MessageDirection.Output; }
 		}
 
 		public override SecurityTokenParameters Parameters {
@@ -136,6 +144,7 @@ namespace System.ServiceModel.Channels
 
 		}
 
+		public abstract MessageDirection Direction { get; }
 		public abstract SecurityTokenParameters Parameters { get; }
 		public abstract SecurityTokenParameters CounterParameters { get; }
 		public abstract byte [] ActiveKey { get; }
@@ -160,7 +169,7 @@ namespace System.ServiceModel.Channels
 
 			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
 			foreach (XmlElement secElem in securityHeaders)
-				// FIXME: check Actor.
+				// FIXME: check Actor. There is only one o:Security which we should handle.
 				ExtractSecurity (secElem);
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
@@ -283,7 +292,6 @@ namespace System.ServiceModel.Channels
 				ed2.LoadXml (el);
 				byte [] key = GetEncryptionKeyForData (ed2, encXml, map);
 				aes.Key = key != null ? key : decryptedKey;
-				if (ed2.GetXml () == null) throw new Exception ("Gyabo");
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
 
@@ -296,8 +304,6 @@ doc.PreserveWhitespace = true;
 			XmlElement sigElem = secElem.SelectSingleNode ("dsig:Signature", nsmgr) as XmlElement;
 			if (sigElem == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
-
-			// FIXME: the security tokens must be authenticated.
 
 			WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
 			sxml.LoadXml (sigElem);
@@ -318,24 +324,125 @@ doc.PreserveWhitespace = true;
 			if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
 				confirmed = sxml.CheckSignature (new HMACSHA1 (aes.Key));
 			else {
+				// my guess is that this could also apply to symmetric binding case i.e. key resolution could be done as WrappedKeySecurityToken resolution.
 				SecurityKey signKey;
 				SecurityTokenResolver outband = security.OutOfBandTokenResolver;
 				SecurityToken signToken;
 				if (!in_band_resolver.TryResolveToken (sigClause, out signToken) &&
 				    (outband == null || !outband.TryResolveToken (sigClause, out signToken)))
 					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", signKey));
-				sec_prop.InitiatorToken = new SecurityTokenSpecification (
-					signToken,
-					security.TokenAuthenticator.ValidateToken (signToken));
 				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
 				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
 				confirmed = sxml.CheckSignature (sigalg);
+
+				// FIXME: it should not apply only to asymmetric case.
+				sec_prop.InitiatorToken = new SecurityTokenSpecification (
+					signToken,
+					security.TokenAuthenticator.ValidateToken (signToken));
 			}
 			if (!confirmed)
 				throw new MessageSecurityException ("Message signature is invalid.");
+
+			// token authentication
+			// FIXME: it might not be limited to recipient
+			if (Direction == MessageDirection.Input)
+				ProcessSupportingTokens (sxml);
+
 			sec_prop.EncryptionKey = decryptedKey;
 			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
 		}
+
+		#region supporting token processing
+
+		// authenticate and map supporting tokens to proper SupportingTokenSpecification list.
+		void ProcessSupportingTokens (SignedXml sxml)
+		{
+			List<SupportingTokenInfo> tokens = new List<SupportingTokenInfo> ();
+		
+			// First, categorize those tokens in the Security
+			// header:
+			// - Endorsing		signing
+			// - Signed			signed
+			// - SignedEncrypted		signed	encrypted
+			// - SignedEndorsing	signing	signed
+
+			foreach (object obj in wss_header.Contents) {
+				SecurityToken token = obj as SecurityToken;
+				if (token == null)
+					continue;
+				bool signed = false, endorsing = false, encrypted = false;
+				// signed
+				foreach (Reference r in sxml.SignedInfo.References)
+					if (r.Uri.Substring (1) == token.Id) {
+						signed = true;
+						break;
+					}
+				// FIXME: how to get 'encrypted' state?
+				// FIXME: endorsing
+
+				SecurityTokenAttachmentMode mode =
+					signed ? encrypted ? SecurityTokenAttachmentMode.SignedEncrypted :
+					endorsing ? SecurityTokenAttachmentMode.SignedEndorsing :
+					SecurityTokenAttachmentMode.Signed :
+					SecurityTokenAttachmentMode.Endorsing;
+				tokens.Add (new SupportingTokenInfo (token, mode, false));
+			}
+
+			// then,
+			// 1. validate every mandatory supporting token
+			// parameters (Endpoint-, Operation-). To do that,
+			// iterate all tokens in the header against every
+			// parameter in the mandatory list.
+			// 2. validate every token that is not validated.
+			// To do that, iterate all supporting token parameters
+			// and check if any of them can validate it.
+			SupportingTokenParameters supp;
+			string action = GetAction ();
+			ValidateTokensByParameters (security.Element.EndpointSupportingTokenParameters, tokens, false);
+			if (security.Element.OperationSupportingTokenParameters.TryGetValue (action, out supp))
+				ValidateTokensByParameters (supp, tokens, false);
+			ValidateTokensByParameters (security.Element.OptionalEndpointSupportingTokenParameters, tokens, true);
+			if (security.Element.OptionalOperationSupportingTokenParameters.TryGetValue (action, out supp))
+				ValidateTokensByParameters (supp, tokens, true);
+		}
+
+		void ValidateTokensByParameters (SupportingTokenParameters supp, List<SupportingTokenInfo> tokens, bool optional)
+		{
+			ValidateTokensByParameters (supp.Endorsing, tokens, optional);
+			ValidateTokensByParameters (supp.Signed, tokens, optional);
+			ValidateTokensByParameters (supp.SignedEndorsing, tokens, optional);
+			ValidateTokensByParameters (supp.SignedEncrypted, tokens, optional);
+		}
+
+		void ValidateTokensByParameters (IEnumerable<SecurityTokenParameters> plist, List<SupportingTokenInfo> tokens, bool optional)
+		{
+			foreach (SecurityTokenParameters p in plist) {
+				SecurityTokenResolver r;
+				SecurityTokenAuthenticator a =
+					security.CreateTokenAuthenticator (p, out r);
+				SupportingTokenSpecification spec = ValidateTokensByParameters (a, r, tokens);
+				if (spec == null) {
+					if (optional)
+						continue;
+					else
+						throw new MessageSecurityException ("Security token '{0}' cannot be validated according to the security settings.");
+				}
+				sec_prop.IncomingSupportingTokens.Add (spec);
+			}
+		}
+
+		SupportingTokenSpecification ValidateTokensByParameters (SecurityTokenAuthenticator a, SecurityTokenResolver r, List<SupportingTokenInfo> tokens)
+		{
+			foreach (SupportingTokenInfo info in tokens)
+				if (a.CanValidateToken (info.Token))
+					return new SupportingTokenSpecification (
+						info.Token,
+						a.ValidateToken (info.Token),
+						info.Mode);
+			return null;
+		}
+
+		#endregion
 
 		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map)
 		{
