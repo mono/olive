@@ -5,7 +5,7 @@ include ../../build/rules.make
 LIBRARY = System.Xml.Linq.dll
 LIB_MCS_FLAGS = \
 	        /r:System.dll \
-	        /r:System.Query.dll \
+	        /r:System.Core.dll \
 	        /r:System.Xml.dll \
 		/d:LIST_BASED
 

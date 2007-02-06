@@ -1,3 +1,7 @@
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : System.Xml.XLinq -> System.Xml.Linq
+
 2007-01-19  Marek Safar  <marek.safar@gmail.com>
 
 	* System.Core: Renamed from System.Query.
