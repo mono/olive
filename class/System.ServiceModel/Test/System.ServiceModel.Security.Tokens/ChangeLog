@@ -1,3 +1,8 @@
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityTokenTest.cs : added test for 
+	  CreateKeyIdentifierClause() (don't return input identifiers).
+
 2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WrappedKeySecurityTokenTest.cs : added tests for keywrap algorithm

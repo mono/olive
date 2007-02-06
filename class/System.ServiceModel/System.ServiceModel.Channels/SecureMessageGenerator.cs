@@ -247,7 +247,7 @@ namespace System.ServiceModel.Channels
 
 		public Message SecureMessage ()
 		{
-			secprop = SecurityMessageProperty.GetOrCreate (Message);
+			secprop = Message.Properties.Security ?? new SecurityMessageProperty ();
 
 			SecurityToken encToken =
 				secprop.InitiatorToken != null ? secprop.InitiatorToken.SecurityToken : security.EncryptionToken;
@@ -261,7 +261,6 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
-//if (secprop.EncryptionKey != null)
 if (!ShouldOutputEncryptedKey)
 	encToken = new BinarySecretSecurityToken (secprop.EncryptionKey);
 
@@ -389,10 +388,13 @@ if (!ShouldOutputEncryptedKey)
 				derivedKey.SecurityTokenReference =
 					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
+			HMAC sha1 = HMACSHA1.Create ();
+			sha1.Initialize ();
+			sha1.Key = pkey.Key;
 			SecurityKeyIdentifierClause ekeyClause =
 				ShouldOutputEncryptedKey ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
-				new InternalEncryptedKeyIdentifierClause (ekey.GetWrappedKey ());
+				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (ekey.GetWrappedKey ()));
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -461,7 +463,6 @@ if (!ShouldOutputEncryptedKey)
 					edata.KeyInfo = new KeyInfo ();
 					edata.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc));
 				}
-edata.KeyInfo = null;
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
@@ -494,7 +495,7 @@ edata.KeyInfo = null;
 				secprop.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
 			}
 			else
-				secprop.ProtectionToken = new SecurityTokenSpecification (encToken, null);
+				secprop.ProtectionToken = new SecurityTokenSpecification (ekey, null);
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);

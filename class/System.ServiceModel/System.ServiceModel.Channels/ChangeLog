@@ -1,3 +1,11 @@
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : EncryptedKeySHA1 needs key hash, not
+	  the key itself. ProtectionToken is WrappedKey.
+	* SecureMessageDecryptor.cs : now it is internal encrypted key clause,
+	  not EncryptedKeyIdentifierClause which is not for embedded key.
+	* MessageProperties.cs : Fixed copy direction in CopyProperties().
+
 2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs : added DefaultKeyWrapAlgorithm

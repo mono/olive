@@ -1,3 +1,8 @@
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added test for reading
+	  EncryptedKeySHA1 embedded key.
+
 2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs : added more tests for

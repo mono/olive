@@ -264,7 +264,7 @@ namespace System.ServiceModel.Security
 				case Constants.WssKeyIdentifierX509Thumbptint:
 					return new X509ThumbprintKeyIdentifierClause (Convert.FromBase64String (value));
 				case Constants.WssKeyIdentifierEncryptedKey:
-					return new EncryptedKeyIdentifierClause (Convert.FromBase64String (value), SecurityAlgorithms.Sha1Digest);
+					return new InternalEncryptedKeyIdentifierClause (Convert.FromBase64String (value));
 				default:
 					// It is kinda weird but it throws XmlException here ...
 					throw new XmlException (String.Format ("KeyIdentifier type '{0}' is not supported in WSSecurityTokenSerializer.", valueType));
@@ -513,7 +513,7 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
 			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
 			w.WriteAttributeString ("ValueType", Constants.WssKeyIdentifierEncryptedKey);
-			w.WriteString (Convert.ToBase64String (ic.GetRawBuffer ()));
+			w.WriteString (Convert.ToBase64String (ic.GetBuffer ()));
 			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}
@@ -529,13 +529,14 @@ namespace System.ServiceModel.Security
 			//	- Kerberos : S.IM.T.KerberosRequestorSecurityToken
 			//	- Rights Expression Language (REL) : N/A
 			//	- SOAP with Attachments : N/A
+			// they are part of standards support:
+			//	- WrappedKey (EncryptedKey)
+			//	- BinarySecret (WS-Trust)
+			//	- SecurityContext (WS-SecureConversation)
 			// additionally there are extra token types in WCF:
 			//	- GenericXml
 			//	- Windows
-			//	- BinarySecret
-			//	- SecurityContext
 			//	- Sspi
-			//	- WrappedKey
 			// not supported in this class:
 			//	- Rsa
 

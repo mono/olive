@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.Xml;
 using System.IdentityModel.Policy;
@@ -119,33 +120,45 @@ namespace System.ServiceModel.Security.Tokens
 			return (byte []) key.Clone ();
 		}
 
+		[MonoTODO]
 		public override bool CanCreateKeyIdentifierClause<T> ()
 		{
+			/*
 			foreach (SecurityKeyIdentifierClause k in WrappingTokenReference) {
 				Type t = k.GetType ();
 				if (t == typeof (T) || t.IsSubclassOf (typeof (T)))
 					return true;
 			}
+			*/
 			return false;
 		}
 
+		[MonoTODO]
 		public override T CreateKeyIdentifierClause<T> ()
 		{
+			/*
 			foreach (SecurityKeyIdentifierClause k in WrappingTokenReference) {
 				Type t = k.GetType ();
 				if (t == typeof (T) || t.IsSubclassOf (typeof (T)))
 					return (T) k;
 			}
-			throw new InvalidOperationException (String.Format ("WrappedKeySecurityToken cannot create '{0}'. The WrappingTokenReference type is '{1}'.", typeof (T), WrappingTokenReference.GetType ()));
+			*/
+			throw new NotSupportedException (String.Format ("WrappedKeySecurityToken cannot create '{0}'", typeof (T)));
 		}
 
 		[MonoTODO]
 		public override bool MatchesKeyIdentifierClause (SecurityKeyIdentifierClause keyIdentifierClause)
 		{
-			if (keyIdentifierClause is LocalIdKeyIdentifierClause &&
-			    ((LocalIdKeyIdentifierClause) keyIdentifierClause).LocalId == Id)
+			LocalIdKeyIdentifierClause lkic = keyIdentifierClause as LocalIdKeyIdentifierClause;
+			if (lkic != null && lkic.LocalId == Id)
 				return true;
-			// FIXME: no other possibilities to match?
+
+			InternalEncryptedKeyIdentifierClause khic = keyIdentifierClause as InternalEncryptedKeyIdentifierClause;
+			HMAC sha = HMACSHA1.Create ();
+			sha.Initialize ();
+			if (khic != null && khic.Matches (sha.ComputeHash (key)))
+				return true;
+
 			return false;
 		}
 	}

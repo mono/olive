@@ -33,19 +33,32 @@ using System.IdentityModel.Tokens;
 
 namespace System.ServiceModel.Security.Tokens
 {
-	internal class InternalEncryptedKeyIdentifierClause : SecurityKeyIdentifierClause
+	internal class InternalEncryptedKeyIdentifierClause : BinaryKeyIdentifierClause
 	{
-		byte [] raw;
-
-		public InternalEncryptedKeyIdentifierClause (byte [] raw)
-			: base (null)
+		public InternalEncryptedKeyIdentifierClause (byte [] hash)
+			: base (null, hash, false)
 		{
-			this.raw = raw;
 		}
 
-		public byte [] GetRawBuffer ()
+		public override bool Matches (SecurityKeyIdentifierClause keyIdentifierClause)
 		{
-			return raw;
+			InternalEncryptedKeyIdentifierClause kic = keyIdentifierClause as InternalEncryptedKeyIdentifierClause;
+			if (kic == null)
+				return false;
+			return Matches (kic.GetRawBuffer ());
+		}
+
+		public bool Matches (byte [] otherHash)
+		{
+			byte [] hash = GetRawBuffer ();
+			if (otherHash == null)
+				throw new ArgumentNullException ("otherHash");
+			if (hash.Length != otherHash.Length)
+				return false;
+			for (int i = 0; i < hash.Length; i++)
+				if (hash [i] != otherHash [i])
+					return false;
+			return true;
 		}
 	}
 }

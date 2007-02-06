@@ -115,7 +115,7 @@ namespace MonoTests.System.ServiceModel
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		public void UserNameToken ()
+		public void UserNameToken () // it does not support any encryption operation.
 		{
 			byte [] bytes = new byte [32];
 			SecurityToken wt = new UserNameSecurityToken ("eno", "enopass");
@@ -162,6 +162,20 @@ namespace MonoTests.System.ServiceModel
 			new WrappedKeySecurityToken ("urn:gyabo",
 				bytes, SecurityAlgorithms.RsaOaepKeyWrap, wt,
 				new SecurityKeyIdentifier (kic));
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotSupportedException))]
+		public void CreateBinarySecretKeyIdentifierClause ()
+		{
+			byte [] bytes = new byte [32];
+			SecurityToken wt = new BinarySecretSecurityToken (bytes);
+			SecurityKeyIdentifierClause kic =
+				new BinarySecretKeyIdentifierClause (bytes);
+			WrappedKeySecurityToken token = new WrappedKeySecurityToken ("urn:gyabo",
+				bytes, SecurityAlgorithms.Aes256KeyWrap, wt,
+				new SecurityKeyIdentifier (kic));
+			token.CreateKeyIdentifierClause<BinarySecretKeyIdentifierClause> ();
 		}
 
 		[Test]

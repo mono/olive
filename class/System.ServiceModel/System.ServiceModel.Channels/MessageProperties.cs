@@ -135,10 +135,10 @@ namespace System.ServiceModel.Channels
 
 		public void CopyProperties (MessageProperties properties)
 		{
-			properties.list = new List<Pair> (list);
-			properties.allow_output_batch = allow_output_batch;
-			properties.encoder = encoder;
-			properties.via = via;
+			list = new List<Pair> (properties.list);
+			allow_output_batch = properties.allow_output_batch;
+			encoder = properties.encoder;
+			via = properties.via;
 		}
 
 		public void Dispose ()

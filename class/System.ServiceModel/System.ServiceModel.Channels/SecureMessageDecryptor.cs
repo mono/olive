@@ -208,6 +208,8 @@ namespace System.ServiceModel.Channels
 			// FIXME: it is totally illogical, just a workaround for initiator's decryption for mono-mono communication. So, it is simply wrong.
 			if (Parameters == security.InitiatorParameters)
 				tokens.Add (security.EncryptionToken);
+			else if (sec_prop != null && sec_prop.ProtectionToken != null)
+				tokens.Add (sec_prop.ProtectionToken.SecurityToken);
 			// FIXME: handle supporting tokens
 
 			foreach (object obj in wss_header.Contents)
@@ -361,7 +363,7 @@ doc.PreserveWhitespace = true;
 					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
 #else
 				// FIXME: this is kind of hack. Probably it should not be parsed as EncryptedKeyIdentifierClause
-				EncryptedKeyIdentifierClause eskic = skic as EncryptedKeyIdentifierClause;
+				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
 				if (eskic != null)
 					return ActiveKey;
 

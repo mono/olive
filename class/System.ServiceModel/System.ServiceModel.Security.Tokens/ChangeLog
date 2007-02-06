@@ -1,3 +1,11 @@
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityToken.cs : it cannot resolve clauses from its
+	  .ctor() argument identifier clauses. Match EncrypedKeySHA1 clause
+	  if the hash values match.
+	* InternalEncryptedKeyIdentifierClause.cs :
+	  derive from Binary clause.
+
 2007-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* InternalEncryptedKeyIdentifierClause.cs : new file. It might not be
