@@ -1,5 +1,9 @@
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityTokenSerializer.cs : read UsernameToken.
+
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityTokenSerializer.cs :
 	  changes due to the latest EncryptedKeySHA1 clause changes.
 

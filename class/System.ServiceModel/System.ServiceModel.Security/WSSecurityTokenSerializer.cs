@@ -189,12 +189,14 @@ namespace System.ServiceModel.Security
 		[MonoTODO]
 		protected override bool CanReadTokenCore (XmlReader reader)
 		{
+			reader.MoveToContent ();
+
 			switch (reader.NamespaceURI) {
 			case Constants.WssNamespace:
 				switch (reader.LocalName) {
 				case "BinarySecurityToken":
 				case "BinarySecret":
-				case "UserNameToken":
+				case "UsernameToken":
 					return true;
 				}
 				break;
@@ -340,7 +342,7 @@ namespace System.ServiceModel.Security
 					return ReadX509TokenCore (reader, tokenResolver);
 				case "BinarySecret":
 					return ReadBinarySecretTokenCore (reader, tokenResolver);
-				case "UserNameToken":
+				case "UsernameToken":
 					return ReadUserNameTokenCore (reader, tokenResolver);
 				}
 				break;
@@ -360,7 +362,22 @@ namespace System.ServiceModel.Security
 		UserNameSecurityToken ReadUserNameTokenCore (
 			XmlReader reader, SecurityTokenResolver resolver)
 		{
-			throw new NotImplementedException ();
+			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
+			if (reader.IsEmptyElement)
+				throw new XmlException ("At least UsernameToken must contain Username");
+			reader.Read ();
+			reader.MoveToContent ();
+			string user = reader.ReadElementContentAsString ("Username", Constants.WssNamespace);
+			reader.MoveToContent ();
+			string pass = null;
+			if (reader.LocalName == "Password" && reader.NamespaceURI == Constants.WssNamespace) {
+				pass = reader.ReadElementContentAsString ("Password", Constants.WssNamespace);
+				reader.MoveToContent ();
+			}
+			reader.ReadEndElement ();
+			return id != null ?
+				new UserNameSecurityToken (user, pass, id) :
+				new UserNameSecurityToken (user, pass);
 		}
 
 		BinarySecretSecurityToken ReadBinarySecretTokenCore (
