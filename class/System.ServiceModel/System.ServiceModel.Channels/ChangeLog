@@ -1,5 +1,10 @@
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs :
+	  make SignBeforeEncryptAndEncryptSignature working.
+
+2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : EncryptedKeySHA1 needs key hash, not
 	  the key itself. ProtectionToken is WrappedKey.
 	* SecureMessageDecryptor.cs : now it is internal encrypted key clause,

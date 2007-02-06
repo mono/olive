@@ -457,12 +457,6 @@ if (!ShouldOutputEncryptedKey)
 				//	encRefList = refList;
 
 				EncryptedData edata = Encrypt (body, pkey, ekeyId, refList, encClause, exml, doc);
-				if (ShouldOutputEncryptedKey)
-					edata.KeyInfo = null;
-				else {
-					edata.KeyInfo = new KeyInfo ();
-					edata.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc));
-				}
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
@@ -594,6 +588,14 @@ if (!ShouldOutputEncryptedKey)
 			DataReference dr = new DataReference ();
 			dr.Uri = "#" + edata.Id;
 			refList.Add (dr);
+
+			if (ShouldOutputEncryptedKey)
+				edata.KeyInfo = null;
+			else {
+				edata.KeyInfo = new KeyInfo ();
+				edata.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (encClause, serializer, doc));
+			}
+
 			return edata;
 		}
 
