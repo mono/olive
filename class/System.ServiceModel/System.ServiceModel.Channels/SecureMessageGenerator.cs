@@ -239,8 +239,7 @@ namespace System.ServiceModel.Channels
 
 			SecurityToken encToken =
 				secprop.InitiatorToken != null ? secprop.InitiatorToken.SecurityToken : security.EncryptionToken;
-			SecurityToken signToken =
-				security.SigningToken;
+			SecurityToken signToken = null;
 			MessageProtectionOrder protectionOrder =
 				security.MessageProtectionOrder;
 			SecurityTokenSerializer serializer =
@@ -308,6 +307,7 @@ if (!ShouldOutputEncryptedKey)
 			nsmgr.AddNamespace ("o11", Constants.Wss11Namespace);
 
 			WrappedKeySecurityToken ekey = null;
+			SecurityKeyIdentifierClause ekeyClause = null;
 			ReferenceList encRefList = null;
 			Signature sig = null;
 			EncryptedData sigenc = null;
@@ -338,8 +338,8 @@ if (!ShouldOutputEncryptedKey)
 			bool includeSigToken = ShouldIncludeToken (
 				Security.InitiatorParameters.InclusionMode, false);
 
-			SecurityKeyIdentifierClause encClause =
-				CounterParameters.CallCreateKeyIdentifierClause (encToken, !ShouldOutputEncryptedKey ? SecurityTokenReferenceStyle.Internal : includeEncToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
+			SecurityKeyIdentifierClause encClause = ShouldOutputEncryptedKey ?
+				CounterParameters.CallCreateKeyIdentifierClause (encToken, !ShouldOutputEncryptedKey ? SecurityTokenReferenceStyle.Internal : includeEncToken ? Parameters.ReferenceStyle : SecurityTokenReferenceStyle.External) : null;
 
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
@@ -376,17 +376,17 @@ if (!ShouldOutputEncryptedKey)
 					suite.DefaultAsymmetricKeyWrapAlgorithm :
 					suite.DefaultSymmetricKeyWrapAlgorithm,
 				encToken,
-				new SecurityKeyIdentifier (encClause));
+				encClause != null ? new SecurityKeyIdentifier (encClause) : null);
 
 			if (derivedKey != null)
 				derivedKey.SecurityTokenReference =
 					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
+			// FIXME: use specified hash algorithm in the SecurityAlgorithmSuite.
 			HMAC sha1 = HMACSHA1.Create ();
 			sha1.Initialize ();
 			sha1.Key = pkey.Key;
-			SecurityKeyIdentifierClause ekeyClause =
-				ShouldOutputEncryptedKey ? (SecurityKeyIdentifierClause)
+			ekeyClause = ShouldOutputEncryptedKey ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
 				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (ekey.GetWrappedKey ()));
 
@@ -427,13 +427,12 @@ if (!ShouldOutputEncryptedKey)
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
 				}
 				else {
+					signToken = security.SigningToken;
 					SecurityKeyIdentifierClause signClause =
 						CounterParameters.CallCreateKeyIdentifierClause (signToken, includeSigToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
 					sxml.SigningKey = signKey.GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, true);
 					sxml.ComputeSignature ();
-//					SecurityKeyIdentifierClause skeyClause =
-//						new LocalIdKeyIdentifierClause (signToken.Id, signToken.GetType ());
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (signClause, serializer, doc);
 				}
 
@@ -450,7 +449,7 @@ if (!ShouldOutputEncryptedKey)
 				//else
 				//	encRefList = refList;
 
-				EncryptedData edata = Encrypt (body, pkey, ekeyId, refList, encClause, exml, doc);
+				EncryptedData edata = Encrypt (body, pkey, ekeyId, refList, ekeyClause, exml, doc);
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature

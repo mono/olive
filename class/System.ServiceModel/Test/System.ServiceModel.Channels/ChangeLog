@@ -1,3 +1,8 @@
+2007-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityBindingElementTest.cs : adding [NotWorking]. It happened to
+	  raise an expected type of exception at different (and wrong) stage.
+
 2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AsymmetricSecurityBindingElementTest.cs : added notworking

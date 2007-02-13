@@ -74,8 +74,6 @@ namespace System.ServiceModel.Channels
 		SecurityBindingElementSupport element_support;
 
 		// only filled at prepared state.
-		SecurityToken encryption_token;
-		SecurityToken signing_token;
 		SecurityTokenAuthenticator authenticator;
 		SecurityTokenResolver auth_token_resolver;
 
@@ -123,15 +121,9 @@ namespace System.ServiceModel.Channels
 			get { return auth_token_resolver; }
 		}
 
-		public SecurityToken EncryptionToken {
-			get { return encryption_token; }
-			set { encryption_token = value; }
-		}
+		public abstract SecurityToken EncryptionToken { get; }
 
-		public SecurityToken SigningToken {
-			get { return signing_token; }
-			set { signing_token = value; }
-		}
+		public abstract SecurityToken SigningToken { get; }
 
 		#region element_support
 
@@ -191,16 +183,6 @@ namespace System.ServiceModel.Channels
 			ReleaseCore ();
 
 			authenticator = null;
-
-			IDisposable disposable = signing_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			signing_token = null;
-
-			disposable = encryption_token as IDisposable;
-			if (disposable != null)
-				disposable.Dispose ();
-			encryption_token = null;
 		}
 
 		protected abstract void ReleaseCore ();
@@ -276,6 +258,8 @@ namespace System.ServiceModel.Channels
 	{
 		ChannelFactoryBase factory;
 		EndpointAddress message_to;
+		SecurityToken encryption_token;
+		SecurityToken signing_token;
 
 		public InitiatorMessageSecurityBindingSupport (
 			SecurityBindingElementSupport elementSupport,
@@ -297,16 +281,49 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 			CreateTokenAuthenticator (r); // FIXME: is it correct??
-			EncryptionToken = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
-			r = CreateRequirement ();
-			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
-			SigningToken = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
+
+			// This check is almost extra, though it is needed
+			// to check correct signing token existence.
+			if (EncryptionToken == null)
+				throw new Exception ("INTERNAL ERROR");
+		}
+
+		public override SecurityToken EncryptionToken {
+			get {
+				if (encryption_token == null) {
+					SecurityTokenRequirement r = CreateRequirement ();
+					RecipientParameters.CallInitializeSecurityTokenRequirement (r);
+					encryption_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
+				}
+				return encryption_token;
+			}
+		}
+
+		public override SecurityToken SigningToken {
+			get {
+				if (signing_token == null) {
+					SecurityTokenRequirement r = CreateRequirement ();
+				InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
+					signing_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
+				}
+				return signing_token;
+			}
 		}
 
 		protected override void ReleaseCore ()
 		{
 			this.factory = null;
 			this.message_to = null;
+
+			IDisposable disposable = signing_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			signing_token = null;
+
+			disposable = encryption_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			encryption_token = null;
 		}
 
 		public override SecurityTokenRequirement CreateRequirement ()
@@ -321,6 +338,8 @@ namespace System.ServiceModel.Channels
 	class RecipientMessageSecurityBindingSupport : MessageSecurityBindingSupport
 	{
 		ChannelListenerBase listener;
+		SecurityToken encryption_token;
+		SecurityToken signing_token;
 
 		public RecipientMessageSecurityBindingSupport (
 			SecurityBindingElementSupport elementSupport,
@@ -341,16 +360,47 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
 			CreateTokenAuthenticator (r);
-			SigningToken = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
 
-			r = CreateRequirement ();
-			InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
-			EncryptionToken = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
+			// This check is almost extra, though it is needed
+			// to check correct signing token existence.
+			if (EncryptionToken == null)
+				throw new Exception ("INTERNAL ERROR");
+		}
+
+		public override SecurityToken EncryptionToken {
+			get {
+				if (encryption_token == null) {
+					SecurityTokenRequirement r = CreateRequirement ();
+					encryption_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
+				}
+				return encryption_token;
+			}
+		}
+
+		public override SecurityToken SigningToken {
+			get {
+				if (signing_token == null) {
+					SecurityTokenRequirement r = CreateRequirement ();
+				RecipientParameters.CallInitializeSecurityTokenRequirement (r);
+					signing_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
+				}
+				return signing_token;
+			}
 		}
 
 		protected override void ReleaseCore ()
 		{
 			this.listener = null;
+
+			IDisposable disposable = signing_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			signing_token = null;
+
+			disposable = encryption_token as IDisposable;
+			if (disposable != null)
+				disposable.Dispose ();
+			encryption_token = null;
 		}
 
 		public override SecurityTokenRequirement CreateRequirement ()

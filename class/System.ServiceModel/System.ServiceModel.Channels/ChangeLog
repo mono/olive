@@ -1,3 +1,11 @@
+2007-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityBindingSupport.cs : SigningToken and EncryptionToken
+	  should not be always prepared at channel Open(). It also caused
+	  that extra token requirements.
+	* SecureMessageGenerator.cs : use correct key clause for encryption.
+	* SecureMessageDecryptor.cs : reduce extra key acquisition.
+
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs : added CreateTokenAuthenticator()

@@ -457,6 +457,7 @@ namespace MonoTests.System.ServiceModel.Channels
 
 		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
+		[Category ("NotWorking")]
 		public void NonEndorsibleParameterInEndorsingSupport ()
 		{
 			SymmetricSecurityBindingElement be =

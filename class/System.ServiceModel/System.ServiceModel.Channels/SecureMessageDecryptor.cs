@@ -232,12 +232,16 @@ namespace System.ServiceModel.Channels
 
 		void ExtractSecurity (XmlElement secElem)
 		{
-			SecurityToken token = security.SigningToken;
+			SecurityToken token = null;
+			SecurityKeyIdentifierClause clause = null;
+			SecurityKey securityKey = null;
+			if (ActiveKey == null || security.DefaultSignatureAlgorithm != SignedXml.XmlDsigHMACSHA1Url) {
+				token = security.SigningToken;
 
-			// FIXME: I doubt this is correct.
-			SecurityKeyIdentifierClause clause =
-				security.InitiatorParameters.CallCreateKeyIdentifierClause (token, Parameters.ReferenceStyle);
-			SecurityKey securityKey = token.ResolveKeyIdentifierClause (clause);
+				// FIXME: I doubt this is correct.
+				clause = security.InitiatorParameters.CallCreateKeyIdentifierClause (token, Parameters.ReferenceStyle);
+				securityKey = token.ResolveKeyIdentifierClause (clause);
+			}
 
 			// decrypt the key with service certificate privkey
 			EncryptedXml encXml = new EncryptedXml (doc);
@@ -256,8 +260,8 @@ namespace System.ServiceModel.Channels
 			if (keyElem != null) {
 				encryptedKey.LoadXml (keyElem);
 				decryptedKey = securityKey.DecryptKey (
-				encryptedKey.EncryptionMethod.KeyAlgorithm,
-				encryptedKey.CipherData.CipherValue);
+					encryptedKey.EncryptionMethod.KeyAlgorithm,
+					encryptedKey.CipherData.CipherValue);
 			}
 			map [String.Empty] = aes.Key = decryptedKey;
 
@@ -471,7 +475,10 @@ doc.PreserveWhitespace = true;
 #else
 				// FIXME: this is kind of hack. Probably it should not be parsed as EncryptedKeyIdentifierClause
 				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
-				if (eskic != null)
+				HMAC sha1 = HMACSHA1.Create ();
+				sha1.Initialize ();
+				sha1.Key = ActiveKey;
+				if (eskic != null && eskic.Matches (sha1.ComputeHash (ActiveKey)))
 					return ActiveKey;
 
 				SecurityKey skey = null;
