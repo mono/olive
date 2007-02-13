@@ -156,7 +156,7 @@ namespace System.ServiceModel.Security
 			if (isInitiator) {
 				cert = credentials.ClientCertificate.Certificate;
 				if (cert == null)
-					throw new InvalidOperationException ("Client certificate for MutualCertificateDuplex is not provided in ServiceCredentials.");
+					throw new InvalidOperationException ("Client certificate is not provided in ServiceCredentials.");
 				if (cert.PrivateKey == null)
 					throw new ArgumentException ("Client certificate for MutualCertificateDuplex does not have a private key which is required for key exchange.");
 			} else {
