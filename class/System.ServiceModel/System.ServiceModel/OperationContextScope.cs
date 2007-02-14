@@ -3,7 +3,7 @@
 //
 // Author: Atsushi Enomoto (atsushi@ximian.com)
 //
-// Copyright (C) 2005 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2005,2007 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,22 +30,24 @@ using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
-	[MonoTODO]
 	public sealed class OperationContextScope : IDisposable
 	{
+		OperationContext previous;
+
 		public OperationContextScope (IContextChannel channel)
+			: this (new OperationContext (channel))
 		{
-			throw new NotImplementedException ();
 		}
 
 		public OperationContextScope (OperationContext context)
 		{
-			throw new NotImplementedException ();
+			previous = OperationContext.Current;
+			OperationContext.Current = context;
 		}
 
 		public void Dispose ()
 		{
-			throw new NotImplementedException ();
+			OperationContext.Current = previous;
 		}
 	}
 }

@@ -3,7 +3,7 @@
 //
 // Author: Atsushi Enomoto (atsushi@ximian.com)
 //
-// Copyright (C) 2005 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2005,2007 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,29 +30,30 @@ using System.Collections.ObjectModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
+using System.Threading;
 
 namespace System.ServiceModel
 {
 	public sealed class OperationContext : IExtensibleObject<OperationContext>
 	{
+		// generated guid (no special meaning)
+		const string operation_context_name = "c15795e2-bb44-4cfb-a89c-8529feb170cb";
+
 		public static OperationContext Current {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return Thread.GetData (Thread.GetNamedDataSlot (operation_context_name)) as OperationContext; }
+			set { Thread.SetData (Thread.GetNamedDataSlot (operation_context_name), value); }
 		}
 
-		ServiceHostBase host;
 		EndpointDispatcher dispatcher;
 		IContextChannel channel;
 		RequestContext request_ctx;
+		ExtensionCollection<OperationContext> extensions;
 
 		public OperationContext (IContextChannel channel)
 		{
+			if (channel == null)
+				throw new ArgumentNullException ("channel");
 			this.channel = channel;
-		}
-
-		internal OperationContext (ServiceHostBase host)
-		{
-			this.host = host;
 		}
 
 		public event EventHandler OperationCompleted;
@@ -66,36 +67,63 @@ namespace System.ServiceModel
 			set { dispatcher = value; }
 		}
 
-		[MonoTODO]
 		public IExtensionCollection<OperationContext> Extensions {
-			get { throw new NotImplementedException (); }
+			get {
+				if (extensions == null)
+					extensions = new ExtensionCollection<OperationContext> (this);
+				return extensions;
+			}
 		}
 
 		public bool HasSupportingTokens {
-			get { return SupportingTokens.Count > 0; }
+			get { return SupportingTokens != null ? SupportingTokens.Count > 0 : false; }
 		}
 
 		public ServiceHostBase Host {
-			get { return host; }
+			get { return dispatcher != null ? dispatcher.ChannelDispatcher.Host : null; }
 		}
 
-		[MonoTODO]
 		public MessageHeaders IncomingMessageHeaders {
-			get { throw new NotImplementedException (); }
+			get { return request_ctx != null ? request_ctx.RequestMessage.Headers : null; }
 		}
 
-		[MonoTODO]
 		public MessageProperties IncomingMessageProperties {
-			get { throw new NotImplementedException (); }
+			get { return request_ctx != null ? request_ctx.RequestMessage.Properties : null; }
 		}
 
-		[MonoTODO]
 		public MessageVersion IncomingMessageVersion {
-			get { throw new NotImplementedException (); }
+			get { return request_ctx != null ? request_ctx.RequestMessage.Version : null; }
 		}
 
 		[MonoTODO]
 		public InstanceContext InstanceContext {
+			get {
+				if (EndpointDispatcher == null)
+					return null;
+				IInstanceContextProvider p = EndpointDispatcher.DispatchRuntime.InstanceContextProvider;
+				InstanceContext i = p.GetExistingInstanceContext (request_ctx.RequestMessage, channel);
+				// FIXME: I guess GetExistingInstanceContext()
+				// subsequently creates a new InstanceContext,
+				// but it is documented as possible to return
+				// null, while InitializeInstanceContext() is
+				// documented as subsequently invoked when there
+				// is no existing instance.
+				if (i == null) {
+					// FIXME: consider ServiceThrottle.
+					// FIXME: is there no way to pass service instance?
+					i = new InstanceContext (Host);
+					p.InitializeInstanceContext (i, request_ctx.RequestMessage, channel);
+
+					// There is no public way to set
+					// instance to the provider...
+					throw new NotImplementedException ();
+				}
+				return i;
+			}
+		}
+
+		[MonoTODO]
+		public bool IsUserContext {
 			get { throw new NotImplementedException (); }
 		}
 
@@ -115,7 +143,7 @@ namespace System.ServiceModel
 		}
 
 		public ServiceSecurityContext ServiceSecurityContext {
-			get { return IncomingMessageProperties.Security.ServiceSecurityContext; }
+			get { return IncomingMessageProperties != null ? IncomingMessageProperties.Security.ServiceSecurityContext : null; }
 		}
 
 		[MonoTODO]
@@ -124,13 +152,21 @@ namespace System.ServiceModel
 		}
 
 		public ICollection<SupportingTokenSpecification> SupportingTokens {
-			get { return IncomingMessageProperties.Security.IncomingSupportingTokens; }
+			get { return IncomingMessageProperties != null ? IncomingMessageProperties.Security.IncomingSupportingTokens : null; }
 		}
 
-		[MonoTODO]
 		public T GetCallbackChannel<T> ()
 		{
-			throw new NotImplementedException ();
+			if (!(channel is IDuplexContextChannel))
+				return default (T);
+			IDuplexContextChannel duplex = (IDuplexContextChannel) channel;
+			foreach (IChannel ch in duplex.CallbackInstance.IncomingChannels)
+				if (typeof (T).IsAssignableFrom (ch.GetType ()))
+					return (T) (object) ch;
+			foreach (IChannel ch in duplex.CallbackInstance.OutgoingChannels)
+				if (typeof (T).IsAssignableFrom (ch.GetType ()))
+					return (T) (object) ch;
+			return default (T);
 		}
 
 		[MonoTODO]

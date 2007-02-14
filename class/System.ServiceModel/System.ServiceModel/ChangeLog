@@ -1,3 +1,10 @@
+2007-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* OperationContext.cs, OperationContextScope.cs : implemented some
+	  members and fixed some misimplementations. (They cannot be in use
+	  until I create IServiceChannel implementation, like 
+	  ClientRuntimeChannel but for services.)
+
 2007-02-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceHostBase.cs : so, we didn't add ChannelProtectionRequirements
