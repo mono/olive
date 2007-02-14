@@ -177,7 +177,23 @@ namespace System.ServiceModel.Security
 		[MonoTODO]
 		protected override bool CanReadKeyIdentifierClauseCore (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			reader.MoveToContent ();
+			switch (reader.NamespaceURI) {
+			case EncryptedXml.XmlEncNamespaceUrl:
+				switch (reader.LocalName) {
+				case "EncryptedKey":
+					return true;
+				}
+				break;
+			case Constants.WssNamespace:
+				switch (reader.LocalName) {
+				case "SecurityTokenReference":
+					return true;
+				}
+				break;
+			}
+
+			return false;
 		}
 
 		[MonoTODO]
