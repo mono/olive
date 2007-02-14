@@ -1,5 +1,10 @@
 2007-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceRuntimeChannel.cs-tmp, ServiceRuntimeChannel.cs :
+	  renamed former to latter.
+
+2007-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* OperationContext.cs, OperationContextScope.cs : implemented some
 	  members and fixed some misimplementations. (They cannot be in use
 	  until I create IServiceChannel implementation, like 
