@@ -214,10 +214,10 @@ namespace System.ServiceModel.Dispatcher
 
 		// Utility methods used by ChannelDispatcher.
 
-		internal Message ProcessRequest (Message req, OperationContext context)
+		internal Message ProcessRequest (Message req)
 		{
 			try {
-				return DoProcessRequest (req, context);
+				return DoProcessRequest (req);
 			} catch (Exception ex) {
 Console.WriteLine (ex);
 				// FIXME: set correct name
@@ -236,7 +236,7 @@ Console.WriteLine (ex);
 			}
 		}
 
-		Message DoProcessRequest (Message req, OperationContext context)
+		Message DoProcessRequest (Message req)
 		{
 			object instance = null;
 			if (parent.InstanceContextProvider != null) {
@@ -247,7 +247,7 @@ Console.WriteLine (ex);
 				instance = ictx.GetServiceInstance ();
 			} else {
 				instance = parent.InstanceProvider != null ?
-					parent.InstanceProvider.GetInstance (context.InstanceContext, req) :
+					parent.InstanceProvider.GetInstance (OperationContext.Current.InstanceContext, req) :
 					// FIXME: this is hack to make simple things work.
 					Activator.CreateInstance (Parent.ChannelDispatcher.Host.Description.ServiceType);
 			}
@@ -279,7 +279,7 @@ Console.WriteLine (ex);
 			for (int i = 0; i < ctx_initialization_results.Length; i++)
 				// FIXME: get IClientChannel from somewhere.
 				ctx_initialization_results [i] =
-					CallContextInitializers [i].BeforeInvoke (context.InstanceContext, null, req);
+					CallContextInitializers [i].BeforeInvoke (OperationContext.Current.InstanceContext, null, req);
 
 			if (Invoker != null)
 				result = Invoker.Invoke (instance, inputs, out outputs);
@@ -314,11 +314,10 @@ Console.WriteLine (ex);
 				String.Format ("action '{0}' is not supported in this service contract.", req.Headers.Action), String.Empty);
 		}
 
-		internal void ProcessInput (
-			Message req, OperationContext context)
+		internal void ProcessInput (Message req)
 		{
 			object instance = parent.InstanceProvider != null ?
-				parent.InstanceProvider.GetInstance (context.InstanceContext, req) : null;
+				parent.InstanceProvider.GetInstance (OperationContext.Current.InstanceContext, req) : null;
 
 			object [] inputs;
 			if (DeserializeRequest) {

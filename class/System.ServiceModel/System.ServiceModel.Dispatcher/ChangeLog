@@ -1,5 +1,11 @@
 2006-12-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ChannelDispatcher.cs, DispatchRuntime.cs, DispatchOperation.cs :
+	  Support OperationContext and OperationContextScope with
+	  ServiceRuntimeChannel as its .ctor() input.
+
+2006-12-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DispatchRuntime.cs : raise an error when the DispatchOperation
 	  returned null Message.
 

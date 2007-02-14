@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -34,14 +34,16 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
-	internal class ServiceRuntimeChannel<TContract>
-		: CommunicationObject, IServiceChannel
+	internal class ServiceRuntimeChannel : CommunicationObject, IServiceChannel
 	{
 		ServiceEndpoint endpoint;
+		IExtensionCollection<IContextChannel> extensions;
+		IChannel channel;
 
-		public ServiceRuntimeChannel (ServiceEndpoint endpoint)
+		public ServiceRuntimeChannel (ServiceEndpoint endpoint, IChannel channel)
 		{
 			this.endpoint = endpoint;
+			this.channel = channel;
 		}
 
 		#region IServiceChannel
@@ -60,14 +62,22 @@ namespace System.ServiceModel
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public IInputSession InputSession {
-			get { throw new NotImplementedException (); }
+			get {
+				if (channel is IInputSessionChannel)
+					return ((IInputSessionChannel) channel).Session;
+				return null;
+			}
 		}
 
-		[MonoTODO]
 		public EndpointAddress LocalAddress {
-			get { throw new NotImplementedException (); }
+			get {
+				if (channel is IReplyChannel)
+					return ((IReplyChannel) channel).LocalAddress;
+				if (channel is IInputChannel)
+					return ((IInputChannel) channel).LocalAddress;
+				return null;
+			}
 		}
 
 		[MonoTODO]
@@ -76,87 +86,89 @@ namespace System.ServiceModel
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public IOutputSession OutputSession {
-			get { throw new NotImplementedException (); }
+			get {
+				if (channel is IOutputSessionChannel)
+					return ((IOutputSessionChannel) channel).Session;
+				return null;
+			}
 		}
 
-		[MonoTODO]
 		public EndpointAddress RemoteAddress {
-			get { throw new NotImplementedException (); }
+			get {
+				if (channel is IRequestChannel)
+					return ((IRequestChannel) channel).RemoteAddress;
+				if (channel is IOutputChannel)
+					return ((IOutputChannel) channel).RemoteAddress;
+				return null;
+			}
 		}
 
-		[MonoTODO]
 		public string SessionId {
-			get { throw new NotImplementedException (); }
+			get { return InputSession != null ? InputSession.Id : null; }
 		}
 
 		#endregion
 
 		// CommunicationObject
-		[MonoTODO]
 		protected internal override TimeSpan DefaultOpenTimeout {
-			get { throw new NotImplementedException (); }
+			get { return endpoint.Binding.OpenTimeout; }
 		}
 
-		[MonoTODO]
 		protected internal override TimeSpan DefaultCloseTimeout {
-			get { throw new NotImplementedException (); }
+			get { return endpoint.Binding.CloseTimeout; }
 		}
 
-		[MonoTODO]
 		protected override void OnAbort ()
 		{
-			throw new NotImplementedException ();
+			channel.Abort ();
 		}
 
-		[MonoTODO]
 		protected override IAsyncResult OnBeginClose (
 			TimeSpan timeout, AsyncCallback callback, object state)
 		{
-			throw new NotImplementedException ();
+			return channel.BeginClose (timeout, callback, state);
 		}
 
-		[MonoTODO]
 		protected override void OnEndClose (IAsyncResult result)
 		{
-			throw new NotImplementedException ();
+			channel.EndClose (result);
 		}
 
-		[MonoTODO]
 		protected override void OnClose (TimeSpan timeout)
 		{
+			channel.Close (timeout);
 		}
 
-		[MonoTODO]
 		protected override IAsyncResult OnBeginOpen (
 			TimeSpan timeout, AsyncCallback callback, object state)
 		{
-			throw new NotImplementedException ();
+			return channel.BeginOpen (timeout, callback, state);
 		}
 
-		[MonoTODO]
 		protected override void OnEndOpen (IAsyncResult result)
 		{
-			throw new NotImplementedException ();
+			channel.EndOpen (result);
 		}
 
-		[MonoTODO]
 		protected override void OnOpen (TimeSpan timeout)
 		{
+			channel.Open (timeout);
 		}
 
 		// IChannel
-		[MonoTODO]
 		public T GetProperty<T> () where T : class
 		{
-			throw new NotImplementedException ();
+			return channel.GetProperty<T> ();
 		}
 
 		// IExtensibleObject<IContextChannel>
-		[MonoTODO]
 		public IExtensionCollection<IContextChannel> Extensions {
-			get { throw new NotImplementedException (); }
+			get {
+				if (extensions == null)
+					extensions = new ExtensionCollection<IContextChannel> (this);
+				return extensions;
+			}
 		}
 
 	}

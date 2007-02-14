@@ -221,20 +221,20 @@ namespace System.ServiceModel.Dispatcher
 			set { unhandled_dispatch_oper = value; }
 		}
 
-		internal void ProcessRequest (RequestContext rctx, OperationContext octx, TimeSpan sendTimeout)
+		internal void ProcessRequest (RequestContext rctx, TimeSpan sendTimeout)
 		{
 			Message req = rctx.RequestMessage;
 			DispatchOperation op = GetOperation (req);
-			Message res = op.ProcessRequest (req, octx);
+			Message res = op.ProcessRequest (req);
 			if (res == null)
 				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
 			rctx.Reply (res, sendTimeout);
 		}
 
-		internal void ProcessInput (Message msg, OperationContext octx)
+		internal void ProcessInput (Message msg)
 		{
 			DispatchOperation op = GetOperation (msg);
-			op.ProcessInput (msg, octx);
+			op.ProcessInput (msg);
 		}
 
 		DispatchOperation GetOperation (Message input)

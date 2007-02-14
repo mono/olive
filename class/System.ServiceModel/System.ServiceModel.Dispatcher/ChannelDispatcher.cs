@@ -372,24 +372,31 @@ namespace System.ServiceModel.Dispatcher
 				if (reply != null) {
 					while (loop) {
 						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout)) {
+							IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), reply);
 							RequestContext rc = reply.ReceiveRequest (owner.timeouts.ReceiveTimeout);
-							// FIXME: get InstanceContext
 							if (rc == null)
 								continue;
-
 							if (IsMessageFilteredOut (rc.RequestMessage)) {
 								rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
 								continue;
 							}
-								
-							r.ProcessRequest (rc, null,  owner.timeouts.SendTimeout);
+							using (OperationContextScope scope = new OperationContextScope (cch)) {
+								OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
+								OperationContext.Current.RequestContext = rc;
+								r.ProcessRequest (rc, owner.timeouts.SendTimeout);
+							}
 						}
 					}
 				} else if (input != null) {
-					while (loop)
-						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout))
-							// FIXME: get InstanceContext
-							r.ProcessInput (input.Receive (owner.timeouts.ReceiveTimeout), null);
+					while (loop) {
+						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout)) {
+							IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), input);
+							using (OperationContextScope scope = new OperationContextScope (cch)) {
+								OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
+								r.ProcessInput (input.Receive (owner.timeouts.ReceiveTimeout));
+							}
+						}
+					}
 				}
 			}
 

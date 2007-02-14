@@ -697,6 +697,7 @@ System.ServiceModel/ServiceContractAttribute.cs
 System.ServiceModel/ServiceHost.cs
 System.ServiceModel/ServiceHostBase.cs
 System.ServiceModel/ServiceHostingEnvironment.cs
+System.ServiceModel/ServiceRuntimeChannel.cs
 System.ServiceModel/ServiceSecurityContext.cs
 System.ServiceModel/SpnEndpointIdentity.cs
 System.ServiceModel/TcpTransportSecurity.cs
