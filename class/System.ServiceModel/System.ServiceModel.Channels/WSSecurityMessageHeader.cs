@@ -93,11 +93,6 @@ namespace System.ServiceModel.Channels
 					break;
 				case EncryptedXml.XmlEncNamespaceUrl:
 					switch (reader.LocalName) {
-					case "EncryptedKey":
-						EncryptedKey ek = new EncryptedKey ();
-						ek.LoadXml ((XmlElement) doc.ReadNode (reader));
-						ret.Contents.Add (ek);
-						continue;
 					case "EncryptedData":
 						EncryptedData ed = new EncryptedData ();
 						ed.LoadXml ((XmlElement) doc.ReadNode (reader));
@@ -130,9 +125,12 @@ namespace System.ServiceModel.Channels
 					break;
 				}
 				// SecurityTokenReference will be handled here.
-				if (!serializer.CanReadToken (reader))
+				if (serializer.CanReadKeyIdentifierClause (reader))
+					ret.Contents.Add (serializer.ReadKeyIdentifierClause (reader));
+				else if (serializer.CanReadToken (reader))
+					ret.Contents.Add (serializer.ReadToken (reader, resolver));
+				else
 					throw new XmlException (String.Format ("Unexpected element '{0}' in namespace '{1}' as a WS-Security message header content.", reader.Name, reader.NamespaceURI));
-				ret.Contents.Add (serializer.ReadToken (reader, resolver));
 			} while (true);
 			reader.ReadEndElement ();
 
