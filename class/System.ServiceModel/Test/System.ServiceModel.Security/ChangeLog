@@ -1,3 +1,8 @@
+2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : added WrappedKeySecurityToken
+	  reader test.
+
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs : added test for reading

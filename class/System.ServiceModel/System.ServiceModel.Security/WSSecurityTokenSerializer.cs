@@ -216,6 +216,12 @@ namespace System.ServiceModel.Security
 					return true;
 				}
 				break;
+			case EncryptedXml.XmlEncNamespaceUrl:
+				switch (reader.LocalName) {
+				case "EncryptedKey":
+					return true;
+				}
+				break;
 			}
 			return false;
 		}
@@ -362,9 +368,38 @@ namespace System.ServiceModel.Security
 					return ReadUserNameTokenCore (reader, tokenResolver);
 				}
 				break;
+			case EncryptedXml.XmlEncNamespaceUrl:
+				switch (reader.LocalName) {
+				case "EncryptedKey":
+					return ReadWrappedKeySecurityTokenCore (reader, tokenResolver);
+				}
+				break;
 			}
 
 			throw new NotImplementedException ();
+		}
+
+		WrappedKeySecurityToken ReadWrappedKeySecurityTokenCore (
+			XmlReader reader, SecurityTokenResolver tokenResolver)
+		{
+			if (tokenResolver == null)
+				throw new ArgumentNullException ("tokenResolver");
+			EncryptedKey ek = new EncryptedKey ();
+			ek.LoadXml (new XmlDocument ().ReadNode (reader) as XmlElement);
+			SecurityKeyIdentifier ki = new SecurityKeyIdentifier ();
+			foreach (KeyInfoClause kic in ek.KeyInfo)
+				ki.Add (ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ())));
+			SecurityToken token = tokenResolver.ResolveToken (ki);
+			string alg = ek.EncryptionMethod.KeyAlgorithm;
+			foreach (SecurityKey skey in token.SecurityKeys)
+				if (skey.IsSupportedAlgorithm (alg)) {
+					byte [] key = skey.DecryptKey (alg, ek.CipherData.CipherValue);
+					WrappedKeySecurityToken wk =
+						new WrappedKeySecurityToken (ek.Id, key, alg, token, ki);
+					wk.ReferenceList = ek.ReferenceList;
+					return wk;
+				}
+			throw new InvalidOperationException (String.Format ("Cannot resolve security key with the resolved SecurityToken specified by the key identifier in the EncryptedKey XML. The key identifier is: {0}", ki));
 		}
 
 		X509SecurityToken ReadX509TokenCore (

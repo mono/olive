@@ -62,6 +62,23 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
         <c:Nonce>BIUeTKeOhR5HeE646ZyA+w==</c:Nonce>
       </c:DerivedKeyToken>";
 
+		const string wrapped_key1 = @"<e:EncryptedKey Id='_0' xmlns:e='http://www.w3.org/2001/04/xmlenc#'>
+  <e:EncryptionMethod Algorithm='http://www.w3.org/2001/04/xmlenc#rsa-oaep-mgf1p'>
+    <DigestMethod Algorithm='http://www.w3.org/2000/09/xmldsig#sha1' xmlns='http://www.w3.org/2000/09/xmldsig#'></DigestMethod>
+  </e:EncryptionMethod>
+  <KeyInfo xmlns='http://www.w3.org/2000/09/xmldsig#'>
+    <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+<o:KeyIdentifier ValueType='http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1'>GQ3YHlGQhDF1bvMixHliX4uLjlY=</o:KeyIdentifier>
+    </o:SecurityTokenReference>
+  </KeyInfo>
+  <e:CipherData>
+    <e:CipherValue>RLRUq81oJNSKPZz4ToCmin7ymCdMpCJiiRx5c1RGZuILiLcU3zCZI2bN9UNgfTHnE4arcJzjwSOeuzFSn948Lr0w6kUaZQjJVzLozu2hBhhb8Kps4ekLWmrsca2c2VmjT9kKEihfCX4s1Pfv9aJyVpT3EGwH7vd9fr9k5G2RtKY=</e:CipherValue>
+  </e:CipherData>
+  <e:ReferenceList>
+    <e:DataReference URI='#_2'></e:DataReference>
+  </e:ReferenceList>
+</e:EncryptedKey>";
+
 		XmlWriterSettings GetWriterSettings ()
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();
@@ -623,6 +640,35 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
 				SecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert, "urn:unique-id:securitycontext:1")));
 				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
+			}
+		}
+
+		[Test]
+		public void ReadWrappedKeySecurityToken ()
+		{
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (wrapped_key1))) {
+				SecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert)));
+				Assert.IsTrue (token is WrappedKeySecurityToken, "#1");
+				Assert.AreEqual (1, token.SecurityKeys.Count, "#2");
+				SymmetricSecurityKey sk = token.SecurityKeys [0] as SymmetricSecurityKey;
+				Assert.IsNotNull (sk, "#3");
+			}
+		}
+
+		[Test]
+		// It raises strange XmlException that wraps ArgumentNullException. Too silly to follow.
+		public void ReadWrappedKeySecurityTokenNullResolver ()
+		{
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (wrapped_key1))) {
+				try {
+					SecurityToken token = serializer.ReadToken (xr, null);
+					Assert.Fail ("Should fail due to the lack of resolver");
+				} catch {
+				}
 			}
 		}
 
