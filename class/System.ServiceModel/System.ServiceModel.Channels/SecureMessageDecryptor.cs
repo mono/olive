@@ -120,7 +120,8 @@ namespace System.ServiceModel.Channels
 			new SecurityMessageProperty ();
 		WSSecurityMessageHeader wss_header = null;
 		List<MessageHeaderInfo> headers = new List<MessageHeaderInfo> ();
-		SecurityTokenResolver in_band_resolver;
+		SecurityTokenResolver token_resolver;
+		List<SecurityToken> tokens;
 
 		protected SecureMessageDecryptor (
 			Message source, MessageSecurityBindingSupport security)
@@ -148,6 +149,10 @@ namespace System.ServiceModel.Channels
 		public abstract SecurityTokenParameters Parameters { get; }
 		public abstract SecurityTokenParameters CounterParameters { get; }
 		public abstract byte [] ActiveKey { get; }
+
+		public SecurityTokenResolver TokenResolver {
+			get { return token_resolver; }
+		}
 
 		public Message DecryptMessage ()
 		{
@@ -192,8 +197,21 @@ namespace System.ServiceModel.Channels
 		{
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
-			SecurityTokenResolver resolver =
-				security.OutOfBandTokenResolver;
+
+			tokens = new List<SecurityToken> ();
+			token_resolver = SecurityTokenResolver.CreateDefaultSecurityTokenResolver (
+				new ReadOnlyCollection <SecurityToken> (tokens),
+				true);
+			token_resolver = new UnionSecurityTokenResolver (token_resolver, security.OutOfBandTokenResolver);
+
+			// Add relevant protection token and supporting tokens.
+			tokens.Add (security.EncryptionToken);
+			// FIXME: this is just a workaround for symmetric binding to not require extra client certificate.
+			if (security.Element is AsymmetricSecurityBindingElement)
+				tokens.Add (security.SigningToken);
+			if (sec_prop != null && sec_prop.ProtectionToken != null)
+				tokens.Add (sec_prop.ProtectionToken.SecurityToken);
+			// FIXME: handle supporting tokens
 
 			for (int i = 0; i < srcmsg.Headers.Count; i++) {
 				MessageHeaderInfo header = srcmsg.Headers [i];
@@ -203,7 +221,7 @@ namespace System.ServiceModel.Channels
 				    header.Name == "Security") {
 					wss_header = WSSecurityMessageHeader.Read (
 						srcmsg.Headers.GetReaderAtHeader (i),
-						serializer, resolver);
+						serializer, TokenResolver);
 					headers.Add (wss_header);
 				}
 				else
@@ -212,22 +230,9 @@ namespace System.ServiceModel.Channels
 			if (wss_header == null)
 				throw new InvalidOperationException ("In this service contract, a WS-Security header is required in the Message, but was not found.");
 
-			List<SecurityToken> tokens = new List<SecurityToken> ();
-			// Add relevant protection token and supporting tokens.
-			// FIXME: it is totally illogical, just a workaround for initiator's decryption for mono-mono communication. So, it is simply wrong.
-			if (Parameters == security.InitiatorParameters)
-				tokens.Add (security.EncryptionToken);
-			else if (sec_prop != null && sec_prop.ProtectionToken != null)
-				tokens.Add (sec_prop.ProtectionToken.SecurityToken);
-			// FIXME: handle supporting tokens
-
 			foreach (object obj in wss_header.Contents)
 				if (obj is SecurityToken)
 					tokens.Add ((SecurityToken) obj);
-
-			in_band_resolver = SecurityTokenResolver.CreateDefaultSecurityTokenResolver (
-				new ReadOnlyCollection <SecurityToken> (tokens),
-				true);
 		}
 
 		void ExtractSecurity (XmlElement secElem)
@@ -251,27 +256,28 @@ namespace System.ServiceModel.Channels
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
 			XmlElement keyElem = secElem.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
-			EncryptedKey encryptedKey = new EncryptedKey ();
 			byte [] decryptedKey = ActiveKey; // default
 			Dictionary<string,byte[]> map = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
 			aes.Mode = CipherMode.CBC;
-			if (keyElem != null) {
-				encryptedKey.LoadXml (keyElem);
-				decryptedKey = securityKey.DecryptKey (
-					encryptedKey.EncryptionMethod.KeyAlgorithm,
-					encryptedKey.CipherData.CipherValue);
+
+			WrappedKeySecurityToken wk = wss_header.Find<WrappedKeySecurityToken> ();
+			if (wk != null) {
+				securityKey = wk.SecurityKeys [0];
+				SymmetricSecurityKey sym = securityKey as SymmetricSecurityKey;
+				decryptedKey = sym.GetSymmetricKey ();
 			}
+
 			map [String.Empty] = aes.Key = decryptedKey;
 
-			if (keyElem != null) {
+			if (wk != null) {
 				// create derived keys
 				// FIXME: an alternative approach is to make use
 				// of EncryptedXml.AddKeyNameMapping().
 				ResolveDerivedKeys (secElem, decryptedKey, map);
-				if (encryptedKey.Id != null)
-					map [encryptedKey.Id] = decryptedKey;
+				if (wk.Id != null)
+					map [wk.Id] = decryptedKey;
 			}
 
 			// decrypt the body with the decrypted key
@@ -279,8 +285,9 @@ namespace System.ServiceModel.Channels
 			foreach (XmlElement rlist in secElem.SelectNodes ("e:ReferenceList", nsmgr))
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					references.Add (StripUri (encref.GetAttribute ("URI")));
-			foreach (EncryptedReference er in encryptedKey.ReferenceList)
-				references.Add (StripUri (er.Uri));
+			if (wk != null)
+				foreach (EncryptedReference er in wk.ReferenceList)
+					references.Add (StripUri (er.Uri));
 
 			Collection<XmlElement> list = new Collection<XmlElement> ();
 			foreach (string uri in references) {
@@ -330,11 +337,7 @@ doc.PreserveWhitespace = true;
 			else {
 				// my guess is that this could also apply to symmetric binding case i.e. key resolution could be done as WrappedKeySecurityToken resolution.
 				SecurityKey signKey;
-				SecurityTokenResolver outband = security.OutOfBandTokenResolver;
-				SecurityToken signToken;
-				if (!in_band_resolver.TryResolveToken (sigClause, out signToken) &&
-				    (outband == null || !outband.TryResolveToken (sigClause, out signToken)))
-					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", signKey));
+				SecurityToken signToken = TokenResolver.ResolveToken (sigClause);
 				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
 				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
 				confirmed = sxml.CheckSignature (sigalg);
@@ -452,7 +455,6 @@ doc.PreserveWhitespace = true;
 		{
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
-			SecurityTokenResolver outband = security.OutOfBandTokenResolver;
 
 			if (ed2.KeyInfo == null)
 				return null;
@@ -475,15 +477,11 @@ doc.PreserveWhitespace = true;
 #else
 				// FIXME: this is kind of hack. Probably it should not be parsed as EncryptedKeyIdentifierClause
 				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
-				HMAC sha1 = HMACSHA1.Create ();
-				sha1.Initialize ();
-				sha1.Key = ActiveKey;
-				if (eskic != null && eskic.Matches (sha1.ComputeHash (ActiveKey)))
+				if (eskic != null)
 					return ActiveKey;
 
 				SecurityKey skey = null;
-				if (!in_band_resolver.TryResolveSecurityKey (skic, out skey) &&
-				    (outband == null || !outband.TryResolveSecurityKey (skic, out skey)))
+				if (!TokenResolver.TryResolveSecurityKey (skic, out skey))
 					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", skic));
 				SymmetricSecurityKey ssk = skey as SymmetricSecurityKey;
 				if (ssk != null)

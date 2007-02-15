@@ -598,6 +598,7 @@ System.ServiceModel.Security/SecurityVersion.cs
 System.ServiceModel.Security/ServiceCredentialsSecurityTokenManager.cs
 System.ServiceModel.Security/SspiSecurityTokenProvider.cs
 System.ServiceModel.Security/SupportingTokenSpecification.cs
+System.ServiceModel.Security/UnionSecurityTokenResolver.cs
 System.ServiceModel.Security/UserNamePasswordClientCredential.cs
 System.ServiceModel.Security/UserNamePasswordServiceCredential.cs
 System.ServiceModel.Security/WSSecurityTokenSerializer.cs

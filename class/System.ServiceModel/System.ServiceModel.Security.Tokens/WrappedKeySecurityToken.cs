@@ -70,7 +70,7 @@ namespace System.ServiceModel.Security.Tokens
 			foreach (SecurityKey sk in wrappingToken.SecurityKeys) {
 				if (sk.IsSupportedAlgorithm (wrappingAlgorithm)) {
 					key = sk.EncryptKey (wrappingAlgorithm, keyToWrap);
-					l.Add (new InMemorySymmetricSecurityKey (key));
+					l.Add (new InMemorySymmetricSecurityKey (keyToWrap));
 					break;
 				}
 			}

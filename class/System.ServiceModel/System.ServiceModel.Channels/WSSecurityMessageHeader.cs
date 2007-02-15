@@ -125,10 +125,13 @@ namespace System.ServiceModel.Channels
 					break;
 				}
 				// SecurityTokenReference will be handled here.
-				if (serializer.CanReadKeyIdentifierClause (reader))
-					ret.Contents.Add (serializer.ReadKeyIdentifierClause (reader));
-				else if (serializer.CanReadToken (reader))
+				// This order (Token->KeyIdentifierClause) is
+				// important because WrappedKey could be read
+				// in both context (but must be a token here).
+				if (serializer.CanReadToken (reader))
 					ret.Contents.Add (serializer.ReadToken (reader, resolver));
+				else if (serializer.CanReadKeyIdentifierClause (reader))
+					ret.Contents.Add (serializer.ReadKeyIdentifierClause (reader));
 				else
 					throw new XmlException (String.Format ("Unexpected element '{0}' in namespace '{1}' as a WS-Security message header content.", reader.Name, reader.NamespaceURI));
 			} while (true);
@@ -256,6 +259,14 @@ namespace System.ServiceModel.Channels
 
 		public override string Namespace {
 			get { return Constants.WssNamespace; }
+		}
+
+		public T Find<T> ()
+		{
+			foreach (object o in Contents)
+				if (typeof (T).IsAssignableFrom (o.GetType ()))
+					return (T) o;
+			return default (T);
 		}
 
 		protected override void OnWriteStartHeader (XmlDictionaryWriter writer, MessageVersion version)

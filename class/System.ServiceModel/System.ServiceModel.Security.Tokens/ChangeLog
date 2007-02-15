@@ -1,3 +1,8 @@
+2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WrappedKeySecurityToken.cs : SecurityKey should hold raw key, not
+	  wrapped one.
+
 2007-02-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WrappedKeySecurityToken.cs : it cannot resolve clauses from its

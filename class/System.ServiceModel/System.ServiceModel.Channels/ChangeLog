@@ -1,3 +1,11 @@
+2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageDecryptor.cs : Now it uses union token resolver and
+	  the resolver works with in-progress token reading in o:Security.
+	* WSSecurityMessageHeader.cs : now it does not read EncryptedKey
+	  as EncryptedKeyIdentifierClause. It is rather a SecurityToken.
+	* SecureMessageGenerator.cs : cosmetic refactoring.
+
 2007-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityMessageHeader.cs : read EncryptedKeyIdentifierClause
