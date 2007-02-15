@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005-2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,6 +28,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 using System.IdentityModel.Policy;
 
@@ -49,16 +50,19 @@ namespace System.IdentityModel.Tokens
 		List<SecurityKeyIdentifierClause> list;
 		bool is_readonly;
 
-		[MonoTODO]
 		public bool CanCreateKey {
-			get { throw new NotImplementedException (); }
+			get {
+				foreach (SecurityKeyIdentifierClause kic in this)
+					if (kic.CanCreateKey)
+						return true;
+				return false;
+			}
 		}
 
 		public int Count {
 			get { return list.Count; }
 		}
 
-		[MonoTODO]
 		public bool IsReadOnly {
 			get { return is_readonly; }
 		}
@@ -67,7 +71,6 @@ namespace System.IdentityModel.Tokens
 			get { return list [i]; }
 		}
 
-		[MonoTODO]
 		public void Add (SecurityKeyIdentifierClause item)
 		{
 			if (is_readonly)
@@ -75,17 +78,21 @@ namespace System.IdentityModel.Tokens
 			list.Add (item);
 		}
 
-		[MonoTODO]
 		public SecurityKey CreateKey ()
 		{
-			throw new NotImplementedException ();
+			foreach (SecurityKeyIdentifierClause kic in this)
+				if (kic.CanCreateKey)
+					return kic.CreateKey ();
+			throw new ArgumentException ("This key identifier cannot create a key");
 		}
 
-		[MonoTODO]
 		public TClause Find<TClause> ()
 			where TClause : SecurityKeyIdentifierClause
 		{
-			throw new NotImplementedException ();
+			TClause kic;
+			if (!TryFind<TClause> (out kic))
+				throw new ArgumentException (String.Format ("{0} was not found in this SecurityKeyIdentifier", typeof (TClause)));
+			return kic;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
@@ -93,29 +100,36 @@ namespace System.IdentityModel.Tokens
 			return GetEnumerator ();
 		}
 
-		[MonoTODO]
 		public IEnumerator<SecurityKeyIdentifierClause> GetEnumerator ()
 		{
 			return list.GetEnumerator ();
 		}
 
-		[MonoTODO]
 		public void MakeReadOnly ()
 		{
 			is_readonly = true;
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
+			if (Count == 0)
+				return "(no key identifier clause)";
+			StringBuilder sb = new StringBuilder ();
+			sb.AppendFormat ("Total keys: {0}, ", Count);
+			foreach (SecurityKeyIdentifierClause kic in this)
+				sb.Append ('{').Append (kic.ToString ()).Append ('}');
+			return sb.ToString ();
 		}
 
-		[MonoTODO]
 		public bool TryFind<TClause> (out TClause result)
 			where TClause : SecurityKeyIdentifierClause
 		{
-			throw new NotImplementedException ();
+			foreach (SecurityKeyIdentifierClause kic in this)
+				if (typeof (TClause).IsAssignableFrom (kic.GetType ())) {
+					result = (TClause) kic;
+					return true;
+				}
+			return false;
 		}
 	}
 }

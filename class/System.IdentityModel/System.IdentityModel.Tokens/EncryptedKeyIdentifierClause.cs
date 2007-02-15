@@ -93,6 +93,7 @@ namespace System.IdentityModel.Tokens
 			if (encryptionMethod != this.enc_method ||
 			    carriedKeyName != this.carried_key_name ||
 			    encryptedKey.Length != buf.Length)
+				return false;
 			for (int i = 0; i < buf.Length; i++)
 				if (encryptedKey [i] != buf [i])
 					return false;

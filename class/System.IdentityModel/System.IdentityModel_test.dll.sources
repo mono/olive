@@ -27,6 +27,7 @@ System.IdentityModel.Tokens/SamlConstantsTest.cs
 System.IdentityModel.Tokens/SamlEvidenceTest.cs
 System.IdentityModel.Tokens/SamlSubjectTest.cs
 System.IdentityModel.Tokens/SecurityAlgorithmsTest.cs
+System.IdentityModel.Tokens/SecurityKeyIdentifierTest.cs
 System.IdentityModel.Tokens/SecurityTokenTypesTest.cs
 System.IdentityModel.Tokens/UserNameSecurityTokenTest.cs
 System.IdentityModel.Tokens/X509AsymmetricSecurityKeyTest.cs
