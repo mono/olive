@@ -80,7 +80,7 @@ namespace System.IdentityModel.Selectors
 		{
 			X509SecurityToken xt = token as X509SecurityToken;
 			if (xt == null)
-				throw new InvalidOperationException ("Security token '{0}' cannot be validated by this security token authenticator.");
+				throw new InvalidOperationException (String.Format ("Security token '{0}' cannot be validated by this security token authenticator.", xt));
 			validator.Validate (xt.Certificate);
 			IAuthorizationPolicy policy =
 				new X509AuthorizationPolicy (xt.Certificate);
