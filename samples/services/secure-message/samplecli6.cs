@@ -56,12 +56,10 @@ public class Tset
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();
 		CustomBinding binding = new CustomBinding (new XBE (), sbe, hbe);
-		X509Certificate2 cert = new X509Certificate2 ("test.pfx", "mono");
-		X509Certificate2 cert2 = cert;//new X509Certificate2 ("test2.cer");
+		//X509Certificate2 cert = new X509Certificate2 ("test.pfx", "mono");
+		X509Certificate2 cert = new X509Certificate2 ("test.cer");//, "mono");
 		FooProxy proxy = new FooProxy (binding,
-			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert2)));
-		//proxy.ClientCredentials.ServiceCertificate.Authentication.CertificateValidationMode = X509CertificateValidationMode.None;
-		proxy.ClientCredentials.ClientCertificate.Certificate = cert;
+			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert)));
 		proxy.Endpoint.Behaviors.Add (new StdErrInspectionBehavior ());
 		proxy.Open ();
 		Console.WriteLine (proxy.Echo ("TEST FOR ECHO"));

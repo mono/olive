@@ -1,3 +1,10 @@
+2007-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs : removed extra code. Check some security properties.
+	* samplecli6.cs : use public-only key to detect possible bugs.
+	* samplesvc8.cs : now it could be nicer to return user name from
+	  supporting token.
+
 2007-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplecli8.cs, samplesvc8.cs, Makefile :

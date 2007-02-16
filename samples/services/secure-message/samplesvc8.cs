@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security.Cryptography.X509Certificates;
+using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
@@ -81,8 +82,11 @@ class Foo : IFoo
 {
 	public string Echo (string msg) 
 	{
+		string user = null;
+		foreach (SupportingTokenSpecification sts in OperationContext.Current.SupportingTokens)
+			user = ((UserNameSecurityToken) sts.SecurityToken).UserName;
 Console.WriteLine (msg);
-		return msg + msg;
+		return user;
 		//throw new NotImplementedException ();
 	}
 }

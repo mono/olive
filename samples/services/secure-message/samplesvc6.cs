@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
@@ -10,14 +12,6 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
-
-	public class GodUserNamePasswordValidator : UserNamePasswordValidator
-	{
-		public override void Validate (string userName, string password)
-		{
-			// God allows everyone.
-		}
-	}
 
 	public class AllowAllX509CertificateValidator : X509CertificateValidator
 	{
@@ -57,8 +51,6 @@ public class Test
 		ServiceCredentials cred = new ServiceCredentials ();
 		cred.ServiceCertificate.Certificate =
 			new X509Certificate2 ("test.pfx", "mono");
-		cred.ClientCertificate.Authentication.CertificateValidationMode =
-			X509CertificateValidationMode.None;
 		host.Description.Behaviors.Add (cred);
 		host.Description.Behaviors.Find<ServiceDebugBehavior> ()
 			.IncludeExceptionDetailInFaults = true;
@@ -87,6 +79,16 @@ class Foo : IFoo
 {
 	public string Echo (string msg) 
 	{
+		SecurityMessageProperty sp = OperationContext.Current.IncomingMessageProperties.Security;
+if (sp.ProtectionToken == null) throw new Exception ("whoa");
+		WrappedKeySecurityToken t = sp.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
+HMAC sha1 = new HMACSHA1 (((SymmetricSecurityKey) t.SecurityKeys [0]).GetSymmetricKey ());
+		Console.WriteLine (Convert.ToBase64String (t.GetWrappedKey ()));
+		Console.WriteLine (Convert.ToBase64String (sha1.ComputeHash (t.GetWrappedKey ())));
+		Console.WriteLine (Convert.ToBase64String (new HMACSHA1 ().ComputeHash (t.GetWrappedKey ())));
+		Console.WriteLine (Convert.ToBase64String (new HMACSHA1 ().ComputeHash (sha1.Key)));
+		//foreach (IAuthorizationPolicy p in sp.ProtectionToken.SecurityTokenPolicies)
+		//	Console.WriteLine (p);
 Console.WriteLine (msg);
 		return msg + msg;
 		//throw new NotImplementedException ();
