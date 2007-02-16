@@ -38,13 +38,15 @@ namespace System.ServiceModel.Security.Tokens
 	public class WrappedKeySecurityToken : SecurityToken
 	{
 		string id;
-		byte [] key;
+		byte [] raw_key;
+		byte [] wrapped_key;
 		string wrap_alg;
 		SecurityToken wrap_token;
 		SecurityKeyIdentifier wrap_token_ref;
 		DateTime valid_from = DateTime.Now.ToUniversalTime ();
 		ReadOnlyCollection<SecurityKey> keys;
 		ReferenceList reference_list;
+		byte [] keyhash;
 
 		public WrappedKeySecurityToken (
 			string id,
@@ -62,6 +64,7 @@ namespace System.ServiceModel.Security.Tokens
 			if (wrappingToken == null)
 				throw new ArgumentNullException ("wrappingToken");
 
+			raw_key = keyToWrap;
 			this.id = id;
 			wrap_alg = wrappingAlgorithm;
 			wrap_token = wrappingToken;
@@ -69,14 +72,18 @@ namespace System.ServiceModel.Security.Tokens
 			Collection<SecurityKey> l = new Collection<SecurityKey> ();
 			foreach (SecurityKey sk in wrappingToken.SecurityKeys) {
 				if (sk.IsSupportedAlgorithm (wrappingAlgorithm)) {
-					key = sk.EncryptKey (wrappingAlgorithm, keyToWrap);
+					wrapped_key = sk.EncryptKey (wrappingAlgorithm, keyToWrap);
 					l.Add (new InMemorySymmetricSecurityKey (keyToWrap));
 					break;
 				}
 			}
 			keys = new ReadOnlyCollection<SecurityKey> (l);
-			if (key == null)
+			if (wrapped_key == null)
 				throw new ArgumentException (String.Format ("None of the security keys in the argument token supports specified wrapping algorithm '{0}'", wrappingAlgorithm));
+		}
+
+		internal byte [] RawKey {
+			get { return raw_key; }
 		}
 
 		// FIXME: it is kind of compromised solution to output
@@ -117,7 +124,12 @@ namespace System.ServiceModel.Security.Tokens
 
 		public byte [] GetWrappedKey ()
 		{
-			return (byte []) key.Clone ();
+			return (byte []) wrapped_key.Clone ();
+		}
+
+		internal void SetWrappedKey (byte [] value)
+		{
+			wrapped_key = (byte []) value.Clone ();
 		}
 
 		[MonoTODO]
@@ -154,9 +166,13 @@ namespace System.ServiceModel.Security.Tokens
 				return true;
 
 			InternalEncryptedKeyIdentifierClause khic = keyIdentifierClause as InternalEncryptedKeyIdentifierClause;
-			HMAC sha = HMACSHA1.Create ();
-			sha.Initialize ();
-			if (khic != null && khic.Matches (sha.ComputeHash (key)))
+			// FIXME: it is likely still incorrect.
+			if (keyhash == null) {
+				HMAC sha = new HMACSHA1 ();
+				sha.Initialize ();
+				keyhash = sha.ComputeHash (wrapped_key);
+			}
+			if (khic != null && khic.Matches (keyhash))
 				return true;
 
 			return false;

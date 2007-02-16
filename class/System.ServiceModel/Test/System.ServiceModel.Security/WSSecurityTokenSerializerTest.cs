@@ -649,12 +649,47 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (wrapped_key1))) {
-				SecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert)));
-				Assert.IsTrue (token is WrappedKeySecurityToken, "#1");
+				WrappedKeySecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert))) as WrappedKeySecurityToken;
+				Assert.IsNotNull (token, "#1");
 				Assert.AreEqual (1, token.SecurityKeys.Count, "#2");
 				SymmetricSecurityKey sk = token.SecurityKeys [0] as SymmetricSecurityKey;
 				Assert.IsNotNull (sk, "#3");
+				byte [] wk = Convert.FromBase64String ("RLRUq81oJNSKPZz4ToCmin7ymCdMpCJiiRx5c1RGZuILiLcU3zCZI2bN9UNgfTHnE4arcJzjwSOeuzFSn948Lr0w6kUaZQjJVzLozu2hBhhb8Kps4ekLWmrsca2c2VmjT9kKEihfCX4s1Pfv9aJyVpT3EGwH7vd9fr9k5G2RtKY=");
+				Assert.AreEqual (wk, token.GetWrappedKey (), "#4");
 			}
+		}
+
+		[Test]
+		public void ReadWrappedKeySecurityTokenImplCheck ()
+		{
+			SecurityTokenResolver tokenResolver = GetResolver (new X509SecurityToken (cert));
+			XmlReader reader = XmlReader.Create (new StringReader (wrapped_key1));
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+
+			EncryptedKey ek = new EncryptedKey ();
+			ek.LoadXml (new XmlDocument ().ReadNode (reader) as XmlElement);
+			SecurityKeyIdentifier ki = new SecurityKeyIdentifier ();
+			foreach (KeyInfoClause kic in ek.KeyInfo)
+				ki.Add (serializer.ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ())));
+			SecurityToken token = tokenResolver.ResolveToken (ki);
+			string alg = ek.EncryptionMethod.KeyAlgorithm;
+
+			SecurityKey skey = token.SecurityKeys [0];
+			Assert.IsTrue (skey is X509AsymmetricSecurityKey, "#1");
+			Assert.IsTrue (skey.IsSupportedAlgorithm (alg), "#2");
+			Assert.AreEqual (
+				EncryptedXml.DecryptKey (ek.CipherData.CipherValue, cert.PrivateKey as RSA, true),
+				skey.DecryptKey (alg, ek.CipherData.CipherValue),
+				"#3");
+
+			byte [] key = skey.DecryptKey (alg, ek.CipherData.CipherValue);
+			WrappedKeySecurityToken wk =
+				new WrappedKeySecurityToken (ek.Id, key, alg, token, ki);
+			Assert.AreEqual (
+				EncryptedXml.DecryptKey (ek.CipherData.CipherValue, cert.PrivateKey as RSA, true),
+				skey.DecryptKey (alg, wk.GetWrappedKey ()),
+				"#4");
 		}
 
 		[Test]

@@ -45,13 +45,12 @@ namespace System.ServiceModel.Channels
 {
 	internal class WSSecurityMessageHeader : MessageHeader
 	{
-		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
+		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr)
 		{
 			WSSecurityMessageHeader ret = new WSSecurityMessageHeader (serializer);
 
 			reader.MoveToContent ();
 			reader.ReadStartElement ("Security", Constants.WssNamespace);
-			XmlDocument doc = new XmlDocument ();
 			do {
 				reader.MoveToContent ();
 				if (reader.NodeType == XmlNodeType.EndElement)
@@ -84,10 +83,10 @@ namespace System.ServiceModel.Channels
 				case SignedXml.XmlDsigNamespaceUrl:
 					switch (reader.LocalName) {
 					case "Signature":
-						Signature sig = new Signature ();
-						sig.LoadXml ((XmlElement) doc.ReadNode (reader));
-						UpdateSignature (sig, doc, serializer);
-						ret.Contents.Add (sig);
+						WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
+						sxml.Signature.LoadXml ((XmlElement) doc.ReadNode (reader));
+						UpdateSignature (sxml.Signature, doc, serializer);
+						ret.Contents.Add (sxml);
 						continue;
 					}
 					break;

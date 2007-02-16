@@ -396,6 +396,8 @@ namespace System.ServiceModel.Security
 					byte [] key = skey.DecryptKey (alg, ek.CipherData.CipherValue);
 					WrappedKeySecurityToken wk =
 						new WrappedKeySecurityToken (ek.Id, key, alg, token, ki);
+					// FIXME: This should not be required.
+					wk.SetWrappedKey (ek.CipherData.CipherValue);
 					wk.ReferenceList = ek.ReferenceList;
 					return wk;
 				}

@@ -1,3 +1,14 @@
+2007-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : it was setting security tokens into
+	  incorrect SecurityMessageProperty.
+	  Use correct WrappedKeySecurityToken for EncryptedKeySHA1.
+	  Now it uses SecurityRequestContext instead of just primary key.
+	* SecureMessageDecryptor.cs : removed extra lines. Limit workarounds
+	  to symmetric reply decryption, which is the only trouble case.
+	  Do not create another SignedXml.
+	* WSSecurityMessageHeader.cs : SignedXml processing changes above.
+
 2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageDecryptor.cs : Now it uses union token resolver and

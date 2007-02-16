@@ -64,7 +64,7 @@ namespace System.ServiceModel.Channels
 			get { return MessageDirection.Input; }
 		}
 
-		public override byte [] ActiveKey {
+		public override SecurityMessageProperty RequestSecurity {
 			get { return null; }
 		}
 
@@ -80,18 +80,18 @@ namespace System.ServiceModel.Channels
 	internal class InitiatorSecureMessageDecryptor : SecureMessageDecryptor
 	{
 		InitiatorMessageSecurityBindingSupport security;
-		byte [] active_key;
+		SecurityMessageProperty request_security;
 
 		public InitiatorSecureMessageDecryptor (
 			Message source, SecurityMessageProperty secprop, InitiatorMessageSecurityBindingSupport security)
 			: base (source, security)
 		{
 			this.security = security;
-			active_key = secprop.EncryptionKey;
+			request_security = secprop;
 		}
 
-		public override byte [] ActiveKey {
-			get { return active_key; }
+		public override SecurityMessageProperty RequestSecurity {
+			get { return request_security; }
 		}
 
 		public override MessageDirection Direction {
@@ -148,7 +148,7 @@ namespace System.ServiceModel.Channels
 		public abstract MessageDirection Direction { get; }
 		public abstract SecurityTokenParameters Parameters { get; }
 		public abstract SecurityTokenParameters CounterParameters { get; }
-		public abstract byte [] ActiveKey { get; }
+		public abstract SecurityMessageProperty RequestSecurity { get; }
 
 		public SecurityTokenResolver TokenResolver {
 			get { return token_resolver; }
@@ -209,8 +209,8 @@ namespace System.ServiceModel.Channels
 			// FIXME: this is just a workaround for symmetric binding to not require extra client certificate.
 			if (security.Element is AsymmetricSecurityBindingElement)
 				tokens.Add (security.SigningToken);
-			if (sec_prop != null && sec_prop.ProtectionToken != null)
-				tokens.Add (sec_prop.ProtectionToken.SecurityToken);
+			if (RequestSecurity != null && RequestSecurity.ProtectionToken != null)
+				tokens.Add (RequestSecurity.ProtectionToken.SecurityToken);
 			// FIXME: handle supporting tokens
 
 			for (int i = 0; i < srcmsg.Headers.Count; i++) {
@@ -221,7 +221,7 @@ namespace System.ServiceModel.Channels
 				    header.Name == "Security") {
 					wss_header = WSSecurityMessageHeader.Read (
 						srcmsg.Headers.GetReaderAtHeader (i),
-						serializer, TokenResolver);
+						serializer, TokenResolver, doc, nsmgr);
 					headers.Add (wss_header);
 				}
 				else
@@ -237,17 +237,6 @@ namespace System.ServiceModel.Channels
 
 		void ExtractSecurity (XmlElement secElem)
 		{
-			SecurityToken token = null;
-			SecurityKeyIdentifierClause clause = null;
-			SecurityKey securityKey = null;
-			if (ActiveKey == null || security.DefaultSignatureAlgorithm != SignedXml.XmlDsigHMACSHA1Url) {
-				token = security.SigningToken;
-
-				// FIXME: I doubt this is correct.
-				clause = security.InitiatorParameters.CallCreateKeyIdentifierClause (token, Parameters.ReferenceStyle);
-				securityKey = token.ResolveKeyIdentifierClause (clause);
-			}
-
 			// decrypt the key with service certificate privkey
 			EncryptedXml encXml = new EncryptedXml (doc);
 
@@ -255,8 +244,7 @@ namespace System.ServiceModel.Channels
 			    secElem.SelectSingleNode ("dsig:Signature", nsmgr) != null)
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
-			XmlElement keyElem = secElem.SelectSingleNode ("e:EncryptedKey", nsmgr) as XmlElement;
-			byte [] decryptedKey = ActiveKey; // default
+			byte [] decryptedKey = RequestSecurity != null ? RequestSecurity.EncryptionKey : null; // default
 			Dictionary<string,byte[]> map = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
@@ -264,8 +252,7 @@ namespace System.ServiceModel.Channels
 
 			WrappedKeySecurityToken wk = wss_header.Find<WrappedKeySecurityToken> ();
 			if (wk != null) {
-				securityKey = wk.SecurityKeys [0];
-				SymmetricSecurityKey sym = securityKey as SymmetricSecurityKey;
+				SymmetricSecurityKey sym = wk.SecurityKeys [0] as SymmetricSecurityKey;
 				decryptedKey = sym.GetSymmetricKey ();
 			}
 
@@ -316,12 +303,10 @@ doc.PreserveWhitespace = true;
 			if (sigElem == null)
 				throw new MessageSecurityException ("The the message signature is expected but not found.");
 
-			WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
-			sxml.LoadXml (sigElem);
-			SecurityTokenSerializer serializer =
-				security.TokenSerializer;
-			// FIXME: it should be put inside some proper class.
-			WSSecurityMessageHeader.UpdateSignature (sxml.Signature, doc, serializer);
+			WSSignedXml sxml = wss_header.Find<WSSignedXml> ();
+
+			bool confirmed = false;
+
 			SecurityKeyIdentifierClause sigClause = null;
 			foreach (KeyInfoClause kic in sxml.KeyInfo) {
 				SecurityTokenReferenceKeyInfo r = kic as SecurityTokenReferenceKeyInfo;
@@ -331,18 +316,34 @@ doc.PreserveWhitespace = true;
 			if (sigClause == null)
 				throw new MessageSecurityException ("SecurityTokenReference was not found in dsig:Signature KeyInfo.");
 
-			bool confirmed = false;
-			if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url)
-				confirmed = sxml.CheckSignature (new HMACSHA1 (aes.Key));
-			else {
-				// my guess is that this could also apply to symmetric binding case i.e. key resolution could be done as WrappedKeySecurityToken resolution.
-				SecurityKey signKey;
-				SecurityToken signToken = TokenResolver.ResolveToken (sigClause);
-				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
-				AsymmetricAlgorithm sigalg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
-				confirmed = sxml.CheckSignature (sigalg);
+			SecurityToken signToken;
+			SecurityKey signKey;
 
-				// FIXME: it should not apply only to asymmetric case.
+			// FIXME: (?) Since .NET does not return 
+			// EncryptedKeySHA1 hash value based on the identical
+			// EncryptedKey as it (the initiator) sent, the token
+			// resolution will always fail. So, whenever 
+			// EncryptedKeySHA1 is returned, just use the same key
+			// as it sent before. I guess this is .NET bug, though
+			// it is still mystery that why .NET could *not*
+			// resolve our EncryptedKeySHA1.
+			if (sigClause is InternalEncryptedKeyIdentifierClause &&
+			    RequestSecurity.ProtectionToken != null) {
+				signToken = RequestSecurity.ProtectionToken.SecurityToken;
+				signKey = signToken.SecurityKeys [0];
+			} else {
+				signToken = TokenResolver.ResolveToken (sigClause);
+				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
+			}
+			SymmetricSecurityKey symkey = signKey as SymmetricSecurityKey;
+			if (symkey != null) {
+				confirmed = sxml.CheckSignature (new HMACSHA1 (symkey.GetSymmetricKey ()));
+				if (wk != null)
+					// FIXME: authenticate token
+					sec_prop.ProtectionToken = new SecurityTokenSpecification (wk, null);
+			} else {
+				AsymmetricAlgorithm alg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (security.DefaultSignatureAlgorithm, false);
+				confirmed = sxml.CheckSignature (alg);
 				sec_prop.InitiatorToken = new SecurityTokenSpecification (
 					signToken,
 					security.TokenAuthenticator.ValidateToken (signToken));
@@ -459,26 +460,13 @@ doc.PreserveWhitespace = true;
 			if (ed2.KeyInfo == null)
 				return null;
 			foreach (KeyInfoClause kic in ed2.KeyInfo) {
-				KeyInfoNode n = kic as KeyInfoNode;
-				if (n == null)
-					continue; // FIXME: probably other kinds of KeyInfoClause could be used.
-				if (n.Value == null || n.Value.LocalName != "SecurityTokenReference" || n.Value.NamespaceURI != Constants.WssNamespace)
-					continue; // FIXME: probably other kinds of KeyInfoClause could be used.
+				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ()));
 
-				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (n.Value));
-#if false
-				LocalIdKeyIdentifierClause lskic = skic as LocalIdKeyIdentifierClause;
-				string keyUri = (lskic != null) ?
-					lskic.LocalId : String.Empty;
-				if (lskic != null && map.ContainsKey (keyUri))
-					return map [keyUri];
-				else
-					throw new XmlException (String.Format ("Encryption key for '{0}' was not found. URI is '{1}'", ed2.Id, keyUri));
-#else
-				// FIXME: this is kind of hack. Probably it should not be parsed as EncryptedKeyIdentifierClause
+#if true // FIXME: this is the same workaround as we have for resolving signing key, as noted above.
 				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
 				if (eskic != null)
-					return ActiveKey;
+					return RequestSecurity != null ? RequestSecurity.EncryptionKey : null;
+#endif
 
 				SecurityKey skey = null;
 				if (!TokenResolver.TryResolveSecurityKey (skic, out skey))
@@ -486,7 +474,6 @@ doc.PreserveWhitespace = true;
 				SymmetricSecurityKey ssk = skey as SymmetricSecurityKey;
 				if (ssk != null)
 					return ssk.GetSymmetricKey ();
-#endif
 			}
 			return null; // no applicable key info clause.
 		}
@@ -498,7 +485,6 @@ doc.PreserveWhitespace = true;
 			InMemorySymmetricSecurityKey skey =
 				new InMemorySymmetricSecurityKey (decryptedKey);
 
-			byte [] currentKey = decryptedKey;
 			foreach (XmlNode n in secElem.ChildNodes) {
 				XmlElement el = n as XmlElement;
 				if (el == null)

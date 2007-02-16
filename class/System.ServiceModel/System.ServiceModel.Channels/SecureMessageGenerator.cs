@@ -69,6 +69,10 @@ namespace System.ServiceModel.Channels
 			this.message_to = messageTo;
 		}
 
+		public override SecurityRequestContext RequestContext {
+			get { return null; }
+		}
+
 		public override UniqueId RelatesTo {
 			get { return null; }
 		}
@@ -128,6 +132,10 @@ namespace System.ServiceModel.Channels
 			SecurityMessageProperty secprop =
 				(SecurityMessageProperty) req_ctx.RequestMessage.Properties.Security.CreateCopy ();
 			msg.Properties.Security = secprop;
+		}
+
+		public override SecurityRequestContext RequestContext {
+			get { return req_ctx; }
 		}
 
 		public override UniqueId RelatesTo {
@@ -228,10 +236,12 @@ namespace System.ServiceModel.Channels
 		public abstract bool ShouldIncludeToken (SecurityTokenInclusionMode mode, bool isInitialized);
 
 		public bool ShouldOutputEncryptedKey {
-			get { return security.Element is AsymmetricSecurityBindingElement || secprop.EncryptionKey == null; }
+			get { return RequestContext == null || RequestContext.RequestMessage.Properties.Security.ProtectionToken == null; } //security.Element is AsymmetricSecurityBindingElement; }
 		}
 
 		public abstract UniqueId RelatesTo { get; }
+
+		public abstract SecurityRequestContext RequestContext { get; }
 
 		public Message SecureMessage ()
 		{
@@ -385,10 +395,10 @@ if (!ShouldOutputEncryptedKey)
 				derivedKey.SecurityTokenReference =
 					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
 
-			sha1.Key = pkey.Key;
-			ekeyClause = ShouldOutputEncryptedKey ? (SecurityKeyIdentifierClause)
+			WrappedKeySecurityToken reqEncKey = ShouldOutputEncryptedKey ? null : RequestContext.RequestMessage.Properties.Security.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
+			ekeyClause = reqEncKey == null ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
-				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (ekey.GetWrappedKey ()));
+				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (reqEncKey.GetWrappedKey ()));
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -422,6 +432,7 @@ if (!ShouldOutputEncryptedKey)
 				}
 				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/*", nsmgr))
 					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
+
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
 					sha1.Key = pkey.Key;
 					sxml.ComputeSignature (sha1);
@@ -479,11 +490,11 @@ if (!ShouldOutputEncryptedKey)
 			//	- TransportToken (can we support it here?)
 			//	- ServiceSecurityContext
 			if (element is AsymmetricSecurityBindingElement) {
-				secprop.InitiatorToken = new SecurityTokenSpecification (encToken, null); // FIXME: second argument
-				secprop.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
+				ret.Properties.Security.InitiatorToken = new SecurityTokenSpecification (encToken, null); // FIXME: second argument
+				ret.Properties.Security.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
 			}
 			else
-				secprop.ProtectionToken = new SecurityTokenSpecification (ekey, null);
+				ret.Properties.Security.ProtectionToken = new SecurityTokenSpecification (ekey, null);
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);

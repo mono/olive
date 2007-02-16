@@ -195,6 +195,12 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (1, token.WrappingTokenReference.Count, "#5");
 			Assert.AreEqual (1, token.SecurityKeys.Count, "#6");
 			Assert.IsTrue (token.SecurityKeys [0] is InMemorySymmetricSecurityKey, "#7");
+			Assert.AreEqual (bytes, new X509AsymmetricSecurityKey (cert).DecryptKey (token.WrappingAlgorithm, token.GetWrappedKey ()), "#8");
+			// wrapped keys cannot be compared, due to the nature of rsa-oaep.
+			// Assert.AreEqual (new X509AsymmetricSecurityKey (cert).EncryptKey (token.WrappingAlgorithm, bytes), token.GetWrappedKey (), "#9-1");
+			// Assert.AreEqual (token.GetWrappedKey (), new WrappedKeySecurityToken ("urn:gyabo",
+			//	bytes, alg, xt,
+			//	new SecurityKeyIdentifier (kic)).GetWrappedKey (), "#9");
 		}
 	}
 }
