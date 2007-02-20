@@ -266,6 +266,16 @@ namespace System.ServiceModel.Security
 		{
 			reader.ReadStartElement ();
 			reader.MoveToContent ();
+			if (reader.NamespaceURI == SignedXml.XmlDsigNamespaceUrl) {
+				KeyInfoX509Data x509 = new KeyInfoX509Data ();
+				x509.LoadXml (new XmlDocument ().ReadNode (reader) as XmlElement);
+				if (x509.IssuerSerials.Count == 0)
+					throw new XmlException ("'X509IssuerSerial' element is expected inside 'X509Data' element");
+				X509IssuerSerial s = (X509IssuerSerial) x509.IssuerSerials [0];
+				reader.MoveToContent ();
+				reader.ReadEndElement ();
+				return new X509IssuerSerialKeyIdentifierClause (s.IssuerName, s.SerialNumber);
+			}
 			if (reader.NamespaceURI != Constants.WssNamespace)
 				throw new XmlException (String.Format ("Unexpected SecurityTokenReference content: expected local name 'Reference' and namespace URI '{0}' but found local name '{1}' and namespace '{2}'.", Constants.WssNamespace, reader.LocalName, reader.NamespaceURI));
 
