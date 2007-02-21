@@ -1,3 +1,7 @@
+2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* InMemorySymmetricSecurityKey.cs : added some argument check.
+
 2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecurityKeyIdentifier.cs : implemented all.

@@ -167,6 +167,96 @@ namespace MonoTests.System.IdentityModel.Tokens
 		}
 
 		[Test]
+		[ExpectedException (typeof (InvalidOperationException))] // not ArgumentNullException?
+		public void GenerateDerivedKeyNullAlgorithm ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (null, wssc_label, nonce, key.KeySize, 0);
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))] // not ArgumentNullException?
+		public void GenerateDerivedKeyUnsupportedAlgorithm ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey ("urn:my-own-way", wssc_label, nonce, key.KeySize, 0);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void GenerateDerivedKeyNullLabel ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				null, nonce, key.KeySize, 0);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void GenerateDerivedKeyNullNonce ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				wssc_label, null, key.KeySize, 0);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
+		public void GenerateDerivedKeyNegativeLength ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				wssc_label, nonce, -32, 0);
+		}
+
+		[Test]
+		public void GenerateDerivedKeyUnusualLength ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				wssc_label, nonce, 5, 0);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentOutOfRangeException))]
+		public void GenerateDerivedKeyNegativeOffset ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				wssc_label, nonce, -32, 0);
+		}
+
+		[Test]
+		public void GenerateDerivedKeyUnusualOffset ()
+		{
+			Key key = new Key (raw);
+			byte [] nonce = new byte [256];
+
+			key.GenerateDerivedKey (
+				SecurityAlgorithms.Psha1KeyDerivation,
+				wssc_label, nonce, 5, 0);
+		}
+
+		[Test]
 		public void IsAsymmetricAlgorithm ()
 		{
 			Key key = new Key (raw);

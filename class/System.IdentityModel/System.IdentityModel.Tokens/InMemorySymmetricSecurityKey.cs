@@ -60,6 +60,16 @@ namespace System.IdentityModel.Tokens
 			string algorithm, byte [] label, byte [] nonce,
 			int derivedKeyLength, int offset)
 		{
+			if (derivedKeyLength < 0)
+				throw new ArgumentOutOfRangeException ("derivedKeyLength");
+			if (offset < 0)
+				throw new ArgumentOutOfRangeException ("offset");
+			if (label == null)
+				throw new ArgumentNullException ("label");
+			if (nonce == null)
+				throw new ArgumentNullException ("nonce");
+			if (algorithm != SecurityAlgorithms.Psha1KeyDerivation)
+				throw new InvalidOperationException (String.Format ("Key derivation algorithm '{0}' is not supported", algorithm));
 			byte [] seed = new byte [label.Length + nonce.Length];
 			Array.Copy (label, seed, label.Length);
 			Array.Copy (nonce, 0, seed, label.Length, nonce.Length);
