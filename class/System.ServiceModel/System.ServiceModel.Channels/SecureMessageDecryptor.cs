@@ -237,7 +237,7 @@ namespace System.ServiceModel.Channels
 			EncryptedXml encXml = new EncryptedXml (doc);
 
 			if (security.MessageProtectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature &&
-			    secElem.SelectSingleNode ("dsig:Signature", nsmgr) != null)
+			    wss_header.Find<SignedXml> () != null)
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
 			byte [] decryptedKey = RequestSecurity != null ? RequestSecurity.EncryptionKey : null; // default
@@ -246,7 +246,10 @@ namespace System.ServiceModel.Channels
 			aes.Mode = CipherMode.CBC;
 
 			WrappedKeySecurityToken wk = wss_header.Find<WrappedKeySecurityToken> ();
+			DerivedKeySecurityToken dk = wss_header.Find<DerivedKeySecurityToken> ();
 			if (wk != null) {
+				if (Parameters.RequireDerivedKeys && dk == null)
+					throw new MessageSecurityException ("DerivedKeyToken is required in this contract, but was not found in the message");
 				SymmetricSecurityKey sym = wk.SecurityKeys [0] as SymmetricSecurityKey;
 				decryptedKey = sym.GetSymmetricKey ();
 			}
@@ -284,11 +287,9 @@ doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
 
 			// signature confirmation
-			XmlElement sigElem = secElem.SelectSingleNode ("dsig:Signature", nsmgr) as XmlElement;
-			if (sigElem == null)
-				throw new MessageSecurityException ("The the message signature is expected but not found.");
-
 			WSSignedXml sxml = wss_header.Find<WSSignedXml> ();
+			if (sxml == null)
+				throw new MessageSecurityException ("The the message signature is expected but not found.");
 
 			bool confirmed = false;
 

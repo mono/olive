@@ -607,7 +607,7 @@ else
 			dr.Uri = "#" + edata.Id;
 			refList.Add (dr);
 
-			if (ShouldOutputEncryptedKey)
+			if (ShouldOutputEncryptedKey && !CounterParameters.RequireDerivedKeys)
 				edata.KeyInfo = null;
 			else {
 				edata.KeyInfo = new KeyInfo ();
