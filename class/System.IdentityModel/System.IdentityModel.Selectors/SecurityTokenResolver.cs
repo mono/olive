@@ -48,10 +48,10 @@ namespace System.IdentityModel.Selectors
 			SecurityKeyIdentifierClause keyIdentifierClause)
 		{
 			if (keyIdentifierClause == null)
-				throw new ArgumentNullException ("keyIdentifierClause ");
+				throw new ArgumentNullException ("keyIdentifierClause");
 			SecurityKey ret;
 			if (!TryResolveSecurityKey (keyIdentifierClause, out ret))
-				throw new InvalidOperationException (String.Format ("Could not resolve security key with the key identifier '{0}'", keyIdentifierClause));
+				throw new InvalidOperationException (String.Format ("Could not resolve security key with the key identifier clause '{0}'", keyIdentifierClause));
 			return ret;
 		}
 
@@ -59,10 +59,10 @@ namespace System.IdentityModel.Selectors
 			SecurityKeyIdentifier keyIdentifier)
 		{
 			if (keyIdentifier == null)
-				throw new ArgumentNullException ("keyIdentifierClause ");
+				throw new ArgumentNullException ("keyIdentifierClause");
 			SecurityToken ret;
 			if (!TryResolveToken (keyIdentifier, out ret))
-				throw new InvalidOperationException ("Could not resolve security token");
+				throw new InvalidOperationException (String.Format ("Could not resolve security token from the key identifier '{0}'", keyIdentifier));
 			return ret;
 		}
 
@@ -70,10 +70,10 @@ namespace System.IdentityModel.Selectors
 			SecurityKeyIdentifierClause keyIdentifierClause)
 		{
 			if (keyIdentifierClause == null)
-				throw new ArgumentNullException ("keyIdentifierClause ");
+				throw new ArgumentNullException ("keyIdentifierClause");
 			SecurityToken ret;
 			if (!TryResolveToken (keyIdentifierClause, out ret))
-				throw new InvalidOperationException (String.Format ("Could not resolve security token with the key identifier '{0}'", keyIdentifierClause));
+				throw new InvalidOperationException (String.Format ("Could not resolve security token from the key identifier clause '{0}'", keyIdentifierClause));
 			return ret;
 		}
 

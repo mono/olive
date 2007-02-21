@@ -1,3 +1,7 @@
+2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityTokenResolver.cs : fixed some error messages.
+
 2007-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* X509SecurityTokenAuthenticator.cs : message formatting fix.

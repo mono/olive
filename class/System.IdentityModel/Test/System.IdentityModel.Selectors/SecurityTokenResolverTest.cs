@@ -47,7 +47,7 @@ namespace MonoTests.System.IdentityModel.Selectors
 		{
 			SecurityTokenResolver r = GetResolver (true, new SecurityToken [0]);
 			SecurityToken token;
-			Assert.IsFalse (r.TryResolveToken ((SecurityKeyIdentifierClause) null, out token));
+			r.TryResolveToken ((SecurityKeyIdentifierClause) null, out token);
 		}
 
 		[Test]
@@ -67,6 +67,15 @@ namespace MonoTests.System.IdentityModel.Selectors
 
 			r = GetResolver (false, new SecurityToken [] {userName});
 			Assert.IsFalse (r.TryResolveToken (kic, out token));
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ResolveTokenNonExistent ()
+		{
+			SecurityTokenResolver r = GetResolver (true, new SecurityToken [0]);
+			SecurityToken token;
+			Assert.IsNull (r.ResolveToken (new LocalIdKeyIdentifierClause ("urn:foo")));
 		}
 	}
 }
