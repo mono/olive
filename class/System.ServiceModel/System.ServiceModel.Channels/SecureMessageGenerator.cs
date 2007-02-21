@@ -258,6 +258,7 @@ namespace System.ServiceModel.Channels
 				security.Element;
 			SecurityAlgorithmSuite suite = element.DefaultAlgorithmSuite;
 
+// FIXME: remove this hack
 if (!ShouldOutputEncryptedKey)
 	encToken = new BinarySecretSecurityToken (secprop.EncryptionKey);
 
@@ -316,9 +317,10 @@ if (!ShouldOutputEncryptedKey)
 			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
 			nsmgr.AddNamespace ("o11", Constants.Wss11Namespace);
 
-			WrappedKeySecurityToken ekey = null;
-			SecurityKeyIdentifierClause ekeyClause = null;
-			ReferenceList encRefList = null;
+			WrappedKeySecurityToken primaryToken = null;
+			DerivedKeySecurityToken dkeyToken = null;
+			SecurityToken actualToken = null;
+			SecurityKeyIdentifierClause actualClause = null;
 			Signature sig = null;
 			EncryptedData sigenc = null;
 
@@ -332,7 +334,7 @@ if (!ShouldOutputEncryptedKey)
 			masterKey.KeySize = suite.DefaultSymmetricKeyLength;
 			masterKey.Mode = CipherMode.CBC;
 			masterKey.Padding = PaddingMode.ISO10126;
-			SymmetricAlgorithm pkey = masterKey;
+			SymmetricAlgorithm actualKey = masterKey;
 
 			// FIXME: use specified hash algorithm in the SecurityAlgorithmSuite.
 			HMAC sha1 = HMACSHA1.Create ();
@@ -359,12 +361,14 @@ if (!ShouldOutputEncryptedKey)
 			// encryption key (possibly also used for signing)
 			// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
 			if (secprop.EncryptionKey != null)
-				pkey.Key = secprop.EncryptionKey;
+				actualKey.Key = secprop.EncryptionKey;
 
-			string ekeyId = messageId + "-" + identForMessageId++;
-
-			ekey = new WrappedKeySecurityToken (ekeyId,
-				pkey.Key,
+// FIXME: remove thid hack
+if (!ShouldOutputEncryptedKey)
+primaryToken = RequestContext.RequestMessage.Properties.Security.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
+else
+			primaryToken = new WrappedKeySecurityToken (messageId + "-" + identForMessageId++,
+				actualKey.Key,
 				// security.DefaultKeyWrapAlgorithm,
 				ShouldOutputEncryptedKey ?
 					suite.DefaultAsymmetricKeyWrapAlgorithm :
@@ -372,31 +376,36 @@ if (!ShouldOutputEncryptedKey)
 				encToken,
 				encClause != null ? new SecurityKeyIdentifier (encClause) : null);
 
-			WrappedKeySecurityToken reqEncKey = ShouldOutputEncryptedKey ? null : RequestContext.RequestMessage.Properties.Security.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
-			ekeyClause = reqEncKey == null ? (SecurityKeyIdentifierClause)
-				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
-				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (reqEncKey.GetWrappedKey ()));
+			actualToken = primaryToken;
+
+			// FIXME: I doubt it is correct...
+			WrappedKeySecurityToken requestEncKey = ShouldOutputEncryptedKey ? null : primaryToken;
+			actualClause = requestEncKey == null ? (SecurityKeyIdentifierClause)
+				new LocalIdKeyIdentifierClause (actualToken.Id, typeof (WrappedKeySecurityToken)) :
+				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (requestEncKey.GetWrappedKey ()));
 
 			// generate derived key if needed
 			if (CounterParameters.RequireDerivedKeys) {
-				// FIXME: it should replace pkey
 				RijndaelManaged deriv = new RijndaelManaged ();
 				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
 				deriv.Mode = CipherMode.CBC;
 				deriv.Padding = PaddingMode.ISO10126;
 				deriv.GenerateKey ();
-				DerivedKeySecurityToken derivedKey = new DerivedKeySecurityToken (
+				dkeyToken = new DerivedKeySecurityToken (
 					GenerateId (doc),
 					null, // algorithm
-					ekeyClause,
-					new InMemorySymmetricSecurityKey (pkey.Key),
+					actualClause,
+					new InMemorySymmetricSecurityKey (actualKey.Key),
 					null, // name
 					null, // generation
 					null, // offset
 					deriv.Key.Length,
 					null, // label
 					deriv.Key);
-				derivedKeys.Add (derivedKey);
+				derivedKeys.Add (dkeyToken);
+				actualToken = dkeyToken;
+				actualKey.Key = ((SymmetricSecurityKey) dkeyToken.SecurityKeys [0]).GetSymmetricKey ();
+				actualClause = new LocalIdKeyIdentifierClause (dkeyToken.Id);
 			}
 
 			switch (protectionOrder) {
@@ -433,9 +442,9 @@ if (!ShouldOutputEncryptedKey)
 					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
 
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
-					sha1.Key = pkey.Key;
+					sha1.Key = actualKey.Key;
 					sxml.ComputeSignature (sha1);
-					sigKeyInfo = new SecurityTokenReferenceKeyInfo (ekeyClause, serializer, doc);
+					sigKeyInfo = new SecurityTokenReferenceKeyInfo (actualClause, serializer, doc);
 				}
 				else {
 					signToken = security.SigningToken;
@@ -454,19 +463,21 @@ if (!ShouldOutputEncryptedKey)
 
 				EncryptedXml exml = new EncryptedXml ();
 				ReferenceList refList = new ReferenceList ();
-				// FIXME: it is currently disabled. ReferenceList might just be written according to key's output state.
-				//if (!CounterParameters.RequireDerivedKeys)
-					ekey.ReferenceList = refList;
-				//else
-				//	encRefList = refList;
+				// When encrypted with DerivedKeyToken, put
+				// references inside o:Security, not inside
+				// EncryptedKey.
+				if (CounterParameters.RequireDerivedKeys)
+					dkeyToken.ReferenceList = refList;
+				else
+					primaryToken.ReferenceList = refList;
 
-				EncryptedData edata = Encrypt (body, pkey, ekeyId, refList, ekeyClause, exml, doc);
+				EncryptedData edata = Encrypt (body, actualKey, actualToken.Id, refList, actualClause, exml, doc);
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
 				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, pkey, ekeyId, refList, ekeyClause, exml, doc);
+					sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
 				}
 				break;
 			}
@@ -493,7 +504,7 @@ if (!ShouldOutputEncryptedKey)
 				ret.Properties.Security.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
 			}
 			else
-				ret.Properties.Security.ProtectionToken = new SecurityTokenSpecification (ekey, null);
+				ret.Properties.Security.ProtectionToken = new SecurityTokenSpecification (primaryToken, null);
 
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
@@ -521,14 +532,17 @@ if (!ShouldOutputEncryptedKey)
 
 			// If it reuses request's encryption key, do not output.
 			if (ShouldOutputEncryptedKey)
-				header.Contents.Add (ekey);
+				header.Contents.Add (primaryToken);
 
-			foreach (DerivedKeySecurityToken dk in derivedKeys)
+			foreach (DerivedKeySecurityToken dk in derivedKeys) {
 				header.Contents.Add (dk);
+				if (dk.ReferenceList != null)
+					header.Contents.Add (dk.ReferenceList);
+			}
 
 			// When we do not output EncryptedKey, output ReferenceList here.
 			if (!ShouldOutputEncryptedKey)
-				header.Contents.Add (ekey.ReferenceList);
+				header.Contents.Add (primaryToken.ReferenceList);
 
 			if (sigenc != null) // [Signature Protection]
 				header.Contents.Add (sigenc);
@@ -572,12 +586,12 @@ if (!ShouldOutputEncryptedKey)
 			throw new Exception (String.Format ("INTERNAL ERROR: Invalid canonicalization URL: {0}", url));
 		}
 
-		EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm pkey, string ekeyId, ReferenceList refList, SecurityKeyIdentifierClause encClause, EncryptedXml exml, XmlDocument doc)
+		EncryptedData Encrypt (XmlElement target, SymmetricAlgorithm actualKey, string ekeyId, ReferenceList refList, SecurityKeyIdentifierClause encClause, EncryptedXml exml, XmlDocument doc)
 		{
 			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
 			SecurityTokenSerializer serializer = security.TokenSerializer;
 
-			byte [] encrypted = exml.EncryptData (target, pkey, false);
+			byte [] encrypted = exml.EncryptData (target, actualKey, false);
 			EncryptedData edata = new EncryptedData ();
 			edata.Id = GenerateId (doc);
 			edata.Type = EncryptedXml.XmlEncElementContentUrl;

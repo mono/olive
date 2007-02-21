@@ -48,6 +48,7 @@ namespace System.ServiceModel.Channels
 		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr, List<SecurityToken> tokens)
 		{
 			WSSecurityMessageHeader ret = new WSSecurityMessageHeader (serializer);
+			DerivedKeySecurityToken currentToken = null;
 
 			reader.MoveToContent ();
 			reader.ReadStartElement ("Security", Constants.WssNamespace);
@@ -110,6 +111,8 @@ namespace System.ServiceModel.Channels
 							throw new XmlException (String.Format ("Unexpected {2} node '{0}' in namespace '{1}' in ReferenceList.", reader.Name, reader.NamespaceURI, reader.NodeType));
 						}
 						reader.ReadEndElement ();
+						if (currentToken != null)
+							currentToken.ReferenceList = rl;
 						ret.Contents.Add (rl);
 						continue;
 					}
@@ -121,6 +124,8 @@ namespace System.ServiceModel.Channels
 				// in both context (but must be a token here).
 				if (serializer.CanReadToken (reader)) {
 					SecurityToken token = serializer.ReadToken (reader, resolver);
+					if (token is DerivedKeySecurityToken)
+						currentToken = token as DerivedKeySecurityToken;
 					tokens.Add (token);
 					ret.Contents.Add (token);
 				}
@@ -221,6 +226,15 @@ namespace System.ServiceModel.Channels
 				if (typeof (T).IsAssignableFrom (o.GetType ()))
 					return (T) o;
 			return default (T);
+		}
+
+		public Collection<T> FindAll<T> ()
+		{
+			Collection<T> c = new Collection<T> ();
+			foreach (object o in Contents)
+				if (typeof (T).IsAssignableFrom (o.GetType ()))
+					c.Add ((T) o);
+			return c;
 		}
 
 		protected override void OnWriteStartHeader (XmlDictionaryWriter writer, MessageVersion version)

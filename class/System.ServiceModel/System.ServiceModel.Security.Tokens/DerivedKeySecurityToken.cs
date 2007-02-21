@@ -2,6 +2,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Security;
 using System.Text;
@@ -18,6 +19,7 @@ namespace System.ServiceModel.Security.Tokens
 		string id, name, label;
 		byte [] nonce;
 		ReadOnlyCollection<SecurityKey> keys;
+		ReferenceList reflist;
 
 		public DerivedKeySecurityToken (string id, string algorithm,
 			SecurityKeyIdentifierClause reference,
@@ -68,6 +70,11 @@ namespace System.ServiceModel.Security.Tokens
 			get { return resolved_token.ValidTo; }
 		}
 
+		internal ReferenceList ReferenceList {
+			get { return reflist; }
+			set { reflist = value; }
+		}
+
 		public SecurityKeyIdentifierClause TokenReference {
 			get { return reference; }
 		}
@@ -107,9 +114,8 @@ namespace System.ServiceModel.Security.Tokens
 		public override SecurityKey ResolveKeyIdentifierClause (
 			SecurityKeyIdentifierClause keyIdentifierClause)
 		{
-			LocalIdKeyIdentifierClause l = keyIdentifierClause
-				as LocalIdKeyIdentifierClause;
-			return keys [0];
+			return MatchesKeyIdentifierClause (keyIdentifierClause) ?
+				keys [0] : null;
 		}
 	}
 }

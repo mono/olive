@@ -1,5 +1,15 @@
 2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WSSecurityMessageHeader.cs : ReferenceList needs to be bound to
+	  the related DerivedKeyToken (if any).
+	* SecureMessageGenerator.cs : largely done with DerivedKeyToken
+	  support. Some refactoring to distinguish deried-token-related
+	  variables.
+	* SecureMessageDecryptor.cs : removed its own support for derived
+	  key tokens. Now it fully works with DerivedKeySecurityToken.
+
+2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityMessageHeader.cs, SecureMessageDecryptor.cs,
 	  SecureMessageDecryptor.cs :
 	  Implemented increment token reading in o:Security, as

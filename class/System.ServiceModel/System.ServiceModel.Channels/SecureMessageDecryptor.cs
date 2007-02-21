@@ -241,7 +241,6 @@ namespace System.ServiceModel.Channels
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
 
 			byte [] decryptedKey = RequestSecurity != null ? RequestSecurity.EncryptionKey : null; // default
-			Dictionary<string,byte[]> map = new Dictionary<string,byte[]> ();
 			// default, unless overriden by the default DerivedKeyToken.
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
 			aes.Mode = CipherMode.CBC;
@@ -252,19 +251,9 @@ namespace System.ServiceModel.Channels
 				decryptedKey = sym.GetSymmetricKey ();
 			}
 
-			map [String.Empty] = aes.Key = decryptedKey;
-
-			if (wk != null) {
-				// create derived keys
-				// FIXME: an alternative approach is to make use
-				// of EncryptedXml.AddKeyNameMapping().
-				ResolveDerivedKeys (secElem, decryptedKey, map);
-				if (wk.Id != null)
-					map [wk.Id] = decryptedKey;
-			}
-
 			// decrypt the body with the decrypted key
 			Collection<string> references = new Collection<string> ();
+
 			foreach (XmlElement rlist in secElem.SelectNodes ("e:ReferenceList", nsmgr))
 				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
 					references.Add (StripUri (encref.GetAttribute ("URI")));
@@ -284,7 +273,7 @@ namespace System.ServiceModel.Channels
 			foreach (XmlElement el in list) {
 				EncryptedData ed2 = new EncryptedData ();
 				ed2.LoadXml (el);
-				byte [] key = GetEncryptionKeyForData (ed2, encXml, map);
+				byte [] key = GetEncryptionKeyForData (ed2, encXml);
 				aes.Key = key != null ? key : decryptedKey;
 				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
 			}
@@ -448,8 +437,19 @@ doc.PreserveWhitespace = true;
 
 		#endregion
 
-		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, Dictionary<string,byte[]> map)
+		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml)
 		{
+			// Since ReferenceList could be embedded directly in wss_header without
+			// key indication, it must iterate all the derived keys to find out
+			// appropriate one.
+			foreach (DerivedKeySecurityToken dk in wss_header.FindAll<DerivedKeySecurityToken> ()) {
+				if (dk.ReferenceList == null)
+					continue;
+				foreach (DataReference dr in dk.ReferenceList)
+					if (StripUri (dr.Uri) == ed2.Id)
+						return ((SymmetricSecurityKey) dk.SecurityKeys [0]).GetSymmetricKey ();
+			}
+
 			SecurityTokenSerializer serializer =
 				security.TokenSerializer;
 
@@ -474,27 +474,6 @@ doc.PreserveWhitespace = true;
 			return null; // no applicable key info clause.
 		}
 
-		// FIXME: this should consider the referent SecurityToken of
-		// each DerivedKeyToken element.
-		void ResolveDerivedKeys (XmlElement secElem, byte [] decryptedKey, Dictionary<string,byte[]> keys)
-		{
-			InMemorySymmetricSecurityKey skey =
-				new InMemorySymmetricSecurityKey (decryptedKey);
-
-			foreach (XmlNode n in secElem.ChildNodes) {
-				XmlElement el = n as XmlElement;
-				if (el == null)
-					continue;
-				if (el.LocalName == "DerivedKeyToken" &&
-				    el.NamespaceURI == Constants.WsscNamespace) {
-					byte [] key = GetDerivedKeyBytes (el, skey);
-					string id = el.GetAttribute ("Id", Constants.WsuNamespace);
-					id = (id == null) ? String.Empty : id;
-					keys [id] = key;
-				}
-			}
-		}
-
 		string StripUri (string src)
 		{
 			if (src == null || src.Length == 0)
@@ -502,26 +481,6 @@ doc.PreserveWhitespace = true;
 			if (src [0] != '#')
 				throw new NotSupportedException (String.Format ("Non-fragment URI in DataReference and KeyReference is not supported: '{0}'", src));
 			return src.Substring (1);
-		}
-
-		byte [] GetDerivedKeyBytes (XmlElement el, InMemorySymmetricSecurityKey skey)
-		{
-			XmlNode n = el.SelectSingleNode ("c:Offset", nsmgr);
-			int offset = (n == null) ? 0 :
-				int.Parse (n.InnerText, CultureInfo.InvariantCulture);
-			n = el.SelectSingleNode ("c:Length", nsmgr);
-			int length = (n == null) ? 32 :
-				int.Parse (n.InnerText, CultureInfo.InvariantCulture);
-			n = el.SelectSingleNode ("c:Label", nsmgr);
-			string inLabel = n == null ? "WS-SecureConversation" : n.InnerText;
-			byte [] label = Encoding.UTF8.GetBytes (
-				inLabel + "WS-SecureConversation");
-			n = el.SelectSingleNode ("c:Nonce", nsmgr);
-			byte [] nonce = (n == null) ? new byte [0] :
-				Convert.FromBase64String (n.InnerText);
-			return skey.GenerateDerivedKey (
-				SecurityAlgorithms.Psha1KeyDerivation,
-				label, nonce, length * 8, offset);
 		}
 
 		// Probably it is a bug in .NET, but sometimes it does not contain
