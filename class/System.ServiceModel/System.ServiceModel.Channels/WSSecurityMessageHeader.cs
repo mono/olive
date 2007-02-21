@@ -45,7 +45,7 @@ namespace System.ServiceModel.Channels
 {
 	internal class WSSecurityMessageHeader : MessageHeader
 	{
-		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr)
+		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr, List<SecurityToken> tokens)
 		{
 			WSSecurityMessageHeader ret = new WSSecurityMessageHeader (serializer);
 
@@ -62,14 +62,6 @@ namespace System.ServiceModel.Channels
 					switch (reader.LocalName) {
 					case "Timestamp":
 						ret.Contents.Add (ReadTimestamp (reader));
-						continue;
-					}
-					break;
-				case Constants.WsscNamespace:
-					switch (reader.LocalName) {
-					case "DerivedKeyToken":
-						// FIXME: actually DerivedKeyToken should be read via WSSecurityTokenSerializer, but o
-						ret.Contents.Add (ReadDerivedKeyToken (reader, doc, serializer));
 						continue;
 					}
 					break;
@@ -127,8 +119,11 @@ namespace System.ServiceModel.Channels
 				// This order (Token->KeyIdentifierClause) is
 				// important because WrappedKey could be read
 				// in both context (but must be a token here).
-				if (serializer.CanReadToken (reader))
-					ret.Contents.Add (serializer.ReadToken (reader, resolver));
+				if (serializer.CanReadToken (reader)) {
+					SecurityToken token = serializer.ReadToken (reader, resolver);
+					tokens.Add (token);
+					ret.Contents.Add (token);
+				}
 				else if (serializer.CanReadKeyIdentifierClause (reader))
 					ret.Contents.Add (serializer.ReadKeyIdentifierClause (reader));
 				else
@@ -162,46 +157,6 @@ namespace System.ServiceModel.Channels
 			string value = reader.GetAttribute ("Value");
 			reader.Skip ();
 			return new Wss11SignatureConfirmation (id, value);
-		}
-
-		static WsscDerivedKeyToken ReadDerivedKeyToken (XmlReader reader, XmlDocument doc, SecurityTokenSerializer serializer)
-		{
-			WsscDerivedKeyToken dkt = new WsscDerivedKeyToken ();
-			dkt.Id = reader.GetAttribute ("Id", Constants.WsuNamespace);
-			dkt.Algorithm = reader.GetAttribute ("Algorithm", String.Empty);
-			reader.ReadStartElement ();
-			
-			for (reader.MoveToContent ();
-			     reader.NodeType != XmlNodeType.EndElement;
-			     reader.MoveToContent ()) {
-				if (reader.NodeType != XmlNodeType.Element)
-					throw new XmlException (String.Format ("Unexpected {0} node in DerivedKeyToken element.", reader.NodeType));
-				switch (reader.NamespaceURI) {
-				case Constants.WssNamespace:
-					switch (reader.LocalName) {
-					case "SecurityTokenReference":
-						dkt.SecurityTokenReference = serializer.ReadKeyIdentifierClause (reader);
-						continue;
-					}
-					break;
-				case Constants.WsscNamespace:
-					switch (reader.LocalName) {
-					case "Length":
-						dkt.Length = reader.ReadElementContentAsInt ();
-						continue;
-					case "Offset":
-						dkt.Offset= reader.ReadElementContentAsInt ();
-						continue;
-					case "Nonce":
-						dkt.Nonce = Convert.FromBase64String (reader.ReadElementContentAsString ());
-						continue;
-					}
-					break;
-				}
-				throw new XmlException (String.Format ("Unexpected element in DerivedKeyToken element. Name is '{0}' and namespace URI is '{1}'.", reader.Name, reader.NamespaceURI));
-			}
-			reader.ReadEndElement ();
-			return dkt;
 		}
 
 		static WsuTimestamp ReadTimestamp (XmlDictionaryReader reader)
@@ -280,28 +235,6 @@ namespace System.ServiceModel.Channels
 				if (obj is WsuTimestamp) {
 					WsuTimestamp ts = (WsuTimestamp) obj;
 					ts.WriteTo (writer);
-				} else if (obj is WsscDerivedKeyToken) {
-					WsscDerivedKeyToken dk = (WsscDerivedKeyToken) obj;
-					writer.WriteStartElement ("c", "DerivedKeyToken", Constants.WsscNamespace);
-					if (dk.Id != null)
-						writer.WriteAttributeString ("u", "Id", Constants.WsuNamespace, dk.Id);
-					if (dk.Algorithm != null)
-						writer.WriteAttributeString ("Algorithm", dk.Algorithm);
-					serializer.WriteKeyIdentifierClause (writer, dk.SecurityTokenReference);
-					writer.WriteStartElement ("Offset", Constants.WsscNamespace);
-					writer.WriteValue (dk.Offset);
-					writer.WriteEndElement ();
-
-					writer.WriteStartElement ("Length", Constants.WsscNamespace);
-					writer.WriteValue (dk.Length);
-					writer.WriteEndElement ();
-
-					writer.WriteStartElement ("Nonce", Constants.WsscNamespace);
-					byte [] bytes = dk.Nonce;
-					writer.WriteBase64 (bytes, 0, bytes.Length);
-					writer.WriteEndElement ();
-
-					writer.WriteEndElement ();
 				} else if (obj is SecurityToken) {
 					serializer.WriteToken (writer, (SecurityToken) obj);
 				} else if (obj is EncryptedKey) {
@@ -367,16 +300,6 @@ namespace System.ServiceModel.Channels
 				"yyyy-MM-dd'T'HH:mm:ss.fff'Z'",
 				CultureInfo.InvariantCulture);
 		}
-	}
-
-	internal class WsscDerivedKeyToken
-	{
-		public string Id;
-		public string Algorithm;
-		public SecurityKeyIdentifierClause SecurityTokenReference;
-		public int Length;
-		public int Offset;
-		public byte [] Nonce;
 	}
 
 	internal class SecurityTokenReferenceKeyInfo : KeyInfoClause

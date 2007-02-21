@@ -221,7 +221,7 @@ namespace System.ServiceModel.Channels
 				    header.Name == "Security") {
 					wss_header = WSSecurityMessageHeader.Read (
 						srcmsg.Headers.GetReaderAtHeader (i),
-						serializer, TokenResolver, doc, nsmgr);
+						serializer, TokenResolver, doc, nsmgr, tokens);
 					headers.Add (wss_header);
 				}
 				else
@@ -229,10 +229,6 @@ namespace System.ServiceModel.Channels
 			}
 			if (wss_header == null)
 				throw new InvalidOperationException ("In this service contract, a WS-Security header is required in the Message, but was not found.");
-
-			foreach (object obj in wss_header.Contents)
-				if (obj is SecurityToken)
-					tokens.Add ((SecurityToken) obj);
 		}
 
 		void ExtractSecurity (XmlElement secElem)

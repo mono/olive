@@ -322,9 +322,8 @@ if (!ShouldOutputEncryptedKey)
 			Signature sig = null;
 			EncryptedData sigenc = null;
 
-
-			List<WsscDerivedKeyToken> derivedKeys =
-				new List<WsscDerivedKeyToken> ();
+			List<DerivedKeySecurityToken> derivedKeys =
+				new List<DerivedKeySecurityToken> ();
 
 			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
 			string bodyId = null;
@@ -357,28 +356,10 @@ if (!ShouldOutputEncryptedKey)
 			MessagePartSpecification sigSpec = SignaturePart;
 			MessagePartSpecification encSpec = EncryptionPart;
 
-			WsscDerivedKeyToken derivedKey = null;
-
 			// encryption key (possibly also used for signing)
 			// FIXME: get correct SymmetricAlgorithm according to the algorithm suite
 			if (secprop.EncryptionKey != null)
 				pkey.Key = secprop.EncryptionKey;
-
-			// generate derived key if needed
-			if (CounterParameters.RequireDerivedKeys) {
-				// FIXME: it should replace pkey
-				RijndaelManaged deriv = new RijndaelManaged ();
-				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
-				deriv.Mode = CipherMode.CBC;
-				deriv.Padding = PaddingMode.ISO10126;
-				deriv.GenerateKey ();
-				derivedKey = new WsscDerivedKeyToken ();
-				derivedKey.Id = GenerateId (doc);
-				derivedKey.Offset = 0;
-				derivedKey.Nonce = deriv.Key;
-				derivedKey.Length = derivedKey.Nonce.Length;
-				derivedKeys.Add (derivedKey);
-			}
 
 			string ekeyId = messageId + "-" + identForMessageId++;
 
@@ -391,14 +372,32 @@ if (!ShouldOutputEncryptedKey)
 				encToken,
 				encClause != null ? new SecurityKeyIdentifier (encClause) : null);
 
-			if (derivedKey != null)
-				derivedKey.SecurityTokenReference =
-					new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken));
-
 			WrappedKeySecurityToken reqEncKey = ShouldOutputEncryptedKey ? null : RequestContext.RequestMessage.Properties.Security.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
 			ekeyClause = reqEncKey == null ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (ekeyId, typeof (WrappedKeySecurityToken)) :
 				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (reqEncKey.GetWrappedKey ()));
+
+			// generate derived key if needed
+			if (CounterParameters.RequireDerivedKeys) {
+				// FIXME: it should replace pkey
+				RijndaelManaged deriv = new RijndaelManaged ();
+				deriv.KeySize = suite.DefaultEncryptionKeyDerivationLength;
+				deriv.Mode = CipherMode.CBC;
+				deriv.Padding = PaddingMode.ISO10126;
+				deriv.GenerateKey ();
+				DerivedKeySecurityToken derivedKey = new DerivedKeySecurityToken (
+					GenerateId (doc),
+					null, // algorithm
+					ekeyClause,
+					new InMemorySymmetricSecurityKey (pkey.Key),
+					null, // name
+					null, // generation
+					null, // offset
+					deriv.Key.Length,
+					null, // label
+					deriv.Key);
+				derivedKeys.Add (derivedKey);
+			}
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -524,7 +523,7 @@ if (!ShouldOutputEncryptedKey)
 			if (ShouldOutputEncryptedKey)
 				header.Contents.Add (ekey);
 
-			foreach (WsscDerivedKeyToken dk in derivedKeys)
+			foreach (DerivedKeySecurityToken dk in derivedKeys)
 				header.Contents.Add (dk);
 
 			// When we do not output EncryptedKey, output ReferenceList here.

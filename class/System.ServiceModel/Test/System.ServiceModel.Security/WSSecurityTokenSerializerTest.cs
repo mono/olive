@@ -51,11 +51,18 @@ namespace MonoTests.System.ServiceModel.Security
 
 		static X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 
-		const string derived_key_token1 = @"<c:DerivedKeyToken xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc'>
-        <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/0
-1/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
-          <o:Reference ValueType='http://docs.oasis-open.org/wss/oasis-wss-soap-
-message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
+		const string derived_key_token1 = @"<c:DerivedKeyToken u:Id='_1' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc'>
+        <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+          <o:Reference ValueType='http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
+        </o:SecurityTokenReference>
+        <c:Offset>0</c:Offset>
+        <c:Length>24</c:Length>
+        <c:Nonce>BIUeTKeOhR5HeE646ZyA+w==</c:Nonce>
+      </c:DerivedKeyToken>";
+
+		const string derived_key_token2 = @"<c:DerivedKeyToken u:Id='_1' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc'>
+        <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+          <o:Reference ValueType='urn:my-own-way' URI='#uuid:urn:abc' />
         </o:SecurityTokenReference>
         <c:Offset>0</c:Offset>
         <c:Length>24</c:Length>
@@ -585,7 +592,6 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 
 		[Test]
 		[ExpectedException (typeof (XmlException))] // tokenResolver is null
-		[Category ("NotWorking")]
 		public void ReadTokenDerivedKeyTokenNullResolver ()
 		{
 			WSSecurityTokenSerializer serializer =
@@ -597,7 +603,6 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 
 		[Test]
 		[ExpectedException (typeof (XmlException))] // DerivedKeyToken requires a reference to an existent token.
-		[Category ("NotWorking")]
 		public void ReadTokenDerivedKeyTokenRefToNonExistent ()
 		{
 			WSSecurityTokenSerializer serializer =
@@ -608,15 +613,51 @@ message-security-1.1#EncryptedKey' URI='#uuid:urn:abc' />
 		}
 
 		[Test]
-		[Ignore ("still fails")]
-		public void ReadTokenDerivedKeyTokenRefToExistent ()
+		public void ReadWriteTokenDerivedKeyTokenRefToExistent ()
+		{
+			WSSecurityTokenSerializer serializer =
+				new WSSecurityTokenSerializer (true); // emitBSP
+			SecurityToken token;
+			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
+				token = serializer.ReadToken (xr,
+					GetResolver (
+						new WrappedKeySecurityToken ("uuid:urn:abc", new byte [32], SecurityAlgorithms.RsaOaepKeyWrap, new X509SecurityToken (cert), null)
+					));
+			}
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				serializer.WriteToken (w, token);
+			}
+			Assert.AreEqual (derived_key_token1.Replace ('\'', '"').Replace ("  ", "").Replace ("\n", ""), sw.ToString ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))] // not sure how this exception type makes sense.
+		public void ReadTokenDerivedKeyTokenRefToExistent2 ()
 		{
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
-				SecurityToken token = serializer.ReadToken (xr,
+				// different token value type to be resolved 
+				// than what is explicitly specified in
+				// <o:Reference>.
+				serializer.ReadToken (xr,
 					GetResolver (new X509SecurityToken (cert, "uuid:urn:abc")));
-				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
+			}
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))] // not sure how this exception type makes sense.
+		public void ReadTokenDerivedKeyTokenRefUnsupported ()
+		{
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token2))) {
+				// different token value type to be resolved 
+				// than what is explicitly specified in
+				// <o:Reference>.
+				serializer.ReadToken (xr,
+					GetResolver (new X509SecurityToken (cert, "uuid:urn:abc")));
 			}
 		}
 

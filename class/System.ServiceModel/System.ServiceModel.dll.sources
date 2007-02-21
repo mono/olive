@@ -535,6 +535,7 @@ System.ServiceModel.Dispatcher/XPathNavigatorException.cs
 System.ServiceModel.Security.Tokens/BinarySecretSecurityToken.cs
 System.ServiceModel.Security.Tokens/ClaimTypeRequirement.cs
 System.ServiceModel.Security.Tokens/CommunicationSecurityTokenProvider.cs
+System.ServiceModel.Security.Tokens/DerivedKeySecurityToken.cs
 System.ServiceModel.Security.Tokens/IIssuanceSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/ISecurityContextSecurityTokenCache.cs
 System.ServiceModel.Security.Tokens/InitiatorServiceModelSecurityTokenRequirement.cs

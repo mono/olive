@@ -82,5 +82,7 @@ namespace System.ServiceModel
 		public const string WstCancelReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Cancel";
 
 		public const string WstValidateReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Validate";
+
+		public const string WsscDefaultLabel = "WS-SecureConversationWS-SecureConversation";
 	}
 }

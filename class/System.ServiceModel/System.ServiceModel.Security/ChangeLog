@@ -1,3 +1,8 @@
+2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : read/write DerivedKeyToken.
+	  Supply OwnerType for LocalId key when there is ValueType attribute.
+
 2007-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializer.cs : handle X509 issue serial key

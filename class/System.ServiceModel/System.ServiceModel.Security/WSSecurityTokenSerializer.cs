@@ -32,6 +32,7 @@ using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.Security.Cryptography.Xml;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel.Security
@@ -216,6 +217,10 @@ namespace System.ServiceModel.Security
 					return true;
 				}
 				break;
+			case Constants.WsscNamespace:
+				if (reader.LocalName == "DerivedKeyToken")
+					return true;
+				break;
 			case EncryptedXml.XmlEncNamespaceUrl:
 				switch (reader.LocalName) {
 				case "EncryptedKey":
@@ -281,10 +286,17 @@ namespace System.ServiceModel.Security
 
 			switch (reader.LocalName) {
 			case "Reference":
+				Type ownerType = null;
+				if (reader.MoveToAttribute ("ValueType")) {
+					if (reader.Value != Constants.WSSEncryptedKeyToken)
+						throw new XmlException ("Unexpected ValueType in 'Reference' element");
+					ownerType = typeof (WrappedKeySecurityToken);
+				}
+				reader.MoveToElement ();
 				string uri = reader.GetAttribute ("URI");
 				if (uri == null)
 					uri = "#";
-				LocalIdKeyIdentifierClause local = new LocalIdKeyIdentifierClause (uri.Substring (1));
+				LocalIdKeyIdentifierClause local = new LocalIdKeyIdentifierClause (uri.Substring (1), ownerType);
 				reader.Skip ();
 				reader.MoveToContent ();
 				reader.ReadEndElement ();
@@ -378,6 +390,10 @@ namespace System.ServiceModel.Security
 					return ReadUserNameTokenCore (reader, tokenResolver);
 				}
 				break;
+			case Constants.WsscNamespace:
+				if (reader.LocalName == "DerivedKeyToken")
+					return ReadDerivedKeyToken (reader, tokenResolver);
+				break;
 			case EncryptedXml.XmlEncNamespaceUrl:
 				switch (reader.LocalName) {
 				case "EncryptedKey":
@@ -387,6 +403,77 @@ namespace System.ServiceModel.Security
 			}
 
 			throw new NotImplementedException ();
+		}
+
+		DerivedKeySecurityToken ReadDerivedKeyToken (
+			XmlReader reader, SecurityTokenResolver tokenResolver)
+		{
+			try {
+				return ReadDerivedKeyTokenCore (reader, tokenResolver);
+			} catch (XmlException) {
+				throw;
+			} catch (Exception ex) {
+				throw new XmlException ("Cannot read DerivedKeyToken", ex);
+			}
+		}
+		
+		DerivedKeySecurityToken ReadDerivedKeyTokenCore (
+			XmlReader reader, SecurityTokenResolver tokenResolver)
+		{
+			if (tokenResolver == null)
+				throw new ArgumentNullException ("tokenResolver");
+			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
+			string algorithm = reader.MoveToAttribute ("Algorithm") ? reader.Value : null;
+			reader.MoveToElement ();
+			reader.ReadStartElement ();
+			reader.MoveToContent ();
+			SecurityKeyIdentifierClause kic = ReadKeyIdentifierClause (reader);
+			int? generation = null, offset = null, length = null;
+			byte [] nonce = null;
+			string name = null, label = null;
+			for (reader.MoveToContent ();
+			       reader.NodeType != XmlNodeType.EndElement;
+			       reader.MoveToContent ())
+				switch (reader.LocalName) {
+				case "Properties":
+					reader.ReadStartElement ("Properties", Constants.WsscNamespace);
+					for (reader.MoveToContent ();
+					       reader.NodeType != XmlNodeType.EndElement;
+					       reader.MoveToContent ())
+						switch (reader.LocalName) {
+						case "Name":
+							name = reader.ReadElementContentAsString ("Name", Constants.WsscNamespace);
+							break;
+						case "Label":
+							label = reader.ReadElementContentAsString ("Label", Constants.WsscNamespace);
+							break;
+						case "Nonce":
+							nonce = Convert.FromBase64String (reader.ReadElementContentAsString ("Nonce", Constants.WsscNamespace));
+							break;
+						}
+					reader.ReadEndElement ();
+					break;
+				case "Offset":
+					offset = reader.ReadElementContentAsInt ("Offset", Constants.WsscNamespace);
+					break;
+				case "Length":
+					length = reader.ReadElementContentAsInt ("Length", Constants.WsscNamespace);
+					break;
+				case "Nonce":
+					nonce = Convert.FromBase64String (reader.ReadElementContentAsString ("Nonce", Constants.WsscNamespace));
+					break;
+				case "Label":
+					label = reader.ReadElementContentAsString ("Label", Constants.WsscNamespace);
+					break;
+				}
+			reader.ReadEndElement ();
+
+			// resolve key reference
+			SymmetricSecurityKey key = tokenResolver.ResolveSecurityKey (kic) as SymmetricSecurityKey;
+			if (key == null)
+				throw new XmlException ("Cannot resolve the security key referenced by the DerivedKeyToken as a symmetric key");
+
+			return new DerivedKeySecurityToken (id, algorithm, kic, key, name, generation, offset, length, label, nonce);
 		}
 
 		WrappedKeySecurityToken ReadWrappedKeySecurityTokenCore (
@@ -632,6 +719,8 @@ namespace System.ServiceModel.Security
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is WrappedKeySecurityToken)
 				WriteWrappedKeySecurityToken (writer, (WrappedKeySecurityToken) token);
+			else if (token is DerivedKeySecurityToken)
+				WriteDerivedKeySecurityToken (writer, (DerivedKeySecurityToken) token);
 			else if (token is SecurityContextSecurityToken)
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is SspiSecurityToken)
@@ -671,6 +760,27 @@ namespace System.ServiceModel.Security
 			w.WriteStartElement ("t", "BinarySecret", Constants.WstNamespace);
 			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace, token.Id);
 			w.WriteString (Convert.ToBase64String (token.GetKeyBytes ()));
+			w.WriteEndElement ();
+		}
+
+		void WriteDerivedKeySecurityToken (XmlWriter w, DerivedKeySecurityToken token)
+		{
+			string ns = Constants.WsscNamespace;
+			w.WriteStartElement ("c", "DerivedKeyToken", ns);
+			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace, token.Id);
+			WriteKeyIdentifierClause (w, token.TokenReference);
+			if (token.Name != null) {
+				w.WriteStartElement ("Properties", ns);
+				w.WriteElementString ("Name", ns, token.Name);
+				w.WriteEndElement ();
+			}
+			if (token.Offset != null)
+				w.WriteElementString ("Offset", ns, Convert.ToString (token.Offset));
+			if (token.Length != null)
+				w.WriteElementString ("Length", ns, Convert.ToString (token.Length));
+			if (token.Label != null)
+				w.WriteElementString ("Label", ns, token.Label);
+			w.WriteElementString ("Nonce", ns, Convert.ToBase64String (token.Nonce));
 			w.WriteEndElement ();
 		}
 
