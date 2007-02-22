@@ -1,10 +1,10 @@
 ﻿//
-// SecurityChannelFactory.cs
+// WSSecurityMessageHeader.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2006-2007 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,24 +30,45 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
+using System.IO;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
 using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel.Channels
 {
-	internal class WSSecurityMessageHeader : MessageHeader
+	internal class WSSecurityMessageHeaderReader
 	{
-		public static WSSecurityMessageHeader Read (XmlDictionaryReader reader, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr, List<SecurityToken> tokens)
+		public WSSecurityMessageHeaderReader (WSSecurityMessageHeader header, SecurityTokenSerializer serializer, SecurityTokenResolver resolver, XmlDocument doc, XmlNamespaceManager nsmgr, List<SecurityToken> tokens)
 		{
-			WSSecurityMessageHeader ret = new WSSecurityMessageHeader (serializer);
+			this.header = header;
+			this.serializer = serializer;
+			this.resolver = resolver;
+			this.doc = doc;
+			this.nsmgr = nsmgr;
+			this.tokens = tokens;
+		}
+
+		WSSecurityMessageHeader header;
+		SecurityTokenSerializer serializer;
+		SecurityTokenResolver resolver;
+		XmlDocument doc;
+		XmlNamespaceManager nsmgr;
+		List<SecurityToken> tokens;
+		Dictionary<string, EncryptedData> encryptedDataList =
+			new Dictionary<string, EncryptedData> ();
+
+		public void ReadContents (XmlReader reader)
+		{
 			DerivedKeySecurityToken currentToken = null;
 
 			reader.MoveToContent ();
@@ -56,105 +77,244 @@ namespace System.ServiceModel.Channels
 				reader.MoveToContent ();
 				if (reader.NodeType == XmlNodeType.EndElement)
 					break;
-				if (reader.NodeType != XmlNodeType.Element)
-					throw new XmlException (String.Format ("Node type {0} is not expected as a WS-Security message header content.", reader.NodeType));
-				switch (reader.NamespaceURI) {
-				case Constants.WsuNamespace:
-					switch (reader.LocalName) {
-					case "Timestamp":
-						ret.Contents.Add (ReadTimestamp (reader));
-						continue;
-					}
-					break;
-				//case Constants.WstNamespace:
-				case Constants.Wss11Namespace:
-					if (reader.LocalName == "SignatureConfirmation") {
-						ret.Contents.Add (ReadSignatureConfirmation (reader, doc));
-						continue;
-					}
-					break;
-				case SignedXml.XmlDsigNamespaceUrl:
-					switch (reader.LocalName) {
-					case "Signature":
-						WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
-						sxml.Signature.LoadXml ((XmlElement) doc.ReadNode (reader));
-						UpdateSignature (sxml.Signature, doc, serializer);
-						ret.Contents.Add (sxml);
-						continue;
-					}
-					break;
-				case EncryptedXml.XmlEncNamespaceUrl:
-					switch (reader.LocalName) {
-					case "EncryptedData":
-						EncryptedData ed = new EncryptedData ();
-						ed.LoadXml ((XmlElement) doc.ReadNode (reader));
-						ret.Contents.Add (ed);
-						continue;
-					case "ReferenceList":
-						ReferenceList rl = new ReferenceList ();
-						reader.Read ();
-						for (reader.MoveToContent ();
-						     reader.NodeType != XmlNodeType.EndElement;
-						     reader.MoveToContent ()) {
-							switch (reader.LocalName) {
-							case "DataReference":
-								DataReference dref = new DataReference ();
-								dref.LoadXml ((XmlElement) doc.ReadNode (reader));
-								rl.Add (dref);
-								continue;
-							case "KeyReference":
-								KeyReference kref = new KeyReference ();
-								kref.LoadXml ((XmlElement) doc.ReadNode (reader));
-								rl.Add (kref);
-								continue;
-							}
-							throw new XmlException (String.Format ("Unexpected {2} node '{0}' in namespace '{1}' in ReferenceList.", reader.Name, reader.NamespaceURI, reader.NodeType));
-						}
-						reader.ReadEndElement ();
-						if (currentToken != null)
-							currentToken.ReferenceList = rl;
-						ret.Contents.Add (rl);
-						continue;
-					}
-					break;
+				object o = ReadContent (reader);
+				if (o is EncryptedData) {
+					EncryptedData ed = (EncryptedData) o;
+					encryptedDataList [ed.Id] = ed;
 				}
-				// SecurityTokenReference will be handled here.
-				// This order (Token->KeyIdentifierClause) is
-				// important because WrappedKey could be read
-				// in both context (but must be a token here).
-				if (serializer.CanReadToken (reader)) {
-					SecurityToken token = serializer.ReadToken (reader, resolver);
-					if (token is DerivedKeySecurityToken)
-						currentToken = token as DerivedKeySecurityToken;
-					tokens.Add (token);
-					ret.Contents.Add (token);
+				else if (o is ReferenceList && currentToken != null)
+					currentToken.ReferenceList = (ReferenceList) o;
+				else if (o is SecurityToken) {
+					if (o is DerivedKeySecurityToken)
+						currentToken = o as DerivedKeySecurityToken;
+					tokens.Add ((SecurityToken) o);
 				}
-				else if (serializer.CanReadKeyIdentifierClause (reader))
-					ret.Contents.Add (serializer.ReadKeyIdentifierClause (reader));
-				else
-					throw new XmlException (String.Format ("Unexpected element '{0}' in namespace '{1}' as a WS-Security message header content.", reader.Name, reader.NamespaceURI));
+				header.Contents.Add (o);
 			} while (true);
 			reader.ReadEndElement ();
-
-			return ret;
 		}
 
-		internal static void UpdateSignature (Signature sig, XmlDocument doc, SecurityTokenSerializer serializer)
+		object ReadContent (XmlReader reader)
+		{
+			reader.MoveToContent ();
+			if (reader.NodeType != XmlNodeType.Element)
+				throw new XmlException (String.Format ("Node type {0} is not expected as a WS-Security message header content.", reader.NodeType));
+			switch (reader.NamespaceURI) {
+			case Constants.WsuNamespace:
+				switch (reader.LocalName) {
+				case "Timestamp":
+					return ReadTimestamp (reader);
+				}
+				break;
+			//case Constants.WstNamespace:
+			case Constants.Wss11Namespace:
+				if (reader.LocalName == "SignatureConfirmation") {
+					return ReadSignatureConfirmation (reader, doc);
+				}
+				break;
+			case SignedXml.XmlDsigNamespaceUrl:
+				switch (reader.LocalName) {
+				case "Signature":
+					WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
+					sxml.Signature.LoadXml ((XmlElement) doc.ReadNode (reader));
+					UpdateSignatureKeyInfo (sxml.Signature, doc, serializer);
+					return sxml;
+				}
+				break;
+			case EncryptedXml.XmlEncNamespaceUrl:
+				switch (reader.LocalName) {
+				case "EncryptedData":
+					XmlElement el = (XmlElement) doc.ReadNode (reader);
+					return CreateEncryptedData (el);
+				case "ReferenceList":
+					ReferenceList rl = new ReferenceList ();
+					reader.Read ();
+					for (reader.MoveToContent ();
+					     reader.NodeType != XmlNodeType.EndElement;
+					     reader.MoveToContent ()) {
+						switch (reader.LocalName) {
+						case "DataReference":
+							DataReference dref = new DataReference ();
+							dref.LoadXml ((XmlElement) doc.ReadNode (reader));
+							rl.Add (dref);
+							continue;
+						case "KeyReference":
+							KeyReference kref = new KeyReference ();
+							kref.LoadXml ((XmlElement) doc.ReadNode (reader));
+							rl.Add (kref);
+							continue;
+						}
+						throw new XmlException (String.Format ("Unexpected {2} node '{0}' in namespace '{1}' in ReferenceList.", reader.Name, reader.NamespaceURI, reader.NodeType));
+					}
+					reader.ReadEndElement ();
+					return rl;
+				}
+				break;
+			}
+			// SecurityTokenReference will be handled here.
+			// This order (Token->KeyIdentifierClause) is
+			// important because WrappedKey could be read
+			// in both context (but must be a token here).
+			if (serializer.CanReadToken (reader))
+				return serializer.ReadToken (reader, resolver);
+			else if (serializer.CanReadKeyIdentifierClause (reader))
+				return serializer.ReadKeyIdentifierClause (reader);
+			else
+				throw new XmlException (String.Format ("Unexpected element '{0}' in namespace '{1}' as a WS-Security message header content.", reader.Name, reader.NamespaceURI));
+		}
+
+		void UpdateSignatureKeyInfo (Signature sig, XmlDocument doc, SecurityTokenSerializer serializer)
 		{
 			KeyInfo ki = new KeyInfo ();
 			ki.Id = sig.KeyInfo.Id;
 			foreach (KeyInfoClause kic in sig.KeyInfo) {
-				KeyInfoNode kin = kic as KeyInfoNode;
-				if (kin != null) {
-					SecurityTokenReferenceKeyInfo r = new SecurityTokenReferenceKeyInfo (serializer, doc);
-					r.LoadXml (kin.Value);
-					ki.AddClause (r);
-				}
-				else
-					ki.AddClause (kic);
+				SecurityTokenReferenceKeyInfo r = new SecurityTokenReferenceKeyInfo (serializer, doc);
+				r.LoadXml (kic.GetXml ());
+				ki.AddClause (r);
 			}
 			sig.KeyInfo = ki;
 		}
+
+		#region Decryption
+
+		// returns the protection token
+		public void DecryptSecurity (SecureMessageDecryptor decryptor, WrappedKeySecurityToken wk, byte [] dummyEncKey)
+		{
+			WSEncryptedXml encXml = new WSEncryptedXml (nsmgr, doc);
+
+			// default, unless overriden by the default DerivedKeyToken.
+			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
+			aes.Mode = CipherMode.CBC;
+
+			SymmetricSecurityKey sym = wk != null ? wk.SecurityKeys [0] as SymmetricSecurityKey : null;
+			if (sym == null)
+				throw new MessageSecurityException ("Cannot find the encryption key in this message and context");
+
+			// decrypt the body with the decrypted key
+			Collection<string> references = new Collection<string> ();
+
+			foreach (ReferenceList rlist in header.FindAll<ReferenceList> ())
+				foreach (EncryptedReference encref in rlist)
+					references.Add (StripUri (encref.Uri));
+
+			if (wk != null)
+				foreach (EncryptedReference er in wk.ReferenceList)
+					references.Add (StripUri (er.Uri));
+
+			Collection<XmlElement> list = new Collection<XmlElement> ();
+			foreach (string uri in references) {
+				XmlElement el = encXml.GetIdElement (doc, uri);
+				if (el != null)
+					list.Add (el);
+				else
+					throw new MessageSecurityException (String.Format ("On decryption, EncryptedData with Id '{0}', referenced by ReferenceData, was not found.", uri));
+			}
+
+			foreach (XmlElement el in list) {
+				EncryptedData ed2 = CreateEncryptedData (el);
+				byte [] key = GetEncryptionKeyForData (ed2, encXml, dummyEncKey);
+				aes.Key = key != null ? key : sym.GetSymmetricKey ();
+				byte [] decrypted = DecryptData (encXml, ed2, aes);
+				encXml.ReplaceData (el, decrypted);
+				EncryptedData existing;
+				// if it was a header content, replace 
+				// corresponding one.
+				if (encryptedDataList.TryGetValue (ed2.Id, out existing)) {
+					// FIXME: it is kind of extraneous and could be replaced by XmlNodeReader
+//Console.WriteLine ("DECRYPTED EncryptedData:");
+//Console.WriteLine (Encoding.UTF8.GetString (decrypted));
+					object o = ReadContent (XmlReader.Create (new MemoryStream (decrypted)));
+					header.Contents.Remove (existing);
+					header.Contents.Add (o);
+				}
+			}
+/*
+Console.WriteLine ("======== Decrypted Document ========");
+doc.PreserveWhitespace = false;
+doc.Save (Console.Out);
+doc.PreserveWhitespace = true;
+*/
+		}
+
+		EncryptedData CreateEncryptedData (XmlElement el)
+		{
+			EncryptedData ed = new EncryptedData ();
+			ed.LoadXml (el);
+			if (ed.Id == null)
+				ed.Id = el.GetAttribute ("Id", Constants.WsuNamespace);
+			return ed;
+		}
+
+		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml, byte [] dummyEncKey)
+		{
+			// Since ReferenceList could be embedded directly in wss_header without
+			// key indication, it must iterate all the derived keys to find out
+			// appropriate one.
+			foreach (DerivedKeySecurityToken dk in header.FindAll<DerivedKeySecurityToken> ()) {
+				if (dk.ReferenceList == null)
+					continue;
+				foreach (DataReference dr in dk.ReferenceList)
+					if (StripUri (dr.Uri) == ed2.Id)
+						return ((SymmetricSecurityKey) dk.SecurityKeys [0]).GetSymmetricKey ();
+			}
+			foreach (WrappedKeySecurityToken wk in header.FindAll<WrappedKeySecurityToken> ()) {
+				if (wk.ReferenceList == null)
+					continue;
+				foreach (DataReference dr in wk.ReferenceList)
+					if (StripUri (dr.Uri) == ed2.Id)
+						return ((SymmetricSecurityKey) wk.SecurityKeys [0]).GetSymmetricKey ();
+			}
+
+			if (ed2.KeyInfo == null)
+				return null;
+			foreach (KeyInfoClause kic in ed2.KeyInfo) {
+				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ()));
+
+#if true // FIXME: this is the same workaround as we have for resolving signing key, as noted above.
+				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
+				if (eskic != null)
+					return dummyEncKey;
+#endif
+
+				SecurityKey skey = null;
+				if (!resolver.TryResolveSecurityKey (skic, out skey))
+					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", skic));
+				SymmetricSecurityKey ssk = skey as SymmetricSecurityKey;
+				if (ssk != null)
+					return ssk.GetSymmetricKey ();
+			}
+			return null; // no applicable key info clause.
+		}
+
+		// Probably it is a bug in .NET, but sometimes it does not contain
+		// proper padding bytes. For such cases, use PaddingMode.None
+		// instead. It must not be done in EncryptedXml class as it
+		// correctly rejects improper ISO10126 padding.
+		byte [] DecryptData (EncryptedXml encXml, EncryptedData ed, SymmetricAlgorithm symAlg)
+		{
+			PaddingMode bak = symAlg.Padding;
+			try {
+				byte [] bytes = ed.CipherData.CipherValue;
+
+				if (encXml.Padding != PaddingMode.None &&
+				    encXml.Padding != PaddingMode.Zeros &&
+				    bytes [bytes.Length - 1] > symAlg.BlockSize / 8)
+					symAlg.Padding = PaddingMode.None;
+				return encXml.DecryptData (ed, symAlg);
+			} finally {
+				symAlg.Padding = bak;
+			}
+		}
+
+		string StripUri (string src)
+		{
+			if (src == null || src.Length == 0)
+				return String.Empty;
+			if (src [0] != '#')
+				throw new NotSupportedException (String.Format ("Non-fragment URI in DataReference and KeyReference is not supported: '{0}'", src));
+			return src.Substring (1);
+		}
+		#endregion
 
 		static Wss11SignatureConfirmation ReadSignatureConfirmation (XmlReader reader, XmlDocument doc)
 		{
@@ -164,7 +324,7 @@ namespace System.ServiceModel.Channels
 			return new Wss11SignatureConfirmation (id, value);
 		}
 
-		static WsuTimestamp ReadTimestamp (XmlDictionaryReader reader)
+		static WsuTimestamp ReadTimestamp (XmlReader reader)
 		{
 			WsuTimestamp ret = new WsuTimestamp ();
 			ret.Id = reader.GetAttribute ("Id", Constants.WsuNamespace);
@@ -193,7 +353,10 @@ namespace System.ServiceModel.Channels
 			reader.ReadEndElement (); // </u:Timestamp>
 			return ret;
 		}
+	}
 
+	internal class WSSecurityMessageHeader : MessageHeader
+	{
 		public WSSecurityMessageHeader (SecurityTokenSerializer serializer)
 		{
 			this.serializer = serializer;

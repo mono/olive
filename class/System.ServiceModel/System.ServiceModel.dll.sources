@@ -198,6 +198,7 @@ System.ServiceModel.Channels/TransportBindingElementImporter.cs
 System.ServiceModel.Channels/TransportSecurityBindingElement.cs
 System.ServiceModel.Channels/UnderstoodHeaders.cs
 System.ServiceModel.Channels/UseManagedPresentationBindingElement.cs
+System.ServiceModel.Channels/WSEncryptedXml.cs
 System.ServiceModel.Channels/WSSecurityMessageHeader.cs
 System.ServiceModel.Channels/WSSignedXml.cs
 System.ServiceModel.Channels/WindowsStreamSecurityBindingElement.cs

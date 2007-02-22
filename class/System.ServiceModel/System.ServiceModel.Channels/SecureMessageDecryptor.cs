@@ -119,6 +119,7 @@ namespace System.ServiceModel.Channels
 		SecurityMessageProperty sec_prop =
 			new SecurityMessageProperty ();
 		WSSecurityMessageHeader wss_header = null;
+		WSSecurityMessageHeaderReader wss_header_reader;
 		List<MessageHeaderInfo> headers = new List<MessageHeaderInfo> ();
 		SecurityTokenResolver token_resolver;
 		List<SecurityToken> tokens;
@@ -168,14 +169,14 @@ namespace System.ServiceModel.Channels
 			using (XmlWriter writer = nav.AppendChild ()) {
 				buf.CreateMessage ().WriteMessage (writer);
 			}
+doc.PreserveWhitespace = false;
+doc.Save (Console.Out);
+doc.PreserveWhitespace = true;
 
 			// read and store headers, wsse:Security and setup in-band resolver.
 			ReadHeaders (srcmsg);
 
-			XmlNodeList securityHeaders = doc.SelectNodes ("/s:Envelope/s:Header/o:Security", nsmgr);
-			foreach (XmlElement secElem in securityHeaders)
-				// FIXME: check Actor. There is only one o:Security which we should handle.
-				ExtractSecurity (secElem);
+			ExtractSecurity ();
 
 			Message msg = Message.CreateMessage (new XmlNodeReader (doc), srcmsg.Headers.Count, srcmsg.Version);
 			for (int i = 0; i < srcmsg.Headers.Count; i++) {
@@ -219,9 +220,9 @@ namespace System.ServiceModel.Channels
 				// MessageHeaderDescription.Actor needs to be accessible from here.
 				if (header.Namespace == Constants.WssNamespace &&
 				    header.Name == "Security") {
-					wss_header = WSSecurityMessageHeader.Read (
-						srcmsg.Headers.GetReaderAtHeader (i),
-						serializer, TokenResolver, doc, nsmgr, tokens);
+					wss_header = new WSSecurityMessageHeader (null);
+					wss_header_reader = new WSSecurityMessageHeaderReader (wss_header, serializer, token_resolver, doc, nsmgr, tokens);
+					wss_header_reader.ReadContents (srcmsg.Headers.GetReaderAtHeader (i));
 					headers.Add (wss_header);
 				}
 				else
@@ -231,60 +232,23 @@ namespace System.ServiceModel.Channels
 				throw new InvalidOperationException ("In this service contract, a WS-Security header is required in the Message, but was not found.");
 		}
 
-		void ExtractSecurity (XmlElement secElem)
+		void ExtractSecurity ()
 		{
-			// decrypt the key with service certificate privkey
-			EncryptedXml encXml = new EncryptedXml (doc);
-
 			if (security.MessageProtectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature &&
 			    wss_header.Find<SignedXml> () != null)
 				throw new MessageSecurityException ("The security binding element expects that the message signature is encrypted, while it isn't.");
-
-			byte [] decryptedKey = RequestSecurity != null ? RequestSecurity.EncryptionKey : null; // default
-			// default, unless overriden by the default DerivedKeyToken.
-			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
-			aes.Mode = CipherMode.CBC;
 
 			WrappedKeySecurityToken wk = wss_header.Find<WrappedKeySecurityToken> ();
 			DerivedKeySecurityToken dk = wss_header.Find<DerivedKeySecurityToken> ();
 			if (wk != null) {
 				if (Parameters.RequireDerivedKeys && dk == null)
 					throw new MessageSecurityException ("DerivedKeyToken is required in this contract, but was not found in the message");
-				SymmetricSecurityKey sym = wk.SecurityKeys [0] as SymmetricSecurityKey;
-				decryptedKey = sym.GetSymmetricKey ();
 			}
+			else
+				// FIXME: this is kind of hack for symmetric reply processing.
+				wk = RequestSecurity.ProtectionToken != null ? RequestSecurity.ProtectionToken.SecurityToken as WrappedKeySecurityToken : null;
 
-			// decrypt the body with the decrypted key
-			Collection<string> references = new Collection<string> ();
-
-			foreach (XmlElement rlist in secElem.SelectNodes ("e:ReferenceList", nsmgr))
-				foreach (XmlElement encref in rlist.SelectNodes ("e:DataReference | e:KeyReference", nsmgr))
-					references.Add (StripUri (encref.GetAttribute ("URI")));
-			if (wk != null)
-				foreach (EncryptedReference er in wk.ReferenceList)
-					references.Add (StripUri (er.Uri));
-
-			Collection<XmlElement> list = new Collection<XmlElement> ();
-			foreach (string uri in references) {
-				XmlElement el = doc.SelectSingleNode ("//e:EncryptedData [@Id='" + uri + "' or @u:Id='" + uri + "']", nsmgr) as XmlElement;
-				if (el != null)
-					list.Add (el);
-				else
-					throw new MessageSecurityException (String.Format ("On decryption, EncryptedData with Id '{0}', referenced by ReferenceData, was not found.", uri));
-			}
-
-			foreach (XmlElement el in list) {
-				EncryptedData ed2 = new EncryptedData ();
-				ed2.LoadXml (el);
-				byte [] key = GetEncryptionKeyForData (ed2, encXml);
-				aes.Key = key != null ? key : decryptedKey;
-				encXml.ReplaceData (el, DecryptLax (encXml, ed2, aes));
-			}
-
-Console.WriteLine ("======== Decrypted Document ========");
-doc.PreserveWhitespace = false;
-doc.Save (Console.Out);
-doc.PreserveWhitespace = true;
+			wss_header_reader.DecryptSecurity (this, wk, RequestSecurity != null ? RequestSecurity.EncryptionKey : null);
 
 			// signature confirmation
 			WSSignedXml sxml = wss_header.Find<WSSignedXml> ();
@@ -342,7 +306,7 @@ doc.PreserveWhitespace = true;
 			if (Direction == MessageDirection.Input)
 				ProcessSupportingTokens (sxml);
 
-			sec_prop.EncryptionKey = decryptedKey;
+			sec_prop.EncryptionKey = ((SymmetricSecurityKey) wk.SecurityKeys [0]).GetSymmetricKey ();
 			sec_prop.ConfirmedSignatures.Add (Convert.ToBase64String (sxml.SignatureValue));
 		}
 
@@ -437,72 +401,6 @@ doc.PreserveWhitespace = true;
 		}
 
 		#endregion
-
-		byte [] GetEncryptionKeyForData (EncryptedData ed2, EncryptedXml encXml)
-		{
-			// Since ReferenceList could be embedded directly in wss_header without
-			// key indication, it must iterate all the derived keys to find out
-			// appropriate one.
-			foreach (DerivedKeySecurityToken dk in wss_header.FindAll<DerivedKeySecurityToken> ()) {
-				if (dk.ReferenceList == null)
-					continue;
-				foreach (DataReference dr in dk.ReferenceList)
-					if (StripUri (dr.Uri) == ed2.Id)
-						return ((SymmetricSecurityKey) dk.SecurityKeys [0]).GetSymmetricKey ();
-			}
-
-			SecurityTokenSerializer serializer =
-				security.TokenSerializer;
-
-			if (ed2.KeyInfo == null)
-				return null;
-			foreach (KeyInfoClause kic in ed2.KeyInfo) {
-				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ()));
-
-#if true // FIXME: this is the same workaround as we have for resolving signing key, as noted above.
-				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
-				if (eskic != null)
-					return RequestSecurity != null ? RequestSecurity.EncryptionKey : null;
-#endif
-
-				SecurityKey skey = null;
-				if (!TokenResolver.TryResolveSecurityKey (skic, out skey))
-					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", skic));
-				SymmetricSecurityKey ssk = skey as SymmetricSecurityKey;
-				if (ssk != null)
-					return ssk.GetSymmetricKey ();
-			}
-			return null; // no applicable key info clause.
-		}
-
-		string StripUri (string src)
-		{
-			if (src == null || src.Length == 0)
-				return String.Empty;
-			if (src [0] != '#')
-				throw new NotSupportedException (String.Format ("Non-fragment URI in DataReference and KeyReference is not supported: '{0}'", src));
-			return src.Substring (1);
-		}
-
-		// Probably it is a bug in .NET, but sometimes it does not contain
-		// proper padding bytes. For such cases, use PaddingMode.None
-		// instead. It must not be done in EncryptedXml class as it
-		// correctly rejects improper ISO10126 padding.
-		byte [] DecryptLax (EncryptedXml encXml, EncryptedData ed, SymmetricAlgorithm symAlg)
-		{
-			PaddingMode bak = symAlg.Padding;
-			try {
-				byte [] bytes = ed.CipherData.CipherValue;
-
-				if (encXml.Padding != PaddingMode.None &&
-				    encXml.Padding != PaddingMode.Zeros &&
-				    bytes [bytes.Length - 1] > symAlg.BlockSize / 8)
-					symAlg.Padding = PaddingMode.None;
-				return encXml.DecryptData (ed, symAlg);
-			} finally {
-				symAlg.Padding = bak;
-			}
-		}
 
 		string GetAction ()
 		{

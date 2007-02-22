@@ -1,3 +1,12 @@
+2007-02-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageDecryptor.cs, WSSecurityMessageHeader.cs :
+	  moved decryption part from former file to latter file, to reuse
+	  SignedXml instance (though now I doubt how it actually was good)
+	  which in turn required to replace EncryptedData in
+	  WSSecurityMessageHeader with decrypted one.
+	* WSEncryptedXml.cs : similar to WSSignedXml.cs, to handle wsu:Id.
+
 2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : when we create DerivedKeyToken, those
