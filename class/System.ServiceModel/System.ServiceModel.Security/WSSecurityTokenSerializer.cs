@@ -287,10 +287,18 @@ namespace System.ServiceModel.Security
 			switch (reader.LocalName) {
 			case "Reference":
 				Type ownerType = null;
+				// FIXME: there could be more token types.
 				if (reader.MoveToAttribute ("ValueType")) {
-					if (reader.Value != Constants.WSSEncryptedKeyToken)
-						throw new XmlException ("Unexpected ValueType in 'Reference' element");
-					ownerType = typeof (WrappedKeySecurityToken);
+					switch (reader.Value) {
+					case Constants.WSSEncryptedKeyToken:
+						ownerType = typeof (WrappedKeySecurityToken);
+						break;
+					case Constants.WSSX509Token:
+						ownerType = typeof (X509SecurityToken);
+						break;
+					default:
+						throw new XmlException (String.Format ("Unexpected ValueType in 'Reference' element: '{0}'", reader.Value));
+					}
 				}
 				reader.MoveToElement ();
 				string uri = reader.GetAttribute ("URI");

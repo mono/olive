@@ -1,3 +1,8 @@
+2007-02-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : there could be more types than
+	  EncryptedKey type that could be indicated by ValueType attribute.
+
 2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializer.cs : read/write DerivedKeyToken.
