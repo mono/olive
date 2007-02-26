@@ -115,7 +115,7 @@ namespace System.ServiceModel.Channels
 			case SignedXml.XmlDsigNamespaceUrl:
 				switch (reader.LocalName) {
 				case "Signature":
-					WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
+					WSSignedXml sxml = new WSSignedXml (doc);
 					sxml.Signature.LoadXml ((XmlElement) doc.ReadNode (reader));
 					UpdateSignatureKeyInfo (sxml.Signature, doc, serializer);
 					return sxml;
@@ -180,7 +180,7 @@ namespace System.ServiceModel.Channels
 		// returns the protection token
 		public void DecryptSecurity (SecureMessageDecryptor decryptor, WrappedKeySecurityToken wk, byte [] dummyEncKey)
 		{
-			WSEncryptedXml encXml = new WSEncryptedXml (nsmgr, doc);
+			WSEncryptedXml encXml = new WSEncryptedXml (doc);
 
 			// default, unless overriden by the default DerivedKeyToken.
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key

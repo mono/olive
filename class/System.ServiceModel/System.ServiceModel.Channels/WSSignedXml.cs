@@ -34,23 +34,33 @@ namespace System.ServiceModel.Channels
 	// See http://blogs.msdn.com/shawnfa/archive/2004/04/05/108098.aspx :)
 	class WSSignedXml : SignedXml
 	{
-		XmlNamespaceManager nsmgr;
-
-		public WSSignedXml (XmlNamespaceManager nsmgr)
+		public WSSignedXml ()
 		{
-			this.nsmgr = nsmgr;
 		}
 
-		public WSSignedXml (XmlNamespaceManager nsmgr, XmlDocument doc)
+		public WSSignedXml (XmlDocument doc)
 			: base (doc)
 		{
-			this.nsmgr = nsmgr;
 		}
 
 		public override XmlElement GetIdElement (XmlDocument doc, string id)
 		{
-			XmlElement el = doc.SelectSingleNode ("//*[@u:Id = '" + id + "']", nsmgr) as XmlElement;
-			return el != null ? el : base.GetIdElement (doc, id);
+			return SearchChildren (doc, id);
+		}
+
+		XmlElement SearchChildren (XmlNode node, string id)
+		{
+			for (XmlNode n = node.FirstChild; n != null; n = n.NextSibling) {
+				XmlElement el = n as XmlElement;
+				if (el == null)
+					continue;
+				if (el.GetAttribute ("Id", Constants.WsuNamespace) == id || el.GetAttribute ("Id") == id)
+					return el;
+				XmlElement el2 = SearchChildren (el, id);
+				if (el2 != null)
+					return el2;
+			}
+			return null;
 		}
 	}
 }

@@ -383,7 +383,7 @@ doc.PreserveWhitespace = true;
 					if (optional)
 						continue;
 					else
-						throw new MessageSecurityException ("Security token '{0}' cannot be validated according to the security settings.");
+						throw new MessageSecurityException (String.Format ("No security token could be validated for authenticator '{0}' which is indicated by the security token parameters", a));
 				}
 				sec_prop.IncomingSupportingTokens.Add (spec);
 			}
