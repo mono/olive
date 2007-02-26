@@ -1,3 +1,11 @@
+2007-02-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc3.exe.config, samplesvc8.exe.config,
+	  samplesvc9.exe.config : trace helpers.
+	* test.cer, test2.pfx : forgot to add.
+	* samplesvc9.cs, samplecli9.cs : SignedEncrypted token sample.
+	* Makefile : added new test.
+
 2007-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplecli4.cs : make it more strict to verify x509 tokens.
