@@ -30,6 +30,7 @@ using System.Collections.ObjectModel;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net.Security;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
@@ -53,6 +54,7 @@ namespace System.ServiceModel.Channels
 		public SecurityToken Token;
 		public SecurityTokenAttachmentMode Mode;
 		public bool IsOptional;
+		public EncryptedData Encrypted;
 	}
 
 	internal class SupportingTokenInfoCollection : Collection<SupportingTokenInfo>

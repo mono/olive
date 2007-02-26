@@ -298,19 +298,6 @@ if (!ShouldOutputEncryptedKey)
 				foreach (string value in secprop.ConfirmedSignatures)
 					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
 
-			SupportingTokenInfoCollection tokenInfos =
-				Direction == MessageDirection.Input ?
-				security.CollectSupportingTokens (GetAction ()) :
-				new SupportingTokenInfoCollection (); // empty
-			foreach (SupportingTokenInfo tokenInfo in tokenInfos)
-				if (tokenInfo.Mode != SecurityTokenAttachmentMode.Endorsing)
-					header.Contents.Add (tokenInfo.Token);
-
-			// populate DOM to sign.
-			XPathNavigator nav = doc.CreateNavigator ();
-			using (XmlWriter w = nav.AppendChild ()) {
-				msg.WriteMessage (w);
-			}
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
 			nsmgr.AddNamespace ("o", Constants.WssNamespace);
@@ -327,9 +314,6 @@ if (!ShouldOutputEncryptedKey)
 			List<DerivedKeySecurityToken> derivedKeys =
 				new List<DerivedKeySecurityToken> ();
 
-			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
-			string bodyId = null;
-
 			SymmetricAlgorithm masterKey = new RijndaelManaged ();
 			masterKey.KeySize = suite.DefaultSymmetricKeyLength;
 			masterKey.Mode = CipherMode.CBC;
@@ -339,7 +323,7 @@ if (!ShouldOutputEncryptedKey)
 			// FIXME: use specified hash algorithm in the SecurityAlgorithmSuite.
 			HMAC sha1 = HMACSHA1.Create ();
 			sha1.Initialize ();
-{
+
 			// 2. [Encryption Token]
 
 			// SecurityTokenInclusionMode
@@ -376,6 +360,10 @@ else
 				encToken,
 				encClause != null ? new SecurityKeyIdentifier (encClause) : null);
 
+			// If it reuses request's encryption key, do not output.
+			if (ShouldOutputEncryptedKey)
+				header.Contents.Add (primaryToken);
+
 			actualToken = primaryToken;
 
 			// FIXME: I doubt it is correct...
@@ -406,7 +394,38 @@ else
 				actualToken = dkeyToken;
 				actualKey.Key = ((SymmetricSecurityKey) dkeyToken.SecurityKeys [0]).GetSymmetricKey ();
 				actualClause = new LocalIdKeyIdentifierClause (dkeyToken.Id);
+				header.Contents.Add (dkeyToken);
 			}
+
+			ReferenceList refList = new ReferenceList ();
+			// When encrypted with DerivedKeyToken, put
+			// references inside o:Security, not inside
+			// EncryptedKey.
+			if (CounterParameters.RequireDerivedKeys)
+				//dkeyToken.ReferenceList = refList;
+				header.Contents.Add (refList);
+			else
+				primaryToken.ReferenceList = refList;
+
+			SupportingTokenInfoCollection tokenInfos =
+				Direction == MessageDirection.Input ?
+				security.CollectSupportingTokens (GetAction ()) :
+				new SupportingTokenInfoCollection (); // empty
+
+			foreach (SupportingTokenInfo tinfo in tokenInfos) {
+				if (tinfo.Mode == SecurityTokenAttachmentMode.Endorsing)
+					continue;
+				header.Contents.Add (tinfo.Token);
+			}
+
+			// populate DOM to sign.
+			XPathNavigator nav = doc.CreateNavigator ();
+			using (XmlWriter w = nav.AppendChild ()) {
+				msg.WriteMessage (w);
+			}
+
+			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
+			string bodyId = null;
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -416,12 +435,20 @@ else
 			case MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature:
 
 				// sign
-				WSSignedXml sxml = new WSSignedXml (nsmgr, doc);
+				// see clause 8 of WS-SecurityPolicy C.2.2
+				WSSignedXml sxml = new WSSignedXml (doc);
 				SecurityTokenReferenceKeyInfo sigKeyInfo;
 
 				sig = sxml.Signature;
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
+				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/u:Timestamp", nsmgr))
+					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
+				foreach (SupportingTokenInfo tinfo in tokenInfos)
+					if (tinfo.Mode != SecurityTokenAttachmentMode.Endorsing) {
+						XmlElement el = sxml.GetIdElement (doc, tinfo.Token.Id);
+						CreateReference (sig, el, el.GetAttribute ("Id", Constants.WsuNamespace));
+					}
 				XmlNodeList nodes = doc.SelectNodes ("/s:Envelope/s:Header/*", nsmgr);
 				for (int i = 0; i < msg.Headers.Count; i++) {
 					MessageHeaderInfo h = msg.Headers [i];
@@ -438,8 +465,6 @@ else
 					bodyId = GenerateId (doc);
 					CreateReference (sig, body.ParentNode as XmlElement, bodyId);
 				}
-				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/*", nsmgr))
-					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
 
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
 					sha1.Key = actualKey.Key;
@@ -461,15 +486,7 @@ else
 
 				// encrypt
 
-				EncryptedXml exml = new EncryptedXml ();
-				ReferenceList refList = new ReferenceList ();
-				// When encrypted with DerivedKeyToken, put
-				// references inside o:Security, not inside
-				// EncryptedKey.
-				if (CounterParameters.RequireDerivedKeys)
-					dkeyToken.ReferenceList = refList;
-				else
-					primaryToken.ReferenceList = refList;
+				WSEncryptedXml exml = new WSEncryptedXml (doc);
 
 				EncryptedData edata = Encrypt (body, actualKey, actualToken.Id, refList, actualClause, exml, doc);
 				EncryptedXml.ReplaceElement (body, edata, false);
@@ -479,26 +496,31 @@ else
 					XmlElement sigxml = sig.GetXml ();
 					sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
 				}
+
+				// encrypt Encrypted supporting tokens
+				foreach (SupportingTokenInfo tinfo in tokenInfos) {
+					if (tinfo.Mode == SecurityTokenAttachmentMode.SignedEncrypted) {
+						XmlElement el = exml.GetIdElement (doc, tinfo.Token.Id);
+						tinfo.Encrypted = Encrypt (el, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+						EncryptedXml.ReplaceElement (el, tinfo.Encrypted, false);
+						header.Contents.Insert (header.Contents.IndexOf (tinfo.Token), tinfo.Encrypted);
+						header.Contents.Remove (tinfo.Token);
+					}
+				}
 				break;
 			}
 
-			if (sig != null && includeSigToken)
+			if (includeSigToken)
 				header.Contents.Add (signToken);
-			if (signToken != encToken && includeEncToken)
-				header.Contents.Add (encToken);
-
-}
+			//if (signToken != encToken && includeEncToken)
+			//	header.Contents.Add (encToken);
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
 			ret.Properties.Security = (SecurityMessageProperty) secprop.CreateCopy ();
 			ret.Properties.Security.EncryptionKey = masterKey.Key;
 			ret.BodyId = bodyId;
 
-			// FIXME: set below items:
-			//	- ExternalAuthorizationPolicies
-			//	- IncomingSupportingTokens (? only for incoming?)
-			//	- TransportToken (can we support it here?)
-			//	- ServiceSecurityContext
+			// FIXME: can we support TransportToken here?
 			if (element is AsymmetricSecurityBindingElement) {
 				ret.Properties.Security.InitiatorToken = new SecurityTokenSpecification (encToken, null); // FIXME: second argument
 				ret.Properties.Security.InitiatorToken = new SecurityTokenSpecification (signToken, null); // FIXME: second argument
@@ -511,13 +533,15 @@ else
 
 			// FIXME: Header contents should be:
 			//	- Timestamp
+			//	- SignatureConfirmation if required
 			//	- EncryptionToken if included
 			//	- derived key token for EncryptionToken
 			//	- ReferenceList for encrypted items
 			//	- signed supporting tokens
 			//	- signed endorsing supporting tokens
-			//	- Signature Token if != EncryptionToken
-			//	- derived key token for SignatureToken
+			//	(i.e. Signed/SignedEncrypted/SignedEndorsing)
+			//	- Signature Token if different from enc token.
+			//	- derived key token for sig token if different
 			//	- Signature for:
 			//		- Timestamp
 			//		- supporting tokens (regardless of
@@ -529,16 +553,6 @@ else
 			//	  for every endorsing token and signed
 			//	  endorsing token.
 			//	
-
-			// If it reuses request's encryption key, do not output.
-			if (ShouldOutputEncryptedKey)
-				header.Contents.Add (primaryToken);
-
-			foreach (DerivedKeySecurityToken dk in derivedKeys) {
-				header.Contents.Add (dk);
-				if (dk.ReferenceList != null)
-					header.Contents.Add (dk.ReferenceList);
-			}
 
 			// When we do not output EncryptedKey, output ReferenceList here.
 			if (!ShouldOutputEncryptedKey)
