@@ -21,6 +21,8 @@ SUBDIRS = \
 
 dist-local: dist-default
 
+DISTFILES = msfinal.pub
+
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):
 	@:

@@ -12,6 +12,8 @@ all-recursive $(STD_TARGETS:=-recursive): platform-check profile-check
 all-local $(STD_TARGETS:=-local):
 	@:
 
+DISTFILES = README configure mkinstalldirs
+
 # fun specialty targets
 
 PROFILES = default net_2_0

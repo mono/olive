@@ -2,6 +2,7 @@
 
 	* scripts/Makefile: add script.in to DISTFILES and use
 	correct DISTFILES target
+	* Makefile: update missing files from DISTFILES
 
 2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
 
