@@ -10,7 +10,7 @@ scripts_3_0 = \
 	sts			\
 	svcutil
 
-EXTRA_DIST =                   \
+DISTFILES =			\
 	script.in
 
 # FIXME: if we still want to use mint then we need switch like mono/scripts/Makefile.am
@@ -50,3 +50,4 @@ install-local:
 clean-local:
 	rm -f $(scripts_3_0)
 
+dist-local: dist-default

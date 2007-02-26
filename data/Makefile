@@ -10,6 +10,8 @@ endif
 
 all-local: olive.pc
 
+DISTFILES = olive.pc.in
+
 REWRITE=
 olive.pc: olive.pc.in Makefile
 	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < olive.pc.in > $@.tmp
@@ -22,3 +24,5 @@ clean-local:
 	rm -rf olive.pc
 
 test-local:
+
+dist-local: dist-default

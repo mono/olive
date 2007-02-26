@@ -24,9 +24,6 @@ COMMON_SRCS = \
 	TestConfiguration.cs
 
 DISTFILES = \
-	README.makefiles		\
-	README.platforms		\
-	README.configury		\
 	config-default.make		\
 	executable.make			\
 	library.make			\

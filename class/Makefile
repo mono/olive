@@ -18,9 +18,8 @@ SUBDIRS = \
 	System.IdentityModel.Selectors	\
 	System.ServiceModel
 
-DISTFILES = \
-	LICENSE 		\
-	README			\
+
+dist-local: dist-default
 
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):
