@@ -82,11 +82,12 @@ class Foo : IFoo
 		SecurityMessageProperty sp = OperationContext.Current.IncomingMessageProperties.Security;
 if (sp.ProtectionToken == null) throw new Exception ("whoa");
 		WrappedKeySecurityToken t = sp.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
-HMAC sha1 = new HMACSHA1 (((SymmetricSecurityKey) t.SecurityKeys [0]).GetSymmetricKey ());
-		Console.WriteLine (Convert.ToBase64String (t.GetWrappedKey ()));
+byte [] key = ((SymmetricSecurityKey) t.SecurityKeys [0]).GetSymmetricKey ();
+SHA1 sha1 = SHA1.Create ();
+		//Console.WriteLine (Convert.ToBase64String (t.GetWrappedKey ()));
+		Console.WriteLine (Convert.ToBase64String (key));
 		Console.WriteLine (Convert.ToBase64String (sha1.ComputeHash (t.GetWrappedKey ())));
-		Console.WriteLine (Convert.ToBase64String (new HMACSHA1 ().ComputeHash (t.GetWrappedKey ())));
-		Console.WriteLine (Convert.ToBase64String (new HMACSHA1 ().ComputeHash (sha1.Key)));
+		Console.WriteLine (Convert.ToBase64String (sha1.ComputeHash (key)));
 		//foreach (IAuthorizationPolicy p in sp.ProtectionToken.SecurityTokenPolicies)
 		//	Console.WriteLine (p);
 Console.WriteLine (msg);
