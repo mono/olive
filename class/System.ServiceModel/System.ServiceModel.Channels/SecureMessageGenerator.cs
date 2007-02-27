@@ -309,7 +309,6 @@ if (!ShouldOutputEncryptedKey)
 			SecurityToken actualToken = null;
 			SecurityKeyIdentifierClause actualClause = null;
 			Signature sig = null;
-			EncryptedData sigenc = null;
 
 			List<DerivedKeySecurityToken> derivedKeys =
 				new List<DerivedKeySecurityToken> ();
@@ -423,6 +422,17 @@ else
 
 			XmlElement body = doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement;
 			string bodyId = null;
+			XmlElement secElem = null;
+			Collection<WSSignedXml> endorsedSignatures =
+				new Collection<WSSignedXml> ();
+			bool signatureProtection = (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature);
+
+			// Below are o:Security contents that are not signed...
+			if (includeSigToken)
+				header.Contents.Add (signToken);
+			// When we do not output EncryptedKey, output ReferenceList here.
+			if (!ShouldOutputEncryptedKey)
+				header.Contents.Add (primaryToken.ReferenceList);
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -450,8 +460,8 @@ else
 				for (int i = 0; i < msg.Headers.Count; i++) {
 					MessageHeaderInfo h = msg.Headers [i];
 					if (h.Name == "Security" && h.Namespace == Constants.WssNamespace)
-						continue;
-					if (sigSpec.HeaderTypes.Count == 0 ||
+						secElem = nodes [i] as XmlElement;
+					else if (sigSpec.HeaderTypes.Count == 0 ||
 					    sigSpec.HeaderTypes.Contains (new XmlQualifiedName (h.Name, h.Namespace))) {
 						string id = GenerateId (doc);
 						h.Id = id;
@@ -481,6 +491,43 @@ else
 				sxml.KeyInfo = new KeyInfo ();
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
+				if (!signatureProtection)
+					header.Contents.Add (sig);
+
+				// endorse the signature with (signed)endorsing
+				// supporting tokens.
+
+				foreach (SupportingTokenInfo tinfo in tokenInfos) {
+					switch (tinfo.Mode) {
+					case SecurityTokenAttachmentMode.Endorsing:
+					case SecurityTokenAttachmentMode.SignedEndorsing:
+						if (sxml.Signature.Id == null) {
+							sig.Id = GenerateId (doc);
+							secElem.AppendChild (sxml.GetXml ());
+						}
+						WSSignedXml ssxml = new WSSignedXml (doc);
+						ssxml.Signature.SignedInfo.CanonicalizationMethod = suite.DefaultCanonicalizationAlgorithm;
+						CreateReference (ssxml.Signature, doc, sig.Id);
+						SecurityToken sst = tinfo.Token;
+						SecurityKey ssk = sst.SecurityKeys [0]; // FIXME: could be different?
+						SecurityKeyIdentifierClause tclause = new LocalIdKeyIdentifierClause (sst.Id); // FIXME: could be different?
+						if (ssk is SymmetricSecurityKey) {
+							SymmetricSecurityKey signKey = (SymmetricSecurityKey) ssk;
+							ssxml.ComputeSignature (signKey.GetKeyedHashAlgorithm (suite.DefaultSymmetricSignatureAlgorithm));
+						} else {
+							AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) ssk;
+							ssxml.SigningKey = signKey.GetAsymmetricAlgorithm (suite.DefaultAsymmetricSignatureAlgorithm, true);
+							ssxml.ComputeSignature ();
+						}
+						ssxml.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (tclause, serializer, doc));
+						if (!signatureProtection)
+							header.Contents.Add (ssxml.Signature);
+						endorsedSignatures.Add (ssxml);
+
+						break;
+					}
+				}
+
 				// encrypt
 
 				WSEncryptedXml exml = new WSEncryptedXml (doc);
@@ -489,9 +536,16 @@ else
 				EncryptedXml.ReplaceElement (body, edata, false);
 
 				// encrypt signature
-				if (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature) {
+				if (signatureProtection) {
 					XmlElement sigxml = sig.GetXml ();
-					sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+					EncryptedData sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+					header.Contents.Add (sigenc);
+
+					foreach (WSSignedXml ssxml in endorsedSignatures) {
+						sigxml = ssxml.GetXml ();
+						sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+						header.Contents.Add (sigenc);
+					}
 				}
 
 				// encrypt Encrypted supporting tokens
@@ -506,11 +560,6 @@ else
 				}
 				break;
 			}
-
-			if (includeSigToken)
-				header.Contents.Add (signToken);
-			//if (signToken != encToken && includeEncToken)
-			//	header.Contents.Add (encToken);
 
 			Message ret = Message.CreateMessage (msg.Version, msg.Headers.Action, new XmlNodeReader (doc.SelectSingleNode ("/s:Envelope/s:Body/*", nsmgr) as XmlElement));
 			ret.Properties.Security = (SecurityMessageProperty) secprop.CreateCopy ();
@@ -528,7 +577,7 @@ else
 			ret.Headers.Clear ();
 			ret.Headers.CopyHeadersFrom (msg);
 
-			// FIXME: Header contents should be:
+			// Header contents are:
 			//	- Timestamp
 			//	- SignatureConfirmation if required
 			//	- EncryptionToken if included
@@ -551,15 +600,6 @@ else
 			//	  endorsing token.
 			//	
 
-			// When we do not output EncryptedKey, output ReferenceList here.
-			if (!ShouldOutputEncryptedKey)
-				header.Contents.Add (primaryToken.ReferenceList);
-
-			if (sigenc != null) // [Signature Protection]
-				header.Contents.Add (sigenc);
-			else if (sig != null) // ![Signature Protection]
-				header.Contents.Add (sig);
-
 //MessageBuffer zzz = ret.CreateBufferedCopy (100000);
 //ret = zzz.CreateMessage ();
 //Console.WriteLine (zzz.CreateMessage ());
@@ -568,17 +608,23 @@ else
 
 		void CreateReference (Signature sig, XmlElement el, string id)
 		{
-			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
-			if (id == String.Empty)
-				id = GenerateId (el.OwnerDocument);
-			Reference r = new Reference ("#" + id);
-			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
-			r.DigestMethod = suite.DefaultDigestAlgorithm;
+			CreateReference (sig, el.OwnerDocument, id);
+
 			if (el.GetAttribute ("Id", Constants.WsuNamespace) != id) {
 				XmlAttribute a = el.SetAttributeNode ("Id", Constants.WsuNamespace);
 				a.Prefix = "u";
 				a.Value = id;
 			}
+		}
+
+		void CreateReference (Signature sig, XmlDocument doc, string id)
+		{
+			SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
+			if (id == String.Empty)
+				id = GenerateId (doc);
+			Reference r = new Reference ("#" + id);
+			r.AddTransform (CreateTransform (suite.DefaultCanonicalizationAlgorithm));
+			r.DigestMethod = suite.DefaultDigestAlgorithm;
 			sig.SignedInfo.AddReference (r);
 		}
 

@@ -1,5 +1,12 @@
 2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageDecryptor.cs : verify that endorsing supporting tokens
+	  actually endorsed the primary signature.
+	* SecureMessageGenerator.cs : implemented endorsing of the primary
+	  signature. So, now supporting tokens are fully implemented.
+
+2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityBindingSupport.cs : so, those supporting tokens are
 	  totally signing tokens.
 	* SecureMessageGenerator.cs : Endorsing tokens should also be

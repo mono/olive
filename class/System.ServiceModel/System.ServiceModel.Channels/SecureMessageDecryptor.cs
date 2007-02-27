@@ -366,13 +366,13 @@ doc.PreserveWhitespace = true;
 
 		void ValidateTokensByParameters (SupportingTokenParameters supp, List<SupportingTokenInfo> tokens, bool optional)
 		{
-			ValidateTokensByParameters (supp.Endorsing, tokens, optional);
-			ValidateTokensByParameters (supp.Signed, tokens, optional);
-			ValidateTokensByParameters (supp.SignedEndorsing, tokens, optional);
-			ValidateTokensByParameters (supp.SignedEncrypted, tokens, optional);
+			ValidateTokensByParameters (supp.Endorsing, tokens, optional, SecurityTokenAttachmentMode.Endorsing);
+			ValidateTokensByParameters (supp.Signed, tokens, optional, SecurityTokenAttachmentMode.Signed);
+			ValidateTokensByParameters (supp.SignedEndorsing, tokens, optional, SecurityTokenAttachmentMode.SignedEndorsing);
+			ValidateTokensByParameters (supp.SignedEncrypted, tokens, optional, SecurityTokenAttachmentMode.SignedEncrypted);
 		}
 
-		void ValidateTokensByParameters (IEnumerable<SecurityTokenParameters> plist, List<SupportingTokenInfo> tokens, bool optional)
+		void ValidateTokensByParameters (IEnumerable<SecurityTokenParameters> plist, List<SupportingTokenInfo> tokens, bool optional, SecurityTokenAttachmentMode attachMode)
 		{
 			foreach (SecurityTokenParameters p in plist) {
 				SecurityTokenResolver r;
@@ -383,10 +383,34 @@ doc.PreserveWhitespace = true;
 					if (optional)
 						continue;
 					else
-						throw new MessageSecurityException (String.Format ("No security token could be validated for authenticator '{0}' which is indicated by the security token parameters", a));
+						throw new MessageSecurityException (String.Format ("No security token could be validated for authenticator '{0}' which is indicated by the '{1}' supporting token parameters", a, attachMode));
+				} else {
+					// For endorsing tokens, verify corresponding signatures.
+					switch (attachMode) {
+					case SecurityTokenAttachmentMode.Endorsing:
+					case SecurityTokenAttachmentMode.SignedEndorsing:
+						WSSignedXml esxml = GetSignatureForToken (spec.SecurityToken);
+						if (esxml == null)
+							throw new MessageSecurityException (String.Format ("The '{1}' token '{0}' is expected to endorse the primary signature but no corresponding signature is found.", spec.SecurityToken, attachMode));
+						break;
+					}
 				}
+
 				sec_prop.IncomingSupportingTokens.Add (spec);
 			}
+		}
+
+		WSSignedXml GetSignatureForToken (SecurityToken token)
+		{
+			int count = 0;
+			foreach (WSSignedXml sxml in wss_header.FindAll<WSSignedXml> ()) {
+				if (count++ == 0)
+					continue; // primary signature
+				foreach (SecurityTokenReferenceKeyInfo r in sxml.KeyInfo)
+					if (token.MatchesKeyIdentifierClause (r.Clause))
+						return sxml;
+			}
+			return null;
 		}
 
 		SupportingTokenSpecification ValidateTokensByParameters (SecurityTokenAuthenticator a, SecurityTokenResolver r, List<SupportingTokenInfo> tokens)
