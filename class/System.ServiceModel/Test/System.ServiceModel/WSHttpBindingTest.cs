@@ -310,10 +310,11 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (X509KeyIdentifierClauseType.Thumbprint, x509tp.X509ReferenceStyle, "#7-2");
 			Assert.AreEqual (SecurityTokenInclusionMode.Never, x509tp.InclusionMode, "#7-3");
 			Assert.AreEqual (true, x509tp.RequireDerivedKeys, "#7-4");
+			Assert.AreEqual (true, sbe.RequireSignatureConfirmation, "#8");
 		}
 
 		[Test]
-		public void MessageSecurityCertificate ()
+		public void MessageSecurityCertificateNego ()
 		{
 			WSHttpBinding binding = new WSHttpBinding ();
 			binding.Security.Message.ClientCredentialType =
@@ -321,6 +322,7 @@ namespace MonoTests.System.ServiceModel
 			SymmetricSecurityBindingElement sbe =
 				binding.CreateBindingElements ().Find<SymmetricSecurityBindingElement> ();
 			Assert.IsNotNull (sbe, "#1");
+			Assert.AreEqual (false, sbe.RequireSignatureConfirmation, "#1-2");
 
 			SecureConversationSecurityTokenParameters sp =
 				sbe.ProtectionTokenParameters
@@ -338,6 +340,37 @@ namespace MonoTests.System.ServiceModel
 					 p.ReferenceStyle, "#5");
 			Assert.AreEqual (SecurityTokenInclusionMode.AlwaysToRecipient,
 					 p.InclusionMode, "#6");
+		}
+
+		[Test]
+		public void MessageSecurityUserName ()
+		{
+			WSHttpBinding binding = new WSHttpBinding ();
+			binding.Security.Message.NegotiateServiceCredential = false;
+			binding.Security.Message.EstablishSecurityContext = false;
+			binding.Security.Message.ClientCredentialType =
+				MessageCredentialType.UserName;
+			SymmetricSecurityBindingElement sbe =
+				binding.CreateBindingElements ().Find<SymmetricSecurityBindingElement> ();
+			Assert.IsNotNull (sbe, "#1");
+			Assert.AreEqual (false, sbe.RequireSignatureConfirmation, "#1-2");
+
+			X509SecurityTokenParameters sp =
+				sbe.ProtectionTokenParameters
+				as X509SecurityTokenParameters;
+			Assert.IsNotNull (sp, "#2");
+			Assert.AreEqual (SecurityTokenReferenceStyle.Internal,
+					 sp.ReferenceStyle, "#3");
+			Assert.AreEqual (SecurityTokenInclusionMode.Never,
+					 sp.InclusionMode, "#4");
+
+			UserNameSecurityTokenParameters up =
+				sbe.EndpointSupportingTokenParameters.SignedEncrypted [0]
+				as UserNameSecurityTokenParameters;
+			Assert.AreEqual (SecurityTokenReferenceStyle.Internal,
+					 up.ReferenceStyle, "#5");
+			Assert.AreEqual (SecurityTokenInclusionMode.AlwaysToRecipient,
+					 up.InclusionMode, "#6");
 		}
 
 		[Test]

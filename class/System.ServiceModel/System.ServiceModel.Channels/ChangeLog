@@ -1,5 +1,10 @@
 2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageGenerator.cs : encrypt signature confirmations only
+	  when they are required.
+
+2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : SignatureConfirmation must be encrypted
 	  when [Signature Protection is true i.e. when we use
 	  SignBeforeEncryptAndEncryptSignature.

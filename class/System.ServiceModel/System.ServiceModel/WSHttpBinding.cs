@@ -122,6 +122,7 @@ namespace System.ServiceModel
 			case MessageCredentialType.UserName:
 				element.EndpointSupportingTokenParameters.SignedEncrypted.Add (
 					new UserNameSecurityTokenParameters ());
+				element.RequireSignatureConfirmation = false;
 				goto default;
 			case MessageCredentialType.Windows:
 				if (Security.Message.NegotiateServiceCredential) {

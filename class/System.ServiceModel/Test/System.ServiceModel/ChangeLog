@@ -1,3 +1,8 @@
+2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSHttpBindingTest.cs : added MessageSecurityUserName(), and some
+	  tests for RequireSignatureConfirmation.
+
 2007-01-31  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientCredentialsSecurityTokenManagerTest.cs : refactoring;
