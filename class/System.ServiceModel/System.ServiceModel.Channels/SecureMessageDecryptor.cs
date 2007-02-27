@@ -169,9 +169,11 @@ namespace System.ServiceModel.Channels
 			using (XmlWriter writer = nav.AppendChild ()) {
 				buf.CreateMessage ().WriteMessage (writer);
 			}
+/*
 doc.PreserveWhitespace = false;
 doc.Save (Console.Out);
 doc.PreserveWhitespace = true;
+*/
 
 			// read and store headers, wsse:Security and setup in-band resolver.
 			ReadHeaders (srcmsg);
@@ -271,25 +273,8 @@ doc.PreserveWhitespace = true;
 			SecurityToken signToken;
 			SecurityKey signKey;
 
-#if true
-			// FIXME: (?) Since .NET does not return 
-			// EncryptedKeySHA1 hash value based on the identical
-			// EncryptedKey as it (the initiator) sent, the token
-			// resolution will always fail. So, whenever 
-			// EncryptedKeySHA1 is returned, just use the same key
-			// as it sent before. I guess this is .NET bug, though
-			// it is still mystery that why .NET could *not*
-			// resolve our EncryptedKeySHA1.
-			if (sigClause is InternalEncryptedKeyIdentifierClause &&
-			    RequestSecurity.ProtectionToken != null) {
-				signToken = RequestSecurity.ProtectionToken.SecurityToken;
-				signKey = signToken.SecurityKeys [0];
-			} else
-#endif
-			{
-				signToken = TokenResolver.ResolveToken (sigClause);
-				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
-			}
+			signToken = TokenResolver.ResolveToken (sigClause);
+			signKey = signToken.ResolveKeyIdentifierClause (sigClause);
 			SymmetricSecurityKey symkey = signKey as SymmetricSecurityKey;
 			if (symkey != null) {
 				confirmed = sxml.CheckSignature (new HMACSHA1 (symkey.GetSymmetricKey ()));

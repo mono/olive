@@ -365,7 +365,7 @@ else
 			WrappedKeySecurityToken requestEncKey = ShouldOutputEncryptedKey ? null : primaryToken;
 			actualClause = requestEncKey == null ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (actualToken.Id, typeof (WrappedKeySecurityToken)) :
-				new InternalEncryptedKeyIdentifierClause (new HMACSHA1 (requestEncKey.RawKey).ComputeHash (requestEncKey.RawKey));
+				new InternalEncryptedKeyIdentifierClause (SHA1.Create ().ComputeHash (requestEncKey.GetWrappedKey ()));
 
 			// generate derived key if needed
 			if (CounterParameters.RequireDerivedKeys) {
@@ -446,6 +446,8 @@ else
 				sig.SignedInfo.CanonicalizationMethod =
 					suite.DefaultCanonicalizationAlgorithm;
 				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/u:Timestamp", nsmgr))
+					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
+				foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/o11:SignatureConfirmation", nsmgr))
 					CreateReference (sig, elem, elem.GetAttribute ("Id", Constants.WsuNamespace));
 				foreach (SupportingTokenInfo tinfo in tokenInfos)
 					if (tinfo.Mode != SecurityTokenAttachmentMode.Endorsing) {

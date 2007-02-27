@@ -86,7 +86,7 @@ namespace System.ServiceModel.Security.Tokens
 			get { return raw_key; }
 		}
 
-		// FIXME: it is kind of compromised solution to output
+		// It is kind of compromised solution to output
 		// ReferenceList inside e:EncryptedKey and might disappear
 		// when non-wrapped key is represented by another token type.
 		internal ReferenceList ReferenceList {
@@ -158,7 +158,6 @@ namespace System.ServiceModel.Security.Tokens
 			throw new NotSupportedException (String.Format ("WrappedKeySecurityToken cannot create '{0}'", typeof (T)));
 		}
 
-		[MonoTODO]
 		public override bool MatchesKeyIdentifierClause (SecurityKeyIdentifierClause keyIdentifierClause)
 		{
 			LocalIdKeyIdentifierClause lkic = keyIdentifierClause as LocalIdKeyIdentifierClause;
@@ -166,12 +165,8 @@ namespace System.ServiceModel.Security.Tokens
 				return true;
 
 			InternalEncryptedKeyIdentifierClause khic = keyIdentifierClause as InternalEncryptedKeyIdentifierClause;
-			// FIXME: it is likely still incorrect.
-			if (keyhash == null) {
-				HMAC sha = new HMACSHA1 (raw_key);
-				sha.Initialize ();
-				keyhash = sha.ComputeHash (raw_key);
-			}
+			if (keyhash == null)
+				keyhash = SHA1.Create ().ComputeHash (wrapped_key);
 			if (khic != null && khic.Matches (keyhash))
 				return true;
 

@@ -269,12 +269,6 @@ doc.PreserveWhitespace = true;
 			foreach (KeyInfoClause kic in ed2.KeyInfo) {
 				SecurityKeyIdentifierClause skic = serializer.ReadKeyIdentifierClause (new XmlNodeReader (kic.GetXml ()));
 
-#if true // FIXME: this is the same workaround as we have for resolving signing key, as noted above.
-				InternalEncryptedKeyIdentifierClause eskic = skic as InternalEncryptedKeyIdentifierClause;
-				if (eskic != null)
-					return dummyEncKey;
-#endif
-
 				SecurityKey skey = null;
 				if (!resolver.TryResolveSecurityKey (skic, out skey))
 					throw new MessageSecurityException (String.Format ("The signing key could not be resolved from {0}", skic));
