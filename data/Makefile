@@ -18,7 +18,8 @@ olive.pc: olive.pc.in Makefile
 	mv $@.tmp $@
 
 install-local: olive.pc
-	install olive.pc $(prefix)/lib/pkgconfig
+	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(INSTALL_DATA) olive.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
 clean-local:
 	rm -rf olive.pc
