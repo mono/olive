@@ -539,13 +539,23 @@ else
 				// encrypt signature
 				if (signatureProtection) {
 					XmlElement sigxml = sig.GetXml ();
-					EncryptedData sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
-					header.Contents.Add (sigenc);
+					edata = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+					header.Contents.Add (edata);
 
 					foreach (WSSignedXml ssxml in endorsedSignatures) {
 						sigxml = ssxml.GetXml ();
-						sigenc = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
-						header.Contents.Add (sigenc);
+						edata = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
+						header.Contents.Add (edata);
+					}
+
+					Collection<Wss11SignatureConfirmation> confs = header.FindAll<Wss11SignatureConfirmation> ();
+					int count = 0;
+					foreach (XmlElement elem in doc.SelectNodes ("/s:Envelope/s:Header/o:Security/o11:SignatureConfirmation", nsmgr)) {
+						edata = Encrypt (elem, actualKey, confs [count].Id, refList, actualClause, exml, doc);
+						EncryptedXml.ReplaceElement (elem, edata, false);
+						header.Contents.Insert (header.Contents.IndexOf (confs [count]), edata);
+						header.Contents.Remove (confs [count++]);
+
 					}
 				}
 
