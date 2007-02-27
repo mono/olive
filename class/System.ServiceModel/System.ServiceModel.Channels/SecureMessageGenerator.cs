@@ -249,7 +249,10 @@ namespace System.ServiceModel.Channels
 
 			SecurityToken encToken =
 				secprop.InitiatorToken != null ? secprop.InitiatorToken.SecurityToken : security.EncryptionToken;
-			SecurityToken signToken = null;
+			// FIXME: it might be still incorrect.
+			SecurityToken signToken =
+				Parameters == CounterParameters ? null :
+				security.SigningToken;
 			MessageProtectionOrder protectionOrder =
 				security.MessageProtectionOrder;
 			SecurityTokenSerializer serializer =
@@ -477,7 +480,6 @@ else
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (actualClause, serializer, doc);
 				}
 				else {
-					signToken = security.SigningToken;
 					SecurityKeyIdentifierClause signClause =
 						CounterParameters.CallCreateKeyIdentifierClause (signToken, includeSigToken ? CounterParameters.ReferenceStyle : SecurityTokenReferenceStyle.External);
 					AsymmetricSecurityKey signKey = (AsymmetricSecurityKey) signToken.ResolveKeyIdentifierClause (signClause);
