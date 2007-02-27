@@ -296,10 +296,6 @@ if (!ShouldOutputEncryptedKey)
 				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
 				header.Contents.Add (timestamp);
 			}
-			// 1.5 [Signature Confirmation]
-			if (security.RequireSignatureConfirmation && secprop.ConfirmedSignatures.Count > 0)
-				foreach (string value in secprop.ConfirmedSignatures)
-					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
 
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
 			nsmgr.AddNamespace ("s", msg.Version.Envelope.Namespace);
@@ -405,6 +401,11 @@ else
 			else
 				primaryToken.ReferenceList = refList;
 
+			// [Signature Confirmation]
+			if (security.RequireSignatureConfirmation && secprop.ConfirmedSignatures.Count > 0)
+				foreach (string value in secprop.ConfirmedSignatures)
+					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
+
 			SupportingTokenInfoCollection tokenInfos =
 				Direction == MessageDirection.Input ?
 				security.CollectSupportingTokens (GetAction ()) :
@@ -430,7 +431,7 @@ else
 			if (includeSigToken)
 				header.Contents.Add (signToken);
 			// When we do not output EncryptedKey, output ReferenceList here.
-			if (!ShouldOutputEncryptedKey)
+			if (!ShouldOutputEncryptedKey && primaryToken.ReferenceList.Count > 0)
 				header.Contents.Add (primaryToken.ReferenceList);
 
 			switch (protectionOrder) {

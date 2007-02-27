@@ -1,5 +1,12 @@
 2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecureMessageDecryptor.cs : signature verification was not done
+	  for endorsing supporting tokens.
+	* SecureMessageGenerator.cs : moved SignatureConfirmation position
+	  in the security header. Don't output empty ReferenceList.
+
+2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecureMessageGenerator.cs : signingToken was added before being
 	  initialized and thus caused NRE.
 

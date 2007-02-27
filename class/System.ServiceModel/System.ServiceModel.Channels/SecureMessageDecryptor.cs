@@ -382,6 +382,24 @@ doc.PreserveWhitespace = true;
 						WSSignedXml esxml = GetSignatureForToken (spec.SecurityToken);
 						if (esxml == null)
 							throw new MessageSecurityException (String.Format ("The '{1}' token '{0}' is expected to endorse the primary signature but no corresponding signature is found.", spec.SecurityToken, attachMode));
+
+						bool confirmed;
+						SecurityAlgorithmSuite suite = security.Element.DefaultAlgorithmSuite;
+						foreach (SecurityTokenReferenceKeyInfo kic in esxml.KeyInfo) {
+							SecurityKey signKey = spec.SecurityToken.ResolveKeyIdentifierClause (kic.Clause);
+							SymmetricSecurityKey symkey = signKey as SymmetricSecurityKey;
+							if (symkey != null) {
+								confirmed = esxml.CheckSignature (symkey.GetKeyedHashAlgorithm (suite.DefaultSymmetricSignatureAlgorithm));
+							} else {
+								AsymmetricAlgorithm alg = ((AsymmetricSecurityKey) signKey).GetAsymmetricAlgorithm (suite.DefaultAsymmetricSignatureAlgorithm, false);
+								confirmed = esxml.CheckSignature (alg);
+							}
+							if (!confirmed)
+								throw new MessageSecurityException (String.Format ("Signature for '{1}' token '{0}' is invalid.", spec.SecurityToken, attachMode));
+							break;
+						}
+
+						sec_prop.ConfirmedSignatures.Insert (0, Convert.ToBase64String (esxml.SignatureValue));
 						break;
 					}
 				}
