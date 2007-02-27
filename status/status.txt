@@ -240,17 +240,19 @@
 	  - .svc IHttpHandler : it partly works but some fixes are needed.
 
 	3. WS-Security and all relevant stuff
-	    - MessageProperty support (HttpRequest-, Security- etc): partly
-	    - MessageBuffer implementation for its internal use: done
-	    - xmlenc/xmldsig support for WSS: done, based on Sys.Security.dll
-	    - simplest connection :
-	      - basic X509SecurityToken based communication: done, with bugs
-	        - retrieve correct tokens and use correct parameters
-	        - support both symmetric and asymmetric binding elements
-	      - basic WSSecurityTokenSerializer support: done
-	    - Timestamp/DetectReplays support: done
-	    - key derivation support
-	    - token authentication
+	    + MessageProperty support (HttpRequest-, Security- etc): partly
+	    o MessageBuffer implementation for its internal use: done
+	    o xmlenc/xmldsig support for WSS: done, based on Sys.Security.dll
+	    o basic X509SecurityToken based communication: done
+	    o basic WSSecurityTokenSerializer support: done
+	    o support asymmetric binding elements: done
+	    o support symmetric binding elements: done
+	    o Timestamp support: done
+	    + token authentication: only at recipient (though it would be enough)
+	    o handle supporting tokens: done
+	    - retrieve correct tokens and use correct parameters
+	    - DetectReplays support
+	    o key derivation support: done
 	  - SecurityTokenManager for several token parameters: it includes
 	    - SecurityTokenProvider for several token parameters
 	    - SecurityTokenAuthenticator for several token parameters
