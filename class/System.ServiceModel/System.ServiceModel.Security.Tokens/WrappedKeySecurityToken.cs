@@ -168,9 +168,9 @@ namespace System.ServiceModel.Security.Tokens
 			InternalEncryptedKeyIdentifierClause khic = keyIdentifierClause as InternalEncryptedKeyIdentifierClause;
 			// FIXME: it is likely still incorrect.
 			if (keyhash == null) {
-				HMAC sha = new HMACSHA1 ();
+				HMAC sha = new HMACSHA1 (raw_key);
 				sha.Initialize ();
-				keyhash = sha.ComputeHash (wrapped_key);
+				keyhash = sha.ComputeHash (raw_key);
 			}
 			if (khic != null && khic.Matches (keyhash))
 				return true;

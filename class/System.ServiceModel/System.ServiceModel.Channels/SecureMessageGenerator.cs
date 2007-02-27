@@ -319,10 +319,6 @@ if (!ShouldOutputEncryptedKey)
 			masterKey.Padding = PaddingMode.ISO10126;
 			SymmetricAlgorithm actualKey = masterKey;
 
-			// FIXME: use specified hash algorithm in the SecurityAlgorithmSuite.
-			HMAC sha1 = HMACSHA1.Create ();
-			sha1.Initialize ();
-
 			// 2. [Encryption Token]
 
 			// SecurityTokenInclusionMode
@@ -369,7 +365,7 @@ else
 			WrappedKeySecurityToken requestEncKey = ShouldOutputEncryptedKey ? null : primaryToken;
 			actualClause = requestEncKey == null ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (actualToken.Id, typeof (WrappedKeySecurityToken)) :
-				new InternalEncryptedKeyIdentifierClause (sha1.ComputeHash (requestEncKey.GetWrappedKey ()));
+				new InternalEncryptedKeyIdentifierClause (new HMACSHA1 (requestEncKey.RawKey).ComputeHash (requestEncKey.RawKey));
 
 			// generate derived key if needed
 			if (CounterParameters.RequireDerivedKeys) {
@@ -474,8 +470,8 @@ else
 				}
 
 				if (security.DefaultSignatureAlgorithm == SignedXml.XmlDsigHMACSHA1Url) {
-					sha1.Key = actualKey.Key;
-					sxml.ComputeSignature (sha1);
+					// FIXME: use appropriate hash algorithm
+					sxml.ComputeSignature (new HMACSHA1 (actualKey.Key));
 					sigKeyInfo = new SecurityTokenReferenceKeyInfo (actualClause, serializer, doc);
 				}
 				else {

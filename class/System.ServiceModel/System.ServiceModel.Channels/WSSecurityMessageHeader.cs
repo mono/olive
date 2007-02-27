@@ -178,7 +178,7 @@ namespace System.ServiceModel.Channels
 		#region Decryption
 
 		// returns the protection token
-		public void DecryptSecurity (SecureMessageDecryptor decryptor, WrappedKeySecurityToken wk, byte [] dummyEncKey)
+		public void DecryptSecurity (SecureMessageDecryptor decryptor, SymmetricSecurityKey sym, byte [] dummyEncKey)
 		{
 			WSEncryptedXml encXml = new WSEncryptedXml (doc);
 
@@ -186,7 +186,6 @@ namespace System.ServiceModel.Channels
 			Rijndael aes = RijndaelManaged.Create (); // it is reused with every key
 			aes.Mode = CipherMode.CBC;
 
-			SymmetricSecurityKey sym = wk != null ? wk.SecurityKeys [0] as SymmetricSecurityKey : null;
 			if (sym == null)
 				throw new MessageSecurityException ("Cannot find the encryption key in this message and context");
 
@@ -197,7 +196,7 @@ namespace System.ServiceModel.Channels
 				foreach (EncryptedReference encref in rlist)
 					references.Add (StripUri (encref.Uri));
 
-			if (wk != null)
+			foreach (WrappedKeySecurityToken wk in header.FindAll<WrappedKeySecurityToken> ())
 				foreach (EncryptedReference er in wk.ReferenceList)
 					references.Add (StripUri (er.Uri));
 

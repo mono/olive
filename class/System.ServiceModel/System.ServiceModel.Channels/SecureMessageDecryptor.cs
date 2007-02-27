@@ -248,7 +248,9 @@ doc.PreserveWhitespace = true;
 				// FIXME: this is kind of hack for symmetric reply processing.
 				wk = RequestSecurity.ProtectionToken != null ? RequestSecurity.ProtectionToken.SecurityToken as WrappedKeySecurityToken : null;
 
-			wss_header_reader.DecryptSecurity (this, wk, RequestSecurity != null ? RequestSecurity.EncryptionKey : null);
+			SymmetricSecurityKey wkkey = wk != null ? wk.SecurityKeys [0] as SymmetricSecurityKey : null;
+
+			wss_header_reader.DecryptSecurity (this, wkkey, RequestSecurity != null ? RequestSecurity.EncryptionKey : null);
 
 			// signature confirmation
 			WSSignedXml sxml = wss_header.Find<WSSignedXml> ();
@@ -269,6 +271,7 @@ doc.PreserveWhitespace = true;
 			SecurityToken signToken;
 			SecurityKey signKey;
 
+#if true
 			// FIXME: (?) Since .NET does not return 
 			// EncryptedKeySHA1 hash value based on the identical
 			// EncryptedKey as it (the initiator) sent, the token
@@ -281,7 +284,9 @@ doc.PreserveWhitespace = true;
 			    RequestSecurity.ProtectionToken != null) {
 				signToken = RequestSecurity.ProtectionToken.SecurityToken;
 				signKey = signToken.SecurityKeys [0];
-			} else {
+			} else
+#endif
+			{
 				signToken = TokenResolver.ResolveToken (sigClause);
 				signKey = signToken.ResolveKeyIdentifierClause (sigClause);
 			}
