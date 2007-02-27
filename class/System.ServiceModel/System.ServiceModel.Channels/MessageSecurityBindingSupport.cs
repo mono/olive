@@ -212,13 +212,13 @@ namespace System.ServiceModel.Channels
 			bool required)
 		{
 			foreach (SecurityTokenParameters p in s.Signed)
-				l.Add (new SupportingTokenInfo (GetExchangeToken (p), SecurityTokenAttachmentMode.Signed, required));
+				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.Signed, required));
 			foreach (SecurityTokenParameters p in s.Endorsing)
 				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.Endorsing, required));
 			foreach (SecurityTokenParameters p in s.SignedEndorsing)
 				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.SignedEndorsing, required));
 			foreach (SecurityTokenParameters p in s.SignedEncrypted)
-				l.Add (new SupportingTokenInfo (GetExchangeToken (p), SecurityTokenAttachmentMode.SignedEncrypted, required));
+				l.Add (new SupportingTokenInfo (GetSigningToken (p), SecurityTokenAttachmentMode.SignedEncrypted, required));
 		}
 
 		SecurityToken GetSigningToken (SecurityTokenParameters p)

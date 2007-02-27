@@ -412,11 +412,8 @@ else
 				security.CollectSupportingTokens (GetAction ()) :
 				new SupportingTokenInfoCollection (); // empty
 
-			foreach (SupportingTokenInfo tinfo in tokenInfos) {
-				if (tinfo.Mode == SecurityTokenAttachmentMode.Endorsing)
-					continue;
+			foreach (SupportingTokenInfo tinfo in tokenInfos)
 				header.Contents.Add (tinfo.Token);
-			}
 
 			// populate DOM to sign.
 			XPathNavigator nav = doc.CreateNavigator ();
