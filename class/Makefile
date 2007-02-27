@@ -18,10 +18,13 @@ SUBDIRS = \
 	System.IdentityModel.Selectors	\
 	System.ServiceModel
 
+DIST_PROFILE_DIRS = net_3_0
 
 dist-local: dist-default
+	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
 
-DISTFILES = msfinal.pub
+
+DISTFILES = msfinal.pub msfinal3.pub winfx.pub mono.snk mono.pub
 
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):

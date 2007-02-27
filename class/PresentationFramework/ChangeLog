@@ -1,3 +1,8 @@
+2007-02-27  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: make filelist out of generator helper files for
+	easy inclusion to EXTRA_DISTFILES.
+
 2007-02-26  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: Consolidate lists of generated xaml files into one list.

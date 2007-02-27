@@ -1,3 +1,7 @@
+2007-02-27  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: include resource files in EXTRA_DISTFILES
+
 2006-10-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* fixup-config2.cs, fixup-config2.xml :

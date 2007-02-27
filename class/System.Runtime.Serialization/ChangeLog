@@ -1,3 +1,7 @@
+2007-02-27  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: Include resource files in EXTRA_DISTFILES
+
 2006-09-05  Ankit Jain  <jankit@novell.com>
 
 	* resources/mstypes.schema: New.

@@ -45,7 +45,8 @@ $(scripts_3_0): script.in Makefile
 	mv $@.tmp $@
 
 install-local:
-	cp $(scripts_3_0) $(prefix)/bin
+	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/bin
+	$(INSTALL_BIN) $(scripts_3_0) $(DESTDIR)$(prefix)/bin
 
 clean-local:
 	rm -f $(scripts_3_0)

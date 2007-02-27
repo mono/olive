@@ -51,8 +51,12 @@ System.Windows.Serialization/XamlUnknownAttributeNode.cs \
 System.Windows.Serialization/XamlUnknownTagEndNode.cs \
 System.Windows.Serialization/XamlUnknownTagStartNode.cs
 
-$(library_CLEAN_FILES): System.Windows.Serialization/data-classes.txt System.Windows.Serialization/data-classes-builder.pl
+GENERATOR_HELPERS = System.Windows.Serialization/data-classes.txt System.Windows.Serialization/data-classes-builder.pl
+
+$(library_CLEAN_FILES): $(GENERATOR_HELPERS)
 	(cd System.Windows.Serialization && perl data-classes-builder.pl)
+
+EXTRA_DISTFILES = $(GENERATOR_HELPERS)
 
 dist-local: $(library_CLEAN_FILES)
 
