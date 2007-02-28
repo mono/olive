@@ -1,3 +1,12 @@
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* rules.make, config-default.make, library.make:
+	  now we use nunit-console2 instead of nunit20 inside. Since this
+	  breaks "run-test-ondotnet", let's expect that nunit-console.exe
+	  exists at $(topdir)../mcs/class/lib/net_2_0, or use
+	  "make TEST_HARNESS_ONDOTNET=your/path/to/nunit-console.exe run-test
+	  -ondfotnet" .
+
 2007-02-27  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: use 'install' instead of hardcoded path to mono's 'install-sh'

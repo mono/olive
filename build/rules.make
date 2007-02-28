@@ -46,7 +46,7 @@ export CC
 export CFLAGS
 export INSTALL
 export MKINSTALLDIRS
-export TEST_HARNESS
+export TEST_HARNESS_ONDOTNET
 export BOOTSTRAP_MCS
 export DESTDIR
 export RESGEN

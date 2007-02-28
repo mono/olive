@@ -194,13 +194,13 @@ run-test-ondotnet-local: run-test-ondotnet-lib
 ## FIXME: i18n problem in the 'sed' command below
 run-test-lib: test-local
 	ok=:; \
-	$(TEST_RUNTIME) $(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) /output:TestResult-$(PROFILE).log /exclude:NotWorking,ValueAdd,CAS,InetAccess /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	nunit-console2 $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) /output:TestResult-$(PROFILE).log /exclude:NotWorking,ValueAdd,CAS,InetAccess /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
 	sed '1,/^Tests run: /d' TestResult-$(PROFILE).log; \
 	$$ok
 
 run-test-ondotnet-lib: test-local
 	ok=:; \
-	$(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) /exclude=NotDotNet,CAS /output:TestResult-ondotnet-$(PROFILE).log /xml:TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	$(TEST_HARNESS_ONDOTNET) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) /exclude=NotDotNet,CAS /output:TestResult-ondotnet-$(PROFILE).log /xml:TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
 	sed '1,/^Tests run: /d' TestResult-ondotnet-$(PROFILE).log; \
 	$$ok
 endif

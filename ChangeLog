@@ -1,3 +1,7 @@
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : skip net_2_0 which is not necessary.
+
 2007-02-27  Wade Berrier  <wberrier@novell.com>
 
 	* scripts/Makefile: use MKINSTALLDIR and INSTALL for
