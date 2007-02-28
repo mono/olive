@@ -1,3 +1,8 @@
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XElementSequence.cs, Makefile : build fix for recent gmcs updates,
+	  and some more implementation.
+
 2007-02-03  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.Xml.XLinq.cs, XName.cs : a few updates from years ago.

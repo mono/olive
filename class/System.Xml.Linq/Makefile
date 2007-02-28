@@ -7,6 +7,7 @@ LIB_MCS_FLAGS = \
 	        /r:System.dll \
 	        /r:System.Core.dll \
 	        /r:System.Xml.dll \
+		/langversion:linq \
 		/d:LIST_BASED
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
