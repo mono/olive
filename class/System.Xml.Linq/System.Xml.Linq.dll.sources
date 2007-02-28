@@ -1,9 +1,9 @@
 ../../build/common/Consts.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
+System.Xml.Linq/Extensions.cs
 System.Xml.Linq/System.Xml.XLinq.cs
 System.Xml.Linq/XAttribute.cs
-System.Xml.Linq/XElementSequence.cs
 System.Xml.Linq/XIterators.cs
 System.Xml.Linq/XName.cs
 System.Xml.Linq/XNamespace.cs
