@@ -1,3 +1,8 @@
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : inconsistent ReferenceList has caused
+	  signature velification failure.
+
 2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : encrypt signature confirmations only

@@ -392,11 +392,13 @@ else
 			}
 
 			ReferenceList refList = new ReferenceList ();
-			// When encrypted with DerivedKeyToken, put
-			// references inside o:Security, not inside
-			// EncryptedKey.
-			if (CounterParameters.RequireDerivedKeys)
-				//dkeyToken.ReferenceList = refList;
+			// When encrypted with DerivedKeyToken, put references
+			// immediately after the derived token (not inside the
+			// primary token).
+			// Similarly, when we do not output EncryptedKey,
+			// output ReferenceList in the same way.
+			if (CounterParameters.RequireDerivedKeys ||
+			    !ShouldOutputEncryptedKey)
 				header.Contents.Add (refList);
 			else
 				primaryToken.ReferenceList = refList;
@@ -430,9 +432,6 @@ else
 			// Below are o:Security contents that are not signed...
 			if (includeSigToken)
 				header.Contents.Add (signToken);
-			// When we do not output EncryptedKey, output ReferenceList here.
-			if (!ShouldOutputEncryptedKey && primaryToken.ReferenceList.Count > 0)
-				header.Contents.Add (primaryToken.ReferenceList);
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
