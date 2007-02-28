@@ -1,5 +1,9 @@
 2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* library.make : set MONO_PATH.
+
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* rules.make, config-default.make, library.make:
 	  now we use nunit-console2 instead of nunit20 inside. Since this
 	  breaks "run-test-ondotnet", let's expect that nunit-console.exe
