@@ -1,3 +1,10 @@
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityBindingSupport.cs : token authenticator is not
+	  always created on channel-opening stage.
+	* SecurityBindingElement.cs : use SslSecurityTokenParameters for
+	  Sslnego binding factory method.
+
 2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecureMessageGenerator.cs : inconsistent ReferenceList has caused

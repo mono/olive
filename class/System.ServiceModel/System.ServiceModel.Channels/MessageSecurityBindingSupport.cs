@@ -175,9 +175,16 @@ namespace System.ServiceModel.Channels
 			return manager.CreateSecurityTokenAuthenticator (r, out resolver);
 		}
 
-		public void CreateTokenAuthenticator (SecurityTokenRequirement requirement)
+		protected void PrepareAuthenticator ()
 		{
-			authenticator = manager.CreateSecurityTokenAuthenticator (requirement, out auth_token_resolver);
+			// This check is almost extra, though it is needed
+			// to check correct signing token existence.
+			//
+			// Not sure if it is limited to this condition, but
+			// Ssl parameters do not support token provider and
+			// still do not fail. X509 parameters do fail.
+			if (RecipientParameters.InternalSupportsClientAuthentication)
+				authenticator = CreateTokenAuthenticator (RecipientParameters, out auth_token_resolver);
 		}
 
 		public void Release ()
@@ -282,7 +289,8 @@ namespace System.ServiceModel.Channels
 
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-			CreateTokenAuthenticator (r); // FIXME: is it correct??
+
+			PrepareAuthenticator ();
 
 			// This check is almost extra, though it is needed
 			// to check correct signing token existence.
@@ -361,11 +369,17 @@ namespace System.ServiceModel.Channels
 
 			SecurityTokenRequirement r = CreateRequirement ();
 			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-			CreateTokenAuthenticator (r);
+
+			PrepareAuthenticator ();
 
 			// This check is almost extra, though it is needed
 			// to check correct signing token existence.
-			if (EncryptionToken == null)
+			//
+			// Not sure if it is limited to this condition, but
+			// Ssl parameters do not support token provider and
+			// still do not fail. X509 parameters do fail.
+			if (InitiatorParameters.InternalHasAsymmetricKey &&
+			    EncryptionToken == null)
 				throw new Exception ("INTERNAL ERROR");
 		}
 

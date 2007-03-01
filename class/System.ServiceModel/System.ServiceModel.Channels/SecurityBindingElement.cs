@@ -356,7 +356,7 @@ namespace System.ServiceModel.Channels
 			bool requireCancellation)
 		{
 			SymmetricSecurityBindingElement be = new SymmetricSecurityBindingElement ();
-			be.ProtectionTokenParameters = CreateProtectionTokenParameters (false);
+			be.ProtectionTokenParameters = new SslSecurityTokenParameters (requireClientCertificate, requireCancellation);
 			return be;
 		}
 
