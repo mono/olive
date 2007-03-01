@@ -25,10 +25,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System.Collections.Generic;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
+using System.Text;
 
 namespace System.ServiceModel.Security.Tokens
 {
@@ -215,6 +217,19 @@ namespace System.ServiceModel.Security.Tokens
 				return ret;
 			}
 			set { Properties [TransportSchemeProperty] = value; }
+		}
+
+		internal string Dump ()
+		{
+			StringBuilder sb = new StringBuilder ();
+			sb.Append (GetType ()).Append (":");
+			foreach (KeyValuePair<string, object> p in Properties)
+				sb.Append ("\n------------\n")
+				  .Append ("URI: ")
+				  .Append (p.Key)
+				  .Append ("\nValue: ")
+				  .Append (p.Value);
+			return sb.ToString ();
 		}
 	}
 }

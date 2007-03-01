@@ -1,5 +1,12 @@
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceModelSecurityTokenRequirement.cs,
+	  RecipientServiceModelSecurityTokenRequirement.cs,
+	  InitiatorServiceModelSecurityTokenRequirement.cs :
+	  implemented ToString().
+
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SslSecurityTokenParameters.cs : more initialization of requirement.
 	* SslSecurityTokenAuthenticator.cs : new file.
 

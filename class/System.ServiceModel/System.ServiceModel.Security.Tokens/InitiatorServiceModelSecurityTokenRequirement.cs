@@ -58,10 +58,9 @@ namespace System.ServiceModel.Security.Tokens
 			set { Properties [ViaProperty] = value; }
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
+			return Dump ();
 		}
 	}
 }

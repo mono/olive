@@ -75,10 +75,9 @@ namespace System.ServiceModel.Security.Tokens
 			set { Properties [SuppressAuditFailureProperty] = value; }
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
+			return Dump ();
 		}
 	}
 }
