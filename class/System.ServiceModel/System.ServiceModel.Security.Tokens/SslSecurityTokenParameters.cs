@@ -107,8 +107,13 @@ namespace System.ServiceModel.Security.Tokens
 
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
 		{
-			requirement.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			requirement.TokenType =
+				RequireClientCertificate ?
+				ServiceModelSecurityTokenTypes.MutualSslnego :
+				ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			requirement.Properties [ReqType.RequireCryptographicTokenProperty] = true;
 			requirement.Properties [ReqType.SupportSecurityContextCancellationProperty] = RequireCancellation;
+			requirement.KeyType = SecurityKeyType.SymmetricKey;
 		}
 	}
 }

@@ -72,8 +72,10 @@ namespace System.ServiceModel.Security
 				return CreateX509Authenticator (requirement);
 			if (requirement.TokenType == SecurityTokenTypes.Rsa)
 				return new RsaSecurityTokenAuthenticator ();
-
-			throw new NotImplementedException ();
+			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
+				return new SslSecurityTokenAuthenticator (requirement);
+			else
+				throw new NotImplementedException ("Not implemented token type: " + requirement.TokenType);
 		}
 
 		UserNameSecurityTokenAuthenticator CreateUserNameAuthenticator (SecurityTokenRequirement requirement)
@@ -131,6 +133,8 @@ namespace System.ServiceModel.Security
 			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.SecurityContext) {
 				// FIXME: implement
 				throw new NotImplementedException ();
+			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego) {
+				throw new NotSupportedException (String.Format ("Token type '{0}' is not supported", requirement.TokenType));
 			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.Spnego) {
 				// FIXME: implement
 				throw new NotImplementedException ();

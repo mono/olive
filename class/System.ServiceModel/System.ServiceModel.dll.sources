@@ -558,6 +558,7 @@ System.ServiceModel.Security.Tokens/SecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/SecurityTokenReferenceStyle.cs
 System.ServiceModel.Security.Tokens/ServiceModelSecurityTokenRequirement.cs
 System.ServiceModel.Security.Tokens/ServiceModelSecurityTokenTypes.cs
+System.ServiceModel.Security.Tokens/SslSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenProvider.cs
 System.ServiceModel.Security.Tokens/SspiSecurityToken.cs

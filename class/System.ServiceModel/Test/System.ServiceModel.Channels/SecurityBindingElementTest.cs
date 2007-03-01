@@ -236,7 +236,11 @@ namespace MonoTests.System.ServiceModel.Channels
 
 			// FIXME: also try different constructor arguments
 
-			// FIXME: test ProtectionTokenParameters
+			// test ProtectionTokenParameters
+			Assert.AreEqual (typeof (SslSecurityTokenParameters), be.ProtectionTokenParameters.GetType (), "#1");
+			SslSecurityTokenParameters sp = be.ProtectionTokenParameters as SslSecurityTokenParameters;
+			Assert.AreEqual (true, sp.RequireCancellation, "#2");
+			Assert.AreEqual (true, sp.RequireClientCertificate, "#3");
 		}
 
 		[Test]

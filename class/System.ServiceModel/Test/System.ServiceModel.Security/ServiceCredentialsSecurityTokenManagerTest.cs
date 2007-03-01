@@ -28,6 +28,7 @@
 using System;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Net;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -54,6 +55,14 @@ namespace MonoTests.System.ServiceModel.Security
 			public bool IsIssued (SecurityTokenRequirement r)
 			{
 				return IsIssuedSecurityTokenRequirement (r);
+			}
+		}
+
+		class MySslSecurityTokenParameters : SslSecurityTokenParameters
+		{
+			public void InitRequirement (SecurityTokenRequirement r)
+			{
+				InitializeSecurityTokenRequirement (r);
 			}
 		}
 
@@ -84,8 +93,8 @@ namespace MonoTests.System.ServiceModel.Security
 		void IsIssuedSecurityTokenRequirement (
 			SecurityTokenParameters p, bool expected, string label)
 		{
-			ServiceModelSecurityTokenRequirement r =
-				new ServiceModelSecurityTokenRequirement ();
+			ReqType r =
+				new ReqType ();
 			p.InitializeSecurityTokenRequirement (r);
 			Assert.AreEqual (expected, def_c.IsIssued (r), label);
 		}
@@ -241,7 +250,7 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (NotSupportedException))]
-		public void CreateProviderAnonSsl ()
+		public void CreateProviderAnonSslError ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
 				new RecipientServiceModelSecurityTokenRequirement ();
@@ -252,6 +261,54 @@ namespace MonoTests.System.ServiceModel.Security
 				new BindingContext (new CustomBinding (), new BindingParameterCollection ());
 			r.MessageSecurityVersion =
 				MessageSecurityVersion.Default.SecurityTokenVersion;
+			SecurityTokenProvider p =
+				def_c.CreateSecurityTokenProvider (r);
+			Assert.IsNotNull (p, "#1");
+		}
+
+		[Test]
+		[Ignore ("incomplete")]
+		[Category ("NotWorking")]
+		public void CreateProviderAnonSsl ()
+		{
+			RecipientServiceModelSecurityTokenRequirement r =
+				new RecipientServiceModelSecurityTokenRequirement ();
+			new MySslSecurityTokenParameters ().InitRequirement (r);
+
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.ChannelParametersCollectionProperty), "#1");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.EndpointFilterTableProperty), "#2");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.HttpAuthenticationSchemeProperty), "#3");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.IsOutOfBandTokenProperty), "#4");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.IssuerAddressProperty), "#5");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.MessageDirectionProperty), "#6");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.MessageSecurityVersionProperty), "#7");
+			//Assert.IsTrue (r.Properties.ContainsKey (SecurityTokenRequirement.PeerAuthenticationMode), "#8");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.SecurityAlgorithmSuiteProperty), "#9");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.SecurityBindingElementProperty), "#10");
+			Assert.IsFalse (r.Properties.ContainsKey (ReqType.SupportingTokenAttachmentModeProperty), "#11");
+			Assert.AreEqual (null, r.TransportScheme, "#12");
+
+			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			r.ListenUri = new Uri ("http://localhost:8080");
+			r.SecurityBindingElement = new SymmetricSecurityBindingElement ();
+			r.Properties [ReqType.IssuerBindingContextProperty] =
+				new BindingContext (new CustomBinding (), new BindingParameterCollection ());
+			r.MessageSecurityVersion =
+				MessageSecurityVersion.Default.SecurityTokenVersion;
+
+			r.Properties [ReqType.SecurityAlgorithmSuiteProperty] =
+				SecurityAlgorithmSuite.Default;
+			r.TransportScheme = "https";
+
+			r.Properties [ReqType.ChannelParametersCollectionProperty] = new ChannelParameterCollection ();
+			r.Properties [ReqType.EndpointFilterTableProperty] = null;
+			r.Properties [ReqType.HttpAuthenticationSchemeProperty] = AuthenticationSchemes.Anonymous;
+			r.Properties [ReqType.IsOutOfBandTokenProperty] = true;
+			r.Properties [ReqType.IssuerAddressProperty] = new EndpointAddress ("http://localhost:9090");
+//			r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
+			r.Properties [ReqType.SecurityBindingElementProperty] = new SymmetricSecurityBindingElement ();
+			r.Properties [ReqType.SupportingTokenAttachmentModeProperty] = SecurityTokenAttachmentMode.Signed;
+
 			SecurityTokenProvider p =
 				def_c.CreateSecurityTokenProvider (r);
 			Assert.IsNotNull (p, "#1");

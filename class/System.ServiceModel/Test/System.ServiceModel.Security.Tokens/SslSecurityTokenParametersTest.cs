@@ -150,8 +150,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
-				manager.CreateSecurityTokenProvider (r);
+			manager.CreateSecurityTokenProvider (r);
 		}
 
 		[Test]
@@ -171,8 +170,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
-				manager.CreateSecurityTokenProvider (r);
+			manager.CreateSecurityTokenProvider (r);
 		}
 
 		[Test]
@@ -192,8 +190,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
-				manager.CreateSecurityTokenProvider (r);
+			manager.CreateSecurityTokenProvider (r);
 		}
 
 		[Test]
@@ -223,6 +220,28 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			((ICommunicationObject) p).Open ();
 
 			p.GetToken (TimeSpan.FromSeconds (5));
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotSupportedException))]
+		public void CreateRecipientProvider ()
+		{
+			MyParameters tp = new MyParameters ();
+			tp.RequireClientCertificate = true;
+			RecipientServiceModelSecurityTokenRequirement r =
+				new RecipientServiceModelSecurityTokenRequirement ();
+			tp.InitRequirement (r);
+			r.ListenUri = new Uri ("http://localhost:8080");
+			r.SecurityBindingElement = new SymmetricSecurityBindingElement ();
+			r.Properties [ReqType.IssuerBindingContextProperty] =
+				new BindingContext (new CustomBinding (),
+					new BindingParameterCollection ());
+			r.MessageSecurityVersion = MessageSecurityVersion.Default.SecurityTokenVersion;
+
+			ClientCredentials cred = new ClientCredentials ();
+			ClientCredentialsSecurityTokenManager manager =
+				new ClientCredentialsSecurityTokenManager (cred);
+			manager.CreateSecurityTokenProvider (r);
 		}
 	}
 }

@@ -1,3 +1,8 @@
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs : more tests for
+	  AnonymousSslnego token authenticator.
+
 2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs : fixed DerivedKeyToken reader
