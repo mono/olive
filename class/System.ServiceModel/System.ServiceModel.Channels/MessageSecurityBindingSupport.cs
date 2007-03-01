@@ -168,12 +168,7 @@ namespace System.ServiceModel.Channels
 			return manager.CreateSecurityTokenProvider (requirement);
 		}
 
-		public SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
-		{
-			SecurityTokenRequirement r = CreateRequirement ();
-			p.CallInitializeSecurityTokenRequirement (r);
-			return manager.CreateSecurityTokenAuthenticator (r, out resolver);
-		}
+		public abstract SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver);
 
 		protected void PrepareAuthenticator ()
 		{
@@ -185,6 +180,23 @@ namespace System.ServiceModel.Channels
 			// still do not fail. X509 parameters do fail.
 			if (RecipientParameters.InternalSupportsClientAuthentication)
 				authenticator = CreateTokenAuthenticator (RecipientParameters, out auth_token_resolver);
+		}
+
+		protected void InitializeRequirement (SecurityTokenParameters p, SecurityTokenRequirement r)
+		{
+			p.CallInitializeSecurityTokenRequirement (r);
+
+			// r.Properties [ChannelParametersCollectionProperty] =
+			// r.Properties [ReqType.EndpointFilterTableProperty] =
+			// r.Properties [ReqType.HttpAuthenticationSchemeProperty] =
+			// r.Properties [ReqType.IsOutOfBandTokenProperty] =
+			// r.Properties [ReqType.IssuerAddressProperty] =
+			// r.Properties [ReqType.MessageDirectionProperty] = 
+			r.Properties [ReqType.MessageSecurityVersionProperty] = Element.MessageSecurityVersion.SecurityTokenVersion;
+			r.Properties [ReqType.SecurityAlgorithmSuiteProperty] = Element.DefaultAlgorithmSuite;
+			r.Properties [ReqType.SecurityBindingElementProperty] = Element;
+			// r.Properties [ReqType.SupportingTokenAttachmentModeProperty] =
+			// r.TransportScheme =
 		}
 
 		public void Release ()
@@ -245,7 +257,7 @@ namespace System.ServiceModel.Channels
 			requirement.Properties [ReqType.MessageSecurityVersionProperty] =
 				Element.MessageSecurityVersion.SecurityTokenVersion;
 
-			targetParams.CallInitializeSecurityTokenRequirement (requirement);
+			InitializeRequirement (targetParams, requirement);
 
 			SecurityTokenProvider provider =
 				CreateTokenProvider (requirement);
@@ -287,9 +299,6 @@ namespace System.ServiceModel.Channels
 			this.factory = factory;
 			this.message_to = address;
 
-			SecurityTokenRequirement r = CreateRequirement ();
-			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-
 			PrepareAuthenticator ();
 
 			// This check is almost extra, though it is needed
@@ -302,7 +311,8 @@ namespace System.ServiceModel.Channels
 			get {
 				if (encryption_token == null) {
 					SecurityTokenRequirement r = CreateRequirement ();
-					RecipientParameters.CallInitializeSecurityTokenRequirement (r);
+					r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
+					InitializeRequirement (RecipientParameters, r);
 					encryption_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Exchange);
 				}
 				return encryption_token;
@@ -313,7 +323,8 @@ namespace System.ServiceModel.Channels
 			get {
 				if (signing_token == null) {
 					SecurityTokenRequirement r = CreateRequirement ();
-				InitiatorParameters.CallInitializeSecurityTokenRequirement (r);
+					r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
+					InitializeRequirement (InitiatorParameters, r);
 					signing_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Signature);
 				}
 				return signing_token;
@@ -341,7 +352,16 @@ namespace System.ServiceModel.Channels
 			SecurityTokenRequirement r = new InitiatorServiceModelSecurityTokenRequirement ();
 //			r.Properties [ReqType.IssuerAddressProperty] = message_to;
 			r.Properties [ReqType.TargetAddressProperty] = message_to;
+			// FIXME: set Via
 			return r;
+		}
+
+		public override SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
+		{
+			SecurityTokenRequirement r = CreateRequirement ();
+			r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Output;
+			InitializeRequirement (p, r);
+			return SecurityTokenManager.CreateSecurityTokenAuthenticator (r, out resolver);
 		}
 	}
 
@@ -367,9 +387,6 @@ namespace System.ServiceModel.Channels
 		{
 			this.listener = listener;
 
-			SecurityTokenRequirement r = CreateRequirement ();
-			RecipientParameters.CallInitializeSecurityTokenRequirement (r);
-
 			PrepareAuthenticator ();
 
 			// This check is almost extra, though it is needed
@@ -378,6 +395,11 @@ namespace System.ServiceModel.Channels
 			// Not sure if it is limited to this condition, but
 			// Ssl parameters do not support token provider and
 			// still do not fail. X509 parameters do fail.
+			//
+			// FIXME: as AsymmetricSecurityBindingElementTest
+			// .ServiceRecipientHasNoKeys() implies, it should be
+			// the recipient's parameters that is used. However
+			// such changes will break some of existing tests...
 			if (InitiatorParameters.InternalHasAsymmetricKey &&
 			    EncryptionToken == null)
 				throw new Exception ("INTERNAL ERROR");
@@ -387,6 +409,7 @@ namespace System.ServiceModel.Channels
 			get {
 				if (encryption_token == null) {
 					SecurityTokenRequirement r = CreateRequirement ();
+					r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Output;
 					encryption_token = GetToken (r, InitiatorParameters, SecurityKeyUsage.Exchange);
 				}
 				return encryption_token;
@@ -397,7 +420,8 @@ namespace System.ServiceModel.Channels
 			get {
 				if (signing_token == null) {
 					SecurityTokenRequirement r = CreateRequirement ();
-				RecipientParameters.CallInitializeSecurityTokenRequirement (r);
+					r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
+					InitializeRequirement (RecipientParameters, r);
 					signing_token = GetToken (r, RecipientParameters, SecurityKeyUsage.Signature);
 				}
 				return signing_token;
@@ -425,6 +449,14 @@ namespace System.ServiceModel.Channels
 				new RecipientServiceModelSecurityTokenRequirement ();
 			requirement.Properties [ReqType.ListenUriProperty] = listener.Uri;
 			return requirement;
+		}
+
+		public override SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
+		{
+			SecurityTokenRequirement r = CreateRequirement ();
+			r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
+			InitializeRequirement (p, r);
+			return SecurityTokenManager.CreateSecurityTokenAuthenticator (r, out resolver);
 		}
 	}
 

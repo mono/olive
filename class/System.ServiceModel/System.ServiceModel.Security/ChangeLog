@@ -1,6 +1,12 @@
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :
+	  internalize IsIssuedSecurityTokenRequirement().
+	  Use SecurityTokenRequirement.ToString().
+
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs :
 	  Return ssl token authenticator (just almost stub now).
 	  Ssl does not support token provider, so explicitly throw an error.
 

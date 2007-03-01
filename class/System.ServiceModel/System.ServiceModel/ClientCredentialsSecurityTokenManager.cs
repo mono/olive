@@ -65,6 +65,7 @@ namespace System.ServiceModel
 			if (requirement == null)
 				throw new ArgumentNullException ("requirement");
 			if (requirement.TokenType == SecurityTokenTypes.UserName) {
+				// unsupported
 			}
 			else if (requirement.TokenType == SecurityTokenTypes.Rsa)
 				return new RsaSecurityTokenAuthenticator ();
@@ -74,7 +75,7 @@ namespace System.ServiceModel
 			else
 				throw new NotImplementedException ();
 
-			throw new NotSupportedException (String.Format ("Token type '{0}' is not supported to create SecurityTokenAuthenticator.", requirement.TokenType));
+			throw new NotSupportedException (String.Format ("Security token requirement '{0}' is not supported to create SecurityTokenAuthenticator.", requirement));
 		}
 
 
@@ -330,7 +331,7 @@ SecurityTokenRequirement requirement)
 			return new WSSecurityTokenSerializer (version);
 		}
 
-		protected bool IsIssuedSecurityTokenRequirement (
+		protected internal bool IsIssuedSecurityTokenRequirement (
 			SecurityTokenRequirement requirement)
 		{
 			IssuedSecurityTokenParameters dummy;

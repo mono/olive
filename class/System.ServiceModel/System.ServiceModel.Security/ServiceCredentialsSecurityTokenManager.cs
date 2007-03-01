@@ -148,7 +148,7 @@ namespace System.ServiceModel.Security
 				// FIXME: implement
 				throw new NotImplementedException ();
 			}
-			throw new NotSupportedException (String.Format ("Token type '{0}' is not supported", requirement.TokenType));
+			throw new NotSupportedException (String.Format ("Securirty token requirement '{0}' is not supported", requirement));
 		}
 
 		X509SecurityTokenProvider CreateX509SecurityTokenProvider (SecurityTokenRequirement requirement)
@@ -268,7 +268,7 @@ namespace System.ServiceModel.Security
 			return new WSSecurityTokenSerializer (ver, bsp);
 		}
 
-		protected bool IsIssuedSecurityTokenRequirement (
+		protected internal bool IsIssuedSecurityTokenRequirement (
 			SecurityTokenRequirement requirement)
 		{
 			IssuedSecurityTokenParameters dummy;

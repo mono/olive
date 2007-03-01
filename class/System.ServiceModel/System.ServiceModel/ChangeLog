@@ -1,3 +1,9 @@
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsSecurityTokenManager.cs :
+	  internalize IsIssuedSecurityTokenRequirement().
+	  Use SecurityTokenRequirement.ToString().
+
 2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSHttpBinding.cs : for UserName credentials, don't require

@@ -1,5 +1,12 @@
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs :
+	  Set proper MessageDirection to the requirement after creation.
+	  split CreateTokenAuthenticator() as MessageDirection is different.
+	  Removed extra creation of requirement.
+
+2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MessageSecurityBindingSupport.cs : token authenticator is not
 	  always created on channel-opening stage.
 	* SecurityBindingElement.cs : use SslSecurityTokenParameters for
