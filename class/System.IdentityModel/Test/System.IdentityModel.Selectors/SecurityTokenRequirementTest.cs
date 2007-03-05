@@ -61,5 +61,37 @@ namespace MonoTests.System.IdentityModel.Selectors
 			Assert.IsNull (r.TokenType, "#4");
 			Assert.AreEqual (false, r.RequireCryptographicToken, "#5");
 		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void TryGetPropertyTypeMismatch ()
+		{
+			SecurityTokenRequirement r =
+				new SecurityTokenRequirement ();
+			r.Properties ["urn:foo"] = 1;
+			string s;
+			r.TryGetProperty<string> ("urn:foo", out s);
+		}
+
+		[Test]
+		public void TryGetPropertyTypeBaseMatch ()
+		{
+			SecurityTokenRequirement r =
+				new SecurityTokenRequirement ();
+			r.Properties ["urn:foo"] = 1;
+			object o;
+			r.TryGetProperty<object> ("urn:foo", out o);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void TryGetPropertyTypeConvertible ()
+		{
+			SecurityTokenRequirement r =
+				new SecurityTokenRequirement ();
+			r.Properties ["urn:foo"] = 1;
+			double d;
+			r.TryGetProperty<double> ("urn:foo", out d);
+		}
 	}
 }

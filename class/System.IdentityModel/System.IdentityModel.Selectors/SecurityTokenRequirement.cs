@@ -133,16 +133,18 @@ namespace System.IdentityModel.Selectors
 			throw new ArgumentException (String.Format ("Property '{0}' was not found.", property));
 		}
 
-		[MonoTODO ("examine type inconsistency between generic arg and the actual value")]
 		public bool TryGetProperty<TValue> (string property, out TValue value)
 		{
 			object tmp;
+
 			if (!Properties.TryGetValue (property, out tmp))
 				return false;
-			if (tmp is TValue)
+			if (tmp == null && !typeof (TValue).IsValueType)
+				value = default (TValue);
+			else if (tmp is TValue)
 				value = (TValue) tmp;
 			else
-				value = (TValue) Convert.ChangeType (tmp, typeof (TValue));
+				throw new ArgumentException (String.Format ("The value of property '{0}' is of type '{1}', while '{2}' is expected.", property, tmp.GetType (), typeof (TValue)));
 			return true;
 		}
 	}
