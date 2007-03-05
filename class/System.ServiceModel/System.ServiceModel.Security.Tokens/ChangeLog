@@ -1,5 +1,12 @@
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SslSecurityTokenProvider.cs : implemented some client negotiation
+	  based on Mono.Security.Protocols.Tls.* and WSTrust contracts.
+	* TlsServerSession.cs, TlsClientSession.cs : session state transition
+	  manager (controls Tls Context).
+
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UserNameSecurityTokenParameters.cs,
 	  RsaSecurityTokenParameters.cs,
 	  IssuedSecurityTokenParameters.cs,

@@ -1,3 +1,7 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	Makefile : added -r:Mono.Security.dll and some nowarns.
+
 2007-02-27  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: include resource files in EXTRA_DISTFILES

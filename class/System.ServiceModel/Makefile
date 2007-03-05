@@ -7,7 +7,7 @@ RESOURCE_FILES = \
 
 LIBRARY = System.ServiceModel.dll
 LIB_MCS_FLAGS = \
-		/nowarn:414,169,67 \
+		/nowarn:414,169,67,3005,436 \
 	        /r:System.dll \
 	        /r:System.Xml.dll \
 	        /r:System.Configuration.dll \
@@ -18,6 +18,7 @@ LIB_MCS_FLAGS = \
 	        /r:System.Transactions.dll \
 	        /r:System.Web.dll \
 		/r:System.Web.Services.dll \
+		/r:Mono.Security.dll \
 		$(RESOURCE_FILES:%=/resource:%)
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)

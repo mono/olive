@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -86,16 +86,61 @@ namespace System.ServiceModel.Description
 		// FIXME: do we need KET here?
 	}
 
-	class WstRequestSecurityToken
+	class WstRequestSecurityToken : WstRequestSecurityTokenBase
 	{
+		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
+		{
+			w.WriteStartElement ("t", "RequestSecurityToken", Constants.WstNamespace);
+			WriteBodyContentsCore (w);
+			w.WriteEndElement ();
+		}
+	}
+
+	class WstRequestSecurityTokenResponse : WstRequestSecurityTokenBase
+	{
+//		public string TokenType;
+
+		public SecurityToken RequestedSecurityToken;
+
+		public string RequestedAttachedReference;
+
+		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
+		{
+			w.WriteStartElement ("t", "RequestSecurityTokenResponse", Constants.WstNamespace);
+			WriteBodyContentsCore (w);
+			w.WriteEndElement ();
+		}
+	}
+
+	abstract class WstRequestSecurityTokenBase : BodyWriter
+	{
+		protected WstRequestSecurityTokenBase ()
+			: base (true)
+		{
+		}
+
+		protected void WriteBodyContentsCore (XmlDictionaryWriter w)
+		{
+			string ns = Constants.WstNamespace;
+			w.WriteAttributeString ("Context", Context);
+			w.WriteElementString ("TokenType", ns, Constants.WsscContextToken);
+			w.WriteElementString ("RequestType", ns, Constants.WstIssueRequest);
+			w.WriteElementString ("KeySize", ns, XmlConvert.ToString (KeySize));
+			if (BinaryExchange != null)
+				BinaryExchange.WriteTo (w);
+		}
+
+		public string Context = "uuid-" + Guid.NewGuid (); // UniqueId()-"urn:"
 		public string RequestType;
 		public WspAppliesTo AppliesTo;
 
 		public SecurityToken Entropy;
 
-		public int KeySize;
+		public int KeySize = 256;
 		public string KeyType;
 		public string ComputedKeyAlgorithm;
+
+		public WstBinaryExchange BinaryExchange;
 	}
 
 	class WstEntropy
@@ -122,12 +167,21 @@ namespace System.ServiceModel.Description
 		public string Value;
 	}
 
-	class WstRequestSecurityTokenResponse
+	class WstBinaryExchange
 	{
-		public string TokenType;
+		public string ValueType = Constants.WstBinaryExchangeValueTls;
 
-		public SecurityToken RequestedSecurityToken;
+		public string EncodingType = Constants.WssBase64BinaryEncodingType;
 
-		public string RequestedAttachedReference;
+		public byte [] Value;
+
+		public void WriteTo (XmlWriter w)
+		{
+			w.WriteStartElement ("BinaryExchange", Constants.WstNamespace);
+			w.WriteAttributeString ("ValueType", ValueType);
+			w.WriteAttributeString ("EncodingType", EncodingType);
+			w.WriteString (Convert.ToBase64String (Value));
+			w.WriteEndElement ();
+		}
 	}
 }

@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,14 +27,18 @@
 //
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Security;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
 
 using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
 
@@ -61,12 +65,67 @@ namespace System.ServiceModel.Security.Tokens
 
 	class SslCommunicationObject : ProviderCommunicationObject
 	{
+		WSTrustSecurityTokenServiceProxy proxy;
+
 		public SslCommunicationObject ()
 		{
 		}
 
 		public SecurityToken GetToken (TimeSpan timeout)
 		{
+			TlsClientSession tls = new TlsClientSession (IssuerAddress.Uri.ToString ());
+			WstRequestSecurityToken rst =
+				new WstRequestSecurityToken ();
+
+			// send ClientHello
+			rst.BinaryExchange = new WstBinaryExchange ();
+			rst.BinaryExchange.Value = tls.ProcessClientHello ();
+
+Console.WriteLine ("Negotiation Context: " + rst.Context);
+
+			Message request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rst);
+			request.Headers.MessageId = new UniqueId ();
+			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
+			request.Headers.To = TargetAddress.Uri;
+			Message response = proxy.Issue (request);
+
+MessageBuffer buf = response.CreateBufferedCopy (0x10000);
+response = buf.CreateMessage ();
+Console.WriteLine (buf.CreateMessage ());
+
+
+			// receive ServerHello
+			WSTrustRequestSecurityTokenResponseReader reader =
+				new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			reader.Read ();
+			if (reader.Value.RequestedSecurityToken != null)
+				return reader.Value.RequestedSecurityToken;
+
+			tls.ProcessServerHello (reader.Value.BinaryExchange.Value);
+
+			// send ClientKeyExchange
+//			WstRequestSecurityTokenResponse rstr =
+//				new WstRequestSecurityTokenResponse ();
+			WstRequestSecurityToken rstr =
+				new WstRequestSecurityToken ();
+			rstr.Context = reader.Value.Context;
+			rstr.BinaryExchange = new WstBinaryExchange ();
+			rstr.BinaryExchange.Value = tls.ProcessClientKeyExchange ();
+
+			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rstr);
+			request.Headers.RelatesTo = response.Headers.RelatesTo;
+			request.Headers.To = TargetAddress.Uri;
+			// FIXME: regeneration of this instance is somehow required, but should not be.
+			proxy = new WSTrustSecurityTokenServiceProxy (
+				IssuerBinding, IssuerAddress);
+			response = proxy.Issue (request);
+
+			reader = new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			reader.Read ();
+			if (reader.Value.RequestedSecurityToken != null)
+				return reader.Value.RequestedSecurityToken;
+
+			// FIXME: continue negotiation
 			throw new NotImplementedException ();
 		}
 
@@ -90,7 +149,8 @@ namespace System.ServiceModel.Security.Tokens
 
 			EnsureProperties ();
 
-			throw new NotImplementedException ();
+			proxy = new WSTrustSecurityTokenServiceProxy (
+				IssuerBinding, IssuerAddress);
 		}
 
 		protected override IAsyncResult OnBeginOpen (TimeSpan timeout, AsyncCallback callback, object state)
@@ -105,7 +165,8 @@ namespace System.ServiceModel.Security.Tokens
 
 		protected override void OnClose (TimeSpan timeout)
 		{
-			throw new NotImplementedException ();
+			if (proxy != null)
+				proxy.Close ();
 		}
 
 		protected override IAsyncResult OnBeginClose (TimeSpan timeout, AsyncCallback callback, object state)

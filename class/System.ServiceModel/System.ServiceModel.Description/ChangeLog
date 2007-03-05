@@ -1,3 +1,8 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :
+	  added missing support for token negotiation (WS-Trust section 10.3).
+
 2007-01-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentials.cs : oops.
