@@ -1,3 +1,16 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UserNameSecurityTokenParameters.cs,
+	  RsaSecurityTokenParameters.cs,
+	  IssuedSecurityTokenParameters.cs,
+	  SslSecurityTokenParameters.cs
+	  SspiSecurityTokenParameters.cs,
+	  KerberosSecurityTokenParameters.cs,
+	  SecureConversationSecurityTokenParameters.cs : updated 
+	  InitializeSecurityTokenRequirement() based on updated MSDN docs.
+	  Implemented Ssl CreateKeyIdentifierClause().
+	  Implemented IssuedToken copy .ctor().
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceModelSecurityTokenRequirement.cs,

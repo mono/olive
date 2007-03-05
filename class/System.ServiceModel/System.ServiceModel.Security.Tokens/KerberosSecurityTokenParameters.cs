@@ -75,10 +75,13 @@ namespace System.ServiceModel.Security.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
 		{
+			if (requirement == null)
+				throw new ArgumentNullException ("requirement");
 			requirement.TokenType = SecurityTokenTypes.Kerberos;
+			requirement.RequireCryptographicToken = true;
+			requirement.KeyType = SecurityKeyType.SymmetricKey;
 		}
 	}
 }

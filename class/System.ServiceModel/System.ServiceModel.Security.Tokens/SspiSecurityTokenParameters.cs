@@ -92,7 +92,10 @@ namespace System.ServiceModel.Security.Tokens
 			if (requirement == null)
 				throw new ArgumentNullException ();
 			requirement.TokenType = ServiceModelSecurityTokenTypes.Spnego;
+			requirement.RequireCryptographicToken = true;
 			requirement.Properties [ReqType.SupportSecurityContextCancellationProperty] = RequireCancellation;
+			requirement.Properties [ReqType.IssuedSecurityTokenParametersProperty] = this.Clone ();
+			requirement.KeyType = SecurityKeyType.SymmetricKey;
 		}
 
 		[MonoTODO]

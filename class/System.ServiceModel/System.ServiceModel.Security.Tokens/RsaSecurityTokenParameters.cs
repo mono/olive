@@ -81,6 +81,8 @@ namespace System.ServiceModel.Security.Tokens
 			if (requirement == null)
 				throw new ArgumentNullException ("requirement");
 			requirement.TokenType = SecurityTokenTypes.Rsa;
+			requirement.RequireCryptographicToken = true;
+			requirement.KeyType = SecurityKeyType.AsymmetricKey;
 		}
 	}
 }

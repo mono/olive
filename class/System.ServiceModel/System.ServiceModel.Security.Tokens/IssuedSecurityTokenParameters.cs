@@ -61,11 +61,17 @@ namespace System.ServiceModel.Security.Tokens
 			binding = issuerBinding;
 		}
 
-		[MonoTODO]
 		protected IssuedSecurityTokenParameters (IssuedSecurityTokenParameters source)
 			: base (source)
 		{
-			throw new NotImplementedException ();
+			binding = source.binding;
+			issuer_address = source.issuer_address;
+			issuer_meta_address = source.issuer_meta_address;
+			key_size = source.key_size;
+			key_type = source.key_type;
+			token_type = source.token_type;
+			reqs = new Collection<ClaimTypeRequirement> (source.reqs);
+			additional_reqs = new Collection<XmlElement> (source.additional_reqs);
 		}
 
 		Binding binding;
@@ -164,13 +170,16 @@ namespace System.ServiceModel.Security.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
 		{
-			requirement.TokenType = SecurityTokenTypes.Saml;
-			requirement.Properties [ReqType.IssuedSecurityTokenParametersProperty] = this;
+			if (requirement == null)
+				throw new ArgumentNullException ("requirement");
+			requirement.TokenType = TokenType;
+			requirement.Properties [ReqType.IssuedSecurityTokenParametersProperty] = this.Clone ();
 			requirement.Properties [ReqType.IssuerAddressProperty] = IssuerAddress;
 			requirement.Properties [ReqType.IssuerBindingProperty] = IssuerBinding;
+			requirement.RequireCryptographicToken = true;
+			requirement.KeyType = KeyType;
 		}
 	}
 }

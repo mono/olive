@@ -145,17 +145,12 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			// .NET somehow causes NRE. dunno why.
 			requirement.TokenType = ServiceModelSecurityTokenTypes.SecureConversation;
+			requirement.RequireCryptographicToken = true;
+			requirement.Properties [ReqType.SupportSecurityContextCancellationProperty] = RequireCancellation;
 			requirement.Properties [ReqType.SecureConversationSecurityBindingElementProperty] =
 				BootstrapSecurityBindingElement;
-			requirement.Properties [ReqType.SecurityBindingElementProperty] =
-				BootstrapSecurityBindingElement;
-			requirement.KeySize = BootstrapSecurityBindingElement.DefaultAlgorithmSuite.DefaultSymmetricKeyLength;
-			requirement.Properties [ReqType.MessageSecurityVersionProperty] = BootstrapSecurityBindingElement.MessageSecurityVersion.SecurityTokenVersion;
-
-			requirement.Properties [ReqType.SecurityAlgorithmSuiteProperty] = BootstrapSecurityBindingElement.DefaultAlgorithmSuite;
-
-			// FIXME: provide ChannelProtectionRequirements and
-			// RequireCancellation somehow.
+			requirement.Properties [ReqType.IssuedSecurityTokenParametersProperty] = this.Clone ();
+			requirement.KeyType = SecurityKeyType.SymmetricKey;
 		}
 
 		[MonoTODO]

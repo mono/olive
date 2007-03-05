@@ -79,6 +79,7 @@ namespace System.ServiceModel.Security.Tokens
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
 		{
 			requirement.TokenType = SecurityTokenTypes.UserName;
+			requirement.RequireCryptographicToken = true;
 		}
 	}
 }

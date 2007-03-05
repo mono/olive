@@ -98,11 +98,15 @@ namespace System.ServiceModel.Security.Tokens
 			return new SslSecurityTokenParameters (this);
 		}
 
-		[MonoTODO]
 		protected override SecurityKeyIdentifierClause CreateKeyIdentifierClause (
 			SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
 		{
-			throw new NotImplementedException ();
+			if (token == null)
+				throw new ArgumentNullException ("token");
+			GenericXmlSecurityToken x = token as GenericXmlSecurityToken;
+			if (x == null)
+				throw new ArgumentException (String.Format ("Not supported SecurityToken: '{0}'", token));
+			return referenceStyle == SecurityTokenReferenceStyle.Internal ? x.InternalTokenReference : x.ExternalTokenReference;
 		}
 
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)
@@ -111,8 +115,9 @@ namespace System.ServiceModel.Security.Tokens
 				RequireClientCertificate ?
 				ServiceModelSecurityTokenTypes.MutualSslnego :
 				ServiceModelSecurityTokenTypes.AnonymousSslnego;
-			requirement.Properties [ReqType.RequireCryptographicTokenProperty] = true;
+			requirement.RequireCryptographicToken = true;
 			requirement.Properties [ReqType.SupportSecurityContextCancellationProperty] = RequireCancellation;
+			requirement.Properties [ReqType.IssuedSecurityTokenParametersProperty] = this.Clone ();
 			requirement.KeyType = SecurityKeyType.SymmetricKey;
 		}
 	}
