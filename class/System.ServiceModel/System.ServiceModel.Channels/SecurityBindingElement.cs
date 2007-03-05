@@ -438,14 +438,17 @@ namespace System.ServiceModel.Channels
 		}
 		#endregion
 
-		[MonoTODO]
+		// It seems almost internal, hardcoded like this (I tried
+		// custom parameters that sets IssuedTokenSecurityTokenParameters
+		// like below ones, but that didn't trigger this method).
 		protected static void SetIssuerBindingContextIfRequired (
 			SecurityTokenParameters parameters,
 			BindingContext issuerBindingContext)
 		{
 			if (parameters is IssuedSecurityTokenParameters ||
 			    parameters is SecureConversationSecurityTokenParameters ||
-			    parameters is SslSecurityTokenParameters) {
+			    parameters is SslSecurityTokenParameters ||
+			    parameters is SspiSecurityTokenParameters) {
 				parameters.IssuerBindingContext = issuerBindingContext;
 			}
 		}

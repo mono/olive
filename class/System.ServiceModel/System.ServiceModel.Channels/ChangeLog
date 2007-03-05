@@ -1,3 +1,8 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityBindingElement.cs : SetIssuerBindingContextIfRequired()
+	  will work only for predefined parameter types.
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs :
