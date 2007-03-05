@@ -114,7 +114,7 @@ namespace MonoTests.System.ServiceModel.Channels
 		[Test]
 		[ExpectedException (typeof (NotSupportedException))]
 		[Category ("NotWorking")]
-		public void ServiceInitiatorHasNoKeys ()
+		public void ServiceRecipientHasNoKeys ()
 		{
 			AsymmetricSecurityBindingElement sbe =
 				new AsymmetricSecurityBindingElement ();

@@ -1,3 +1,8 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SslSecurityTokenParametersTest.cs : for requirement initialization,
+	  test IssuedSecurityTokenParametersProperty existence.
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenParametersTest.cs : warning fixes. Test for

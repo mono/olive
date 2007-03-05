@@ -57,31 +57,36 @@ namespace MonoTests.System.ServiceModel
 			def_c = new MyManager (new MyClientCredentials ());
 		}
 
-/*
 		[Test]
 		public void IsIssuedSecurityTokenRequirement ()
 		{
-			IsIssuedSecurityTokenRequirement (
-				new RsaSecurityTokenParameters (), false, "#1");
-			IsIssuedSecurityTokenRequirement (
-				new X509SecurityTokenParameters (), false, "#2");
-			IsIssuedSecurityTokenRequirement (
-				new SslSecurityTokenParameters (), false, "#3");
-			IsIssuedSecurityTokenRequirement (
-				new SecureConversationSecurityTokenParameters (), false, "#4");
-			IsIssuedSecurityTokenRequirement (
-				new IssuedSecurityTokenParameters (), true, "#1");
-		}
+			ServiceModelSecurityTokenRequirement r;
+			MyManager mgr = new MyManager (new MyClientCredentials ());
 
-		void IsIssuedSecurityTokenRequirement (
-			SecurityTokenParameters p, bool expected, string label)
-		{
-			ServiceModelSecurityTokenRequirement r =
-				new ServiceModelSecurityTokenRequirement ();
-			p.InitializeSecurityTokenRequirement (r);
-			Assert.AreEqual (expected, def_c.IsIssued (r), label);
+			r = new InitiatorServiceModelSecurityTokenRequirement ();
+			MySslSecurityTokenParameters ssl =
+				new MySslSecurityTokenParameters ();
+			ssl.InitRequirement (r);
+			Assert.IsFalse (mgr.IsIssued (r), "ssl");
+
+			r = new InitiatorServiceModelSecurityTokenRequirement ();
+			MySspiSecurityTokenParameters sspi =
+				new MySspiSecurityTokenParameters ();
+			sspi.InitRequirement (r);
+			Assert.IsFalse (mgr.IsIssued (r), "sspi");
+
+			r = new InitiatorServiceModelSecurityTokenRequirement ();
+			MyIssuedSecurityTokenParameters issued =
+				new MyIssuedSecurityTokenParameters ();
+			issued.InitRequirement (r);
+			Assert.IsTrue (mgr.IsIssued (r), "issued");
+
+//			r = new InitiatorServiceModelSecurityTokenRequirement ();
+//			MySecureConversationSecurityTokenParameters sc =
+//				new MySecureConversationSecurityTokenParameters ();
+//			sc.InitRequirement (r);
+//			Assert.IsFalse (mgr.IsIssued (r), "sc");
 		}
-*/
 
 		[Test]
 		[ExpectedException (typeof (NotSupportedException))]
@@ -227,7 +232,8 @@ namespace MonoTests.System.ServiceModel
 		{
 			SecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
-			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+//			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			new MySslSecurityTokenParameters ().InitRequirement (r);
 			def_c.CreateSecurityTokenProvider (r);
 		}
 
@@ -250,7 +256,8 @@ namespace MonoTests.System.ServiceModel
 		{
 			InitiatorServiceModelSecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
-			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+//			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			new MySslSecurityTokenParameters ().InitRequirement (r);
 			r.TargetAddress = new EndpointAddress ("http://localhost:8080");
 			r.SecurityBindingElement = new SymmetricSecurityBindingElement ();
 			SecurityTokenProvider p =
@@ -264,7 +271,8 @@ namespace MonoTests.System.ServiceModel
 		{
 			InitiatorServiceModelSecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
-			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+//			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			new MySslSecurityTokenParameters ().InitRequirement (r);
 			r.TargetAddress = new EndpointAddress ("http://localhost:8080");
 			r.SecurityBindingElement = new SymmetricSecurityBindingElement ();
 			r.Properties [ReqType.IssuerBindingContextProperty] =
@@ -284,7 +292,8 @@ namespace MonoTests.System.ServiceModel
 		{
 			InitiatorServiceModelSecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
-			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
+			new MySslSecurityTokenParameters ().InitRequirement (r);
+//			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
 			r.TargetAddress = new EndpointAddress ("http://localhost:8080");
 //			r.TargetAddress = CreateEndpointAddress ("http://localhost:8080", true);
 			r.SecurityBindingElement = SecurityBindingElement.CreateUserNameForSslBindingElement ();
@@ -298,10 +307,18 @@ namespace MonoTests.System.ServiceModel
 				MessageSecurityVersion.Default.SecurityTokenVersion;
 			r.SecurityAlgorithmSuite =
 				SecurityAlgorithmSuite.Default;
+
+Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premise");
 			return r;
 		}
 
 		[Test]
+		public void CreateProviderAnonSsl ()
+		{
+			CreateProviderAnonSsl (false);
+			CreateProviderAnonSsl (true);
+		}
+
 		public void CreateProviderAnonSsl (bool useTransport)
 		{
 			InitiatorServiceModelSecurityTokenRequirement r =
@@ -598,6 +615,15 @@ namespace MonoTests.System.ServiceModel
 		{
 			new MyClientCredentials2 ().Clone ();
 		}
+
+		[Test]
+		public void AnonSslIsIssued ()
+		{
+			InitiatorServiceModelSecurityTokenRequirement r =
+				new InitiatorServiceModelSecurityTokenRequirement ();
+			new MySslSecurityTokenParameters ().InitRequirement (r);
+			Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "#1");
+		}
 	}
 
 	class MyClientCredentials : ClientCredentials
@@ -644,6 +670,38 @@ namespace MonoTests.System.ServiceModel
 		public override SecurityTokenSerializer CreateSecurityTokenSerializer (SecurityTokenVersion ver)
 		{
 			return new MySecurityTokenSerializer ();
+		}
+	}
+
+	class MySslSecurityTokenParameters : SslSecurityTokenParameters
+	{
+		public void InitRequirement (SecurityTokenRequirement r)
+		{
+			InitializeSecurityTokenRequirement (r);
+		}
+	}
+
+	class MySspiSecurityTokenParameters : SspiSecurityTokenParameters
+	{
+		public void InitRequirement (SecurityTokenRequirement r)
+		{
+			InitializeSecurityTokenRequirement (r);
+		}
+	}
+
+	class MyIssuedSecurityTokenParameters : IssuedSecurityTokenParameters
+	{
+		public void InitRequirement (SecurityTokenRequirement r)
+		{
+			InitializeSecurityTokenRequirement (r);
+		}
+	}
+
+	class MySecureConversationSecurityTokenParameters : SecureConversationSecurityTokenParameters
+	{
+		public void InitRequirement (SecurityTokenRequirement r)
+		{
+			InitializeSecurityTokenRequirement (r);
 		}
 	}
 

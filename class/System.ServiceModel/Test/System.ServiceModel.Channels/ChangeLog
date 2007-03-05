@@ -1,3 +1,8 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AsymmetricSecurityBindingElementTest.cs :
+	  fixed inappropriate test name.
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecurityBindingElementTest.cs : some more test for ssl parameters.

@@ -103,6 +103,8 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 
 			Assert.AreEqual (ServiceModelSecurityTokenTypes.AnonymousSslnego, r.TokenType, "#1");
 			Assert.AreEqual (false, r.Properties [ReqType.SupportSecurityContextCancellationProperty], "#2");
+			SslSecurityTokenParameters dummy;
+			Assert.IsTrue (r.TryGetProperty<SslSecurityTokenParameters> (ReqType.IssuedSecurityTokenParametersProperty, out dummy), "#3");
 		}
 
 		[Test]
