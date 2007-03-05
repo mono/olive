@@ -84,5 +84,16 @@ namespace System.ServiceModel
 		public const string WstValidateReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Validate";
 
 		public const string WsscDefaultLabel = "WS-SecureConversationWS-SecureConversation";
+
+		// .NET BUG: it requires extra white space !
+		public const string WstBinaryExchangeValueTls = " http://schemas.xmlsoap.org/ws/2005/02/trust/tlsnego";
+
+		public const string WstIssueRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue";
+
+		public const string WstRenewRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Renew";
+
+		public const string WstCancelRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Cancel";
+
+		public const string WstValidateRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Validate";
 	}
 }

@@ -232,7 +232,7 @@ SecurityTokenRequirement requirement)
 			// I doubt the binding is acquired this way ...
 			Binding binding;
 			if (!r.TryGetProperty<Binding> (ReqType.IssuerBindingProperty, out binding))
-				binding = new CustomBinding (sbe,
+				binding = new CustomBinding (
 					new TextMessageEncodingBindingElement (),
 					new HttpTransportBindingElement ());
 			p.IssuerBinding = binding;
@@ -334,8 +334,10 @@ SecurityTokenRequirement requirement)
 		protected internal bool IsIssuedSecurityTokenRequirement (
 			SecurityTokenRequirement requirement)
 		{
-			IssuedSecurityTokenParameters dummy;
-			return requirement.TryGetProperty<IssuedSecurityTokenParameters> (ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty, out dummy);
+			SecurityTokenParameters ret;
+			if (!requirement.TryGetProperty<SecurityTokenParameters> (ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty, out ret))
+				return false;
+			return ret is IssuedSecurityTokenParameters;
 		}
 	}
 }

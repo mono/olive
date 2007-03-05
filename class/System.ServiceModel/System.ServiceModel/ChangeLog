@@ -1,3 +1,10 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Constants.cs : added consts for ssl and negotiation bindings.
+	* ClientCredentialsSecurityTokenManager.cs :
+	  IsIssuedSecurityTokenRequirement() should not return true for
+	  non-IssuedToken parameters.
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientCredentialsSecurityTokenManager.cs :
