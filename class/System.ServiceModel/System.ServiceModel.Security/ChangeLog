@@ -1,3 +1,8 @@
+2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  IsIssuedSecurityTokenRequirement() fix, the same way as client.
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :

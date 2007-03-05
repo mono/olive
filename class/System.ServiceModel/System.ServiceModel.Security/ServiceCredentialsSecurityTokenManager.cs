@@ -271,8 +271,10 @@ namespace System.ServiceModel.Security
 		protected internal bool IsIssuedSecurityTokenRequirement (
 			SecurityTokenRequirement requirement)
 		{
-			IssuedSecurityTokenParameters dummy;
-			return requirement.TryGetProperty<IssuedSecurityTokenParameters> (ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty, out dummy);
+			SecurityTokenParameters ret;
+			if (!requirement.TryGetProperty<SecurityTokenParameters> (ServiceModelSecurityTokenRequirement.IssuedSecurityTokenParametersProperty, out ret))
+				return false;
+			return ret is IssuedSecurityTokenParameters;
 		}
 	}
 }
