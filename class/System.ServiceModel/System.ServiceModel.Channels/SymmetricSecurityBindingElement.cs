@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005-2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -118,7 +118,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelFactory<TChannel> (
-				context.BuildInnerChannelFactory<TChannel> (), new InitiatorMessageSecurityBindingSupport (new SymmetricSecurityBindingElementSupport (this), manager, requirements));
+				context.BuildInnerChannelFactory<TChannel> (), new InitiatorMessageSecurityBindingSupport (GetCapabilities (), manager, requirements));
 		}
 
 		[MonoTODO]
@@ -140,7 +140,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelListener<TChannel> (
-				context.BuildInnerChannelListener<TChannel> (), new RecipientMessageSecurityBindingSupport (new SymmetricSecurityBindingElementSupport (this), manager, requirements));
+				context.BuildInnerChannelListener<TChannel> (), new RecipientMessageSecurityBindingSupport (GetCapabilities (), manager, requirements));
 		}
 
 		public override BindingElement Clone ()
@@ -151,7 +151,18 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			if (typeof (T) == typeof (ISecurityCapabilities))
+				return (T) (object) GetCapabilities ();
+			if (typeof (T) == typeof (IdentityVerifier))
+				throw new NotImplementedException ();
+			return context.GetInnerProperty<T> ();
+		}
+
+		SymmetricSecurityCapabilities GetCapabilities ()
+		{
+			return new SymmetricSecurityCapabilities (this);
 		}
 
 		#region explicit interface implementations

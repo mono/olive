@@ -114,5 +114,10 @@ namespace System.ServiceModel.Security.Tokens
 			requirement.KeyType = SecurityKeyType.AsymmetricKey;
 			requirement.RequireCryptographicToken = true;
 		}
+
+		public override string ToString ()
+		{
+			return base.ToString ();
+		}
 	}
 }

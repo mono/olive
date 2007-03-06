@@ -73,14 +73,14 @@ namespace System.ServiceModel.Channels
 		SecurityTokenManager manager;
 		ChannelProtectionRequirements requirements;
 		SecurityTokenSerializer serializer;
-		SecurityBindingElementSupport element_support;
+		SecurityCapabilities element_support;
 
 		// only filled at prepared state.
 		SecurityTokenAuthenticator authenticator;
 		SecurityTokenResolver auth_token_resolver;
 
 		protected MessageSecurityBindingSupport (
-			SecurityBindingElementSupport elementSupport,
+			SecurityCapabilities elementSupport,
 			SecurityTokenManager manager,
 			ChannelProtectionRequirements requirements)
 		{
@@ -283,7 +283,7 @@ namespace System.ServiceModel.Channels
 		SecurityToken signing_token;
 
 		public InitiatorMessageSecurityBindingSupport (
-			SecurityBindingElementSupport elementSupport,
+			SecurityCapabilities elementSupport,
 			SecurityTokenManager manager,
 			ChannelProtectionRequirements requirements)
 			: base (elementSupport, manager, requirements)
@@ -372,7 +372,7 @@ namespace System.ServiceModel.Channels
 		SecurityToken signing_token;
 
 		public RecipientMessageSecurityBindingSupport (
-			SecurityBindingElementSupport elementSupport,
+			SecurityCapabilities elementSupport,
 			SecurityTokenManager manager,
 			ChannelProtectionRequirements requirements)
 			: base (elementSupport, manager, requirements)
@@ -460,7 +460,8 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	internal abstract class SecurityBindingElementSupport
+	internal abstract class SecurityCapabilities
+		: ISecurityCapabilities
 	{
 		public abstract SecurityBindingElement Element { get; }
 
@@ -477,13 +478,36 @@ namespace System.ServiceModel.Channels
 		public abstract string DefaultKeyWrapAlgorithm { get; }
 
 		public abstract string DefaultSignatureAlgorithm { get; }
+
+
+		// ISecurityCapabilities
+		// FIXME: implement correctly
+		public ProtectionLevel SupportedRequestProtectionLevel {
+			get { return ProtectionLevel.EncryptAndSign; }
+		}
+
+		public ProtectionLevel SupportedResponseProtectionLevel {
+			get { return ProtectionLevel.EncryptAndSign; }
+		}
+
+		public bool SupportsClientAuthentication {
+			get { return InitiatorParameters != null ? InitiatorParameters.InternalSupportsClientAuthentication : false; }
+		}
+
+		public bool SupportsClientWindowsIdentity {
+			get { return InitiatorParameters != null ? InitiatorParameters.InternalSupportsClientWindowsIdentity : false; }
+		}
+
+		public bool SupportsServerAuthentication {
+			get { return RecipientParameters != null ? RecipientParameters.InternalSupportsServerAuthentication : false; }
+		}
 	}
 
-	internal class SymmetricSecurityBindingElementSupport : SecurityBindingElementSupport
+	internal class SymmetricSecurityCapabilities : SecurityCapabilities
 	{
 		SymmetricSecurityBindingElement element;
 
-		public SymmetricSecurityBindingElementSupport (
+		public SymmetricSecurityCapabilities (
 			SymmetricSecurityBindingElement element)
 		{
 			this.element = element;
@@ -523,11 +547,11 @@ namespace System.ServiceModel.Channels
 		}
 	}
 
-	internal class AsymmetricSecurityBindingElementSupport : SecurityBindingElementSupport
+	internal class AsymmetricSecurityCapabilities : SecurityCapabilities
 	{
 		AsymmetricSecurityBindingElement element;
 
-		public AsymmetricSecurityBindingElementSupport (
+		public AsymmetricSecurityCapabilities (
 			AsymmetricSecurityBindingElement element)
 		{
 			this.element = element;

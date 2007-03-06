@@ -1,3 +1,7 @@
+2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelProtectionRequirements.cs : null arg check.
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :

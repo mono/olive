@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -37,6 +37,7 @@ namespace System.ServiceModel.Security.Tokens
 	public class SecureConversationSecurityTokenParameters : SecurityTokenParameters
 	{
 		static readonly ChannelProtectionRequirements default_channel_protection_requirements;
+		static readonly BindingContext dummy_context;
 
 		static SecureConversationSecurityTokenParameters ()
 		{
@@ -48,6 +49,10 @@ namespace System.ServiceModel.Security.Tokens
 			r.OutgoingEncryptionParts.ChannelParts.IsBodyIncluded = true;
 			r.MakeReadOnly ();
 			default_channel_protection_requirements = r;
+
+			dummy_context = new BindingContext (
+				new CustomBinding (),
+				new BindingParameterCollection ());
 		}
 
 		SecurityBindingElement element;
@@ -90,7 +95,7 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			this.element = (SecurityBindingElement) source.element.Clone ();
 			this.cancellable = source.cancellable;
-			this.requirements = new ChannelProtectionRequirements (requirements);
+			this.requirements = new ChannelProtectionRequirements (default_channel_protection_requirements);
 		}
 
 		public bool RequireCancellation {
@@ -113,19 +118,16 @@ namespace System.ServiceModel.Security.Tokens
 			get { return false; }
 		}
 
-		[MonoTODO]
 		protected override bool SupportsClientAuthentication {
-			get { return false; }
+			get { return element.GetProperty<ISecurityCapabilities> (dummy_context).SupportsClientAuthentication; }
 		}
 
-		[MonoTODO]
 		protected override bool SupportsClientWindowsIdentity {
-			get { return false; }
+			get { return element.GetProperty<ISecurityCapabilities> (dummy_context).SupportsClientWindowsIdentity; }
 		}
 
-		[MonoTODO]
 		protected override bool SupportsServerAuthentication {
-			get { return false; }
+			get { return element.GetProperty<ISecurityCapabilities> (dummy_context).SupportsServerAuthentication; }
 		}
 
 		protected override SecurityTokenParameters CloneCore ()

@@ -1,3 +1,12 @@
+2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityBindingSupport.cs,
+	  AsymmetricSecurityBindingElement.cs,
+	  SymmetricSecurityBindingElement.cs :
+	  renamed *SecurityBindingElementSupport to *SecurityCapabilities and
+	  implemented ISecurityCapabilities on them. Now those binding
+	  elements support GetProperty<ISecurityCapabilities>().
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecurityBindingElement.cs : SetIssuerBindingContextIfRequired()

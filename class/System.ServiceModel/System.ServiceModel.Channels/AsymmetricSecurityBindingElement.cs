@@ -47,13 +47,13 @@ namespace System.ServiceModel.Channels
 
 		public AsymmetricSecurityBindingElement (
 			SecurityTokenParameters recipientTokenParameters)
-			: this (null, recipientTokenParameters)
+			: this (recipientTokenParameters, null)
 		{
 		}
 
 		public AsymmetricSecurityBindingElement (
-			SecurityTokenParameters initiatorTokenParameters,
-			SecurityTokenParameters recipientTokenParameters)
+			SecurityTokenParameters recipientTokenParameters,
+			SecurityTokenParameters initiatorTokenParameters)
 		{
 			this.initiator_token_params = initiatorTokenParameters;
 			this.recipient_token_params = recipientTokenParameters;
@@ -140,7 +140,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelFactory<TChannel> (
-				context.BuildInnerChannelFactory<TChannel> (), new InitiatorMessageSecurityBindingSupport (new AsymmetricSecurityBindingElementSupport (this), manager, requirements));
+				context.BuildInnerChannelFactory<TChannel> (), new InitiatorMessageSecurityBindingSupport (GetCapabilities (), manager, requirements));
 		}
 
 		[MonoTODO]
@@ -165,7 +165,7 @@ namespace System.ServiceModel.Channels
 				context.BindingParameters.Find<ChannelProtectionRequirements> ();
 
 			return new SecurityChannelListener<TChannel> (
-				context.BuildInnerChannelListener<TChannel> (), new RecipientMessageSecurityBindingSupport (new AsymmetricSecurityBindingElementSupport (this), manager, requirements));
+				context.BuildInnerChannelListener<TChannel> (), new RecipientMessageSecurityBindingSupport (GetCapabilities (), manager, requirements));
 		}
 
 		public override BindingElement Clone ()
@@ -176,7 +176,18 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			if (typeof (T) == typeof (ISecurityCapabilities))
+				return (T) (object) GetCapabilities ();
+			if (typeof (T) == typeof (IdentityVerifier))
+				throw new NotImplementedException ();
+			return context.GetInnerProperty<T> ();
+		}
+
+		AsymmetricSecurityCapabilities GetCapabilities ()
+		{
+			return new AsymmetricSecurityCapabilities (this);
 		}
 
 		#region explicit interface implementations

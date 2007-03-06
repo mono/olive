@@ -52,6 +52,8 @@ namespace System.ServiceModel.Security
 		public ChannelProtectionRequirements (
 			ChannelProtectionRequirements other)
 		{
+			if (other == null)
+				throw new ArgumentNullException ("other");
 			in_enc = new ScopedMessagePartSpecification (other.in_enc);
 			out_enc = new ScopedMessagePartSpecification (other.out_enc);
 			in_sign = new ScopedMessagePartSpecification (other.in_sign);

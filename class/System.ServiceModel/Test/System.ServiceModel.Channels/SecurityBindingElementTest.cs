@@ -477,5 +477,152 @@ namespace MonoTests.System.ServiceModel.Channels
 			client.ClientCredentials.UserName.UserName = "rupert";
 			client.Sum (1, 2);
 		}
+
+		void AssertSecurityCapabilities (
+			ProtectionLevel request, ProtectionLevel response,
+			bool supportsClientAuth, bool supportsClientWinId,
+			bool supportsServerAuth, ISecurityCapabilities c,
+			string label)
+		{
+			Assert.AreEqual (request, c.SupportedRequestProtectionLevel, label + ".request");
+			Assert.AreEqual (response, c.SupportedResponseProtectionLevel, label + ".response");
+			Assert.AreEqual (supportsClientAuth, c.SupportsClientAuthentication, label + ".client-auth");
+			Assert.AreEqual (supportsClientWinId, c.SupportsClientWindowsIdentity, label + ".client-identity");
+			Assert.AreEqual (supportsServerAuth, c.SupportsServerAuthentication, label + ".server-auth");
+		}
+
+		ISecurityCapabilities GetSecurityCapabilities (SecurityBindingElement be)
+		{
+			BindingContext bc = new BindingContext (
+				new CustomBinding (),
+				new BindingParameterCollection ());
+			return be.GetProperty<ISecurityCapabilities> (bc);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void GetPropertyNullBindingContext1 ()
+		{
+			new SymmetricSecurityBindingElement ()
+				.GetProperty<ISecurityCapabilities> (null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void GetPropertyNullBindingContext2 ()
+		{
+			new AsymmetricSecurityBindingElement ()
+				.GetProperty<ISecurityCapabilities> (null);
+		}
+
+		[Test]
+		public void GetPropertySecurityCapabilities ()
+		{
+			ISecurityCapabilities c;
+			RsaSecurityTokenParameters rsa =
+				new RsaSecurityTokenParameters ();
+			UserNameSecurityTokenParameters user =
+				new UserNameSecurityTokenParameters ();
+			X509SecurityTokenParameters x509 =
+				new X509SecurityTokenParameters ();
+			SecureConversationSecurityTokenParameters sc1 =
+				new SecureConversationSecurityTokenParameters ();
+			sc1.BootstrapSecurityBindingElement =
+				new SymmetricSecurityBindingElement (); // empty
+			SecureConversationSecurityTokenParameters sc2 =
+				new SecureConversationSecurityTokenParameters ();
+			sc2.BootstrapSecurityBindingElement =
+				new SymmetricSecurityBindingElement (x509);
+			SecureConversationSecurityTokenParameters sc3 =
+				new SecureConversationSecurityTokenParameters ();
+			sc3.BootstrapSecurityBindingElement =
+				new AsymmetricSecurityBindingElement (null, x509);
+			SecureConversationSecurityTokenParameters sc4 =
+				new SecureConversationSecurityTokenParameters ();
+			sc4.BootstrapSecurityBindingElement =
+				new AsymmetricSecurityBindingElement (x509, null);
+
+			// no parameters
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement ());
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				false, false, false, c, "#1");
+
+			// x509 parameters for both
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement (x509));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, true, true, c, "#2");
+
+			// no initiator parameters
+			c = GetSecurityCapabilities (
+				new AsymmetricSecurityBindingElement (x509, null));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				false, false, true, c, "#3");
+
+			// no recipient parameters
+			c = GetSecurityCapabilities (
+				new AsymmetricSecurityBindingElement (null, x509));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, true, false, c, "#4");
+
+			// initiator does not support identity
+			c = GetSecurityCapabilities (
+				new AsymmetricSecurityBindingElement (x509, rsa));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, false, true, c, "#5");
+
+			// recipient does not support server auth
+			c = GetSecurityCapabilities (
+				new AsymmetricSecurityBindingElement (user, x509));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, true, false, c, "#6");
+
+			// secureconv with no symm. bootstrap params
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement (sc1));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				false, false, false, c, "#7");
+
+			// secureconv with x509 symm. bootstrap params
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement (sc2));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, true, true, c, "#8");
+
+			// secureconv with x509 initiator bootstrap params
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement (sc3));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				true, true, false, c, "#9");
+
+			// secureconv with x509 recipient bootstrap params
+			c = GetSecurityCapabilities (
+				new SymmetricSecurityBindingElement (sc4));
+			AssertSecurityCapabilities (
+				ProtectionLevel.EncryptAndSign,
+				ProtectionLevel.EncryptAndSign,
+				false, false, true, c, "#10");
+
+			// FIXME: find out such cases that returns other ProtectionLevel values.
+		}
 	}
 }

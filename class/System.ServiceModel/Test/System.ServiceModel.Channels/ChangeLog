@@ -1,3 +1,8 @@
+2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityBindingElementTest.cs :
+	  added tests for GetProperty<ISecurityCapabilities>().
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AsymmetricSecurityBindingElementTest.cs :

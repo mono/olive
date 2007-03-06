@@ -1,3 +1,9 @@
+2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureConversationSecurityTokenParameters.cs :
+	  implemented protected properties.
+	* X509SecurityTokenParameters.cs : added missing ToString().
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenProvider.cs : implemented some client negotiation
