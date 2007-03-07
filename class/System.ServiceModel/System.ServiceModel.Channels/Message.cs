@@ -51,12 +51,10 @@ namespace System.ServiceModel.Channels
 			set { body_id = value; }
 		}
 
-		[MonoTODO]
 		public virtual bool IsEmpty {
 			get { return false; }
 		}
 
-		[MonoTODO]
 		public virtual bool IsFault {
 			get { return false; }
 		}
@@ -337,8 +335,8 @@ namespace System.ServiceModel.Channels
 		public static Message CreateMessage (MessageVersion version,
 			MessageFault fault, string action)
 		{
-			return CreateMessage (version, action,
-				new MessageFaultBodyWriter (fault, version));
+			return new SimpleMessage (version, action,
+				new MessageFaultBodyWriter (fault, version), true);
 		}
 
 		public static Message CreateMessage (MessageVersion version,

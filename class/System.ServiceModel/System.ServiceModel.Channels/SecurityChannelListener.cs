@@ -56,6 +56,13 @@ namespace System.ServiceModel.Channels
 			get { return security; }
 		}
 
+		public override T GetProperty<T> ()
+		{
+			if (typeof (T) == typeof (MessageSecurityBindingSupport))
+				return (T) (object) security;
+			return base.GetProperty<T> ();
+		}
+
 		TChannel CreateSecurityWrapper (TChannel src)
 		{
 			if (typeof (TChannel) == typeof (IReplyChannel))

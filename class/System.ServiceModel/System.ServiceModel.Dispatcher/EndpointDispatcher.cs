@@ -32,6 +32,7 @@ using System.Reflection;
 using System.ServiceModel.Description;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Security.Tokens;
 using System.Text;
 
 namespace System.ServiceModel.Dispatcher
@@ -162,10 +163,27 @@ Console.WriteLine (ex);
 				throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
 
 			Message req = rc.RequestMessage;
+			Message res = null;
+
 			DispatchOperation op = GetOperation (req);
-			Message res = op.ProcessRequest (req);
+			if (op == null) {
+				// process WS-Trust based negotiation
+				MessageSecurityBindingSupport support =
+					ChannelDispatcher.Listener.GetProperty<MessageSecurityBindingSupport> ();
+				if (support != null && req.Headers.FindHeader ("Security", Constants.WssNamespace) < 0) {
+					CommunicationSecurityTokenAuthenticator nego =
+						support.TokenAuthenticator as CommunicationSecurityTokenAuthenticator;
+					if (nego != null)
+						res = nego.Communication.ProcessNegotiation (req);
+				}
+				if (res == null)
+					op = DispatchRuntime.UnhandledDispatchOperation;
+			}
+			if (res == null)
+				res = op.ProcessRequest (req);
 			if (res == null)
 				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
+
 			rc.Reply (res, se.Binding.SendTimeout);
 		}
 
@@ -193,6 +211,10 @@ Console.WriteLine (ex);
 					throw new EndpointNotFoundException (String.Format ("The input message has the target '{0}' which is not reachable in this service contract", msg.Headers.To));
 
 				DispatchOperation op = GetOperation (msg);
+				// IInputChannel is also simpler since there
+				// is no chance for token negotiation.
+				if (op == null)
+					op = DispatchRuntime.UnhandledDispatchOperation;
 				op.ProcessInput (msg);
 			}
 		}
@@ -220,8 +242,7 @@ Console.WriteLine (ex);
 					if (d.Action == action)
 						return d;
 			}
-
-			return DispatchRuntime.UnhandledDispatchOperation;
+			return null;
 		}
 		
 		void HandleError (Exception ex)

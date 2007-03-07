@@ -36,7 +36,6 @@ namespace System.ServiceModel.Channels
 		IChannelListener, ICommunicationObject,
 		IDefaultCommunicationTimeouts
 	{
-		IChannelListener inner_listener;
 		IDefaultCommunicationTimeouts timeouts;
 
 		protected ChannelListenerBase ()
@@ -84,10 +83,9 @@ namespace System.ServiceModel.Channels
 			get { return timeouts.SendTimeout; }
 		}
 
-		[MonoTODO]
 		public virtual T GetProperty<T> () where T : class
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		public IAsyncResult BeginWaitForChannel (

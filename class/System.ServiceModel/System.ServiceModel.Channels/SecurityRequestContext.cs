@@ -70,11 +70,17 @@ namespace System.ServiceModel.Channels
 		public override Message RequestMessage {
 			get {
 				if (msg == null) {
-					try {
-						msg = new RecipientSecureMessageDecryptor (SourceBuffer.CreateMessage (), security).DecryptMessage ();
-					} finally {
-						if (msg == null)
-							msg = SourceBuffer.CreateMessage ();
+					msg = SourceBuffer.CreateMessage (); // default
+					switch (msg.Headers.Action) {
+					case Constants.WstIssueAction:
+					case Constants.WstIssueReplyAction:
+					case Constants.WstRenewAction:
+					case Constants.WstCancelAction:
+					case Constants.WstValidateAction:
+						break;
+					default:
+						msg = new RecipientSecureMessageDecryptor (msg, security).DecryptMessage ();
+						break;
 					}
 				}
 				return msg;
@@ -121,7 +127,9 @@ namespace System.ServiceModel.Channels
 		public override void Reply (Message message, TimeSpan timeout)
 		{
 			try {
-				message = SecureMessage (message);
+				// FIXME: it also needs to exclude WS-Trust RSTR
+				if (!message.IsFault)
+					message = SecureMessage (message);
 				source.Reply (message, timeout);
 			} catch (Exception ex) {
 				FaultConverter fc = FaultConverter.GetDefaultFaultConverter (msg.Version);

@@ -310,5 +310,14 @@ namespace MonoTests.System.ServiceModel.Channels
 			Message m = Message.CreateMessage (MessageVersion.Default, "action", 1);
 			Assert.AreEqual (m.ToString (), m.ToString ());
 		}
+
+		[Test]
+		public void IsFault ()
+		{
+			Message m = Message.CreateMessage (MessageVersion.Default, "action", 1);
+			Assert.IsFalse (m.IsFault, "#1");
+			m = Message.CreateMessage (MessageVersion.Default, new FaultCode ("ActionNotSupported", "urn:myfault"), "I dunno", "urn:myaction");
+			Assert.IsTrue (m.IsFault, "#2");
+		}
 	}
 }

@@ -172,6 +172,7 @@ namespace System.ServiceModel.Channels
 
 		protected void PrepareAuthenticator ()
 		{
+#if false
 			// This check is almost extra, though it is needed
 			// to check correct signing token existence.
 			//
@@ -179,6 +180,7 @@ namespace System.ServiceModel.Channels
 			// Ssl parameters do not support token provider and
 			// still do not fail. X509 parameters do fail.
 			if (RecipientParameters.InternalSupportsClientAuthentication)
+#endif
 				authenticator = CreateTokenAuthenticator (RecipientParameters, out auth_token_resolver);
 		}
 

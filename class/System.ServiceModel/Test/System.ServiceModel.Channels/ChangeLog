@@ -1,3 +1,7 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageTest.cs : added IsFault().
+
 2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecurityBindingElementTest.cs :

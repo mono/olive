@@ -1,5 +1,20 @@
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MessageSecurityBindingSupport.cs : for now, comment out the code
+	  that makes authenticator creation optional.
+	* SecurityRequestContext.cs : don't decrypt message when it is
+	  WS-Trust messages. Also, do not secure SOAP Fault (it is likely
+	  to fail).
+	* SecurityChannelListener.cs : GetProperty<T>() now returns
+	  MessageSecurityBindingSupport when requested. It is used by
+	  EndpointDispatcher to check if it supports WS-Trust negotiation.
+	* ChannelListenerBase.cs :
+	  removed extra TODO and field. Implemented GetProperty<T>().
+	* Message.cs : In CreateMessage() for SOAP Fault, create
+	  SimpleMessage with IsFault = true.
+
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecurityRequestContext.cs : try to reply fault with the inner
 	  channel when an error occurred internally.
 	* FaultConverter.cs : implemented based on OperationContext (at normal

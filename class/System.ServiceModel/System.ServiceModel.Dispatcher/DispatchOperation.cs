@@ -243,7 +243,7 @@ Console.WriteLine (ex);
 				InstanceContext ictx = parent.InstanceContextProvider.GetExistingInstanceContext (req, null);
 				if (ictx == null)
 					//FIXME: What should be done here?
-					return CreateActionNotSupported (req);
+					throw new InvalidOperationException ("The instance context provider failed to get or create an instance context");
 				instance = ictx.GetServiceInstance ();
 			} else {
 				instance = parent.InstanceProvider != null ?
