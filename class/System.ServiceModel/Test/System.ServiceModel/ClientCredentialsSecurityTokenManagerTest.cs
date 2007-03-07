@@ -699,6 +699,20 @@ Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premis
 
 	class MySecureConversationSecurityTokenParameters : SecureConversationSecurityTokenParameters
 	{
+		public MySecureConversationSecurityTokenParameters ()
+		{
+		}
+
+		public MySecureConversationSecurityTokenParameters (SecurityBindingElement element)
+			: base (element)
+		{
+		}
+
+		public MySecureConversationSecurityTokenParameters (SecurityBindingElement element, bool requireCancel, ChannelProtectionRequirements cpr)
+			: base (element, requireCancel, cpr)
+		{
+		}
+
 		public void InitRequirement (SecurityTokenRequirement r)
 		{
 			InitializeSecurityTokenRequirement (r);

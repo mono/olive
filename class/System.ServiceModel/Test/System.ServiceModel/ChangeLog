@@ -1,3 +1,8 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsSecurityTokenManagerTest.cs :
+	  added another secure conversation parameter .ctor().
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientCredentialsSecurityTokenManagerTest.cs :

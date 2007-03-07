@@ -1,3 +1,9 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManagerTest.cs :
+	  test for InitializeSecurityTokenRequirement() for several token
+	  parameters (like existing tests in client credentials manager).
+
 2007-03-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManagerTest.cs : more tests for

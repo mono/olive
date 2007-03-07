@@ -1,10 +1,10 @@
 //
-// ClientCredentialsSecurityTokenManagerTest.cs
+// ServiceCredentialsSecurityTokenManagerTest.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -48,7 +48,12 @@ namespace MonoTests.System.ServiceModel.Security
 		class MyManager : ServiceCredentialsSecurityTokenManager
 		{
 			public MyManager ()
-				: base (new ServiceCredentials ())
+				: this (new ServiceCredentials ())
+			{
+			}
+
+			public MyManager (ServiceCredentials cred)
+				: base (cred)
 			{
 			}
 
@@ -74,31 +79,59 @@ namespace MonoTests.System.ServiceModel.Security
 			def_c = new MyManager ();
 		}
 
-/*
 		[Test]
 		public void IsIssuedSecurityTokenRequirement ()
 		{
-			IsIssuedSecurityTokenRequirement (
-				new RsaSecurityTokenParameters (), false, "#1");
-			IsIssuedSecurityTokenRequirement (
-				new X509SecurityTokenParameters (), false, "#2");
-			IsIssuedSecurityTokenRequirement (
-				new SslSecurityTokenParameters (), false, "#3");
-			IsIssuedSecurityTokenRequirement (
-				new SecureConversationSecurityTokenParameters (), false, "#4");
-			IsIssuedSecurityTokenRequirement (
-				new IssuedSecurityTokenParameters (), true, "#1");
-		}
+			RecipientServiceModelSecurityTokenRequirement r;
+			MyManager mgr = new MyManager ();
 
-		void IsIssuedSecurityTokenRequirement (
-			SecurityTokenParameters p, bool expected, string label)
-		{
-			ReqType r =
-				new ReqType ();
-			p.InitializeSecurityTokenRequirement (r);
-			Assert.AreEqual (expected, def_c.IsIssued (r), label);
-		}
+			r = new RecipientServiceModelSecurityTokenRequirement ();
+			MySslSecurityTokenParameters ssl =
+				new MySslSecurityTokenParameters ();
+			ssl.InitRequirement (r);
+			Assert.IsFalse (mgr.IsIssued (r), "ssl");
+
+			r = new RecipientServiceModelSecurityTokenRequirement ();
+			MySspiSecurityTokenParameters sspi =
+				new MySspiSecurityTokenParameters ();
+			sspi.InitRequirement (r);
+			Assert.IsFalse (mgr.IsIssued (r), "sspi");
+
+			r = new RecipientServiceModelSecurityTokenRequirement ();
+			MyIssuedSecurityTokenParameters issued =
+				new MyIssuedSecurityTokenParameters ();
+			issued.InitRequirement (r);
+			Assert.IsTrue (mgr.IsIssued (r), "issued");
+
+/*
+			r = new RecipientServiceModelSecurityTokenRequirement ();
+			MySecureConversationSecurityTokenParameters sc =
+				new MySecureConversationSecurityTokenParameters (
+					new SymmetricSecurityBindingElement (new X509SecurityTokenParameters ()),
+					false,
+					new ChannelProtectionRequirements ());
+			r.Properties [ReqType.IssuerBindingContextProperty] =
+				new BindingContext (new CustomBinding (), new BindingParameterCollection ());
+			r.Properties [ReqType.MessageSecurityVersionProperty] =
+				MessageSecurityVersion.Default;
+			r.Properties [ReqType.ChannelParametersCollectionProperty] =
+				new ChannelParameterCollection ();
+			r.Properties [ReqType.IssuedSecurityTokenParametersProperty] = sc.Clone ();
+			r.Properties [ReqType.IssuerBindingProperty] =
+				new CustomBinding (new HttpTransportBindingElement ());
+			r.Properties [ReqType.MessageDirectionProperty] =
+				MessageDirection.Input;
+			r.SecureConversationSecurityBindingElement =
+				new SymmetricSecurityBindingElement (
+					new X509SecurityTokenParameters ());
+			r.SecurityAlgorithmSuite = SecurityAlgorithmSuite.Default;
+			r.Properties [ReqType.SupportSecurityContextCancellationProperty] = true;
+			r.ListenUri = new Uri ("http://localhost:8080");
+			r.KeySize = 256;
+			sc.InitRequirement (r);
+			Assert.IsFalse (mgr.IsIssued (r), "sc");
 */
+		}
 
 		[Test]
 		[ExpectedException (typeof (NotSupportedException))]
@@ -316,13 +349,24 @@ namespace MonoTests.System.ServiceModel.Security
 
 		RecipientServiceModelSecurityTokenRequirement CreateAnonSslRequirement ()
 		{
-			return CreateRecipientRequirement (ServiceModelSecurityTokenTypes.AnonymousSslnego);
+			RecipientServiceModelSecurityTokenRequirement r =
+				new RecipientServiceModelSecurityTokenRequirement ();
+			MySslSecurityTokenParameters p = new MySslSecurityTokenParameters ();
+			p.InitRequirement (r);
+			r.SecurityBindingElement = new SymmetricSecurityBindingElement (new X509SecurityTokenParameters ());
+			r.Properties [ReqType.IssuedSecurityTokenParametersProperty] = p.Clone ();
+			r.Properties [ReqType.IssuerBindingContextProperty] =
+				new BindingContext (new CustomBinding (new HttpTransportBindingElement ()), new BindingParameterCollection ());
+			r.Properties [ReqType.MessageSecurityVersionProperty] =
+				MessageSecurityVersion.Default.SecurityTokenVersion;
+			return r;
 		}
 
 		RecipientServiceModelSecurityTokenRequirement CreateSecureConvRequirement ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
 				CreateRecipientRequirement (ServiceModelSecurityTokenTypes.SecureConversation);
+			r.Properties [ReqType.IssuedSecurityTokenParametersProperty] = new SecureConversationSecurityTokenParameters (new SymmetricSecurityBindingElement (new X509SecurityTokenParameters ()));
 			// without it, "The key length (...) is not a multiple of 8 for symmetric keys" occurs.
 			r.SecureConversationSecurityBindingElement =
 				new SymmetricSecurityBindingElement ();
@@ -530,7 +574,9 @@ namespace MonoTests.System.ServiceModel.Security
 			RecipientServiceModelSecurityTokenRequirement r =
 				CreateSecureConvRequirement ();
 			SecurityTokenResolver resolver;
-			def_c.CreateSecurityTokenAuthenticator (r, out resolver);
+			SecurityTokenAuthenticator a =
+				def_c.CreateSecurityTokenAuthenticator (r, out resolver);
+			Assert.IsNotNull (resolver, "#1");
 		}
 	}
 }
