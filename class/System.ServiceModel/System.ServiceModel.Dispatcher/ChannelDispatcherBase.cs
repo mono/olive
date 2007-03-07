@@ -40,17 +40,14 @@ namespace System.ServiceModel.Dispatcher
 
 		public abstract ServiceHostBase Host { get; }
 
-		[MonoTODO ("umm, why are they virtual?")]
 		protected internal virtual void Attach (ServiceHostBase host)
 		{
 		}
 
-		[MonoTODO ("umm, why are they virtual?")]
 		public virtual void CloseInput ()
 		{
 		}
 
-		[MonoTODO ("umm, why are they virtual?")]
 		protected internal virtual void Detach (ServiceHostBase host)
 		{
 		}

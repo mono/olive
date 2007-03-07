@@ -1,5 +1,9 @@
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ExceptionDetail.cs : new file.
+
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ServiceHostBase.cs :
 	  moved code for applying behavior to ChannelDispatcher.cs.
 

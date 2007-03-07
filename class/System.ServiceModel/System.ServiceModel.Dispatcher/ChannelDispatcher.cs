@@ -40,6 +40,8 @@ namespace System.ServiceModel.Dispatcher
 	public class ChannelDispatcher : ChannelDispatcherBase
 	{
 		ServiceHostBase host;
+		ServiceEndpoint service_endpoint;
+
 		string binding_name;
 		EndpointDispatcher endpoint_dispatcher;
 		Collection<IErrorHandler> error_handlers
@@ -180,6 +182,7 @@ namespace System.ServiceModel.Dispatcher
 		{
 			this.host = host;
 			ServiceEndpoint se = FindEndpoint ();
+			service_endpoint = se;
 			// FIXME: raise an error in case endpoint was not found.
 
 			endpoint_dispatcher = new EndpointDispatcher (
@@ -264,7 +267,11 @@ namespace System.ServiceModel.Dispatcher
 			host.ChannelDispatchers.Remove (this);
 		}
 
-		internal ServiceEndpoint FindEndpoint ()
+		internal ServiceEndpoint ServiceEndpoint {
+			get { return service_endpoint; }
+		}
+
+		ServiceEndpoint FindEndpoint ()
 		{
 			foreach (ServiceEndpoint se in host.Description.Endpoints)
 				if (se.Binding.Name == BindingName)

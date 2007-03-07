@@ -1,5 +1,12 @@
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* EndpointDispatcher.cs : use ErrorHandlers when error was raised.
+	  Handle exceptions to make into SOAP Fault, using FaultConverter.
+	* ChannelDispatcher.cs : simply get ServiceEndpoint at Attach().
+	* ChannelDispatcherBase.cs : removed MonoTODOs.
+
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ChannelDispatcher.cs, DispatchRuntime.cs, EndpointDispatcher.cs :
 	  moved most of request/input processing to EndpointDispatcher.cs.
 	  Also, ChannelDispatcher now contains code for behavior

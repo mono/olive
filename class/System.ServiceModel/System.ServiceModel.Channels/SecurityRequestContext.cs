@@ -49,6 +49,7 @@ namespace System.ServiceModel.Channels
 		SecurityReplyChannel channel;
 		RequestContext source;
 		Message msg;
+		MessageBuffer source_request;
 
 		public SecurityRequestContext (SecurityReplyChannel channel, RequestContext source)
 		{
@@ -58,10 +59,24 @@ namespace System.ServiceModel.Channels
 			security = channel.Source.SecuritySupport;
 		}
 
+		MessageBuffer SourceBuffer {
+			get {
+				if (source_request == null)
+					source_request = source.RequestMessage.CreateBufferedCopy (0x10000);
+				return source_request;
+			}
+		}
+
 		public override Message RequestMessage {
 			get {
-				if (msg == null)
-					msg = new RecipientSecureMessageDecryptor (source.RequestMessage, security).DecryptMessage ();
+				if (msg == null) {
+					try {
+						msg = new RecipientSecureMessageDecryptor (SourceBuffer.CreateMessage (), security).DecryptMessage ();
+					} finally {
+						if (msg == null)
+							msg = SourceBuffer.CreateMessage ();
+					}
+				}
 				return msg;
 			}
 		}
@@ -105,8 +120,17 @@ namespace System.ServiceModel.Channels
 
 		public override void Reply (Message message, TimeSpan timeout)
 		{
-			message = SecureMessage (message);
-			source.Reply (message, timeout);
+			try {
+				message = SecureMessage (message);
+				source.Reply (message, timeout);
+			} catch (Exception ex) {
+				FaultConverter fc = FaultConverter.GetDefaultFaultConverter (msg.Version);
+				Message fault;
+				if (fc.TryCreateFaultMessage (ex, out fault))
+					source.Reply (fault, timeout);
+				else
+					throw;
+			}
 		}
 
 		Message SecureMessage (Message input)

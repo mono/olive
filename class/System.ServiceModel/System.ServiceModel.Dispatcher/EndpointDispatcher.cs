@@ -123,41 +123,50 @@ namespace System.ServiceModel.Dispatcher
 				DoProcessRequest (reply);
 			} catch (Exception ex) {
 Console.WriteLine (ex);
-				// FIXME: will we need to do something (like error logging) here.
+				HandleError (ex);
 			}
 		}
 
 		void DoProcessRequest (IReplyChannel reply)
 		{
-			ServiceEndpoint se = channel_dispatcher.FindEndpoint ();
+			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
 			IServiceChannel cch = new ServiceRuntimeChannel (se, reply);
-			// FIXME: some kind of extra consideration to
-			// create transport-level RequestContext is
-			// needed, to handle errors on wrapping
-			// RequestContext layers (such as 
-			// SecurityRequestContext). Currently there
-			// is no way to catch those errors and return
-			// it as SOAP Fault...
-			RequestContext rc = reply.ReceiveRequest (se.Binding.ReceiveTimeout);
-			if (rc == null)
-				// FIXME: probably some kind of reporting is required.
-				return;
-			if (IsMessageFilteredOut (rc.RequestMessage)) {
-				rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
-				// FIXME: probably some kind of reporting is required.
-				return;
-			}
 			using (OperationContextScope scope = new OperationContextScope (cch)) {
 				OperationContext.Current.EndpointDispatcher = this;
+				RequestContext rc = reply.ReceiveRequest (se.Binding.ReceiveTimeout);
+				if (rc == null)
+					throw new InvalidOperationException ("The reply channel didn't return RequestContext");
 				OperationContext.Current.RequestContext = rc;
-
-				Message req = rc.RequestMessage;
-				DispatchOperation op = GetOperation (req);
-				Message res = op.ProcessRequest (req);
-				if (res == null)
-					throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
-				rc.Reply (res, se.Binding.SendTimeout);
+				// This covers some kind of extra consideration
+				// to catch errors and replies SOAP fault. It
+				// still depends on the channel implementation
+				// to not raise errors instead of replying
+				// fault at Reply() though ...
+				try {
+					ProcessRequestCore (reply, cch, rc);
+				} catch (Exception ex) {
+					FaultConverter fc = FaultConverter.GetDefaultFaultConverter (channel_dispatcher.MessageVersion);
+					Message fault;
+					if (fc.TryCreateFaultMessage (ex, out fault))
+						rc.Reply (fault, se.Binding.SendTimeout);
+					else
+						throw;
+				}
 			}
+		}
+
+		void ProcessRequestCore (IReplyChannel reply, IServiceChannel cch, RequestContext rc)
+		{
+			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
+			if (IsMessageFilteredOut (rc.RequestMessage))
+				throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
+
+			Message req = rc.RequestMessage;
+			DispatchOperation op = GetOperation (req);
+			Message res = op.ProcessRequest (req);
+			if (res == null)
+				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
+			rc.Reply (res, se.Binding.SendTimeout);
 		}
 
 		internal void ProcessInput (IInputChannel input)
@@ -166,22 +175,23 @@ Console.WriteLine (ex);
 				DoProcessInput (input);
 			} catch (Exception ex) {
 Console.WriteLine (ex);
-			// FIXME: will we need to do something (like error logging) here.
+				HandleError (ex);
 			}
 		}
 
 		void DoProcessInput (IInputChannel input)
 		{
-			ServiceEndpoint se = channel_dispatcher.FindEndpoint ();
+			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
 			IServiceChannel cch = new ServiceRuntimeChannel (se, input);
-			Message msg = input.Receive (se.Binding.ReceiveTimeout);
-			if (IsMessageFilteredOut (msg)) {
-Console.WriteLine ("Input message was filtered out.");
-				// FIXME: will we need to do something (like error logging) here.
-				return;
-			}
 			using (OperationContextScope scope = new OperationContextScope (cch)) {
 				OperationContext.Current.EndpointDispatcher = this;
+				// IInputChannel is simpler since it does
+				// not have to return SOAP Fault.
+
+				Message msg = input.Receive (se.Binding.ReceiveTimeout);
+				if (IsMessageFilteredOut (msg))
+					throw new EndpointNotFoundException (String.Format ("The input message has the target '{0}' which is not reachable in this service contract", msg.Headers.To));
+
 				DispatchOperation op = GetOperation (msg);
 				op.ProcessInput (msg);
 			}
@@ -214,14 +224,11 @@ Console.WriteLine ("Input message was filtered out.");
 			return DispatchRuntime.UnhandledDispatchOperation;
 		}
 		
-		Message CreateDestinationUnreachable (Message req)
+		void HandleError (Exception ex)
 		{
-			FaultCode fc = new FaultCode (
-				"DestinationUnreachable",
-				req.Version.Addressing.Namespace);
-			// FIXME: set correct namespace URI
-			return Message.CreateMessage (req.Version, fc,
-				String.Format ("No endpoint found for message with To '{0}'", req.Headers.To), String.Empty);
+			foreach (IErrorHandler handler in channel_dispatcher.ErrorHandlers)
+				if (handler.HandleError (ex))
+					break;
 		}
 
 		#endregion

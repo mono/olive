@@ -708,6 +708,7 @@ System.ServiceModel/EndpointAddressBuilder.cs
 System.ServiceModel/EndpointIdentity.cs
 System.ServiceModel/EndpointNotFoundException.cs
 System.ServiceModel/EnvelopeVersion.cs
+System.ServiceModel/ExceptionDetail.cs
 System.ServiceModel/ExtensionCollection.cs
 System.ServiceModel/FaultCode.cs
 System.ServiceModel/FaultContractAttribute.cs

@@ -27,31 +27,29 @@
 //
 using System;
 using System.Collections.Generic;
-using System.ServiceModel.Channels;
+using System.ServiceModel;
 using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Channels
 {
-	[MonoTODO]
 	public abstract class FaultConverter
 	{
-		static FaultConverter soap12 = new Soap12FaultConverter ();
-		static FaultConverter soap11 = new Soap11FaultConverter ();
-
 		public static FaultConverter GetDefaultFaultConverter (MessageVersion version)
 		{
 			if (version == null)
 				throw new ArgumentNullException ("version");
-			return version.Envelope == EnvelopeVersion.Soap11 ? soap11 : soap12;
+			return new SimpleFaultConverter (version);
 		}
 
 		protected FaultConverter ()
 		{
 		}
 
+		[MonoTODO]
 		protected abstract bool OnTryCreateException (
 			Message message, MessageFault fault, out Exception error);
 
+		[MonoTODO]
 		protected abstract bool OnTryCreateFaultMessage (
 			Exception error, out Message message);
 
@@ -65,31 +63,35 @@ namespace System.ServiceModel.Channels
 			return OnTryCreateFaultMessage (error, out message);
 		}
 
-		class Soap12FaultConverter : FaultConverter
+		Message CreateSimpleFaultMessage (Exception error, MessageVersion version)
 		{
-			public Soap12FaultConverter ()
-			{
-			}
+Console.WriteLine (error);
+			OperationContext ctx = OperationContext.Current;
+			// FIXME: support more fault code depending on the exception type.
+			FaultCode fc = null;
+			if (error is EndpointNotFoundException)
+				fc = new FaultCode (
+					"DestinationUnreachable",
+					version.Addressing.Namespace);
+			else
+				fc = new FaultCode (
+					"FIXME_InternalError",
+					version.Addressing.Namespace);
 
-			protected override bool OnTryCreateException (
-				Message message, MessageFault fault, out Exception error)
-			{
-				error = null;
-				return false;
-			}
-
-			protected override bool OnTryCreateFaultMessage (
-				Exception error, out Message message)
-			{
-				message = null;
-				return false;
-			}
+			ExceptionDetail detail = 
+				ctx.EndpointDispatcher.ChannelDispatcher.IncludeExceptionDetailInFaults ?
+				new ExceptionDetail (error) : null;
+			// FIXME: set correct fault reason.
+			return Message.CreateMessage (version, fc,
+				"error occured", detail, ctx.IncomingMessageHeaders.Action);
 		}
 
-		class Soap11FaultConverter : FaultConverter
+		class SimpleFaultConverter : FaultConverter
 		{
-			public Soap11FaultConverter ()
+			MessageVersion version;
+			public SimpleFaultConverter (MessageVersion version)
 			{
+				this.version = version;
 			}
 
 			protected override bool OnTryCreateException (
@@ -103,7 +105,11 @@ namespace System.ServiceModel.Channels
 				Exception error, out Message message)
 			{
 				message = null;
-				return false;
+				if (OperationContext.Current == null)
+					return false;
+
+				message = CreateSimpleFaultMessage (error, version);
+				return true;
 			}
 		}
 	}
