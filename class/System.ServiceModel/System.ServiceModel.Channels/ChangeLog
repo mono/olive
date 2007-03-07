@@ -1,3 +1,13 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TransportBindingElement.cs : implemented GetProperty<T>().
+	* TransactionFlowBindingElement.cs : on building factory or listener,
+	  reject channel types that cannot build.
+	* SecurityBindingElement.cs : added some TODO comments.
+	* HttpTransportBindingElement.cs : GetProperty<T>() should rather
+	  delegate to base, not BindingContext.
+	* SecurityRequestContext.cs : somewhat late decryption.
+
 2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs,

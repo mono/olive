@@ -130,11 +130,13 @@ namespace System.ServiceModel.Channels
 			get { return opt_operation; }
 		}
 
+		[MonoTODO ("It supports only IRequestSessionChannel")]
 		public override bool CanBuildChannelFactory<TChannel> (BindingContext context)
 		{
 			return context.CanBuildInnerChannelFactory<TChannel> ();
 		}
 
+		[MonoTODO ("It probably supports only IReplySessionChannel")]
 		public override bool CanBuildChannelListener<TChannel> (BindingContext context)
 		{
 			return context.CanBuildInnerChannelListener<TChannel> ();

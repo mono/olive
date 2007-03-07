@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005, 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -31,6 +31,7 @@ using System.Net;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {
@@ -70,10 +71,24 @@ namespace System.ServiceModel.Channels
 
 		public abstract string Scheme { get; }
 
-		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
-			return context.GetInnerProperty<T> ();
+			T ret = context.GetInnerProperty<T> ();
+			if (ret != default (T))
+				return ret;
+			if (typeof (T) == typeof (XmlDictionaryReaderQuotas)) {
+				XmlDictionaryReaderQuotas q =
+					new XmlDictionaryReaderQuotas ();
+				q.MaxStringContentLength = (int) MaxReceivedMessageSize;
+				return (T) (object) q;
+			}
+			if (typeof (T) == typeof (ChannelProtectionRequirements))
+				// blank one, basically it should not be used
+				// for any secure channels (
+				return (T) (object) new ChannelProtectionRequirements ();
+			if (typeof (T) == typeof (MessageVersion))
+				return (T) (object) MessageVersion.Default;
+			return null;
 		}
 	}
 }

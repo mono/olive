@@ -56,11 +56,14 @@ namespace System.ServiceModel.Channels
 			this.channel = channel;
 
 			security = channel.Source.SecuritySupport;
-			msg = new RecipientSecureMessageDecryptor (source.RequestMessage, security).DecryptMessage ();
 		}
 
 		public override Message RequestMessage {
-			get { return msg; }
+			get {
+				if (msg == null)
+					msg = new RecipientSecureMessageDecryptor (source.RequestMessage, security).DecryptMessage ();
+				return msg;
+			}
 		}
 
 		public override void Abort ()

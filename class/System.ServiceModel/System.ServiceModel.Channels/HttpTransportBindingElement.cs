@@ -127,22 +127,16 @@ namespace System.ServiceModel.Channels
 			set { use_default_proxy = value; }
 		}
 
-		[MonoTODO ("It might return true for session channels depending on the context.")]
 		public override bool CanBuildChannelFactory<TChannel> (
 			BindingContext context)
 		{
-			if (typeof (TChannel) == typeof (IRequestChannel))
-				return true;
-			return false;
+			return typeof (TChannel) == typeof (IRequestChannel);
 		}
 
-		[MonoTODO ("It might return true for session channels depending on the context.")]
 		public override bool CanBuildChannelListener<TChannel> (
 			BindingContext context)
 		{
-			if (typeof (TChannel) == typeof (IReplyChannel))
-				return true;
-			return false;
+			return typeof (TChannel) == typeof (IReplyChannel);
 		}
 
 		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (
@@ -169,7 +163,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
-			return context.GetInnerProperty<T> ();
+			return base.GetProperty<T> (context);
 		}
 
 		[MonoTODO]

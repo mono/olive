@@ -65,7 +65,6 @@ namespace System.ServiceModel.Channels
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override bool CanBuildChannelFactory<TChannel> (BindingContext context)
 		{
 			return context.CanBuildInnerChannelFactory<TChannel> ();
@@ -83,6 +82,8 @@ namespace System.ServiceModel.Channels
 				throw new InvalidOperationException ("Set transaction protocol in prior to build a channel factory.");
 			if (protocol == TransactionProtocol.Default)
 				throw new NotSupportedException ("Mono does not support DTC.");
+			if (!CanBuildChannelFactory<TChannel> (context))
+				throw new ArgumentException (String.Format ("The channel type '{0}' is not supported", typeof (TChannel)));
 			return new TransactionChannelFactory<TChannel> (context.BuildInnerChannelFactory<TChannel> (), protocol);
 		}
 
@@ -92,6 +93,8 @@ namespace System.ServiceModel.Channels
 				throw new InvalidOperationException ("Set transaction protocol in prior to build a channel listener.");
 			if (protocol == TransactionProtocol.Default)
 				throw new NotSupportedException ("Mono does not support DTC.");
+			if (!CanBuildChannelListener<TChannel> (context))
+				throw new ArgumentException (String.Format ("The channel type '{0}' is not supported", typeof (TChannel)));
 			return new TransactionChannelListener<TChannel> (
 				context.BuildInnerChannelListener<TChannel> (),
 				protocol);
