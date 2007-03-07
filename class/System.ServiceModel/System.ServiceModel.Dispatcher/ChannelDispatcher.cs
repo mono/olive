@@ -371,32 +371,79 @@ namespace System.ServiceModel.Dispatcher
 				DispatchRuntime r = owner.endpoint_dispatcher.DispatchRuntime;
 				if (reply != null) {
 					while (loop) {
-						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout)) {
-							IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), reply);
-							RequestContext rc = reply.ReceiveRequest (owner.timeouts.ReceiveTimeout);
-							if (rc == null)
-								continue;
-							if (IsMessageFilteredOut (rc.RequestMessage)) {
-								rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
-								continue;
-							}
-							using (OperationContextScope scope = new OperationContextScope (cch)) {
-								OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
-								OperationContext.Current.RequestContext = rc;
-								r.ProcessRequest (rc, owner.timeouts.SendTimeout);
-							}
-						}
+						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout))
+							ProcessRequest ();
 					}
 				} else if (input != null) {
 					while (loop) {
-						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout)) {
-							IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), input);
-							using (OperationContextScope scope = new OperationContextScope (cch)) {
-								OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
-								r.ProcessInput (input.Receive (owner.timeouts.ReceiveTimeout));
-							}
-						}
+						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout))
+							ProcessInput ();
 					}
+				}
+			}
+
+			void ProcessRequest ()
+			{
+				try {
+					DoProcessRequest ();
+				} catch (Exception ex) {
+Console.WriteLine (ex);
+					// FIXME: will we need to do something (like error logging) here.
+				}
+			}
+
+			void DoProcessRequest ()
+			{
+				DispatchRuntime rt = owner.endpoint_dispatcher.DispatchRuntime;
+
+				IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), reply);
+				// FIXME: some kind of extra consideration to
+				// create transport-level RequestContext is
+				// needed, to handle errors on wrapping
+				// RequestContext layers (such as 
+				// SecurityRequestContext). Currently there
+				// is no way to catch those errors and return
+				// it as SOAP Fault...
+				RequestContext rc = reply.ReceiveRequest (owner.timeouts.ReceiveTimeout);
+				if (rc == null)
+					// FIXME: probably some kind of reporting is required.
+					return;
+				if (IsMessageFilteredOut (rc.RequestMessage)) {
+					rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
+					// FIXME: probably some kind of reporting is required.
+					return;
+				}
+				using (OperationContextScope scope = new OperationContextScope (cch)) {
+					OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
+					OperationContext.Current.RequestContext = rc;
+					rt.ProcessRequest (rc, owner.timeouts.SendTimeout);
+				}
+			}
+
+			void ProcessInput ()
+			{
+				try {
+					DoProcessInput ();
+				} catch (Exception ex) {
+Console.WriteLine (ex);
+				// FIXME: will we need to do something (like error logging) here.
+				}
+			}
+
+			void DoProcessInput ()
+			{
+				DispatchRuntime rt = owner.endpoint_dispatcher.DispatchRuntime;
+
+				IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), input);
+				Message msg = input.Receive (owner.timeouts.ReceiveTimeout);
+				if (IsMessageFilteredOut (msg)) {
+Console.WriteLine ("Input message was filtered out.");
+					// FIXME: will we need to do something (like error logging) here.
+					return;
+				}
+				using (OperationContextScope scope = new OperationContextScope (cch)) {
+					OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
+					rt.ProcessInput (msg);
 				}
 			}
 
