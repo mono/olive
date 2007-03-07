@@ -193,6 +193,11 @@ namespace System.ServiceModel
 		}
 
 		[MonoTODO]
+		public void DisplayInitializationUI ()
+		{
+		}
+
+		[MonoTODO]
 		void IDisposable.Dispose ()
 		{
 			Close ();
