@@ -1,5 +1,12 @@
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ChannelDispatcher.cs, DispatchRuntime.cs, EndpointDispatcher.cs :
+	  moved most of request/input processing to EndpointDispatcher.cs.
+	  Also, ChannelDispatcher now contains code for behavior
+	  initialization.
+
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ChannelDispatcher.cs : some cosmetic refactoring on error handling
 	  with comments.
 

@@ -179,18 +179,66 @@ namespace System.ServiceModel.Dispatcher
 		protected internal override void Attach (ServiceHostBase host)
 		{
 			this.host = host;
-			ServiceEndpoint ep = FindEndpoint ();
-			// FIXME: raise an error in case endpoing was not found.
+			ServiceEndpoint se = FindEndpoint ();
+			// FIXME: raise an error in case endpoint was not found.
 
 			endpoint_dispatcher = new EndpointDispatcher (
-				ep.Address, ep.Contract.Name, ep.Contract.Namespace);
+				se.Address, se.Contract.Name, se.Contract.Namespace);
 			endpoint_dispatcher.ChannelDispatcher = this;
 			host.ChannelDispatchers.Add (this);
+
+			foreach (IEndpointBehavior b in se.Behaviors)
+				b.ApplyDispatchBehavior (se, endpoint_dispatcher);
+
+			// apply behaviors
+			DispatchRuntime db = endpoint_dispatcher.DispatchRuntime;
+			foreach (IContractBehavior b in se.Contract.Behaviors)
+				b.ApplyDispatchBehavior (se.Contract, se, db);
+			foreach (OperationDescription od in se.Contract.Operations) {
+				if (!db.Operations.Contains (od.Name))
+					PopulateDispatchOperation (db, od);
+				foreach (IOperationBehavior ob in od.Behaviors)
+					ob.ApplyDispatchBehavior (od, db.Operations [od.Name]);
+			}
 		}
 
-		// FIXME: it could be extraneous
-		internal EndpointDispatcher InternalEndpointDispatcher {
-			get { return endpoint_dispatcher; }
+		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od)
+		{
+			string reqA = null, resA = null;
+			foreach (MessageDescription m in od.Messages) {
+				if (m.Direction == MessageDirection.Input)
+					reqA = m.Action;
+				else
+					resA = m.Action;
+			}
+			DispatchOperation o =
+				od.IsOneWay ?
+				new DispatchOperation (db, od.Name, reqA) :
+				new DispatchOperation (db, od.Name, reqA, resA);
+			bool has_void_reply = false;
+			foreach (MessageDescription md in od.Messages) {
+				if (md.Direction == MessageDirection.Input &&
+				    md.Body.Parts.Count == 1 &&
+				    md.Body.Parts [0].Type == typeof (Message))
+					o.DeserializeRequest = false;
+				if (md.Direction == MessageDirection.Output &&
+				    md.Body.ReturnValue != null) {
+					if (md.Body.ReturnValue.Type == typeof (Message))
+						o.SerializeReply = false;
+					else if (md.Body.ReturnValue.Type == typeof (void))
+						has_void_reply = true;
+				}
+			}
+
+			if (o.Action == "*" && o.ReplyAction == "*") {
+				//Signature : Message  (Message)
+				//	    : void  (Message)
+				//FIXME: void (IChannel)
+				if (!o.DeserializeRequest && (!o.SerializeReply || has_void_reply))
+					db.UnhandledDispatchOperation = o;
+			}
+
+			db.Operations.Add (o);
 		}
 
 		public override void CloseInput ()
@@ -372,89 +420,14 @@ namespace System.ServiceModel.Dispatcher
 				if (reply != null) {
 					while (loop) {
 						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout))
-							ProcessRequest ();
+							owner.endpoint_dispatcher.ProcessRequest (reply);
 					}
 				} else if (input != null) {
 					while (loop) {
 						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout))
-							ProcessInput ();
+							owner.endpoint_dispatcher.ProcessInput (input);
 					}
 				}
-			}
-
-			void ProcessRequest ()
-			{
-				try {
-					DoProcessRequest ();
-				} catch (Exception ex) {
-Console.WriteLine (ex);
-					// FIXME: will we need to do something (like error logging) here.
-				}
-			}
-
-			void DoProcessRequest ()
-			{
-				DispatchRuntime rt = owner.endpoint_dispatcher.DispatchRuntime;
-
-				IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), reply);
-				// FIXME: some kind of extra consideration to
-				// create transport-level RequestContext is
-				// needed, to handle errors on wrapping
-				// RequestContext layers (such as 
-				// SecurityRequestContext). Currently there
-				// is no way to catch those errors and return
-				// it as SOAP Fault...
-				RequestContext rc = reply.ReceiveRequest (owner.timeouts.ReceiveTimeout);
-				if (rc == null)
-					// FIXME: probably some kind of reporting is required.
-					return;
-				if (IsMessageFilteredOut (rc.RequestMessage)) {
-					rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
-					// FIXME: probably some kind of reporting is required.
-					return;
-				}
-				using (OperationContextScope scope = new OperationContextScope (cch)) {
-					OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
-					OperationContext.Current.RequestContext = rc;
-					rt.ProcessRequest (rc, owner.timeouts.SendTimeout);
-				}
-			}
-
-			void ProcessInput ()
-			{
-				try {
-					DoProcessInput ();
-				} catch (Exception ex) {
-Console.WriteLine (ex);
-				// FIXME: will we need to do something (like error logging) here.
-				}
-			}
-
-			void DoProcessInput ()
-			{
-				DispatchRuntime rt = owner.endpoint_dispatcher.DispatchRuntime;
-
-				IServiceChannel cch = new ServiceRuntimeChannel (owner.FindEndpoint (), input);
-				Message msg = input.Receive (owner.timeouts.ReceiveTimeout);
-				if (IsMessageFilteredOut (msg)) {
-Console.WriteLine ("Input message was filtered out.");
-					// FIXME: will we need to do something (like error logging) here.
-					return;
-				}
-				using (OperationContextScope scope = new OperationContextScope (cch)) {
-					OperationContext.Current.EndpointDispatcher = owner.endpoint_dispatcher;
-					rt.ProcessInput (msg);
-				}
-			}
-
-			bool IsMessageFilteredOut (Message req)
-			{
-				Uri to = req.Headers.To;
-				if (to == null)
-					return false;
-				if (to.AbsoluteUri == Constants.WsaAnonymousUri)
-					return false;
-				return !owner.endpoint_dispatcher.AddressFilter.Match (req);
 			}
 
 			void StopLoop ()
@@ -462,17 +435,6 @@ Console.WriteLine ("Input message was filtered out.");
 				loop = false;
 				// FIXME: send manual stop for reply or input channel.
 			}
-			
-			Message CreateDestinationUnreachable (Message req)
-			{
-				FaultCode fc = new FaultCode (
-					"DestinationUnreachable",
-					req.Version.Addressing.Namespace);
-				// FIXME: set correct namespace URI
-				return Message.CreateMessage (req.Version, fc,
-					String.Format ("No endpoint found for message with To '{0}'", req.Headers.To), String.Empty);
-			}
-
 		}
 
 		#region AsyncResult classes

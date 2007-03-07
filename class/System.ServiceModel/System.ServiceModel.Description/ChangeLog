@@ -1,3 +1,8 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceMetadataExtension.cs :
+	  DispatchRuntime.InternalEndpointDispatcher was eliminated.
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :

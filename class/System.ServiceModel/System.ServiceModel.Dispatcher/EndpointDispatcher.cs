@@ -114,5 +114,116 @@ namespace System.ServiceModel.Dispatcher
 			get { return filter_priority; }
 			set { filter_priority = value; }
 		}
+
+		#region communication processing
+
+		internal void ProcessRequest (IReplyChannel reply)
+		{
+			try {
+				DoProcessRequest (reply);
+			} catch (Exception ex) {
+Console.WriteLine (ex);
+				// FIXME: will we need to do something (like error logging) here.
+			}
+		}
+
+		void DoProcessRequest (IReplyChannel reply)
+		{
+			ServiceEndpoint se = channel_dispatcher.FindEndpoint ();
+			IServiceChannel cch = new ServiceRuntimeChannel (se, reply);
+			// FIXME: some kind of extra consideration to
+			// create transport-level RequestContext is
+			// needed, to handle errors on wrapping
+			// RequestContext layers (such as 
+			// SecurityRequestContext). Currently there
+			// is no way to catch those errors and return
+			// it as SOAP Fault...
+			RequestContext rc = reply.ReceiveRequest (se.Binding.ReceiveTimeout);
+			if (rc == null)
+				// FIXME: probably some kind of reporting is required.
+				return;
+			if (IsMessageFilteredOut (rc.RequestMessage)) {
+				rc.Reply (CreateDestinationUnreachable (rc.RequestMessage));
+				// FIXME: probably some kind of reporting is required.
+				return;
+			}
+			using (OperationContextScope scope = new OperationContextScope (cch)) {
+				OperationContext.Current.EndpointDispatcher = this;
+				OperationContext.Current.RequestContext = rc;
+
+				Message req = rc.RequestMessage;
+				DispatchOperation op = GetOperation (req);
+				Message res = op.ProcessRequest (req);
+				if (res == null)
+					throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
+				rc.Reply (res, se.Binding.SendTimeout);
+			}
+		}
+
+		internal void ProcessInput (IInputChannel input)
+		{
+			try {
+				DoProcessInput (input);
+			} catch (Exception ex) {
+Console.WriteLine (ex);
+			// FIXME: will we need to do something (like error logging) here.
+			}
+		}
+
+		void DoProcessInput (IInputChannel input)
+		{
+			ServiceEndpoint se = channel_dispatcher.FindEndpoint ();
+			IServiceChannel cch = new ServiceRuntimeChannel (se, input);
+			Message msg = input.Receive (se.Binding.ReceiveTimeout);
+			if (IsMessageFilteredOut (msg)) {
+Console.WriteLine ("Input message was filtered out.");
+				// FIXME: will we need to do something (like error logging) here.
+				return;
+			}
+			using (OperationContextScope scope = new OperationContextScope (cch)) {
+				OperationContext.Current.EndpointDispatcher = this;
+				DispatchOperation op = GetOperation (msg);
+				op.ProcessInput (msg);
+			}
+		}
+
+		bool IsMessageFilteredOut (Message req)
+		{
+			Uri to = req.Headers.To;
+			if (to == null)
+				return false;
+			if (to.AbsoluteUri == Constants.WsaAnonymousUri)
+				return false;
+			return !AddressFilter.Match (req);
+		}
+
+		DispatchOperation GetOperation (Message input)
+		{
+			if (DispatchRuntime.OperationSelector != null) {
+				string name = DispatchRuntime.OperationSelector.SelectOperation (ref input);
+				foreach (DispatchOperation d in DispatchRuntime.Operations)
+					if (d.Name == name)
+						return d;
+			} else {
+				string action = input.Headers.Action;
+				foreach (DispatchOperation d in DispatchRuntime.Operations)
+					if (d.Action == action)
+						return d;
+			}
+
+			return DispatchRuntime.UnhandledDispatchOperation;
+		}
+		
+		Message CreateDestinationUnreachable (Message req)
+		{
+			FaultCode fc = new FaultCode (
+				"DestinationUnreachable",
+				req.Version.Addressing.Namespace);
+			// FIXME: set correct namespace URI
+			return Message.CreateMessage (req.Version, fc,
+				String.Format ("No endpoint found for message with To '{0}'", req.Headers.To), String.Empty);
+		}
+
+		#endregion
 	}
 }

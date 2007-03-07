@@ -320,72 +320,12 @@ namespace System.ServiceModel
 				cd.MessageVersion = se.Binding.MessageVersion;
 				if (cd.MessageVersion == null)
 					cd.MessageVersion = MessageVersion.Default;
-				// FIXME: there might be decent way to supply channel dispatcher to endpoint dispatcher
 				cd.Attach (this);
-
-				// Apply contract/operation behaviors.
-				//EndpointDispatcher d = new EndpointDispatcher (se.Address,
-				//	se.Contract.Name, se.Contract.Namespace);
-				EndpointDispatcher d = cd.InternalEndpointDispatcher;
-
-				foreach (IEndpointBehavior b in se.Behaviors)
-					b.ApplyDispatchBehavior (se, d);
-
-				DispatchRuntime db = d.DispatchRuntime;
-				foreach (IContractBehavior b in se.Contract.Behaviors)
-					b.ApplyDispatchBehavior (se.Contract, se, db);
-				foreach (OperationDescription od in se.Contract.Operations) {
-					if (!db.Operations.Contains (od.Name))
-						PopulateDispatchOperation (db, od);
-					foreach (IOperationBehavior ob in od.Behaviors)
-						ob.ApplyDispatchBehavior (od, d.DispatchRuntime.Operations [od.Name]);
-				}
-
 				cd.Open ();
 			}
 
-			// FIXME: Apply service behaviors
 			foreach (IServiceBehavior b in description.Behaviors)
 				b.ApplyDispatchBehavior (description, this);
-		}
-
-		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od)
-		{
-			string reqA = null, resA = null;
-			foreach (MessageDescription m in od.Messages) {
-				if (m.Direction == MessageDirection.Input)
-					reqA = m.Action;
-				else
-					resA = m.Action;
-			}
-			DispatchOperation o =
-				od.IsOneWay ?
-				new DispatchOperation (db, od.Name, reqA) :
-				new DispatchOperation (db, od.Name, reqA, resA);
-			bool has_void_reply = false;
-			foreach (MessageDescription md in od.Messages) {
-				if (md.Direction == MessageDirection.Input &&
-				    md.Body.Parts.Count == 1 &&
-				    md.Body.Parts [0].Type == typeof (Message))
-					o.DeserializeRequest = false;
-				if (md.Direction == MessageDirection.Output &&
-				    md.Body.ReturnValue != null) {
-					if (md.Body.ReturnValue.Type == typeof (Message))
-						o.SerializeReply = false;
-					else if (md.Body.ReturnValue.Type == typeof (void))
-						has_void_reply = true;
-				}
-			}
-
-			if (o.Action == "*" && o.ReplyAction == "*") {
-				//Signature : Message  (Message)
-				//	    : void  (Message)
-				//FIXME: void (IChannel)
-				if (!o.DeserializeRequest && (!o.SerializeReply || has_void_reply))
-					db.UnhandledDispatchOperation = o;
-			}
-
-			db.Operations.Add (o);
 		}
 
 		IChannelListener BuildListener (ServiceEndpoint se,

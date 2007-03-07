@@ -93,7 +93,7 @@ namespace System.ServiceModel.Description
 					} else if (metadata_beh.HttpGetEnabled && 
 						ed.ContractName == "HttpGetWsdl" && 
 						ed.ContractNamespace == "http://tempuri.org/") {
-						cd.InternalEndpointDispatcher.DispatchRuntime.InstanceContextProvider =
+						ed.DispatchRuntime.InstanceContextProvider =
 							new HttpGetInstanceContextProvider (owner, new HttpGetWsdl (this, ed.EndpointAddress.Uri));
 					}
 				}
