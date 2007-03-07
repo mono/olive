@@ -1,3 +1,10 @@
+2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  started secure conversation authenticator code (not sure when it
+	  should work though. Any attempt to initialize requirement with
+	  SecureConv parameter causes NRE on .NET).
+
 2007-03-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ChannelProtectionRequirements.cs : null arg check.

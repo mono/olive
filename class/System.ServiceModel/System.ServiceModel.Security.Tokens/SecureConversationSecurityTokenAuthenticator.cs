@@ -1,5 +1,5 @@
 //
-// SslSecurityTokenAuthenticator.cs
+// SecureConversationSecurityTokenAuthenticator.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
@@ -25,49 +25,52 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
+
 using System.Collections.ObjectModel;
-using System.Net.Security;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
-using System.ServiceModel.Security;
-using System.ServiceModel.Security.Tokens;
-
-using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
 
 namespace System.ServiceModel.Security.Tokens
 {
-	// FIXME: implement all
-	class SslSecurityTokenAuthenticator : CommunicationSecurityTokenAuthenticator
+	class SecureConversationSecurityTokenAuthenticator : CommunicationSecurityTokenAuthenticator
 	{
-		SslAuthenticatorCommunicationObject comm;
+		SecurityTokenRequirement req;
+		SecurityContextSecurityTokenAuthenticator sc_auth;
+		SecurityContextSecurityTokenResolver sc_res;
+		WsscAuthenticatorCommunicationObject comm;
 
-		public SslSecurityTokenAuthenticator (SecurityTokenRequirement r)
+		public SecureConversationSecurityTokenAuthenticator (
+			SecurityTokenRequirement r,
+			SecurityContextSecurityTokenAuthenticator scAuth,
+			SecurityContextSecurityTokenResolver scResolver)
 		{
-			comm = new SslAuthenticatorCommunicationObject ();
+			this.req = r;
+			this.sc_auth = scAuth;
+			this.sc_res = scResolver;
+			comm = new WsscAuthenticatorCommunicationObject ();
 		}
 
 		public override AuthenticatorCommunicationObject Communication {
 			get { return comm; }
 		}
 
+		[MonoTODO]
 		protected override bool CanValidateTokenCore (SecurityToken token)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override ReadOnlyCollection<IAuthorizationPolicy>
-			ValidateTokenCore (SecurityToken token)
+		[MonoTODO]
+		protected override ReadOnlyCollection<IAuthorizationPolicy> ValidateTokenCore (SecurityToken token)
 		{
 			throw new NotImplementedException ();
 		}
 	}
 
-	class SslAuthenticatorCommunicationObject : AuthenticatorCommunicationObject
+	class WsscAuthenticatorCommunicationObject : AuthenticatorCommunicationObject
 	{
 		WSTrustSecurityTokenServiceProxy proxy;
 

@@ -72,6 +72,15 @@ namespace System.ServiceModel.Security
 				return CreateX509Authenticator (requirement);
 			if (requirement.TokenType == SecurityTokenTypes.Rsa)
 				return new RsaSecurityTokenAuthenticator ();
+			if (requirement.TokenType == ServiceModelSecurityTokenTypes.SecureConversation) {
+				// FIXME: get parameters from somewhere
+				SecurityContextSecurityTokenResolver resolver =
+					new SecurityContextSecurityTokenResolver (0x1000, true);
+				outOfBandTokenResolver = resolver;
+				SecurityContextSecurityTokenAuthenticator sc =
+					new SecurityContextSecurityTokenAuthenticator ();
+				return new SecureConversationSecurityTokenAuthenticator (requirement, sc, resolver);
+			}
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
 				return new SslSecurityTokenAuthenticator (requirement);
 			else

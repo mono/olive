@@ -594,8 +594,10 @@ System.ServiceModel.Dispatcher/XPathMessageContext.cs
 System.ServiceModel.Dispatcher/XPathMessageFilter.cs
 System.ServiceModel.Dispatcher/XPathMessageFilterTable.cs
 System.ServiceModel.Dispatcher/XPathNavigatorException.cs
+System.ServiceModel.Security.Tokens/AuthenticatorCommunicationObject.cs
 System.ServiceModel.Security.Tokens/BinarySecretSecurityToken.cs
 System.ServiceModel.Security.Tokens/ClaimTypeRequirement.cs
+System.ServiceModel.Security.Tokens/CommunicationSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/CommunicationSecurityTokenProvider.cs
 System.ServiceModel.Security.Tokens/DerivedKeySecurityToken.cs
 System.ServiceModel.Security.Tokens/IIssuanceSecurityTokenAuthenticator.cs
@@ -611,6 +613,7 @@ System.ServiceModel.Security.Tokens/ProviderCommunicationObject.cs
 System.ServiceModel.Security.Tokens/RecipientServiceModelSecurityTokenRequirement.cs
 System.ServiceModel.Security.Tokens/RenewedSecurityTokenHandler.cs
 System.ServiceModel.Security.Tokens/RsaSecurityTokenParameters.cs
+System.ServiceModel.Security.Tokens/SecureConversationSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/SecureConversationSecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/SecurityContextSecurityToken.cs
 System.ServiceModel.Security.Tokens/SecurityContextSecurityTokenAuthenticator.cs
