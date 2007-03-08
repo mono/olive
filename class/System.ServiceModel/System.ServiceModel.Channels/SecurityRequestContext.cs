@@ -127,8 +127,7 @@ namespace System.ServiceModel.Channels
 		public override void Reply (Message message, TimeSpan timeout)
 		{
 			try {
-				// FIXME: it also needs to exclude WS-Trust RSTR
-				if (!message.IsFault)
+				if (!message.IsFault && message.Headers.Action != Constants.WstIssueReplyAction)
 					message = SecureMessage (message);
 				source.Reply (message, timeout);
 			} catch (Exception ex) {

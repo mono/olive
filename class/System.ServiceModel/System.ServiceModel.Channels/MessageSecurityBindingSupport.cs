@@ -172,16 +172,7 @@ namespace System.ServiceModel.Channels
 
 		protected void PrepareAuthenticator ()
 		{
-#if false
-			// This check is almost extra, though it is needed
-			// to check correct signing token existence.
-			//
-			// Not sure if it is limited to this condition, but
-			// Ssl parameters do not support token provider and
-			// still do not fail. X509 parameters do fail.
-			if (RecipientParameters.InternalSupportsClientAuthentication)
-#endif
-				authenticator = CreateTokenAuthenticator (RecipientParameters, out auth_token_resolver);
+			authenticator = CreateTokenAuthenticator (RecipientParameters, out auth_token_resolver);
 		}
 
 		protected void InitializeRequirement (SecurityTokenParameters p, SecurityTokenRequirement r)
@@ -360,6 +351,16 @@ namespace System.ServiceModel.Channels
 
 		public override SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
 		{
+			resolver = null;
+			// This check might be almost extra, though it is
+			// needed to check correct signing token existence.
+			//
+			// Not sure if it is limited to this condition, but
+			// Ssl parameters do not support token provider and
+			// still do not fail. X509 parameters do fail.
+			if (!InitiatorParameters.InternalSupportsClientAuthentication)
+				return null;
+
 			SecurityTokenRequirement r = CreateRequirement ();
 			r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Output;
 			InitializeRequirement (p, r);
@@ -455,6 +456,16 @@ namespace System.ServiceModel.Channels
 
 		public override SecurityTokenAuthenticator CreateTokenAuthenticator (SecurityTokenParameters p, out SecurityTokenResolver resolver)
 		{
+			resolver = null;
+			// This check might be almost extra, though it is
+			// needed to check correct signing token existence.
+			//
+			// Not sure if it is limited to this condition, but
+			// Ssl parameters do not support token provider and
+			// still do not fail. X509 parameters do fail.
+			if (!RecipientParameters.InternalSupportsServerAuthentication)
+				return null;
+
 			SecurityTokenRequirement r = CreateRequirement ();
 			r.Properties [ReqType.MessageDirectionProperty] = MessageDirection.Input;
 			InitializeRequirement (p, r);

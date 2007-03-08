@@ -89,11 +89,6 @@ Console.WriteLine ("Negotiation Context: " + rst.Context);
 			request.Headers.To = TargetAddress.Uri;
 			Message response = proxy.Issue (request);
 
-MessageBuffer buf = response.CreateBufferedCopy (0x10000);
-response = buf.CreateMessage ();
-Console.WriteLine (buf.CreateMessage ());
-
-
 			// receive ServerHello
 			WSTrustRequestSecurityTokenResponseReader reader =
 				new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
@@ -104,21 +99,19 @@ Console.WriteLine (buf.CreateMessage ());
 			tls.ProcessServerHello (reader.Value.BinaryExchange.Value);
 
 			// send ClientKeyExchange
-//			WstRequestSecurityTokenResponse rstr =
-//				new WstRequestSecurityTokenResponse ();
-			WstRequestSecurityToken rstr =
-				new WstRequestSecurityToken ();
+			WstRequestSecurityTokenResponse rstr =
+				new WstRequestSecurityTokenResponse ();
 			rstr.Context = reader.Value.Context;
 			rstr.BinaryExchange = new WstBinaryExchange ();
 			rstr.BinaryExchange.Value = tls.ProcessClientKeyExchange ();
 
-			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rstr);
-			request.Headers.RelatesTo = response.Headers.RelatesTo;
+			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueReplyAction, rstr);
+			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
 			request.Headers.To = TargetAddress.Uri;
 			// FIXME: regeneration of this instance is somehow required, but should not be.
 			proxy = new WSTrustSecurityTokenServiceProxy (
 				IssuerBinding, IssuerAddress);
-			response = proxy.Issue (request);
+			response = proxy.IssueReply (request);
 
 			reader = new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();

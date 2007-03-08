@@ -82,7 +82,7 @@ namespace System.ServiceModel.Security
 				return new SecureConversationSecurityTokenAuthenticator (requirement, sc, resolver);
 			}
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
-				return new SslSecurityTokenAuthenticator (requirement);
+				return new SslSecurityTokenAuthenticator (this, requirement);
 			else
 				throw new NotImplementedException ("Not implemented token type: " + requirement.TokenType);
 		}

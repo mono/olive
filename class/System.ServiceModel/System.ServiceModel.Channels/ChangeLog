@@ -1,3 +1,9 @@
+2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageSecurityBindingSupport.cs : support check to create
+	  authenticator is now done in both initiator/recipient sides.
+	* SecurityRequestContext.cs : don't encrypt WS-Trust RSTR.
+
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageSecurityBindingSupport.cs : for now, comment out the code

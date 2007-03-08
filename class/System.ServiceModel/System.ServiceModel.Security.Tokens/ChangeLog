@@ -1,3 +1,15 @@
+2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsClientSession.cs, TlsServerSession.cs :
+	  several fixes; Fixed content type processing (Handshake and
+	  ChangeCipherSpec). Fixed chunk output of handshake messages.
+	  Set server side key verifier.
+	* SslSecurityTokenProvider.cs : use IssueReply for RSTR (fixed SOAP
+	  action mismatch).
+	* SslSecurityTokenAuthenticator.cs : implemented most of TLS
+	  negotiation support, except for the final stage (still not clear
+	  what to do here).
+
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AuthenticatorCommunicationObject.cs,

@@ -30,6 +30,7 @@ using System;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -71,6 +72,7 @@ namespace System.ServiceModel.Description
 		public WstRequestSecurityToken Read ()
 		{
 			reader.MoveToContent ();
+			req.Context = reader.GetAttribute ("Context");
 			reader.ReadStartElement ("RequestSecurityToken", Constants.WstNamespace);
 			do {
 				reader.MoveToContent ();
@@ -104,8 +106,16 @@ namespace System.ServiceModel.Description
 				case "KeyType":
 					req.KeyType = reader.ReadElementContentAsString ();
 					return;
+				case "TokenType":
+					string tokenType = reader.ReadElementContentAsString ();
+					if (tokenType != Constants.WsscContextToken)
+						throw new SecurityTokenException (String.Format ("Unexpected TokenType: {0}", tokenType));
+					return;
 				case "ComputedKeyAlgorithm":
 					req.ComputedKeyAlgorithm = reader.ReadElementContentAsString ();
+					return;
+				case "BinaryExchange":
+					ReadBinaryExchange ();
 					return;
 				}
 				break;
@@ -118,6 +128,17 @@ namespace System.ServiceModel.Description
 				break;
 			}
 			throw new XmlException (String.Format ("Unexpected RequestSecurityToken content element. Name is {0} and namespace URI is {1}{2}", reader.Name, reader.NamespaceURI, LineInfo ()));
+		}
+
+		protected void ReadBinaryExchange ()
+		{
+			if (reader.IsEmptyElement)
+				throw new XmlException (String.Format ("Binary content is expected in 'BinaryExchange' element.{0}", LineInfo ()));
+			WstBinaryExchange b = new WstBinaryExchange ();
+			b.ValueType = reader.GetAttribute ("ValueType");
+			b.EncodingType = reader.GetAttribute ("EncodingType");
+			b.Value = Convert.FromBase64String (reader.ReadElementContentAsString ());
+			req.BinaryExchange = b;
 		}
 
 		void ReadEntropy ()

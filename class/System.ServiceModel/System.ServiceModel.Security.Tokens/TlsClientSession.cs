@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Generic;
 using System.IO;
 using Mono.Security.Protocol.Tls;
 using Mono.Security.Protocol.Tls.Handshake;
@@ -37,18 +38,39 @@ namespace System.ServiceModel.Security.Tokens
 	{
 		protected abstract Context Context { get; }
 
-		protected void WriteChangeCipherSpec (MemoryStream ms)
+		protected void WriteHandshake (MemoryStream ms)
 		{
 			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
-			ms.WriteByte (0x16); // ChangeCipherSpec
+			ms.WriteByte (0x16); // Handshake
 			ms.WriteByte (3); // version-major
 			ms.WriteByte (1); // version-minor
 		}
 
+		protected void WriteChangeCipherSpec (MemoryStream ms)
+		{
+			ms.WriteByte (0x14); // Handshake
+			ms.WriteByte (3); // version-major
+			ms.WriteByte (1); // version-minor
+			ms.WriteByte (0); // size-upper
+			ms.WriteByte (1); // size-lower
+			ms.WriteByte (1); // ChangeCipherSpec content (1 byte)
+		}
+
+		protected void ReadHandshake (MemoryStream ms)
+		{
+			if (ms.ReadByte () != 0x16)
+				throw new Exception ("INTERNAL ERROR: handshake is expected");
+			Context.ChangeProtocol ((short) (ms.ReadByte () * 0x100 + ms.ReadByte ()));
+		}
+
 		protected void ReadChangeCipherSpec (MemoryStream ms)
 		{
-			ms.ReadByte (); // 0x16
+			if (ms.ReadByte () != 0x14)
+				throw new Exception ("INTERNAL ERROR: ChangeCipherSpec is expected");
 			Context.ChangeProtocol ((short) (ms.ReadByte () * 0x100 + ms.ReadByte ()));
+			if (ms.ReadByte () * 0x100 + ms.ReadByte () != 1)
+				throw new Exception ("INTERNAL ERROR: unexpected ChangeCipherSpec length");
+			ms.ReadByte (); // ChangeCipherSpec content (1 byte) ... anything is OK?
 		}
 
 		protected byte [] ReadNextOperation (MemoryStream ms, HandshakeType expected)
@@ -64,28 +86,38 @@ namespace System.ServiceModel.Security.Tokens
 			return bytes;
 		}
 
-		protected void WriteOperation (MemoryStream ms, HandshakeMessage msg)
+		protected void WriteOperations (MemoryStream ms, params HandshakeMessage [] msgs)
 		{
-			msg.Process ();
-			byte [] bytes = msg.EncodeMessage ();
-			msg.Update ();
-			ms.WriteByte ((byte) (bytes.Length / 0x100));
-			ms.WriteByte ((byte) (bytes.Length % 0x100));
-			ms.Write (bytes, 0, bytes.Length);
+			List<byte []> rawbufs = new List<byte []> ();
+			int total = 0;
+			for (int i = 0; i < msgs.Length; i++) {
+				HandshakeMessage msg = msgs [i];
+				msg.Process ();
+				rawbufs.Add (msg.EncodeMessage ());
+				total += rawbufs [i].Length;
+				msg.Update ();
+			}
+			// FIXME: split packets when the size exceeded 0x10000 (or so)
+			ms.WriteByte ((byte) (total / 0x100));
+			ms.WriteByte ((byte) (total % 0x100));
+			foreach (byte [] bytes in rawbufs)
+				ms.Write (bytes, 0, bytes.Length);
 		}
 
 		protected void VerifyEndOfTransmit (MemoryStream ms)
 		{
-			if (ms.Position != ms.Length)
-				throw new Exception ("INTERNAL ERROR: unexpected server response");
+			if (ms.Position == ms.Length)
+				return;
 
 			/*
-			bytes = new byte [ms.Length - ms.Position];
+			byte [] bytes = new byte [ms.Length - ms.Position];
 			ms.Read (bytes, 0, bytes.Length);
 			foreach (byte b in bytes)
 				Console.Write ("{0:X02} ", b);
 			Console.WriteLine (" - total {0} bytes remained.", bytes.Length);
 			*/
+
+			throw new Exception ("INTERNAL ERROR: unexpected server response");
 		}
 	}
 
@@ -106,9 +138,9 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			MemoryStream ms = new MemoryStream ();
 			// ClientHello
-			WriteChangeCipherSpec (ms);
+			WriteHandshake (ms);
 			TlsClientHello c = new TlsClientHello (ssl.context);
-			WriteOperation (ms, c);
+			WriteOperations (ms, c);
 
 			return ms.ToArray ();
 		}
@@ -118,7 +150,7 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			MemoryStream ms = new MemoryStream (raw);
 
-			ReadChangeCipherSpec (ms);
+			ReadHandshake (ms);
 			// FIXME: use this size info?
 			int size = ms.ReadByte () * 0x100 + ms.ReadByte ();
 
@@ -147,15 +179,24 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			// ClientKeyExchange
 			MemoryStream ms = new MemoryStream ();
-			ms.WriteByte (0x16); // ChangeCipherSpec
-			ms.WriteByte (3); // version-major
-			ms.WriteByte (1); // version-minor
+			WriteHandshake (ms);
 			TlsClientKeyExchange ckx = new TlsClientKeyExchange (ssl.context);
 			ckx.Process ();
 			byte [] bytes = ckx.EncodeMessage ();
 			ckx.Update ();
 			ms.WriteByte ((byte) (bytes.Length / 0x100));
 			ms.WriteByte ((byte) (bytes.Length % 0x100));
+			ms.Write (bytes, 0, bytes.Length);
+
+			WriteChangeCipherSpec (ms);
+
+			WriteHandshake (ms);
+
+			// FIXME: probably encrypted something goes here,
+			// but dunno what it is.
+			ms.WriteByte (0); // size-upper
+			ms.WriteByte (0x20); // size-lower
+			bytes = new byte [0x20];
 			ms.Write (bytes, 0, bytes.Length);
 
 			return ms.ToArray ();

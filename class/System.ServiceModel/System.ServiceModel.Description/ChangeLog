@@ -1,3 +1,9 @@
+2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :
+	  Added IssueReply() operation to support RSTR from client.
+	  Several fixes to read and write RSTR correctly.
+
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceMetadataExtension.cs :

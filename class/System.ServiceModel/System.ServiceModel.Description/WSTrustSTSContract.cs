@@ -52,6 +52,11 @@ namespace System.ServiceModel.Description
 			return Channel.Issue (request);
 		}
 
+		public Message IssueReply (Message request)
+		{
+			return Channel.IssueReply (request);
+		}
+
 		public Message Renew (Message request)
 		{
 			return Channel.Issue (request);
@@ -73,6 +78,9 @@ namespace System.ServiceModel.Description
 	{
 		[OperationContract (Action = Constants.WstIssueAction, ReplyAction = Constants.WstIssueReplyAction, ProtectionLevel = ProtectionLevel.EncryptAndSign)]
 		Message Issue (Message request);
+
+		[OperationContract (Action = Constants.WstIssueReplyAction, ReplyAction = Constants.WstIssueReplyAction, ProtectionLevel = ProtectionLevel.EncryptAndSign)] // needed for token negotiation reply
+		Message IssueReply (Message request);
 
 		[OperationContract (Action = Constants.WstRenewAction, ReplyAction = Constants.WstRenewReplyAction, ProtectionLevel = ProtectionLevel.EncryptAndSign)]
 		Message Renew (Message request);
@@ -107,7 +115,10 @@ namespace System.ServiceModel.Description
 		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
 		{
 			w.WriteStartElement ("t", "RequestSecurityTokenResponse", Constants.WstNamespace);
-			WriteBodyContentsCore (w);
+			string ns = Constants.WstNamespace;
+			w.WriteAttributeString ("Context", Context);
+			if (BinaryExchange != null)
+				BinaryExchange.WriteTo (w);
 			w.WriteEndElement ();
 		}
 	}

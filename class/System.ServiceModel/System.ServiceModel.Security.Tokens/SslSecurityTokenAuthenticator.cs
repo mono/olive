@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Security;
 using System.IdentityModel.Policy;
@@ -44,11 +45,25 @@ namespace System.ServiceModel.Security.Tokens
 	// FIXME: implement all
 	class SslSecurityTokenAuthenticator : CommunicationSecurityTokenAuthenticator
 	{
+		ServiceCredentialsSecurityTokenManager manager;
 		SslAuthenticatorCommunicationObject comm;
+		bool mutual;
 
-		public SslSecurityTokenAuthenticator (SecurityTokenRequirement r)
+		public SslSecurityTokenAuthenticator (
+			ServiceCredentialsSecurityTokenManager manager, 
+			SecurityTokenRequirement r)
 		{
-			comm = new SslAuthenticatorCommunicationObject ();
+			this.manager = manager;
+			mutual = (r.TokenType == ServiceModelSecurityTokenTypes.MutualSslnego);
+			comm = new SslAuthenticatorCommunicationObject (this);
+		}
+
+		public bool IsMutual {
+			get { return mutual; }
+		}
+
+		public ServiceCredentialsSecurityTokenManager Manager {
+			get { return manager; }
 		}
 
 		public override AuthenticatorCommunicationObject Communication {
@@ -69,6 +84,13 @@ namespace System.ServiceModel.Security.Tokens
 
 	class SslAuthenticatorCommunicationObject : AuthenticatorCommunicationObject
 	{
+		SslSecurityTokenAuthenticator owner;
+
+		public SslAuthenticatorCommunicationObject (SslSecurityTokenAuthenticator owner)
+		{
+			this.owner = owner;
+		}
+
 		WSTrustSecurityTokenServiceProxy proxy;
 
 		protected internal override TimeSpan DefaultCloseTimeout {
@@ -81,6 +103,56 @@ namespace System.ServiceModel.Security.Tokens
 
 		public override Message ProcessNegotiation (Message request)
 		{
+			if (request.Headers.Action == Constants.WstIssueAction)
+				return ProcessClientHello (request);
+			else
+				return ProcessClientKeyExchange (request);
+		}
+
+		Dictionary<string,TlsServerSession> sessions =
+			new Dictionary<string,TlsServerSession> ();
+
+		Message ProcessClientHello (Message request)
+		{
+			WSTrustRequestSecurityTokenReader reader =
+				new WSTrustRequestSecurityTokenReader (request.GetReaderAtBodyContents (), SecurityTokenSerializer);
+			reader.Read ();
+
+			if (sessions.ContainsKey (reader.Value.Context))
+				throw new InvalidOperationException (String.Format ("The context '{0}' already exists in this SSL negotiation manager", reader.Value.Context));
+
+			TlsServerSession tls = new TlsServerSession (owner.Manager.ServiceCredentials.ServiceCertificate.Certificate, owner.IsMutual);
+
+			tls.ProcessClientHello (reader.Value.BinaryExchange.Value);
+			WstRequestSecurityTokenResponse rstr =
+				new WstRequestSecurityTokenResponse ();
+			rstr.Context = reader.Value.Context;
+			rstr.BinaryExchange = new WstBinaryExchange ();
+			rstr.BinaryExchange.Value = tls.ProcessServerHello ();
+
+			Message reply = Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, rstr);
+			reply.Headers.RelatesTo = request.Headers.MessageId;
+
+			sessions [reader.Value.Context] = tls;
+
+			return reply;
+		}
+
+		Message ProcessClientKeyExchange (Message request)
+		{
+			WSTrustRequestSecurityTokenResponseReader reader =
+				new WSTrustRequestSecurityTokenResponseReader (request.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			reader.Read ();
+
+foreach (byte b in reader.Value.BinaryExchange.Value) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+
+			TlsServerSession tls;
+			if (!sessions.TryGetValue (reader.Value.Context, out tls))
+				throw new InvalidOperationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
+			tls.ProcessClientKeyExchange (reader.Value.BinaryExchange.Value);
+
+			// ... so, I dunno what to do next here
+
 			throw new NotImplementedException ();
 		}
 

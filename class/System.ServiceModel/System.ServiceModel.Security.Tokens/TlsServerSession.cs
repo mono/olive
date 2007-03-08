@@ -41,6 +41,11 @@ namespace System.ServiceModel.Security.Tokens
 		public TlsServerSession (X509Certificate2 cert, bool clientCertificateRequired)
 		{
 			ssl = new SslServerStream (new MemoryStream (), cert, clientCertificateRequired, true, SecurityProtocolType.Tls);
+			ssl.PrivateKeyCertSelectionDelegate = delegate (X509Certificate c, string host) {
+				if (c.GetCertHashString () == cert.GetCertHashString ())
+					return cert.PrivateKey;
+				return null;
+			};
 		}
 
 		protected override Context Context {
@@ -49,8 +54,12 @@ namespace System.ServiceModel.Security.Tokens
 
 		public void ProcessClientHello (byte [] raw)
 		{
+			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls); // need to initialize
+
 			MemoryStream ms = new MemoryStream (raw);
-			ReadChangeCipherSpec (ms);
+			ReadHandshake (ms);
+			// FIXME: use this size info?
+			int size = ms.ReadByte () * 0x100 + ms.ReadByte ();
 			// ClientHello
 			byte [] bytes = ReadNextOperation (ms, HandshakeType.ClientHello);
 			TlsClientHello c = new TlsClientHello (ssl.context, bytes);
@@ -65,13 +74,38 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			MemoryStream ms = new MemoryStream ();
 
-			WriteChangeCipherSpec (ms);
+			WriteHandshake (ms);
 
-			WriteOperation (ms, new TlsServerHello (ssl.context));
-			WriteOperation (ms, new TlsServerCertificate (ssl.context));
-			WriteOperation (ms, new TlsServerHelloDone (ssl.context));
+			WriteOperations (ms,
+				new TlsServerHello (ssl.context),
+				new TlsServerCertificate (ssl.context),
+				new TlsServerHelloDone (ssl.context));
 
 			return ms.ToArray ();
+		}
+
+		public void ProcessClientKeyExchange (byte [] raw)
+		{
+			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls); // need to initialize
+
+			MemoryStream ms = new MemoryStream (raw);
+			ReadHandshake (ms);
+			// FIXME: use this size info?
+			int size = ms.ReadByte () * 0x100 + ms.ReadByte ();
+			// ClientHello
+			byte [] bytes = ReadNextOperation (ms, HandshakeType.ClientKeyExchange);
+			TlsClientKeyExchange c = new TlsClientKeyExchange (ssl.context, bytes);
+			c.Process ();
+			c.Update ();
+
+			ReadChangeCipherSpec (ms);
+
+			ReadHandshake (ms);
+			size = ms.ReadByte () * 0x100 + ms.ReadByte ();
+			// FIXME: here .NET returns extra 32 bytes
+			ms.Read (bytes, 0, size);
+
+			VerifyEndOfTransmit (ms);
 		}
 	}
 }
