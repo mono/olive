@@ -52,6 +52,10 @@ namespace System.ServiceModel.Security.Tokens
 			get { return ssl.context; }
 		}
 
+		protected override RecordProtocol Protocol {
+			get { return ssl.protocol; }
+		}
+
 		public void ProcessClientHello (byte [] raw)
 		{
 			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls); // need to initialize

@@ -1,3 +1,9 @@
+2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsClientSession.cs, TlsServerSession.cs :
+	  okay, there is RecordProtocol, which makes things much easier and
+	  correct. Now client seems to be interoperable with .net.
+
 2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TlsClientSession.cs, TlsServerSession.cs :

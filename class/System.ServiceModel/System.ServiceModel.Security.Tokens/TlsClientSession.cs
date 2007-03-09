@@ -38,6 +38,8 @@ namespace System.ServiceModel.Security.Tokens
 	{
 		protected abstract Context Context { get; }
 
+		protected abstract RecordProtocol Protocol { get; }
+
 		protected void WriteHandshake (MemoryStream ms)
 		{
 			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
@@ -124,82 +126,51 @@ namespace System.ServiceModel.Security.Tokens
 	internal class TlsClientSession : TlsSession
 	{
 		SslClientStream ssl;
+		MemoryStream stream;
 
 		public TlsClientSession (string host)
 		{
-			ssl = new SslClientStream (new MemoryStream (), host, true, SecurityProtocolType.Tls);
+			stream = new MemoryStream ();
+			ssl = new SslClientStream (stream, host, true, SecurityProtocolType.Tls);
 		}
 
 		protected override Context Context {
 			get { return ssl.context; }
 		}
 
+		protected override RecordProtocol Protocol {
+			get { return ssl.protocol; }
+		}
+
 		public byte [] ProcessClientHello ()
 		{
-			MemoryStream ms = new MemoryStream ();
-			// ClientHello
-			WriteHandshake (ms);
-			TlsClientHello c = new TlsClientHello (ssl.context);
-			WriteOperations (ms, c);
-
-			return ms.ToArray ();
+			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
+			Protocol.SendRecord (HandshakeType.ClientHello);
+			stream.Flush ();
+			return stream.ToArray ();
 		}
 
 		// ServerHello, ServerCertificate and ServerHelloDone
 		public void ProcessServerHello (byte [] raw)
 		{
-			MemoryStream ms = new MemoryStream (raw);
+			stream.SetLength (0);
+			stream.Write (raw, 0, raw.Length);
+			stream.Seek (0, SeekOrigin.Begin);
 
-			ReadHandshake (ms);
-			// FIXME: use this size info?
-			int size = ms.ReadByte () * 0x100 + ms.ReadByte ();
-
-			// ServerHello
-			byte [] bytes = ReadNextOperation (ms, HandshakeType.ServerHello);
-			TlsServerHello sh = new TlsServerHello (ssl.context, bytes);
-			sh.Process ();
-			sh.Update ();
-
-			// ServerCertificate
-			bytes = ReadNextOperation (ms, HandshakeType.Certificate);
-			TlsServerCertificate sc = new TlsServerCertificate (ssl.context, bytes);
-			sc.Process ();
-			sc.Update ();
-
-			// ServerHelloDone
-			bytes = ReadNextOperation (ms, HandshakeType.ServerHelloDone);
-			TlsServerHelloDone shd = new TlsServerHelloDone (ssl.context, bytes);
-			shd.Process ();
-			shd.Update ();
-
-			VerifyEndOfTransmit (ms);
+			Protocol.ReceiveRecord (stream);
 		}
 
 		public byte [] ProcessClientKeyExchange ()
 		{
-			// ClientKeyExchange
-			MemoryStream ms = new MemoryStream ();
-			WriteHandshake (ms);
-			TlsClientKeyExchange ckx = new TlsClientKeyExchange (ssl.context);
-			ckx.Process ();
-			byte [] bytes = ckx.EncodeMessage ();
-			ckx.Update ();
-			ms.WriteByte ((byte) (bytes.Length / 0x100));
-			ms.WriteByte ((byte) (bytes.Length % 0x100));
-			ms.Write (bytes, 0, bytes.Length);
-
-			WriteChangeCipherSpec (ms);
-
-			WriteHandshake (ms);
-
-			// FIXME: probably encrypted something goes here,
-			// but dunno what it is.
-			ms.WriteByte (0); // size-upper
-			ms.WriteByte (0x20); // size-lower
-			bytes = new byte [0x20];
-			ms.Write (bytes, 0, bytes.Length);
-
-			return ms.ToArray ();
+			stream.SetLength (0);
+			Protocol.SendRecord (HandshakeType.ClientKeyExchange);
+			Context.Negotiating.Cipher.ComputeKeys ();
+			Context.Negotiating.Cipher.InitializeCipher ();
+			Protocol.SendChangeCipherSpec ();
+			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
+			Protocol.SendRecord (HandshakeType.Finished);
+			stream.Flush ();
+			return stream.ToArray ();
 		}
 	}
 }
