@@ -1,5 +1,11 @@
 2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* TlsServerSession.cs : now ssl negotiation is functional enough to
+	  implement SecurityContextToken(Collection) transmit.
+	* TlsClientSession.cs : cosmetic code consistency fix.
+
+2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TlsClientSession.cs, TlsServerSession.cs :
 	  okay, there is RecordProtocol, which makes things much easier and
 	  correct. Now client seems to be interoperable with .net.

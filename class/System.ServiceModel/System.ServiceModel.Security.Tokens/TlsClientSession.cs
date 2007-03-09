@@ -144,7 +144,8 @@ namespace System.ServiceModel.Security.Tokens
 
 		public byte [] ProcessClientHello ()
 		{
-			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
+			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (Context.SecurityProtocol);
+			Context.HandshakeState = HandshakeState.Started;
 			Protocol.SendRecord (HandshakeType.ClientHello);
 			stream.Flush ();
 			return stream.ToArray ();
