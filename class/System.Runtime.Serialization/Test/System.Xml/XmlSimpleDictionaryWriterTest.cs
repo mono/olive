@@ -1281,5 +1281,13 @@ namespace MonoTests.System.Xml
 		}
 
 		#endregion
+
+		[Test]
+		public void WriteBooleanArray ()
+		{
+			bool [] array = new bool [] {true, false, true, true, false};
+			xw.WriteArray ("", "root", "", array, 1, 3);
+			Assert.AreEqual ("<root>false</root><root>true</root><root>true</root>", Output, "#1");
+		}
 	}
 }

@@ -33,18 +33,24 @@ using System.Xml;
 
 namespace System.Xml
 {
-	public abstract class XmlDictionaryReader : XmlReader
+	public abstract partial class XmlDictionaryReader : XmlReader
 	{
 		protected XmlDictionaryReader ()
 		{
 		}
+
+		XmlDictionaryReaderQuotas quotas;
 
 		public virtual bool CanCanonicalize {
 			get { return false; }
 		}
 
 		public virtual XmlDictionaryReaderQuotas Quotas {
-			get { return null; }
+			get {
+				if (quotas == null)
+					quotas = new XmlDictionaryReaderQuotas ();
+				return quotas;
+			}
 		}
 
 		[MonoTODO]

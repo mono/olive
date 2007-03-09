@@ -88,6 +88,60 @@ namespace MonoTests.System.Xml
 				r.TryGetNamespaceUriAsDictionaryString (out ds),
 				"#2");
 		}
+
+		[Test]
+		public void ReadBooleanArray ()
+		{
+			XmlDictionaryReader r = GetReader ("<root><item>true</item><item> false </item><item> true</item></root>");
+			r.Read ();
+			r.Read ();
+			bool [] array = r.ReadBooleanArray ("item", "");
+			Assert.AreEqual (3, array.Length, "#1");
+			Assert.AreEqual (true, array [0], "#2");
+			Assert.AreEqual (false, array [1], "#3");
+			Assert.AreEqual (true, array [2], "#4");
+		}
+
+		[Test]
+		public void ReadArrayBoolean ()
+		{
+			XmlDictionaryReader r = GetReader ("<root><item>true</item><item> false </item><item> true</item></root>");
+			r.Read ();
+			r.Read ();
+			bool [] array = new bool [5];
+			r.ReadArray ("item", "", array, 1, 3);
+			Assert.AreEqual (true, array [1], "#1");
+			Assert.AreEqual (false, array [2], "#2");
+			Assert.AreEqual (true, array [3], "#3");
+		}
+
+		[Test]
+		public void ReadInt32Array ()
+		{
+			XmlDictionaryReader r = GetReader ("<root><item>1</item><item> 100 </item><item>-50</item></root>");
+			Assert.IsNotNull (r.Quotas, "premise");
+			r.Read ();
+			r.Read ();
+			int [] array = r.ReadInt32Array ("item", "");
+			Assert.AreEqual (3, array.Length, "#1");
+			Assert.AreEqual (1, array [0], "#2");
+			Assert.AreEqual (100, array [1], "#3");
+			Assert.AreEqual (-50, array [2], "#4");
+		}
+
+		[Test]
+		public void ReadArrayInt32 ()
+		{
+			XmlDictionaryReader r = GetReader ("<root><item>1</item><item> 100 </item><item>-50</item></root>");
+			Assert.IsNotNull (r.Quotas, "premise");
+			r.Read ();
+			r.Read ();
+			int [] array = new int [5];
+			r.ReadArray ("item", "", array, 1, 3);
+			Assert.AreEqual (1, array [1], "#1");
+			Assert.AreEqual (100, array [2], "#2");
+			Assert.AreEqual (-50, array [3], "#3");
+		}
 	}
 
 	public class SimpleExtReader : XmlDictionaryReader

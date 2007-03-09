@@ -1,3 +1,8 @@
+2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReaderAbstractTest.cs : added array reader tests.
+	* XmlSimpleDictionaryWriterTest.cs : added WriteBooleanArray().
+
 2006-07-31  Ankit Jain  <jankit@novell.com>
 
 	* UniqueIdTest.cs: Add new tests.

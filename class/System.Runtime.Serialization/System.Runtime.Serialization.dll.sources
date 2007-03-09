@@ -1,4 +1,5 @@
 ../../build/common/Consts.cs
+../../build/common/Locale.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 System.Runtime.Serialization.Configuration/DeclaredTypeElement.cs
@@ -49,8 +50,10 @@ System.Xml/XmlC14NWriter.cs
 System.Xml/XmlCanonicalWriter.cs
 System.Xml/XmlDictionary.cs
 System.Xml/XmlDictionaryReader.cs
+System.Xml/XmlDictionaryReaderAutoGen.cs
 System.Xml/XmlDictionaryReaderQuotas.cs
 System.Xml/XmlDictionaryString.cs
 System.Xml/XmlDictionaryWriter.cs
+System.Xml/XmlDictionaryWriterAutoGen.cs
 System.Xml/XmlSimpleDictionaryReader.cs
 System.Xml/XmlSimpleDictionaryWriter.cs

@@ -32,7 +32,7 @@ using System.Text;
 
 namespace System.Xml
 {
-	public abstract class XmlDictionaryWriter : XmlWriter
+	public abstract partial class XmlDictionaryWriter : XmlWriter
 	{
 		protected XmlDictionaryWriter ()
 		{
