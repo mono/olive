@@ -1,5 +1,13 @@
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SslnegoCookieResolver.cs : new file. It contains the resolver for
+	  MS's non-standard encrypted sslnego shared key (dnse:Cookie), and
+	  more importantly, the description on its data format (which was
+	  almost unabled to be guessed, until I use non-protecting 
+	  SecurityStateEncoder and dug in depth to Binary XmlDictionaryReader).
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TlsServerSession.cs, TlsClientSession.cs : complete every operations
 	  that depends on ReceiveRecord(). Added accessor to MasterSecret.
 

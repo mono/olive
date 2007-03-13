@@ -625,6 +625,7 @@ System.ServiceModel.Security.Tokens/ServiceModelSecurityTokenTypes.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenAuthenticator.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenProvider.cs
+System.ServiceModel.Security.Tokens/SslnegoCookieResolver.cs
 System.ServiceModel.Security.Tokens/SspiSecurityToken.cs
 System.ServiceModel.Security.Tokens/SspiSecurityTokenParameters.cs
 System.ServiceModel.Security.Tokens/SupportingTokenParameters.cs
