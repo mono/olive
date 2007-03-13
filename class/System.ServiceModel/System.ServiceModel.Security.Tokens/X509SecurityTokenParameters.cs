@@ -62,6 +62,7 @@ namespace System.ServiceModel.Security.Tokens
 			set { reference_style = value; }
 		}
 
+		// It is documented as to return false, but that is wrong.
 		protected override bool HasAsymmetricKey {
 			get { return true; }
 		}

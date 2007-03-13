@@ -1,5 +1,10 @@
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SecurityContextSecurityToken.cs : implemented almost all members.
+	* X509SecurityTokenParameters.cs : added comment on wrong documentation.
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SslnegoCookieResolver.cs : new file. It contains the resolver for
 	  MS's non-standard encrypted sslnego shared key (dnse:Cookie), and
 	  more importantly, the description on its data format (which was

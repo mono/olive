@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -35,11 +35,54 @@ namespace System.ServiceModel.Security.Tokens
 {
 	public class SecurityContextSecurityToken : SecurityToken
 	{
+		#region Static members 
+
+		public static SecurityContextSecurityToken CreateCookieSecurityContextToken (
+			UniqueId contextId,
+			string id,
+			byte [] key,
+			DateTime validFrom,
+			DateTime validTo,
+			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies,
+			SecurityStateEncoder securityStateEncoder)
+		{
+			if (securityStateEncoder == null)
+				throw new ArgumentNullException ("securityStateEncoder");
+
+			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (contextId, id, key, validFrom, validTo, authorizationPolicies);
+			sct.cookie = securityStateEncoder.EncodeSecurityState (key);
+			return sct;
+		}
+
+		public static SecurityContextSecurityToken CreateCookieSecurityContextToken (
+			UniqueId contextId,
+			string id,
+			byte [] key,
+			DateTime validFrom,
+			DateTime validTo,
+			UniqueId keyGeneration,
+			DateTime keyEffectiveTime,
+			DateTime keyExpirationTime,
+			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies,
+			SecurityStateEncoder securityStateEncoder)
+		{
+			if (securityStateEncoder == null)
+				throw new ArgumentNullException ("securityStateEncoder");
+
+			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (contextId, id, key, validFrom, validTo, keyGeneration, keyEffectiveTime, keyExpirationTime,  authorizationPolicies);
+			sct.cookie = securityStateEncoder.EncodeSecurityState (key);
+			return sct;
+		}
+
+		#endregion
+
 		string id;
-		byte [] key;
+		InMemorySymmetricSecurityKey key;
+		ReadOnlyCollection<SecurityKey> keys;
 		DateTime token_since, token_until, key_since, key_until;
 		UniqueId context_id, key_generation;
 		ReadOnlyCollection<IAuthorizationPolicy> policies;
+		byte [] cookie;
 
 		public SecurityContextSecurityToken (
 			UniqueId contextId,
@@ -56,12 +99,8 @@ namespace System.ServiceModel.Security.Tokens
 			byte[] key,
 			DateTime validFrom,
 			DateTime validTo)
+			: this (contextId, id, key, validFrom, validTo, null)
 		{
-			context_id = contextId;
-			this.id = id;
-			this.key = key;
-			token_since = validFrom;
-			token_until = validTo;
 		}
 
 		public SecurityContextSecurityToken (
@@ -71,8 +110,14 @@ namespace System.ServiceModel.Security.Tokens
 			DateTime validFrom,
 			DateTime validTo,
 			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies)
-			: this (contextId, id, key, validFrom, validTo)
 		{
+			context_id = contextId;
+			this.id = id;
+			this.key = new InMemorySymmetricSecurityKey (key);
+			token_since = validFrom;
+			token_until = validTo;
+			if (authorizationPolicies == null)
+				authorizationPolicies = new ReadOnlyCollection<IAuthorizationPolicy> (new Collection<IAuthorizationPolicy> ());
 			policies = authorizationPolicies;
 		}
 
@@ -125,9 +170,38 @@ namespace System.ServiceModel.Security.Tokens
 			get { return id; }
 		}
 
-		[MonoTODO]
 		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
-			get { throw new NotImplementedException (); }
+			get {
+				if (keys == null)
+					keys = new ReadOnlyCollection<SecurityKey> (new SecurityKey [] {key});
+				return keys;
+			}
+		}
+
+		internal byte [] Cookie {
+			get { return cookie; }
+		}
+
+		public override bool CanCreateKeyIdentifierClause<T> ()
+		{
+			return typeof (T) == typeof (SecurityContextKeyIdentifierClause);
+		}
+
+		public override T CreateKeyIdentifierClause<T> ()
+		{
+			Type t = typeof (T);
+			if (t == typeof (SecurityContextKeyIdentifierClause))
+				return (T) (object) new SecurityContextKeyIdentifierClause (ContextId, KeyGeneration);
+
+			throw new NotSupportedException (String.Format ("X509SecurityToken does not support creation of {0}.", t));
+		}
+
+		public override bool MatchesKeyIdentifierClause (SecurityKeyIdentifierClause clause)
+		{
+			SecurityContextKeyIdentifierClause sctic =
+				clause as SecurityContextKeyIdentifierClause;
+			return sctic != null && sctic.ContextId == ContextId &&
+			       sctic.Generation == KeyGeneration;
 		}
 
 		[MonoTODO]
