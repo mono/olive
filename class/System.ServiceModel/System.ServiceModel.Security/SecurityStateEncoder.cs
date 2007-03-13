@@ -34,8 +34,8 @@ namespace System.ServiceModel.Security
 		{
 		}
 
-		protected abstract byte [] DecodeSecurityState (byte [] data);
+		protected internal abstract byte [] DecodeSecurityState (byte [] data);
 
-		protected abstract byte [] EncodeSecurityState (byte [] data);
+		protected internal abstract byte [] EncodeSecurityState (byte [] data);
 	}
 }

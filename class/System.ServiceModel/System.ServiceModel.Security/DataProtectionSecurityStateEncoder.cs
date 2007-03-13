@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,6 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System.Security.Cryptography;
 
 namespace System.ServiceModel.Security
 {
@@ -42,9 +43,8 @@ namespace System.ServiceModel.Security
 
 		public DataProtectionSecurityStateEncoder (bool useCurrentUserProtectionScope, byte [] entropy)
 		{
-			if (entropy == null)
-				throw new ArgumentNullException ();
 			user = useCurrentUserProtectionScope;
+			this.entropy = entropy;
 		}
 
 		bool user;
@@ -65,16 +65,14 @@ namespace System.ServiceModel.Security
 			return base.ToString ();
 		}
 
-		[MonoTODO]
-		protected override byte [] DecodeSecurityState (byte [] data)
+		protected internal override byte [] DecodeSecurityState (byte [] data)
 		{
-			throw new NotImplementedException ();
+			return ProtectedData.Protect (data, entropy, DataProtectionScope.CurrentUser);
 		}
 
-		[MonoTODO]
-		protected override byte [] EncodeSecurityState (byte [] data)
+		protected internal override byte [] EncodeSecurityState (byte [] data)
 		{
-			throw new NotImplementedException ();
+			return ProtectedData.Unprotect (data, entropy, DataProtectionScope.CurrentUser);
 		}
 	}
 }

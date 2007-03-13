@@ -1,3 +1,10 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DataProtectionSecurityStateEncoder.cs, SecurityStateEncoder.cs :
+	  nominally implemented (it won't work under Linux as it depends on
+	  DPAPI). We should just ignore those lazy users who depend on them
+	  by using default settings.
+
 2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :
