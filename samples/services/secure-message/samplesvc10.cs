@@ -13,18 +13,28 @@ using System.ServiceModel.Security.Tokens;
 
 public class Test
 {
+	class MyEncoder : SecurityStateEncoder
+	{
+		protected override byte [] DecodeSecurityState (byte [] src)
+		{
+foreach (byte b in src) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+			return src;
+		}
+		protected override byte [] EncodeSecurityState (byte [] src)
+		{
+foreach (byte b in src) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+			// this show how it is LAMESPEC.
+			//Array.Reverse (src);
+			return src;
+		}
+	}
+
 	public static void Main ()
 	{
 		SymmetricSecurityBindingElement sbe =
 			new SymmetricSecurityBindingElement ();
 		sbe.ProtectionTokenParameters =
 			new SslSecurityTokenParameters ();
-		/*
-		X509SecurityTokenParameters p =
-			new X509SecurityTokenParameters ();//X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.AlwaysToRecipient);
-		p.RequireDerivedKeys = false;
-		sbe.EndpointSupportingTokenParameters.Endorsing.Add (p);
-		*/
 		ServiceHost host = new ServiceHost (typeof (Foo));
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();
@@ -33,6 +43,8 @@ public class Test
 		host.AddServiceEndpoint ("IFoo",
 			binding, new Uri ("http://localhost:8080"));
 		ServiceCredentials cred = new ServiceCredentials ();
+		cred.SecureConversationAuthentication.SecurityStateEncoder =
+			new MyEncoder ();
 		cred.ServiceCertificate.Certificate =
 			new X509Certificate2 ("test.pfx", "mono");
 		cred.ClientCertificate.Authentication.CertificateValidationMode =

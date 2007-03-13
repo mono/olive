@@ -1,3 +1,9 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : removed extra code. Use pass-through security state
+	  encoder so that its scope could become clearer.
+	* samplecli10.cs : removed extra code.
+
 2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc10.cs, samplecli10.cs :

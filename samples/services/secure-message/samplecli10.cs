@@ -38,22 +38,14 @@ public class Tset
 	{
 		SymmetricSecurityBindingElement sbe =
 			new SymmetricSecurityBindingElement ();
-		/*
-		X509SecurityTokenParameters p =
-			new X509SecurityTokenParameters ();//X509KeyIdentifierClauseType.Thumbprint, SecurityTokenInclusionMode.AlwaysToRecipient);
-		p.RequireDerivedKeys = false;
-		sbe.EndpointSupportingTokenParameters.Endorsing.Add (p);
-		*/
 		sbe.ProtectionTokenParameters =
 			new SslSecurityTokenParameters ();
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();
 		CustomBinding binding = new CustomBinding (sbe, hbe);
-		X509Certificate2 cert = new X509Certificate2 ("test.pfx", "mono");
-		X509Certificate2 cert2 = cert;
+		X509Certificate2 cert = new X509Certificate2 ("test.cer");
 		FooProxy proxy = new FooProxy (binding,
-			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert2)));
-		proxy.ClientCredentials.ClientCertificate.Certificate = cert;
+			new EndpointAddress (new Uri ("http://localhost:8080"), new X509CertificateEndpointIdentity (cert)));
 		proxy.ClientCredentials.ServiceCertificate.Authentication
 			.CertificateValidationMode =
 			X509CertificateValidationMode.None;
