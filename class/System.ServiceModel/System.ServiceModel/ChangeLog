@@ -1,3 +1,7 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Constants.cs : added namespace for dnse:Cookie in ssl negotiation.
+
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ExceptionDetail.cs : new file.
