@@ -1,3 +1,9 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SslSecurityTokenParametersTest.cs : test for creating key clause
+	  for SCT.
+	* SecurityContextSecurityTokenTest.cs : new test, for SCT.
+
 2007-03-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenParametersTest.cs : for requirement initialization,

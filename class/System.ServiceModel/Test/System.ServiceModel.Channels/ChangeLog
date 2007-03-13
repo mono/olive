@@ -1,3 +1,8 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AsymmetricSecurityBindingElementTest.cs : some tests are NotWorking
+	  now, as they depend on internal processing order.
+
 2007-03-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageTest.cs : added IsFault().

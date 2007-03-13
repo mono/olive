@@ -504,6 +504,47 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
+		public void WriteSecurityContextKeyIdentifierClause ()
+		{
+			StringWriter sw = new StringWriter ();
+			SecurityContextKeyIdentifierClause ic = new SecurityContextKeyIdentifierClause (new UniqueId ("urn:foo:1"), null);
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual (@"<o:SecurityTokenReference xmlns:o=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><o:Reference URI=""urn:foo:1"" ValueType=""http://schemas.xmlsoap.org/ws/2005/02/sc/sct"" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+			XmlReader reader = XmlReader.Create (new StringReader (sw.ToString ()));
+			ic = WSSecurityTokenSerializer.DefaultInstance.ReadKeyIdentifierClause (reader) as SecurityContextKeyIdentifierClause;
+			Assert.IsNotNull (ic, "#2");
+		}
+
+		class MySslParameters : SslSecurityTokenParameters
+		{
+			public SecurityKeyIdentifierClause CallCreateKeyIdentifierClause (
+				SecurityToken token, SecurityTokenReferenceStyle referenceStyle)
+			{
+				return CreateKeyIdentifierClause (token, referenceStyle);
+			}
+		}
+
+		[Test]
+		public void WriteSecurityContextKeyIdentifierClause2 ()
+		{
+			StringWriter sw = new StringWriter ();
+			MySslParameters tp = new MySslParameters ();
+			SecurityContextSecurityToken sct =
+				new SecurityContextSecurityToken (new UniqueId ("urn:foo:1"), "urn:foo:2", new byte [32], DateTime.MinValue, DateTime.MaxValue);
+			SecurityKeyIdentifierClause ic =
+				tp.CallCreateKeyIdentifierClause (sct, SecurityTokenReferenceStyle.Internal);
+			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
+				WSSecurityTokenSerializer.DefaultInstance.WriteKeyIdentifierClause (w, ic);
+			}
+			Assert.AreEqual (@"<o:SecurityTokenReference xmlns:o=""http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd""><o:Reference URI=""#urn:foo:2"" /></o:SecurityTokenReference>", sw.ToString (), "#1");
+			XmlReader reader = XmlReader.Create (new StringReader (sw.ToString ()));
+			ic = WSSecurityTokenSerializer.DefaultInstance.ReadKeyIdentifierClause (reader) as LocalIdKeyIdentifierClause;
+			Assert.IsNotNull (ic, "#2");
+		}
+
+		[Test]
 		public void ReadKeyIdentifierClause ()
 		{
 			string xml = @"<o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
@@ -679,10 +720,86 @@ namespace MonoTests.System.ServiceModel.Security
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
-				SecurityToken token = serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert, "urn:unique-id:securitycontext:1")));
-				Assert.IsTrue (token is SecurityContextSecurityToken, "#1");
+				serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert, "urn:unique-id:securitycontext:1")));
 			}
 		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void ReadSecurityContextSecurityTokenSslnego ()
+		{
+			string xml = @"<c:SecurityContextToken u:Id='uuid-d699595c-8dac-4db4-9d7d-22bf0d900f6b-1' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+  <c:Identifier>urn:uuid:bf4d319a-1386-45a4-bd54-8c7ebc5d418e</c:Identifier>
+  <dnse:Cookie xmlns:dnse='http://schemas.microsoft.com/ws/2006/05/security'>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbwpVqF25WkyFYDXHavE7SwAAAAACAAAAAAADZgAAqAAAABAAAABhYEZd5XcsntVz0r+ZeOQtAAAAAASAAACgAAAAEAAAAGOGL0zkp8ZlDZEDdFvhOpmgAAAAA70hoWg30wr4v4A9zUYqOdw5AgQ+qS3C9lpLHH5vvVIyDZ++w+RjooLLbuhHfa4kGMxBaizAHqhHhhqsLczapTfkmLuNXZtdgtIkavUGcNkWOiGRs6ciZgXu2QLoCTRiQYDB5t2cWMzSDmzXO6yAzm2Zdik2sQ8CnOHzBTvFI8/tbE5/NHOCw2DXLWCi5ndyVEVcnLfvyV1Sk64A6pkQuBQAAAABerotvApVRg4/IJAsZwfzXL671Q==</dnse:Cookie>
+</c:SecurityContextToken>";
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			SecurityContextSecurityToken sct;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				// Token is not registered, but is restored from the cookie
+				sct = serializer.ReadToken (xr, null) as SecurityContextSecurityToken;
+			}
+			Assert.IsNotNull (sct, "#1");
+			Assert.AreEqual (new UniqueId ("urn:uuid:bf4d319a-1386-45a4-bd54-8c7ebc5d418e"), sct.ContextId, "#2");
+			Assert.IsNotNull (sct.AuthorizationPolicies.Count, "#3");
+			Assert.AreEqual (0, sct.AuthorizationPolicies.Count, "#4");
+			Assert.AreEqual (1, sct.SecurityKeys.Count, "#5");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadSecurityContextSecurityTokenSslnego3 ()
+		{
+			// full RSTR ... fails
+			string xml = @"<t:RequestSecurityTokenResponse Context='uuid-d88a7f14-97b7-4663-a548-c59a2a1c652f' xmlns:t='http://schemas.xmlsoap.org/ws/2005/02/trust' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+        <t:TokenType>http://schemas.xmlsoap.org/ws/2005/02/sc/sct</t:TokenType>
+        <t:RequestedSecurityToken>
+          <c:SecurityContextToken u:Id='uuid-8921c433-1f44-4ff1-99c7-c70ba90c56c3-1' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc'>
+            <c:Identifier>urn:uuid:6ee2d642-484a-4e08-a9f4-a2bfe4f2d540</c:Identifier>
+            <dnse:Cookie xmlns:dnse='http://schemas.microsoft.com/ws/2006/05/security'>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbwpVqF25WkyFYDXHavE7SwAAAAACAAAAAAADZgAAqAAAABAAAAD+ZtWd8MLaBeaMn+xLvyAhAAAAAASAAACgAAAAEAAAAKxhFZ5l669I+hLsZTunH12gAAAAQKjqxZo4eRtLLRO0kA0qHCNaazWddGbVdVzeMY8uIjBgl6UAMroZ6N5MAsACNbKLcYfdtEvZa1P1MTT+8dpsnWRCy5/UcQkg6mlrBAkYzEMYT8yNxRF/xEIXMpRAB5e2De4tUTFwIBIRBBKoay+oWP1M4Hcq7C8HDAqOjNyMOAUILIcz5hMFjtBDwJ4EfogiUVr02xGiXoHqEodxT75wKxQAAABQ3v/KgM1WGIDVcDypm1sNE6SASQ==</dnse:Cookie>
+          </c:SecurityContextToken>
+        </t:RequestedSecurityToken>
+        <t:RequestedAttachedReference>
+          <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+            <o:Reference URI='#uuid-8921c433-1f44-4ff1-99c7-c70ba90c56c3-1'>
+            </o:Reference>
+          </o:SecurityTokenReference>
+        </t:RequestedAttachedReference>
+        <t:RequestedUnattachedReference>
+          <o:SecurityTokenReference xmlns:o='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd'>
+            <o:Reference URI='urn:uuid:6ee2d642-484a-4e08-a9f4-a2bfe4f2d540' ValueType='http://schemas.xmlsoap.org/ws/2005/02/sc/sct'>
+            </o:Reference>
+          </o:SecurityTokenReference>
+        </t:RequestedUnattachedReference>
+        <t:RequestedProofToken>
+          <e:EncryptedKey xmlns:e='http://www.w3.org/2001/04/xmlenc#'>
+            <e:EncryptionMethod Algorithm='http://schemas.xmlsoap.org/2005/02/trust/tlsnego#TLS_Wrap'>
+            </e:EncryptionMethod>
+            <e:CipherData>
+              <e:CipherValue>FwMBADB9aB76Af+8UmE6nuo5bSh1OwbBjlImD1BY2NUbcByLmCgIARvC+KutimPRXwnMio8=</e:CipherValue>
+            </e:CipherData>
+          </e:EncryptedKey>
+        </t:RequestedProofToken>
+        <t:Lifetime>
+          <u:Created>2007-03-09T18:51:37.109Z</u:Created>
+          <u:Expires>2007-03-10T04:51:37.109Z</u:Expires>
+        </t:Lifetime>
+        <t:KeySize>256</t:KeySize>
+        <t:BinaryExchange ValueType=' http://schemas.xmlsoap.org/ws/2005/02/trust/tlsnego' EncodingType='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary'>FAMBAAEBFgMBACALQXwZMThkzZ0m4ICTSg/tcKk2eB+IKLRIhwFKHm+G6w==</t:BinaryExchange>
+      </t:RequestSecurityTokenResponse>
+      <t:RequestSecurityTokenResponse Context='uuid-d88a7f14-97b7-4663-a548-c59a2a1c652f' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+        <t:Authenticator>
+          <t:CombinedHash>O6A+tpZvcUnI/+HMW2qWREreuFHDV3SVfMCJ2haq27A=</t:CombinedHash>
+        </t:Authenticator>
+      </t:RequestSecurityTokenResponse>";
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			SecurityContextSecurityToken sct;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				serializer.ReadToken (xr, null);
+			}
+		}
+
 
 		[Test]
 		public void ReadWrappedKeySecurityToken ()

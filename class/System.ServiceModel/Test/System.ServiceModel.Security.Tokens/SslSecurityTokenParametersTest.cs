@@ -37,6 +37,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
 using NUnit.Framework;
 
 using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
@@ -244,6 +245,21 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
 			manager.CreateSecurityTokenProvider (r);
+		}
+
+		[Test]
+		public void CreateKeyIdentifierClauseSCT ()
+		{
+			MyParameters tp = new MyParameters ();
+			SecurityContextSecurityToken sct =
+				new SecurityContextSecurityToken (new UniqueId (), new byte [32], DateTime.MinValue, DateTime.MaxValue);
+			SecurityKeyIdentifierClause kic =
+				tp.CallCreateKeyIdentifierClause (sct, SecurityTokenReferenceStyle.Internal);
+			Assert.IsTrue (kic is LocalIdKeyIdentifierClause, "#1");
+			SecurityContextKeyIdentifierClause scic = tp.CallCreateKeyIdentifierClause (sct, SecurityTokenReferenceStyle.External)
+				as SecurityContextKeyIdentifierClause;
+			Assert.IsNotNull (scic, "#2");
+			Assert.IsNull (scic.Generation, "#3");
 		}
 	}
 }

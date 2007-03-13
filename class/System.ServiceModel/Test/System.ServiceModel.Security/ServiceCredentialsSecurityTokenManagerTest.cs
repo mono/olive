@@ -80,6 +80,14 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
+		public void DefaultValues ()
+		{
+			// FIXME: check more
+			MyManager mgr = new MyManager ();
+			Assert.IsTrue (mgr.ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder is DataProtectionSecurityStateEncoder, "#n-1");
+		}
+
+		[Test]
 		public void IsIssuedSecurityTokenRequirement ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r;

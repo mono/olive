@@ -57,6 +57,7 @@ System.ServiceModel.Security.Tokens/IssuedSecurityTokenParametersTest.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenProviderTest.cs
 System.ServiceModel.Security.Tokens/RsaSecurityTokenParametersTest.cs
 System.ServiceModel.Security.Tokens/SecureConversationSecurityTokenParametersTest.cs
+System.ServiceModel.Security.Tokens/SecurityContextSecurityTokenTest.cs
 System.ServiceModel.Security.Tokens/SecurityTokenParametersTest.cs
 System.ServiceModel.Security.Tokens/ServiceModelSecurityTokenTypesTest.cs
 System.ServiceModel.Security.Tokens/SslSecurityTokenParametersTest.cs
