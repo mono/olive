@@ -175,6 +175,7 @@ namespace System.ServiceModel.Description
 		}
 	}
 
+	// FIXME: it might be extraneous - currently used only for IssuedToken
 	class WstRequestSecurityTokenWriter : BodyWriter
 	{
 		WstRequestSecurityToken value;
@@ -196,7 +197,7 @@ namespace System.ServiceModel.Description
 
 	class WSTrustRequestSecurityTokenResponseReader : IDisposable
 	{
-		WstRequestSecurityTokenResponse res = new WstRequestSecurityTokenResponse ();
+		WstRequestSecurityTokenResponse res;
 		XmlDictionaryReader reader;
 		SecurityTokenSerializer serializer;
 		SecurityTokenResolver resolver;
@@ -209,6 +210,7 @@ namespace System.ServiceModel.Description
 			this.reader = reader;
 			this.serializer = serializer;
 			this.resolver = resolver;
+			res = new WstRequestSecurityTokenResponse (serializer);
 		}
 
 		public WstRequestSecurityTokenResponse Value {
@@ -253,25 +255,103 @@ namespace System.ServiceModel.Description
 			case Constants.WstNamespace:
 				switch (reader.LocalName) {
 				case "RequestedSecurityToken":
-					ReadRequestedSecurityToken ();
+					res.RequestedSecurityToken = (SecurityContextSecurityToken) ReadToken ();
+					return;
+				case "RequestedProofToken":
+#if true // FIXME: we can't handle it right now
+		reader.Skip ();
+#else
+					reader.Read ();
+					reader.MoveToContent ();
+					if (serializer.CanReadToken (reader))
+						res.RequestedProofToken = serializer.ReadToken (reader, resolver);
+					else
+						res.RequestedProofToken = serializer.ReadKeyIdentifierClause (reader);
+					reader.ReadEndElement ();
+#endif
 					return;
 				case "BinaryExchange":
 					ReadBinaryExchange ();
 					return;
+				case "TokenType":
+					res.TokenType = reader.ReadElementContentAsString ();
+					return;
+				case "Lifetime":
+					ReadLifetime ();
+					return;
+				case "KeySize":
+					res.KeySize = reader.ReadElementContentAsInt ();
+					return;
+				case "RequestedAttachedReference":
+					res.RequestedAttachedReference = ReadTokenReference ();
+					return;
+				case "RequestedUnattachedReference":
+					res.RequestedUnattachedReference = ReadTokenReference ();
+					return;
+				case "Authenticator":
+					ReadAuthenticator ();
+					return;
 				}
 				break;
 			}
-			throw new XmlException (String.Format ("Unexpected RequestSecurityToken content element. Name is {0} and namespace URI is {1}{2}", reader.Name, reader.NamespaceURI, LineInfo ()));
+			throw new XmlException (String.Format ("Unexpected RequestSecurityTokenResponse content element. Name is {0} and namespace URI is {1} {2}", reader.Name, reader.NamespaceURI, LineInfo ()));
 		}
 
-		void ReadRequestedSecurityToken ()
+		void ReadAuthenticator ()
 		{
 			if (reader.IsEmptyElement)
-				throw new XmlException (String.Format ("Security token body is expected in 'RequestedSecurityToken' element.{0}", LineInfo ()));
+				throw new XmlException (String.Format ("WS-Trust 'Authenticator' element is expected to have contents. {0}", LineInfo ()));
 			reader.Read ();
 			reader.MoveToContent ();
-			res.RequestedSecurityToken = serializer.ReadToken (reader, resolver);
-			reader.ReadEndElement (); // </RequestedSecurityToken>
+			res.Authenticator = Convert.FromBase64String (reader.ReadElementContentAsString ("CombinedHash", Constants.WstNamespace));
+			reader.ReadEndElement ();
+		}
+
+		void ReadLifetime ()
+		{
+			WstLifetime lt = new WstLifetime ();
+			res.Lifetime = lt;
+			if (reader.IsEmptyElement)
+				throw new XmlException (String.Format ("WS-Trust 'Lifetime' element is expected to have contents. {0}", LineInfo ()));
+			reader.Read ();
+			while (true) {
+				reader.MoveToContent ();
+				if (reader.NodeType != XmlNodeType.Element)
+					break;
+				if (reader.NamespaceURI == Constants.WsuNamespace) {
+					switch (reader.LocalName) {
+					case "Created":
+						lt.Created = XmlConvert.ToDateTime (reader.ReadElementContentAsString ());
+						continue;
+					case "Expires":
+						lt.Expires = XmlConvert.ToDateTime (reader.ReadElementContentAsString ());
+						continue;
+					}
+				}
+				throw new XmlException (String.Format ("Unexpected Lifetime content. Name is {0} and namespace URI is {1} {2}", reader.Name, reader.NamespaceURI, LineInfo ()));
+			}
+			reader.ReadEndElement ();
+		}
+
+		SecurityToken ReadToken ()
+		{
+			if (reader.IsEmptyElement)
+				throw new XmlException (String.Format ("Security token body is expected in '{0}' element. {1}", reader.LocalName, LineInfo ()));
+			reader.Read ();
+			reader.MoveToContent ();
+			SecurityToken token = serializer.ReadToken (reader, resolver);
+			reader.ReadEndElement ();
+			return token;
+		}
+
+		SecurityKeyIdentifierClause ReadTokenReference ()
+		{
+			if (reader.IsEmptyElement)
+				throw new XmlException (String.Format ("Content is expected in 'RequestedAttachedReference' element. {0}", LineInfo ()));
+			reader.Read ();
+			SecurityKeyIdentifierClause ret = serializer.ReadKeyIdentifierClause (reader);
+			reader.ReadEndElement ();
+			return ret;
 		}
 
 		void ReadBinaryExchange ()
@@ -286,6 +366,7 @@ namespace System.ServiceModel.Description
 		}
 	}
 
+	// FIXME: it might be extraneous - currently unused
 	internal class WstRequestSecurityTokenResponseWriter : BodyWriter
 	{
 		WstRequestSecurityTokenResponse res;

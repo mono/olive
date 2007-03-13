@@ -1,3 +1,9 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :
+	  (This inidividual commit breaks the build.)
+	  Support all xml contents required for Sslnego RSTR collection.
+
 2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :

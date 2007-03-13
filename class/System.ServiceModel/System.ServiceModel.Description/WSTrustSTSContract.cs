@@ -35,6 +35,7 @@ using System.Runtime.Serialization;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
+using System.ServiceModel.Security.Tokens;
 using System.Xml;
 
 namespace System.ServiceModel.Description
@@ -106,17 +107,66 @@ namespace System.ServiceModel.Description
 
 	class WstRequestSecurityTokenResponse : WstRequestSecurityTokenBase
 	{
-//		public string TokenType;
+		SecurityTokenSerializer serializer;
 
-		public SecurityToken RequestedSecurityToken;
+		public WstRequestSecurityTokenResponse (SecurityTokenSerializer serializer)
+		{
+			this.serializer = serializer;
+		}
 
-		public string RequestedAttachedReference;
+		public string TokenType;
 
+		public SecurityContextSecurityToken RequestedSecurityToken;
+
+		public SecurityKeyIdentifierClause RequestedAttachedReference;
+
+		public SecurityKeyIdentifierClause RequestedUnattachedReference;
+
+		public object RequestedProofToken;
+
+		public WstLifetime Lifetime;
+
+		public byte [] Authenticator;
+
+		// it only supports negotiation so far ...
 		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
 		{
-			w.WriteStartElement ("t", "RequestSecurityTokenResponse", Constants.WstNamespace);
 			string ns = Constants.WstNamespace;
+			w.WriteStartElement ("t", "RequestSecurityTokenResponse", ns);
 			w.WriteAttributeString ("Context", Context);
+			if (TokenType != null)
+				w.WriteElementString ("TokenType", ns, TokenType);
+			if (RequestedSecurityToken != null) {
+				w.WriteStartElement ("RequestedSecurityToken", ns);
+				serializer.WriteToken (w, RequestedSecurityToken);
+				w.WriteEndElement ();
+			}
+			if (RequestedAttachedReference != null) {
+				w.WriteStartElement ("RequestedAttachedReference", ns);
+				serializer.WriteKeyIdentifierClause (w, RequestedAttachedReference);
+				w.WriteEndElement ();
+			}
+			if (RequestedUnattachedReference != null) {
+				w.WriteStartElement ("RequestedUnattachedReference", ns);
+				serializer.WriteKeyIdentifierClause (w, RequestedUnattachedReference);
+				w.WriteEndElement ();
+			}
+			if (RequestedProofToken != null) {
+				w.WriteStartElement ("RequestedProofToken", ns);
+				if (RequestedProofToken is SecurityToken)
+					serializer.WriteToken (w, (SecurityToken) RequestedProofToken);
+				else
+					serializer.WriteKeyIdentifierClause (w, (SecurityKeyIdentifierClause) RequestedProofToken);
+				w.WriteEndElement ();
+			}
+			if (Lifetime != null) {
+				w.WriteStartElement ("Lifetime", ns);
+				if (Lifetime.Created != DateTime.MinValue)
+					w.WriteElementString ("Created", ns, XmlConvert.ToString (Lifetime.Created));
+				if (Lifetime.Expires != DateTime.MaxValue)
+					w.WriteElementString ("Expires", ns, XmlConvert.ToString (Lifetime.Expires));
+				w.WriteEndElement ();
+			}
 			if (BinaryExchange != null)
 				BinaryExchange.WriteTo (w);
 			w.WriteEndElement ();
@@ -152,6 +202,51 @@ namespace System.ServiceModel.Description
 		public string ComputedKeyAlgorithm;
 
 		public WstBinaryExchange BinaryExchange;
+	}
+
+	class WstRequestSecurityTokenResponseCollection : BodyWriter
+	{
+		public WstRequestSecurityTokenResponseCollection ()
+			: base (true)
+		{
+		}
+
+		Collection<WstRequestSecurityTokenResponse> responses =
+			new Collection<WstRequestSecurityTokenResponse> ();
+
+		public Collection<WstRequestSecurityTokenResponse> Responses {
+			get { return responses; }
+		}
+
+		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
+		{
+			w.WriteStartElement ("t", "RequestSecurityTokenResponseCollection", Constants.WstNamespace);
+			foreach (WstRequestSecurityTokenResponse r in Responses)
+				r.WriteBodyContents (w);
+			w.WriteEndElement ();
+		}
+
+		public void Read (XmlDictionaryReader r, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
+		{
+			r.MoveToContent ();
+			r.ReadStartElement ("RequestSecurityTokenResponseCollection", Constants.WstNamespace);
+			while (true) {
+				r.MoveToContent ();
+				if (r.NodeType != XmlNodeType.Element)
+					break;
+				WSTrustRequestSecurityTokenResponseReader rstrr = new WSTrustRequestSecurityTokenResponseReader (r, serializer, resolver);
+				rstrr.Read ();
+				responses.Add (rstrr.Value);
+			}
+			r.ReadEndElement ();
+		}
+	}
+
+	class WstLifetime
+	{
+		public DateTime Created = DateTime.MinValue;
+
+		public DateTime Expires = DateTime.MaxValue;
 	}
 
 	class WstEntropy
