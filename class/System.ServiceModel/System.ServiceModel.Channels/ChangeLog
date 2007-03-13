@@ -1,3 +1,12 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityMessageHeader.cs, SecureMessageGenerator.cs :
+	  make header.Contents.Add() more strict.
+	  Use HasAsymmetricKey to determine whether to use asymmetric algorithm
+	  or not.
+	  Added some hack to allow ssl token external mode.
+	  Commented out such lines that always premised asymmtric key.
+
 2007-03-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TransactionFlowBindingElement.cs : forgot necessary Clone().

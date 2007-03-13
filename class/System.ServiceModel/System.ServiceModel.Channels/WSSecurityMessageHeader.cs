@@ -376,6 +376,13 @@ doc.PreserveWhitespace = true;
 			get { return Constants.WssNamespace; }
 		}
 
+		public void AddContent (object obj)
+		{
+			if (obj == null)
+				throw new ArgumentNullException ("obj");
+			Contents.Add (obj);
+		}
+
 		public T Find<T> ()
 		{
 			foreach (object o in Contents)
@@ -426,7 +433,7 @@ doc.PreserveWhitespace = true;
 					writer.WriteEndElement ();
 				}
 				else
-					throw new ArgumentException (String.Format ("Unrecognized header item {0}", obj));
+					throw new ArgumentException (String.Format ("Unrecognized header item {0}", obj ?? "(null)"));
 			}
 		}
 	}

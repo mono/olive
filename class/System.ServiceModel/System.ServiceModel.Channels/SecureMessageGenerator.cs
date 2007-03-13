@@ -62,8 +62,8 @@ namespace System.ServiceModel.Channels
 		{
 			// FIXME: I believe it should be done at channel
 			// creation phase, but WinFX does not.
-			if (!security.InitiatorParameters.InternalHasAsymmetricKey)
-				throw new InvalidOperationException ("Wrong security token parameters: it must have an asymmetric key (HasAsymmetricKey). There is likely a misconfiguration in the custom security binding element.");
+//			if (!security.InitiatorParameters.InternalHasAsymmetricKey)
+//				throw new InvalidOperationException ("Wrong security token parameters: it must have an asymmetric key (HasAsymmetricKey). There is likely a misconfiguration in the custom security binding element.");
 
 			this.security = security;
 			this.message_to = messageTo;
@@ -294,7 +294,7 @@ if (!ShouldOutputEncryptedKey)
 				timestamp.Created = DateTime.Now;
 				// FIXME: on service side, use element.LocalServiceSettings.TimestampValidityDuration
 				timestamp.Expires = timestamp.Created.Add (element.LocalClientSettings.TimestampValidityDuration);
-				header.Contents.Add (timestamp);
+				header.AddContent (timestamp);
 			}
 
 			XmlNamespaceManager nsmgr = new XmlNamespaceManager (doc.NameTable);
@@ -325,9 +325,11 @@ if (!ShouldOutputEncryptedKey)
 			// - done or notyet. FIXME: not implemented yet
 			// It also affects on key reference output
 
-			bool includeEncToken = ShouldIncludeToken (
+			bool includeEncToken = /* FIXME: remove this hack */ Parameters is SslSecurityTokenParameters ? false :
+						ShouldIncludeToken (
 				Security.RecipientParameters.InclusionMode, false);
-			bool includeSigToken = ShouldIncludeToken (
+			bool includeSigToken = /* FIXME: remove this hack */ Parameters is SslSecurityTokenParameters ? false :
+						ShouldIncludeToken (
 				Security.InitiatorParameters.InclusionMode, false);
 
 			SecurityKeyIdentifierClause encClause = ShouldOutputEncryptedKey ?
@@ -348,7 +350,7 @@ else
 			primaryToken = new WrappedKeySecurityToken (messageId + "-" + identForMessageId++,
 				actualKey.Key,
 				// security.DefaultKeyWrapAlgorithm,
-				ShouldOutputEncryptedKey ?
+				Parameters.InternalHasAsymmetricKey ?
 					suite.DefaultAsymmetricKeyWrapAlgorithm :
 					suite.DefaultSymmetricKeyWrapAlgorithm,
 				encToken,
@@ -356,7 +358,7 @@ else
 
 			// If it reuses request's encryption key, do not output.
 			if (ShouldOutputEncryptedKey)
-				header.Contents.Add (primaryToken);
+				header.AddContent (primaryToken);
 
 			actualToken = primaryToken;
 
@@ -388,7 +390,7 @@ else
 				actualToken = dkeyToken;
 				actualKey.Key = ((SymmetricSecurityKey) dkeyToken.SecurityKeys [0]).GetSymmetricKey ();
 				actualClause = new LocalIdKeyIdentifierClause (dkeyToken.Id);
-				header.Contents.Add (dkeyToken);
+				header.AddContent (dkeyToken);
 			}
 
 			ReferenceList refList = new ReferenceList ();
@@ -399,14 +401,14 @@ else
 			// output ReferenceList in the same way.
 			if (CounterParameters.RequireDerivedKeys ||
 			    !ShouldOutputEncryptedKey)
-				header.Contents.Add (refList);
+				header.AddContent (refList);
 			else
 				primaryToken.ReferenceList = refList;
 
 			// [Signature Confirmation]
 			if (security.RequireSignatureConfirmation && secprop.ConfirmedSignatures.Count > 0)
 				foreach (string value in secprop.ConfirmedSignatures)
-					header.Contents.Add (new Wss11SignatureConfirmation (GenerateId (doc), value));
+					header.AddContent (new Wss11SignatureConfirmation (GenerateId (doc), value));
 
 			SupportingTokenInfoCollection tokenInfos =
 				Direction == MessageDirection.Input ?
@@ -414,7 +416,7 @@ else
 				new SupportingTokenInfoCollection (); // empty
 
 			foreach (SupportingTokenInfo tinfo in tokenInfos)
-				header.Contents.Add (tinfo.Token);
+				header.AddContent (tinfo.Token);
 
 			// populate DOM to sign.
 			XPathNavigator nav = doc.CreateNavigator ();
@@ -430,8 +432,8 @@ else
 			bool signatureProtection = (protectionOrder == MessageProtectionOrder.SignBeforeEncryptAndEncryptSignature);
 
 			// Below are o:Security contents that are not signed...
-			if (includeSigToken)
-				header.Contents.Add (signToken);
+			if (includeSigToken && signToken != null)
+				header.AddContent (signToken);
 
 			switch (protectionOrder) {
 			case MessageProtectionOrder.EncryptBeforeSign:
@@ -492,7 +494,7 @@ else
 				sxml.KeyInfo.AddClause (sigKeyInfo);
 
 				if (!signatureProtection)
-					header.Contents.Add (sig);
+					header.AddContent (sig);
 
 				// endorse the signature with (signed)endorsing
 				// supporting tokens.
@@ -521,7 +523,7 @@ else
 						}
 						ssxml.KeyInfo.AddClause (new SecurityTokenReferenceKeyInfo (tclause, serializer, doc));
 						if (!signatureProtection)
-							header.Contents.Add (ssxml.Signature);
+							header.AddContent (ssxml.Signature);
 						endorsedSignatures.Add (ssxml);
 
 						break;
@@ -539,12 +541,12 @@ else
 				if (signatureProtection) {
 					XmlElement sigxml = sig.GetXml ();
 					edata = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
-					header.Contents.Add (edata);
+					header.AddContent (edata);
 
 					foreach (WSSignedXml ssxml in endorsedSignatures) {
 						sigxml = ssxml.GetXml ();
 						edata = Encrypt (sigxml, actualKey, actualToken.Id, refList, actualClause, exml, doc);
-						header.Contents.Add (edata);
+						header.AddContent (edata);
 					}
 
 					if (security.RequireSignatureConfirmation) {
