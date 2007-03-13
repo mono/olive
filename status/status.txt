@@ -152,12 +152,10 @@
 
 	XmlDictionaryReader should work as basic XmlReader 
 	implementation. For XmlDictionary and XmlDictionaryString, things are
-	left untested. Dictionary part is only for optimizations, so it is
-	not in priority.
+	left untested.
 
 	Binary reader/writer are left as old implementation of former
-	Indigo stuff. Mtom reader/writer are not implemented. Both of them
-	are not in priority.
+	Indigo stuff. Mtom reader/writer are not implemented.
 
 **** System.Runtime.Serialization namespace
 
@@ -248,21 +246,20 @@
 	    o support asymmetric binding elements: done
 	    o support symmetric binding elements: done
 	    o Timestamp support: done
-	    + token authentication: only at recipient (though it would be enough)
+	    + token authentication: only at recipient (though it would be
+	      enough so far)
 	    o handle supporting tokens: done
 	    - retrieve correct tokens and use correct parameters
 	    - DetectReplays support
 	    o key derivation support: done
-	  - SecurityTokenManager for several token parameters: it includes
-	    - SecurityTokenProvider for several token parameters
-	    - SecurityTokenAuthenticator for several token parameters
-	    - SAML implementation
-	  - SslSecurityTokenParameters: it includes
-	    - connection-based token retrieval
-	    - SSL token processing
 	  - WS-SecureConversation support: it includes
 	    - SecureConversationSecurityTokenParameters
-	    - SecurityContextSecurityToken
+	    + SecurityContextSecurityToken : largely done.
+	  - SslSecurityTokenParameters: it includes
+	    + connection-based token retrieval: largely done
+	    + SSL token processing : largely done
+	    - Binary XmlDictionary reader/writer for dnse:Cookie
+	  - SAML implementation
 	  - IssuedSecurityTokenProvider : it includes
 	    - analysis on its behavior: largely done
 	    - WS-Trust request processing (especially at service side)
