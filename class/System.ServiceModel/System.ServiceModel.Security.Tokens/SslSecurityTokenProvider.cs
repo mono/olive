@@ -81,8 +81,6 @@ namespace System.ServiceModel.Security.Tokens
 			rst.BinaryExchange = new WstBinaryExchange ();
 			rst.BinaryExchange.Value = tls.ProcessClientHello ();
 
-Console.WriteLine ("Negotiation Context: " + rst.Context);
-
 			Message request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rst);
 			request.Headers.MessageId = new UniqueId ();
 			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
@@ -100,7 +98,7 @@ Console.WriteLine ("Negotiation Context: " + rst.Context);
 
 			// send ClientKeyExchange
 			WstRequestSecurityTokenResponse rstr =
-				new WstRequestSecurityTokenResponse ();
+				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
 			rstr.BinaryExchange = new WstBinaryExchange ();
 			rstr.BinaryExchange.Value = tls.ProcessClientKeyExchange ();
@@ -113,13 +111,37 @@ Console.WriteLine ("Negotiation Context: " + rst.Context);
 				IssuerBinding, IssuerAddress);
 			response = proxy.IssueReply (request);
 
-			reader = new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
-			reader.Read ();
-			if (reader.Value.RequestedSecurityToken != null)
-				return reader.Value.RequestedSecurityToken;
+			// FIXME: support simple RSTR
+			WstRequestSecurityTokenResponseCollection coll =
+				new WstRequestSecurityTokenResponseCollection ();
+			coll.Read (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 
-			// FIXME: continue negotiation
-			throw new NotImplementedException ();
+			WstRequestSecurityTokenResponse r = coll.Responses [0];
+			tls.ProcessServerFinished (r.BinaryExchange.Value);
+			SecurityContextSecurityToken sctSrc =
+				r.RequestedSecurityToken;
+
+			// FIXME: probably reject keyless input token here.
+			byte [] key = sctSrc.SecurityKeys.Count > 0 ?
+				((SymmetricSecurityKey) sctSrc.SecurityKeys [0]).GetSymmetricKey () :
+				null;
+			// FIXME: get correct parameter values.
+			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (sctSrc.ContextId, sctSrc.Id, key,
+				r.Lifetime.Created, r.Lifetime.Expires, null,
+				DateTime.MinValue, DateTime.MaxValue, null);
+			// FIXME: authenticate token if required.
+
+			// the input dnse:Cookie value is encrypted by the
+			// server's SecurityStateEncoder
+			// (setting error-raising encoder to ServiceCredentials.
+			// SecureConversationAuthentication.SecurityStateEncoder
+			// shows it).
+			// FIXME: so, now we need to find out what the "raw"
+			// value means. It wasn't either
+			// - XML binary dictioanry reader value, or
+			// - valid utf16 string.
+
+			return sct;
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {

@@ -1,5 +1,18 @@
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :
+	  (The build should be fixed at this state.)
+	  Implemented RSTR consumption and RSTR collection creation (as the
+	  final stage at sslnego phase).
+
+	 Note that it is still not working, as our binary XmlDictionaryReader
+	 is not working fine (and still not sure if it will work when they
+	 are working fine, as currently there is no way to check if the
+	 byte array binary-serialized and encrypted in the dnse:Cookie is
+	 the actual symmetric key).
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SslSecurityTokenParameters.cs : support SecurityContextSecurityToken
 	  in CreateKeyIdentifierClause(). Comment out generic xml token
 	  support until we need it for sure.

@@ -37,6 +37,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
 
 using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
 
@@ -125,7 +126,7 @@ namespace System.ServiceModel.Security.Tokens
 
 			tls.ProcessClientHello (reader.Value.BinaryExchange.Value);
 			WstRequestSecurityTokenResponse rstr =
-				new WstRequestSecurityTokenResponse ();
+				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
 			rstr.BinaryExchange = new WstBinaryExchange ();
 			rstr.BinaryExchange.Value = tls.ProcessServerHello ();
@@ -144,16 +145,45 @@ namespace System.ServiceModel.Security.Tokens
 				new WSTrustRequestSecurityTokenResponseReader (request.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 
-foreach (byte b in reader.Value.BinaryExchange.Value) Console.Write ("{0:X02} ", b); Console.WriteLine ();
-
 			TlsServerSession tls;
 			if (!sessions.TryGetValue (reader.Value.Context, out tls))
 				throw new InvalidOperationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
 			tls.ProcessClientKeyExchange (reader.Value.BinaryExchange.Value);
 
-			// ... so, I dunno what to do next here
+			WstRequestSecurityTokenResponseCollection col =
+				new WstRequestSecurityTokenResponseCollection ();
+			WstRequestSecurityTokenResponse rstr =
+				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
+			DateTime from = DateTime.Now;
+			// FIXME: not sure if MasterSecret is used here.
+			SecurityContextSecurityToken sct = SecurityContextSecurityToken.CreateCookieSecurityContextToken (
+				new UniqueId (reader.Value.Context),
+				new UniqueId ().ToString (),
+				tls.MasterSecret,
+				from,
+				// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
+				from.AddHours (8),
+				null,
+				owner.Manager.ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder);
+			rstr.RequestedSecurityToken = sct;
+			rstr.RequestedAttachedReference = new LocalIdKeyIdentifierClause (sct.Id);
+			rstr.RequestedUnattachedReference = new SecurityContextKeyIdentifierClause (sct.ContextId, null);
+			WstLifetime lt = new WstLifetime ();
+			lt.Created = from;
+			// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
+			lt.Expires = from.AddHours (8);
+			rstr.Lifetime = lt;
+			rstr.BinaryExchange = new WstBinaryExchange ();
+			rstr.BinaryExchange.Value = tls.ProcessServerFinished ();
 
-			throw new NotImplementedException ();
+			col.Responses.Add (rstr);
+
+			// FIXME: add authenticator
+			rstr = new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
+
+			sessions.Remove (reader.Value.Context);
+
+			return Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, col);
 		}
 
 		protected override void OnAbort ()
