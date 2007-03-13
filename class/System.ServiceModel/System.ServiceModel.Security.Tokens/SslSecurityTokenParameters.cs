@@ -103,10 +103,20 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			if (token == null)
 				throw new ArgumentNullException ("token");
+
+			SecurityContextSecurityToken sct = token as SecurityContextSecurityToken;
+			if (sct == null)
+				throw new ArgumentException (String.Format ("Not supported SecurityToken: '{0}'", token));
+			return referenceStyle == SecurityTokenReferenceStyle.Internal ?
+				(SecurityKeyIdentifierClause)
+				new LocalIdKeyIdentifierClause (sct.Id) :
+				new SecurityContextKeyIdentifierClause (sct.ContextId, sct.KeyGeneration);
+			/*
 			GenericXmlSecurityToken x = token as GenericXmlSecurityToken;
 			if (x == null)
 				throw new ArgumentException (String.Format ("Not supported SecurityToken: '{0}'", token));
 			return referenceStyle == SecurityTokenReferenceStyle.Internal ? x.InternalTokenReference : x.ExternalTokenReference;
+			*/
 		}
 
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)

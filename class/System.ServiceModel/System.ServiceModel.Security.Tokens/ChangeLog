@@ -1,5 +1,11 @@
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SslSecurityTokenParameters.cs : support SecurityContextSecurityToken
+	  in CreateKeyIdentifierClause(). Comment out generic xml token
+	  support until we need it for sure.
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SecurityContextSecurityToken.cs : implemented almost all members.
 	* X509SecurityTokenParameters.cs : added comment on wrong documentation.
 
