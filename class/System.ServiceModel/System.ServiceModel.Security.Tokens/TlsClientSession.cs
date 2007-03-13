@@ -40,6 +40,10 @@ namespace System.ServiceModel.Security.Tokens
 
 		protected abstract RecordProtocol Protocol { get; }
 
+		public byte [] MasterSecret {
+			get { return Context.MasterSecret; }
+		}
+
 		protected void WriteHandshake (MemoryStream ms)
 		{
 			Context.SupportedCiphers = CipherSuiteFactory.GetSupportedCiphers (SecurityProtocolType.Tls);
@@ -159,6 +163,8 @@ namespace System.ServiceModel.Security.Tokens
 			stream.Seek (0, SeekOrigin.Begin);
 
 			Protocol.ReceiveRecord (stream);
+			Protocol.ReceiveRecord (stream);
+			Protocol.ReceiveRecord (stream);
 		}
 
 		public byte [] ProcessClientKeyExchange ()
@@ -172,6 +178,16 @@ namespace System.ServiceModel.Security.Tokens
 			Protocol.SendRecord (HandshakeType.Finished);
 			stream.Flush ();
 			return stream.ToArray ();
+		}
+
+		public void ProcessServerFinished (byte [] raw)
+		{
+			stream.SetLength (0);
+			stream.Write (raw, 0, raw.Length);
+			stream.Seek (0, SeekOrigin.Begin);
+
+			Protocol.ReceiveRecord (stream); // ChangeCipherSpec
+			Protocol.ReceiveRecord (stream); // ServerFinished
 		}
 	}
 }

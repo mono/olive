@@ -103,7 +103,18 @@ namespace System.ServiceModel.Security.Tokens
 			stream.Write (raw, 0, raw.Length);
 			stream.Seek (0, SeekOrigin.Begin);
 
-			Protocol.ReceiveRecord (stream);
+			Protocol.ReceiveRecord (stream); // ClientKeyExchange
+			Protocol.ReceiveRecord (stream); // ChangeCipherSpec
+			Protocol.ReceiveRecord (stream); // ClientFinished
+		}
+
+		public byte [] ProcessServerFinished ()
+		{
+			stream.SetLength (0);
+			Protocol.SendChangeCipherSpec ();
+			Protocol.SendRecord (HandshakeType.Finished);
+			stream.Flush ();
+			return stream.ToArray ();
 		}
 	}
 }

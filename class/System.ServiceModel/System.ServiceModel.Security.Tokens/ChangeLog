@@ -1,3 +1,8 @@
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsServerSession.cs, TlsClientSession.cs : complete every operations
+	  that depends on ReceiveRecord(). Added accessor to MasterSecret.
+
 2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TlsServerSession.cs : now ssl negotiation is functional enough to
