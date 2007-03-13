@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -110,6 +110,9 @@ namespace System.ServiceModel.Security
 			max_offset = maximumKeyDerivationOffset;
 			max_label_length = maximumKeyDerivationLabelLength;
 			max_nonce_length = maximumKeyDerivationNonceLength;
+
+			if (encoder == null)
+				encoder = new DataProtectionSecurityStateEncoder ();
 		}
 
 		SecurityVersion security_version;
@@ -218,8 +221,11 @@ namespace System.ServiceModel.Security
 				}
 				break;
 			case Constants.WsscNamespace:
-				if (reader.LocalName == "DerivedKeyToken")
+				switch (reader.LocalName) {
+				case "DerivedKeyToken":
+				case "SecurityContextToken":
 					return true;
+				}
 				break;
 			case EncryptedXml.XmlEncNamespaceUrl:
 				switch (reader.LocalName) {
@@ -296,19 +302,27 @@ namespace System.ServiceModel.Security
 					case Constants.WSSX509Token:
 						ownerType = typeof (X509SecurityToken);
 						break;
+					case Constants.WsscContextToken:
+						ownerType = typeof (SecurityContextSecurityToken);
+						break;
 					default:
 						throw new XmlException (String.Format ("Unexpected ValueType in 'Reference' element: '{0}'", reader.Value));
 					}
 				}
 				reader.MoveToElement ();
 				string uri = reader.GetAttribute ("URI");
-				if (uri == null)
+				if (String.IsNullOrEmpty (uri))
 					uri = "#";
-				LocalIdKeyIdentifierClause local = new LocalIdKeyIdentifierClause (uri.Substring (1), ownerType);
+				SecurityKeyIdentifierClause ic = null;
+				if (ownerType == typeof (SecurityContextSecurityToken) && uri [0] != '#')
+					// FIXME: Generation?
+					ic = new SecurityContextKeyIdentifierClause (new UniqueId (uri));
+				else
+				 ic = new LocalIdKeyIdentifierClause (uri.Substring (1), ownerType);
 				reader.Skip ();
 				reader.MoveToContent ();
 				reader.ReadEndElement ();
-				return local;
+				return ic;
 			case "KeyIdentifier":
 				string valueType = reader.GetAttribute ("ValueType");
 				string value = reader.ReadElementContentAsString ();
@@ -385,7 +399,7 @@ namespace System.ServiceModel.Security
 			SecurityTokenResolver tokenResolver)
 		{
 			if (!CanReadToken (reader))
-				throw new InvalidOperationException (String.Format ("Cannot read security token from {0} node of name '{1}' and namespace URI '{2}'", reader.NodeType, reader.LocalName, reader.NamespaceURI));
+				throw new XmlException (String.Format ("Cannot read security token from {0} node of name '{1}' and namespace URI '{2}'", reader.NodeType, reader.LocalName, reader.NamespaceURI));
 
 			switch (reader.NamespaceURI) {
 			case Constants.WssNamespace:
@@ -401,6 +415,8 @@ namespace System.ServiceModel.Security
 			case Constants.WsscNamespace:
 				if (reader.LocalName == "DerivedKeyToken")
 					return ReadDerivedKeyToken (reader, tokenResolver);
+				if (reader.LocalName == "SecurityContextToken")
+					return ReadSecurityContextToken (reader, tokenResolver);
 				break;
 			case EncryptedXml.XmlEncNamespaceUrl:
 				switch (reader.LocalName) {
@@ -484,6 +500,53 @@ namespace System.ServiceModel.Security
 			return new DerivedKeySecurityToken (id, algorithm, kic, key, name, generation, offset, length, label, nonce);
 		}
 
+		// since it cannot consume RequestSecurityTokenResponse,
+		// the token information cannot be complete.
+		SecurityContextSecurityToken ReadSecurityContextToken (
+			XmlReader reader, SecurityTokenResolver tokenResolver)
+		{
+			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
+			reader.Read ();
+			UniqueId cid = null;
+			byte [] cookie = null;
+			while (true) {
+				reader.MoveToContent ();
+				if (reader.NodeType != XmlNodeType.Element)
+					break;
+				switch (reader.NamespaceURI) {
+				case Constants.WsscNamespace:
+					switch (reader.LocalName) {
+					case "Identifier":
+						cid = new UniqueId (reader.ReadElementContentAsString ());
+						continue;
+					}
+					break;
+				case Constants.MSTlsnegoTokenContent:
+					switch (reader.LocalName) {
+					case "Cookie":
+						cookie = Convert.FromBase64String (reader.ReadElementContentAsString ());
+						continue;
+					}
+					break;
+				}
+				throw new XmlException (String.Format ("Unexpected element {0} in namespace {1}", reader.LocalName, reader.NamespaceURI));
+			}
+			reader.ReadEndElement ();
+
+			// LAMESPEC: at client side there is no way to specify
+			// SecurityStateEncoder, so it must be guessed from
+			// its cookie content itself.
+			if (encoder == null) throw new Exception ();
+			byte [] decoded =
+				cookie != null && cookie.Length > 154 ?
+				encoder.DecodeSecurityState (cookie) :
+				cookie;
+			byte [] key = SslnegoCookieResolver.ResolveCookie (decoded);
+
+			return new SecurityContextSecurityToken (
+				cid, id, key, DateTime.MinValue, DateTime.MaxValue);
+		}
+
 		WrappedKeySecurityToken ReadWrappedKeySecurityTokenCore (
 			XmlReader reader, SecurityTokenResolver tokenResolver)
 		{
@@ -557,7 +620,18 @@ namespace System.ServiceModel.Security
 		protected override bool CanWriteKeyIdentifierClauseCore (
 			SecurityKeyIdentifierClause keyIdentifierClause)
 		{
-			throw new NotImplementedException ();
+			if (keyIdentifierClause == null)
+				throw new ArgumentNullException ("keyIdentifierClause");
+			if (keyIdentifierClause is LocalIdKeyIdentifierClause ||
+			    keyIdentifierClause is SecurityContextKeyIdentifierClause ||
+			    keyIdentifierClause is X509IssuerSerialKeyIdentifierClause ||
+			    (keyIdentifierClause is X509ThumbprintKeyIdentifierClause && !WSS1_0) ||
+			    keyIdentifierClause is EncryptedKeyIdentifierClause ||
+			    keyIdentifierClause is BinarySecretKeyIdentifierClause ||
+			    keyIdentifierClause is InternalEncryptedKeyIdentifierClause)
+				return true;
+			else
+				return false;
 		}
 
 		[MonoTODO]
@@ -585,6 +659,8 @@ namespace System.ServiceModel.Security
 				throw new ArgumentNullException ("keyIdentifierClause");
 			if (keyIdentifierClause is LocalIdKeyIdentifierClause)
 				WriteLocalIdKeyIdentifierClause (writer, (LocalIdKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is SecurityContextKeyIdentifierClause)
+				WriteSecurityContextKeyIdentifierClause (writer, (SecurityContextKeyIdentifierClause) keyIdentifierClause);
 			else if (keyIdentifierClause is X509IssuerSerialKeyIdentifierClause)
 				WriteX509IssuerSerialKeyIdentifierClause (writer, (X509IssuerSerialKeyIdentifierClause) keyIdentifierClause);
 			else if (keyIdentifierClause is X509ThumbprintKeyIdentifierClause) {
@@ -647,6 +723,18 @@ namespace System.ServiceModel.Security
 					w.WriteAttributeString ("ValueType", vt);
 			}
 			w.WriteAttributeString ("URI", "#" + ic.LocalId);
+			w.WriteEndElement ();
+			w.WriteEndElement ();
+		}
+
+		void WriteSecurityContextKeyIdentifierClause (
+			XmlWriter w, SecurityContextKeyIdentifierClause ic)
+		{
+			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
+			w.WriteStartElement ("o", "Reference", Constants.WssNamespace);
+			w.WriteAttributeString ("URI", ic.ContextId.ToString ());
+			string vt = GetTokenTypeUri (typeof (SecurityContextSecurityToken));
+			w.WriteAttributeString ("ValueType", vt);
 			w.WriteEndElement ();
 			w.WriteEndElement ();
 		}
@@ -730,7 +818,7 @@ namespace System.ServiceModel.Security
 			else if (token is DerivedKeySecurityToken)
 				WriteDerivedKeySecurityToken (writer, (DerivedKeySecurityToken) token);
 			else if (token is SecurityContextSecurityToken)
-				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
+				WriteSecurityContextSecurityToken (writer, (SecurityContextSecurityToken) token);
 			else if (token is SspiSecurityToken)
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is KerberosRequestorSecurityToken)
@@ -823,6 +911,18 @@ namespace System.ServiceModel.Security
 				}
 				w.WriteEndElement ();
 			}
+			w.WriteEndElement ();
+		}
+
+		void WriteSecurityContextSecurityToken (XmlWriter w, SecurityContextSecurityToken token)
+		{
+			string ns = Constants.WsscNamespace;
+			w.WriteStartElement ("t", "SecurityContextToken", ns);
+			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace);
+			w.WriteElementString ("Identifier", ns, token.ContextId.ToString ());
+			// FIXME: add Cookie output (from CreateCookieSecurityContextToken() method)
+			if (token.Cookie != null)
+				w.WriteElementString ("dnse", "Cookie", Constants.MSTlsnegoTokenContent, Convert.ToBase64String (token.Cookie));
 			w.WriteEndElement ();
 		}
 	}

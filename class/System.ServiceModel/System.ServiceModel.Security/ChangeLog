@@ -1,5 +1,14 @@
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  updated Ssl token authenticator .ctor().
+	  Pass SecurityStateEncoder to WSSecurityTokenSerializer (it is used
+	  for cookie sct).
+	* WSSecurityTokenSerializer.cs : added couple of support for
+	  SecurityContextToken. Implemented CanWriteKeyIdentifierClause().
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DataProtectionSecurityStateEncoder.cs, SecurityStateEncoder.cs :
 	  nominally implemented (it won't work under Linux as it depends on
 	  DPAPI). We should just ignore those lazy users who depend on them

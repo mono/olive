@@ -82,9 +82,17 @@ namespace System.ServiceModel.Security
 				return new SecureConversationSecurityTokenAuthenticator (requirement, sc, resolver);
 			}
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
-				return new SslSecurityTokenAuthenticator (this, requirement);
+				return CreateSslTokenAuthenticator (requirement);
 			else
 				throw new NotImplementedException ("Not implemented token type: " + requirement.TokenType);
+		}
+
+		SslSecurityTokenAuthenticator CreateSslTokenAuthenticator (SecurityTokenRequirement requirement)
+		{
+			SslSecurityTokenAuthenticator a =
+				new SslSecurityTokenAuthenticator (this, requirement);
+			InitializeAuthenticatorCommunicationObject (a.Communication, requirement);
+			return a;
 		}
 
 		UserNameSecurityTokenAuthenticator CreateUserNameAuthenticator (SecurityTokenRequirement requirement)
@@ -121,6 +129,52 @@ namespace System.ServiceModel.Security
 			default:
 				return new X509SecurityTokenAuthenticator (X509CertificateValidator.PeerTrust);
 			}
+		}
+
+		void InitializeAuthenticatorCommunicationObject (AuthenticatorCommunicationObject p, SecurityTokenRequirement r)
+		{
+			p.ListenUri = r.GetProperty<Uri> (ReqType.ListenUriProperty);
+
+			// FIXME: use it somewhere, probably to build 
+			// IssuerBinding. However, there is also IssuerBinding 
+			// property. SecureConversationSecurityBindingElement
+			// as well.
+			SecurityBindingElement sbe =
+				r.GetProperty<SecurityBindingElement> (ReqType.SecurityBindingElementProperty);
+
+/*
+			// I doubt the binding is acquired this way ...
+			Binding binding;
+			if (!r.TryGetProperty<Binding> (ReqType.IssuerBindingProperty, out binding))
+				binding = new CustomBinding (
+					new TextMessageEncodingBindingElement (),
+					new HttpTransportBindingElement ());
+			p.IssuerBinding = binding;
+
+			// not sure if it is used only for this purpose though ...
+			BindingContext ctx = r.GetProperty<BindingContext> (ReqType.IssuerBindingContextProperty);
+			foreach (IEndpointBehavior b in ctx.BindingParameters.FindAll<IEndpointBehavior> ())
+				p.IssuerChannelBehaviors.Add (b);
+*/
+
+			SecurityTokenVersion ver =
+				r.GetProperty<SecurityTokenVersion> (ReqType.MessageSecurityVersionProperty);
+			p.SecurityTokenSerializer =
+				CreateSecurityTokenSerializer (ver);
+
+/*
+			// seems like they are optional here ... (but possibly
+			// used later)
+			EndpointAddress address;
+			if (!r.TryGetProperty<EndpointAddress> (ReqType.IssuerAddressProperty, out address))
+				address = p.TargetAddress;
+			p.IssuerAddress = address;
+*/
+
+			// It is somehow not checked as mandatory ...
+			SecurityAlgorithmSuite suite = null;
+			r.TryGetProperty<SecurityAlgorithmSuite> (ReqType.SecurityAlgorithmSuiteProperty, out suite);
+			p.SecurityAlgorithmSuite = suite;
 		}
 
 		#region CreateSecurityTokenProvider()
@@ -267,6 +321,7 @@ namespace System.ServiceModel.Security
 
 		#endregion
 
+		[MonoTODO ("pass correct arguments to WSSecurityTokenSerializer..ctor()")]
 		public override SecurityTokenSerializer CreateSecurityTokenSerializer (SecurityTokenVersion version)
 		{
 			bool bsp = version.GetSecuritySpecifications ().Contains (Constants.WSBasicSecurityProfileCore1);
@@ -274,7 +329,12 @@ namespace System.ServiceModel.Security
 				version.GetSecuritySpecifications ().Contains (Constants.Wss11Namespace) ?
 				SecurityVersion.WSSecurity11 :
 				SecurityVersion.WSSecurity10;
-			return new WSSecurityTokenSerializer (ver, bsp);
+
+			// FIXME: pass correct arguments.
+			return new WSSecurityTokenSerializer (ver, bsp, null,
+				ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder,
+				null,
+				int.MaxValue, int.MaxValue, int.MaxValue);
 		}
 
 		protected internal bool IsIssuedSecurityTokenRequirement (
