@@ -134,10 +134,7 @@ namespace System.Xml
 
 		public override void WriteProcessingInstruction (string name, string text)
 		{
-			if (name != "xml")
-				throw new InvalidOperationException ("Processing instructions are not supported. ('xml' is allowed for XmlDeclaration; this is because of design problem of ECMA XmlWriter)");
-			// Otherwise, silently ignored. WriteStartDocument()
-			// is still callable after this method(!)
+			writer.WriteProcessingInstruction (name, text);
 		}
 
 		public override void WriteQualifiedName (string localName, string ns)

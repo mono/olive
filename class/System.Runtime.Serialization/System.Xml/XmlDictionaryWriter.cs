@@ -207,7 +207,7 @@ namespace System.Xml
 			XmlDictionaryString localName,
 			XmlDictionaryString namespaceUri)
 		{
-			WriteStartElement (localName.Value, namespaceUri.Value);
+			WriteStartElement (null, localName, namespaceUri);
 		}
 
 		public virtual void WriteStartElement (string prefix,

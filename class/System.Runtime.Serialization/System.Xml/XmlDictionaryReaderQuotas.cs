@@ -30,11 +30,10 @@ namespace System.Xml
 {
 	public sealed class XmlDictionaryReaderQuotas
 	{
-		static XmlDictionaryReaderQuotas std, max;
+		static XmlDictionaryReaderQuotas max;
 
 		static XmlDictionaryReaderQuotas ()
 		{
-			std = new XmlDictionaryReaderQuotas (true);
 			max = new XmlDictionaryReaderQuotas (true);
 		}
 
@@ -46,28 +45,14 @@ namespace System.Xml
 		{
 		}
 
-		private XmlDictionaryReaderQuotas (bool isReadOnly)
+		private XmlDictionaryReaderQuotas (bool max)
 		{
-			is_readonly = isReadOnly;
-			array_len = DefaultMaxArrayLength;
-			bytes = DefaultMaxBytesPerRead;
-			depth = DefaultMaxDepth;
-			nt_chars = DefaultMaxNameTableCharCount;
-			text_len = DefaultMaxStringContentLength;
-		}
-
-		internal const int DefaultMaxArrayLength = int.MaxValue;
-
-		internal const int DefaultMaxBytesPerRead = int.MaxValue;
-
-		internal const int DefaultMaxDepth = int.MaxValue;
-
-		internal const int DefaultMaxNameTableCharCount = int.MaxValue;
-
-		internal const int DefaultMaxStringContentLength = int.MaxValue;
-
-		internal static XmlDictionaryReaderQuotas Default {
-			get { return std; }
+			is_readonly = max;
+			array_len = max ? int.MaxValue : 0x4000;
+			bytes = max ? int.MaxValue : 0x1000;
+			depth = max ? int.MaxValue : 0x20;
+			nt_chars = max ? int.MaxValue : 0x4000;
+			text_len = max ? int.MaxValue : 0x2000;
 		}
 
 		public static XmlDictionaryReaderQuotas Max {

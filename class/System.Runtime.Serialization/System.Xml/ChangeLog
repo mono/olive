@@ -1,3 +1,13 @@
+2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UniqueId.cs : hacky Equals() implementation.
+	* XmlDictionaryReaderQuotas.cs : removed Default and fixed Max.
+	* XmlSimpleDictionaryWriter.cs : in .NET 3.0 RTM, it is supported.
+	* XmlDictionaryWriter.cs : WriteStartElement(XmlDictionaryString,
+	  XmlDictionaryString) should call WriteStartElement(string,
+	  XmlDictionaryString,XmlDictionaryString) since because only the
+	  latter is overridable and possible to provide dictionary string.
+
 2007-03-09  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryReader.cs : make it partial. Fill Quotas when requested.
