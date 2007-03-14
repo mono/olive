@@ -1,5 +1,10 @@
 2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryWriterSession.cs : implemented.
+	* XmlBinaryDictionaryWriter.cs : a bunch of updates.
+
+2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UniqueId.cs : hacky Equals() implementation.
 	* XmlDictionaryReaderQuotas.cs : removed Default and fixed Max.
 	* XmlSimpleDictionaryWriter.cs : in .NET 3.0 RTM, it is supported.

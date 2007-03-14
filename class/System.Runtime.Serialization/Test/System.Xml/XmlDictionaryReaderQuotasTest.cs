@@ -35,7 +35,7 @@ using Q = System.Xml.XmlDictionaryReaderQuotas;
 namespace MonoTests.System.Xml
 {
 	[TestFixture]
-	public class XmlDictionaryReaderQuotas
+	public class XmlDictionaryReaderQuotasTest
 	{
 		[Test]
 		public void StaticAndDefaultValues ()

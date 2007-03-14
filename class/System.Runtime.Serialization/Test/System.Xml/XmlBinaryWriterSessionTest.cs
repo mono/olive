@@ -1,10 +1,10 @@
 //
-// XmlBinaryWriterSession.cs
+// XmlBinaryWriterSessionTest.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005, 2007 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,38 +25,41 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-#if NET_2_0
-using System.Collections.Generic;
 
-namespace System.Xml
+using System;
+using System.Xml;
+using NUnit.Framework;
+
+namespace MonoTests.System.Xml
 {
-	public class XmlBinaryWriterSession
+	[TestFixture]
+	public class XmlBinaryWriterSessionTest
 	{
-		Dictionary<int,XmlDictionaryString> dic =
-			new Dictionary<int,XmlDictionaryString> ();
-
-		public XmlBinaryWriterSession ()
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void TryAddDuplicate ()
 		{
+			XmlDictionary dic = new XmlDictionary ();
+			XmlDictionaryString d1 = dic.Add ("foo");
+			XmlBinaryWriterSession s = new XmlBinaryWriterSession ();
+			int idx;
+			s.TryAdd (d1, out idx);
+			s.TryAdd (d1, out idx);
 		}
 
-		public void Reset ()
+		[Test]
+		public void TryAddIndex ()
 		{
-			dic.Clear ();
-		}
-
-		// Unlike XmlDictionary, it throws an InvalidOperationException
-		// if the same string already exists.
-		public virtual bool TryAdd (XmlDictionaryString value,
-			out int key)
-		{
-			if (value == null)
-				throw new ArgumentNullException ("value");
-			if (dic.ContainsValue (value))
-				throw new InvalidOperationException ("Argument XmlDictionaryString was already added to the writer session");
-			key = dic.Count;
-			dic.Add (dic.Count, value);
-			return true;
+			XmlDictionary dic = new XmlDictionary ();
+			XmlDictionaryString d1 = dic.Add ("foo");
+			XmlDictionaryString d2 = dic.Add ("bar");
+			XmlDictionaryString d3 = dic.Add ("baz");
+			XmlBinaryWriterSession s = new XmlBinaryWriterSession ();
+			int idx;
+			s.TryAdd (d1, out idx);
+			Assert.AreEqual (0, idx, "#1");
+			s.TryAdd (d3, out idx);
+			Assert.AreEqual (1, idx, "#2"); // not 2
 		}
 	}
 }
-#endif

@@ -1,5 +1,12 @@
 2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryReaderQuotasTest.cs : fixed test class name.
+	* XmlBinaryDictionaryWriterTest.cs : added a bunch of tests. Many
+	  tests still fail. They are going to be fixed.
+	* XmlBinaryWriterSessionTest.cs : new test.
+
+2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlDictionaryTest.cs : removed pointless test-breaking return.
 	  Added test for Add() and key index. Added test for Empty.
 	* XmlSimpleDictionaryWriterTest.cs : in .NET 3.0 RTM processing

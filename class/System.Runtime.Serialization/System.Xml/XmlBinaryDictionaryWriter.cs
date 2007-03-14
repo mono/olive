@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005, 2007 Novell, Inc.  http://www.novell.com
 //
 
 //
@@ -37,24 +37,43 @@ using System.Text;
 
 namespace System.Xml
 {
-	/* Binary Format (maybe incomplete):
+	/* Binary Format (incomplete):
 
-		StartAttribute without Prefix: 00 name
-		StartAttribute with Prefix without nsIndex: 01 prefix name
-		StartAttribute dict. without Prefix: 02 nameIdx
-		StartAttribute dict. with Prefix: 03 prefix nameIdx
-		StartAttribute with Prefix with nsIndex: [22-3B] name
-		Missing default namespace: 04 ns (before 3C)
-		Missing non-default namespace: 05 prefix ns (before 3C)
-		EndElement: 3C
-		Comment: 3D fixed_len utf8bin
-		StartElement with no Prefix: 3F name
-		StartElement with Prefix: 40 prefix name
-		StartElement dict. with no Prefix: 41 name
-		StartElement dict. with Prefix: 42 prefix nameIdx
-		Empty string: 82
-		Text, CDATA, Whitespace: 83 len utf8bin
-		Text, CDATA, Whitespace + EndElement?: 9D len utf8bin
+		Literal strings are represented as UTF-8 string, with a length
+		prefixed to the string itself.
+
+		Key indices are based on the rules below:
+		- dictionary strings which can be found in IXmlDictionary are 
+		  doubled its Key. e.g. if the string.Key is 4, then the
+		  output is 8.
+		- dictionary strings which cannot be found in IXmlDictionary
+		  are stored in the XmlBinaryWriterSession, and its output
+		  number is doubled + 1 e.g. if the string is the first
+		  non-dictionary entry, then the output is 1, and 7 for the
+		  fourth one.
+		- When the index goes beyond 128, then it becomes 2 bytes,
+		  where the first byte becomes 0x80 + idx % 0x80 and
+		  the second byte becomes idx / 0x80.
+
+		Below are operations. Prefixes are always raw strings.
+		$string is length-prefixed string. @index is index as
+		described above. [value] is length-prefixed raw array.
+
+		01			: EndElement
+		02 $value		: Comment
+		04 $name		: local attribute by string
+		05 $prefix $name	: global attribute by string
+		06 @name		: local attribute by index
+		07 $prefix @name	: global attribute by index
+		0A @name		: default namespace
+		0B $prefix @name	: prefixed namespace
+		40 $name		: element w/o namespace by string
+		41 $prefix $name	: element with namespace by string
+		42 @name		: element w/o namespace by index
+		42 $prefix @name	: element with namespace by index
+		98 $value		: text/cdata/chars
+		99 $value		: text/cdata/chars + EndElement
+		9F [value]		: base64
 
 		FIXME: Below are not implemented:
 		byte : 7B
@@ -65,21 +84,20 @@ namespace System.Xml
 		double: 80
 		decimal: 81
 		DateTime: 82
+		bool-false: 85
+		bool-true: 86
 		UniqueId: 8D
 		TimeSpan: 8E
-		Guid: 8F
-		base64Binary: A0
-		(Uri is simply 83, QName is 83 '{' ns '}' 83 name)
+		Guid: B0
+		Guid + EndElement: B1
+		base64Binary: 9F
+		(Uri is simply 98, QName is 98 '{' ns '}' 98 name)
 
 		Error: PIs, doctype
 		Ignored: XMLdecl
-
-		prefix, name and ns are name strings: length utf8bin
-
 	*/
 
 	// FIXME:
-	//	- Support XmlBinaryWriterSession (esp. EmitStrings).
 	//	- Support XmlDictionaryString.
 	//	- Namespace node processing seems still incomplete.
 	//	- Find out how it can write 0x9D (text + EndElement).
@@ -162,15 +180,28 @@ namespace System.Xml
 			if (new_namespaces.Count > 0) {
 				foreach (DictionaryEntry ent in new_namespaces) {
 					string prefix = (string) ent.Key;
-					string ns = (string) ent.Value;
-					if (prefix.Length > 0) {
-						stream.WriteByte (0x05);
-						WriteNamePart (prefix);
+					string ns = ent.Value as string;
+					XmlDictionaryString dns = ent.Value as XmlDictionaryString;
+					if (ns != null) {
+						if (prefix.Length > 0) {
+							stream.WriteByte (0x09);
+							WriteNamePart (prefix);
+						}
+						else
+							stream.WriteByte (0x08);
+						WriteNamePart (ns);
+						nsmgr.AddNamespace (prefix, ns);
+					} else {
+						if (prefix.Length > 0) {
+							stream.WriteByte (0x0B);
+							WriteNamePart (prefix);
+						}
+						else
+							stream.WriteByte (0x0A);
+						// FIXME: index could be > 256
+						stream.WriteByte ((byte) (dns.Key != 0 ? dns.Key << 1 : 0));
+						nsmgr.AddNamespace (prefix, dns.Value);
 					}
-					else
-						stream.WriteByte (0x04);
-					WriteNamePart (ns);
-					nsmgr.AddNamespace (prefix, ns);
 				}
 				new_namespaces.Clear ();
 			}
@@ -204,11 +235,8 @@ namespace System.Xml
 			if (open_attribute)
 				WriteEndAttribute ();
 
-			// FIXME: I think this should be done, but WinFX beta1 
-			// does not output missing ones.
-			// while (open_element_count > 0) {
-			//	WriteEndElement ();
-			//}
+			 while (open_element_count > 0)
+				WriteEndElement ();
 		}
 
 		private void CloseStartElement ()
@@ -231,9 +259,12 @@ namespace System.Xml
 		{
 			if (ns == null || ns == String.Empty)
 				throw new ArgumentException ("The Namespace cannot be empty.");
-			foreach (DictionaryEntry de in new_namespaces)
-				if (ns == de.Value as string)
+			foreach (DictionaryEntry de in new_namespaces) {
+				XmlDictionaryString dns = de.Value as XmlDictionaryString;
+				string cns = dns != null ? dns.Value : de.Value as string;
+				if (ns == cns)
 					return (string) de.Key;
+			}
 
 			string prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (ns));
 			// XmlNamespaceManager might return such prefix that
@@ -251,7 +282,7 @@ namespace System.Xml
 				CloseStartElement ();
 			}
 
-			WriteToStream (0xA0, buffer, index, count);
+			WriteToStream (0x9F, buffer, index, count);
 		}
 
 		public override void WriteCData (string text)
@@ -282,7 +313,7 @@ namespace System.Xml
 				stream.WriteByte (0x8B);
 			else {
 				byte [] data = utf8Enc.GetBytes (buffer, index, count);
-				WriteToStream (0x83, data, 0, data.Length);
+				WriteToStream (0x98, data, 0, data.Length);
 			}
 		}
 
@@ -296,7 +327,10 @@ namespace System.Xml
 			CheckState ();
 			CloseStartElement ();
 
-			WriteToStream (0x3D, text);
+			// FIXME: this 0xA8 might be wrong
+			if (text.Length == 0)
+				stream.WriteByte (0xA8);
+			WriteToStream (0x02, text);
 		}
 
 		public override void WriteDocType (string name, string pubid, string sysid, string subset)
@@ -368,7 +402,7 @@ namespace System.Xml
 			CheckState ();
 			AddMissingElementXmlns ();
 
-			stream.WriteByte (0x3C);
+			stream.WriteByte (0x01);
 
 			open_element_count--;
 			xml_lang = xml_lang_stack.Pop ();
@@ -391,7 +425,7 @@ namespace System.Xml
 		public override void WriteProcessingInstruction (string name, string text)
 		{
 			if (name != "xml")
-				throw new InvalidOperationException ("Processing instructions are not supported. ('xml' is allowed for XmlDeclaration; this is because of design problem of ECMA XmlWriter)");
+				throw new ArgumentException ("Processing instructions are not supported. ('xml' is allowed for XmlDeclaration; this is because of design problem of ECMA XmlWriter)");
 			// Otherwise, silently ignored. WriteStartDocument()
 			// is still callable after this method(!)
 		}
@@ -450,11 +484,12 @@ namespace System.Xml
 			if (ns == null)
 				ns = String.Empty;
 
-			int nsIdentifier = prefix.Length > 0 ? 1 : 0;
+			int nsIdentifier = prefix.Length > 0 ? 0x05 : 0x04;
 
 			if (ns != String.Empty && prefix != "xmlns") {
 				if (prefix.Length > 0) {
-					string existingNS = new_namespaces [prefix] as string;
+					XmlDictionaryString dns = new_namespaces [prefix] as XmlDictionaryString;
+					string existingNS = dns != null ? dns.Value : new_namespaces [prefix] as string;
 					if (existingNS != null && existingNS != ns)
 						throw new ArgumentException (String.Format ("The prefix '{0}' is already bound to the namespace '{1}' and cannot be reassigned to '{2}'", prefix, existingNS, ns));
 				}
@@ -469,7 +504,7 @@ namespace System.Xml
 
 			// Write to Stream
 			stream.WriteByte ((byte) nsIdentifier);
-			WriteNames (nsIdentifier > 1 ? String.Empty : prefix, localName);
+			WriteNames (/*nsIdentifier > 1 ? String.Empty : */prefix, localName);
 
 			open_attribute = true;
 			state = WriteState.Attribute;
@@ -532,7 +567,7 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 			state = WriteState.Prolog;
 		}
 
-		public override void WriteStartElement (string prefix, string localName, string ns)
+		void PrepareStartElement ()
 		{
 			CheckState ();
 			CloseStartElement ();
@@ -540,6 +575,11 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 			xml_lang_stack.Push (xml_lang);
 			xml_space_stack.Push (xml_space);
 			nsmgr.PushScope ();
+		}
+
+		public override void WriteStartElement (string prefix, string localName, string ns)
+		{
+			PrepareStartElement ();
 
 			if ((prefix != null && prefix != String.Empty) && ((ns == null) || (ns == String.Empty)))
 				throw new ArgumentException ("Cannot use a prefix with an empty namespace.");
@@ -554,23 +594,26 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 			if (prefix == null)
 				prefix = String.Empty;
 
-			stream.WriteByte ((byte) (prefix.Length > 0 ? 0x40 : 0x3F));
+			stream.WriteByte ((byte) (prefix.Length > 0 ? 0x41 : 0x40));
 			WriteNames (prefix, localName);
 
+			PushElement (prefix, ns, ns);
+		}
+
+		void PushElement (string prefix, string ns, object nsobj)
+		{
 			open_element_count++;
 			state = WriteState.Element;
 			open_start_element = true;
 
-			if (ns.Length > 0) {
-				string existing = LookupPrefix (ns);
-				if (existing != prefix) {
-					new_namespaces.Add (prefix, ns);
-				}
-			} else {
-				if (ns != nsmgr.DefaultNamespace) {
-					new_namespaces.Add ("", ns);
-				}
-			}
+			if (ns.Length == 0)
+				return;
+
+			string existing = LookupPrefix (ns);
+			if (existing == prefix)
+				return;
+
+			new_namespaces.Add (prefix, nsobj);
 		}
 
 		public override void WriteString (string text)
@@ -622,12 +665,65 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 			WriteTextBinary (ws);
 		}
 
+		#region DictionaryString
+		public override void WriteStartElement (string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
+		{
+			PrepareStartElement ();
+
+			if (prefix == null && namespaceUri.Value.Length > 0)
+				prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (namespaceUri.Value));
+			if (prefix == null)
+				prefix = String.Empty;
+
+			if (prefix.Length == 0)
+				stream.WriteByte (0x42);
+			else
+				WriteToStream (0x43, prefix);
+			stream.WriteByte ((byte) (localName.Key != 0 ? localName.Key << 1 : 0));
+
+			PushElement (prefix, namespaceUri.Value, namespaceUri);
+		}
+		#endregion
+
+		#region WriteValue
+		public override void WriteValue (Guid value)
+		{
+			stream.WriteByte (0xB0);
+			byte [] bytes = value.ToByteArray ();
+			stream.Write (bytes, 0, bytes.Length);
+		}
+
+		public override void WriteValue (UniqueId value)
+		{
+			WriteToStream (0x8D, value.ToString ());
+		}
+
+		public override void WriteValue (TimeSpan value)
+		{
+			stream.WriteByte (0x8E);
+			WriteLong (value.Ticks);
+		}
+		#endregion
+
+		private void WriteLong (long value)
+		{
+			long v = 0;
+			for (int i = 0; i < 4; i++) {
+				v = (v << 4) + value & 0xFF;
+				value >>= 4;
+			}
+			for (int i = 0; i < 4; i++) {
+				stream.WriteByte ((byte) (v & 0xFF));
+				v >>= 4;
+			}
+		}
+
 		private void WriteTextBinary (string text)
 		{
 			if (text.Length == 0)
-				stream.WriteByte (0x8B);
+				stream.WriteByte (0xA8);
 			else
-				WriteToStream (0x83, text);
+				WriteToStream (0x98, text);
 		}
 
 		private void WriteNames (string prefix, string localName)
