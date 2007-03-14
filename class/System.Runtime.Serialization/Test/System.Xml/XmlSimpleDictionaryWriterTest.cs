@@ -458,40 +458,35 @@ namespace MonoTests.System.Xml
 		}
 
 		[Test]
-		[ExpectedException (typeof (InvalidOperationException))] // XmlDictionaryWriter does not support it.
 		public void ProcessingInstructionValid ()
 		{
 			xw.WriteProcessingInstruction("foo", "bar");
-			//Assert.AreEqual ("<?foo bar?>", Output, "WriteProcessingInstruction had incorrect output.");
+			Assert.AreEqual ("<?foo bar?>", Output, "WriteProcessingInstruction had incorrect output.");
 		}
 
 		[Test]
-		[ExpectedException (typeof (InvalidOperationException))] // XmlDictionaryWriter does not support it.
-		//[ExpectedException (typeof (ArgumentException))]
+		[ExpectedException (typeof (ArgumentException))]
 		public void ProcessingInstructionInvalid1 ()
 		{
 			xw.WriteProcessingInstruction("fo?>o", "bar");
 		}
 
 		[Test]
-		[ExpectedException (typeof (InvalidOperationException))] // XmlDictionaryWriter does not support it.
-		//[ExpectedException (typeof (ArgumentException))]
+		[ExpectedException (typeof (ArgumentException))]
 		public void ProcessingInstructionInvalid2 ()
 		{
 			xw.WriteProcessingInstruction("foo", "ba?>r");
 		}
 
 		[Test]
-		[ExpectedException (typeof (InvalidOperationException))] // XmlDictionaryWriter does not support it.
-		//[ExpectedException (typeof (ArgumentException))]
+		[ExpectedException (typeof (ArgumentException))]
 		public void ProcessingInstructionInvalid3 ()
 		{
 			xw.WriteProcessingInstruction("", "bar");
 		}
 
 		[Test]
-		[ExpectedException (typeof (InvalidOperationException))] // XmlDictionaryWriter does not support it.
-		//[ExpectedException (typeof (ArgumentException))]
+		[ExpectedException (typeof (ArgumentException))]
 		public void ProcessingInstructionInvalid4 ()
 		{
 			xw.WriteProcessingInstruction(null, "bar");
