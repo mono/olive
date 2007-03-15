@@ -1,5 +1,12 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryFormat.cs : new file, collection of constants.
+	* XmlBinaryDictionaryWriter.cs :
+	  Stream->BinaryWriter. Support for WriteValue() for almost all
+	  types.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlDictionaryWriter.cs : removed couple of MonoTODOs.
 
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>

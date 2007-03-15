@@ -35,80 +35,14 @@ using System.Globalization;
 using System.IO;
 using System.Text;
 
+using BF = System.Xml.XmlBinaryFormat;
+
 namespace System.Xml
 {
-	/* Binary Format (incomplete):
-
-		Literal strings are represented as UTF-8 string, with a length
-		prefixed to the string itself.
-
-		Key indices are based on the rules below:
-		- dictionary strings which can be found in IXmlDictionary are 
-		  doubled its Key. e.g. if the string.Key is 4, then the
-		  output is 8.
-		- dictionary strings which cannot be found in IXmlDictionary
-		  are stored in the XmlBinaryWriterSession, and its output
-		  number is doubled + 1 e.g. if the string is the first
-		  non-dictionary entry, then the output is 1, and 7 for the
-		  fourth one.
-		- When the index goes beyond 128, then it becomes 2 bytes,
-		  where the first byte becomes 0x80 + idx % 0x80 and
-		  the second byte becomes idx / 0x80.
-
-		Below are operations. Prefixes are always raw strings.
-		$string is length-prefixed string. @index is index as
-		described above. [value] is length-prefixed raw array.
-
-		01			: EndElement
-		02 $value		: Comment
-		04 $name		: local attribute by string
-		05 $prefix $name	: global attribute by string
-		06 @name		: local attribute by index
-		07 $prefix @name	: global attribute by index
-		0A @name		: default namespace
-		0B $prefix @name	: prefixed namespace
-		0C @name		: global attribute by index
-		0D @name		: global attribute by index,
-					: in current element's namespace
-		40 $name		: element w/o namespace by string
-		41 $prefix $name	: element with namespace by string
-		42 @name		: element w/o namespace by index
-		43 $prefix @name	: element with namespace by index
-		98 $value		: text/cdata/chars
-		99 $value		: text/cdata/chars + EndElement
-
-		FIXME: Below are not implemented:
-		byte : 7B
-		short : 7C
-		int : 7D
-		long: 7E
-		float: 7F
-		double: 80
-		decimal: 81
-		DateTime: 82
-		(Uri is simply 98, QName is 98 '{' ns '}' 98 name)
-
-		Below are implemented. Combined EndElement is supported.
-		84 : false (bool)
-		86 : true (bool)
-		98 : UniqueId
-		AE : TimeSpan
-		B0 : Guid
-		9E : base64Binary
-
-		Error: PIs, doctype
-		Ignored: XMLdecl
-	*/
-
-	// FIXME:
-	//	- Support XmlDictionaryString.
-	//	- Namespace node processing seems still incomplete.
-	//	- Find out how it can write 0x9D (text + EndElement).
-
 	internal class XmlBinaryDictionaryWriter : XmlDictionaryWriter
 	{
 		#region Fields
-		Stream original_output, stream;
+		BinaryWriter original, writer, buffer_writer;
 		IXmlDictionary dict_ext;
 		XmlDictionary dict_int = new XmlDictionary ();
 		XmlBinaryWriterSession session;
@@ -162,8 +96,9 @@ namespace System.Xml
 			if (session == null)
 				session = new XmlBinaryWriterSession ();
 
-			original_output = stream;
-			this.stream = stream;
+			original = new BinaryWriter (stream);
+			this.writer = original;
+			buffer_writer = new BinaryWriter (buffer);
 			this.dict_ext = dictionary;
 			this.session = session;
 			owns_stream = ownsStream;
@@ -201,19 +136,19 @@ namespace System.Xml
 				XmlDictionaryString dns = ent.Value as XmlDictionaryString;
 				if (ns != null) {
 					if (prefix.Length > 0) {
-						stream.WriteByte (0x09);
+						writer.Write (BF.PrefixNSString);
 						WriteNamePart (prefix);
 					}
 					else
-						stream.WriteByte (0x08);
+						writer.Write (BF.DefaultNSString);
 					WriteNamePart (ns);
 				} else {
 					if (prefix.Length > 0) {
-						stream.WriteByte (0x0B);
+						writer.Write (BF.PrefixNSIndex);
 						WriteNamePart (prefix);
 					}
 					else
-						stream.WriteByte (0x0A);
+						writer.Write (BF.DefaultNSIndex);
 					WriteDictionaryIndex (dns);
 				}
 				nsmgr.AddNamespace (prefix, ent.Value.ToString ());
@@ -237,7 +172,7 @@ namespace System.Xml
 
 			ProcessPendingBuffer (false, false);
 			if (state != WriteState.Attribute)
-				stream = buffer;
+				writer = buffer_writer;
 		}
 
 		void ProcessTypedValue ()
@@ -256,11 +191,11 @@ namespace System.Xml
 				byte [] arr = buffer.GetBuffer ();
 				if (endElement)
 					arr [0]++;
-				original_output.Write (arr, 0, (int) buffer.Position);
+				original.Write (arr, 0, (int) buffer.Position);
 				buffer.SetLength (0);
 			}
 			if (last)
-				stream = original_output;
+				writer = original;
 		}
 
 		public override void Close ()
@@ -268,9 +203,9 @@ namespace System.Xml
 			CloseOpenAttributeAndElements ();
 
 			if (owns_stream)
-				stream.Close ();
+				writer.Close ();
 			else if (state != WriteState.Closed)
-				stream.Flush ();
+				writer.Flush ();
 			state = WriteState.Closed;
 		}
 
@@ -299,7 +234,7 @@ namespace System.Xml
 
 		public override void Flush ()
 		{
-			stream.Flush ();
+			writer.Flush ();
 		}
 
 		public override string LookupPrefix (string ns)
@@ -313,7 +248,7 @@ namespace System.Xml
 		{
 			ProcessStateForContent ();
 
-			WriteToStream (0x9E, buffer, index, count);
+			WriteToStream (BF.Base64, buffer, index, count);
 		}
 
 		public override void WriteCData (string text)
@@ -336,10 +271,10 @@ namespace System.Xml
 			ProcessStateForContent ();
 
 			if (count == 0)
-				stream.WriteByte (0x8B);
+				writer.Write (BF.EmptyText);
 			else {
 				byte [] data = utf8Enc.GetBytes (buffer, index, count);
-				WriteToStream (0x98, data, 0, data.Length);
+				WriteToStream (BF.Text, data, 0, data.Length);
 			}
 		}
 
@@ -355,7 +290,7 @@ namespace System.Xml
 			if (state == WriteState.Attribute)
 				throw new InvalidOperationException ("Comment node is not allowed inside an attribute");
 
-			WriteToStream (0x02, text);
+			WriteToStream (BF.Comment, text);
 		}
 
 		public override void WriteDocType (string name, string pubid, string sysid, string subset)
@@ -427,7 +362,7 @@ namespace System.Xml
 		bool SupportsCombinedEndElementSupport (byte operation)
 		{
 			switch (operation) {
-			case 0x02: // comment
+			case BF.Comment:
 				return false;
 			}
 			return true;
@@ -448,7 +383,7 @@ namespace System.Xml
 			AddMissingElementXmlns ();
 
 			if (needExplicitEndElement)
-				stream.WriteByte (0x01);
+				writer.Write (BF.EndElement);
 
 			nsmgr.PopScope ();
 			element_ns = element_ns_stack.Pop ();
@@ -573,9 +508,9 @@ namespace System.Xml
 			if (save_target == SaveTarget.Namespaces)
 				return;
 
-			int op = prefix.Length > 0 ? 0x05 : 0x04;
+			int op = prefix.Length > 0 ? BF.AttrStringPrefix : BF.AttrString;
 			// Write to Stream
-			stream.WriteByte ((byte) op);
+			writer.Write ((byte) op);
 			WriteNames (prefix, localName);
 		}
 
@@ -621,7 +556,7 @@ namespace System.Xml
 			if (prefix == null)
 				prefix = String.Empty;
 
-			stream.WriteByte ((byte) (prefix.Length > 0 ? 0x41 : 0x40));
+			writer.Write ((byte) (prefix.Length > 0 ? BF.ElemStringPrefix : BF.ElemString));
 			WriteNames (prefix, localName);
 
 			OpenElement (prefix, ns);
@@ -734,11 +669,11 @@ namespace System.Xml
 					session.TryAdd (dict_int.Add (ds.Value), out idx);
 			}
 			if (idx >= 0x80) {
-				stream.WriteByte ((byte) (0x80 + ((idx % 0x80) << 1) + (isSession ? 1 : 0)));
-				stream.WriteByte ((byte) ((byte) (idx / 0x80) << 1));
+				writer.Write ((byte) (0x80 + ((idx % 0x80) << 1) + (isSession ? 1 : 0)));
+				writer.Write ((byte) ((byte) (idx / 0x80) << 1));
 			}
 			else
-				stream.WriteByte ((byte) ((idx % 0x80) << 1 + (isSession ? 1 : 0)));
+				writer.Write ((byte) ((idx % 0x80) << 1 + (isSession ? 1 : 0)));
 		}
 
 		public override void WriteStartElement (string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
@@ -749,9 +684,9 @@ namespace System.Xml
 				prefix = String.Empty;
 
 			if (prefix.Length == 0)
-				stream.WriteByte (0x42);
+				writer.Write (BF.ElemIndex);
 			else
-				WriteToStream (0x43, prefix);
+				WriteToStream (BF.ElemIndexPrefix, prefix);
 			WriteDictionaryIndex (localName);
 
 			OpenElement (prefix, namespaceUri);
@@ -776,11 +711,11 @@ namespace System.Xml
 				return;
 
 			int op = 
-				ns.Value == nsmgr.LookupNamespace (element_prefix) ? 0x0D :
-				ns.Value.Length == 0 ? 0x06 :
-				prefix.Length > 0 ? 0x07 : 0x0C;
+				ns.Value == nsmgr.LookupNamespace (element_prefix) ? BF.GlobalAttrIndexInElemNS :
+				ns.Value.Length == 0 ? BF.AttrIndex :
+				prefix.Length > 0 ? BF.AttrIndexPrefix : BF.GlobalAttrIndex;
 			// Write to Stream
-			stream.WriteByte ((byte) op);
+			writer.Write ((byte) op);
 			if (prefix.Length > 0)
 				WriteNamePart (prefix);
 			WriteDictionaryIndex (localName);
@@ -806,53 +741,113 @@ namespace System.Xml
 		{
 			ProcessTypedValue ();
 
-			stream.WriteByte ((byte) (value ? 0x86 : 0x84));
+			writer.Write ((byte) (value ? BF.BoolTrue : BF.BoolFalse));
+		}
+
+		public override void WriteValue (int value)
+		{
+			WriteValue ((long) value);
+		}
+
+		public override void WriteValue (long value)
+		{
+			ProcessTypedValue ();
+
+			if (value < 0 || value > uint.MaxValue) {
+				writer.Write (BF.Int64);
+				for (int i = 0; i < 8; i++) {
+					writer.Write ((byte) (value & 0xFF));
+					value >>= 8;
+				}
+			} else if (value <= byte.MaxValue) {
+				writer.Write (BF.Int8);
+				writer.Write ((byte) value);
+			} else if (value <= short.MaxValue) {
+				writer.Write (BF.Int16);
+				writer.Write ((byte) (value & 0xFF));
+				writer.Write ((byte) (value >> 8));
+			} else if (value <= int.MaxValue) {
+				writer.Write (BF.Int32);
+				for (int i = 0; i < 4; i++) {
+					writer.Write ((byte) (value & 0xFF));
+					value >>= 8;
+				}
+			}
+		}
+
+		public override void WriteValue (float value)
+		{
+			ProcessTypedValue ();
+			writer.Write (BF.Single);
+			writer.Write (value);
+		}
+
+		public override void WriteValue (double value)
+		{
+			ProcessTypedValue ();
+			writer.Write (BF.Double);
+			writer.Write (value);
+		}
+
+		// FIXME: find out how it is written.
+		public override void WriteValue (decimal value)
+		{
+			ProcessTypedValue ();
+			writer.Write (BF.Decimal);
+			writer.Write (value);
+		}
+
+		public override void WriteValue (DateTime value)
+		{
+			ProcessTypedValue ();
+			writer.Write (BF.DateTime);
+			writer.Write (value.Ticks);
 		}
 
 		public override void WriteValue (Guid value)
 		{
 			ProcessTypedValue ();
 
-			stream.WriteByte (0xB0);
+			writer.Write (BF.Guid);
 			byte [] bytes = value.ToByteArray ();
-			stream.Write (bytes, 0, bytes.Length);
+			writer.Write (bytes, 0, bytes.Length);
 		}
 
 		public override void WriteValue (UniqueId value)
 		{
 			ProcessTypedValue ();
 
-			WriteToStream (0x98, value.ToString ());
+			WriteToStream (BF.UniqueId, value.ToString ());
 		}
 
 		public override void WriteValue (TimeSpan value)
 		{
 			ProcessTypedValue ();
 
-			stream.WriteByte (0xAE);
-			WriteLong (value.Ticks);
+			writer.Write (BF.TimeSpan);
+			WriteBigEndian (value.Ticks, 8);
 		}
 		#endregion
 
-		private void WriteLong (long value)
+		private void WriteBigEndian (long value, int digits)
 		{
 			long v = 0;
-			for (int i = 0; i < 8; i++) {
-				v = (v << 4) + value & 0xFF;
-				value >>= 4;
+			for (int i = 0; i < digits; i++) {
+				v = (v << 8) + (value & 0xFF);
+				value >>= 8;
 			}
-			for (int i = 0; i < 8; i++) {
-				stream.WriteByte ((byte) (v & 0xFF));
-				v >>= 4;
+			for (int i = 0; i < digits; i++) {
+				writer.Write ((byte) (v & 0xFF));
+				v >>= 8;
 			}
 		}
 
 		private void WriteTextBinary (string text)
 		{
 			if (text.Length == 0)
-				stream.WriteByte (0xA8);
+				writer.Write (BF.EmptyText);
 			else
-				WriteToStream (0x98, text);
+				WriteToStream (BF.Text, text);
 		}
 
 		private void WriteNames (string prefix, string localName)
@@ -865,17 +860,15 @@ namespace System.Xml
 		private void WriteNamePart (string name)
 		{
 			byte [] data = utf8Enc.GetBytes (name);
-//			int lengthAdjust = GetLengthAdjust (data.Length);
-//			WriteLength (data.Length, lengthAdjust);
-			stream.WriteByte ((byte) (data.Length));
-			stream.Write (data, 0, data.Length);
+			writer.Write ((byte) (data.Length));
+			writer.Write (data, 0, data.Length);
 		}
 
 		private void WriteToStream (byte identifier, string text)
 		{
 			if (text.Length == 0) {
-				stream.WriteByte (identifier);
-				stream.WriteByte (0);
+				writer.Write (identifier);
+				writer.Write ((byte) 0);
 			} else {
 				byte [] data = utf8Enc.GetBytes (text);
 				WriteToStream (identifier, data, 0, data.Length);
@@ -885,9 +878,9 @@ namespace System.Xml
 		private void WriteToStream (byte identifier, byte [] data, int start, int len)
 		{
 			int lengthAdjust = GetLengthAdjust (len);
-			stream.WriteByte ((byte) (identifier + lengthAdjust));
+			writer.Write ((byte) (identifier + lengthAdjust));
 			WriteLength (len, lengthAdjust);
-			stream.Write (data, start, len);
+			writer.Write (data, start, len);
 		}
 
 		private int GetLengthAdjust (int count)
@@ -901,7 +894,7 @@ namespace System.Xml
 		private void WriteLength (int count, int lengthAdjust)
 		{
 			for (int i = 0, ctmp = count; i < lengthAdjust + 1; i++, ctmp /= 0x100)
-				stream.WriteByte ((byte) (ctmp % 0x100));
+				writer.Write ((byte) (ctmp % 0x100));
 		}
 
 		#endregion

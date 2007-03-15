@@ -546,5 +546,38 @@ Console.WriteLine ();
 			w.WriteStartElement ("root");
 			w.WriteAttributeString ("xmlns", "foo", "urn:thisCausesError", "urn:foo");
 		}
+
+		[Test]
+		public void WriteTypedValues ()
+		{
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
+			w.WriteStartElement ("root");
+			w.WriteValue ((byte) 5);
+			w.WriteValue ((short) 893);
+			w.WriteValue ((int) 37564);
+			w.WriteValue ((long) 141421356);
+			w.WriteValue ((long) 5670000000);
+			w.WriteValue ((float) 1.7320508);
+			w.WriteValue ((double) 2.2360679);
+//			w.WriteValue ((decimal) 3.141592);
+			w.WriteValue (new DateTime (2000, 1, 2, 3, 4, 5));
+			w.Close ();
+//foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+			Assert.AreEqual (typed_values, ms.ToArray ());
+		}
+
+		byte [] typed_values = new byte [] {
+			0x40, 4, 0x72, 0x6F, 0x6F, 0x74,
+			0x88, 5,
+			0x8A, 0x7D, 0x03,
+			0x8C, 0xBC, 0x92, 0, 0, // int
+			0x8C, 0x2C, 0xEB, 0x6D, 0x08, // 20
+			0x8E, 0x80, 0x55, 0xF5, 0x51, 0x01, 0, 0, 0,
+			0x90, 0xD7, 0xB3, 0xDD, 0x3F, // float
+			0x92, 0x4C, 0x15, 0x31, 0x91, 0x77, 0xE3, 0x01, 0x40, // 43
+//			0x94, 0, 0, 6, 0, 0, 0, 0, 0, 0xD8, 0xEF, 0x2F, 0, 0, 0, 0, 0,
+			0x97, 0x80, 0x40, 0xA3, 0x29, 0xE5, 0x22, 0xC1, 8
+			};
 	}
 }

@@ -44,6 +44,7 @@ System.Xml/OnXmlDictionaryReaderClose.cs
 System.Xml/UniqueId.cs
 System.Xml/XmlBinaryDictionaryReader.cs
 System.Xml/XmlBinaryDictionaryWriter.cs
+System.Xml/XmlBinaryFormat.cs
 System.Xml/XmlBinaryReaderSession.cs
 System.Xml/XmlBinaryWriterSession.cs
 System.Xml/XmlC14NWriter.cs
