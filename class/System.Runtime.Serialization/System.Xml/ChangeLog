@@ -1,5 +1,12 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : fixed Base64 operation byte.
+	  For comment node there is no corresponding combined EndElement
+	  operation, so don't try to combine it.
+	  Don't output xmlns and xml namespaces.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : fixed couple of dictionary string
 	  issues (on lookup and index output).
 	* XmlBinaryWriterSession.cs : added internal TryLookup(). Changed

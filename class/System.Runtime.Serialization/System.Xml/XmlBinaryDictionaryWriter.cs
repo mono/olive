@@ -298,7 +298,7 @@ namespace System.Xml
 		{
 			ProcessStateForContent ();
 
-			WriteToStream (0x9F, buffer, index, count);
+			WriteToStream (0x9E, buffer, index, count);
 		}
 
 		public override void WriteCData (string text)
@@ -412,8 +412,9 @@ namespace System.Xml
 			if (state == WriteState.Attribute)
 				WriteEndAttribute ();
 
-			bool needExplicitEndElement = buffer.Position == 0;
-			ProcessPendingBuffer (true, true);
+			// Comment+EndElement does not exist
+			bool needExplicitEndElement = buffer.Position == 0 || buffer.GetBuffer () [0] == 0x02;
+			ProcessPendingBuffer (true, !needExplicitEndElement);
 			CheckState ();
 			AddMissingElementXmlns ();
 
@@ -662,6 +663,12 @@ namespace System.Xml
 
 		void AddNamespaceChecked (string prefix, object ns)
 		{
+			switch (ns.ToString ()) {
+			case XmlnsNamespace:
+			case XmlNamespace:
+				return;
+			}
+
 			if (prefix == null)
 				prefix = String.Empty;
 			if (namespaces.Contains (prefix)) {
