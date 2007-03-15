@@ -67,6 +67,9 @@ namespace System.Xml
 		07 $prefix @name	: global attribute by index
 		0A @name		: default namespace
 		0B $prefix @name	: prefixed namespace
+		0C @name		: global attribute by index
+		0D @name		: global attribute by index,
+					: in current element's namespace
 		40 $name		: element w/o namespace by string
 		41 $prefix $name	: element with namespace by string
 		42 @name		: element w/o namespace by index
@@ -230,7 +233,8 @@ namespace System.Xml
 				CloseStartElement ();
 
 			ProcessPendingBuffer (false, false);
-			stream = buffer;
+			if (state != WriteState.Attribute)
+				stream = buffer;
 		}
 
 		void ProcessPendingBuffer (bool last, bool endElement)
@@ -239,7 +243,7 @@ namespace System.Xml
 				byte [] arr = buffer.GetBuffer ();
 				if (endElement)
 					arr [0]++;
-				original_output.Write (arr, 0, arr.Length);
+				original_output.Write (arr, 0, (int) buffer.Position);
 				buffer.SetLength (0);
 			}
 			if (last)
@@ -348,12 +352,12 @@ namespace System.Xml
 			CheckState ();
 
 			if (attr_value == null)
-				WriteString ("");
+				attr_value = String.Empty;
 
 			switch (save_target) {
 			case SaveTarget.XmlLang:
 				xml_lang = attr_value;
-				break;
+				goto default;
 			case SaveTarget.XmlSpace:
 				switch (attr_value) {
 				case "preserve":
@@ -365,7 +369,7 @@ namespace System.Xml
 				default:
 					throw new ArgumentException (String.Format ("Invalid xml:space value: '{0}'", attr_value));
 				}
-				break;
+				goto default;
 			case SaveTarget.Namespaces:
 				if (current_attr_name.ToString ().Length > 0 && attr_value.Length == 0)
 					throw new ArgumentException ("Cannot use prefix with an empty namespace.");
@@ -373,9 +377,10 @@ namespace System.Xml
 				// add namespace
 				AddNamespaceChecked (current_attr_name.ToString (), attr_value);
 				break;
+			default:
+				WriteTextBinary (attr_value);
+				break;
 			}
-
-			// FIXME: write attribute binary here
 
 			state = WriteState.Element;
 			current_attr_prefix = null;
@@ -702,11 +707,16 @@ namespace System.Xml
 			if (save_target == SaveTarget.Namespaces)
 				return;
 
-			int op = prefix.Length > 0 ? 0x07 : 0x06;
+			int op = ns.Value.Length > 0 ?
+				ns.Value == element_ns ? 0x0D : 0x0C :
+				prefix.Length > 0 ? 0x07 : 0x06;
 			// Write to Stream
 			stream.WriteByte ((byte) op);
-			WriteNamePart (prefix);
+			if (prefix.Length > 0)
+				WriteNamePart (prefix);
 			WriteDictionaryIndex (localName);
+			if (ns.Value.Length > 0)
+				WriteDictionaryIndex (ns);
 		}
 
 		public override void WriteXmlnsAttribute (string prefix, XmlDictionaryString namespaceUri)
