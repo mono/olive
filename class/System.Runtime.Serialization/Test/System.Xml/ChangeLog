@@ -1,5 +1,10 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriterTest.cs : a few code comments and
+	  XmlDictionaryString.Key value test.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriterTest.cs : added more attribute tests.
 	  Reduced extra dictionary creation.
 

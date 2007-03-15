@@ -211,8 +211,7 @@ namespace System.Xml
 					}
 					else
 						stream.WriteByte (0x0A);
-					// FIXME: index could be > 256
-					stream.WriteByte ((byte) (dns.Key != 0 ? dns.Key << 1 : 0));
+					WriteDictionaryIndex (dns);
 				}
 			}
 			namespaces.Clear ();
@@ -680,12 +679,14 @@ namespace System.Xml
 			XmlDictionaryString ds2;
 			bool isSession = false;
 			int idx = ds.Key;
-			if (!dict_ext.TryLookup (ds, out ds2)) {
+			if (ds.Dictionary != dict_ext) {
 				isSession = true;
-				if (!dict_int.TryLookup (ds, out ds2))
+				if (dict_int.TryLookup (ds, out ds2))
+					ds = ds2;
+				if (!session.TryLookup (ds, out idx))
 					session.TryAdd (dict_int.Add (ds.Value), out idx);
 			}
-			if (idx > 0x80) {
+			if (idx >= 0x80) {
 				stream.WriteByte ((byte) (0x80 + ((idx % 0x80) << 1) + (isSession ? 1 : 0)));
 				stream.WriteByte ((byte) ((byte) (idx / 0x80) << 1));
 			}

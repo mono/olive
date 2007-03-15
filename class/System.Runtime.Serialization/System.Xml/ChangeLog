@@ -1,5 +1,12 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : fixed couple of dictionary string
+	  issues (on lookup and index output).
+	* XmlBinaryWriterSession.cs : added internal TryLookup(). Changed
+	  internal structure to have dictionary string as a key.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : new prefix population is needed
 	  in this class too.
 

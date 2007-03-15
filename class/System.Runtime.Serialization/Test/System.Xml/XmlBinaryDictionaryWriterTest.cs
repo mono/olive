@@ -423,7 +423,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 			MemoryStream ms = new MemoryStream ();
 			XmlDictionary dic = new XmlDictionary ();
 			for (int i = 0; i < 260; i++)
-				dic.Add ("n" + i);
+				Assert.AreEqual (i, dic.Add ("n" + i).Key, "d");
 			XmlDictionary dic2 = new XmlDictionary ();
 			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
 			int idx;
@@ -474,7 +474,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 			w.WriteAttributeString ("bbb", "n8", "urn:foo", String.Empty); // xmlns:bbb mapping already exists (n5), and written just once
 			w.Close ();
 
-			// 0x0C nameidx (value) 0x0C nameidx (value)
+			// 0x0C nameidx (value) 0x0D nameidx (value)
 			// 0x07 (prefix) nameidx (value)
 			// 0x05 (prefix) (name) (value)
 			// 0x04...  0x06...  0x05...
@@ -495,7 +495,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 				0x06, 12, 0xA8,
 				0x05, 3, 0x62, 0x62, 0x62, 2, 0x6E, 0x38, 0xA8,
 				0x0A, 2,
-				0x0B, 1, 0x61, 10,
+				0x0B, 1, 0x61, 10, // 48
 				0x0B, 1, 0x62, 2,
 				0x0B, 3, 0x61, 0x61, 0x61, 10,
 				0x09, 3, 0x62, 0x62, 0x62,
