@@ -263,8 +263,7 @@ namespace System.Xml
 
 		private void CloseOpenAttributeAndElements ()
 		{
-			if (state == WriteState.Attribute)
-				WriteEndAttribute ();
+			CloseStartElement ();
 
 			 while (element_ns_stack.Count > 0)
 				WriteEndElement ();
@@ -274,6 +273,9 @@ namespace System.Xml
 		{
 			if (!open_start_element)
 				return;
+
+			if (state == WriteState.Attribute)
+				WriteEndAttribute ();
 
 			AddMissingElementXmlns ();
 
@@ -707,16 +709,15 @@ namespace System.Xml
 			if (save_target == SaveTarget.Namespaces)
 				return;
 
-			int op = ns.Value.Length > 0 ?
-				ns.Value == element_ns ? 0x0D : 0x0C :
-				prefix.Length > 0 ? 0x07 : 0x06;
+			int op = 
+				ns.Value == element_ns ? 0x0D :
+				ns.Value.Length == 0 ? 0x06 :
+				prefix.Length > 0 ? 0x07 : 0x0C;
 			// Write to Stream
 			stream.WriteByte ((byte) op);
 			if (prefix.Length > 0)
 				WriteNamePart (prefix);
 			WriteDictionaryIndex (localName);
-			if (ns.Value.Length > 0)
-				WriteDictionaryIndex (ns);
 		}
 
 		public override void WriteXmlnsAttribute (string prefix, XmlDictionaryString namespaceUri)
