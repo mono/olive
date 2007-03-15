@@ -1,5 +1,9 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriterTest.cs : removed debug code (UseCase2).
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriterTest.cs : more code comments.
 
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>

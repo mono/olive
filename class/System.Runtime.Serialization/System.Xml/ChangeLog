@@ -1,5 +1,10 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : more couple of fixes (typed value
+	  support and fixes, more element/attribute namespace fixes etc.).
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : fixed Base64 operation byte.
 	  For comment node there is no corresponding combined EndElement
 	  operation, so don't try to combine it.

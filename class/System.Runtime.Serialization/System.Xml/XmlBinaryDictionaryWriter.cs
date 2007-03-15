@@ -76,7 +76,6 @@ namespace System.Xml
 		43 $prefix @name	: element with namespace by index
 		98 $value		: text/cdata/chars
 		99 $value		: text/cdata/chars + EndElement
-		9F [value]		: base64
 
 		FIXME: Below are not implemented:
 		byte : 7B
@@ -87,14 +86,15 @@ namespace System.Xml
 		double: 80
 		decimal: 81
 		DateTime: 82
-		bool-false: 85
-		bool-true: 86
-		UniqueId: 8D
-		TimeSpan: 8E
-		Guid: B0
-		Guid + EndElement: B1
-		base64Binary: 9F
 		(Uri is simply 98, QName is 98 '{' ns '}' 98 name)
+
+		Below are implemented. Combined EndElement is supported.
+		84 : false (bool)
+		86 : true (bool)
+		98 : UniqueId
+		AE : TimeSpan
+		B0 : Guid
+		9E : base64Binary
 
 		Error: PIs, doctype
 		Ignored: XMLdecl
@@ -121,20 +121,23 @@ namespace System.Xml
 
 		WriteState state = WriteState.Start;
 		bool open_start_element = false;
-		int open_element_count;
 		// transient current node info
 		ListDictionary namespaces = new ListDictionary ();
-		string element_ns = String.Empty;
 		string xml_lang = null;
 		XmlSpace xml_space = XmlSpace.None;
 		// stacked info
 		Stack<string> xml_lang_stack = new Stack<string> ();
 		Stack<XmlSpace> xml_space_stack = new Stack<XmlSpace> ();
+		XmlNamespaceManager nsmgr = new XmlNamespaceManager (new NameTable ());
 		Stack<string> element_ns_stack = new Stack<string> ();
+		string element_ns = String.Empty;
+		int element_count;
+		string element_prefix; // only meaningful at Element state
 		// current attribute info
 		string attr_value;
 		string current_attr_prefix;
 		object current_attr_name, current_attr_ns;
+		bool attr_typed_value;
 		SaveTarget save_target;
 
 		enum SaveTarget {
@@ -165,8 +168,8 @@ namespace System.Xml
 			this.session = session;
 			owns_stream = ownsStream;
 
-			xml_lang_stack.Push (null);
-			xml_space_stack.Push (XmlSpace.None);
+//			xml_lang_stack.Push (null);
+//			xml_space_stack.Push (XmlSpace.None);
 		}
 
 		#endregion
@@ -213,6 +216,7 @@ namespace System.Xml
 						stream.WriteByte (0x0A);
 					WriteDictionaryIndex (dns);
 				}
+				nsmgr.AddNamespace (prefix, ent.Value.ToString ());
 			}
 			namespaces.Clear ();
 		}
@@ -234,6 +238,16 @@ namespace System.Xml
 			ProcessPendingBuffer (false, false);
 			if (state != WriteState.Attribute)
 				stream = buffer;
+		}
+
+		void ProcessTypedValue ()
+		{
+			ProcessStateForContent ();
+			if (state == WriteState.Attribute) {
+				if (attr_typed_value)
+					throw new InvalidOperationException (String.Format ("A typed value for the attribute '{0}' in namespace '{1}' was already written", current_attr_name, current_attr_ns));
+				attr_typed_value = true;
+			}
 		}
 
 		void ProcessPendingBuffer (bool last, bool endElement)
@@ -264,7 +278,7 @@ namespace System.Xml
 		{
 			CloseStartElement ();
 
-			 while (element_ns_stack.Count > 0)
+			 while (element_count > 0)
 				WriteEndElement ();
 		}
 
@@ -280,6 +294,7 @@ namespace System.Xml
 
 			state = WriteState.Content;
 			open_start_element = false;
+			nsmgr.PushScope ();
 		}
 
 		public override void Flush ()
@@ -337,6 +352,9 @@ namespace System.Xml
 
 			ProcessStateForContent ();
 
+			if (state == WriteState.Attribute)
+				throw new InvalidOperationException ("Comment node is not allowed inside an attribute");
+
 			WriteToStream (0x02, text);
 		}
 
@@ -379,7 +397,8 @@ namespace System.Xml
 				AddNamespaceChecked (current_attr_name.ToString (), attr_value);
 				break;
 			default:
-				WriteTextBinary (attr_value);
+				if (!attr_typed_value)
+					WriteTextBinary (attr_value);
 				break;
 			}
 
@@ -388,6 +407,7 @@ namespace System.Xml
 			current_attr_name = null;
 			current_attr_ns = null;
 			attr_value = null;
+			attr_typed_value = false;
 		}
 
 		public override void WriteEndDocument ()
@@ -404,16 +424,25 @@ namespace System.Xml
 			state = WriteState.Start;
 		}
 
+		bool SupportsCombinedEndElementSupport (byte operation)
+		{
+			switch (operation) {
+			case 0x02: // comment
+				return false;
+			}
+			return true;
+		}
+
 		public override void WriteEndElement ()
 		{
-			if (element_ns_stack.Count == 0)
+			if (element_count-- == 0)
 				throw new InvalidOperationException("There was no XML start tag open.");
 
 			if (state == WriteState.Attribute)
 				WriteEndAttribute ();
 
 			// Comment+EndElement does not exist
-			bool needExplicitEndElement = buffer.Position == 0 || buffer.GetBuffer () [0] == 0x02;
+			bool needExplicitEndElement = buffer.Position == 0 || !SupportsCombinedEndElementSupport (buffer.GetBuffer () [0]);
 			ProcessPendingBuffer (true, !needExplicitEndElement);
 			CheckState ();
 			AddMissingElementXmlns ();
@@ -421,6 +450,7 @@ namespace System.Xml
 			if (needExplicitEndElement)
 				stream.WriteByte (0x01);
 
+			nsmgr.PopScope ();
 			element_ns = element_ns_stack.Pop ();
 			xml_lang = xml_lang_stack.Pop ();
 			xml_space = xml_space_stack.Pop ();
@@ -572,9 +602,9 @@ namespace System.Xml
 			CheckState ();
 			CloseStartElement ();
 
+			element_ns_stack.Push (element_ns);
 			xml_lang_stack.Push (xml_lang);
 			xml_space_stack.Push (xml_space);
-			element_ns_stack.Push (element_ns);
 		}
 
 		public override void WriteStartElement (string prefix, string localName, string ns)
@@ -594,17 +624,27 @@ namespace System.Xml
 			stream.WriteByte ((byte) (prefix.Length > 0 ? 0x41 : 0x40));
 			WriteNames (prefix, localName);
 
-			OpenElement (prefix, ns, ns);
+			OpenElement (prefix, ns);
 		}
 
-		void OpenElement (string prefix, string ns, object nsobj)
+		void OpenElement (string prefix, object nsobj)
 		{
-			if (element_ns != ns)
-				namespaces.Add (prefix, nsobj);
-			element_ns = ns;
+			string ns = nsobj.ToString ();
+//			if (prefix.Length == 0 && ns != nsmgr.DefaultNamespace ||
+//			    prefix.Length > 0 && nsmgr.LookupNamespace (prefix) != ns) {
+			// FIXME: this condition might be still incorrect...
+			if (nsobj.ToString () != element_ns ||
+			    nsmgr.LookupPrefix (element_ns) != prefix) {
+				nsmgr.AddNamespace (prefix, ns);
+				if (nsmgr.LookupPrefix (element_ns) != prefix)
+					namespaces.Add (prefix, nsobj);
+			}
 
 			state = WriteState.Element;
 			open_start_element = true;
+			element_prefix = prefix;
+			element_count++;
+			element_ns = nsobj.ToString ();
 		}
 
 		public override void WriteString (string text)
@@ -714,7 +754,7 @@ namespace System.Xml
 				WriteToStream (0x43, prefix);
 			WriteDictionaryIndex (localName);
 
-			OpenElement (prefix, namespaceUri.Value, namespaceUri);
+			OpenElement (prefix, namespaceUri);
 		}
 
 		public override void WriteStartAttribute (string prefix, XmlDictionaryString localName, XmlDictionaryString ns)
@@ -736,7 +776,7 @@ namespace System.Xml
 				return;
 
 			int op = 
-				ns.Value == element_ns ? 0x0D :
+				ns.Value == nsmgr.LookupNamespace (element_prefix) ? 0x0D :
 				ns.Value.Length == 0 ? 0x06 :
 				prefix.Length > 0 ? 0x07 : 0x0C;
 			// Write to Stream
@@ -762,8 +802,17 @@ namespace System.Xml
 		#endregion
 
 		#region WriteValue
+		public override void WriteValue (bool value)
+		{
+			ProcessTypedValue ();
+
+			stream.WriteByte ((byte) (value ? 0x86 : 0x84));
+		}
+
 		public override void WriteValue (Guid value)
 		{
+			ProcessTypedValue ();
+
 			stream.WriteByte (0xB0);
 			byte [] bytes = value.ToByteArray ();
 			stream.Write (bytes, 0, bytes.Length);
@@ -771,12 +820,16 @@ namespace System.Xml
 
 		public override void WriteValue (UniqueId value)
 		{
-			WriteToStream (0x8D, value.ToString ());
+			ProcessTypedValue ();
+
+			WriteToStream (0x98, value.ToString ());
 		}
 
 		public override void WriteValue (TimeSpan value)
 		{
-			stream.WriteByte (0x8E);
+			ProcessTypedValue ();
+
+			stream.WriteByte (0xAE);
 			WriteLong (value.Ticks);
 		}
 		#endregion
@@ -784,11 +837,11 @@ namespace System.Xml
 		private void WriteLong (long value)
 		{
 			long v = 0;
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 8; i++) {
 				v = (v << 4) + value & 0xFF;
 				value >>= 4;
 			}
-			for (int i = 0; i < 4; i++) {
+			for (int i = 0; i < 8; i++) {
 				stream.WriteByte ((byte) (v & 0xFF));
 				v >>= 4;
 			}

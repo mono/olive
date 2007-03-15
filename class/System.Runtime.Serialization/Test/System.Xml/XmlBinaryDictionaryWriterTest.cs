@@ -199,8 +199,6 @@ Console.WriteLine ();
 
 			w.Close ();
 
-foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLine ();
-
 			Assert.AreEqual (usecase2_result, ms.ToArray ());
 		}
 
