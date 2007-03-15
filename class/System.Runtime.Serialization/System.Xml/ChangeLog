@@ -1,5 +1,9 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryWriter.cs : removed couple of MonoTODOs.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : more couple of fixes (typed value
 	  support and fixes, more element/attribute namespace fixes etc.).
 

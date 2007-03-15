@@ -42,21 +42,18 @@ namespace System.Xml
 			get { return false; }
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryWriter CreateBinaryWriter (
 			Stream stream)
 		{
 			return CreateBinaryWriter (stream, null, null, false);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryWriter CreateBinaryWriter (
 			Stream stream, IXmlDictionary dictionary)
 		{
 			return CreateBinaryWriter (stream, dictionary, null, false);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryWriter CreateBinaryWriter (
 			Stream stream, IXmlDictionary dictionary,
 			XmlBinaryWriterSession session)
@@ -64,7 +61,6 @@ namespace System.Xml
 			return CreateBinaryWriter (stream, dictionary, session, false);
 		}
 
-		[MonoTODO ("binary XmlWriter is incomplete")]
 		public static XmlDictionaryWriter CreateBinaryWriter (
 			Stream stream, IXmlDictionary dictionary,
 			XmlBinaryWriterSession session, bool ownsStream)
@@ -73,7 +69,6 @@ namespace System.Xml
 				dictionary, session, ownsStream);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryWriter CreateDictionaryWriter (XmlWriter writer)
 		{
 			return new XmlSimpleDictionaryWriter (writer);
@@ -112,7 +107,6 @@ namespace System.Xml
 			return CreateTextWriter (stream, encoding, false);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryWriter CreateTextWriter (
 			Stream stream, Encoding encoding, bool ownsStream)
 		{
