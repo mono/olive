@@ -463,9 +463,27 @@ namespace System.Xml
 				throw new InvalidOperationException ("Token StartAttribute in state " + WriteState + " would result in an invalid XML document.");
 		}
 
+		string CreateNewPrefix ()
+		{
+			string s = String.Empty;
+			for (int n = 0; n < 26; n++) {
+				for (int i = 0; i < 26; i++) {
+					string x = s + (char) (0x61 + i);
+					if (!namespaces.Contains (x))
+						return x;
+				}
+				s = ((char) (0x61 + n)).ToString ();
+			}
+			throw new InvalidOperationException ("too many prefix population");
+		}
+
 		void ProcessStartAttributeCommon (string prefix, string localName, string ns, object nameObj, object nsObj)
 		{
-			if (prefix.Length > 0 && ns.Length == 0)
+			// dummy prefix is created here, while the caller
+			// still uses empty string as the prefix there.
+			if (prefix.Length == 0 && ns.Length > 0)
+				prefix = CreateNewPrefix ();
+			else if (prefix.Length > 0 && ns.Length == 0)
 				throw new ArgumentException ("Cannot use prefix with an empty namespace.");
 			// here we omit such cases that it is used for writing
 			// namespace-less xml, unlike XmlTextWriter.

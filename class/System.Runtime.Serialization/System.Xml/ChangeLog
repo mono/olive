@@ -1,5 +1,10 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : new prefix population is needed
+	  in this class too.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : more WriteEndAttribute() is needed.
 	  Remove wrong namespaceUri index output. Fixed attribute operation.
 
