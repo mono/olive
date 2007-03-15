@@ -1,5 +1,9 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : couple of namespaces processing fix.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlDictionaryWriter.cs : WriteAttributeString and WriteStartElement
 	  should also delegate to dictionary-string based methods.
 	* XmlBinaryDictionaryWriter.cs : ongoing reimplementation as it was
