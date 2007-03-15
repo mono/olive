@@ -41,9 +41,10 @@ namespace MonoTests.System.Xml
 		[Test]
 		public void UseCase1 ()
 		{
+Console.WriteLine ();
+
 			MemoryStream ms = new MemoryStream ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
 
 			w.WriteStartDocument (true);
 			w.WriteStartElement ("root");
@@ -144,8 +145,7 @@ namespace MonoTests.System.Xml
 		public void ProcessingInstructions ()
 		{
 			MemoryStream ms = new MemoryStream ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
 			w.WriteStartDocument ();
 			w.WriteProcessingInstruction ("myPI", "myValue");
 		}
@@ -155,8 +155,7 @@ namespace MonoTests.System.Xml
 		{
 			XmlDictionary dic = new XmlDictionary ();
 			MemoryStream ms = new MemoryStream ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
 			XmlDictionaryString empty = dic.Add (String.Empty);
 			// empty ns
 			w.WriteStartElement (dic.Add ("FOO"), empty);
@@ -246,8 +245,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 		public void WriteDictionaryStringWithNullDictionary ()
 		{
 			MemoryStream ms = new MemoryStream ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
 			XmlDictionary dic = new XmlDictionary ();
 			w.WriteStartElement (dic.Add ("FOO"), XmlDictionaryString.Empty);
 		}
@@ -272,9 +270,8 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 		public void WriteDictionaryStringWithSameDictionary ()
 		{
 			MemoryStream ms = new MemoryStream ();
-			MyWriterSession1 session = new MyWriterSession1 ();
 			XmlDictionary dic = new XmlDictionary ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
 			w.WriteStartElement (dic.Add ("FOO"), XmlDictionaryString.Empty);
 			w.Close ();
 			Assert.AreEqual (new byte [] {0x42, 0, 1}, ms.ToArray ());
@@ -395,9 +392,8 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 				0x61, 0x42, 0, 0x42, 2, 1, 1, 1};
 			XmlDictionaryString ds;
 			MemoryStream ms = new MemoryStream ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
 			XmlDictionary dic = new XmlDictionary ();
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
 			w.WriteStartElement (dic.Add ("FOO"), dic.Add ("foo"));
 			Assert.IsTrue (dic.TryLookup ("foo", out ds), "#1");
 			Assert.AreEqual (1, ds.Key, "#2");
@@ -406,7 +402,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 			w.WriteStartElement (dic.Add ("foo"), dic.Add ("foo"));
 			w.Close ();
 			Assert.AreEqual (bytes, ms.ToArray (), "result");
-
+/*
 			byte [] bytes2 = new byte [] {
 				0x42, 1, 10, 2, 0x98, 3, 0x61, 0x61,
 				0x61, 0x42, 0, 0x42, 2, 1, 1, 1};
@@ -417,6 +413,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 				Assert.Fail ("dictionary index 1 should be regarded as invalid.");
 			} catch (XmlException) {
 			}
+*/
 		}
 
 		[Test]
@@ -458,10 +455,8 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 			XmlDictionaryString ds;
 			MemoryStream ms = new MemoryStream ();
 			XmlDictionary dic = new XmlDictionary ();
-			XmlDictionary dic2 = new XmlDictionary ();
-			XmlBinaryWriterSession session = new XmlBinaryWriterSession ();
 			int idx;
-			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, session);
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
 			dic.Add ("n1");
 			dic.Add ("urn:foo");
 			dic.Add ("n2");
@@ -475,14 +470,18 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 			w.WriteAttributeString ("aaa", dic.Add ("n4"), dic.Add ("urn:bar"), String.Empty);
 			w.WriteAttributeString ("bbb", "n5", "urn:foo", String.Empty);
 			w.WriteAttributeString ("n6", String.Empty);
-			w.WriteAttributeString (dic.Add ("n7"), XmlDictionaryString.Empty, String.Empty);
+			w.WriteAttributeString (dic.Add ("n7"), XmlDictionaryString.Empty, String.Empty); // local attribute
+			w.WriteAttributeString ("bbb", "n8", "urn:foo", String.Empty); // xmlns:bbb mapping already exists (n5), and written just once
 			w.Close ();
 
 			// 0x0C nameidx (value) 0x0C nameidx (value)
 			// 0x07 (prefix) nameidx (value)
 			// 0x05 (prefix) (name) (value)
+			// 0x04...  0x06...  0x05...
 			// 0x0A nsidx
 			// 0x0B (prefix) nsidx
+			// 0x0B...  0x0B...
+			// 0x09 (prefix) (ns)
 			byte [] bytes = new byte [] {
 				// $@$@$$@$  !v$!aaa@
 				// $@!bbb!n  5$$@$!a@
@@ -494,6 +493,7 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 				0x05, 3, 0x62, 0x62, 0x62, 2, 0x6E, 0x35, 0xA8,
 				0x04, 2, 0x6E, 0x36, 0xA8, // 30
 				0x06, 12, 0xA8,
+				0x05, 3, 0x62, 0x62, 0x62, 2, 0x6E, 0x38, 0xA8,
 				0x0A, 2,
 				0x0B, 1, 0x61, 10,
 				0x0B, 1, 0x62, 2,
@@ -502,6 +502,51 @@ foreach (byte b in ms.ToArray ()) Console.Write ("{0:X02} ", b); Console.WriteLi
 				0x07, 0x75, 0x72, 0x6E, 0x3A, 0x66, 0x6F, 0x6F,
 				1};
 			Assert.AreEqual (bytes, ms.ToArray (), "result");
+		}
+
+		[Test]
+		public void WriteAttributeXmlns ()
+		{
+			// equivalent to WriteXmlnsAttribute()
+			XmlDictionaryString ds;
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionary dic = new XmlDictionary ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
+			w.WriteStartElement ("root");
+			w.WriteAttributeString ("xmlns", "foo", "http://www.w3.org/2000/xmlns/", "urn:foo");
+			w.WriteAttributeString (dic.Add ("xmlns"), dic.Add ("http://www.w3.org/2000/xmlns/"), "urn:bar");
+			w.WriteAttributeString ("a", String.Empty);
+			w.Close ();
+			byte [] bytes = new byte [] {
+				// 40 (root) 04 (a) A8
+				// 09 (foo) (urn:foo) 08 (urn:bar)
+				0x40, 4, 0x72, 0x6F, 0x6F, 0x74,
+				0x04, 1, 0x61, 0xA8,
+				0x09, 3, 0x66, 0x6F, 0x6F, 7, 0x75, 0x72, 0x6E, 0x3A, 0x66, 0x6F, 0x6F,
+				0x08, 7, 0x75, 0x72, 0x6E, 0x3A, 0x62, 0x61, 0x72, 1
+				};
+			Assert.AreEqual (bytes, ms.ToArray ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void WriteAttributeWithoutElement ()
+		{
+			XmlDictionaryString ds;
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
+			w.WriteAttributeString ("foo", "value");
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void OverwriteXmlnsUri ()
+		{
+			XmlDictionaryString ds;
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, null, null);
+			w.WriteStartElement ("root");
+			w.WriteAttributeString ("xmlns", "foo", "urn:thisCausesError", "urn:foo");
 		}
 	}
 }

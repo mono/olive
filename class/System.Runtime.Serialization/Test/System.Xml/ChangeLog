@@ -1,3 +1,8 @@
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriterTest.cs : added more attribute tests.
+	  Reduced extra dictionary creation.
+
 2007-03-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryReaderQuotasTest.cs : fixed test class name.

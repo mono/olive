@@ -142,7 +142,7 @@ namespace System.Xml
 			XmlDictionaryString namespaceUri,
 			string value)
 		{
-			WriteAttributeString (localName.Value, namespaceUri.Value, value);
+			WriteAttributeString (null, localName, namespaceUri, value);
 		}
 
 		public void WriteAttributeString (string prefix,
@@ -150,7 +150,9 @@ namespace System.Xml
 			XmlDictionaryString namespaceUri,
 			string value)
 		{
-			WriteAttributeString (prefix, localName.Value, namespaceUri.Value, value);
+			WriteStartAttribute (prefix, localName, namespaceUri);
+			WriteString (value);
+			WriteEndAttribute ();
 		}
 
 		public void WriteElementString (
@@ -158,7 +160,7 @@ namespace System.Xml
 			XmlDictionaryString namespaceUri,
 			string value)
 		{
-			WriteElementString (localName.Value, namespaceUri.Value, value);
+			WriteElementString (null, localName, namespaceUri, value);
 		}
 
 		public void WriteElementString (string prefix,
@@ -166,7 +168,9 @@ namespace System.Xml
 			XmlDictionaryString namespaceUri,
 			string value)
 		{
-			WriteElementString (prefix, localName.Value, namespaceUri.Value, value);
+			WriteStartElement (prefix, localName, namespaceUri);
+			WriteString (value);
+			WriteEndElement ();
 		}
 
 		[MonoTODO ("make use of dictionary reader optimization")]

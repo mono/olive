@@ -70,7 +70,7 @@ namespace System.Xml
 		40 $name		: element w/o namespace by string
 		41 $prefix $name	: element with namespace by string
 		42 @name		: element w/o namespace by index
-		42 $prefix @name	: element with namespace by index
+		43 $prefix @name	: element with namespace by index
 		98 $value		: text/cdata/chars
 		99 $value		: text/cdata/chars + EndElement
 		9F [value]		: base64
@@ -106,27 +106,32 @@ namespace System.Xml
 	{
 		#region Fields
 		Stream stream;
-		IXmlDictionary dictionary;
+		IXmlDictionary dict_ext;
+		XmlDictionary dict_int = new XmlDictionary ();
 		XmlBinaryWriterSession session;
 		bool owns_stream;
 		Encoding utf8Enc = new UTF8Encoding ();
+		MemoryStream previous_oper = new MemoryStream ();
 
 		const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
 		const string XmlnsNamespace = "http://www.w3.org/2000/xmlns/";
 
 		WriteState state = WriteState.Start;
 		bool open_start_element = false;
-		bool open_attribute = false;
 		int open_element_count;
+		// transient current node info
+		ListDictionary namespaces = new ListDictionary ();
+		string element_ns = String.Empty;
 		string xml_lang = null;
 		XmlSpace xml_space = XmlSpace.None;
-		ListDictionary new_namespaces = new ListDictionary ();
-		XmlNamespaceManager nsmgr = new XmlNamespaceManager (new NameTable ());
+		// stacked info
 		Stack<string> xml_lang_stack = new Stack<string> ();
 		Stack<XmlSpace> xml_space_stack = new Stack<XmlSpace> ();
-
+		Stack<string> element_ns_stack = new Stack<string> ();
+		// current attribute info
 		string attr_value;
 		string current_attr_prefix;
+		object current_attr_name, current_attr_ns;
 		SaveTarget save_target;
 
 		enum SaveTarget {
@@ -145,11 +150,17 @@ namespace System.Xml
 			IXmlDictionary dictionary,
 			XmlBinaryWriterSession session, bool ownsStream)
 		{
+			if (dictionary == null)
+				dictionary = new XmlDictionary ();
+			if (session == null)
+				session = new XmlBinaryWriterSession ();
+
 			this.stream = stream;
-			this.dictionary = dictionary;
+			this.dict_ext = dictionary;
 			this.session = session;
 			owns_stream = ownsStream;
 
+			element_ns_stack.Push (String.Empty);
 			xml_lang_stack.Push (null);
 			xml_space_stack.Push (XmlSpace.None);
 		}
@@ -177,8 +188,8 @@ namespace System.Xml
 		private void AddMissingElementXmlns ()
 		{
 			// push new namespaces to manager.
-			if (new_namespaces.Count > 0) {
-				foreach (DictionaryEntry ent in new_namespaces) {
+			if (namespaces.Count > 0) {
+				foreach (DictionaryEntry ent in namespaces) {
 					string prefix = (string) ent.Key;
 					string ns = ent.Value as string;
 					XmlDictionaryString dns = ent.Value as XmlDictionaryString;
@@ -190,7 +201,6 @@ namespace System.Xml
 						else
 							stream.WriteByte (0x08);
 						WriteNamePart (ns);
-						nsmgr.AddNamespace (prefix, ns);
 					} else {
 						if (prefix.Length > 0) {
 							stream.WriteByte (0x0B);
@@ -200,10 +210,9 @@ namespace System.Xml
 							stream.WriteByte (0x0A);
 						// FIXME: index could be > 256
 						stream.WriteByte ((byte) (dns.Key != 0 ? dns.Key << 1 : 0));
-						nsmgr.AddNamespace (prefix, dns.Value);
 					}
 				}
-				new_namespaces.Clear ();
+				namespaces.Clear ();
 			}
 		}
 
@@ -232,10 +241,10 @@ namespace System.Xml
 
 		private void CloseOpenAttributeAndElements ()
 		{
-			if (open_attribute)
+			if (state == WriteState.Attribute)
 				WriteEndAttribute ();
 
-			 while (open_element_count > 0)
+			 while (element_ns_stack.Count > 0)
 				WriteEndElement ();
 		}
 
@@ -259,28 +268,15 @@ namespace System.Xml
 		{
 			if (ns == null || ns == String.Empty)
 				throw new ArgumentException ("The Namespace cannot be empty.");
-			foreach (DictionaryEntry de in new_namespaces) {
-				XmlDictionaryString dns = de.Value as XmlDictionaryString;
-				string cns = dns != null ? dns.Value : de.Value as string;
-				if (ns == cns)
-					return (string) de.Key;
-			}
-
-			string prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (ns));
-			// XmlNamespaceManager might return such prefix that
-			// is *previously* mapped to ns passed above.
-			if (prefix == null || nsmgr.LookupNamespace (prefix) != ns)
-				return null;
-			return prefix;
+			throw new NotImplementedException ();
 		}
 
 		public override void WriteBase64 (byte[] buffer, int index, int count)
 		{
 			CheckState ();
 
-			if (!open_attribute) {
+			if (state == WriteState.Element)
 				CloseStartElement ();
-			}
 
 			WriteToStream (0x9F, buffer, index, count);
 		}
@@ -305,9 +301,8 @@ namespace System.Xml
 		{
 			CheckState ();
 
-			if (!open_attribute) {
+			if (state == WriteState.Element)
 				CloseStartElement ();
-			}
 
 			if (count == 0)
 				stream.WriteByte (0x8B);
@@ -340,12 +335,10 @@ namespace System.Xml
 
 		public override void WriteEndAttribute ()
 		{
-			if (!open_attribute)
+			if (state != WriteState.Attribute)
 				throw new InvalidOperationException("Token EndAttribute in state Start would result in an invalid XML document.");
 
 			CheckState ();
-
-			open_attribute = false;
 
 			if (attr_value != null) {
 				switch (save_target) {
@@ -369,12 +362,18 @@ namespace System.Xml
 						throw new ArgumentException ("Cannot use prefix with an empty namespace.");
 
 					// add namespace
-					nsmgr.AddNamespace (current_attr_prefix, attr_value);
-					break;
+//					nsmgr.AddNamespace (current_attr_prefix, attr_value);
+//					break;
+					AddNamespaceChecked (current_attr_prefix, attr_value);
+					return;
 				}
-				WriteTextBinary (attr_value);
-				attr_value = null;
+//				WriteTextBinary (attr_value);
+//				attr_value = null;
 			}
+
+			// FIXME: write attribute binary here
+
+			state = WriteState.Element;
 		}
 
 		public override void WriteEndDocument ()
@@ -393,10 +392,10 @@ namespace System.Xml
 
 		public override void WriteEndElement ()
 		{
-			if (open_element_count == 0)
+			if (element_ns_stack.Count == 0)
 				throw new InvalidOperationException("There was no XML start tag open.");
 
-			if (open_attribute)
+			if (state == WriteState.Attribute)
 				WriteEndAttribute ();
 
 			CheckState ();
@@ -404,12 +403,10 @@ namespace System.Xml
 
 			stream.WriteByte (0x01);
 
-			open_element_count--;
+			element_ns = element_ns_stack.Pop ();
 			xml_lang = xml_lang_stack.Pop ();
 			xml_space = xml_space_stack.Pop ();
 			open_start_element = false;
-
-			nsmgr.PopScope ();
 		}
 
 		public override void WriteEntityRef (string name)
@@ -440,113 +437,73 @@ namespace System.Xml
 			WriteChars (buffer, index, count);
 		}
 
-		public override void WriteStartAttribute (string prefix, string localName, string ns)
+		void CheckStateAttribute ()
 		{
-			if (prefix == "xml") {
+			CheckState ();
+
+			if (state != WriteState.Element)
+				throw new InvalidOperationException ("Token StartAttribute in state " + WriteState + " would result in an invalid XML document.");
+		}
+
+		void ProcessStartAttributeCommon (string prefix, string localName, string ns)
+		{
+			if (prefix.Length > 0 && ns.Length == 0)
+				throw new ArgumentException ("Cannot use prefix with an empty namespace.");
+			// here we omit such cases that it is used for writing
+			// namespace-less xml, unlike XmlTextWriter.
+			if ((prefix == "xmlns" || localName == "xmlns" && prefix == String.Empty) && ns != XmlnsNamespace)
+				throw new ArgumentException (String.Format ("The 'xmlns' attribute is bound to the reserved namespace '{0}'", XmlnsNamespace));
+
+			CheckStateAttribute ();
+
+			state = WriteState.Attribute;
+
+			switch (prefix) {
+			case "xml":
 				// MS.NET looks to allow other names than 
 				// lang and space (e.g. xml:link, xml:hack).
 				ns = XmlNamespace;
-				if (localName == "lang") {
+				switch (localName) {
+				case "lang":
 					save_target = SaveTarget.XmlLang;
 					attr_value = String.Empty;
-				}
-				else if (localName == "space") {
+					break;
+				case "space":
 					save_target = SaveTarget.XmlSpace;
 					attr_value = String.Empty;
+					break;
 				}
-			}
-			if (prefix == null)
-				prefix = String.Empty;
-
-			if (prefix.Length > 0 && (ns == null || ns.Length == 0))
-				if (prefix != "xmlns")
-					throw new ArgumentException ("Cannot use prefix with an empty namespace.");
-
-			if (prefix == "xmlns") {
+				break;
+			case "xmlns":
 				if (localName == null || localName.Length == 0) {
-					localName = prefix;
+					save_target = SaveTarget.Namespaces;
+					localName = "xmlns";
 					prefix = String.Empty;
 				}
+				break;
 			}
+		}
 
-			// Note that null namespace with "xmlns" are allowed.
-			if ((prefix == "xmlns" || localName == "xmlns" && prefix == String.Empty) && ns != null && ns != XmlnsNamespace)
-				throw new ArgumentException (String.Format ("The 'xmlns' attribute is bound to the reserved namespace '{0}'", XmlnsNamespace));
-
-			CheckState ();
-
-			if (state == WriteState.Content)
-				throw new InvalidOperationException ("Token StartAttribute in state " + WriteState + " would result in an invalid XML document.");
-
+		public override void WriteStartAttribute (string prefix, string localName, string ns)
+		{
 			if (prefix == null)
 				prefix = String.Empty;
-
 			if (ns == null)
 				ns = String.Empty;
 
-			int nsIdentifier = prefix.Length > 0 ? 0x05 : 0x04;
+			ProcessStartAttributeCommon (prefix, localName, ns);
 
-			if (ns != String.Empty && prefix != "xmlns") {
-				if (prefix.Length > 0) {
-					XmlDictionaryString dns = new_namespaces [prefix] as XmlDictionaryString;
-					string existingNS = dns != null ? dns.Value : new_namespaces [prefix] as string;
-					if (existingNS != null && existingNS != ns)
-						throw new ArgumentException (String.Format ("The prefix '{0}' is already bound to the namespace '{1}' and cannot be reassigned to '{2}'", prefix, existingNS, ns));
-				}
-				else
-					prefix = GetNewPrefix (ns, ref nsIdentifier);
-
-				string existingPrefix = LookupPrefix (ns);
-
-				if (existingPrefix != prefix)
-					new_namespaces.Add (prefix, ns);
-			}
-
-			// Write to Stream
-			stream.WriteByte ((byte) nsIdentifier);
-			WriteNames (/*nsIdentifier > 1 ? String.Empty : */prefix, localName);
-
-			open_attribute = true;
-			state = WriteState.Attribute;
-
+			// for namespace nodes we don't write attribute node here.
 			if (prefix == "xmlns" || prefix == String.Empty && localName == "xmlns") {
 				current_attr_prefix = (prefix == "xmlns") ? localName : String.Empty;
 				save_target = SaveTarget.Namespaces;
 				attr_value = String.Empty;
-			}
-		}
-
-		static readonly string [] defPrefixes = new string [] {
-			"a", "b", "c", "d", "e", "f", "g", "h", "i",
-			"j", "k", "l", "m", "n", "o", "p", "q", "r",
-			"s", "t", "u", "v", "w", "x", "y", "z", String.Empty};
-
-		private string GetNewPrefix (string ns, ref int nsIdentifier)
-		{
-			string prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (ns));
-			if (prefix != null)
-				return prefix;
-			int startIndex = 0x21 + new_namespaces.Count;
-			nsIdentifier = startIndex;
-			foreach (DictionaryEntry de in new_namespaces) {
-Console.WriteLine ("trying: {0}/{1}, {2:x}", de.Key, de.Value, nsIdentifier);
-				if (ns == (string) de.Value)
-					return (string) de.Key;
-Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
-				nsIdentifier++;
-			}
-
-			for (nsIdentifier = startIndex; nsIdentifier < 0x3D; nsIdentifier++) {
-				prefix = defPrefixes [nsIdentifier - 0x21];
-				if (new_namespaces [prefix] == null)
-					return prefix;
-			}
-			nsIdentifier = 1;
-
-			for (int i = 1; ; i++) {
-				prefix = String.Concat ("d", XmlConvert.ToString (open_element_count), "p", XmlConvert.ToString (i));
-				if (new_namespaces [prefix] == null)
-					return prefix;
+				return;
+			} else {
+				int op = prefix.Length > 0 ? 0x05 : 0x04;
+				// Write to Stream
+				stream.WriteByte ((byte) op);
+				WriteNames (prefix, localName);
 			}
 		}
 
@@ -574,7 +531,7 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 
 			xml_lang_stack.Push (xml_lang);
 			xml_space_stack.Push (xml_space);
-			nsmgr.PushScope ();
+			element_ns_stack.Push (element_ns);
 		}
 
 		public override void WriteStartElement (string prefix, string localName, string ns)
@@ -588,32 +545,23 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 				ns = String.Empty;
 			if (ns == String.Empty)
 				prefix = String.Empty;
-
-			if (prefix == null && ns != null)
-				prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (ns));
 			if (prefix == null)
 				prefix = String.Empty;
 
 			stream.WriteByte ((byte) (prefix.Length > 0 ? 0x41 : 0x40));
 			WriteNames (prefix, localName);
 
-			PushElement (prefix, ns, ns);
+			OpenElement (prefix, ns, ns);
 		}
 
-		void PushElement (string prefix, string ns, object nsobj)
+		void OpenElement (string prefix, string ns, object nsobj)
 		{
-			open_element_count++;
+			if (element_ns != ns)
+				namespaces.Add (prefix, nsobj);
+			element_ns = ns;
+
 			state = WriteState.Element;
 			open_start_element = true;
-
-			if (ns.Length == 0)
-				return;
-
-			string existing = LookupPrefix (ns);
-			if (existing == prefix)
-				return;
-
-			new_namespaces.Add (prefix, nsobj);
 		}
 
 		public override void WriteString (string text)
@@ -629,10 +577,8 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 
 			CheckState ();
 
-			if (!open_attribute)
-			{
+			if (state == WriteState.Element)
 				CloseStartElement ();
-			}
 
 			if (attr_value != null)
 				attr_value += text;
@@ -658,20 +604,63 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 
 			CheckState ();
 
-			if (!open_attribute) {
+			if (state == WriteState.Element)
 				CloseStartElement ();
-			}
 
 			WriteTextBinary (ws);
 		}
 
+		public override void WriteXmlnsAttribute (string prefix, string namespaceUri)
+		{
+			if (prefix == null)
+				throw new ArgumentNullException ("prefix");
+			if (namespaceUri == null)
+				throw new ArgumentNullException ("namespaceUri");
+
+			CheckStateAttribute ();
+
+			AddNamespaceChecked (prefix, namespaceUri);
+
+			state = WriteState.Element;
+		}
+
+		void AddNamespaceChecked (string prefix, object ns)
+		{
+			if (prefix == null)
+				prefix = String.Empty;
+			if (namespaces.Contains (prefix)) {
+Console.Error.WriteLine ("{0} / {1} / {2}", prefix, namespaces [prefix], ns);
+				if (namespaces [prefix].ToString () != ns.ToString ())
+					throw new ArgumentException (String.Format ("The prefix '{0}' is already mapped to another namespace URI '{1}' in this element scope", prefix ?? "(null)", namespaces [prefix] ?? "(null)"));
+			}
+			else
+				namespaces.Add (prefix, ns);
+		}
+
 		#region DictionaryString
+
+		void WriteDictionaryIndex (XmlDictionaryString ds)
+		{
+			XmlDictionaryString ds2;
+			bool isSession = false;
+			int idx = ds.Key;
+			if (!dict_ext.TryLookup (ds, out ds2)) {
+				isSession = true;
+				if (!dict_int.TryLookup (ds, out ds2))
+					session.TryAdd (dict_int.Add (ds.Value), out idx);
+			}
+			if (idx > 0x80) {
+				stream.WriteByte ((byte) (0x80 + ((idx % 0x80) << 1) + (isSession ? 1 : 0)));
+				stream.WriteByte ((byte) ((byte) (idx / 0x80) << 1));
+			}
+			else
+				stream.WriteByte ((byte) ((idx % 0x80) << 1 + (isSession ? 1 : 0)));
+		}
+
 		public override void WriteStartElement (string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
 		{
 			PrepareStartElement ();
 
-			if (prefix == null && namespaceUri.Value.Length > 0)
-				prefix = nsmgr.LookupPrefix (nsmgr.NameTable.Get (namespaceUri.Value));
 			if (prefix == null)
 				prefix = String.Empty;
 
@@ -679,9 +668,48 @@ Console.WriteLine ("different: {0}/{1}", de.Key, de.Value);
 				stream.WriteByte (0x42);
 			else
 				WriteToStream (0x43, prefix);
-			stream.WriteByte ((byte) (localName.Key != 0 ? localName.Key << 1 : 0));
+			WriteDictionaryIndex (localName);
 
-			PushElement (prefix, namespaceUri.Value, namespaceUri);
+			OpenElement (prefix, namespaceUri.Value, namespaceUri);
+		}
+
+		public override void WriteStartAttribute (string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)
+		{
+			CheckState ();
+
+			if (state == WriteState.Content)
+				throw new InvalidOperationException ("Token StartAttribute in state " + WriteState + " would result in an invalid XML document.");
+
+			if (prefix == null)
+				prefix = String.Empty;
+
+			if (namespaceUri.Value.Length > 0)
+				AddNamespaceChecked (prefix, namespaceUri);
+
+			if (namespaceUri.Value.Length == 0) {
+				if (prefix.Length > 0)
+					throw new ArgumentException ("The empty namespace requires an empty prefix");
+				stream.WriteByte (0x06);
+			}
+			else if (prefix.Length == 0)
+				stream.WriteByte (0x07);
+			else
+				WriteToStream (0x08, prefix);
+			WriteDictionaryIndex (localName);
+		}
+
+		public override void WriteXmlnsAttribute (string prefix, XmlDictionaryString namespaceUri)
+		{
+			if (prefix == null)
+				throw new ArgumentNullException ("prefix");
+			if (namespaceUri == null)
+				throw new ArgumentNullException ("namespaceUri");
+
+			CheckStateAttribute ();
+
+			AddNamespaceChecked (prefix, namespaceUri);
+
+			state = WriteState.Element;
 		}
 		#endregion
 
