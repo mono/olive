@@ -105,13 +105,13 @@ namespace System.Xml
 	internal class XmlBinaryDictionaryWriter : XmlDictionaryWriter
 	{
 		#region Fields
-		Stream stream;
+		Stream original_output, stream;
 		IXmlDictionary dict_ext;
 		XmlDictionary dict_int = new XmlDictionary ();
 		XmlBinaryWriterSession session;
 		bool owns_stream;
 		Encoding utf8Enc = new UTF8Encoding ();
-		MemoryStream previous_oper = new MemoryStream ();
+		MemoryStream buffer = new MemoryStream ();
 
 		const string XmlNamespace = "http://www.w3.org/XML/1998/namespace";
 		const string XmlnsNamespace = "http://www.w3.org/2000/xmlns/";
@@ -156,12 +156,12 @@ namespace System.Xml
 			if (session == null)
 				session = new XmlBinaryWriterSession ();
 
+			original_output = stream;
 			this.stream = stream;
 			this.dict_ext = dictionary;
 			this.session = session;
 			owns_stream = ownsStream;
 
-			element_ns_stack.Push (String.Empty);
 			xml_lang_stack.Push (null);
 			xml_space_stack.Push (XmlSpace.None);
 		}
@@ -189,32 +189,30 @@ namespace System.Xml
 		private void AddMissingElementXmlns ()
 		{
 			// push new namespaces to manager.
-			if (namespaces.Count > 0) {
-				foreach (DictionaryEntry ent in namespaces) {
-					string prefix = (string) ent.Key;
-					string ns = ent.Value as string;
-					XmlDictionaryString dns = ent.Value as XmlDictionaryString;
-					if (ns != null) {
-						if (prefix.Length > 0) {
-							stream.WriteByte (0x09);
-							WriteNamePart (prefix);
-						}
-						else
-							stream.WriteByte (0x08);
-						WriteNamePart (ns);
-					} else {
-						if (prefix.Length > 0) {
-							stream.WriteByte (0x0B);
-							WriteNamePart (prefix);
-						}
-						else
-							stream.WriteByte (0x0A);
-						// FIXME: index could be > 256
-						stream.WriteByte ((byte) (dns.Key != 0 ? dns.Key << 1 : 0));
+			foreach (DictionaryEntry ent in namespaces) {
+				string prefix = (string) ent.Key;
+				string ns = ent.Value as string;
+				XmlDictionaryString dns = ent.Value as XmlDictionaryString;
+				if (ns != null) {
+					if (prefix.Length > 0) {
+						stream.WriteByte (0x09);
+						WriteNamePart (prefix);
 					}
+					else
+						stream.WriteByte (0x08);
+					WriteNamePart (ns);
+				} else {
+					if (prefix.Length > 0) {
+						stream.WriteByte (0x0B);
+						WriteNamePart (prefix);
+					}
+					else
+						stream.WriteByte (0x0A);
+					// FIXME: index could be > 256
+					stream.WriteByte ((byte) (dns.Key != 0 ? dns.Key << 1 : 0));
 				}
-				namespaces.Clear ();
 			}
+			namespaces.Clear ();
 		}
 
 		private void CheckState ()
@@ -230,6 +228,22 @@ namespace System.Xml
 
 			if (state == WriteState.Element)
 				CloseStartElement ();
+
+			ProcessPendingBuffer (false, false);
+			stream = buffer;
+		}
+
+		void ProcessPendingBuffer (bool last, bool endElement)
+		{
+			if (buffer.Position > 0) {
+				byte [] arr = buffer.GetBuffer ();
+				if (endElement)
+					arr [0]++;
+				original_output.Write (arr, 0, arr.Length);
+				buffer.SetLength (0);
+			}
+			if (last)
+				stream = original_output;
 		}
 
 		public override void Close ()
@@ -392,10 +406,13 @@ namespace System.Xml
 			if (state == WriteState.Attribute)
 				WriteEndAttribute ();
 
+			bool needExplicitEndElement = buffer.Position == 0;
+			ProcessPendingBuffer (true, true);
 			CheckState ();
 			AddMissingElementXmlns ();
 
-			stream.WriteByte (0x01);
+			if (needExplicitEndElement)
+				stream.WriteByte (0x01);
 
 			element_ns = element_ns_stack.Pop ();
 			xml_lang = xml_lang_stack.Pop ();
@@ -526,6 +543,7 @@ namespace System.Xml
 
 		void PrepareStartElement ()
 		{
+			ProcessPendingBuffer (true, false);
 			CheckState ();
 			CloseStartElement ();
 

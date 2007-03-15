@@ -1,5 +1,12 @@
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : for binary output format requirement,
+	  every content must be buffered once and wait for next operation so
+	  that if the content is one of the content sequence or not. This is
+	  almost silly, but that is what Microsoft wanted to do.
+
+2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : couple of namespaces processing fix.
 
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
