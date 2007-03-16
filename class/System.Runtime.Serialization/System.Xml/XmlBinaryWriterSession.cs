@@ -32,8 +32,8 @@ namespace System.Xml
 {
 	public class XmlBinaryWriterSession
 	{
-		Dictionary<XmlDictionaryString,int> dic =
-			new Dictionary<XmlDictionaryString,int> ();
+		Dictionary<int,XmlDictionaryString> dic =
+			new Dictionary<int,XmlDictionaryString> ();
 
 		public XmlBinaryWriterSession ()
 		{
@@ -51,18 +51,22 @@ namespace System.Xml
 		{
 			if (value == null)
 				throw new ArgumentNullException ("value");
-			if (dic.ContainsKey (value))
+			if (TryLookup (value, out key))
 				throw new InvalidOperationException ("Argument XmlDictionaryString was already added to the writer session");
 			key = dic.Count;
-			dic.Add (value, key);
+			dic.Add (key, value);
 			return true;
 		}
 
 		internal bool TryLookup (XmlDictionaryString value,
 			out int key)
 		{
-			if (dic.TryGetValue (value, out key))
-				return true;
+			foreach (KeyValuePair<int,XmlDictionaryString> e in dic)
+				if (e.Value.Value == value.Value) {
+					key = e.Key;
+					return true;
+				}
+			key = -1;
 			return false;
 		}
 	}

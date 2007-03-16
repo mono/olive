@@ -663,7 +663,7 @@ namespace System.Xml
 			int idx = ds.Key;
 			if (ds.Dictionary != dict_ext) {
 				isSession = true;
-				if (dict_int.TryLookup (ds, out ds2))
+				if (dict_int.TryLookup (ds.Value, out ds2))
 					ds = ds2;
 				if (!session.TryLookup (ds, out idx))
 					session.TryAdd (dict_int.Add (ds.Value), out idx);
@@ -673,7 +673,7 @@ namespace System.Xml
 				writer.Write ((byte) ((byte) (idx / 0x80) << 1));
 			}
 			else
-				writer.Write ((byte) ((idx % 0x80) << 1 + (isSession ? 1 : 0)));
+				writer.Write ((byte) (((idx % 0x80) << 1) + (isSession ? 1 : 0)));
 		}
 
 		public override void WriteStartElement (string prefix, XmlDictionaryString localName, XmlDictionaryString namespaceUri)

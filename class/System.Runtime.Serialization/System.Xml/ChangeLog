@@ -1,5 +1,16 @@
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryWriter.cs : for XmlWriterBinarySession lookup,
+	  internal dictionary lookup should be string-based, since otherwise
+	  it will never return correct dictionary string stored when the
+	  dictionary string is from another dictionary.
+	* XmlBinaryWriterSession.cs :
+	  TryLookup() is now based on string value comparison.
+	  Reverted internal dictionary to int->XmlDictionaryString form,
+	  as I don't use TryGetValue() anymore.
+
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : WriteValue(Decimal) is working now.
 
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
