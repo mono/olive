@@ -789,12 +789,18 @@ namespace System.Xml
 			writer.Write (value);
 		}
 
-		// FIXME: find out how it is written.
 		public override void WriteValue (decimal value)
 		{
 			ProcessTypedValue ();
 			writer.Write (BF.Decimal);
-			writer.Write (value);
+			int [] bits = Decimal.GetBits (value);
+			// so, looks like it is saved as its internal form,
+			// not the returned order.
+			// BinaryWriter.Write(Decimal) is useless here.
+			writer.Write (bits [3]);
+			writer.Write (bits [2]);
+			writer.Write (bits [0]);
+			writer.Write (bits [1]);
 		}
 
 		public override void WriteValue (DateTime value)

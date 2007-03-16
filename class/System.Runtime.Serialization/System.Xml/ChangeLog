@@ -1,3 +1,7 @@
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryWriter.cs : WriteValue(Decimal) is working now.
+
 2007-03-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlBinaryFormat.cs : new file, collection of constants.
