@@ -1,5 +1,10 @@
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryReaderTest.cs :
+	  ok, now we have pretty simple imports from writer tests so far.
+
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriterTest.cs :
 	  WriteValue(Decimal) is working now.
 

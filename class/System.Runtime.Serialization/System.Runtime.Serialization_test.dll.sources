@@ -2,6 +2,7 @@ System.Runtime.Serialization/XmlObjectSerializerTest.cs
 System.Runtime.Serialization/XsdDataContractExporterTest.cs
 System.Runtime.Serialization/XsdDataContractImporterTest.cs
 System.Xml/UniqueIdTest.cs
+System.Xml/XmlBinaryDictionaryReaderTest.cs
 System.Xml/XmlBinaryDictionaryWriterTest.cs
 System.Xml/XmlBinaryWriterSessionTest.cs
 System.Xml/XmlDictionaryReaderAbstractTest.cs

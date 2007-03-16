@@ -520,6 +520,7 @@ namespace System.Xml
 				goto case 0x41;
 			}
 
+			bool loop = true;
 			do {
 				ident = next < 0 ? ReadByteOrError () : next;
 				next = -1;
@@ -541,6 +542,7 @@ namespace System.Xml
 					break;
 				default:
 					next = ident;
+					loop = false;
 					break;
 				}
 /*
@@ -591,7 +593,7 @@ namespace System.Xml
 					break;
 				}
 */
-			} while (true);
+			} while (loop);
 
 			foreach (AttrNodeInfo a in attributes) {
 				if (a.NSSlot >= 0) {

@@ -1,5 +1,9 @@
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryReader.cs : fix infinite loop.
+
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlDictionaryReader.cs : added couple of missing methods.
 
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
