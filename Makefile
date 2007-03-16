@@ -12,7 +12,7 @@ all-recursive $(STD_TARGETS:=-recursive): platform-check profile-check
 all-local $(STD_TARGETS:=-local):
 	@:
 
-DISTFILES = README configure mkinstalldirs nunit.key
+DISTFILES = README configure mkinstalldirs nunit.key install-sh
 
 # fun specialty targets
 
