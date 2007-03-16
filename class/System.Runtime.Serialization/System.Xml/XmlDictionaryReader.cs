@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005, 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,6 +28,7 @@
 #if NET_2_0
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Xml;
 
@@ -210,8 +211,150 @@ namespace System.Xml
 			return false;
 		}
 
-		// FIXME: add Read*Array() overloads
+		#region Content Reader Methods
 
+		[MonoTODO]
+		public override object ReadContentAs (Type type, IXmlNamespaceResolver nsResolver)
+		{
+			return base.ReadContentAs (type, nsResolver);
+		}
+
+		public virtual byte [] ReadContentAsBase64 ()
+		{
+			int len;
+			if (!TryGetBase64ContentLength (out len))
+				return Convert.FromBase64String (ReadContentAsString ());
+			byte [] bytes = new byte [len];
+			ReadContentAsBase64 (bytes, 0, len);
+			return bytes;
+		}
+
+		MethodInfo xmlconv_from_bin_hex = typeof (XmlConvert).GetMethod ("FromBinHexString", BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] {typeof (string)}, null);
+
+		byte [] FromBinHexString (string s)
+		{
+			return (byte []) xmlconv_from_bin_hex.Invoke (null, new object [] {s});
+		}
+
+		public virtual byte [] ReadContentAsBinHex ()
+		{
+			int len;
+			if (!TryGetArrayLength (out len))
+				return FromBinHexString (ReadContentAsString ());
+			return ReadContentAsBinHex (len);
+		}
+
+		protected byte [] ReadContentAsBinHex (int maxByteArrayContentLength)
+		{
+			byte [] bytes = new byte [maxByteArrayContentLength];
+			ReadContentAsBinHex (bytes, 0, maxByteArrayContentLength);
+			return bytes;
+		}
+
+		[MonoTODO]
+		public virtual int ReadContentAsChars (char [] chars, int offset, int count)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override decimal ReadContentAsDecimal ()
+		{
+			return base.ReadContentAsDecimal ();
+		}
+
+		[MonoTODO]
+		public override float ReadContentAsFloat ()
+		{
+			return base.ReadContentAsFloat ();
+		}
+
+		public virtual Guid ReadContentAsGuid ()
+		{
+			return XmlConvert.ToGuid (ReadContentAsString ());
+		}
+
+		[MonoTODO]
+		public virtual void ReadContentAsQualifiedName (out string localName, out string namespaceUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override string ReadContentAsString ()
+		{
+			return base.ReadContentAsString ();
+		}
+
+		[MonoTODO]
+		protected string ReadContentAsString (int maxStringContentLength)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public virtual string ReadContentAsString (string [] strings, out int index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public virtual string ReadContentAsString (XmlDictionaryString [] strings, out int index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public virtual TimeSpan ReadContentAsTimeSpan ()
+		{
+			return XmlConvert.ToTimeSpan (ReadContentAsString ());
+		}
+
+		public virtual UniqueId ReadContentAsUniqueId ()
+		{
+			return new UniqueId (ReadContentAsString ());
+		}
+
+		public virtual byte [] ReadElementContentAsBase64 ()
+		{
+			ReadStartElement ();
+			byte [] ret = ReadContentAsBase64 ();
+			ReadEndElement ();
+			return ret;
+		}
+
+		public virtual byte [] ReadElementContentAsBinHex ()
+		{
+			ReadStartElement ();
+			byte [] ret = ReadContentAsBinHex ();
+			ReadEndElement ();
+			return ret;
+		}
+
+		public virtual Guid ReadElementContentAsGuid ()
+		{
+			ReadStartElement ();
+			Guid ret = ReadContentAsGuid ();
+			ReadEndElement ();
+			return ret;
+		}
+
+		public virtual TimeSpan ReadElementContentAsTimeSpan ()
+		{
+			ReadStartElement ();
+			TimeSpan ret = ReadContentAsTimeSpan ();
+			ReadEndElement ();
+			return ret;
+		}
+
+		public virtual UniqueId ReadElementContentAsUniqueId ()
+		{
+			ReadStartElement ();
+			UniqueId ret = ReadContentAsUniqueId ();
+			ReadEndElement ();
+			return ret;
+		}
+
+		#endregion
 
 		#region Factory Methods
 
