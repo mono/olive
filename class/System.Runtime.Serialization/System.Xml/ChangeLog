@@ -1,5 +1,9 @@
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryReaderAutoGen.cs : regenerated.
+
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryReader.cs : ongoing updates to the 3.0 RTM
 	  format.
 

@@ -462,5 +462,45 @@ namespace System.Xml
 			return ReadTimeSpanArray (localName.Value, namespaceUri.Value);
 		}
 
+				public override bool ReadElementContentAsBoolean ()
+				{
+					return ReadElementContentAsBoolean (LocalName, NamespaceURI);
+				}
+
+				public override DateTime ReadElementContentAsDateTime ()
+				{
+					return ReadElementContentAsDateTime (LocalName, NamespaceURI);
+				}
+
+				public override decimal ReadElementContentAsDecimal ()
+				{
+					return ReadElementContentAsDecimal (LocalName, NamespaceURI);
+				}
+
+				public override double ReadElementContentAsDouble ()
+				{
+					return ReadElementContentAsDouble (LocalName, NamespaceURI);
+				}
+
+				public override float ReadElementContentAsFloat ()
+				{
+					return ReadElementContentAsFloat (LocalName, NamespaceURI);
+				}
+
+				public override int ReadElementContentAsInt ()
+				{
+					return ReadElementContentAsInt (LocalName, NamespaceURI);
+				}
+
+				public override long ReadElementContentAsLong ()
+				{
+					return ReadElementContentAsLong (LocalName, NamespaceURI);
+				}
+
+				public override string ReadElementContentAsString ()
+				{
+					return ReadElementContentAsString (LocalName, NamespaceURI);
+				}
+
 	}
 }
