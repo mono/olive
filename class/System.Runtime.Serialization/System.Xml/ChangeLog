@@ -1,5 +1,10 @@
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlBinaryDictionaryReader.cs : ongoing updates to the 3.0 RTM
+	  format.
+
+2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryDictionaryWriter.cs : for XmlWriterBinarySession lookup,
 	  internal dictionary lookup should be string-based, since otherwise
 	  it will never return correct dictionary string stored when the

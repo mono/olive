@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005, 2007 Novell, Inc.  http://www.novell.com
 //
 
 //
@@ -36,6 +36,7 @@ using System.IO;
 using System.Text;
 
 using QName = System.Xml.XmlQualifiedName;
+using BF = System.Xml.XmlBinaryFormat;
 
 namespace System.Xml
 {
@@ -52,61 +53,30 @@ namespace System.Xml
 			int Position { get; }
 			int ReadByte ();
 			int Read (byte [] data, int offset, int count);
-		}
-
-		internal class ArraySource : ISource
-		{
-			byte [] buffer;
-			int offset, end;
-			int current;
-
-			public ArraySource (
-				byte [] buffer, int offset, int count)
-			{
-				this.buffer = buffer;
-				this.offset = current = offset;
-				end = offset + count;
-			}
-
-			public int Position {
-				get { return current - offset - 1; }
-			}
-
-			public int ReadByte ()
-			{
-				return current < end ? buffer [current++] : -1;
-			}
-
-			public int Read (byte [] data, int offset, int count)
-			{
-				if (current == end)
-					return 0;
-
-				int remaining = end - current;
-				int ret = remaining > count ? remaining : count;
-				Array.Copy (buffer, current, data, offset, ret);
-				current += ret;
-				return ret;
-			}
+			BinaryReader Reader { get; }
 		}
 
 		internal class StreamSource : ISource
 		{
-			Stream stream;
+			BinaryReader stream;
 			int position;
 
 			public StreamSource (Stream stream)
 			{
-				this.stream = stream;
+				this.stream = new BinaryReader (stream);
 			}
 
 			public int Position {
 				get { return position - 1; }
 			}
 
+			public BinaryReader Reader {
+				get { return stream; }
+			}
+
 			public int ReadByte ()
 			{
-				if (!stream.CanRead)
+				if (!stream.BaseStream.CanRead)
 					return -1;
 				position++;
 				return stream.ReadByte ();
@@ -128,6 +98,7 @@ namespace System.Xml
 			public XmlDictionaryString DictNS;
 			public string Value;
 			public XmlNodeType NodeType;
+			public object TypedValue;
 
 			string name;
 			string local_name;
@@ -213,7 +184,8 @@ namespace System.Xml
 			XmlBinaryReaderSession session,
 			OnXmlDictionaryReaderClose onClose)
 		{
-			source = new ArraySource (buffer, offset, count);
+			source = /*new ArraySource (buffer, offset, count);*/
+				new StreamSource (new MemoryStream (buffer, offset, count));
 			Initialize (dictionary, quota, session, onClose);
 		}
 
@@ -461,7 +433,7 @@ namespace System.Xml
 
 			if (is_next_end_element) {
 				is_next_end_element = false;
-				ReadEndElementBinary ();
+				ProcessEndElement ();
 				return true;
 			}
 
@@ -475,15 +447,18 @@ namespace System.Xml
 				return false;
 			}
 
+			is_next_end_element = ident > 0x80 && (ident & 1) == 1;
+			ident -= is_next_end_element ? 1 : 0;
+/*
 			if (0x3F <= ident && ident <= 0x42)
 				ReadElementBinary ((byte) ident);
 			else {
 				switch (ident) {
 				case 0x3C: // end element
-					ReadEndElementBinary ();
+					ProcessEndElement ();
 					break;
 				case 0x3D: // comment
-					node.Value = ReadUTF8 (-1);
+					node.Value = ReadUTF8 ();
 					node.NodeType = XmlNodeType.Comment;
 					break;
 				default:
@@ -491,10 +466,31 @@ namespace System.Xml
 					break;
 				}
 			}
+*/
+			switch (ident) {
+			case BF.EndElement:
+				ProcessEndElement ();
+				break;
+			case BF.Comment:
+				node.Value = ReadUTF8 ();
+				node.NodeType = XmlNodeType.Comment;
+				break;
+			case BF.ElemString:
+			case BF.ElemStringPrefix:
+			case BF.ElemIndex:
+			case BF.ElemIndexPrefix:
+				ReadElementBinary ((byte) ident);
+				break;
+
+			default:
+				ReadTextOrValue ((byte) ident, node, false);
+				break;
+			}
+
 			return true;
 		}
 
-		private void ReadEndElementBinary ()
+		private void ProcessEndElement ()
 		{
 			if (depth < 0)
 				throw new XmlException ("Unexpected end of element while there is no element started.");
@@ -511,22 +507,43 @@ namespace System.Xml
 			node.NodeType = XmlNodeType.Element;
 			switch (ident) {
 			case 0x3F:
-				node.LocalName = ReadUTF8 (-1);
+				node.LocalName = ReadUTF8 ();
 				break;
 			case 0x40:
-				node.Prefix = ReadUTF8 (-1);
+				node.Prefix = ReadUTF8 ();
 				goto case 0x3F;
 			case 0x41:
 				node.DictLocalName = ReadDictName ();
 				break;
 			case 0x42:
-				node.Prefix = ReadUTF8 (-1);
+				node.Prefix = ReadUTF8 ();
 				goto case 0x41;
 			}
 
 			do {
 				ident = next < 0 ? ReadByteOrError () : next;
 				next = -1;
+
+				switch (ident) {
+				case BF.AttrString:
+				case BF.AttrStringPrefix:
+				case BF.AttrIndex:
+				case BF.AttrIndexPrefix:
+				case BF.GlobalAttrIndex:
+				case BF.GlobalAttrIndexInElemNS:
+					ReadAttribute ((byte) ident);
+					break;
+				case BF.DefaultNSString:
+				case BF.PrefixNSString:
+				case BF.DefaultNSIndex:
+				case BF.PrefixNSIndex:
+					ReadNamespace ((byte) ident);
+					break;
+				default:
+					next = ident;
+					break;
+				}
+/*
 				if (ident < 4) {
 					// attributes
 					if (attributes.Count == attr_count)
@@ -536,16 +553,16 @@ namespace System.Xml
 					a.Position = source.Position;
 					switch (ident) {
 					case 0:
-						a.LocalName = ReadUTF8 (-1);
+						a.LocalName = ReadUTF8 ();
 						break;
 					case 1:
-						a.Prefix = ReadUTF8 (-1);
+						a.Prefix = ReadUTF8 ();
 						goto case 0;
 					case 2:
 						a.DictLocalName = ReadDictName ();
 						break;
 					case 3:
-						a.Prefix = ReadUTF8 (-1);
+						a.Prefix = ReadUTF8 ();
 						goto case 2;
 					}
 					ReadAttributeValueBinary (a);
@@ -553,8 +570,8 @@ namespace System.Xml
 				else if (ident < 6) {
 					// namespaces
 					string prefix = ident == 4 ?
-						String.Empty : ReadUTF8 (-1);
-					string ns = ReadUTF8 (-1);
+						String.Empty : ReadUTF8 ();
+					string ns = ReadUTF8 ();
 					ns_store.Add (new QName (prefix, ns));
 					context.NamespaceManager.AddNamespace (prefix, ns);
 				}
@@ -566,13 +583,14 @@ namespace System.Xml
 					a.Reset ();
 					a.Position = source.Position;
 					a.NSSlot = ident - 0x22;
-					a.LocalName = ReadUTF8 (-1);
+					a.LocalName = ReadUTF8 ();
 					ReadAttributeValueBinary (a);
 				}
 				else {
 					next = ident;
 					break;
 				}
+*/
 			} while (true);
 
 			foreach (AttrNodeInfo a in attributes) {
@@ -585,6 +603,67 @@ namespace System.Xml
 			}
 
 			ns_store.Clear ();
+		}
+
+		private void ReadAttribute (byte ident)
+		{
+			if (attributes.Count == attr_count)
+				attributes.Add (new AttrNodeInfo ());
+			AttrNodeInfo a = attributes [attr_count++];
+			a.Reset ();
+			a.Position = source.Position;
+
+			switch (ident) {
+			case BF.AttrString:
+				a.LocalName = ReadUTF8 ();
+				break;
+			case BF.AttrStringPrefix:
+				a.Prefix = ReadUTF8 ();
+				goto case BF.AttrString;
+			case BF.AttrIndex:
+				a.DictLocalName = ReadDictName ();
+				break;
+			case BF.AttrIndexPrefix:
+				a.Prefix = ReadUTF8 ();
+				goto case BF.AttrIndex;
+			case BF.GlobalAttrIndex:
+				a.DictLocalName = ReadDictName ();
+				// FIXME: retrieve namespace
+				break;
+			case BF.GlobalAttrIndexInElemNS:
+				a.Prefix = node.Prefix;
+				a.DictLocalName = ReadDictName ();
+				a.NS = node.NS;
+				break;
+			}
+			ReadAttributeValueBinary (a);
+		}
+
+		private void ReadNamespace (byte ident)
+		{
+			string prefix = null, ns = null;
+			switch (ident) {
+			case BF.DefaultNSString:
+				prefix = String.Empty;
+				ns = ReadUTF8 ();
+				break;
+			case BF.PrefixNSString:
+				prefix = ReadUTF8 ();
+				ns = ReadUTF8 ();
+				break;
+			case BF.DefaultNSIndex:
+				prefix = String.Empty;
+				// FIXME: no need to retrieve dictionary string?
+				ns = ReadDictName ().Value;
+				break;
+			case BF.PrefixNSIndex:
+				prefix = ReadUTF8 ();
+				// FIXME: no need to retrieve dictionary string?
+				ns = ReadDictName ().Value;
+				break;
+			}
+			ns_store.Add (new QName (prefix, ns));
+			context.NamespaceManager.AddNamespace (prefix, ns);
 		}
 
 		private void ReadAttributeValueBinary (AttrNodeInfo a)
@@ -603,6 +682,52 @@ namespace System.Xml
 
 		private bool ReadTextOrValue (byte ident, NodeInfo node, bool canSkip)
 		{
+			switch (ident) {
+			case BF.BoolFalse:
+				node.Value = null;
+				node.TypedValue = false;
+				node.NodeType = XmlNodeType.Text;
+				break;
+			case BF.BoolTrue:
+				node.Value = null;
+				node.TypedValue = true;
+				node.NodeType = XmlNodeType.Text;
+				break;
+			case BF.Int8:
+				node.Value = null;
+				node.TypedValue = ReadByteOrError ();
+				node.NodeType = XmlNodeType.Text;
+				break;
+			case BF.Int16:
+			case BF.Int32:
+			case BF.Int64:
+			case BF.Single:
+			case BF.Double:
+			case BF.Decimal:
+			case BF.DateTime:
+			//case BF.UniqueId: // identical to .Text
+			case BF.Base64:
+
+			case BF.TimeSpan:
+			case BF.Guid:
+				throw new NotImplementedException ();
+
+			case BF.Text:
+				node.Value = ReadUTF8 ();
+				node.NodeType = XmlNodeType.Text;
+				break;
+			case BF.EmptyText:
+				node.Value = String.Empty;
+				node.NodeType = XmlNodeType.Text;
+				break;
+			default:
+				if (!canSkip)
+					throw new ArgumentException (String.Format ("Unexpected binary XML data at position {1}: {0:X}", ident, source.Position));
+				next = ident;
+				return false;
+			}
+			return true;
+/*
 			if (ident == 0x8B) {
 				// empty text
 				node.Value = String.Empty;
@@ -640,6 +765,7 @@ namespace System.Xml
 				}
 			}
 			return true;
+*/
 		}
 
 		private int ReadInt (int sizeSpec)
@@ -661,6 +787,11 @@ namespace System.Xml
 					size += ReadByteOrError () << i;
 			}
 			return size;
+		}
+
+		private string ReadUTF8 ()
+		{
+			return ReadUTF8 (-1);
 		}
 
 		private string ReadUTF8 (int sizeSpec)
