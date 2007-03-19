@@ -333,7 +333,7 @@ namespace System.ServiceModel.Security
 			// FIXME: pass correct arguments.
 			return new WSSecurityTokenSerializer (ver, bsp, null,
 				ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder,
-				null,
+				Type.EmptyTypes,
 				int.MaxValue, int.MaxValue, int.MaxValue);
 		}
 

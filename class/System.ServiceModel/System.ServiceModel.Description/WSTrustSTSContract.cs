@@ -133,7 +133,15 @@ namespace System.ServiceModel.Description
 		{
 			string ns = Constants.WstNamespace;
 			w.WriteStartElement ("t", "RequestSecurityTokenResponse", ns);
+			w.WriteXmlnsAttribute ("u", Constants.WsuNamespace);
 			w.WriteAttributeString ("Context", Context);
+			if (Authenticator != null) {
+				w.WriteStartElement ("Authenticator", ns);
+				w.WriteStartElement ("CombinedHash", ns);
+				w.WriteBase64 (Authenticator, 0, Authenticator.Length);
+				w.WriteEndElement ();
+				w.WriteEndElement ();
+			}
 			if (TokenType != null)
 				w.WriteElementString ("TokenType", ns, TokenType);
 			if (RequestedSecurityToken != null) {

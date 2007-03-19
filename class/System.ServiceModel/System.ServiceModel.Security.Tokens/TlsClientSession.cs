@@ -28,6 +28,8 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Security.Cryptography;
+using System.Text;
 using Mono.Security.Protocol.Tls;
 using Mono.Security.Protocol.Tls.Handshake;
 using Mono.Security.Protocol.Tls.Handshake.Client;
@@ -42,6 +44,17 @@ namespace System.ServiceModel.Security.Tokens
 
 		public byte [] MasterSecret {
 			get { return Context.MasterSecret; }
+		}
+
+		public byte [] CreateAuthHash (byte [] key)
+		{
+			string label = "AUTH-HASH";
+			byte [] keyhash = SHA1.Create ().ComputeHash (key);
+			byte [] labelBytes = Encoding.UTF8.GetBytes (label);
+			byte [] seed = new byte [keyhash.Length + labelBytes.Length];
+			Array.Copy (keyhash, seed, keyhash.Length);
+			Array.Copy (labelBytes, 0, seed, keyhash.Length, labelBytes.Length);
+			return Context.Current.Cipher.Expand ("SHA1", key, seed, 256 / 8);
 		}
 
 		protected void WriteHandshake (MemoryStream ms)

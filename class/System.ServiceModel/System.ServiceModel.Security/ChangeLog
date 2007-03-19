@@ -1,3 +1,8 @@
+2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  use Type.EmptyTypes instead of null to avoid ANE.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :

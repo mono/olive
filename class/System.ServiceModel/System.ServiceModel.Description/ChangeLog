@@ -1,3 +1,7 @@
+2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs : support t:Authenticator output in RSTR.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :

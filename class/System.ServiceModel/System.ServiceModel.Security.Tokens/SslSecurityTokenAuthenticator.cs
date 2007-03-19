@@ -150,16 +150,19 @@ namespace System.ServiceModel.Security.Tokens
 				throw new InvalidOperationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
 			tls.ProcessClientKeyExchange (reader.Value.BinaryExchange.Value);
 
+			RijndaelManaged aes = new RijndaelManaged ();
+
 			WstRequestSecurityTokenResponseCollection col =
 				new WstRequestSecurityTokenResponseCollection ();
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
+			rstr.Context = reader.Value.Context;
 			DateTime from = DateTime.Now;
-			// FIXME: not sure if MasterSecret is used here.
+			// FIXME: not sure if arbitrary key is used here.
 			SecurityContextSecurityToken sct = SecurityContextSecurityToken.CreateCookieSecurityContextToken (
 				new UniqueId (reader.Value.Context),
 				new UniqueId ().ToString (),
-				tls.MasterSecret,
+				aes.Key,
 				from,
 				// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
 				from.AddHours (8),
@@ -180,6 +183,9 @@ namespace System.ServiceModel.Security.Tokens
 
 			// FIXME: add authenticator
 			rstr = new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
+			rstr.Context = reader.Value.Context;
+			rstr.Authenticator = tls.CreateAuthHash (aes.Key);
+			col.Responses.Add (rstr);
 
 			sessions.Remove (reader.Value.Context);
 

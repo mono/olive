@@ -46,12 +46,8 @@ namespace System.ServiceModel.Security.Tokens
 			ReadOnlyCollection<IAuthorizationPolicy> authorizationPolicies,
 			SecurityStateEncoder securityStateEncoder)
 		{
-			if (securityStateEncoder == null)
-				throw new ArgumentNullException ("securityStateEncoder");
-
-			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (contextId, id, key, validFrom, validTo, authorizationPolicies);
-			sct.cookie = securityStateEncoder.EncodeSecurityState (key);
-			return sct;
+			return CreateCookieSecurityContextToken (
+				contextId, id, key, validFrom, validTo, new UniqueId (Guid.NewGuid ()), validFrom, validTo, authorizationPolicies, securityStateEncoder);
 		}
 
 		public static SecurityContextSecurityToken CreateCookieSecurityContextToken (
@@ -69,8 +65,15 @@ namespace System.ServiceModel.Security.Tokens
 			if (securityStateEncoder == null)
 				throw new ArgumentNullException ("securityStateEncoder");
 
-			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (contextId, id, key, validFrom, validTo, keyGeneration, keyEffectiveTime, keyExpirationTime,  authorizationPolicies);
-			sct.cookie = securityStateEncoder.EncodeSecurityState (key);
+			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (
+				contextId, id, key, validFrom, validTo,
+				keyGeneration, keyEffectiveTime, 
+				keyExpirationTime,  authorizationPolicies);
+			byte [] rawdata = SslnegoCookieResolver.CreateData (
+				contextId, keyGeneration, key,
+				validFrom, validTo,
+				keyEffectiveTime, keyExpirationTime);
+			sct.cookie = securityStateEncoder.EncodeSecurityState (rawdata);
 			return sct;
 		}
 

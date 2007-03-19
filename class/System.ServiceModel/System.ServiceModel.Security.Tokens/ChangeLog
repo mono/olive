@@ -1,3 +1,14 @@
+2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsClientSession.cs : added CreateAuthHash(), used by authenticator.
+	* SecurityContextSecurityToken.cs : support "probably correct" rawdata
+	  creation for cookie. It is not the secret key but some binary xml
+	  data.
+	* SslnegoCookieResolver.cs : added CreateData() for creating
+	  binary-xmlized token cookie info.
+	* SslSecurityTokenAuthenticator.cs : create session key (dummy for
+	  now) and use it instead of MasterSecret. Support t:Authenticator.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :

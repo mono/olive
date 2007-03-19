@@ -59,12 +59,12 @@ So, it will be parsed as below:
 42 02 
 83 
 42 06 99 2B 75 75 69 64 2D 31 65 38 33 62 63 37 39 2D 35 30 33 37 2D 34 61 32 30 2D 38 32 66 37 2D 64 32 39 37 31 34 61 30 32 62 37 66 2D 31 // UniqueId
-42 04 AD 45 34 07 4E 38 D2 18 4D 8B 22 FD 6C E6 CE B2 17 // something 16 bytes
+42 04 AD 45 34 07 4E 38 D2 18 4D 8B 22 FD 6C E6 CE B2 17 // UniqueIdFromGuid
 42 08 9E 1E CA AC F2 71 6E 61 99 DA FB 71 B2 A8 DC 51 36 5B CD F3 F9 60 D2 B6 67 BF 5D B0 CE ED 37 35 9F 02 DC 7D // Base64
-42 0E 8F F4 4C 9C 48 61 33 C9 08 // TimeSpan
-42 10 8F F4 5C 48 1A B5 33 C9 08 // TimeSpan
-42 14 8F F4 4C 9C 48 61 33 C9 08 // TimeSpan
-42 16 8F F4 5C 48 1A B5 33 C9 08 // TimeSpan
+42 0E 8F F4 4C 9C 48 61 33 C9 08 // Int64
+42 10 8F F4 5C 48 1A B5 33 C9 08 // Int64
+42 14 8F F4 4C 9C 48 61 33 C9 08 // Int64
+42 16 8F F4 5C 48 1A B5 33 C9 08 // Int64
 01
 
 
@@ -93,11 +93,54 @@ namespace System.ServiceModel.Security.Tokens
 			XmlDictionaryReader cr = XmlDictionaryReader.CreateBinaryReader (bytes, 0, bytes.Length, dic, quotas);
 			cr.Read (); // -> n1
 			cr.Read (); // -> n2
-			cr.Skip (); // -> n4
-			cr.Skip (); // -> n3
-			cr.Skip (); // -> n5
-			//return cr.ReadElementContentAsBase64 ();
-			throw new NotImplementedException ();
+			cr.Read (); // -> '1'
+			cr.Read (); // -> /n2
+			cr.Read (); // -> n4
+			cr.Read (); // -> uid
+			cr.Read (); // -> /n4
+			cr.Read (); // -> n3
+			cr.Read (); // -> uid
+			cr.Read (); // -> /n3
+			cr.Read (); // -> n5
+			return cr.ReadElementContentAsBase64 ();
+			//throw new NotImplementedException ();
+		}
+
+		public static byte [] CreateData (UniqueId contextId, UniqueId session, byte [] key, DateTime tokenSince, DateTime tokenUntil, DateTime keySince, DateTime keyUntil)
+		{
+			XmlDictionary dic = new XmlDictionary ();
+			for (int i = 0; i < 12; i++)
+				dic.Add ("n" + i);
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic);
+			XmlDictionaryString e = XmlDictionaryString.Empty;
+			w.WriteStartElement (dic.Add ("n0"), e);
+			w.WriteStartElement (dic.Add ("n1"), e);
+			w.WriteValue (1);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n3"), e);
+			w.WriteValue (contextId);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n2"), e);
+			w.WriteValue (contextId);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n4"), e);
+			w.WriteBase64 (key, 0, key.Length);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n7"), e);
+			w.WriteValue (tokenSince.Ticks);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n8"), e);
+			w.WriteValue (tokenUntil.Ticks);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n10"), e);
+			w.WriteValue (keySince.Ticks);
+			w.WriteEndElement ();
+			w.WriteStartElement (dic.Add ("n11"), e);
+			w.WriteValue (keyUntil.Ticks);
+			w.WriteEndElement ();
+			w.Close ();
+			return ms.ToArray ();
 		}
 	}
 }
