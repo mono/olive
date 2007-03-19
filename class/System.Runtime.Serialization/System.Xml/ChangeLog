@@ -1,5 +1,10 @@
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryReader.cs : more ongoing updates (valuetype support,
+	  key support updates, ReadElementContentAsBase64).
+
+2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlBinaryFormat.cs, XmlBinaryDictionaryWriter.cs :
 	  support following operators; 0x80 (integer 0), 0x82 (integer 1) and
 	  0xAE (UniqueId which is created from Guid).
