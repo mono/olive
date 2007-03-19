@@ -51,6 +51,8 @@ namespace System.Xml
 		public const byte ElemIndex = 0x42;
 		public const byte ElemIndexPrefix = 0x43;
 
+		public const byte Zero = 0x80;
+		public const byte One = 0x82;
 		public const byte BoolFalse = 0x84;
 		public const byte BoolTrue = 0x86;
 		public const byte Int8 = 0x88;
@@ -61,12 +63,12 @@ namespace System.Xml
 		public const byte Double = 0x92;
 		public const byte Decimal = 0x94;
 		public const byte DateTime = 0x96;
-		public const byte UniqueId = 0x98; // Text
 		public const byte Base64 = 0x9E;
 
 		public const byte Text = 0x98;
 		public const byte EmptyText = 0xA8;
 
+		public const byte UniqueIdFromGuid = 0xAC;
 		public const byte TimeSpan = 0xAE;
 		public const byte Guid = 0xB0;
 	}
@@ -117,6 +119,8 @@ namespace System.Xml
 		(Uri is simply 98, QName is 98 '{' ns '}' 98 name)
 
 		Combined EndElement for below are supported:
+		80 : 0 (integer)
+		82 : 1 (integer)
 		84 : false (bool)
 		86 : true (bool)
 		88 : 1-byte integer
@@ -129,6 +133,7 @@ namespace System.Xml
 		96 : DateTime
 		98 : UniqueId
 		9E : base64Binary
+		AC : UniqueId whose IsGuid = true
 		AE : TimeSpan
 		B0 : Guid
 

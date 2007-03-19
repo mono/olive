@@ -753,7 +753,11 @@ namespace System.Xml
 		{
 			ProcessTypedValue ();
 
-			if (value < 0 || value > uint.MaxValue) {
+			if (value == 0)
+				writer.Write (BF.Zero);
+			else if (value == 1)
+				writer.Write (BF.One);
+			else if (value < 0 || value > uint.MaxValue) {
 				writer.Write (BF.Int64);
 				for (int i = 0; i < 8; i++) {
 					writer.Write ((byte) (value & 0xFF));
@@ -821,9 +825,21 @@ namespace System.Xml
 
 		public override void WriteValue (UniqueId value)
 		{
-			ProcessTypedValue ();
+			if (value == null)
+				throw new ArgumentNullException ("value");
 
-			WriteToStream (BF.UniqueId, value.ToString ());
+			Guid guid;
+			if (value.TryGetGuid (out guid)) {
+				// this conditional branching is required for
+				// attr_typed_value not being true.
+				ProcessTypedValue ();
+
+				writer.Write (BF.UniqueIdFromGuid);
+				byte [] bytes = guid.ToByteArray ();
+				writer.Write (bytes, 0, bytes.Length);
+			} else {
+				WriteValue (value.ToString ());
+			}
 		}
 
 		public override void WriteValue (TimeSpan value)
@@ -881,14 +897,18 @@ namespace System.Xml
 			}
 		}
 
+		// FIXME: process long data (than 255 bytes)
 		private void WriteToStream (byte identifier, byte [] data, int start, int len)
 		{
-			int lengthAdjust = GetLengthAdjust (len);
-			writer.Write ((byte) (identifier + lengthAdjust));
-			WriteLength (len, lengthAdjust);
+			//int lengthAdjust = 0;GetLengthAdjust (len);
+			//writer.Write ((byte) (identifier + lengthAdjust));
+			//WriteLength (len, lengthAdjust);
+			writer.Write ((byte) (identifier));
+			WriteLength (len, 0);
 			writer.Write (data, start, len);
 		}
 
+		/*
 		private int GetLengthAdjust (int count)
 		{
 			int lengthAdjust = 0;
@@ -896,6 +916,7 @@ namespace System.Xml
 				lengthAdjust++;
 			return lengthAdjust;
 		}
+		*/
 
 		private void WriteLength (int count, int lengthAdjust)
 		{

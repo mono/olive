@@ -562,6 +562,9 @@ Console.WriteLine ();
 			w.WriteValue ((double) 2.2360679);
 			w.WriteValue ((decimal) 3.141592);
 			w.WriteValue (new DateTime (2000, 1, 2, 3, 4, 5));
+			w.WriteValue (new XmlDictionary ().Add ("xxx"));
+			// w.WriteValue ((object) null); ANE
+			w.WriteValue (1);
 			w.Close ();
 			Assert.AreEqual (typed_values, ms.ToArray ());
 		}
@@ -576,7 +579,9 @@ Console.WriteLine ();
 			0x90, 0xD7, 0xB3, 0xDD, 0x3F, // float
 			0x92, 0x4C, 0x15, 0x31, 0x91, 0x77, 0xE3, 0x01, 0x40, // 43
 			0x94, 0, 0, 6, 0, 0, 0, 0, 0, 0xD8, 0xEF, 0x2F, 0, 0, 0, 0, 0,
-			0x97, 0x80, 0x40, 0xA3, 0x29, 0xE5, 0x22, 0xC1, 8
+			0x96, 0x80, 0x40, 0xA3, 0x29, 0xE5, 0x22, 0xC1, 8,
+			0x98, 3, 0x78, 0x78, 0x78, // dictionary string is just a string here
+			0x83,
 			};
 	}
 }
