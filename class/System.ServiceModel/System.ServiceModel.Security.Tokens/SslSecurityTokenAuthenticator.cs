@@ -151,6 +151,8 @@ namespace System.ServiceModel.Security.Tokens
 				throw new InvalidOperationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
 			tls.ProcessClientKeyExchange (reader.Value.BinaryExchange.Value);
 
+			byte [] serverFinished = tls.ProcessServerFinished ();
+
 			RijndaelManaged aes = new RijndaelManaged ();
 
 			WstRequestSecurityTokenResponseCollection col =
@@ -162,8 +164,10 @@ namespace System.ServiceModel.Security.Tokens
 			DateTime from = DateTime.Now;
 			// FIXME: not sure if arbitrary key is used here.
 			SecurityContextSecurityToken sct = SecurityContextSecurityToken.CreateCookieSecurityContextToken (
-				new UniqueId (reader.Value.Context),
-				new UniqueId ().ToString (),
+				// Create a new context.
+				// (do not use sslnego context here.)
+				new UniqueId (),
+				"uuid-" + Guid.NewGuid (),
 				aes.Key,
 				from,
 				// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
@@ -180,7 +184,7 @@ namespace System.ServiceModel.Security.Tokens
 			lt.Expires = from.AddHours (8);
 			rstr.Lifetime = lt;
 			rstr.BinaryExchange = new WstBinaryExchange ();
-			rstr.BinaryExchange.Value = tls.ProcessServerFinished ();
+			rstr.BinaryExchange.Value = serverFinished;
 
 			col.Responses.Add (rstr);
 

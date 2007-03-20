@@ -133,8 +133,9 @@ namespace System.ServiceModel.Description
 		protected override void OnWriteBodyContents (XmlDictionaryWriter w)
 		{
 			string ns = Constants.WstNamespace;
+			string nsu = Constants.WsuNamespace;
 			w.WriteStartElement ("t", "RequestSecurityTokenResponse", ns);
-			w.WriteXmlnsAttribute ("u", Constants.WsuNamespace);
+			w.WriteXmlnsAttribute ("u", nsu);
 			w.WriteAttributeString ("Context", Context);
 			if (Authenticator != null) {
 				w.WriteStartElement ("Authenticator", ns);
@@ -185,11 +186,12 @@ namespace System.ServiceModel.Description
 			if (Lifetime != null) {
 				w.WriteStartElement ("Lifetime", ns);
 				if (Lifetime.Created != DateTime.MinValue)
-					w.WriteElementString ("Created", ns, XmlConvert.ToString (Lifetime.Created));
+					w.WriteElementString ("Created", nsu, XmlConvert.ToString (Lifetime.Created.ToUniversalTime (), Constants.LifetimeFormat));
 				if (Lifetime.Expires != DateTime.MaxValue)
-					w.WriteElementString ("Expires", ns, XmlConvert.ToString (Lifetime.Expires));
+					w.WriteElementString ("Expires", nsu, XmlConvert.ToString (Lifetime.Expires.ToUniversalTime (), Constants.LifetimeFormat));
 				w.WriteEndElement ();
 			}
+			w.WriteElementString ("KeySize", ns, XmlConvert.ToString (KeySize));
 			if (BinaryExchange != null)
 				BinaryExchange.WriteTo (w);
 			w.WriteEndElement ();

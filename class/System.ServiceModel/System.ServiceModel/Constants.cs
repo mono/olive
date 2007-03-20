@@ -99,5 +99,7 @@ namespace System.ServiceModel
 		public const string WstCancelRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Cancel";
 
 		public const string WstValidateRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Validate";
+
+		public const string LifetimeFormat = "yyyy-MM-dd'T'HH:mm:ss.fffZ";
 	}
 }

@@ -264,10 +264,11 @@ namespace System.ServiceModel.Description
 					reader.Read ();
 					reader.ReadStartElement ("EncryptedKey", ens);
 					string alg = reader.GetAttribute ("Algorithm");
+					bool isEmpty = reader.IsEmptyElement;
 					reader.ReadStartElement ("EncryptionMethod", ens);
 					if (alg != Constants.WstTlsnegoProofTokenType)
 						throw new XmlException (String.Format ("EncryptionMethod '{0}' is not supported in RequestedProofToken.", alg));
-					if (!reader.IsEmptyElement)
+					if (!isEmpty)
 						reader.ReadEndElement ();
 					reader.ReadStartElement ("CipherData", ens);
 					reader.ReadStartElement ("CipherValue", ens);

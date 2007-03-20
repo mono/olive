@@ -1,5 +1,9 @@
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Constants.cs : added LifetimeFormat.
+
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Constants.cs : added Tlsnego WST proof token type.
 
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>

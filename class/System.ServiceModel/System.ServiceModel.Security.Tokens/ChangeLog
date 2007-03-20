@@ -1,5 +1,11 @@
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SslSecurityTokenAuthenticator.cs : don't reuse ContextId for SCT.
+	  Process ServerFinished before ApplicationData exchange.
+	* TlsServerSession.cs : Fixed ClientKeyExchange stream processing.
+
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TlsClientSession.cs, TlsServerSession.cs :
 	  added ProcessApplicationData()
 	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :

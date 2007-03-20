@@ -100,6 +100,7 @@ namespace System.ServiceModel.Security.Tokens
 
 		public void ProcessClientKeyExchange (byte [] raw)
 		{
+			stream.SetLength (0);
 			stream.Write (raw, 0, raw.Length);
 			stream.Seek (0, SeekOrigin.Begin);
 
