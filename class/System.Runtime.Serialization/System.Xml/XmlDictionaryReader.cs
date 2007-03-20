@@ -183,16 +183,16 @@ namespace System.Xml
 			throw new NotSupportedException ();
 		}
 
-		[MonoTODO]
 		public virtual bool TryGetArrayLength (out int count)
 		{
-			throw new NotImplementedException ();
+			count = -1;
+			return false;
 		}
 
-		[MonoTODO]
 		public virtual bool TryGetBase64ContentLength (out int count)
 		{
-			throw new NotImplementedException ();
+			count = -1;
+			return false;
 		}
 
 		[MonoTODO]

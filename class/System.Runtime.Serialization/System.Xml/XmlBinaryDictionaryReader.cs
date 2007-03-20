@@ -106,7 +106,6 @@ namespace System.Xml
 			public string Prefix;
 			public XmlDictionaryString DictLocalName;
 			public XmlDictionaryString DictNS;
-			public string Value;
 			public XmlNodeType NodeType;
 			public object TypedValue;
 			public byte ValueType;
@@ -119,6 +118,7 @@ namespace System.Xml
 			string name;
 			string local_name;
 			string ns;
+			string value;
 
 			public string LocalName {
 				get { return DictLocalName != null ? DictLocalName.Value : local_name; }
@@ -144,6 +144,40 @@ namespace System.Xml
 							LocalName;
 					return name;
 				}
+			}
+
+			public string Value {
+				get {
+					switch (ValueType) {
+					case BF.Text:
+					case BF.EmptyText:
+						return value;
+					case BF.Zero:
+					case BF.One:
+						return XmlConvert.ToString ((int) TypedValue);
+					case BF.Int8:
+						return XmlConvert.ToString ((byte) TypedValue);
+					case BF.Int16:
+						return XmlConvert.ToString ((short) TypedValue);
+					case BF.Int32:
+						return XmlConvert.ToString ((int) TypedValue);
+					case BF.Int64:
+						return XmlConvert.ToString ((long) TypedValue);
+					case BF.DateTime:
+						return XmlConvert.ToString ((DateTime) TypedValue);
+					case BF.TimeSpan:
+						return XmlConvert.ToString ((TimeSpan) TypedValue);
+					case BF.Guid:
+						return XmlConvert.ToString ((Guid) TypedValue);
+					case BF.UniqueIdFromGuid:
+						return TypedValue.ToString ();
+					case BF.Base64:
+						return Convert.ToBase64String ((byte []) TypedValue);
+					default:
+						throw new NotImplementedException ();
+					}
+				}
+				set { this.value = value; }
 			}
 
 			public virtual void Reset ()

@@ -1,3 +1,10 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryReader.cs : simply return false for
+	  TryGet[Base64|Array]Length().
+	* XmlBinaryDictionaryReader.cs : Value string should be pupulated
+	  for typed value nodes.
+
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryReader.cs : more ongoing updates (valuetype support,
