@@ -865,6 +865,19 @@ namespace MonoTests.System.ServiceModel.Security
 			}
 		}
 
+		[Test]
+		[Ignore ("not sure how we can consume this RequestedProofToken yet.")]
+		public void ReadTlsnegoRequestedProofToken ()
+		{
+			string xml = @"<e:EncryptedKey xmlns:e=""http://www.w3.org/2001/04/xmlenc#""><e:EncryptionMethod Algorithm=""http://schemas.xmlsoap.org/2005/02/trust/tlsnego#TLS_Wrap""></e:EncryptionMethod><e:CipherData><e:CipherValue>FwMBADD/I64jS8yQM4+yn1FPr1+enSjRwoyw1c/hdEDWqfkW/parE9yq5zNKwO0g7zQaFXg=</e:CipherValue></e:CipherData></e:EncryptedKey>";
+
+			WSSecurityTokenSerializer serializer =
+				WSSecurityTokenSerializer.DefaultInstance;
+			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
+				serializer.ReadToken (xr, GetResolver (new X509SecurityToken (cert, "urn:unique-id:foo")));
+			}
+		}
+
 		class MyResolver : SecurityTokenResolver
 		{
 			protected override bool TryResolveTokenCore (SecurityKeyIdentifier ident, out SecurityToken token)

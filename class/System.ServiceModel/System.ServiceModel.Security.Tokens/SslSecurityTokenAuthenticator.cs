@@ -32,6 +32,7 @@ using System.Net.Security;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -157,6 +158,7 @@ namespace System.ServiceModel.Security.Tokens
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
+			rstr.TokenType = Constants.WsscContextToken;
 			DateTime from = DateTime.Now;
 			// FIXME: not sure if arbitrary key is used here.
 			SecurityContextSecurityToken sct = SecurityContextSecurityToken.CreateCookieSecurityContextToken (
@@ -169,6 +171,7 @@ namespace System.ServiceModel.Security.Tokens
 				null,
 				owner.Manager.ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder);
 			rstr.RequestedSecurityToken = sct;
+			rstr.RequestedProofToken = tls.ProcessApplicationData (aes.Key);
 			rstr.RequestedAttachedReference = new LocalIdKeyIdentifierClause (sct.Id);
 			rstr.RequestedUnattachedReference = new SecurityContextKeyIdentifierClause (sct.ContextId, null);
 			WstLifetime lt = new WstLifetime ();

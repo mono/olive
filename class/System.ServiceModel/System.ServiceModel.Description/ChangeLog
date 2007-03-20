@@ -1,3 +1,9 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs, WSTrustMessageConverters.cs :
+	  process RequestedProofToken as raw TLS 1.0 application data, which
+	  is likely a shared key.
+
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustSTSContract.cs : support t:Authenticator output in RSTR.

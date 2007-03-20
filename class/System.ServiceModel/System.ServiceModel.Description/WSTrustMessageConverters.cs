@@ -31,6 +31,7 @@ using System.Reflection;
 using System.Security.Cryptography;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -259,7 +260,24 @@ namespace System.ServiceModel.Description
 					return;
 				case "RequestedProofToken":
 #if true // FIXME: we can't handle it right now
-		reader.Skip ();
+					string ens = EncryptedXml.XmlEncNamespaceUrl;
+					reader.Read ();
+					reader.ReadStartElement ("EncryptedKey", ens);
+					string alg = reader.GetAttribute ("Algorithm");
+					reader.ReadStartElement ("EncryptionMethod", ens);
+					if (alg != Constants.WstTlsnegoProofTokenType)
+						throw new XmlException (String.Format ("EncryptionMethod '{0}' is not supported in RequestedProofToken.", alg));
+					if (!reader.IsEmptyElement)
+						reader.ReadEndElement ();
+					reader.ReadStartElement ("CipherData", ens);
+					reader.ReadStartElement ("CipherValue", ens);
+					byte [] pt = reader.ReadContentAsBase64 ();
+					res.RequestedProofToken = pt;
+					reader.ReadEndElement ();
+					reader.ReadEndElement ();
+					reader.ReadEndElement ();// EncryptedKey
+					reader.ReadEndElement ();// RPT
+					return;
 #else
 					reader.Read ();
 					reader.MoveToContent ();

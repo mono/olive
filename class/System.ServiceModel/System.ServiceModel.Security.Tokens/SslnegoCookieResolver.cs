@@ -75,6 +75,9 @@ where n[x] are presumed names. They would be meaningful in MS implementation,
 but as a binary XML array with preconfigured IXmlDictionary (sigh), it doesn't
 matter.
 
+n2 matches the context Identifier for SecurityContextToken.
+n3 matches the u:Id for SecurityContextToken.
+
 */
 
 

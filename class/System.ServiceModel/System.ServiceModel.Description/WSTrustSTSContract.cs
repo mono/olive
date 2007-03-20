@@ -32,6 +32,7 @@ using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Net.Security;
 using System.Runtime.Serialization;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
@@ -163,8 +164,22 @@ namespace System.ServiceModel.Description
 				w.WriteStartElement ("RequestedProofToken", ns);
 				if (RequestedProofToken is SecurityToken)
 					serializer.WriteToken (w, (SecurityToken) RequestedProofToken);
-				else
+				else if (RequestedProofToken is SecurityKeyIdentifierClause)
 					serializer.WriteKeyIdentifierClause (w, (SecurityKeyIdentifierClause) RequestedProofToken);
+				else {
+					string ens = EncryptedXml.XmlEncNamespaceUrl;
+					w.WriteStartElement ("e", "EncryptedKey", ens);
+					w.WriteStartElement ("EncryptionMethod", ens);
+					w.WriteAttributeString ("Algorithm", Constants.WstTlsnegoProofTokenType);
+					w.WriteEndElement ();
+					w.WriteStartElement ("CipherData", ens);
+					w.WriteStartElement ("CipherValue", ens);
+					byte [] base64 = (byte []) RequestedProofToken;
+					w.WriteBase64 (base64, 0, base64.Length);
+					w.WriteEndElement ();
+					w.WriteEndElement ();
+					w.WriteEndElement ();
+				}
 				w.WriteEndElement ();
 			}
 			if (Lifetime != null) {

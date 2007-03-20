@@ -90,6 +90,8 @@ namespace System.ServiceModel
 
 		public const string MSTlsnegoTokenContent = "http://schemas.microsoft.com/ws/2006/05/security";
 
+		public const string WstTlsnegoProofTokenType = "http://schemas.xmlsoap.org/2005/02/trust/tlsnego#TLS_Wrap";
+
 		public const string WstIssueRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue";
 
 		public const string WstRenewRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Renew";

@@ -1,3 +1,8 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializer.cs : fixed SecurityContextToken Id
+	  and prefix output.
+
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManager.cs :

@@ -202,5 +202,13 @@ namespace System.ServiceModel.Security.Tokens
 			Protocol.ReceiveRecord (stream); // ChangeCipherSpec
 			Protocol.ReceiveRecord (stream); // ServerFinished
 		}
+
+		public byte [] ProcessApplicationData (byte [] raw)
+		{
+			stream.SetLength (0);
+			stream.Write (raw, 0, raw.Length);
+			stream.Seek (0, SeekOrigin.Begin);
+			return Protocol.ReceiveRecord (stream); // ApplicationData
+		}
 	}
 }

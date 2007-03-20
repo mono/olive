@@ -116,5 +116,13 @@ namespace System.ServiceModel.Security.Tokens
 			stream.Flush ();
 			return stream.ToArray ();
 		}
+
+		public byte [] ProcessApplicationData (byte [] raw)
+		{
+			stream.SetLength (0);
+			Protocol.SendRecord (ContentType.ApplicationData, raw);
+			stream.Flush ();
+			return stream.ToArray ();
+		}
 	}
 }

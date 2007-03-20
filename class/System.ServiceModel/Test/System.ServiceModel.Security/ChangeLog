@@ -1,3 +1,8 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : so, RequestedProofToken content
+	  is unlikely readable here.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManagerTest.cs : test DedaultValues().

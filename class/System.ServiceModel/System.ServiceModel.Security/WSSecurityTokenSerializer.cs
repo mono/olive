@@ -917,8 +917,8 @@ namespace System.ServiceModel.Security
 		void WriteSecurityContextSecurityToken (XmlWriter w, SecurityContextSecurityToken token)
 		{
 			string ns = Constants.WsscNamespace;
-			w.WriteStartElement ("t", "SecurityContextToken", ns);
-			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace);
+			w.WriteStartElement ("c", "SecurityContextToken", ns);
+			w.WriteAttributeString ("u", "Id", Constants.WsuNamespace, token.Id);
 			w.WriteElementString ("Identifier", ns, token.ContextId.ToString ());
 			// FIXME: add Cookie output (from CreateCookieSecurityContextToken() method)
 			if (token.Cookie != null)

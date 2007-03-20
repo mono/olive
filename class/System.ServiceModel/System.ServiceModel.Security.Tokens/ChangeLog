@@ -1,3 +1,11 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsClientSession.cs, TlsServerSession.cs :
+	  added ProcessApplicationData()
+	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :
+	  process RequestedProofToken as raw TLS negotiation data.
+	* SslnegoCookieResolver.cs : add comments on data format.
+
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TlsClientSession.cs : added CreateAuthHash(), used by authenticator.

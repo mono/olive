@@ -111,6 +111,10 @@ namespace System.ServiceModel.Security.Tokens
 				IssuerBinding, IssuerAddress);
 			response = proxy.IssueReply (request);
 
+MessageBuffer bugg = response.CreateBufferedCopy (10000);
+response = bugg.CreateMessage ();
+Console.WriteLine (bugg.CreateMessage ());
+
 			// FIXME: support simple RSTR
 			WstRequestSecurityTokenResponseCollection coll =
 				new WstRequestSecurityTokenResponseCollection ();
@@ -121,10 +125,15 @@ namespace System.ServiceModel.Security.Tokens
 			SecurityContextSecurityToken sctSrc =
 				r.RequestedSecurityToken;
 
-			// FIXME: probably reject keyless input token here.
-			byte [] key = sctSrc.SecurityKeys.Count > 0 ?
-				((SymmetricSecurityKey) sctSrc.SecurityKeys [0]).GetSymmetricKey () :
-				null;
+			// the RequestedProofToken looks like below:
+			// 17 03 01 00 30 1A 37 0A 80 3D 5E F7 6B 54 FA A0 FA 1B
+			// C2 D6 B8 DB F0 4D E5 62 85 A7 31 0C 8E F9 F4 D9 5C 35
+			// 99 DA C7 BE 45 8B 58 A1 B3 D0 B0 F8 8E C3 1C 46 A0
+			// This looks like a TLS ApplicationData which consists
+			// of 32 bytes of data. It smells like *the* shared key.
+			byte [] key = tls.ProcessApplicationData (
+				(byte []) r.RequestedProofToken);
+
 			// FIXME: get correct parameter values.
 			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (sctSrc.ContextId, sctSrc.Id, key,
 				r.Lifetime.Created, r.Lifetime.Expires, null,
