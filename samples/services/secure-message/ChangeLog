@@ -1,3 +1,8 @@
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : with this temporary addition, you might be able to
+	  understand what is included in the security state raw data.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc10.cs : removed extra code. Use pass-through security state

@@ -10,6 +10,7 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
 
 public class Test
 {
@@ -25,6 +26,18 @@ foreach (byte b in src) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 foreach (byte b in src) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			// this show how it is LAMESPEC.
 			//Array.Reverse (src);
+XmlDictionary dic = new XmlDictionary ();
+for (int i = 0; i < 12; i++)
+	dic.Add ("n" + i);
+XmlDictionaryReaderQuotas quotas =
+	new XmlDictionaryReaderQuotas ();
+XmlDictionaryReader cr = XmlDictionaryReader.CreateBinaryReader (src, 0, src.Length, dic, quotas);
+cr.Read ();
+XmlWriter w = XmlWriter.Create (Console.Out);
+while (!cr.EOF)
+	w.WriteNode (cr, false);
+w.Close ();
+
 			return src;
 		}
 	}
