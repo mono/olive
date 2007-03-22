@@ -46,15 +46,18 @@ namespace System.ServiceModel.Security.Tokens
 			get { return Context.MasterSecret; }
 		}
 
-		public byte [] CreateAuthHash (byte [] key)
+		public byte [] CreateHashAlt (byte [] key, byte [] seedSrc, string label)
 		{
-			string label = "AUTH-HASH";
-			byte [] keyhash = SHA1.Create ().ComputeHash (key);
 			byte [] labelBytes = Encoding.UTF8.GetBytes (label);
-			byte [] seed = new byte [keyhash.Length + labelBytes.Length];
-			Array.Copy (keyhash, seed, keyhash.Length);
-			Array.Copy (labelBytes, 0, seed, keyhash.Length, labelBytes.Length);
+			byte [] seed = new byte [seedSrc.Length + labelBytes.Length];
+			Array.Copy (seedSrc, seed, seedSrc.Length);
+			Array.Copy (labelBytes, 0, seed, seedSrc.Length, labelBytes.Length);
 			return Context.Current.Cipher.Expand ("SHA1", key, seed, 256 / 8);
+		}
+
+		public byte [] CreateHash (byte [] key, byte [] seed, string label)
+		{
+			return Context.Current.Cipher.PRF (key, label, seed, 256 / 8);
 		}
 
 		protected void WriteHandshake (MemoryStream ms)

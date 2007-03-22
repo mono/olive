@@ -1,3 +1,9 @@
+2007-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TlsClientSession.cs, SslSecurityTokenProvider.cs,
+	  SslSecurityTokenAuthenticator.cs : added hash calculation support,
+	  not working yet though (probably at service side).
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenAuthenticator.cs : don't reuse ContextId for SCT.

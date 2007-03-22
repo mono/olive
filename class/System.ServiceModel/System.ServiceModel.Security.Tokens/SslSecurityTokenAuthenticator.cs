@@ -28,12 +28,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Net.Security;
 using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
@@ -111,19 +113,51 @@ namespace System.ServiceModel.Security.Tokens
 				return ProcessClientKeyExchange (request);
 		}
 
-		Dictionary<string,TlsServerSession> sessions =
-			new Dictionary<string,TlsServerSession> ();
+		class TlsServerSessionInfo
+		{
+			public TlsServerSessionInfo (string context, TlsServerSession tls)
+			{
+				ContextId = context;
+				Tls = tls;
+			}
+
+			public string ContextId;
+			public TlsServerSession Tls;
+			public MemoryStream Messages = new MemoryStream ();
+		}
+
+		Dictionary<string,TlsServerSessionInfo> sessions =
+			new Dictionary<string,TlsServerSessionInfo> ();
+
+		void AppendNegotiationMessageXml (XmlReader reader, TlsServerSessionInfo tlsInfo)
+		{
+			XmlDsigExcC14NTransform t = new XmlDsigExcC14NTransform ();
+			XmlDocument doc = new XmlDocument ();
+			doc.PreserveWhitespace = true;
+			reader.MoveToContent ();
+			doc.AppendChild (doc.ReadNode (reader));
+			t.LoadInput (doc);
+			MemoryStream stream = (MemoryStream) t.GetOutput ();
+			byte [] bytes = stream.ToArray ();
+			tlsInfo.Messages.Write (bytes, 0, bytes.Length);
+		}
 
 		Message ProcessClientHello (Message request)
 		{
+			// FIXME: use correct buffer size
+			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
 			WSTrustRequestSecurityTokenReader reader =
-				new WSTrustRequestSecurityTokenReader (request.GetReaderAtBodyContents (), SecurityTokenSerializer);
+				new WSTrustRequestSecurityTokenReader (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer);
 			reader.Read ();
 
 			if (sessions.ContainsKey (reader.Value.Context))
 				throw new InvalidOperationException (String.Format ("The context '{0}' already exists in this SSL negotiation manager", reader.Value.Context));
 
 			TlsServerSession tls = new TlsServerSession (owner.Manager.ServiceCredentials.ServiceCertificate.Certificate, owner.IsMutual);
+			TlsServerSessionInfo tlsInfo = new TlsServerSessionInfo (
+				reader.Value.Context, tls);
+
+			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 
 			tls.ProcessClientHello (reader.Value.BinaryExchange.Value);
 			WstRequestSecurityTokenResponse rstr =
@@ -135,25 +169,39 @@ namespace System.ServiceModel.Security.Tokens
 			Message reply = Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, rstr);
 			reply.Headers.RelatesTo = request.Headers.MessageId;
 
-			sessions [reader.Value.Context] = tls;
+			// FIXME: use correct buffer size
+			buffer = reply.CreateBufferedCopy (0x10000);
+			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 
-			return reply;
+			sessions [reader.Value.Context] = tlsInfo;
+
+			return buffer.CreateMessage ();
 		}
 
 		Message ProcessClientKeyExchange (Message request)
 		{
+			// FIXME: use correct buffer size
+			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
 			WSTrustRequestSecurityTokenResponseReader reader =
-				new WSTrustRequestSecurityTokenResponseReader (request.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+				new WSTrustRequestSecurityTokenResponseReader (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 
-			TlsServerSession tls;
-			if (!sessions.TryGetValue (reader.Value.Context, out tls))
+			TlsServerSessionInfo tlsInfo;
+			if (!sessions.TryGetValue (reader.Value.Context, out tlsInfo))
 				throw new InvalidOperationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
+			TlsServerSession tls = tlsInfo.Tls;
+
+			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
+//Console.WriteLine (System.Text.Encoding.UTF8.GetString (tlsInfo.Messages.ToArray ()));
+
 			tls.ProcessClientKeyExchange (reader.Value.BinaryExchange.Value);
 
 			byte [] serverFinished = tls.ProcessServerFinished ();
 
-			RijndaelManaged aes = new RijndaelManaged ();
+			// The shared key is computed as:
+			// P_SHA1(encrypted_key,SHA1(exc14n(RST..RSTRs))+"CK-HASH")
+			byte [] hash = SHA1.Create ().ComputeHash (tlsInfo.Messages.GetBuffer (), 0, (int) tlsInfo.Messages.Length);
+			byte [] ckhash = tls.CreateHash (tls.MasterSecret, hash, "CK-HASH");
 
 			WstRequestSecurityTokenResponseCollection col =
 				new WstRequestSecurityTokenResponseCollection ();
@@ -168,14 +216,14 @@ namespace System.ServiceModel.Security.Tokens
 				// (do not use sslnego context here.)
 				new UniqueId (),
 				"uuid-" + Guid.NewGuid (),
-				aes.Key,
+				ckhash,
 				from,
 				// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
 				from.AddHours (8),
 				null,
 				owner.Manager.ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder);
 			rstr.RequestedSecurityToken = sct;
-			rstr.RequestedProofToken = tls.ProcessApplicationData (aes.Key);
+			rstr.RequestedProofToken = tls.ProcessApplicationData (ckhash);
 			rstr.RequestedAttachedReference = new LocalIdKeyIdentifierClause (sct.Id);
 			rstr.RequestedUnattachedReference = new SecurityContextKeyIdentifierClause (sct.ContextId, null);
 			WstLifetime lt = new WstLifetime ();
@@ -188,10 +236,10 @@ namespace System.ServiceModel.Security.Tokens
 
 			col.Responses.Add (rstr);
 
-			// FIXME: add authenticator
+			// Authenticator is mandatory for MS sslnego.
 			rstr = new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
-			rstr.Authenticator = tls.CreateAuthHash (aes.Key);
+			rstr.Authenticator = tls.CreateHash (key, hash, "AUTH-HASH");
 			col.Responses.Add (rstr);
 
 			sessions.Remove (reader.Value.Context);

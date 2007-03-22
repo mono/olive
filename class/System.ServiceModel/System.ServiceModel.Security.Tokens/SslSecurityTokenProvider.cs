@@ -33,6 +33,7 @@ using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.Security.Cryptography;
 using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
@@ -71,8 +72,32 @@ namespace System.ServiceModel.Security.Tokens
 		{
 		}
 
+		class TlsnegoClientSessionContext
+		{
+			XmlDocument doc = new XmlDocument ();
+			XmlDsigExcC14NTransform t = new XmlDsigExcC14NTransform ();
+			MemoryStream stream = new MemoryStream ();
+
+			public void StoreMessage (XmlReader reader)
+			{
+				doc.RemoveAll ();
+				doc.AppendChild (doc.ReadNode (reader));
+				t.LoadInput (doc);
+				MemoryStream s = (MemoryStream) t.GetOutput ();
+				byte [] bytes = s.ToArray ();
+				stream.Write (bytes, 0, bytes.Length);
+			}
+
+			public byte [] GetC14NResults ()
+			{
+				return stream.ToArray ();
+			}
+		}
+
 		public SecurityToken GetToken (TimeSpan timeout)
 		{
+			TlsnegoClientSessionContext tlsctx =
+				new TlsnegoClientSessionContext ();
 			TlsClientSession tls = new TlsClientSession (IssuerAddress.Uri.ToString ());
 			WstRequestSecurityToken rst =
 				new WstRequestSecurityToken ();
@@ -85,11 +110,17 @@ namespace System.ServiceModel.Security.Tokens
 			request.Headers.MessageId = new UniqueId ();
 			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
 			request.Headers.To = TargetAddress.Uri;
-			Message response = proxy.Issue (request);
+			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
+			tlsctx.StoreMessage (buffer.CreateMessage ().GetReaderAtBodyContents ());
+			Message response = proxy.Issue (buffer.CreateMessage ());
+
+			// FIXME: use correct limitation
+			buffer = response.CreateBufferedCopy (0x10000);
+			tlsctx.StoreMessage (buffer.CreateMessage ().GetReaderAtBodyContents ());
 
 			// receive ServerHello
 			WSTrustRequestSecurityTokenResponseReader reader =
-				new WSTrustRequestSecurityTokenResponseReader (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+				new WSTrustRequestSecurityTokenResponseReader (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 			if (reader.Value.RequestedSecurityToken != null)
 				return reader.Value.RequestedSecurityToken;
@@ -106,33 +137,49 @@ namespace System.ServiceModel.Security.Tokens
 			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueReplyAction, rstr);
 			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
 			request.Headers.To = TargetAddress.Uri;
+
+			buffer = request.CreateBufferedCopy (0x10000);
+			tlsctx.StoreMessage (buffer.CreateMessage ().GetReaderAtBodyContents ());
+//Console.WriteLine (System.Text.Encoding.UTF8.GetString (tlsctx.GetC14NResults ()));
+
 			// FIXME: regeneration of this instance is somehow required, but should not be.
 			proxy = new WSTrustSecurityTokenServiceProxy (
 				IssuerBinding, IssuerAddress);
-			response = proxy.IssueReply (request);
-
-MessageBuffer bugg = response.CreateBufferedCopy (10000);
-response = bugg.CreateMessage ();
-Console.WriteLine (bugg.CreateMessage ());
+			response = proxy.IssueReply (buffer.CreateMessage ());
+			// FIXME: use correct limitation
+			buffer = response.CreateBufferedCopy (0x10000);
+			// don't store this message in tlsctx (it's not part
+			// of exchange)
 
 			// FIXME: support simple RSTR
 			WstRequestSecurityTokenResponseCollection coll =
 				new WstRequestSecurityTokenResponseCollection ();
-			coll.Read (response.GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			coll.Read (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 
 			WstRequestSecurityTokenResponse r = coll.Responses [0];
 			tls.ProcessServerFinished (r.BinaryExchange.Value);
 			SecurityContextSecurityToken sctSrc =
 				r.RequestedSecurityToken;
 
-			// the RequestedProofToken looks like below:
-			// 17 03 01 00 30 1A 37 0A 80 3D 5E F7 6B 54 FA A0 FA 1B
-			// C2 D6 B8 DB F0 4D E5 62 85 A7 31 0C 8E F9 F4 D9 5C 35
-			// 99 DA C7 BE 45 8B 58 A1 B3 D0 B0 F8 8E C3 1C 46 A0
-			// This looks like a TLS ApplicationData which consists
-			// of 32 bytes of data. It smells like *the* shared key.
+			// the RequestedProofToken is represented as 32 bytes
+			// of TLS ApplicationData.
 			byte [] key = tls.ProcessApplicationData (
 				(byte []) r.RequestedProofToken);
+
+			byte [] actual = coll.Responses.Count > 1 ? coll.Responses [1].Authenticator : null;
+			if (actual == null)
+				throw new MessageSecurityException ("Token authenticator is expected in the RequestSecurityTokenResponse but not found.");
+			// H = sha1(exc14n(RST..RSTRs))
+
+			byte [] hash = SHA1.Create ().ComputeHash (tlsctx.GetC14NResults ());
+			byte [] referent = tls.CreateHash (tls.MasterSecret, hash, "AUTH-HASH");
+			bool mismatch = referent.Length != actual.Length;
+			if (!mismatch)
+				for (int i = 0; i < referent.Length; i++)
+					if (referent [i] != actual [i])
+						mismatch = true;
+			if (mismatch)
+				throw new MessageSecurityException ("The CombinedHash does not match the expected value.");
 
 			// FIXME: get correct parameter values.
 			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (sctSrc.ContextId, sctSrc.Id, key,
