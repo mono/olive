@@ -20,11 +20,16 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface IExecuteResults
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region Properties
+        object ReturnValue { get; }
+        #endregion
+
+        #region Methods
+        object GetParameterValue(int parameterIndex);
+        #endregion
     }
 }

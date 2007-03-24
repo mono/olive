@@ -20,11 +20,12 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface ICompiledQuery
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region Methods
+        object Execute(IProvider provider, object[] arguments);
+        #endregion
     }
 }

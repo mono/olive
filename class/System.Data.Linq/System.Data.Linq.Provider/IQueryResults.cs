@@ -20,11 +20,11 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Collections;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface IQueryResults : IExecuteResults, IEnumerable
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
     }
 }

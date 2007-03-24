@@ -49,6 +49,6 @@ using System.Runtime.InteropServices;
 [assembly: SatelliteContractVersion (Consts.FxVersion)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../mono.pub")]
+[assembly: AssemblyKeyFile ("../msfinal.pub")]
 [assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification=true)]
 [assembly: AllowPartiallyTrustedCallers]

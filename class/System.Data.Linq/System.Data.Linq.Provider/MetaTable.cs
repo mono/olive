@@ -22,9 +22,7 @@
 
 namespace System.Data.Linq
 {
-    public enum ConflictMode
+    public abstract class MetaTable
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
     }
 }

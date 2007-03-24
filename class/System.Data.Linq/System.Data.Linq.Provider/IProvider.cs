@@ -20,11 +20,45 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Collections;
+using System.Data;
+using System.IO;
+using System.Linq.Expressions;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface IProvider : IDisposable
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region Properties
+        IDbConnection Connection { get; }
+
+        TextWriter Log { get; set; }
+
+        IDbTransaction Transaction { get; set; }
+        #endregion
+
+        #region Methods
+        void ClearConnection();
+
+        ICompiledQuery Compile(Expression query);
+
+        void CreateDatabase();
+
+        bool DatabaseExists();
+
+        void DeleteDatabase();
+
+        IMultipleResults ExecuteMultipleResults(Expression query);
+
+        IExecuteResults ExecuteNonQuery(Expression query);
+
+        IQueryResults ExecuteQuery(Expression query);
+
+        string GetQueryText(Expression query);
+
+        void Initialize(IDataServices dataServices, object connection);
+
+        IEnumerator Translate(Type elementType, IDataReader reader);
+        #endregion
     }
 }

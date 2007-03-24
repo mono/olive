@@ -20,11 +20,45 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Reflection;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public abstract class MetaFunction
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region .ctor
+        protected MetaFunction()
+        {
+        }
+        #endregion
+
+        #region Properties
+        public abstract MetaFunctionType FunctionType { get; }
+
+        public abstract bool HasMultipleResults { get; }
+
+        public abstract string MappedName { get; }
+
+        public abstract MethodInfo Method { get; }
+
+        public abstract MetaModel Model { get; }
+
+        public abstract string Name { get; }
+
+        public abstract ReadOnlyCollection<MetaParameter> Parameters { get; }
+
+        public abstract MetaParameter ReturnParameter { get; }
+
+        public abstract MetaType RowType { get; }
+        #endregion
+
+
+        #region Public Methods
+        public abstract MetaType GetMultipleResultsRowType(Type type);
+
+        public abstract IEnumerable<MetaType> GetMultipleResultsRowTypes();
+        #endregion
     }
 }

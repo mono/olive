@@ -20,11 +20,14 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Collections.Generic;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface IMultipleResults : IExecuteResults, IDisposable
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region Methods
+        IEnumerable<T> GetResult<T>();
+        #endregion
     }
 }

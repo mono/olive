@@ -20,11 +20,40 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public abstract class MetaAccessor
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region .ctor
+        protected MetaAccessor()
+        {
+        }
+        #endregion
+
+        #region Properties
+        public abstract Type Type { get; }
+        #endregion
+
+        #region Public Methods
+        public abstract object GetBoxedValue(object instance);
+
+        public abstract void SetBoxedValue(ref object instance, object value);
+
+
+        public virtual bool HasAssignedValue(object instance)
+        {
+            return true;
+        }
+
+        public virtual bool HasLoadedValue(object instance)
+        {
+            return false;
+        }
+
+        public virtual bool HasValue(object instance)
+        {
+            return true;
+        }
+        #endregion
     }
 }

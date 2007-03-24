@@ -20,11 +20,14 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Collections;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public interface IDeferredSourceFactory
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        IEnumerable CreateDeferredSource(object instance);
+
+        IEnumerable CreateDeferredSource(object[] keyValues);
     }
 }

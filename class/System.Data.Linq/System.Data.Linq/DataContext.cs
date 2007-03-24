@@ -22,9 +22,20 @@
 
 namespace System.Data.Linq
 {
-    public enum ConflictMode
+    public class DataContext : ICloneable, IDisposable
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region Public Methods
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Clone()
+        {
+            throw new NotImplementedException();
+        }
+
+        #endregion
     }
 }

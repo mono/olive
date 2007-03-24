@@ -20,11 +20,28 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+using System.Reflection;
+
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public abstract class MetaParameter
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        #region .ctor
+        protected MetaParameter()
+        {
+        }
+        #endregion
+
+        #region Properties
+        public abstract string DBType { get; }
+
+        public abstract string MappedName { get; }
+
+        public abstract string Name { get; }
+
+        public abstract ParameterInfo Parameter { get; }
+
+        public abstract Type ParameterType { get; }
+        #endregion
     }
 }

@@ -20,11 +20,13 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq
+namespace System.Data.Linq.Provider
 {
-    public enum ConflictMode
+    public enum MetaFunctionType
     {
-        FailOnFirstConflict,
-        ContinueOnConflict
+        Invalid,
+        StoredProcedure,
+        UserDefinedFunction,
+        TableValuedFunction
     }
 }

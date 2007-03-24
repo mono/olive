@@ -20,36 +20,47 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-using System.Collections.Generic;
-using System.Reflection;
+using System.Linq;
+using System.Linq.Expressions;
 
 namespace System.Data.Linq.Provider
 {
-    public abstract class MetaModel
+    public interface IDataServices
     {
-        #region .ctor
-        protected MetaModel()
-        {
-        }
-        #endregion
-
         #region Properties
-        public abstract string DatabaseName { get; }
+        DataContext Context { get; }
 
-        public abstract Type ProviderType { get; }
+        MetaModel Model { get; }
         #endregion
 
+        #region Methods
+        IQueryable CreateQuery(Type type, Expression expression);
 
-        #region Public Methods
-        public abstract MetaFunction GetFunction(MethodInfo method);
+        object GetCachedObject(Expression query);
 
-        public abstract IEnumerable<MetaFunction> GetFunctions();
+        object GetCachedObject(MetaType type, object[] keyValues);
 
-        public abstract MetaTable GetTable(Type rowType);
+        IQueryable GetDataMemberQuery(MetaDataMember member, Expression[] keyValues);
 
-        public abstract IEnumerable<MetaTable> GetTables();
+        IQueryable GetDataMemberQuery(MetaDataMember member, object[] keyValues);
 
-        public abstract MetaType GetUnmappedType(Type type);
+        IDeferredSourceFactory GetDeferredSourceFactory(MetaDataMember member);
+
+        object[] GetForeignKeyValues(MetaAssociation association, object instance);
+
+        object[] GetKeyValues(MetaType type, LambdaExpression predicate);
+
+        object[] GetKeyValues(MetaType type, object instance);
+
+        IQueryable GetObjectQuery(MetaType type, Expression[] keyValues);
+
+        IQueryable GetObjectQuery(MetaType type, object[] keyValues);
+
+        object InsertLookupCachedObject(MetaType type, object instance);
+
+        bool IsCachedObject(MetaType type, object instance);
+
+        void OnEntityMaterialized(MetaType type, object instance);
         #endregion
     }
 }
