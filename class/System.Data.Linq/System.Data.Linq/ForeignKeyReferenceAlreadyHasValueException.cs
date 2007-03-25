@@ -20,22 +20,22 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    public class ForeignKeyReferenceAlreadyHasValueException : InvalidOperationException
     {
-        #region .ctor
-        protected MetaTable()
+        public ForeignKeyReferenceAlreadyHasValueException()
         {
         }
-        #endregion
 
-        #region Properties
-        public abstract MetaModel Model { get; }
+        public ForeignKeyReferenceAlreadyHasValueException(string message)
+            : base(message)
+        {
+        }
 
-        public abstract MetaType RowType { get; }
-
-        public abstract string TableName { get; }
-        #endregion
+        public ForeignKeyReferenceAlreadyHasValueException(string message, Exception innerException)
+            : base(message, innerException)
+        {
+        }
     }
 }

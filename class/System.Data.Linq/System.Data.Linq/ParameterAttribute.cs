@@ -20,22 +20,34 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    [AttributeUsage(AttributeTargets.ReturnValue | AttributeTargets.Parameter, AllowMultiple = false)]
+    public sealed class ParameterAttribute : Attribute
     {
         #region .ctor
-        protected MetaTable()
+        public ParameterAttribute() 
         {
         }
         #endregion
 
+        #region Fields
+        private string dbType;
+        private string name;
+        #endregion
+
         #region Properties
-        public abstract MetaModel Model { get; }
+        public string DBType
+        {
+            get { return dbType; }
+            set { dbType = value; }
+        }
 
-        public abstract MetaType RowType { get; }
-
-        public abstract string TableName { get; }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         #endregion
     }
 }

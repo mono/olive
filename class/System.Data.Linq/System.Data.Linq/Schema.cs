@@ -20,22 +20,49 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+using System.Data.Linq.Provider;
+using System.Reflection;
+
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    public abstract class Schema
     {
-        #region .ctor
-        protected MetaTable()
+        protected Schema(DataContext context)
         {
+            if (context == null)
+                throw new ArgumentNullException("context");
+            this.context = context;
         }
+
+        #region Fields
+        private DataContext context;
         #endregion
 
         #region Properties
-        public abstract MetaModel Model { get; }
+        public DataContext Context
+        {
+            get { return context; }
+        }
+        #endregion
 
-        public abstract MetaType RowType { get; }
+        #region Protected Methods
+        protected IExecuteResults ExecuteMethodCall(object instance, MethodInfo methodInfo, params object[] parameters)
+        {
+            //TODO:
+            throw new NotImplementedException();
+        }
 
-        public abstract string TableName { get; }
+        protected IQueryResults<T> ExecuteMethodCall<T>(object instance, MethodInfo methodInfo, params object[] parameters)
+        {
+            //TODO:
+            throw new NotImplementedException();
+        }
+
+        protected IMultipleResults ExecuteMethodCallWithMultipleResults(object instance, MethodInfo methodInfo, params object[] parameters)
+        {
+            //TODO:
+            throw new NotImplementedException();
+        }
         #endregion
     }
 }

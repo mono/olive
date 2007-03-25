@@ -20,22 +20,27 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    [AttributeUsage(AttributeTargets.Method, AllowMultiple = false)]
+    public sealed class FunctionAttribute : Attribute
     {
         #region .ctor
-        protected MetaTable()
+        public FunctionAttribute()
         {
         }
         #endregion
 
+        #region Fields
+        private string name;
+        #endregion
+
         #region Properties
-        public abstract MetaModel Model { get; }
-
-        public abstract MetaType RowType { get; }
-
-        public abstract string TableName { get; }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         #endregion
     }
 }

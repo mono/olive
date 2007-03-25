@@ -20,22 +20,31 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
+    public sealed class ProviderAttribute : Attribute
     {
         #region .ctor
-        protected MetaTable()
+        public ProviderAttribute()
         {
+        }
+
+        public ProviderAttribute(Type type)
+        {
+            this.type = type;
         }
         #endregion
 
+        #region Fields
+        private Type type;
+        #endregion
+
         #region Properties
-        public abstract MetaModel Model { get; }
-
-        public abstract MetaType RowType { get; }
-
-        public abstract string TableName { get; }
+        public Type Type
+        {
+            get { return type; }
+        }
         #endregion
     }
 }

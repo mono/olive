@@ -20,22 +20,17 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-namespace System.Data.Linq.Provider
+using System.Collections;
+using System.Linq;
+
+namespace System.Data.Linq
 {
-    public abstract class MetaTable
+    public interface ITable : IQueryable, IEnumerable
     {
-        #region .ctor
-        protected MetaTable()
-        {
-        }
-        #endregion
+        DataContext Context { get; }
 
-        #region Properties
-        public abstract MetaModel Model { get; }
+        string Name { get; }
 
-        public abstract MetaType RowType { get; }
-
-        public abstract string TableName { get; }
-        #endregion
+        Type RowType { get; }
     }
 }
