@@ -88,9 +88,13 @@ namespace System.ServiceModel
 		// .NET BUG: it requires extra white space !
 		public const string WstBinaryExchangeValueTls = " http://schemas.xmlsoap.org/ws/2005/02/trust/tlsnego";
 
+		public const string WstBinaryExchangeValueGss = "http://schemas.xmlsoap.org/ws/2005/02/trust/spnego";
+
 		public const string MSTlsnegoTokenContent = "http://schemas.microsoft.com/ws/2006/05/security";
 
 		public const string WstTlsnegoProofTokenType = "http://schemas.xmlsoap.org/2005/02/trust/tlsnego#TLS_Wrap";
+
+		public const string WstSpnegoProofTokenType = "http://schemas.xmlsoap.org/2005/02/trust/spnego#TLS_Wrap";
 
 		public const string WstIssueRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue";
 

@@ -103,7 +103,7 @@ namespace System.ServiceModel.Security.Tokens
 				new WstRequestSecurityToken ();
 
 			// send ClientHello
-			rst.BinaryExchange = new WstBinaryExchange ();
+			rst.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
 			rst.BinaryExchange.Value = tls.ProcessClientHello ();
 
 			Message request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rst);
@@ -120,7 +120,7 @@ namespace System.ServiceModel.Security.Tokens
 
 			// receive ServerHello
 			WSTrustRequestSecurityTokenResponseReader reader =
-				new WSTrustRequestSecurityTokenResponseReader (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+				new WSTrustRequestSecurityTokenResponseReader (Constants.WstTlsnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 			if (reader.Value.RequestedSecurityToken != null)
 				return reader.Value.RequestedSecurityToken;
@@ -131,7 +131,7 @@ namespace System.ServiceModel.Security.Tokens
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
-			rstr.BinaryExchange = new WstBinaryExchange ();
+			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
 			rstr.BinaryExchange.Value = tls.ProcessClientKeyExchange ();
 
 			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueReplyAction, rstr);
@@ -151,53 +151,45 @@ namespace System.ServiceModel.Security.Tokens
 			// don't store this message in tlsctx (it's not part
 			// of exchange)
 
-			// FIXME: support simple RSTR
 			WstRequestSecurityTokenResponseCollection coll =
 				new WstRequestSecurityTokenResponseCollection ();
-			coll.Read (buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			coll.Read (Constants.WstTlsnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+			if (coll.Responses.Count != 2)
+				throw new SecurityNegotiationException (String.Format ("Expected response is RequestSecurityTokenResponseCollection which contains two RequestSecurityTokenResponse items, but it actually contains {0} items", coll.Responses.Count));
 
 			WstRequestSecurityTokenResponse r = coll.Responses [0];
 			tls.ProcessServerFinished (r.BinaryExchange.Value);
 			SecurityContextSecurityToken sctSrc =
 				r.RequestedSecurityToken;
 
+			// Authenticate token.
+			byte [] key = tls.MasterSecret; //(sctSrc.SecurityKeys [0] as SymmetricSecurityKey).GetSymmetricKey ();
+//foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+
 			// the RequestedProofToken is represented as 32 bytes
 			// of TLS ApplicationData.
-			byte [] key = tls.ProcessApplicationData (
+			byte [] proof = tls.ProcessApplicationData (
 				(byte []) r.RequestedProofToken);
 
-			byte [] actual = coll.Responses.Count > 1 ? coll.Responses [1].Authenticator : null;
+			byte [] actual = coll.Responses [1].Authenticator;
 			if (actual == null)
-				throw new MessageSecurityException ("Token authenticator is expected in the RequestSecurityTokenResponse but not found.");
-			// H = sha1(exc14n(RST..RSTRs))
+				throw new SecurityNegotiationException ("Token authenticator is expected in the RequestSecurityTokenResponse but not found.");
 
+			// H = sha1(exc14n(RST..RSTRs))
 			byte [] hash = SHA1.Create ().ComputeHash (tlsctx.GetC14NResults ());
-			byte [] referent = tls.CreateHash (tls.MasterSecret, hash, "AUTH-HASH");
+			byte [] referent = tls.CreateHash (key, hash, "AUTH-HASH");
+foreach (byte b in hash) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+foreach (byte b in referent) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+foreach (byte b in actual) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			bool mismatch = referent.Length != actual.Length;
 			if (!mismatch)
 				for (int i = 0; i < referent.Length; i++)
 					if (referent [i] != actual [i])
 						mismatch = true;
 			if (mismatch)
-				throw new MessageSecurityException ("The CombinedHash does not match the expected value.");
+				throw new SecurityNegotiationException ("The CombinedHash does not match the expected value.");
 
-			// FIXME: get correct parameter values.
-			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (sctSrc.ContextId, sctSrc.Id, key,
-				r.Lifetime.Created, r.Lifetime.Expires, null,
-				DateTime.MinValue, DateTime.MaxValue, null);
-			// FIXME: authenticate token if required.
-
-			// the input dnse:Cookie value is encrypted by the
-			// server's SecurityStateEncoder
-			// (setting error-raising encoder to ServiceCredentials.
-			// SecureConversationAuthentication.SecurityStateEncoder
-			// shows it).
-			// FIXME: so, now we need to find out what the "raw"
-			// value means. It wasn't either
-			// - XML binary dictioanry reader value, or
-			// - valid utf16 string.
-
-			return sct;
+			return sctSrc;
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {

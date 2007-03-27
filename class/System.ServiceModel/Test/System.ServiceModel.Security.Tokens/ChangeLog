@@ -1,3 +1,9 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SspiSecurityTokenParametersTest.cs : Added test for security
+	  token provider as a communication object.
+	  Added test for authenticator.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenParametersTest.cs : test for creating key clause

@@ -1,5 +1,5 @@
 //
-// SslSecurityTokenAuthenticator.cs
+// SpnegoSecurityTokenAuthenticator.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
@@ -47,23 +47,17 @@ using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenReq
 namespace System.ServiceModel.Security.Tokens
 {
 	// FIXME: implement all
-	class SslSecurityTokenAuthenticator : CommunicationSecurityTokenAuthenticator
+	class SpnegoSecurityTokenAuthenticator : CommunicationSecurityTokenAuthenticator
 	{
 		ServiceCredentialsSecurityTokenManager manager;
-		SslAuthenticatorCommunicationObject comm;
-		bool mutual;
+		SpnegoAuthenticatorCommunicationObject comm;
 
-		public SslSecurityTokenAuthenticator (
+		public SpnegoSecurityTokenAuthenticator (
 			ServiceCredentialsSecurityTokenManager manager, 
 			SecurityTokenRequirement r)
 		{
 			this.manager = manager;
-			mutual = (r.TokenType == ServiceModelSecurityTokenTypes.MutualSslnego);
-			comm = new SslAuthenticatorCommunicationObject (this);
-		}
-
-		public bool IsMutual {
-			get { return mutual; }
+			comm = new SpnegoAuthenticatorCommunicationObject (this);
 		}
 
 		public ServiceCredentialsSecurityTokenManager Manager {
@@ -86,11 +80,11 @@ namespace System.ServiceModel.Security.Tokens
 		}
 	}
 
-	class SslAuthenticatorCommunicationObject : AuthenticatorCommunicationObject
+	class SpnegoAuthenticatorCommunicationObject : AuthenticatorCommunicationObject
 	{
-		SslSecurityTokenAuthenticator owner;
+		SpnegoSecurityTokenAuthenticator owner;
 
-		public SslAuthenticatorCommunicationObject (SslSecurityTokenAuthenticator owner)
+		public SpnegoAuthenticatorCommunicationObject (SpnegoSecurityTokenAuthenticator owner)
 		{
 			this.owner = owner;
 		}
@@ -108,7 +102,7 @@ namespace System.ServiceModel.Security.Tokens
 		public override Message ProcessNegotiation (Message request)
 		{
 			if (request.Headers.Action == Constants.WstIssueAction)
-				return ProcessClientHello (request);
+				return ProcessMessageType1 (request);
 			else
 				return ProcessClientKeyExchange (request);
 		}
@@ -126,8 +120,8 @@ namespace System.ServiceModel.Security.Tokens
 			public MemoryStream Messages = new MemoryStream ();
 		}
 
-		Dictionary<string,TlsServerSessionInfo> sessions =
-			new Dictionary<string,TlsServerSessionInfo> ();
+		Dictionary<string,SspiServerSession> sessions =
+			new Dictionary<string,SspiServerSession> ();
 
 		void AppendNegotiationMessageXml (XmlReader reader, TlsServerSessionInfo tlsInfo)
 		{
@@ -142,7 +136,7 @@ namespace System.ServiceModel.Security.Tokens
 			tlsInfo.Messages.Write (bytes, 0, bytes.Length);
 		}
 
-		Message ProcessClientHello (Message request)
+		Message ProcessMessageType1 (Message request)
 		{
 			// FIXME: use correct buffer size
 			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
@@ -153,27 +147,24 @@ namespace System.ServiceModel.Security.Tokens
 			if (sessions.ContainsKey (reader.Value.Context))
 				throw new SecurityNegotiationException (String.Format ("The context '{0}' already exists in this SSL negotiation manager", reader.Value.Context));
 
-			TlsServerSession tls = new TlsServerSession (owner.Manager.ServiceCredentials.ServiceCertificate.Certificate, owner.IsMutual);
-			TlsServerSessionInfo tlsInfo = new TlsServerSessionInfo (
-				reader.Value.Context, tls);
+			SspiServerSession sspi = new SspiServerSession ();
+//			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 
-			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
-
-			tls.ProcessClientHello (reader.Value.BinaryExchange.Value);
+			sspi.ProcessMessageType1 (reader.Value.BinaryExchange.Value);
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
-			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
-			rstr.BinaryExchange.Value = tls.ProcessServerHello ();
+			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueGss);
+			rstr.BinaryExchange.Value = sspi.ProcessMessageType2 ();
 
 			Message reply = Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, rstr);
 			reply.Headers.RelatesTo = request.Headers.MessageId;
 
 			// FIXME: use correct buffer size
 			buffer = reply.CreateBufferedCopy (0x10000);
-			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
+//			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 
-			sessions [reader.Value.Context] = tlsInfo;
+			sessions [reader.Value.Context] = sspi;
 
 			return buffer.CreateMessage ();
 		}
@@ -182,15 +173,21 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			// FIXME: use correct buffer size
 			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
+Console.WriteLine (buffer.CreateMessage ());
 			WSTrustRequestSecurityTokenResponseReader reader =
-				new WSTrustRequestSecurityTokenResponseReader (Constants.WstTlsnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
+				new WSTrustRequestSecurityTokenResponseReader (Constants.WstSpnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 
-			TlsServerSessionInfo tlsInfo;
-			if (!sessions.TryGetValue (reader.Value.Context, out tlsInfo))
-				throw new SecurityNegotiationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
-			TlsServerSession tls = tlsInfo.Tls;
+foreach (byte b in reader.Value.BinaryExchange.Value) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 
+			SspiServerSession sspi;
+			if (!sessions.TryGetValue (reader.Value.Context, out sspi))
+				throw new SecurityNegotiationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
+
+			sspi.ProcessMessageType3 (reader.Value.BinaryExchange.Value);
+
+			throw new NotImplementedException ();
+/*
 			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 //Console.WriteLine (System.Text.Encoding.UTF8.GetString (tlsInfo.Messages.ToArray ()));
 
@@ -233,7 +230,7 @@ foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
 			lt.Expires = from.AddHours (8);
 			rstr.Lifetime = lt;
-			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
+			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueGss);
 			rstr.BinaryExchange.Value = serverFinished;
 
 			col.Responses.Add (rstr);
@@ -247,6 +244,7 @@ foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			sessions.Remove (reader.Value.Context);
 
 			return Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, col);
+*/
 		}
 
 		protected override void OnAbort ()

@@ -135,8 +135,7 @@ namespace System.ServiceModel.Description
 		{
 			if (reader.IsEmptyElement)
 				throw new XmlException (String.Format ("Binary content is expected in 'BinaryExchange' element.{0}", LineInfo ()));
-			WstBinaryExchange b = new WstBinaryExchange ();
-			b.ValueType = reader.GetAttribute ("ValueType");
+			WstBinaryExchange b = new WstBinaryExchange (reader.GetAttribute ("ValueType"));
 			b.EncodingType = reader.GetAttribute ("EncodingType");
 			b.Value = Convert.FromBase64String (reader.ReadElementContentAsString ());
 			req.BinaryExchange = b;
@@ -198,16 +197,19 @@ namespace System.ServiceModel.Description
 
 	class WSTrustRequestSecurityTokenResponseReader : IDisposable
 	{
+		string negotiation_type;
 		WstRequestSecurityTokenResponse res;
 		XmlDictionaryReader reader;
 		SecurityTokenSerializer serializer;
 		SecurityTokenResolver resolver;
 
 		public WSTrustRequestSecurityTokenResponseReader (
+			string negotiationType,
 			XmlDictionaryReader reader,
 			SecurityTokenSerializer serializer,
 			SecurityTokenResolver resolver)
 		{
+			this.negotiation_type = negotiationType;
 			this.reader = reader;
 			this.serializer = serializer;
 			this.resolver = resolver;
@@ -266,7 +268,7 @@ namespace System.ServiceModel.Description
 					string alg = reader.GetAttribute ("Algorithm");
 					bool isEmpty = reader.IsEmptyElement;
 					reader.ReadStartElement ("EncryptionMethod", ens);
-					if (alg != Constants.WstTlsnegoProofTokenType)
+					if (alg != negotiation_type)
 						throw new XmlException (String.Format ("EncryptionMethod '{0}' is not supported in RequestedProofToken.", alg));
 					if (!isEmpty)
 						reader.ReadEndElement ();
@@ -377,8 +379,7 @@ namespace System.ServiceModel.Description
 		{
 			if (reader.IsEmptyElement)
 				throw new XmlException (String.Format ("Binary content is expected in 'BinaryExchange' element.{0}", LineInfo ()));
-			WstBinaryExchange b = new WstBinaryExchange ();
-			b.ValueType = reader.GetAttribute ("ValueType");
+			WstBinaryExchange b = new WstBinaryExchange (reader.GetAttribute ("ValueType"));
 			b.EncodingType = reader.GetAttribute ("EncodingType");
 			b.Value = Convert.FromBase64String (reader.ReadElementContentAsString ());
 			res.BinaryExchange = b;

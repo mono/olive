@@ -1,3 +1,8 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustMessageConverters.cs, WSTrustSTSContract.cs:
+	  now they could be used for both TLS and SPNego.
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustMessageConverters.cs : fixed incorrect empty element check.

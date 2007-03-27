@@ -1,3 +1,11 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SspiSecurityTokenProvider.cs : removed SspiCommunicationObject from
+	  this class, as it is not for spnego.
+	* ServiceCredentialsSecurityTokenManager.cs :
+	  handle spnego authenticator.
+	* WSSecurityTokenSerializer.cs : some comments.
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializer.cs : fixed SecurityContextToken Id

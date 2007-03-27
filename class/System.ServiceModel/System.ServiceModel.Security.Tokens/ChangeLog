@@ -1,3 +1,16 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :
+	  Ongoing implementation. Applied some changes for SSPI support. 
+	  WSSecurityTokenSerializer is implemented to return binary-secret-
+	  aware token, so just return it. Fixed some CK-HASH usage.
+	* IssuedTokenCommunicationObject.cs :
+	  Applied some changes for SSPI support.
+	* SpnegoSecurityTokenAuthenticator.cs, SpnegoSecurityTokenProvider.cs,
+	  SspiSession.cs : new ongoing implementation for SSPI negotiation.
+	* SspiClientSecurityTokenAuthenticator.cs : spnego authenticator
+	  will go here (it is just a stub. Created when opening a channel).
+
 2007-03-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TlsClientSession.cs, SslSecurityTokenProvider.cs,

@@ -8,6 +8,7 @@ RESOURCE_FILES = \
 LIBRARY = System.ServiceModel.dll
 LIB_MCS_FLAGS = \
 		/nowarn:414,169,67,3005,436 \
+		/unsafe \
 	        /r:System.dll \
 	        /r:System.Xml.dll \
 	        /r:System.Configuration.dll \

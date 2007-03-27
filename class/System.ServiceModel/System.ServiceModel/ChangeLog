@@ -1,3 +1,10 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsSecurityTokenManager.cs :
+	  support spnego authenticator and provider. Provider should not be
+	  SspiSecurityTokenProvider, as it is not for spnego.
+	* Constants.cs : added some spnego constants.
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Constants.cs : added LifetimeFormat.

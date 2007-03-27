@@ -83,8 +83,18 @@ namespace System.ServiceModel.Security
 			}
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
 				return CreateSslTokenAuthenticator (requirement);
+			if (requirement.TokenType == ServiceModelSecurityTokenTypes.Spnego)
+				return CreateSpnegoTokenAuthenticator (requirement);
 			else
 				throw new NotImplementedException ("Not implemented token type: " + requirement.TokenType);
+		}
+
+		SpnegoSecurityTokenAuthenticator CreateSpnegoTokenAuthenticator (SecurityTokenRequirement requirement)
+		{
+			SpnegoSecurityTokenAuthenticator a =
+				new SpnegoSecurityTokenAuthenticator (this, requirement);
+			InitializeAuthenticatorCommunicationObject (a.Communication, requirement);
+			return a;
 		}
 
 		SslSecurityTokenAuthenticator CreateSslTokenAuthenticator (SecurityTokenRequirement requirement)

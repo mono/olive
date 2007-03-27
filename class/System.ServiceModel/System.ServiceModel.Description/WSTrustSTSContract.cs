@@ -251,7 +251,7 @@ namespace System.ServiceModel.Description
 			w.WriteEndElement ();
 		}
 
-		public void Read (XmlDictionaryReader r, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
+		public void Read (string negotiationType, XmlDictionaryReader r, SecurityTokenSerializer serializer, SecurityTokenResolver resolver)
 		{
 			r.MoveToContent ();
 			r.ReadStartElement ("RequestSecurityTokenResponseCollection", Constants.WstNamespace);
@@ -259,7 +259,7 @@ namespace System.ServiceModel.Description
 				r.MoveToContent ();
 				if (r.NodeType != XmlNodeType.Element)
 					break;
-				WSTrustRequestSecurityTokenResponseReader rstrr = new WSTrustRequestSecurityTokenResponseReader (r, serializer, resolver);
+				WSTrustRequestSecurityTokenResponseReader rstrr = new WSTrustRequestSecurityTokenResponseReader (negotiationType, r, serializer, resolver);
 				rstrr.Read ();
 				responses.Add (rstrr.Value);
 			}
@@ -300,7 +300,12 @@ namespace System.ServiceModel.Description
 
 	class WstBinaryExchange
 	{
-		public string ValueType = Constants.WstBinaryExchangeValueTls;
+		public WstBinaryExchange (string valueType)
+		{
+			ValueType = valueType;
+		}
+
+		public string ValueType;
 
 		public string EncodingType = Constants.WssBase64BinaryEncodingType;
 

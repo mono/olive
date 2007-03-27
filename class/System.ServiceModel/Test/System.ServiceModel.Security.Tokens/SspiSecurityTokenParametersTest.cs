@@ -195,9 +195,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 				manager.CreateSecurityTokenProvider (r);
 		}
 
-		[Test]
-		[Ignore ("This ends up to fail to connect. Anyways it's too implementation dependent.")]
-		public void CreateProviderGetToken ()
+		void CreateProviderOpenGetToken (bool getToken)
 		{
 			MyParameters tp = new MyParameters ();
 			InitiatorServiceModelSecurityTokenRequirement r =
@@ -211,7 +209,6 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			r.MessageSecurityVersion = MessageSecurityVersion.Default.SecurityTokenVersion;
 			// This is required at GetToken().
 			r.SecurityAlgorithmSuite = SecurityAlgorithmSuite.Default;
-
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
@@ -221,7 +218,40 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 
 			((ICommunicationObject) p).Open ();
 
+			if (!getToken)
+				return;
+
 			p.GetToken (TimeSpan.FromSeconds (5));
+		}
+
+		[Test]
+		public void CreateProviderOpen ()
+		{
+			CreateProviderOpenGetToken (false);
+		}
+
+		[Test]
+		[Ignore ("This ends up to fail to connect. Anyways it's too implementation dependent.")]
+		public void CreateProviderGetToken ()
+		{
+			CreateProviderOpenGetToken (true);
+		}
+
+		[Test]
+		public void CreateAuthenticator ()
+		{
+			MyParameters tp = new MyParameters ();
+			InitiatorServiceModelSecurityTokenRequirement r =
+				new InitiatorServiceModelSecurityTokenRequirement ();
+			tp.InitRequirement (r);
+
+			ClientCredentials cred = new ClientCredentials ();
+			ClientCredentialsSecurityTokenManager manager =
+				new ClientCredentialsSecurityTokenManager (cred);
+
+			SecurityTokenResolver resolver;
+//			SecurityTokenAuthenticator authenticator =
+				manager.CreateSecurityTokenAuthenticator (r, out resolver);
 		}
 	}
 }

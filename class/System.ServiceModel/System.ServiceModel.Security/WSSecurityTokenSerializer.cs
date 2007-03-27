@@ -507,6 +507,12 @@ namespace System.ServiceModel.Security
 		{
 			string id = reader.GetAttribute ("Id", Constants.WsuNamespace);
 			reader.Read ();
+
+			// The input dnse:Cookie value is encrypted by the
+			// server's SecurityStateEncoder
+			// (setting error-raising encoder to ServiceCredentials.
+			// SecureConversationAuthentication.SecurityStateEncoder
+			// shows it).
 			UniqueId cid = null;
 			byte [] cookie = null;
 			while (true) {
@@ -541,6 +547,9 @@ namespace System.ServiceModel.Security
 				cookie != null && cookie.Length > 154 ?
 				encoder.DecodeSecurityState (cookie) :
 				cookie;
+			// FIXME: turned out that it is just a proof token. So,
+			// the token to be returned should be created entirely
+			// from this decoded binary XML.
 			byte [] key = SslnegoCookieResolver.ResolveCookie (decoded);
 
 			return new SecurityContextSecurityToken (

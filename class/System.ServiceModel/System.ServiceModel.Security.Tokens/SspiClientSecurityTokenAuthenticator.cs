@@ -1,10 +1,10 @@
 //
-// SspiSecurityTokenProvider.cs
+// SspiClientSecurityTokenAuthenticator.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,45 +25,50 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Net;
-using System.Security.Principal;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Net.Security;
+using System.IdentityModel.Policy;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
-
+using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
+using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Xml;
 
-// mhm, why is this class not in S.SM.S.Tokens??
-namespace System.ServiceModel.Security
+using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
+
+namespace System.ServiceModel.Security.Tokens
 {
-	// Anyways we won't support SSPI until it becomes open.
-	public class SspiSecurityTokenProvider : SecurityTokenProvider
+	// FIXME: implement all
+	class SspiClientSecurityTokenAuthenticator : SecurityTokenAuthenticator
 	{
-		[MonoTODO]
-		public SspiSecurityTokenProvider (NetworkCredential credential,
-			bool extractGroupsForWindowsAccounts,
-			bool allowUnauthenticatedCallers)
+		ClientCredentialsSecurityTokenManager manager;
+
+		public SspiClientSecurityTokenAuthenticator (
+			ClientCredentialsSecurityTokenManager manager, 
+			SecurityTokenRequirement r)
+		{
+			this.manager = manager;
+		}
+
+		public ClientCredentialsSecurityTokenManager Manager {
+			get { return manager; }
+		}
+
+		protected override bool CanValidateTokenCore (SecurityToken token)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SspiSecurityTokenProvider (NetworkCredential credential, 
-			bool allowNtlm, TokenImpersonationLevel impersonationLevel)
-		{
-			if (credential == null)
-				throw new ArgumentNullException ("credential");
-			this.credential = credential;
-			allow_ntlm = allowNtlm;
-			impersonation_level = impersonationLevel;
-		}
-
-		NetworkCredential credential;
-		bool allow_ntlm;
-		TokenImpersonationLevel impersonation_level;
-
-		// SecurityTokenProvider
-
-		[MonoTODO]
-		protected override SecurityToken GetTokenCore (TimeSpan timeout)
+		protected override ReadOnlyCollection<IAuthorizationPolicy>
+			ValidateTokenCore (SecurityToken token)
 		{
 			throw new NotImplementedException ();
 		}

@@ -69,9 +69,10 @@ namespace System.ServiceModel
 			}
 			else if (requirement.TokenType == SecurityTokenTypes.Rsa)
 				return new RsaSecurityTokenAuthenticator ();
-			else if (requirement.TokenType == SecurityTokenTypes.X509Certificate) {
+			else if (requirement.TokenType == SecurityTokenTypes.X509Certificate)
 				return CreateX509Authenticator (requirement);
-			}
+			else if (requirement.TokenType == ServiceModelSecurityTokenTypes.Spnego)
+				return new SspiClientSecurityTokenAuthenticator (this, requirement);
 			else
 				throw new NotImplementedException ();
 
@@ -283,10 +284,7 @@ SecurityTokenRequirement requirement)
 
 		SecurityTokenProvider CreateSpnegoProvider (SecurityTokenRequirement r)
 		{
-			SspiSecurityTokenProvider p = new SspiSecurityTokenProvider (
-				ClientCredentials.Windows.ClientCredential,
-				ClientCredentials.Windows.AllowNtlm,
-				ClientCredentials.Windows.AllowedImpersonationLevel);
+			SpnegoSecurityTokenProvider p = new SpnegoSecurityTokenProvider (this, r);
 			InitializeProviderCommunicationObject (p.Communication, r);
 
 			return p;

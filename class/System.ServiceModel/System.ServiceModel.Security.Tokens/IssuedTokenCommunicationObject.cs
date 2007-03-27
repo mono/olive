@@ -49,7 +49,7 @@ namespace System.ServiceModel.Security.Tokens
 			Message res = comm.Issue (msg);
 
 			// FIXME: provide SecurityTokenResolver (but from where?)
-			using (WSTrustRequestSecurityTokenResponseReader resreader = new WSTrustRequestSecurityTokenResponseReader (res.GetReaderAtBodyContents (), SecurityTokenSerializer, null)) {
+			using (WSTrustRequestSecurityTokenResponseReader resreader = new WSTrustRequestSecurityTokenResponseReader (null, res.GetReaderAtBodyContents (), SecurityTokenSerializer, null)) {
 				WstRequestSecurityTokenResponse rstr = resreader.Read ();
 				if (rstr.RequestedSecurityToken != null)
 					return rstr.RequestedSecurityToken;
