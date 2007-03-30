@@ -64,7 +64,7 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public DiagnosticSection Diagnostic {
-			get { return (DiagnosticSection) Sections ["diagnostic"]; }
+			get { return (DiagnosticSection) Sections ["diagnostics"]; }
 		}
 
 		public ExtensionsSection Extensions {
