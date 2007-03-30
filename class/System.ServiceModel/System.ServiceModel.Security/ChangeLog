@@ -1,5 +1,10 @@
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceCredentialsSecurityTokenManager.cs : SecurityBindingElement
+	  is also needed to retrieve local service settings.
+
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WSSecurityTokenSerializer.cs : when reading SCT from
 	  SecurityContextSecurityToken, return it from cookie binary.
 	  knownTypes argument can be null.

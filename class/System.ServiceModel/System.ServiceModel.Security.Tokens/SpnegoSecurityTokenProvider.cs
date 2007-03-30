@@ -33,6 +33,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security.Tokens;
 using System.Xml;
+using Mono.Security;
 
 // mhm, why is this class not in S.SM.S.Tokens??
 namespace System.ServiceModel.Security
@@ -42,12 +43,16 @@ namespace System.ServiceModel.Security
 	{
 		ClientCredentialsSecurityTokenManager manager;
 		SecurityTokenRequirement requirement;
-		SspiCommunicationObject comm = new SspiCommunicationObject ();
+		SpnegoCommunicationObject comm;
 
-		[MonoTODO]
 		public SpnegoSecurityTokenProvider (ClientCredentialsSecurityTokenManager manager, SecurityTokenRequirement requirement)
 		{
 			this.manager = manager;
+			comm = new SpnegoCommunicationObject (this);
+		}
+
+		public ClientCredentialsSecurityTokenManager Manager {
+			get { return manager; }
 		}
 
 		public override ProviderCommunicationObject Communication {
@@ -60,8 +65,15 @@ namespace System.ServiceModel.Security
 		}
 	}
 
-	class SspiCommunicationObject : ProviderCommunicationObject
+	class SpnegoCommunicationObject : ProviderCommunicationObject
 	{
+		SpnegoSecurityTokenProvider owner;
+
+		public SpnegoCommunicationObject (SpnegoSecurityTokenProvider owner)
+		{
+			this.owner = owner;
+		}
+
 		WSTrustSecurityTokenServiceProxy proxy;
 
 		protected internal override TimeSpan DefaultCloseTimeout {
@@ -116,6 +128,7 @@ namespace System.ServiceModel.Security
 
 		public SecurityToken GetToken (TimeSpan timeout)
 		{
+			bool gss = (TargetAddress.Identity == null);
 			SspiClientSession sspi = new SspiClientSession ();
 
 			WstRequestSecurityToken rst =
@@ -123,7 +136,13 @@ namespace System.ServiceModel.Security
 
 			// send MessageType1
 			rst.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueGss);
-			rst.BinaryExchange.Value = sspi.ProcessMessageType1 ();
+			// When the TargetAddress does not contain the endpoint
+			// identity, then .net seems to use Kerberos instead of
+			// raw NTLM.
+			if (gss)
+				rst.BinaryExchange.Value = sspi.ProcessSpnegoInitialContextTokenRequest ();
+			else
+				rst.BinaryExchange.Value = sspi.ProcessMessageType1 ();
 
 			Message request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueAction, rst);
 			request.Headers.MessageId = new UniqueId ();
@@ -141,19 +160,28 @@ namespace System.ServiceModel.Security
 				new WSTrustRequestSecurityTokenResponseReader (Constants.WstSpnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 
-			sspi.ProcessMessageType2 (reader.Value.BinaryExchange.Value);
+			byte [] raw = reader.Value.BinaryExchange.Value;
+			if (gss)
+				sspi.ProcessSpnegoInitialContextTokenResponse (raw);
+			else
+				sspi.ProcessMessageType2 (raw);
 
 			// send MessageType3
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
 			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueGss);
-			// FIXME: REMOVE THEM
-			string user = "test";
-			string pass = "test";
-			rstr.BinaryExchange.Value = sspi.ProcessMessageType3 (user, pass);
+
+			NetworkCredential cred = owner.Manager.ClientCredentials.Windows.ClientCredential;
+			string user = string.IsNullOrEmpty (cred.UserName) ? Environment.UserName : cred.UserName;
+			string pass = cred.Password ?? String.Empty;
+			if (gss)
+				rstr.BinaryExchange.Value = sspi.ProcessSpnegoProcessContextToken (user, pass);
+			else
+				rstr.BinaryExchange.Value = sspi.ProcessMessageType3 (user, pass);
 
 			request = Message.CreateMessage (IssuerBinding.MessageVersion, Constants.WstIssueReplyAction, rstr);
+			request.Headers.MessageId = new UniqueId ();
 			request.Headers.ReplyTo = new EndpointAddress (Constants.WsaAnonymousUri);
 			request.Headers.To = TargetAddress.Uri;
 
@@ -165,7 +193,7 @@ namespace System.ServiceModel.Security
 			response = proxy.IssueReply (buffer.CreateMessage ());
 			// FIXME: use correct limitation
 			buffer = response.CreateBufferedCopy (0x10000);
-			// don't store this message in tlsctx (it's not part
+			// don't store this message for ckhash (it's not part
 			// of exchange)
 Console.WriteLine (buffer.CreateMessage ());
 

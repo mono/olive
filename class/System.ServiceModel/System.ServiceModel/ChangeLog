@@ -1,3 +1,7 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Constants.cs : added soem OIDs.
+
 2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientCredentialsSecurityTokenManager.cs :

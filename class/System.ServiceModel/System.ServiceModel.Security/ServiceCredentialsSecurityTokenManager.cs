@@ -151,6 +151,7 @@ namespace System.ServiceModel.Security
 			// as well.
 			SecurityBindingElement sbe =
 				r.GetProperty<SecurityBindingElement> (ReqType.SecurityBindingElementProperty);
+			p.SecurityBindingElement = sbe;
 
 /*
 			// I doubt the binding is acquired this way ...

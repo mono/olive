@@ -51,6 +51,7 @@ namespace System.ServiceModel.Security.Tokens
 			new KeyedByTypeCollection<IEndpointBehavior> ();
 		SecurityTokenSerializer serializer;
 		SecurityAlgorithmSuite algorithm;
+		SecurityBindingElement element;
 
 		public EndpointAddress IssuerAddress {
 			get { return issuer_address; }
@@ -74,6 +75,11 @@ namespace System.ServiceModel.Security.Tokens
 		public SecurityAlgorithmSuite SecurityAlgorithmSuite {
 			get { return algorithm; }
 			set { algorithm= value; }
+		}
+
+		public SecurityBindingElement SecurityBindingElement {
+			get { return element; }
+			set { element = value; }
 		}
 
 		public SecurityTokenSerializer SecurityTokenSerializer {
@@ -100,6 +106,8 @@ namespace System.ServiceModel.Security.Tokens
 
 			if (ListenUri == null)
 				throw new InvalidOperationException ("Listening uri must be set before opening the token provider.");
+			if (SecurityBindingElement == null)
+				throw new InvalidOperationException ("SecurityBindingElement must be set before opening the token provider.");
 		}
 	}
 }

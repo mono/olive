@@ -50,13 +50,9 @@ namespace System.ServiceModel
 		public const string XmlDsig = "http://www.w3.org/2000/09/xmldsig#";
 
 		public const string WSSSamlToken = "http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1";
-
 		public const string WSSUserNameToken = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken";
-
 		public const string WsscContextToken = "http://schemas.xmlsoap.org/ws/2005/02/sc/sct";
-
 		public const string WSSKerberosToken = "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#GSS_Kerberosv5_AP_REQ";
-
 		public const string WSSEncryptedKeyToken = "http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#EncryptedKey";
 
 		public const string WstNamespace = "http://schemas.xmlsoap.org/ws/2005/02/trust";
@@ -68,42 +64,38 @@ namespace System.ServiceModel
 		public const string WsscNamespace = "http://schemas.xmlsoap.org/ws/2005/02/sc";
 
 		public const string WstIssueAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue";
-
 		public const string WstRenewAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Renew";
-
 		public const string WstCancelAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Cancel";
-
 		public const string WstValidateAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Validate";
-
 		public const string WstIssueReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Issue";
-
 		public const string WstRenewReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Renew";
-
 		public const string WstCancelReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Cancel";
-
 		public const string WstValidateReplyAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RSTR/Validate";
 
 		public const string WsscDefaultLabel = "WS-SecureConversationWS-SecureConversation";
 
 		// .NET BUG: it requires extra white space !
 		public const string WstBinaryExchangeValueTls = " http://schemas.xmlsoap.org/ws/2005/02/trust/tlsnego";
-
 		public const string WstBinaryExchangeValueGss = "http://schemas.xmlsoap.org/ws/2005/02/trust/spnego";
 
 		public const string MSTlsnegoTokenContent = "http://schemas.microsoft.com/ws/2006/05/security";
 
 		public const string WstTlsnegoProofTokenType = "http://schemas.xmlsoap.org/2005/02/trust/tlsnego#TLS_Wrap";
-
 		public const string WstSpnegoProofTokenType = "http://schemas.xmlsoap.org/2005/02/trust/spnego#TLS_Wrap";
 
 		public const string WstIssueRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Issue";
-
 		public const string WstRenewRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Renew";
-
 		public const string WstCancelRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Cancel";
-
 		public const string WstValidateRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Validate";
 
 		public const string LifetimeFormat = "yyyy-MM-dd'T'HH:mm:ss.fffZ";
+
+		// Those OIDs except for Kerberos5 are described here:
+		// http://www.alvestrand.no/objectid/
+		// (searching web for those OIDs would give you pointers.)
+		public const string OidSpnego = "1.3.6.1.5.5.2";
+		public const string OidNtlmSsp = "1.3.6.1.4.1.311.2.2.10";
+		public const string OidKerberos5 = "1.2.840.48018.1.2.2";
+		public const string OidMIT = "1.2.840.113554.1.2.2";
 	}
 }

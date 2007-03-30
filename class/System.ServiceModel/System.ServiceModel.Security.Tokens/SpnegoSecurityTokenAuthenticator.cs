@@ -40,7 +40,9 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Security;
 using System.ServiceModel.Security.Tokens;
+using System.Text;
 using System.Xml;
+using Mono.Security;
 
 using ReqType = System.ServiceModel.Security.Tokens.ServiceModelSecurityTokenRequirement;
 
@@ -104,7 +106,7 @@ namespace System.ServiceModel.Security.Tokens
 			if (request.Headers.Action == Constants.WstIssueAction)
 				return ProcessMessageType1 (request);
 			else
-				return ProcessClientKeyExchange (request);
+				return ProcessMessageType3 (request);
 		}
 
 		class TlsServerSessionInfo
@@ -147,15 +149,34 @@ namespace System.ServiceModel.Security.Tokens
 			if (sessions.ContainsKey (reader.Value.Context))
 				throw new SecurityNegotiationException (String.Format ("The context '{0}' already exists in this SSL negotiation manager", reader.Value.Context));
 
+Console.WriteLine (buffer.CreateMessage ());
+
 			SspiServerSession sspi = new SspiServerSession ();
 //			AppendNegotiationMessageXml (buffer.CreateMessage ().GetReaderAtBodyContents (), tlsInfo);
 
-			sspi.ProcessMessageType1 (reader.Value.BinaryExchange.Value);
+			// FIXME: when an explicit endpoint identity is
+			// specified in the target EndpointAddress at client,
+			// it sends some other kind of binary octets that
+			// include NTLM octet, instead of raw NTLM octet itself.
+
+			byte [] raw = reader.Value.BinaryExchange.Value;
+
+			bool gss = "NTLMSSP" != Encoding.ASCII.GetString (raw, 0, 7);
+
+			if (gss)
+				sspi.ProcessSpnegoInitialContextTokenRequest (raw);
+			else
+				sspi.ProcessMessageType1 (raw);
+
 			WstRequestSecurityTokenResponse rstr =
 				new WstRequestSecurityTokenResponse (SecurityTokenSerializer);
 			rstr.Context = reader.Value.Context;
 			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueGss);
-			rstr.BinaryExchange.Value = sspi.ProcessMessageType2 ();
+
+			if (gss)
+				rstr.BinaryExchange.Value = sspi.ProcessSpnegoInitialContextTokenResponse ();
+			else
+				rstr.BinaryExchange.Value = sspi.ProcessMessageType2 ();
 
 			Message reply = Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, rstr);
 			reply.Headers.RelatesTo = request.Headers.MessageId;
@@ -169,7 +190,7 @@ namespace System.ServiceModel.Security.Tokens
 			return buffer.CreateMessage ();
 		}
 
-		Message ProcessClientKeyExchange (Message request)
+		Message ProcessMessageType3 (Message request)
 		{
 			// FIXME: use correct buffer size
 			MessageBuffer buffer = request.CreateBufferedCopy (0x10000);
@@ -178,13 +199,20 @@ Console.WriteLine (buffer.CreateMessage ());
 				new WSTrustRequestSecurityTokenResponseReader (Constants.WstSpnegoProofTokenType, buffer.CreateMessage ().GetReaderAtBodyContents (), SecurityTokenSerializer, null);
 			reader.Read ();
 
-foreach (byte b in reader.Value.BinaryExchange.Value) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+			byte [] raw = reader.Value.BinaryExchange.Value;
+
+			bool gss = "NTLMSSP" != Encoding.ASCII.GetString (raw, 0, 7);
+
+foreach (byte b in raw) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 
 			SspiServerSession sspi;
 			if (!sessions.TryGetValue (reader.Value.Context, out sspi))
 				throw new SecurityNegotiationException (String.Format ("The context '{0}' does not exist in this SSL negotiation manager", reader.Value.Context));
 
-			sspi.ProcessMessageType3 (reader.Value.BinaryExchange.Value);
+			if (gss)
+				sspi.ProcessSpnegoProcessContextToken (raw);
+			else
+				sspi.ProcessMessageType3 (raw);
 
 			throw new NotImplementedException ();
 /*

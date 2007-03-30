@@ -138,31 +138,31 @@ namespace System.ServiceModel.Description
 			w.WriteXmlnsAttribute ("u", nsu);
 			w.WriteAttributeString ("Context", Context);
 			if (Authenticator != null) {
-				w.WriteStartElement ("Authenticator", ns);
-				w.WriteStartElement ("CombinedHash", ns);
+				w.WriteStartElement ("t", "Authenticator", ns);
+				w.WriteStartElement ("t", "CombinedHash", ns);
 				w.WriteBase64 (Authenticator, 0, Authenticator.Length);
 				w.WriteEndElement ();
 				w.WriteEndElement ();
 			}
 			if (TokenType != null)
-				w.WriteElementString ("TokenType", ns, TokenType);
+				w.WriteElementString ("t", "TokenType", ns, TokenType);
 			if (RequestedSecurityToken != null) {
-				w.WriteStartElement ("RequestedSecurityToken", ns);
+				w.WriteStartElement ("t", "RequestedSecurityToken", ns);
 				serializer.WriteToken (w, RequestedSecurityToken);
 				w.WriteEndElement ();
 			}
 			if (RequestedAttachedReference != null) {
-				w.WriteStartElement ("RequestedAttachedReference", ns);
+				w.WriteStartElement ("t", "RequestedAttachedReference", ns);
 				serializer.WriteKeyIdentifierClause (w, RequestedAttachedReference);
 				w.WriteEndElement ();
 			}
 			if (RequestedUnattachedReference != null) {
-				w.WriteStartElement ("RequestedUnattachedReference", ns);
+				w.WriteStartElement ("t", "RequestedUnattachedReference", ns);
 				serializer.WriteKeyIdentifierClause (w, RequestedUnattachedReference);
 				w.WriteEndElement ();
 			}
 			if (RequestedProofToken != null) {
-				w.WriteStartElement ("RequestedProofToken", ns);
+				w.WriteStartElement ("t", "RequestedProofToken", ns);
 				if (RequestedProofToken is SecurityToken)
 					serializer.WriteToken (w, (SecurityToken) RequestedProofToken);
 				else if (RequestedProofToken is SecurityKeyIdentifierClause)
@@ -184,14 +184,14 @@ namespace System.ServiceModel.Description
 				w.WriteEndElement ();
 			}
 			if (Lifetime != null) {
-				w.WriteStartElement ("Lifetime", ns);
+				w.WriteStartElement ("t", "Lifetime", ns);
 				if (Lifetime.Created != DateTime.MinValue)
 					w.WriteElementString ("Created", nsu, XmlConvert.ToString (Lifetime.Created.ToUniversalTime (), Constants.LifetimeFormat));
 				if (Lifetime.Expires != DateTime.MaxValue)
 					w.WriteElementString ("Expires", nsu, XmlConvert.ToString (Lifetime.Expires.ToUniversalTime (), Constants.LifetimeFormat));
 				w.WriteEndElement ();
 			}
-			w.WriteElementString ("KeySize", ns, XmlConvert.ToString (KeySize));
+			//w.WriteElementString ("t", "KeySize", ns, XmlConvert.ToString (KeySize));
 			if (BinaryExchange != null)
 				BinaryExchange.WriteTo (w);
 			w.WriteEndElement ();
@@ -209,9 +209,9 @@ namespace System.ServiceModel.Description
 		{
 			string ns = Constants.WstNamespace;
 			w.WriteAttributeString ("Context", Context);
-			w.WriteElementString ("TokenType", ns, Constants.WsscContextToken);
-			w.WriteElementString ("RequestType", ns, Constants.WstIssueRequest);
-			w.WriteElementString ("KeySize", ns, XmlConvert.ToString (KeySize));
+			w.WriteElementString ("t", "TokenType", ns, Constants.WsscContextToken);
+			w.WriteElementString ("t", "RequestType", ns, Constants.WstIssueRequest);
+			w.WriteElementString ("t", "KeySize", ns, XmlConvert.ToString (KeySize));
 			if (BinaryExchange != null)
 				BinaryExchange.WriteTo (w);
 		}
@@ -313,7 +313,7 @@ namespace System.ServiceModel.Description
 
 		public void WriteTo (XmlWriter w)
 		{
-			w.WriteStartElement ("BinaryExchange", Constants.WstNamespace);
+			w.WriteStartElement ("t", "BinaryExchange", Constants.WstNamespace);
 			w.WriteAttributeString ("ValueType", ValueType);
 			w.WriteAttributeString ("EncodingType", EncodingType);
 			w.WriteString (Convert.ToBase64String (Value));

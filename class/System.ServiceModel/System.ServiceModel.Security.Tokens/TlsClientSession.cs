@@ -46,7 +46,7 @@ namespace System.ServiceModel.Security.Tokens
 			get { return Context.MasterSecret; }
 		}
 
-		public byte [] CreateHashAlt (byte [] key, byte [] seedSrc, string label)
+		public byte [] CreateHash (byte [] key, byte [] seedSrc, string label)
 		{
 			byte [] labelBytes = Encoding.UTF8.GetBytes (label);
 			byte [] seed = new byte [seedSrc.Length + labelBytes.Length];
@@ -55,7 +55,7 @@ namespace System.ServiceModel.Security.Tokens
 			return Context.Current.Cipher.Expand ("SHA1", key, seed, 256 / 8);
 		}
 
-		public byte [] CreateHash (byte [] key, byte [] seed, string label)
+		public byte [] CreateHashAlt (byte [] key, byte [] seed, string label)
 		{
 			return Context.Current.Cipher.PRF (key, label, seed, 256 / 8);
 		}

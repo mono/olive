@@ -230,8 +230,7 @@ foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			rstr.RequestedUnattachedReference = new SecurityContextKeyIdentifierClause (sct.ContextId, null);
 			WstLifetime lt = new WstLifetime ();
 			lt.Created = from;
-			// FIXME: use LocalServiceSecuritySettings.NegotiationTimeout
-			lt.Expires = from.AddHours (8);
+			lt.Expires = from.Add (SecurityBindingElement.LocalServiceSettings.IssuedCookieLifetime);
 			rstr.Lifetime = lt;
 			rstr.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
 			rstr.BinaryExchange.Value = serverFinished;

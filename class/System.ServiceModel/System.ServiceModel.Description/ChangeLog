@@ -1,3 +1,7 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSTrustSTSContract.cs : write prefixes.
+
 2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustMessageConverters.cs, WSTrustSTSContract.cs:

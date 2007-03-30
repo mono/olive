@@ -1,5 +1,18 @@
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* AuthenticatorCommunicationObject.cs : added SecurityBindingElement.
+	* SslSecurityTokenProvider.cs : a few updates, key is now from
+	  proof token.
+	* SslSecurityTokenAuthenticator.cs :
+	  use LocalServiceSecuritySettings.IssuedCookieLifetime.
+	* SpnegoSecurityTokenProvider.cs, SpnegoSecurityTokenAuthenticator.cs,
+	  SspiSession.cs : some ongoing updates
+	  as well as spnego (kerberos) negotiation handling.
+	* TlsClientSession.cs : by specification it is P_SHA, not PRF
+	  (though not sure, as CombinedHash is for PRF).
+
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SslnegoCookieResolver.cs : ResolveCookie() should simply return
 	  entire SecurityContextToken parsed by dnse:Cookie binary.
 

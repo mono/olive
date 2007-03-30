@@ -148,8 +148,6 @@ namespace System.ServiceModel.Security.Tokens
 			response = proxy.IssueReply (buffer.CreateMessage ());
 			// FIXME: use correct limitation
 			buffer = response.CreateBufferedCopy (0x10000);
-			// don't store this message in tlsctx (it's not part
-			// of exchange)
 
 			WstRequestSecurityTokenResponseCollection coll =
 				new WstRequestSecurityTokenResponseCollection ();
@@ -162,14 +160,26 @@ namespace System.ServiceModel.Security.Tokens
 			SecurityContextSecurityToken sctSrc =
 				r.RequestedSecurityToken;
 
-			// Authenticate token.
-			byte [] key = tls.MasterSecret; //(sctSrc.SecurityKeys [0] as SymmetricSecurityKey).GetSymmetricKey ();
-//foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+#if false // FIXME: should this final RSTR included in RSTRC considered too?
+			XmlDocument doc = new XmlDocument ();
+			doc.PreserveWhitespace = true;
+			using (XmlDictionaryWriter dw = XmlDictionaryWriter.CreateDictionaryWriter (doc.CreateNavigator ().AppendChild ())) {
+				if (r == null) throw new Exception ("r");
+				if (dw == null) throw new Exception ("dw");
+				r.WriteBodyContents (dw);
+			}
+			tlsctx.StoreMessage (XmlDictionaryReader.CreateDictionaryReader (new XmlNodeReader (doc)));
+#endif
 
-			// the RequestedProofToken is represented as 32 bytes
-			// of TLS ApplicationData.
 			byte [] proof = tls.ProcessApplicationData (
 				(byte []) r.RequestedProofToken);
+			// the RequestedProofToken is represented as 32 bytes
+			// of TLS ApplicationData. According to WSE2 doc, it
+			// is *the* key, but not sure it also applies to WCF.
+			// WSS4J also seems to store the encryped shared key.
+			byte [] key = (byte []) r.RequestedProofToken;
+
+			// Authenticate token.
 
 			byte [] actual = coll.Responses [1].Authenticator;
 			if (actual == null)
@@ -178,16 +188,22 @@ namespace System.ServiceModel.Security.Tokens
 			// H = sha1(exc14n(RST..RSTRs))
 			byte [] hash = SHA1.Create ().ComputeHash (tlsctx.GetC14NResults ());
 			byte [] referent = tls.CreateHash (key, hash, "AUTH-HASH");
+Console.WriteLine (System.Text.Encoding.ASCII.GetString (tlsctx.GetC14NResults ()));
+Console.Write ("Hash: ");
 foreach (byte b in hash) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+Console.Write ("Referent: ");
 foreach (byte b in referent) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+Console.Write ("Actual: ");
 foreach (byte b in actual) Console.Write ("{0:X02} ", b); Console.WriteLine ();
+Console.Write ("Proof: ");
+foreach (byte b in proof) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			bool mismatch = referent.Length != actual.Length;
 			if (!mismatch)
 				for (int i = 0; i < referent.Length; i++)
 					if (referent [i] != actual [i])
 						mismatch = true;
-			if (mismatch)
-				throw new SecurityNegotiationException ("The CombinedHash does not match the expected value.");
+//			if (mismatch)
+//				throw new SecurityNegotiationException ("The CombinedHash does not match the expected value.");
 
 			return sctSrc;
 		}
