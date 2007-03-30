@@ -48,10 +48,17 @@ namespace MonoTests.System.Xml
 		[Test]
 		public void UseCase1 ()
 		{
+			string xml = @"<?xml version=""1.0"" encoding=""utf-16""?><root a=""""><!---->     <AAA xmlns=""urn:AAA""></AAA><ePfix:AAA xmlns:ePfix=""urn:AAABBB""></ePfix:AAA><AAA>CCCÅXàÍCCCAAA&amp;AAADDD&amp;DDDíö<!--COMMENT--></AAA><AAA BBB=""bbb"" pfix:BBB=""bbbbb"" xml:lang=""ja"" xml:space=""preserve"" xml:base=""local:hogehoge"" xmlns:pfix=""urn:bbb"">CCCICAg/4Aw</AAA></root>";
+
 			XmlDictionaryReader reader =
 				XmlDictionaryReader.CreateBinaryReader (usecase1,new XmlDictionaryReaderQuotas ());
+			StringWriter sw = new StringWriter ();
+			XmlWriter xw = XmlWriter.Create (sw);
+			reader.Read ();
 			while (!reader.EOF)
-				reader.Read ();
+				xw.WriteNode (reader, false);
+			xw.Close ();
+			Assert.AreEqual (xml, sw.ToString ());
 		}
 
 		// $ : kind

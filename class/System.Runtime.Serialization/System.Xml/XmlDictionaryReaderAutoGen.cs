@@ -462,45 +462,61 @@ namespace System.Xml
 			return ReadTimeSpanArray (localName.Value, namespaceUri.Value);
 		}
 
-				public override bool ReadElementContentAsBoolean ()
-				{
-					return ReadElementContentAsBoolean (LocalName, NamespaceURI);
-				}
+		public override bool ReadElementContentAsBoolean ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			bool ret = ReadContentAsBoolean ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override DateTime ReadElementContentAsDateTime ()
-				{
-					return ReadElementContentAsDateTime (LocalName, NamespaceURI);
-				}
+		public override DateTime ReadElementContentAsDateTime ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			DateTime ret = ReadContentAsDateTime ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override decimal ReadElementContentAsDecimal ()
-				{
-					return ReadElementContentAsDecimal (LocalName, NamespaceURI);
-				}
+		public override decimal ReadElementContentAsDecimal ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			decimal ret = ReadContentAsDecimal ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override double ReadElementContentAsDouble ()
-				{
-					return ReadElementContentAsDouble (LocalName, NamespaceURI);
-				}
+		public override double ReadElementContentAsDouble ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			double ret = ReadContentAsDouble ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override float ReadElementContentAsFloat ()
-				{
-					return ReadElementContentAsFloat (LocalName, NamespaceURI);
-				}
+		public override float ReadElementContentAsFloat ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			float ret = ReadContentAsFloat ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override int ReadElementContentAsInt ()
-				{
-					return ReadElementContentAsInt (LocalName, NamespaceURI);
-				}
+		public override int ReadElementContentAsInt ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			int ret = ReadContentAsInt ();
+			ReadEndElement ();
+			return ret;
+		}
 
-				public override long ReadElementContentAsLong ()
-				{
-					return ReadElementContentAsLong (LocalName, NamespaceURI);
-				}
-
-				public override string ReadElementContentAsString ()
-				{
-					return ReadElementContentAsString (LocalName, NamespaceURI);
-				}
+		public override long ReadElementContentAsLong ()
+		{
+			ReadStartElement (LocalName, NamespaceURI);
+			long ret = ReadContentAsLong ();
+			ReadEndElement ();
+			return ret;
+		}
 
 	}
 }

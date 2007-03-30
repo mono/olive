@@ -98,25 +98,31 @@ namespace System.Xml
 		}
 
 		Type xr = typeof (XmlReader);
-		string [] names = new string [] {"ReadContentAs", "ReadElementContentAs"};
-		foreach (string name in names) {
-			foreach (MethodInfo mi in xr.GetMethods ()) {
-				if (!mi.Name.StartsWith (name))
-					continue;
-				ParameterInfo [] pl = mi.GetParameters ();
-				if (pl.Length != 2 || pl [0].ParameterType != typeof (string))
-					continue;
-				if (mi.Name.EndsWith ("AsObject"))
-					continue; // special case to filter out.
+		string name = "ReadElementContentAs";
+		foreach (MethodInfo mi in xr.GetMethods ()) {
+			if (!mi.Name.StartsWith (name))
+				continue;
+			ParameterInfo [] pl = mi.GetParameters ();
+			if (pl.Length != 2 || pl [0].ParameterType != typeof (string))
+				continue;
+			if (mi.Name.EndsWith ("AsObject"))
+				continue; // special case to filter out.
+			if (mi.Name.EndsWith ("AsString"))
+				continue; // special case to filter out.
 
-				bool isOverride = xr.GetMethod (mi.Name, Type.EmptyTypes) != null;
-				Console.WriteLine (@"
-				public {2}{0} {1} ()
-				{{
-					return {1} (LocalName, NamespaceURI);
-				}}", ToCSharp (mi.ReturnType), mi.Name,
-					isOverride ? "override " : null);
-			}
+			bool isOverride = xr.GetMethod (mi.Name, Type.EmptyTypes) != null;
+			Console.WriteLine (@"
+		public {3}{0} {1} ()
+		{{
+			ReadStartElement (LocalName, NamespaceURI);
+			{0} ret = {2} ();
+			ReadEndElement ();
+			return ret;
+		}}",
+				ToCSharp (mi.ReturnType),
+				mi.Name,
+				mi.Name.Replace ("Element", String.Empty),
+				isOverride ? "override " : null);
 		}
 
 		Console.WriteLine (@"

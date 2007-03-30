@@ -149,6 +149,8 @@ namespace System.Xml
 			public string Value {
 				get {
 					switch (ValueType) {
+					case 0:
+					case BF.Comment:
 					case BF.Text:
 					case BF.EmptyText:
 						return value;
@@ -174,7 +176,7 @@ namespace System.Xml
 					case BF.Base64:
 						return Convert.ToBase64String ((byte []) TypedValue);
 					default:
-						throw new NotImplementedException ();
+						throw new NotImplementedException ("ValueType " + ValueType + " on node " + NodeType);
 					}
 				}
 				set { this.value = value; }
@@ -228,7 +230,6 @@ namespace System.Xml
 		// next byte in the source (one byte token ahead always
 		// happens because there is no "end of start element" mark).
 		int next = -1;
-		// this is for binary identifier 0x9D (and possible 0x9E, 0x9F)
 		bool is_next_end_element;
 		// temporary buffer for utf8enc.GetString()
 		byte [] tmp_buffer = new byte [128];
@@ -542,6 +543,7 @@ namespace System.Xml
 				break;
 			case BF.Comment:
 				node.Value = ReadUTF8 ();
+				node.ValueType = BF.Comment;
 				node.NodeType = XmlNodeType.Comment;
 				break;
 			case BF.ElemString:
@@ -563,7 +565,7 @@ namespace System.Xml
 		{
 			if (depth == 0)
 				throw new XmlException ("Unexpected end of element while there is no element started.");
-			node = node_stack [--depth];
+			current = node = node_stack [--depth];
 			node.NodeType = XmlNodeType.EndElement;
 			context.NamespaceManager.PopScope ();
 		}
@@ -986,9 +988,60 @@ namespace System.Xml
 			return true;
 		}
 
-		public override byte [] ReadElementContentAsBase64 ()
+		public override string ReadContentAsString ()
 		{
-			ReadStartElement ();
+			string value = Value;
+			do {
+				switch (NodeType) {
+				case XmlNodeType.Element:
+				case XmlNodeType.EndElement:
+					return value;
+				case XmlNodeType.Text:
+					value += Value;
+					break;
+				}
+			} while (Read ());
+			return value;
+		}
+
+		#region read typed content
+
+		public override int ReadContentAsInt ()
+		{
+			int ret = GetIntValue ();
+			Read ();
+			return ret;
+		}
+		
+		int GetIntValue ()
+		{
+			switch (node.ValueType) {
+			case BF.Zero:
+				return 0;
+			case BF.One:
+				return 1;
+			case BF.Int8:
+				return (byte) current.TypedValue;
+			case BF.Int16:
+				return (short) current.TypedValue;
+			case BF.Int32:
+				return (int) current.TypedValue;
+			}
+			throw new InvalidOperationException ("The element content is not an integer");
+		}
+
+		public override long ReadContentAsLong ()
+		{
+			if (node.ValueType == BF.Int64) {
+				long v = (long) current.TypedValue;
+				Read ();
+				return v;
+			}
+			return ReadContentAsInt ();
+		}
+
+		public override byte [] ReadContentAsBase64 ()
+		{
 			byte [] ret = null;
 			if (node.ValueType != BF.Base64)
 				throw new InvalidOperationException ("The element content is not base64");
@@ -1005,8 +1058,34 @@ namespace System.Xml
 				Read ();
 				//MoveToContent ();
 			}
-			ReadEndElement ();
 			return ret;
 		}
+
+		public override Guid ReadContentAsGuid ()
+		{
+			if (node.ValueType != BF.Guid)
+				throw new InvalidOperationException ("The element content is not Guid");
+			Guid ret = (Guid) node.TypedValue;
+			Read ();
+			return ret;
+		}
+
+		public override UniqueId ReadContentAsUniqueId ()
+		{
+			switch (node.ValueType) {
+			case BF.Text:
+				UniqueId ret = new UniqueId (node.Value);
+				Read ();
+				return ret;
+			case BF.UniqueIdFromGuid:
+				ret = (UniqueId) node.TypedValue;
+				Read ();
+				return ret;
+			default:
+				throw new InvalidOperationException ("The element content is not Guid");
+			}
+		}
+
+		#endregion
 	}
 }

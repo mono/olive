@@ -280,16 +280,15 @@ namespace System.Xml
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override string ReadContentAsString ()
 		{
-			return base.ReadContentAsString ();
+			return ReadContentAsString (Quotas.MaxStringContentLength);
 		}
 
 		[MonoTODO]
 		protected string ReadContentAsString (int maxStringContentLength)
 		{
-			throw new NotImplementedException ();
+			return base.ReadContentAsString ();
 		}
 
 		[MonoTODO]
@@ -352,6 +351,40 @@ namespace System.Xml
 			UniqueId ret = ReadContentAsUniqueId ();
 			ReadEndElement ();
 			return ret;
+		}
+
+		public override string ReadElementContentAsString ()
+		{
+			if (IsEmptyElement) {
+				Read ();
+				return String.Empty;
+			} else {
+				ReadStartElement ();
+				string s;
+				if (NodeType == XmlNodeType.EndElement)
+					s = String.Empty;
+				else
+					s = ReadContentAsString ();
+				ReadEndElement ();
+				return s;
+			}
+		}
+
+		public override string ReadString ()
+		{
+			return ReadString (Quotas.MaxStringContentLength);
+		}
+
+		[MonoTODO]
+		protected string ReadString (int maxStringContentLength)
+		{
+			return base.ReadString ();
+		}
+
+		[MonoTODO]
+		public virtual byte [] ReadValueAsBase64 ()
+		{
+			return ReadContentAsBase64 ();
 		}
 
 		#endregion

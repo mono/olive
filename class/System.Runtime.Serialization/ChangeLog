@@ -1,3 +1,9 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* reader-method-gen.cs : changed ReadElementContentAsXxx() 
+	  implementation to rather call ReadContentAsXxx() so that binary
+	  reader implementation could be implemented easily.
+
 2007-03-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	(oops, I forgot to add entry for it last time)

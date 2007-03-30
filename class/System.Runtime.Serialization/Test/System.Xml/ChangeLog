@@ -1,3 +1,8 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReaderTest.cs : check if it reads nodes
+	  correctly, by comparing direct output to binary writer.
+
 2007-03-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlBinaryDictionaryWriterTest.cs : more WriteValue() cases.

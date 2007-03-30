@@ -1,3 +1,11 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs :
+	  implemented some ReadContentAs[Type]() methods.
+	* XmlDictionaryReader.cs :
+	  Added Read[[Element]ContentAs]String() implementations.
+	* XmlDictionaryReaderAutoGen.cs : regenerated
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryReader.cs : simply return false for
