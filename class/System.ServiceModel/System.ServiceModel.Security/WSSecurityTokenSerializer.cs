@@ -75,7 +75,7 @@ namespace System.ServiceModel.Security
 			bool emitBspRequiredAttributes,
 			SamlSerializer samlSerializer)
 			: this (securityVersion, emitBspRequiredAttributes, 
-				samlSerializer, null, Type.EmptyTypes)
+				samlSerializer, null, null)
 		{
 		}
 
@@ -106,7 +106,7 @@ namespace System.ServiceModel.Security
 			emit_bsp = emitBspRequiredAttributes;
 			saml_serializer = samlSerializer;
 			encoder = securityStateEncoder;
-			known_types = new List<Type> (knownTypes);
+			known_types = new List<Type> (knownTypes ?? Type.EmptyTypes);
 			max_offset = maximumKeyDerivationOffset;
 			max_label_length = maximumKeyDerivationLabelLength;
 			max_nonce_length = maximumKeyDerivationNonceLength;
@@ -547,13 +547,7 @@ namespace System.ServiceModel.Security
 				cookie != null && cookie.Length > 154 ?
 				encoder.DecodeSecurityState (cookie) :
 				cookie;
-			// FIXME: turned out that it is just a proof token. So,
-			// the token to be returned should be created entirely
-			// from this decoded binary XML.
-			byte [] key = SslnegoCookieResolver.ResolveCookie (decoded);
-
-			return new SecurityContextSecurityToken (
-				cid, id, key, DateTime.MinValue, DateTime.MaxValue);
+			return SslnegoCookieResolver.ResolveCookie (decoded);
 		}
 
 		WrappedKeySecurityToken ReadWrappedKeySecurityTokenCore (

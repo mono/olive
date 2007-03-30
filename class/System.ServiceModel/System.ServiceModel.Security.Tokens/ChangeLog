@@ -1,3 +1,8 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SslnegoCookieResolver.cs : ResolveCookie() should simply return
+	  entire SecurityContextToken parsed by dnse:Cookie binary.
+
 2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SslSecurityTokenAuthenticator.cs, SslSecurityTokenProvider.cs :

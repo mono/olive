@@ -1,3 +1,8 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs : removed SCT reader test which
+	  was DPAPI dependent, and added new DPAPI independent one.
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs : so, RequestedProofToken content

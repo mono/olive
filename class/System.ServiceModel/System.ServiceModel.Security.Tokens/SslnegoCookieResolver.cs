@@ -58,13 +58,13 @@ So, it will be parsed as below:
 42 00 
 42 02 
 83 
-42 06 99 2B 75 75 69 64 2D 31 65 38 33 62 63 37 39 2D 35 30 33 37 2D 34 61 32 30 2D 38 32 66 37 2D 64 32 39 37 31 34 61 30 32 62 37 66 2D 31 // UniqueId
-42 04 AD 45 34 07 4E 38 D2 18 4D 8B 22 FD 6C E6 CE B2 17 // UniqueIdFromGuid
-42 08 9E 1E CA AC F2 71 6E 61 99 DA FB 71 B2 A8 DC 51 36 5B CD F3 F9 60 D2 B6 67 BF 5D B0 CE ED 37 35 9F 02 DC 7D // Base64
-42 0E 8F F4 4C 9C 48 61 33 C9 08 // Int64
-42 10 8F F4 5C 48 1A B5 33 C9 08 // Int64
-42 14 8F F4 4C 9C 48 61 33 C9 08 // Int64
-42 16 8F F4 5C 48 1A B5 33 C9 08 // Int64
+42 06 99 2B 75 75 69 64 2D 31 65 38 33 62 63 37 39 2D 35 30 33 37 2D 34 61 32 30 2D 38 32 66 37 2D 64 32 39 37 31 34 61 30 32 62 37 66 2D 31 // UniqueId wsu:Id
+42 04 AD 45 34 07 4E 38 D2 18 4D 8B 22 FD 6C E6 CE B2 17 // UniqueIdFromGuid ContextId
+42 08 9E 1E CA AC F2 71 6E 61 99 DA FB 71 B2 A8 DC 51 36 5B CD F3 F9 60 D2 B6 67 BF 5D B0 CE ED 37 35 9F 02 DC 7D // Base64 Key
+42 0E 8F F4 4C 9C 48 61 33 C9 08 // Int64 KeyCreation
+42 10 8F F4 5C 48 1A B5 33 C9 08 // Int64 KeyExpiration
+42 14 8F F4 4C 9C 48 61 33 C9 08 // Int64 CookieCreatation
+42 16 8F F4 5C 48 1A B5 33 C9 08 // Int64 CookieExpiration
 01
 
 
@@ -85,8 +85,16 @@ namespace System.ServiceModel.Security.Tokens
 {
 	internal class SslnegoCookieResolver
 	{
-		public static byte [] ResolveCookie (byte [] bytes)
+		public static SecurityContextSecurityToken ResolveCookie (byte [] bytes)
 		{
+			string id = null;
+			UniqueId context = null;
+			DateTime validFrom = DateTime.MinValue,
+				 validTo = DateTime.MaxValue,
+				 keyEffective = DateTime.MinValue,
+				 keyExpired = DateTime.MaxValue;
+			byte [] key = null;
+
 			XmlDictionary dic = new XmlDictionary ();
 			for (int i = 0; i < 12; i++)
 				dic.Add ("n" + i);
@@ -94,19 +102,51 @@ namespace System.ServiceModel.Security.Tokens
 			XmlDictionaryReaderQuotas quotas =
 				new XmlDictionaryReaderQuotas ();
 			XmlDictionaryReader cr = XmlDictionaryReader.CreateBinaryReader (bytes, 0, bytes.Length, dic, quotas);
-			cr.Read (); // -> n1
-			cr.Read (); // -> n2
-			cr.Read (); // -> '1'
-			cr.Read (); // -> /n2
-			cr.Read (); // -> n4
-			cr.Read (); // -> uid
-			cr.Read (); // -> /n4
-			cr.Read (); // -> n3
-			cr.Read (); // -> uid
-			cr.Read (); // -> /n3
-			cr.Read (); // -> n5
-			return cr.ReadElementContentAsBase64 ();
-			//throw new NotImplementedException ();
+			cr.MoveToContent (); // -> n1
+			cr.ReadStartElement ("n0", String.Empty);
+			do {
+				cr.MoveToContent ();
+				if (cr.NodeType == XmlNodeType.EndElement)
+					break;
+				if (cr.NodeType != XmlNodeType.Element)
+					throw new Exception ("Unxpected non-element content:" + cr.NodeType);
+
+				switch (cr.Name) {
+				case "n1":
+					// FIXME: some integer here
+					int n1 = cr.ReadElementContentAsInt ();
+					if (n1 != 1)
+						throw new Exception ("INTERNAL ERROR: there was unexpected n2 content: " + n1);
+					break;
+				case "n2":
+					context = cr.ReadElementContentAsUniqueId ();
+					break;
+				case "n3":
+					id = cr.ReadElementContentAsString ();
+					break;
+				case "n4":
+					key = cr.ReadElementContentAsBase64 ();
+					break;
+				case "n7":
+					validFrom = new DateTime (cr.ReadElementContentAsLong ());
+					break;
+				case "n8":
+					validTo = new DateTime (cr.ReadElementContentAsLong ());
+					break;
+				case "n10":
+					keyEffective = new DateTime (cr.ReadElementContentAsLong ());
+					break;
+				case "n11":
+					keyExpired = new DateTime (cr.ReadElementContentAsLong ());
+					break;
+				default:
+					throw new Exception ("INTERNAL ERROR: there was an unhandled element: " + cr.Name);
+				}
+			} while (true);
+
+			return new SecurityContextSecurityToken (
+				context, id, key, validFrom, validTo,
+				null, keyEffective, keyExpired, null);
 		}
 
 		public static byte [] CreateData (UniqueId contextId, UniqueId session, byte [] key, DateTime tokenSince, DateTime tokenUntil, DateTime keySince, DateTime keyUntil)

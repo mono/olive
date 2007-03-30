@@ -725,25 +725,59 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
-		[Category ("NotWorking")]
-		public void ReadSecurityContextSecurityTokenSslnego ()
+		public void ReadSslnegoSCTNoStateEncoder ()
 		{
-			string xml = @"<c:SecurityContextToken u:Id='uuid-d699595c-8dac-4db4-9d7d-22bf0d900f6b-1' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
-  <c:Identifier>urn:uuid:bf4d319a-1386-45a4-bd54-8c7ebc5d418e</c:Identifier>
-  <dnse:Cookie xmlns:dnse='http://schemas.microsoft.com/ws/2006/05/security'>AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAbwpVqF25WkyFYDXHavE7SwAAAAACAAAAAAADZgAAqAAAABAAAABhYEZd5XcsntVz0r+ZeOQtAAAAAASAAACgAAAAEAAAAGOGL0zkp8ZlDZEDdFvhOpmgAAAAA70hoWg30wr4v4A9zUYqOdw5AgQ+qS3C9lpLHH5vvVIyDZ++w+RjooLLbuhHfa4kGMxBaizAHqhHhhqsLczapTfkmLuNXZtdgtIkavUGcNkWOiGRs6ciZgXu2QLoCTRiQYDB5t2cWMzSDmzXO6yAzm2Zdik2sQ8CnOHzBTvFI8/tbE5/NHOCw2DXLWCi5ndyVEVcnLfvyV1Sk64A6pkQuBQAAAABerotvApVRg4/IJAsZwfzXL671Q==</dnse:Cookie>
-</c:SecurityContextToken>";
+			string cookie = "QgBCAoNCBpkrdXVpZC03MDlhYjYwOC0yMDA0LTQ0ZDUtYjM5Mi1mM2M1YmY3YzY3ZmItMUIErZ3da7enifVFg+e0dObwRLNCCJ4egLowfrwP4Hgn0lOSqlA2fr0k4NAKgRZX+0BVs2EOnwJ6xkIOjzCAEnLHQMkIQhCPMJC+QxtByQhCFI8wgBJyx0DJCEIWjzCQvkMbQckIAQ==";
+			string xml = String.Format (@"<c:SecurityContextToken u:Id='uuid-709ab608-2004-44d5-b392-f3c5bf7c67fb-1' xmlns:c='http://schemas.xmlsoap.org/ws/2005/02/sc' xmlns:u='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+  <c:Identifier>urn:uuid:b76bdd9d-89a7-45f5-83e7-b474e6f044b3</c:Identifier>
+  <dnse:Cookie xmlns:dnse='http://schemas.microsoft.com/ws/2006/05/security'>{0}</dnse:Cookie>
+</c:SecurityContextToken>", cookie);
+			string expectedKey = "gLowfrwP4Hgn0lOSqlA2fr0k4NAKgRZX+0BVs2EOesY=";
+
 			WSSecurityTokenSerializer serializer =
-				WSSecurityTokenSerializer.DefaultInstance;
+				new WSSecurityTokenSerializer (MessageSecurityVersion.Default.SecurityVersion,
+					false,
+					new SamlSerializer (),
+					new MyStateEncoder (),
+					null);
 			SecurityContextSecurityToken sct;
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
 				// Token is not registered, but is restored from the cookie
 				sct = serializer.ReadToken (xr, null) as SecurityContextSecurityToken;
 			}
 			Assert.IsNotNull (sct, "#1");
-			Assert.AreEqual (new UniqueId ("urn:uuid:bf4d319a-1386-45a4-bd54-8c7ebc5d418e"), sct.ContextId, "#2");
+			Assert.AreEqual (new UniqueId ("urn:uuid:b76bdd9d-89a7-45f5-83e7-b474e6f044b3"), sct.ContextId, "#2");
 			Assert.IsNotNull (sct.AuthorizationPolicies.Count, "#3");
 			Assert.AreEqual (0, sct.AuthorizationPolicies.Count, "#4");
 			Assert.AreEqual (1, sct.SecurityKeys.Count, "#5");
+			Assert.AreEqual (expectedKey, Convert.ToBase64String (((SymmetricSecurityKey) sct.SecurityKeys [0]).GetSymmetricKey ()), "#6");
+
+			byte [] xmlbin = Convert.FromBase64String (cookie);
+			XmlDictionary dic = new XmlDictionary ();
+			for (int i = 0; i < 12; i++)
+				dic.Add ("n" + i);
+			XmlDictionaryReader br = XmlDictionaryReader.CreateBinaryReader (xmlbin, 0, xmlbin.Length, dic, new XmlDictionaryReaderQuotas ());
+			while (br.LocalName != "n4")
+				if (!br.Read ())
+					Assert.Fail ("Unxpected binary xmlreader failure.");
+			byte [] key = br.ReadElementContentAsBase64 ();
+			// Hmm, so, looks like the Cookie binary depends not
+			// on SSL protection but on the state encoder ...
+			// does it make sense, or is a different key resolved
+			// as a result of TLS negotiation?
+			Assert.AreEqual (expectedKey, Convert.ToBase64String (key), "#7");
+		}
+
+		class MyStateEncoder : SecurityStateEncoder
+		{
+			protected override byte [] DecodeSecurityState (byte [] src)
+			{
+				return src;
+			}
+			protected override byte [] EncodeSecurityState (byte [] src)
+			{
+				return src;
+			}
 		}
 
 		[Test]
