@@ -122,7 +122,7 @@ namespace Mono.Security.Protocol.Ntlm {
 			data [14] = (byte)((uint)Flags >> 16);
 			data [15] = (byte)((uint)Flags >> 24);
 
-			short dom_off = (short) (headSize + host_len);
+			int dom_off = (headSize + host_len);
 
 			data [16] = (byte) dom_len;
 			data [17] = (byte)(dom_len >> 8);
@@ -130,19 +130,24 @@ namespace Mono.Security.Protocol.Ntlm {
 			data [19] = data [17];
 			data [20] = (byte) dom_off;
 			data [21] = (byte)(dom_off >> 8);
+			data [22] = (byte)(dom_off >> 16);
+			data [23] = (byte)(dom_off >> 24);
 
+			int host_off = headSize;
 			data [24] = (byte) host_len;
 			data [25] = (byte)(host_len >> 8);
 			data [26] = data [24];
 			data [27] = data [25];
-			data [28] = 0x20;
-			data [29] = 0x00;
+			data [28] = (byte) host_off;
+			data [29] = (byte)(host_off >> 8);
+			data [30] = (byte)(host_off >> 16);
+			data [31] = (byte)(host_off >> 24);
 
 			if (Version == NtlmVersion.Version3)
 				Buffer.BlockCopy (OSVersion, 0, data, 32, OSVersion.Length);
 
 			byte[] host = Encoding.ASCII.GetBytes (_host.ToUpper (CultureInfo.InvariantCulture));
-			Buffer.BlockCopy (host, 0, data, headSize, host.Length);
+			Buffer.BlockCopy (host, 0, data, host_off, host.Length);
 
 			byte[] domain = Encoding.ASCII.GetBytes (_domain.ToUpper (CultureInfo.InvariantCulture));
 			Buffer.BlockCopy (domain, 0, data, dom_off, domain.Length);

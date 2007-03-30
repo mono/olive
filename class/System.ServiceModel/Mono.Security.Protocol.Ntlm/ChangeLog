@@ -1,3 +1,9 @@
+2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Type1Message.cs : handle offsets per (assumed) document.
+
+	  (It should be re-examined in Mono.Security with SqlClient btw...)
+
 2007-03-27  Atsushi Enomoto
 
 	This is temporary addition so do not expect further change here
