@@ -343,6 +343,50 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		public void MessageSecuritySPNego ()
+		{
+			WSHttpBinding binding = new WSHttpBinding ();
+			SymmetricSecurityBindingElement sbe =
+				binding.CreateBindingElements ().Find<SymmetricSecurityBindingElement> ();
+			Assert.IsNotNull (sbe, "#1");
+			Assert.AreEqual (false, sbe.RequireSignatureConfirmation, "#1-2");
+
+			SecureConversationSecurityTokenParameters sp =
+				sbe.ProtectionTokenParameters
+				as SecureConversationSecurityTokenParameters;
+			Assert.IsNotNull (sp, "#2");
+			SymmetricSecurityBindingElement spbe =
+				sp.BootstrapSecurityBindingElement
+				as SymmetricSecurityBindingElement;
+			Assert.IsNotNull (spbe, "#3");
+			SspiSecurityTokenParameters p =
+				spbe.ProtectionTokenParameters
+				as SspiSecurityTokenParameters;
+			Assert.IsNotNull (p, "#4");
+			Assert.AreEqual (SecurityTokenReferenceStyle.Internal,
+					 p.ReferenceStyle, "#5");
+			Assert.AreEqual (SecurityTokenInclusionMode.AlwaysToRecipient,
+					 p.InclusionMode, "#6");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.Signed.Count, "#7");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.SignedEncrypted.Count, "#8");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.Endorsing.Count, "#9");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.SignedEndorsing.Count, "#10");
+			Assert.AreEqual (0, spbe.EndpointSupportingTokenParameters.Signed.Count, "#11");
+			Assert.AreEqual (0, spbe.EndpointSupportingTokenParameters.SignedEncrypted.Count, "#12");
+			Assert.AreEqual (0, spbe.EndpointSupportingTokenParameters.Endorsing.Count, "#13");
+			Assert.AreEqual (0, spbe.EndpointSupportingTokenParameters.SignedEndorsing.Count, "#14");
+
+			Assert.AreEqual (0, sbe.OptionalEndpointSupportingTokenParameters.Signed.Count, "#17");
+			Assert.AreEqual (0, sbe.OptionalEndpointSupportingTokenParameters.SignedEncrypted.Count, "#18");
+			Assert.AreEqual (0, sbe.OptionalEndpointSupportingTokenParameters.Endorsing.Count, "#19");
+			Assert.AreEqual (0, sbe.OptionalEndpointSupportingTokenParameters.SignedEndorsing.Count, "#110");
+			Assert.AreEqual (0, spbe.OptionalEndpointSupportingTokenParameters.Signed.Count, "#21");
+			Assert.AreEqual (0, spbe.OptionalEndpointSupportingTokenParameters.SignedEncrypted.Count, "#22");
+			Assert.AreEqual (0, spbe.OptionalEndpointSupportingTokenParameters.Endorsing.Count, "#23");
+			Assert.AreEqual (0, spbe.OptionalEndpointSupportingTokenParameters.SignedEndorsing.Count, "#24");
+		}
+
+		[Test]
 		public void MessageSecurityUserName ()
 		{
 			WSHttpBinding binding = new WSHttpBinding ();
