@@ -11,7 +11,9 @@ System.Data.Linq/ConflictMode.cs
 System.Data.Linq/DataAttribute.cs
 System.Data.Linq/DatabaseAttribute.cs
 System.Data.Linq/DataContext.cs
+System.Data.Linq/DataShape.cs
 System.Data.Linq/DuplicateKeyException.cs
+System.Data.Linq/EntityRef.cs
 Systen.Data.Linq/ForeignKeyReferenceAlreadyHasValueException.cs
 System.Data.Linq/FunctionAttribute.cs
 System.Data.Linq/ITable.cs
@@ -28,6 +30,13 @@ System.Data.Linq/StoredProcedureAttribute.cs
 System.Data.Linq/Table_T.cs
 System.Data.Linq/TableAttribute.cs
 System.Data.Linq/UpdateCheck.cs
+System.Data.Linq/XmlAssociationMapping.cs
+System.Data.Linq/XmlColumnMapping.cs
+System.Data.Linq/XmlDatabaseMapping.cs
+System.Data.Linq/XmlMappingSource.cs
+System.Data.Linq/XmlMemberMapping.cs
+System.Data.Linq/XmlTableMapping.cs
+System.Data.Linq/XmlTypeMapping.cs
 System.Data.Linq.Provider/ICompiledQuery.cs
 System.Data.Linq.Provider/IDataServices.cs
 System.Data.Linq.Provider/IDeferredSourceFactory.cs

@@ -46,6 +46,21 @@ namespace System.Data.Linq
         #endregion
 
         #region Private Static Methods
+        private static bool GetBoolean(string value, bool defaultValue)
+        {
+            if (value == null)
+                return defaultValue;
+
+            try
+            {
+                return Boolean.Parse(value);
+            }
+            catch (FormatException)
+            {
+                throw new InvalidOperationException();
+            }
+        }
+
         private static XmlDatabaseMapping ReadDatabaseMapping(XmlReader reader)
         {
             XmlDocument doc = new XmlDocument();
@@ -128,23 +143,7 @@ namespace System.Data.Linq
             XmlTypeMapping typeMapping = new XmlTypeMapping(name);
 
             typeMapping.InheritanceCode = element.GetAttribute("InheritanceCode");
-
-            string inheritanceDefault = element.GetAttribute("IsInheritanceDefault");
-            if (inheritanceDefault == null)
-            {
-                typeMapping.IsInheritanceDefault = false;
-            }
-            else
-            {
-                try
-                {
-                    typeMapping.IsInheritanceDefault = Boolean.Parse(inheritanceDefault);
-                }
-                catch (FormatException)
-                {
-                    throw new InvalidOperationException();
-                }
-            }
+            typeMapping.IsInheritanceDefault = GetBoolean(element.GetAttribute("IsInheritanceDefault"), false);
 
             XmlNodeList childNodes = element.ChildNodes;
             for (int i = 0; i < childNodes.Count; i++)
@@ -156,8 +155,10 @@ namespace System.Data.Linq
                         typeMapping.Derived.Add(ReadTypeElement(child));
                         break;
                     case "Association":
+                        typeMapping.Members.Add(ReadAssociationElement(child));
                         break;
                     case "Column":
+                        typeMapping.Members.Add(ReadColumnElement(child));
                         break;
                     default:
                         throw new InvalidOperationException();
@@ -165,6 +166,50 @@ namespace System.Data.Linq
             }
 
             return typeMapping;
+        }
+
+        [MonoTODO]
+        private static XmlMemberMapping ReadAssociationElement(XmlElement element)
+        {
+            string member = element.GetAttribute("Member");
+            if (member == null || member.Length == 0)
+                throw new InvalidOperationException();
+
+            XmlAssociationMapping assMapping = new XmlAssociationMapping(member);
+
+            return assMapping;
+        }
+
+        private static XmlColumnMapping ReadColumnElement(XmlElement element)
+        {
+            string member = element.GetAttribute("Member");
+            if (member == null || member.Length == 0)
+                throw new InvalidOperationException();
+
+            XmlColumnMapping columnMapping = new XmlColumnMapping(member);
+            columnMapping.Name = element.GetAttribute("Name");
+            columnMapping.DbType = element.GetAttribute("DbType");
+            columnMapping.IsDBGenerated = GetBoolean(element.GetAttribute("IsDBGenerated"), false);
+            columnMapping.IsDiscriminator = GetBoolean(element.GetAttribute("IsDiscriminator"), false);
+            columnMapping.IsPrimaryKey = GetBoolean(element.GetAttribute("IsPrimaryKey"), false);
+            columnMapping.IsVersion = GetBoolean(element.GetAttribute("IsVersion"), false);
+            columnMapping.Storage = element.GetAttribute("Storage");
+            columnMapping.CanBeNull = GetBoolean(element.GetAttribute("CanBeNull"), false);
+            columnMapping.Expression = element.GetAttribute("Expression");
+
+            string sUpdateCheck = element.GetAttribute("UpdateCheck");
+            if (sUpdateCheck == null)
+                columnMapping.UpdateCheck = UpdateCheck.Always;
+            else
+                columnMapping.UpdateCheck = (UpdateCheck)Enum.Parse(typeof(UpdateCheck), sUpdateCheck, true);
+
+            string sAutoSync = element.GetAttribute("AutoSync");
+            if (sAutoSync == null)
+                columnMapping.AutoSync = AutoSync.Always;
+            else
+                columnMapping.AutoSync = (AutoSync)Enum.Parse(typeof(AutoSync), sAutoSync, true);
+
+            return columnMapping;
         }
         #endregion
 

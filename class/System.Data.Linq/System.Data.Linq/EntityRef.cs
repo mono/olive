@@ -20,61 +20,50 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
+using System.Collections.Generic;
+
 namespace System.Data.Linq
 {
-    class XmlAssociationMapping : XmlMemberMapping
+    //TODO: this should be checked: is LINQ working to handle this?
+    public struct EntityRef<TEntity> where TEntity : class
     {
         #region .ctor
-        public XmlAssociationMapping(string member)
-            : base(member)
+        [MonoTODO()]
+        public EntityRef(TEntity entity)
         {
+            this.source = null; //TODO: we should assign it...
+            this.entity = entity;
+        }
+
+        public EntityRef(IEnumerable<TEntity> source)
+        {
+            this.source = source;
+            entity = default(TEntity);
+        }
+
+        public EntityRef(EntityRef<TEntity> entityRef)
+        {
+            source = entityRef.source;
+            entity = entityRef.entity;
         }
         #endregion
 
         #region Fields
-        private string deleteRule;
-        private bool foreignKey;
-        private bool unique;
-        private string otherKey;
-        private string otherTableName;
-        private string thisKey;
+        private IEnumerable<TEntity> source;
+        private TEntity entity;
         #endregion
 
         #region Properties
-        public string DeleteRule
+        public TEntity Entity
         {
-            get { return deleteRule; }
-            set { deleteRule = value; }
+            get { return entity; }
+            set { entity = value; }
         }
 
-        public bool IsForeignKey
+        [MonoTODO()]
+        public bool HasLoadedOrAssignedValue
         {
-            get { return foreignKey; }
-            set { foreignKey = value; }
-        }
-
-        public bool IsUnique
-        {
-            get { return unique; }
-            set { unique = value; }
-        }
-
-        public string OtherKey
-        {
-            get { return otherKey; }
-            set { otherKey = value; }
-        }
-
-        public string OtherTableName
-        {
-            get { return otherTableName; }
-            set { otherTableName = value; }
-        }
-
-        public string ThisKey
-        {
-            get { return thisKey; }
-            set { thisKey = value; }
+            get { return true; }
         }
         #endregion
     }
