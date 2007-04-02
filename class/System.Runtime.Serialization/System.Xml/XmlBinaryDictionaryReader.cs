@@ -165,6 +165,10 @@ namespace System.Xml
 						return XmlConvert.ToString ((int) TypedValue);
 					case BF.Int64:
 						return XmlConvert.ToString ((long) TypedValue);
+					case BF.Single:
+						return XmlConvert.ToString ((float) TypedValue);
+					case BF.Double:
+						return XmlConvert.ToString ((double) TypedValue);
 					case BF.DateTime:
 						return XmlConvert.ToString ((DateTime) TypedValue);
 					case BF.TimeSpan:
@@ -174,6 +178,7 @@ namespace System.Xml
 					case BF.UniqueIdFromGuid:
 						return TypedValue.ToString ();
 					case BF.Base64:
+					case BF.Base64Fixed:
 						return Convert.ToBase64String ((byte []) TypedValue);
 					default:
 						throw new NotImplementedException ("ValueType " + ValueType + " on node " + NodeType);
@@ -785,8 +790,10 @@ namespace System.Xml
 					attr_values.Add (new NodeInfo (true));
 				NodeInfo v = attr_values [attr_value_count++];
 				v.Reset ();
-				next = ReadByteOrError ();
-				if (!ReadTextOrValue ((byte) next, v, true))
+				int ident = ReadByteOrError ();
+				is_next_end_element = ident > 0x80 && (ident & 1) == 1;
+				ident -= is_next_end_element ? 1 : 0;
+				if (!ReadTextOrValue ((byte) ident, v, true) || is_next_end_element)
 					break;
 			} while (true);
 		}
@@ -840,7 +847,12 @@ namespace System.Xml
 				break;
 			//case BF.UniqueId: // identical to .Text
 			case BF.Base64:
-				byte [] base64 = new byte [ReadInt (-1)];
+				byte [] base64 = new byte [ReadVariantSize ()];
+				source.Reader.Read (base64, 0, base64.Length);
+				node.TypedValue = base64;
+				break;
+			case BF.Base64Fixed:
+				base64 = new byte [source.Reader.ReadInt16 ()];
 				source.Reader.Read (base64, 0, base64.Length);
 				node.TypedValue = base64;
 				break;
@@ -913,35 +925,25 @@ namespace System.Xml
 */
 		}
 
-		private int ReadInt (int sizeSpec)
+		private int ReadVariantSize ()
 		{
 			int size = 0;
 			// If sizeSpec < 0, then it is variant size specifier.
 			// Otherwise it is fixed size s = sizeSpec + 1 byte(s).
-			if (sizeSpec < 0) {
-				do {
-					size <<= 7;
-					byte got = ReadByteOrError ();
-					size += got;
-					if (got < 0x80)
-						break;
-					size -= 0x80;
-				} while (true);
-			} else {
-				for (int i = 0; i < sizeSpec + 1; i++)
-					size += ReadByteOrError () << i;
-			}
+			do {
+				size <<= 7;
+				byte got = ReadByteOrError ();
+				size += got;
+				if (got < 0x80)
+					break;
+				size -= 0x80;
+			} while (true);
 			return size;
 		}
 
 		private string ReadUTF8 ()
 		{
-			return ReadUTF8 (-1);
-		}
-
-		private string ReadUTF8 (int sizeSpec)
-		{
-			int size = ReadInt (sizeSpec);
+			int size = ReadVariantSize ();
 			if (size == 0)
 				return String.Empty;
 			if (tmp_buffer.Length < size) {
@@ -954,7 +956,7 @@ namespace System.Xml
 
 		private XmlDictionaryString ReadDictName ()
 		{
-			int key = ReadInt (-1);
+			int key = ReadVariantSize ();
 			XmlDictionaryString s;
 			if ((key & 1) == 1) {
 				if (session.TryLookup (key >> 1, out s))
@@ -982,7 +984,8 @@ namespace System.Xml
 		public override bool TryGetBase64ContentLength (out int length)
 		{
 			length = 0;
-			if (current.ValueType != BF.Base64)
+			if (current.ValueType != BF.Base64 &&
+			    current.ValueType != BF.Base64Fixed)
 				return false;
 			length = ((byte []) current.TypedValue).Length;
 			return true;
@@ -1027,7 +1030,7 @@ namespace System.Xml
 			case BF.Int32:
 				return (int) current.TypedValue;
 			}
-			throw new InvalidOperationException ("The element content is not an integer");
+			throw new InvalidOperationException ("Current content is not an integer");
 		}
 
 		public override long ReadContentAsLong ()
@@ -1040,12 +1043,33 @@ namespace System.Xml
 			return ReadContentAsInt ();
 		}
 
+		public override float ReadContentAsFloat ()
+		{
+			if (node.ValueType != BF.Single)
+				throw new InvalidOperationException ("Current content is not a single");
+			float v = (float) current.TypedValue;
+			Read ();
+			return v;
+		}
+
+		public override double ReadContentAsDouble ()
+		{
+			if (node.ValueType != BF.Double)
+				throw new InvalidOperationException ("Current content is not a double");
+			double v = (double) current.TypedValue;
+			Read ();
+			return v;
+		}
+
+		// FIXME: this is not likely to consume sequential base64 nodes.
 		public override byte [] ReadContentAsBase64 ()
 		{
 			byte [] ret = null;
-			if (node.ValueType != BF.Base64)
-				throw new InvalidOperationException ("The element content is not base64");
-			while (NodeType == XmlNodeType.Text && node.ValueType == BF.Base64) {
+			if (node.ValueType != BF.Base64 &&
+			    node.ValueType != BF.Base64Fixed)
+				throw new InvalidOperationException ("Current content is not base64");
+			while (NodeType == XmlNodeType.Text &&
+			       (node.ValueType == BF.Base64 || node.ValueType == BF.Base64Fixed)) {
 				if (ret == null)
 					ret = (byte []) node.TypedValue;
 				else {
@@ -1064,7 +1088,7 @@ namespace System.Xml
 		public override Guid ReadContentAsGuid ()
 		{
 			if (node.ValueType != BF.Guid)
-				throw new InvalidOperationException ("The element content is not Guid");
+				throw new InvalidOperationException ("Current content is not a Guid");
 			Guid ret = (Guid) node.TypedValue;
 			Read ();
 			return ret;
@@ -1082,7 +1106,7 @@ namespace System.Xml
 				Read ();
 				return ret;
 			default:
-				throw new InvalidOperationException ("The element content is not Guid");
+				throw new InvalidOperationException ("Current content is not a UniqueId");
 			}
 		}
 

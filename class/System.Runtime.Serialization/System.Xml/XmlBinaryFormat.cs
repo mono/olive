@@ -64,6 +64,7 @@ namespace System.Xml
 		public const byte Decimal = 0x94;
 		public const byte DateTime = 0x96;
 		public const byte Base64 = 0x9E;
+		public const byte Base64Fixed = 0xA0;
 
 		public const byte Text = 0x98;
 		public const byte EmptyText = 0xA8;
@@ -133,6 +134,7 @@ namespace System.Xml
 		96 : DateTime
 		98 : UniqueId
 		9E : base64Binary
+		A0 : base64Binary fixed length?
 		AC : UniqueId whose IsGuid = true
 		AE : TimeSpan
 		B0 : Guid
