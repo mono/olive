@@ -83,6 +83,8 @@ namespace System.ServiceModel.Security
 			}
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego)
 				return CreateSslTokenAuthenticator (requirement);
+			if (requirement.TokenType == ServiceModelSecurityTokenTypes.MutualSslnego)
+				return CreateSslTokenAuthenticator (requirement);
 			if (requirement.TokenType == ServiceModelSecurityTokenTypes.Spnego)
 				return CreateSpnegoTokenAuthenticator (requirement);
 			else

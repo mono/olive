@@ -38,15 +38,21 @@ namespace System.ServiceModel.Security.Tokens
 	{
 		SslServerStream ssl;
 		MemoryStream stream;
+		bool mutual;
 
-		public TlsServerSession (X509Certificate2 cert, bool clientCertificateRequired)
+		public TlsServerSession (X509Certificate2 cert, bool mutual)
 		{
+			this.mutual = mutual;
 			stream = new MemoryStream ();
-			ssl = new SslServerStream (stream, cert, clientCertificateRequired, true, SecurityProtocolType.Tls);
+			ssl = new SslServerStream (stream, cert, mutual, true, SecurityProtocolType.Tls);
 			ssl.PrivateKeyCertSelectionDelegate = delegate (X509Certificate c, string host) {
 				if (c.GetCertHashString () == cert.GetCertHashString ())
 					return cert.PrivateKey;
 				return null;
+			};
+			ssl.ClientCertValidationDelegate = delegate (X509Certificate certificate, int[] certificateErrors) {
+				// FIXME: use X509CertificateValidator
+				return true;
 			};
 		}
 
@@ -89,10 +95,17 @@ namespace System.ServiceModel.Security.Tokens
 
 			WriteHandshake (ms);
 
-			WriteOperations (ms,
-				new TlsServerHello (ssl.context),
-				new TlsServerCertificate (ssl.context),
-				new TlsServerHelloDone (ssl.context));
+			if (mutual)
+				WriteOperations (ms,
+					new TlsServerHello (ssl.context),
+					new TlsServerCertificate (ssl.context),
+					new TlsServerCertificateRequest (ssl.context),
+					new TlsServerHelloDone (ssl.context));
+			else
+				WriteOperations (ms,
+					new TlsServerHello (ssl.context),
+					new TlsServerCertificate (ssl.context),
+					new TlsServerHelloDone (ssl.context));
 
 			return ms.ToArray ();
 #endif
@@ -104,9 +117,14 @@ namespace System.ServiceModel.Security.Tokens
 			stream.Write (raw, 0, raw.Length);
 			stream.Seek (0, SeekOrigin.Begin);
 
+			if (mutual)
+				Protocol.ReceiveRecord (stream); // Certificate
 			Protocol.ReceiveRecord (stream); // ClientKeyExchange
 			Protocol.ReceiveRecord (stream); // ChangeCipherSpec
 			Protocol.ReceiveRecord (stream); // ClientFinished
+
+			if (stream.Position != stream.Length)
+				throw new SecurityNegotiationException (String.Format ("Unexpected SSL negotiation binary: {0} bytes of excess in {1} bytes of the octets", stream.Length - stream.Position, stream.Length));
 		}
 
 		public byte [] ProcessServerFinished ()

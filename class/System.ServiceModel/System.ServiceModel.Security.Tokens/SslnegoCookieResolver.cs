@@ -27,6 +27,7 @@
 //
 using System;
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using System.Xml;
 
 /*
@@ -94,14 +95,17 @@ namespace System.ServiceModel.Security.Tokens
 				 keyEffective = DateTime.MinValue,
 				 keyExpired = DateTime.MaxValue;
 			byte [] key = null;
+			X509Certificate2 cert = null;
+			X500DistinguishedName issuer = null;
 
 			XmlDictionary dic = new XmlDictionary ();
-			for (int i = 0; i < 12; i++)
+			for (int i = 0; i < 30; i++)
 				dic.Add ("n" + i);
 			// FIXME: create proper quotas
 			XmlDictionaryReaderQuotas quotas =
 				new XmlDictionaryReaderQuotas ();
 			XmlDictionaryReader cr = XmlDictionaryReader.CreateBinaryReader (bytes, 0, bytes.Length, dic, quotas);
+
 			cr.MoveToContent (); // -> n1
 			cr.ReadStartElement ("n0", String.Empty);
 			do {
@@ -138,6 +142,25 @@ namespace System.ServiceModel.Security.Tokens
 					break;
 				case "n11":
 					keyExpired = new DateTime (cr.ReadElementContentAsLong ());
+					break;
+				case "n13":
+					// <n18>X509Certificate</n18>
+					cr.Read ();
+					cr.MoveToContent ();
+					cert = new X509Certificate2 (cr.ReadElementContentAsBase64 ());
+					cr.ReadEndElement ();
+					break;
+				case "n15":
+					// <n16><n24 n25="IssuerName" /></n16>
+					cr.Read ();
+					cr.ReadStartElement ("n16", String.Empty);
+					issuer = new X500DistinguishedName (cr.GetAttribute ("n25"));
+					bool empty = cr.IsEmptyElement;
+					cr.ReadStartElement ("n24", String.Empty);
+					if (!empty)
+						cr.ReadEndElement (); // n24
+					cr.ReadEndElement (); // n16
+					cr.ReadEndElement (); // n15
 					break;
 				default:
 					throw new Exception ("INTERNAL ERROR: there was an unhandled element: " + cr.Name);

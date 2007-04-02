@@ -1,5 +1,9 @@
 2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ClientCredentialsSecurityTokenManager.cs : support mutual sslnego.
+
+2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ServiceKnownTypeAttribute.cs : added.
 
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>

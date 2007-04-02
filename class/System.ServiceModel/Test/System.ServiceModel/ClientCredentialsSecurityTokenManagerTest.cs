@@ -290,9 +290,19 @@ namespace MonoTests.System.ServiceModel
 
 		InitiatorServiceModelSecurityTokenRequirement  GetAnonSslProviderRequirement (bool useTransport)
 		{
+			return GetSslProviderRequirement (useTransport, false);
+		}
+
+		InitiatorServiceModelSecurityTokenRequirement  GetMutualSslProviderRequirement (bool useTransport)
+		{
+			return GetSslProviderRequirement (useTransport, true);
+		}
+		
+		InitiatorServiceModelSecurityTokenRequirement  GetSslProviderRequirement (bool useTransport, bool mutual)
+		{
 			InitiatorServiceModelSecurityTokenRequirement r =
 				new InitiatorServiceModelSecurityTokenRequirement ();
-			new MySslSecurityTokenParameters ().InitRequirement (r);
+			new MySslSecurityTokenParameters (mutual).InitRequirement (r);
 //			r.TokenType = ServiceModelSecurityTokenTypes.AnonymousSslnego;
 			r.TargetAddress = new EndpointAddress ("http://localhost:8080");
 //			r.TargetAddress = CreateEndpointAddress ("http://localhost:8080", true);
@@ -401,6 +411,17 @@ Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premis
 			} finally {
 				comm.Close ();
 			}
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void CreateProviderMutualSslWithoutClientCert ()
+		{
+			InitiatorServiceModelSecurityTokenRequirement r =
+				GetMutualSslProviderRequirement (true);
+			SecurityTokenProvider p =
+				def_c.CreateSecurityTokenProvider (r);
+			Assert.IsNotNull (p, "#1");
 		}
 
 		[Test]
@@ -675,6 +696,15 @@ Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premis
 
 	class MySslSecurityTokenParameters : SslSecurityTokenParameters
 	{
+		public MySslSecurityTokenParameters ()
+		{
+		}
+
+		public MySslSecurityTokenParameters (bool mutual)
+			: base (mutual)
+		{
+		}
+
 		public void InitRequirement (SecurityTokenRequirement r)
 		{
 			InitializeSecurityTokenRequirement (r);

@@ -29,6 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using Mono.Security.Protocol.Tls;
 using Mono.Security.Protocol.Tls.Handshake;
@@ -147,11 +148,24 @@ namespace System.ServiceModel.Security.Tokens
 	{
 		SslClientStream ssl;
 		MemoryStream stream;
+		bool mutual;
 
-		public TlsClientSession (string host)
+		public TlsClientSession (string host, X509Certificate2 clientCert)
 		{
 			stream = new MemoryStream ();
-			ssl = new SslClientStream (stream, host, true, SecurityProtocolType.Tls);
+			if (clientCert == null)
+				ssl = new SslClientStream (stream, host, true, SecurityProtocolType.Tls);
+			else {
+				ssl = new SslClientStream (stream, host, true, SecurityProtocolType.Tls, new X509CertificateCollection (new X509Certificate [] {clientCert}));
+				mutual = true;
+				ssl.ClientCertSelection += delegate (
+					X509CertificateCollection clientCertificates,
+				X509Certificate serverCertificate,
+				string targetHost,
+				X509CertificateCollection serverRequestedCertificates) {
+					return clientCertificates [0];
+				};
+			}
 		}
 
 		protected override Context Context {
@@ -178,14 +192,20 @@ namespace System.ServiceModel.Security.Tokens
 			stream.Write (raw, 0, raw.Length);
 			stream.Seek (0, SeekOrigin.Begin);
 
-			Protocol.ReceiveRecord (stream);
-			Protocol.ReceiveRecord (stream);
-			Protocol.ReceiveRecord (stream);
+			Protocol.ReceiveRecord (stream); // ServerHello
+			Protocol.ReceiveRecord (stream); // ServerCertificate
+			if (mutual)
+				Protocol.ReceiveRecord (stream); // CertificateRequest
+			Protocol.ReceiveRecord (stream); // ServerHelloDone
+			if (stream.Position != stream.Length)
+				throw new SecurityNegotiationException (String.Format ("Unexpected SSL negotiation binary: {0} bytes of excess in {1} bytes of the octets", stream.Length - stream.Position, stream.Length));
 		}
 
 		public byte [] ProcessClientKeyExchange ()
 		{
 			stream.SetLength (0);
+			if (mutual)
+				Protocol.SendRecord (HandshakeType.Certificate);
 			Protocol.SendRecord (HandshakeType.ClientKeyExchange);
 			Context.Negotiating.Cipher.ComputeKeys ();
 			Context.Negotiating.Cipher.InitializeCipher ();

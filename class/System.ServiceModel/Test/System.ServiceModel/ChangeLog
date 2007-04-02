@@ -1,3 +1,8 @@
+2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ClientCredentialsSecurityTokenManagerTest.cs :
+	  added mutual ssonego provider creation without client certificate.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSHttpBindingTest.cs : added MessageSecurity test for SPNego case.

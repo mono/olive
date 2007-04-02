@@ -107,15 +107,19 @@ namespace System.ServiceModel
 			if (IsIssuedSecurityTokenRequirement (requirement))
 				return CreateIssuedTokenProvider (requirement);
 
+			bool isInitiator;
+
 			// huh, they are not constants but properties.
 			if (requirement.TokenType == SecurityTokenTypes.X509Certificate)
 				return CreateX509SecurityTokenProvider (requirement);
 			else if (requirement.TokenType == ServiceModelSecurityTokenTypes.SecureConversation)
 				return CreateSecureConversationProvider (requirement);
 			else if (requirement.TokenType == ServiceModelSecurityTokenTypes.AnonymousSslnego) {
-				return CreateAnonymousSslnegoProvider (requirement);
+				if (requirement.TryGetProperty<bool> (ReqType.IsInitiatorProperty, out isInitiator) && isInitiator)
+					return CreateSslnegoProvider (requirement);
 			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.MutualSslnego) {
-				// FIXME: implement
+				if (requirement.TryGetProperty<bool> (ReqType.IsInitiatorProperty, out isInitiator) && isInitiator)
+					return CreateSslnegoProvider (requirement);
 			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.SecurityContext) {
 				// FIXME: implement
 			} else if (requirement.TokenType == ServiceModelSecurityTokenTypes.Spnego) {
@@ -274,9 +278,9 @@ SecurityTokenRequirement requirement)
 			return p;
 		}
 
-		SecurityTokenProvider CreateAnonymousSslnegoProvider (SecurityTokenRequirement r)
+		SecurityTokenProvider CreateSslnegoProvider (SecurityTokenRequirement r)
 		{
-			SslSecurityTokenProvider p = new SslSecurityTokenProvider ();
+			SslSecurityTokenProvider p = new SslSecurityTokenProvider (this, r.TokenType == ServiceModelSecurityTokenTypes.MutualSslnego);
 			InitializeProviderCommunicationObject (p.Communication, r);
 
 			return p;

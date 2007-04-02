@@ -227,7 +227,19 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 
 		[Test]
 		[ExpectedException (typeof (NotSupportedException))]
-		public void CreateRecipientProvider ()
+		public void CreateRecipientProviderAnonymous ()
+		{
+			CreateRecipientProviderCore (false);
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotSupportedException))]
+		public void CreateRecipientProviderMutual ()
+		{
+			CreateRecipientProviderCore (true);
+		}
+
+		void CreateRecipientProviderCore (bool mutual)
 		{
 			MyParameters tp = new MyParameters ();
 			tp.RequireClientCertificate = true;

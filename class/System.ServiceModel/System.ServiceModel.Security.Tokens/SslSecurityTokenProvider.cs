@@ -48,14 +48,20 @@ namespace System.ServiceModel.Security.Tokens
 	class SslSecurityTokenProvider : CommunicationSecurityTokenProvider
 	{
 		SslCommunicationObject comm;
+		ClientCredentialsSecurityTokenManager manager;
 
-		public SslSecurityTokenProvider ()
+		public SslSecurityTokenProvider (ClientCredentialsSecurityTokenManager manager, bool mutual)
 		{
-			comm = new SslCommunicationObject ();
+			this.manager = manager;
+			comm = new SslCommunicationObject (this, mutual);
 		}
 
 		public override ProviderCommunicationObject Communication {
 			get { return comm; }
+		}
+
+		public ClientCredentialsSecurityTokenManager Manager {
+			get { return manager; }
 		}
 
 		public override SecurityToken GetOnlineToken (TimeSpan timeout)
@@ -66,10 +72,19 @@ namespace System.ServiceModel.Security.Tokens
 
 	class SslCommunicationObject : ProviderCommunicationObject
 	{
+		SslSecurityTokenProvider owner;
 		WSTrustSecurityTokenServiceProxy proxy;
+		X509Certificate2 client_certificate;
+		
 
-		public SslCommunicationObject ()
+		public SslCommunicationObject (SslSecurityTokenProvider owner, bool mutual)
 		{
+			if (mutual) {
+				client_certificate = owner.Manager.ClientCredentials.ClientCertificate.Certificate;
+				if (client_certificate == null)
+					throw new InvalidOperationException ("ClientCertificate is required for mutual SSL negotiation.");
+			}
+			this.owner = owner;
 		}
 
 		class TlsnegoClientSessionContext
@@ -98,7 +113,7 @@ namespace System.ServiceModel.Security.Tokens
 		{
 			TlsnegoClientSessionContext tlsctx =
 				new TlsnegoClientSessionContext ();
-			TlsClientSession tls = new TlsClientSession (IssuerAddress.Uri.ToString ());
+			TlsClientSession tls = new TlsClientSession (IssuerAddress.Uri.ToString (), client_certificate);
 			WstRequestSecurityToken rst =
 				new WstRequestSecurityToken ();
 			string contextId = rst.Context;
