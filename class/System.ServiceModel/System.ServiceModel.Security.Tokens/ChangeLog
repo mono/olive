@@ -1,3 +1,13 @@
+2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityContextSecurityToken.cs : Cookie needs a setter.
+	* SslnegoCookieResolver.cs : set Cookie so that it can be serialized.
+	* SslSecurityTokenProvider.cs, SslSecurityTokenAuthenticator.cs :
+	  (At provider) check contextId returned by the server.
+	  Reverted ProofToken value (see comments).
+	* CommunicationSecurityTokenAuthenticator.cs : it now implements
+	  IIssuanceSecurityTokenAuthenticator.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AuthenticatorCommunicationObject.cs : added SecurityBindingElement.

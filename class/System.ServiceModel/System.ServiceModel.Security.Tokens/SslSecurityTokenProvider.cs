@@ -101,6 +101,7 @@ namespace System.ServiceModel.Security.Tokens
 			TlsClientSession tls = new TlsClientSession (IssuerAddress.Uri.ToString ());
 			WstRequestSecurityToken rst =
 				new WstRequestSecurityToken ();
+			string contextId = rst.Context;
 
 			// send ClientHello
 			rst.BinaryExchange = new WstBinaryExchange (Constants.WstBinaryExchangeValueTls);
@@ -171,19 +172,25 @@ namespace System.ServiceModel.Security.Tokens
 			tlsctx.StoreMessage (XmlDictionaryReader.CreateDictionaryReader (new XmlNodeReader (doc)));
 #endif
 
+			// the RequestedProofToken is represented as 32 bytes
+			// of TLS ApplicationData.
+			// - According to WSE2 doc, it is *the* key, but not
+			//   sure it also applies to WCF.
+			// - WSS4J also seems to store the encryped shared key.
+			// - (Important) It seems that without tls decryption,
+			//   .NET fails to recover the key.
 			byte [] proof = tls.ProcessApplicationData (
 				(byte []) r.RequestedProofToken);
-			// the RequestedProofToken is represented as 32 bytes
-			// of TLS ApplicationData. According to WSE2 doc, it
-			// is *the* key, but not sure it also applies to WCF.
-			// WSS4J also seems to store the encryped shared key.
-			byte [] key = (byte []) r.RequestedProofToken;
+			byte [] key = proof;
 
 			// Authenticate token.
 
 			byte [] actual = coll.Responses [1].Authenticator;
 			if (actual == null)
 				throw new SecurityNegotiationException ("Token authenticator is expected in the RequestSecurityTokenResponse but not found.");
+
+			if (coll.Responses [0].Context != contextId)
+				throw new SecurityNegotiationException ("The context Id does not match with that of the corresponding token authenticator.");
 
 			// H = sha1(exc14n(RST..RSTRs))
 			byte [] hash = SHA1.Create ().ComputeHash (tlsctx.GetC14NResults ());
@@ -202,6 +209,7 @@ foreach (byte b in proof) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 				for (int i = 0; i < referent.Length; i++)
 					if (referent [i] != actual [i])
 						mismatch = true;
+			// FIXME: enable verification
 //			if (mismatch)
 //				throw new SecurityNegotiationException ("The CombinedHash does not match the expected value.");
 

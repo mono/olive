@@ -85,7 +85,7 @@ namespace System.ServiceModel.Security.Tokens
 {
 	internal class SslnegoCookieResolver
 	{
-		public static SecurityContextSecurityToken ResolveCookie (byte [] bytes)
+		public static SecurityContextSecurityToken ResolveCookie (byte [] bytes, byte [] cookie)
 		{
 			string id = null;
 			UniqueId context = null;
@@ -144,9 +144,11 @@ namespace System.ServiceModel.Security.Tokens
 				}
 			} while (true);
 
-			return new SecurityContextSecurityToken (
+			SecurityContextSecurityToken sct = new SecurityContextSecurityToken (
 				context, id, key, validFrom, validTo,
 				null, keyEffective, keyExpired, null);
+			sct.Cookie = cookie;
+			return sct;
 		}
 
 		public static byte [] CreateData (UniqueId contextId, UniqueId session, byte [] key, DateTime tokenSince, DateTime tokenUntil, DateTime keySince, DateTime keyUntil)

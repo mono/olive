@@ -303,7 +303,7 @@ if (!ShouldOutputEncryptedKey)
 			nsmgr.AddNamespace ("u", Constants.WsuNamespace);
 			nsmgr.AddNamespace ("o11", Constants.Wss11Namespace);
 
-			WrappedKeySecurityToken primaryToken = null;
+			/*WrappedKey*/SecurityToken primaryToken = null;
 			DerivedKeySecurityToken dkeyToken = null;
 			SecurityToken actualToken = null;
 			SecurityKeyIdentifierClause actualClause = null;
@@ -325,10 +325,10 @@ if (!ShouldOutputEncryptedKey)
 			// - done or notyet. FIXME: not implemented yet
 			// It also affects on key reference output
 
-			bool includeEncToken = /* FIXME: remove this hack */ Parameters is SslSecurityTokenParameters ? false :
+			bool includeEncToken = // /* FIXME: remove this hack */Parameters is SslSecurityTokenParameters ? false :
 						ShouldIncludeToken (
 				Security.RecipientParameters.InclusionMode, false);
-			bool includeSigToken = /* FIXME: remove this hack */ Parameters is SslSecurityTokenParameters ? false :
+			bool includeSigToken = // /* FIXME: remove this hack */ Parameters is SslSecurityTokenParameters ? false :
 						ShouldIncludeToken (
 				Security.InitiatorParameters.InclusionMode, false);
 
@@ -347,7 +347,10 @@ if (!ShouldOutputEncryptedKey)
 if (!ShouldOutputEncryptedKey)
 primaryToken = RequestContext.RequestMessage.Properties.Security.ProtectionToken.SecurityToken as WrappedKeySecurityToken;
 else
-			primaryToken = new WrappedKeySecurityToken (messageId + "-" + identForMessageId++,
+			primaryToken =
+				// FIXME: remove this hack?
+				encToken is SecurityContextSecurityToken ? encToken :
+				new WrappedKeySecurityToken (messageId + "-" + identForMessageId++,
 				actualKey.Key,
 				// security.DefaultKeyWrapAlgorithm,
 				Parameters.InternalHasAsymmetricKey ?
@@ -363,7 +366,7 @@ else
 			actualToken = primaryToken;
 
 			// FIXME: I doubt it is correct...
-			WrappedKeySecurityToken requestEncKey = ShouldOutputEncryptedKey ? null : primaryToken;
+			WrappedKeySecurityToken requestEncKey = ShouldOutputEncryptedKey ? null : primaryToken as WrappedKeySecurityToken;
 			actualClause = requestEncKey == null ? (SecurityKeyIdentifierClause)
 				new LocalIdKeyIdentifierClause (actualToken.Id, typeof (WrappedKeySecurityToken)) :
 				new InternalEncryptedKeyIdentifierClause (SHA1.Create ().ComputeHash (requestEncKey.GetWrappedKey ()));
@@ -403,7 +406,7 @@ else
 			    !ShouldOutputEncryptedKey)
 				header.AddContent (refList);
 			else
-				primaryToken.ReferenceList = refList;
+				((WrappedKeySecurityToken) primaryToken).ReferenceList = refList;
 
 			// [Signature Confirmation]
 			if (security.RequireSignatureConfirmation && secprop.ConfirmedSignatures.Count > 0)

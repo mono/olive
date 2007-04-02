@@ -202,6 +202,7 @@ namespace System.ServiceModel.Security.Tokens
 			// P_SHA1(encrypted_key,SHA1(exc14n(RST..RSTRs))+"CK-HASH")
 			byte [] hash = SHA1.Create ().ComputeHash (tlsInfo.Messages.ToArray ());
 			byte [] key = tls.CreateHash (tls.MasterSecret, hash, "CK-HASH");
+			byte [] keyTlsApplied = tls.ProcessApplicationData (key);
 foreach (byte b in hash) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 
@@ -225,7 +226,9 @@ foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 				null,
 				owner.Manager.ServiceCredentials.SecureConversationAuthentication.SecurityStateEncoder);
 			rstr.RequestedSecurityToken = sct;
-			rstr.RequestedProofToken = tls.ProcessApplicationData (key);
+			// without this ProcessApplicationData(), .NET seems
+			// to fail recovering the key.
+			rstr.RequestedProofToken = keyTlsApplied;
 			rstr.RequestedAttachedReference = new LocalIdKeyIdentifierClause (sct.Id);
 			rstr.RequestedUnattachedReference = new SecurityContextKeyIdentifierClause (sct.ContextId, null);
 			WstLifetime lt = new WstLifetime ();
@@ -244,6 +247,10 @@ foreach (byte b in key) Console.Write ("{0:X02} ", b); Console.WriteLine ();
 			col.Responses.Add (rstr);
 
 			sessions.Remove (reader.Value.Context);
+
+			// FIXME: get correct tokenRequestor address (probably identity authorized?)
+			if (owner.IssuedSecurityTokenHandler != null)
+				owner.IssuedSecurityTokenHandler (sct, request.Headers.ReplyTo);
 
 			return Message.CreateMessage (request.Version, Constants.WstIssueReplyAction, col);
 		}

@@ -1,3 +1,8 @@
+2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecureMessageGenerator.cs : SecurityContextToken support (though
+	  it is still regarded as invalid by WCF).
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityMessageHeader.cs, SecureMessageGenerator.cs :

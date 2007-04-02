@@ -492,6 +492,7 @@ namespace MonoTests.System.ServiceModel.Security
 			SecurityTokenAuthenticator a = def_c.CreateSecurityTokenAuthenticator (r, out resolver);
 			// non-standard authenticator type.
 			Assert.IsNotNull (resolver, "#1");
+			Assert.IsTrue (a is IIssuanceSecurityTokenAuthenticator, "#2");
 
 			try {
 				a.ValidateToken (new X509SecurityToken (cert));

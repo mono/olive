@@ -33,10 +33,25 @@ using System.IdentityModel.Tokens;
 
 namespace System.ServiceModel.Security.Tokens
 {
-	abstract class CommunicationSecurityTokenAuthenticator : SecurityTokenAuthenticator, ICommunicationObject
+	abstract class CommunicationSecurityTokenAuthenticator
+		: SecurityTokenAuthenticator, ICommunicationObject,
+		  IIssuanceSecurityTokenAuthenticator
 	{
 		protected CommunicationSecurityTokenAuthenticator ()
 		{
+		}
+
+		IssuedSecurityTokenHandler issuance_handler;
+		RenewedSecurityTokenHandler renew_handler;
+
+		public IssuedSecurityTokenHandler IssuedSecurityTokenHandler { 
+			get { return issuance_handler; }
+			set { issuance_handler = value; }
+		}
+
+		public RenewedSecurityTokenHandler RenewedSecurityTokenHandler { 
+			get { return renew_handler; }
+			set { renew_handler = value; }
 		}
 
 		public abstract AuthenticatorCommunicationObject Communication { get; }

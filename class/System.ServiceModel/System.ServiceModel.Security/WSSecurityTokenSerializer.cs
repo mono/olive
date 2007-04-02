@@ -547,7 +547,7 @@ namespace System.ServiceModel.Security
 				cookie != null && cookie.Length > 154 ?
 				encoder.DecodeSecurityState (cookie) :
 				cookie;
-			return SslnegoCookieResolver.ResolveCookie (decoded);
+			return SslnegoCookieResolver.ResolveCookie (decoded, cookie);
 		}
 
 		WrappedKeySecurityToken ReadWrappedKeySecurityTokenCore (

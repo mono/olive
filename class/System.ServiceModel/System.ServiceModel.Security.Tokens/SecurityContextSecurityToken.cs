@@ -183,6 +183,7 @@ namespace System.ServiceModel.Security.Tokens
 
 		internal byte [] Cookie {
 			get { return cookie; }
+			set { cookie = value; }
 		}
 
 		public override bool CanCreateKeyIdentifierClause<T> ()
