@@ -67,12 +67,12 @@ namespace System.ServiceModel.Security
 
 		protected internal override byte [] DecodeSecurityState (byte [] data)
 		{
-			return ProtectedData.Protect (data, entropy, DataProtectionScope.CurrentUser);
+			return ProtectedData.Unprotect (data, entropy, DataProtectionScope.CurrentUser);
 		}
 
 		protected internal override byte [] EncodeSecurityState (byte [] data)
 		{
-			return ProtectedData.Unprotect (data, entropy, DataProtectionScope.CurrentUser);
+			return ProtectedData.Protect (data, entropy, DataProtectionScope.CurrentUser);
 		}
 	}
 }
