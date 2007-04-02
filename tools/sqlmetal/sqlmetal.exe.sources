@@ -1,0 +1,4 @@
+Assembly/AssemblyInfo.cs
+System.Data.Linq/ConnectionStringFormatter.cs
+System.Data.Linq/LinqMapper.cs
+System.Data.Linq/ProgramOptions.cs
