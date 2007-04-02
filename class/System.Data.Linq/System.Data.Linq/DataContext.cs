@@ -20,22 +20,187 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.Linq.Provider;
+using System.IO;
+using System.Linq;
+
 namespace System.Data.Linq
 {
     public class DataContext : ICloneable, IDisposable
     {
+        #region .ctor
+        public DataContext(IDbConnection connection, MappingSource mapping)
+        {
+            if (connection == null)
+                throw new ArgumentNullException("connection");
+            if (connection == null)
+                throw new ArgumentNullException("mapping");
+
+            this.conflicts = new ChangeConflictCollection();
+            this.mapping = mapping;
+
+            //TODO: init the IDataServices for the provider...
+
+            MetaModel model = mapping.CreateModel(GetType());
+            Type providerType = model.ProviderType;
+
+            if (providerType == null)
+                throw new InvalidOperationException();
+            if (!typeof(IProvider).IsAssignableFrom(providerType))
+                throw new InvalidOperationException();
+
+            provider = (IProvider)Activator.CreateInstance(providerType, true);
+            provider.Initialize(services, connection);
+        }
+
+        public DataContext(IDbConnection connection)
+            : this(connection, new AttributeMappingSource())
+        {
+        }
+
+        ~DataContext()
+        {
+            Dispose(false);
+        }
+        #endregion
+
+        #region Fields
+        private bool disposed;
+        private IProvider provider;
+        private MappingSource mapping;
+        private bool objectTracking;
+        private bool deferredLoading;
+        private DataShape shape;
+        private IDataServices services;
+        private ChangeConflictCollection conflicts;
+        #endregion
+
+        #region Properties
+
+        public ChangeConflictCollection ChangeConflicts
+        {
+            get
+            {
+                CheckIsDisposed();
+                return conflicts;
+            }
+        }
+
+        public IDbConnection Connection
+        {
+            get
+            {
+                CheckIsDisposed();
+                return provider.Connection;
+            }
+        }
+
+        public TextWriter Log
+        {
+            get
+            {
+                CheckIsDisposed();
+                return provider.Log;
+            }
+            set
+            {
+                CheckIsDisposed();
+                provider.Log = value;
+            }
+        }
+
+        public bool ObjectTrackingEnabled
+        {
+            get
+            {
+                CheckIsDisposed();
+                return objectTracking;
+            }
+            set
+            {
+                CheckIsDisposed();
+                objectTracking = value;
+                if (!value)
+                    deferredLoading = false;
+            }
+        }
+        #endregion
+
+        #region Private Methods
+        private void CheckIsDisposed()
+        {
+            if (disposed)
+                throw new ObjectDisposedException(GetType().Name);
+        }
+        #endregion
+
+        #region Protected Methods
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (provider != null)
+                {
+                    provider.Dispose();
+                    provider = null;
+                }
+                mapping = null;
+                shape = null;
+            }
+        }
+        #endregion
+
         #region Public Methods
+        public object Clone()
+        {
+            return new DataContext(Connection, mapping);
+        }
+
+        public void CreateDatabase()
+        {
+            CheckIsDisposed();
+            provider.CreateDatabase();
+        }
+
+        public bool DatabaseExists()
+        {
+            CheckIsDisposed();
+            return provider.DatabaseExists();
+        }
+
+        public void DeleteDatabase()
+        {
+            CheckIsDisposed();
+            provider.DeleteDatabase();
+        }
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            this.disposed = true;
+            this.Dispose(true);
         }
 
-        public object Clone()
+        public string GetQueryText(IQueryable query)
         {
-            throw new NotImplementedException();
+            CheckIsDisposed();
+            if (query == null)
+                throw new ArgumentNullException("query");
+
+            return provider.GetQueryText(query.Expression);
         }
 
+        public IEnumerable<T> Translate<T>(IDataReader reader)
+        {
+            CheckIsDisposed();
+            if (reader == null)
+                throw new ArgumentNullException("reader");
+
+            IEnumerator en = provider.Translate(typeof(T), reader);
+            while (en.MoveNext())
+                yield return en.Current;
+        }
         #endregion
     }
 }
