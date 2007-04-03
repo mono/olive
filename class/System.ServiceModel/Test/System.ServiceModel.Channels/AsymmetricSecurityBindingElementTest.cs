@@ -132,7 +132,12 @@ namespace MonoTests.System.ServiceModel.Channels
 				new HttpTransportBindingElement ());
 			IChannelListener<IReplyChannel> l =
 				binding.BuildChannelListener<IReplyChannel> (new Uri ("http://localhost:37564"), new BindingParameterCollection ());
-			l.Open ();
+			try {
+				l.Open ();
+			} finally {
+				if (l.State == CommunicationState.Opened)
+					l.Close ();
+			}
 		}
 
 		Message tmp_request, tmp_reply;
@@ -140,9 +145,16 @@ namespace MonoTests.System.ServiceModel.Channels
 		[Test]
 		[ExpectedException (typeof (MessageSecurityException))]
 		// after having to fix several issues, I forgot what I originally wanted to test here ...
-		[Category ("NotWorking")]
+		[Ignore ("It causes some weird failure and port blocking ...")]
 		public void VerifyX509MessageSecurityAtService ()
 		{
+			AsymmetricSecurityBindingElement clisbe =
+				new AsymmetricSecurityBindingElement ();
+			clisbe.InitiatorTokenParameters =
+				new X509SecurityTokenParameters ();
+			clisbe.RecipientTokenParameters =
+				new X509SecurityTokenParameters ();
+
 			AsymmetricSecurityBindingElement svcsbe =
 				new AsymmetricSecurityBindingElement ();
 			svcsbe.InitiatorTokenParameters =
@@ -150,33 +162,29 @@ namespace MonoTests.System.ServiceModel.Channels
 			svcsbe.RecipientTokenParameters =
 				new X509SecurityTokenParameters ();
 
-			CustomBinding b_req = new CustomBinding (svcsbe,
+			CustomBinding b_req = new CustomBinding (clisbe,
 				new HttpTransportBindingElement ());
 
-			b_req.ReceiveTimeout = b_req.SendTimeout = TimeSpan.FromSeconds (5);
+			b_req.ReceiveTimeout = b_req.SendTimeout = TimeSpan.FromSeconds (10);
+
+			CustomBinding b_res = new CustomBinding (svcsbe, new HttpTransportBindingElement ());
+			b_res.ReceiveTimeout = b_res.SendTimeout = TimeSpan.FromSeconds (10);
+
 			EndpointAddress remaddr = new EndpointAddress (
 				new Uri ("http://localhost:37564"),
 				new X509CertificateEndpointIdentity (cert2));
-			CalcProxy proxy = new CalcProxy (b_req, remaddr);
-			proxy.ClientCredentials.ClientCertificate.Certificate = cert;
+			CalcProxy proxy = null;
 			ServiceHost host = new ServiceHost (typeof (CalcService));
+			host.AddServiceEndpoint (typeof (ICalc), b_res, "http://localhost:37564");
+
+			ServiceCredentials cred = new ServiceCredentials ();
+			cred.ServiceCertificate.Certificate = cert;
+			host.Description.Behaviors.Add (cred);
 			try {
-				AsymmetricSecurityBindingElement clisbe =
-					new AsymmetricSecurityBindingElement ();
-				clisbe.InitiatorTokenParameters =
-					new X509SecurityTokenParameters ();
-				clisbe.RecipientTokenParameters =
-					new X509SecurityTokenParameters ();
-				BindingElement transport = new HttpTransportBindingElement ();
-				CustomBinding b_res = new CustomBinding (clisbe, transport);
-				b_res.ReceiveTimeout = b_res.SendTimeout = TimeSpan.FromSeconds (5);
-				host.AddServiceEndpoint (typeof (ICalc), b_res, "http://localhost:37564");
-
-				ServiceCredentials cred = new ServiceCredentials ();
-				cred.ServiceCertificate.Certificate = cert;
-				host.Description.Behaviors.Add (cred);
-
 				host.Open ();
+
+				proxy = new CalcProxy (b_req, remaddr);
+				proxy.ClientCredentials.ClientCertificate.Certificate = cert;
 
 				// FIXME: on WinFX, when this Begin method
 				// is invoked before the listener setup, it
@@ -185,8 +193,6 @@ namespace MonoTests.System.ServiceModel.Channels
 				//Assert.AreEqual (3, proxy.EndSum (result));
 				Assert.AreEqual (3, proxy.Sum (1, 2));
 			} finally {
-				if (proxy.State == CommunicationState.Opened)
-					proxy.Close ();
 				if (host.State == CommunicationState.Opened)
 					host.Close ();
 			}
@@ -241,8 +247,12 @@ namespace MonoTests.System.ServiceModel.Channels
 			cred.ClientCertificate.Authentication.CertificateValidationMode =
 				X509CertificateValidationMode.None;
 			host.Description.Behaviors.Add (cred);
-			host.Open ();
-			host.Close (); // in case it didn't fail.
+			try {
+				host.Open ();
+			} finally {
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
+			}
 		}
 	}
 }

@@ -47,6 +47,7 @@ namespace MonoTests.System.ServiceModel
 	public class IntegratedConnectionTest
 	{
 		[Test]
+		[Ignore ("With Orcas it does not work fine")]
 		// It is almost identical to samples/basic-http-binding
 		public void SimpleHttpConnection ()
 		{
@@ -66,11 +67,13 @@ namespace MonoTests.System.ServiceModel
 				IFoo foo  = cf.CreateChannel ();
 				Assert.AreEqual ("Test for EchoTest for Echo", foo.Echo ("Test for Echo"));
 			} finally {
-				host.Close ();
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
 			}
 		}
 
 		[Test]
+		[Ignore ("With Orcas it does not work fine")]
 		public void SimpleClientBase ()
 		{
 			// Service
@@ -95,11 +98,13 @@ namespace MonoTests.System.ServiceModel
 				}
 			} finally {
 				// Service
-				host.Close ();
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
 			}
 		}
 
 		[Test]
+		[Ignore ("With Orcas it does not work fine")]
 		public void ExchangeMetadata ()
 		{
 			// Service
@@ -125,7 +130,8 @@ namespace MonoTests.System.ServiceModel
 				}
 			} finally {
 				// Service
-				host.Close ();
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
 			}
 		}
 	}

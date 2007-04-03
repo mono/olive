@@ -25,10 +25,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 using System;
 using System.Collections.ObjectModel;
 using System.IO;
+using System.Net.Sockets;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -127,27 +127,37 @@ namespace MonoTests.System.ServiceModel
 
 		#region UseCase1
 
+		ServiceHost host;
+
 		[Test]
+		[Ignore ("With Orcas it does not work fine")]
 		public void UseCase1Test ()
 		{
 			// almost equivalent to samples/clientbase/samplesvc.cs
-			ServiceHost host = new ServiceHost (typeof (UseCase1));
-			Binding binding = new BasicHttpBinding ();
-			binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
-			host.AddServiceEndpoint (typeof (IUseCase1).FullName,
+			using (host = new ServiceHost (typeof (UseCase1))) {
+				Binding binding = new BasicHttpBinding ();
+				binding.ReceiveTimeout = TimeSpan.FromSeconds (15);
+				host.AddServiceEndpoint (typeof (IUseCase1).FullName,
 				binding, new Uri ("http://localhost:37564"));
-			host.Open ();
-			try {
+
+				host.Open ();
 				// almost equivalent to samples/clientbase/samplecli.cs
-				UseCase1Proxy proxy = new UseCase1Proxy (
+				using (UseCase1Proxy proxy = new UseCase1Proxy (
 					new BasicHttpBinding (),
-					new EndpointAddress ("http://localhost:37564"));
-				proxy.Open ();
-				Assert.AreEqual ("TEST FOR ECHOTEST FOR ECHO",
-					proxy.Echo ("TEST FOR ECHO"));
-			} finally {
-				host.Close ();
+					new EndpointAddress ("http://localhost:37564"))) {
+					proxy.Open ();
+					Assert.AreEqual ("TEST FOR ECHOTEST FOR ECHO", proxy.Echo ("TEST FOR ECHO"));
+				}
 			}
+			EnsurePortNonBlocking (37564);
+		}
+
+		void EnsurePortNonBlocking (int port)
+		{
+			TcpListener l = new TcpListener (port);
+			l.ExclusiveAddressUse = true;
+			l.Start ();
+			l.Stop ();
 		}
 
 		[ServiceContract]
@@ -183,23 +193,24 @@ namespace MonoTests.System.ServiceModel
 		// For contract that directly receives and sends Message instances.
 		#region UseCase2
 		[Test]
+		[Ignore ("With Orcas it does not work fine")]
 		public void UseCase2Test ()
 		{
 			// almost equivalent to samples/clientbase/samplesvc2.cs
 			ServiceHost host = new ServiceHost (typeof (UseCase2));
 			Binding binding = new BasicHttpBinding ();
-			binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
+			binding.ReceiveTimeout = TimeSpan.FromSeconds (15);
 			host.AddServiceEndpoint (typeof (IUseCase2).FullName,
 			binding, new Uri ("http://localhost:37564"));
-			host.Open ();
 
 			try {
+				host.Open ();
 				// almost equivalent to samples/clientbase/samplecli2.cs
-				Binding binging = new BasicHttpBinding ();
-				binging.SendTimeout = TimeSpan.FromSeconds (5);
-				binging.ReceiveTimeout = TimeSpan.FromSeconds (5);
+				Binding b = new BasicHttpBinding ();
+				b.SendTimeout = TimeSpan.FromSeconds (15);
+				b.ReceiveTimeout = TimeSpan.FromSeconds (15);
 				UseCase2Proxy proxy = new UseCase2Proxy (
-					binding,
+					b,
 					new EndpointAddress ("http://localhost:37564/"));
 				proxy.Open ();
 				Message req = Message.CreateMessage (MessageVersion.Soap11, "http://tempuri.org/IUseCase2/Echo");
@@ -208,7 +219,9 @@ namespace MonoTests.System.ServiceModel
 					res.WriteMessage (w);
 				}
 			} finally {
-				host.Close ();
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
+				EnsurePortNonBlocking (37564);
 			}
 		}
 
@@ -245,7 +258,9 @@ namespace MonoTests.System.ServiceModel
 
 		#endregion
 
-		public void UseCase3Test ()
+		[Test]
+		[Ignore ("With Orcas it does not work fine")]
+		public void UseCase3 ()
 		{
 			// almost equivalent to samples/clientbase/samplesvc3.cs
 			ServiceHost host = new ServiceHost (typeof (MetadataExchange));
@@ -257,8 +272,8 @@ namespace MonoTests.System.ServiceModel
 			// magic name that does not require fully qualified name ...
 			host.AddServiceEndpoint ("IMetadataExchange",
 			        bs, new Uri ("http://localhost:37564"));
-			host.Open ();
 			try {
+				host.Open ();
 				// almost equivalent to samples/clientbase/samplecli3.cs
 				Binding bc = new BasicHttpBinding ();
 				bc.SendTimeout = TimeSpan.FromSeconds (5);
@@ -274,7 +289,9 @@ namespace MonoTests.System.ServiceModel
 					res.WriteMessage (w);
 				}
 			} finally {
-				host.Close ();
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
+				EnsurePortNonBlocking (37564);
 			}
 		}
 

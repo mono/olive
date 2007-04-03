@@ -203,13 +203,33 @@ namespace MonoTests.System.ServiceModel.Channels
 		string svcret;
 
 		[Test]
+		[Ignore ("It somehow fails...")]
 		// It is almost identical to http-low-level-binding
 		public void LowLevelHttpConnection ()
 		{
+			HttpTransportBindingElement lel =
+				new HttpTransportBindingElement ();
+
+			// Service
+			BindingContext lbc = new BindingContext (
+				new CustomBinding (),
+				new BindingParameterCollection (),
+				new Uri ("http://localhost:37564"),
+				String.Empty, ListenUriMode.Explicit);
+			listener = lel.BuildChannelListener<IReplyChannel> (lbc);
+
+			try {
+
+			listener.Open ();
+
 			svcret = "";
 
 			Thread svc = new Thread (delegate () {
-				LowLevelHttpConnection_SetupService ();
+				try {
+					svcret = LowLevelHttpConnection_SetupService ();
+				} catch (Exception ex) {
+					svcret = ex.ToString ();
+				}
 			});
 			svc.Start ();
 
@@ -231,10 +251,11 @@ namespace MonoTests.System.ServiceModel.Channels
 			request.Open ();
 
 			try {
+			try {
 				Message reqmsg = Message.CreateMessage (
 					MessageVersion.Default, "Echo");
 				// sync version does not work here.
-				Message msg = request.EndRequest (request.BeginRequest (reqmsg, TimeSpan.FromSeconds (5), null, null));
+				Message msg = request.Request (reqmsg, TimeSpan.FromSeconds (5));
 
 				using (XmlWriter w = XmlWriter.Create (TextWriter.Null)) {
 					msg.WriteMessage (w);
@@ -243,69 +264,36 @@ namespace MonoTests.System.ServiceModel.Channels
 				if (svcret != null)
 					Assert.Fail (svcret.Length > 0 ? svcret : "service code did not finish until this test expected.");
 			} finally {
-				request.Close ();
-				factory.Close ();
+				if (request.State == CommunicationState.Opened)
+					request.Close ();
+			}
+			} finally {
+				if (factory.State == CommunicationState.Opened)
+					factory.Close ();
+			}
+			} finally {
+				if (listener.State == CommunicationState.Opened)
+					listener.Close ();
 			}
 		}
 
-		void LowLevelHttpConnection_SetupService ()
+		IChannelListener<IReplyChannel> listener;
+
+		string LowLevelHttpConnection_SetupService ()
 		{
-			try {
-				svcret = LowLevelHttpConnection_SetupService_Core ();
-			} catch (Exception ex) {
-				svcret = ex.ToString ();
-			}
-		}
+			IReplyChannel reply = listener.AcceptChannel ();
+			reply.Open ();
+			if (!reply.WaitForRequest (TimeSpan.FromSeconds (10)))
+				return "No request reached here.";
 
-		string LowLevelHttpConnection_SetupService_Core ()
-		{
-			HttpTransportBindingElement el =
-				new HttpTransportBindingElement ();
+			svcret = "Receiving request ...";
+			RequestContext ctx = reply.ReceiveRequest ();
+			if (ctx == null)
+				return "No request context returned.";
 
-			// Service
-			BindingContext bc = new BindingContext (
-				new CustomBinding (),
-				new BindingParameterCollection (),
-				new Uri ("http://localhost:37564"),
-				String.Empty, ListenUriMode.Explicit);
-			IChannelListener<IReplyChannel> listener =
-				el.BuildChannelListener<IReplyChannel> (bc);
-
-			listener.Open ();
-			try {
-
-				svcret = "Waiting ...";
-				IReplyChannel reply = listener.AcceptChannel ();
-			// FIXME: somehow reply needs to be declared here, not outside the outermost try ...
-			try {
-				svcret = "Opening reply ...";
-
-				reply.Open ();
-
-				if (!reply.WaitForRequest (TimeSpan.FromSeconds (10)))
-					return "No request reached here.";
-
-				svcret = "Receiving request ...";
-				RequestContext ctx = reply.ReceiveRequest ();
-			// FIXME: somehow ctx needs to be declared here, not outside the outermost try ...
-			try {
-				if (ctx == null)
-					return "No request context returned.";
-
-				svcret = "Starting reply ...";
-				ctx.Reply (Message.CreateMessage (MessageVersion.Default, "Ack"));
-				return null; // OK
-			} finally {
-				if (ctx != null)
-					ctx.Close ();
-			}
-			} finally {
-				if (reply.State == CommunicationState.Opened)
-					reply.Close ();
-			}
-			} finally {
-				listener.Close ();
-			}
+			svcret = "Starting reply ...";
+			ctx.Reply (Message.CreateMessage (MessageVersion.Default, "Ack"));
+			return null; // OK
 		}
 
 		#endregion

@@ -429,9 +429,12 @@ namespace MonoTests.System.ServiceModel.Channels
 			cred.ClientCertificate.Certificate =
 				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 			IChannelFactory<IReplyChannel> ch = b.BuildChannelFactory<IReplyChannel> (new Uri ("http://localhost:37564"), cred);
-			ch.Open ();
-			// in case Open() failed to raise an error...
-			ch.Close ();
+			try {
+				ch.Open ();
+			} finally {
+				if (ch.State == CommunicationState.Closed)
+					ch.Close ();
+			}
 		}
 
 		[Test]
@@ -454,9 +457,12 @@ namespace MonoTests.System.ServiceModel.Channels
 			cred.ServiceCertificate.Certificate =
 				new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 			IChannelListener<IReplyChannel> ch = b.BuildChannelListener<IReplyChannel> (new Uri ("http://localhost:37564"), cred);
-			ch.Open ();
-			// in case Open() failed to raise an error...
-			ch.Close ();
+			try {
+				ch.Open ();
+			} finally {
+				if (ch.State == CommunicationState.Closed)
+					ch.Close ();
+			}
 		}
 
 		[Test]

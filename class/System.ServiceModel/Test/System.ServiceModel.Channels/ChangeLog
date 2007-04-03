@@ -1,3 +1,11 @@
+2007-04-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityBindingElementTest.cs,
+	  AsymmetricSecurityBindingElementTest.cs,
+	  HttpTransportBindingElementTest.cs :
+	  marked some failing tests (on Orcas) as ignored. Some fixes to
+	  make sure that open connection things be closed.
+
 2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AsymmetricSecurityBindingElementTest.cs : some tests are NotWorking
