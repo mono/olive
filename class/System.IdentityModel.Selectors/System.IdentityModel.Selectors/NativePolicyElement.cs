@@ -1,10 +1,10 @@
 //
-// CardSpacePolicyElement.cs
+// NativePolicyElement.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006-2007 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,66 +27,42 @@
 //
 using System;
 using System.Collections.ObjectModel;
+using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace System.IdentityModel.Selectors
 {
-	public class CardSpacePolicyElement
+	[StructLayout (LayoutKind.Sequential)]
+	class NativePolicyElement
 	{
-		public CardSpacePolicyElement (
+		// This field order must be fixed for win32 API interop:
+		string target;
+		string issuer;
+		string parameters;
+		string privacy_link;
+		int privacy_ver;
+		bool is_managed;
+
+		public NativePolicyElement (
 			XmlElement target, XmlElement issuer,
 			Collection<XmlElement> parameters,
 			Uri privacyNoticeLink,
 			int privacyNoticeVersion,
 			bool isManagedIssuer)
 		{
-			this.target = target;
-			this.issuer = issuer;
-			this.parameters = parameters ?? new Collection<XmlElement> ();
-			this.privacy_link = privacyNoticeLink;
+			if (target == null)
+				throw new ArgumentException ("target");
+			if (issuer == null)
+				throw new ArgumentException ("issuer");
+			if (parameters == null)
+				throw new ArgumentException ("parameters");
+			this.target = target.OuterXml;
+			this.issuer = issuer.OuterXml;
+			foreach (XmlElement el in parameters)
+				this.parameters += el.OuterXml;
+			this.privacy_link = privacyNoticeLink != null ? privacyNoticeLink.ToString () : String.Empty;
 			privacy_ver = privacyNoticeVersion;
 			is_managed = isManagedIssuer;
-		}
-
-		XmlElement target;
-		XmlElement issuer;
-		Collection<XmlElement> parameters;
-		Uri privacy_link;
-		int privacy_ver;
-		bool is_managed;
-
-		internal NativePolicyElement GetNativeObject ()
-		{
-			return new NativePolicyElement (target, issuer, parameters, privacy_link, privacy_ver, is_managed);
-		}
-
-		public bool IsManagedIssuer {
-			get { return is_managed; }
-			set { is_managed = value; }
-		}
-
-		public XmlElement Issuer {
-			get { return issuer; }
-			set { issuer = value; }
-		}
-
-		public Collection<XmlElement> Parameters {
-			get { return parameters; }
-		}
-
-		public Uri PolicyNoticeLink {
-			get { return privacy_link; }
-			set { privacy_link = value; }
-		}
-
-		public int PolicyNoticeVersion {
-			get { return privacy_ver; }
-			set { privacy_ver = value; }
-		}
-
-		public XmlElement Target {
-			get { return target; }
-			set { target = value; }
 		}
 	}
 }
