@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
+using System.IdentityModel.Tokens;
 using System.Security.Cryptography.X509Certificates;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -12,7 +13,13 @@ using System.Xml.Serialization;
 
 public class Test
 {
-	public static void Main ()
+	// This sample requires managed card.
+	// You can get one from e.g. http://itickr.com/index.php/?p=41
+
+	// usage: gettoken.exe issuerURI issuerCertificate
+	// example:
+	// gettoken.exe https://infocard.pingidentity.com/idpdemo/sts ping.cer
+	public static void Main (string [] args)
 	{
 		XmlDocument doc = new XmlDocument ();
 		doc.AppendChild (doc.CreateElement ("root"));
@@ -24,8 +31,8 @@ public class Test
 		}
 		XmlElement endpoint = doc.DocumentElement.FirstChild as XmlElement;
 		using (XmlWriter w = doc.DocumentElement.CreateNavigator ().AppendChild ()) {
-			new EndpointAddress (new Uri ("http://localhost:9090"),
-				new X509CertificateEndpointIdentity (cert))
+			new EndpointAddress (new Uri (args [0]),
+				new X509CertificateEndpointIdentity (new X509Certificate2 (args [1])))
 				.WriteTo (AddressingVersion.WSAddressing10, w);
 
 		}
@@ -33,10 +40,18 @@ public class Test
 		string infocard = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 		XmlElement p = doc.CreateElement ("Claims", wst);
 		p.SetAttribute ("Dialect", ClaimTypes.Name);
-		p.AppendChild (doc.CreateElement ("Name", infocard));
+		XmlElement ct = doc.CreateElement ("ClaimType", infocard);
+		ct.SetAttribute ("Uri", ClaimTypes.Email);
+		p.AppendChild (ct);
 		XmlElement issuer = doc.DocumentElement.LastChild as XmlElement;
-		CardSpaceSelector.GetToken (endpoint, new XmlElement [] {p.FirstChild as XmlElement},
-			issuer, WSSecurityTokenSerializer.DefaultInstance);
+		GenericXmlSecurityToken token = CardSpaceSelector.GetToken (
+			endpoint, new XmlElement [] {p}, issuer, WSSecurityTokenSerializer.DefaultInstance);
+		XmlWriterSettings s = new XmlWriterSettings ();
+		s.Indent = true;
+		using (XmlWriter xw = XmlWriter.Create (Console.Out, s)) {
+			WSSecurityTokenSerializer.DefaultInstance.WriteToken (
+				xw, token);
+		}
 	}
 }
 
