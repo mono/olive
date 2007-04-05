@@ -136,8 +136,13 @@ namespace System.IdentityModel.Claims
 			return new Claim (ClaimTypes.X500DistinguishedName, x500DistinguishedName, Rights.PossessProperty);
 		}
 
+		// since those public properties do not expose attributes,
+		// here I use them on the fields instead ...
+		[DataMember (Name = "ClaimType")]
 		string claim_type;
+		[DataMember (Name = "Resource")]
 		object resource;
+		[DataMember (Name = "Right")]
 		string right;
 
 		public Claim (string claimType, object resource,
