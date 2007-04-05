@@ -30,6 +30,9 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Resources;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -296,19 +299,42 @@ namespace System.ServiceModel
 			AddressingVersion addressingVersion,
 			XmlDictionaryWriter writer)
 		{
-			throw new NotImplementedException ();
+			if (addressingVersion == AddressingVersion.WSAddressing10) {
+				writer.WriteStartElement ("Address", addressingVersion.Namespace);
+				writer.WriteString (Uri.AbsoluteUri);
+				writer.WriteEndElement ();
+
+				if (Identity == null)
+					return;
+
+				writer.WriteStartElement ("Identity", Constants.WsaIdentityUri);
+				X509CertificateEndpointIdentity x509 =
+					Identity as X509CertificateEndpointIdentity;
+				if (x509 != null) {
+					KeyInfo ki = new KeyInfo ();
+					KeyInfoX509Data x = new KeyInfoX509Data ();
+					foreach (X509Certificate2 cert in x509.Certificates)
+						x.AddCertificate (cert);
+					ki.AddClause (x);
+					ki.GetXml ().WriteTo (writer);
+				} else {
+					DataContractSerializer ds = new DataContractSerializer (Identity.IdentityClaim.GetType ());
+					ds.WriteObject (writer, Identity.IdentityClaim);
+				}
+				writer.WriteEndElement ();
+			} else {
+				writer.WriteString (Uri.AbsoluteUri);
+			}
 		}
 
-		[MonoTODO]
 		public void WriteContentsTo (
 			AddressingVersion addressingVersion,
 			XmlWriter writer)
 		{
-			WriteTo (addressingVersion,
+			WriteContentsTo (addressingVersion,
 				XmlDictionaryWriter.CreateDictionaryWriter (writer));
 		}
 
-		[MonoTODO]
 		public void WriteTo (
 			AddressingVersion addressingVersion,
 			XmlDictionaryWriter writer)
@@ -316,7 +342,6 @@ namespace System.ServiceModel
 			WriteTo (addressingVersion, writer, "EndpointReference", addressingVersion.Namespace);
 		}
 
-		[MonoTODO]
 		public void WriteTo (
 			AddressingVersion addressingVersion, XmlWriter writer)
 		{
@@ -324,7 +349,6 @@ namespace System.ServiceModel
 				XmlDictionaryWriter.CreateDictionaryWriter (writer));
 		}
 
-		[MonoTODO]
 		public void WriteTo (
 			AddressingVersion addressingVersion,
 			XmlDictionaryWriter writer,
@@ -332,17 +356,16 @@ namespace System.ServiceModel
 			XmlDictionaryString ns)
 		{
 			writer.WriteStartElement (localname, ns);
-			writer.WriteString (Uri.AbsoluteUri);
+			WriteContentsTo (addressingVersion, writer);
 			writer.WriteEndElement ();
 		}
 
-		[MonoTODO]
 		public void WriteTo (
 			AddressingVersion addressingVersion,
 			XmlWriter writer, string localname, string ns)
 		{
 			writer.WriteStartElement (localname, ns);
-			writer.WriteString (Uri.AbsoluteUri);
+			WriteContentsTo (addressingVersion, writer);
 			writer.WriteEndElement ();
 		}
 	}

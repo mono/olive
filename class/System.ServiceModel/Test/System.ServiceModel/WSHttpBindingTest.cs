@@ -29,6 +29,7 @@ using System;
 using System.Collections.ObjectModel;
 using System.Net;
 using System.Net.Security;
+using System.IdentityModel.Claims;
 using System.IdentityModel.Selectors;
 using System.IdentityModel.Tokens;
 using System.ServiceModel;
@@ -415,6 +416,31 @@ namespace MonoTests.System.ServiceModel
 					 up.ReferenceStyle, "#5");
 			Assert.AreEqual (SecurityTokenInclusionMode.AlwaysToRecipient,
 					 up.InclusionMode, "#6");
+		}
+
+		[Test]
+		public void MessageSecurityIssuedToken ()
+		{
+			WSHttpBinding binding = new WSHttpBinding ();
+			binding.Security.Message.EstablishSecurityContext = false;
+			binding.Security.Message.ClientCredentialType =
+				MessageCredentialType.IssuedToken;
+			SymmetricSecurityBindingElement sbe =
+				binding.CreateBindingElements ().Find<SymmetricSecurityBindingElement> ();
+			Assert.IsNotNull (sbe, "#1");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.Signed.Count, "#1-1");
+			Assert.AreEqual (1, sbe.EndpointSupportingTokenParameters.Endorsing.Count, "#1-2");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.SignedEndorsing.Count, "#1-3");
+			Assert.AreEqual (0, sbe.EndpointSupportingTokenParameters.SignedEncrypted.Count, "#1-4");
+			IssuedSecurityTokenParameters p =
+				sbe.EndpointSupportingTokenParameters.Endorsing [0]
+				as IssuedSecurityTokenParameters;
+			Assert.IsNotNull (p, "#2");
+			Assert.IsNotNull (p.ClaimTypeRequirements, "#2-1");
+			Assert.AreEqual (1, p.ClaimTypeRequirements.Count, "#2-2");
+			ClaimTypeRequirement r = p.ClaimTypeRequirements [0];
+			Assert.AreEqual (ClaimTypes.PPID, r.ClaimType, "#3-1");
+			Assert.IsFalse (r.IsOptional, "#3-2");
 		}
 
 		[Test]

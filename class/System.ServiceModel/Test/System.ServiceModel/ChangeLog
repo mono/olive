@@ -1,3 +1,10 @@
+2007-04-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddressTest.cs : added WriteContentsTo and WriteTo tests
+	  with WSAddressing10 mode.
+	* WSHttpBindingTest.cs : added test for IssuedToken security.
+	* EndpointIdentityTest.cs : new test (not working yet).
+
 2007-04-03  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* IntegratedConnectionTest.cs, ClientBaseTest.cs :

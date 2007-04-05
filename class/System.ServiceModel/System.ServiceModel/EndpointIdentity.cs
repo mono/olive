@@ -121,10 +121,9 @@ namespace System.ServiceModel
 			return comparer.GetHashCode (claim);
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
+			return String.Concat ("identity(", claim, ")");
 		}
 
 		protected void Initialize (Claim claim)

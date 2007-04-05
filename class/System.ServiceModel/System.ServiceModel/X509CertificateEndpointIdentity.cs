@@ -45,6 +45,7 @@ namespace System.ServiceModel
 			if (cert == null)
 				throw new ArgumentNullException ("cert");
 			primary = cert;
+			Initialize (Claim.CreateThumbprintClaim (cert.GetCertHash ()));
 		}
 
 		public X509CertificateEndpointIdentity (

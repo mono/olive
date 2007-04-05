@@ -36,6 +36,7 @@ namespace System.ServiceModel
 		public const string WSBasicSecurityProfileCore1 = "http://ws-i.org/profiles/basic-security/core/1.0";
 
 		public const string WsaAnonymousUri = "http://www.w3.org/2005/08/addressing/anonymous";
+		public const string WsaIdentityUri = "http://schemas.xmlsoap.org/ws/2006/02/addressingidentity";
 
 		public const string MSSerialization = "http://schemas.microsoft.com/2003/10/Serialization/";
 
