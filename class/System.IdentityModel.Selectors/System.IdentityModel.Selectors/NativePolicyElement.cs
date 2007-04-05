@@ -25,6 +25,8 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+#pragma warning disable 414
 using System;
 using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
@@ -32,7 +34,8 @@ using System.Xml;
 
 namespace System.IdentityModel.Selectors
 {
-	[StructLayout (LayoutKind.Sequential)]
+	// FIXME: it does not seem to marshal this object as expected ...
+	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	class NativePolicyElement
 	{
 		// This field order must be fixed for win32 API interop:
@@ -66,3 +69,4 @@ namespace System.IdentityModel.Selectors
 		}
 	}
 }
+#pragma warning restore

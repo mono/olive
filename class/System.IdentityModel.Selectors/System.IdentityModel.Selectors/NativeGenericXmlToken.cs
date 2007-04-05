@@ -35,7 +35,7 @@ using System.Xml;
 
 namespace System.IdentityModel.Selectors
 {
-	[StructLayout (LayoutKind.Sequential)]
+	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	struct NativeGenericXmlToken
 	{
 		// This field order must be fixed for win32 API interop:

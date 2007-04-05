@@ -79,7 +79,7 @@ namespace System.IdentityModel.Selectors
 	}
 
 #pragma warning disable 169
-	[StructLayout (LayoutKind.Sequential)]
+	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	struct NativeAsymmetricCryptoParameters
 	{
 		int key_size;
