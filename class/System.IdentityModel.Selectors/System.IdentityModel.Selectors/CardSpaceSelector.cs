@@ -51,7 +51,8 @@ namespace System.IdentityModel.Selectors
 					new NativePolicyElement [policyChain.Length];
 				for (int i = 0; i < policyChain.Length; i++)
 					natives [i] = policyChain [i].GetNativeObject ();
-				NativeGetTokenResults ret = GetToken (policyChain.Length, natives, out token, out proof);
+				int hresult = GetToken (policyChain.Length, natives, out token, out proof);
+				NativeGetTokenResults ret = (NativeGetTokenResults) hresult;
 				switch (ret) {
 				case NativeGetTokenResults.OK:
 					return token.ToObject (proof, serializer);
@@ -101,7 +102,7 @@ namespace System.IdentityModel.Selectors
 		}
 
 		[DllImport ("infocardapi", CharSet = CharSet.Unicode)]
-		static extern NativeGetTokenResults GetToken (int cPolicyChain,
+		static extern int GetToken (int cPolicyChain,
 			NativePolicyElement [] pPolicyChain,
 			out NativeGenericXmlToken securityToken,
 			out NativeInfocardCryptoHandle phProofTokenCrypto);

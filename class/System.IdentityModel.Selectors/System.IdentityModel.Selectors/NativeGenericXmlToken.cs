@@ -36,7 +36,7 @@ using System.Xml;
 namespace System.IdentityModel.Selectors
 {
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	struct NativeGenericXmlToken
+	class NativeGenericXmlToken
 	{
 		// This field order must be fixed for win32 API interop:
 		long created;
@@ -70,8 +70,9 @@ namespace System.IdentityModel.Selectors
 			XmlDocument doc = new XmlDocument ();
 			doc.LoadXml (xml_token);
 			XmlElement token = doc.DocumentElement;
-			string proofTokenXml = proofTokenHandle.ToXmlString ();
-			SecurityToken proof = serializer.ReadToken (Create (proofTokenXml), null);
+			// FIXME: cannot resolve proof token yet
+			string proofTokenXml = null;//proofTokenHandle.ToXmlString ();
+			SecurityToken proof = null;//serializer.ReadToken (Create (proofTokenXml), null);
 
 			DateTime effective = DateTime.FromFileTime (created);
 			DateTime expiration = DateTime.FromFileTime (expired);
@@ -85,7 +86,7 @@ namespace System.IdentityModel.Selectors
 
 		XmlDictionaryReader Create (string xml)
 		{
-			XmlReader xr = XmlReader.Create (new StringReader (external_ref));
+			XmlReader xr = XmlReader.Create (new StringReader (xml));
 			return XmlDictionaryReader.CreateDictionaryReader (xr);
 		}
 	}

@@ -35,12 +35,12 @@ namespace System.IdentityModel.Selectors
 	// see http://msdn2.microsoft.com/en-us/library/aa702727.aspx
 
 	[StructLayout (LayoutKind.Sequential)]
-	struct NativeInfocardCryptoHandle
+	class NativeInfocardCryptoHandle
 	{
 		// This field order must be fixed for win32 API interop:
 		NativeInfocardHandleType handle_type;
 		long expiration;
-		NativeCryptoParameters parameters;
+		IntPtr parameters;
 
 		public string ToXmlString ()
 		{

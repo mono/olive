@@ -1,3 +1,10 @@
+2007-04-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativeGenericXmlToken.cs, NativeInfocardCryptoHandle.cs :
+	  they are marshalled as references. Some workarounds.
+	* CardSpaceSelector.cs : get int hresult.
+	* NativePolicyElement.cs : it is marshalled as struct.
+
 2007-04-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* NativePolicyElement.cs, NativeGenericXmlToken.cs,

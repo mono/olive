@@ -36,7 +36,7 @@ namespace System.IdentityModel.Selectors
 {
 	// FIXME: it does not seem to marshal this object as expected ...
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	class NativePolicyElement
+	struct NativePolicyElement
 	{
 		// This field order must be fixed for win32 API interop:
 		string target;
@@ -61,9 +61,10 @@ namespace System.IdentityModel.Selectors
 				throw new ArgumentException ("parameters");
 			this.target = target.OuterXml;
 			this.issuer = issuer.OuterXml;
+			this.parameters = null;
 			foreach (XmlElement el in parameters)
 				this.parameters += el.OuterXml;
-			this.privacy_link = privacyNoticeLink != null ? privacyNoticeLink.ToString () : String.Empty;
+			this.privacy_link = privacyNoticeLink != null ? privacyNoticeLink.ToString () : null;
 			privacy_ver = privacyNoticeVersion;
 			is_managed = isManagedIssuer;
 		}
