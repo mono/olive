@@ -52,10 +52,49 @@ namespace System.IdentityModel.Selectors
 				for (int i = 0; i < policyChain.Length; i++)
 					natives [i] = policyChain [i].GetNativeObject ();
 				int hresult = GetToken (policyChain.Length, natives, out token, out proof);
-				NativeGetTokenResults ret = (NativeGetTokenResults) hresult;
+				NativeGetTokenResults ret = (NativeGetTokenResults) (hresult & 0xCFFFFFFF);
 				switch (ret) {
 				case NativeGetTokenResults.OK:
 					return token.ToObject (proof, serializer);
+				case NativeGetTokenResults.UserCancelled:
+					throw new UserCancellationException ();
+				case NativeGetTokenResults.InvalidPolicy:
+					throw new PolicyValidationException ();
+				case NativeGetTokenResults.ServiceBusy:
+					throw new ServiceBusyException ();
+				case NativeGetTokenResults.ServiceUnavailable:
+					throw new ServiceNotStartedException ();
+				case NativeGetTokenResults.IdentityVerificationFailed:
+				case NativeGetTokenResults.InvalidDecryptionKey:
+					throw new IdentityValidationException ();
+				case NativeGetTokenResults.ErrorOnCommunication:
+					throw new StsCommunicationException ();
+				case NativeGetTokenResults.UntrustedRecipient:
+					throw new UntrustedRecipientException ();
+				case NativeGetTokenResults.UnsupportedPolicy:
+					throw new UnsupportedPolicyOptionsException ();
+				case NativeGetTokenResults.ErrorOnDataAccess:
+				case NativeGetTokenResults.ErrorOnExport:
+				case NativeGetTokenResults.ErrorOnImport:
+				case NativeGetTokenResults.InvalidArgument:
+				case NativeGetTokenResults.ErrorInRequest:
+				case NativeGetTokenResults.ErrorInCardData:
+				case NativeGetTokenResults.InvalidCertificateLogo:
+				case NativeGetTokenResults.InvalidPassword:
+				case NativeGetTokenResults.ProcessDied:
+				case NativeGetTokenResults.Shuttingdown:
+				case NativeGetTokenResults.ErrorOnTokenCreation:
+				case NativeGetTokenResults.TrustExchangeFailure:
+				case NativeGetTokenResults.ErrorOnStoreImport:
+				case NativeGetTokenResults.UIStartFailure:
+				case NativeGetTokenResults.MaxSession:
+				case NativeGetTokenResults.ImportFileAccessFailure:
+				case NativeGetTokenResults.MalformedRequest:
+				case NativeGetTokenResults.RefreshRequired:
+				case NativeGetTokenResults.MissingAppliesTo:
+				case NativeGetTokenResults.UnknownReference:
+				case NativeGetTokenResults.InvalidProofKey:
+				case NativeGetTokenResults.ClaimsNotProvided:
 				default:
 					throw CardspaceError (ret);
 				}
@@ -97,7 +136,7 @@ namespace System.IdentityModel.Selectors
 		{
 			switch (error) {
 			default:
-				throw new NotImplementedException (String.Format ("not implemented error type: {0:X}", error));
+				throw new CardSpaceException (String.Format ("not implemented error type: {0:X}", error));
 			}
 		}
 

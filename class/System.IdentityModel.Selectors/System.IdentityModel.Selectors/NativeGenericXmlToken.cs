@@ -36,7 +36,7 @@ using System.Xml;
 namespace System.IdentityModel.Selectors
 {
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	class NativeGenericXmlToken
+	class NativeGenericXmlToken : IDisposable
 	{
 		// This field order must be fixed for win32 API interop:
 		long created;
@@ -56,6 +56,11 @@ namespace System.IdentityModel.Selectors
 			external_ref = GetKeyIdentifierClauseXml (serializer, settings, token.ExternalTokenReference);
 		}
 
+		void IDisposable.Dispose ()
+		{
+			FreeToken (this);
+		}
+
 		public static string GetKeyIdentifierClauseXml (SecurityTokenSerializer serializer, XmlWriterSettings settings, SecurityKeyIdentifierClause item)
 		{
 			StringWriter sw = new StringWriter ();
@@ -70,9 +75,7 @@ namespace System.IdentityModel.Selectors
 			XmlDocument doc = new XmlDocument ();
 			doc.LoadXml (xml_token);
 			XmlElement token = doc.DocumentElement;
-			// FIXME: cannot resolve proof token yet
-			string proofTokenXml = null;//proofTokenHandle.ToXmlString ();
-			SecurityToken proof = null;//serializer.ReadToken (Create (proofTokenXml), null);
+			SecurityToken proof = new CardSpaceProofToken (DateTime.FromFileTime (proofTokenHandle.Expiration), proofTokenHandle.GetAsymmetricKey ());
 
 			DateTime effective = DateTime.FromFileTime (created);
 			DateTime expiration = DateTime.FromFileTime (expired);
@@ -89,5 +92,8 @@ namespace System.IdentityModel.Selectors
 			XmlReader xr = XmlReader.Create (new StringReader (xml));
 			return XmlDictionaryReader.CreateDictionaryReader (xr);
 		}
+
+		[DllImport ("infocardapi")]
+		static extern void FreeToken (NativeGenericXmlToken token);
 	}
 }

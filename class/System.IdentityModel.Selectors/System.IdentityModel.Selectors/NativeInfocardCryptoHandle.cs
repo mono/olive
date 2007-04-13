@@ -27,6 +27,7 @@
 //
 using System;
 using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens;
 using System.Runtime.InteropServices;
 using System.Xml;
 
@@ -42,51 +43,42 @@ namespace System.IdentityModel.Selectors
 		long expiration;
 		IntPtr parameters;
 
-		public string ToXmlString ()
+		public long Expiration {
+			get { return expiration; }
+		}
+
+		public AsymmetricSecurityKey GetAsymmetricKey ()
 		{
-			// FIXME: implement
+			switch (handle_type) {
+			case NativeInfocardHandleType.Asymmetric:
+				NativeAsymmetricCryptoParameters a = (NativeAsymmetricCryptoParameters) Marshal.PtrToStructure (parameters, typeof (NativeAsymmetricCryptoParameters));
+				return new AsymmetricProofTokenSecurityKey (a, this);
+			}
 			throw new NotImplementedException ();
 		}
 	}
 
-	[StructLayout (LayoutKind.Explicit)]
-	struct NativeCryptoParameters
-	{
-		[FieldOffset (0)]
-		NativeAsymmetricCryptoParameters asymmetric;
-		[FieldOffset (0)]
-		NativeSymmetricCryptoParameters symmetric;
-		[FieldOffset (0)]
-		NativeTransformCryptoParameters transform;
-		[FieldOffset (0)]
-		NativeHashCryptoParameters hash;
-
-		public NativeAsymmetricCryptoParameters Asymmetric {
-			get { return asymmetric; }
-		}
-
-		public NativeSymmetricCryptoParameters Symmetric {
-			get { return symmetric; }
-		}
-
-		public NativeTransformCryptoParameters Transform {
-			get { return transform; }
-		}
-
-		public NativeHashCryptoParameters Hash {
-			get { return hash; }
-		}
-	}
-
-#pragma warning disable 169
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	struct NativeAsymmetricCryptoParameters
 	{
 		int key_size;
 		string encalg;
 		string sigalg;
+
+		public int KeySize {
+			get { return key_size; }
+		}
+
+		public string EncryptionAlgorithm {
+			get { return encalg; }
+		}
+
+		public string SignatureAlgorithm {
+			get { return sigalg; }
+		}
 	}
 
+#pragma warning disable 169
 	[StructLayout (LayoutKind.Sequential)]
 	struct NativeSymmetricCryptoParameters
 	{

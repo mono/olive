@@ -1,3 +1,15 @@
+2007-04-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativePolicyElement.cs : issuer could be null (self-issued card).
+	* CardSpaceSelector.cs : throw correct exceptions.
+	* NativeGenericXmlToken : disposable. Create ProofToken (btw it is
+	  not serializable with WSSecurityTokenSerializer).
+	* NativeInfocardCryptoHandle.cs : several implementation for
+	  ProofToken creation. removed extra types.
+	* AsymmetricProofTokenSecurityKey.cs, CardSpaceProofToken.cs :
+	  New files for ProofToken implementation.
+	  They are largely unimplemented yet.
+
 2007-04-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* NativeGenericXmlToken.cs, NativeInfocardCryptoHandle.cs :

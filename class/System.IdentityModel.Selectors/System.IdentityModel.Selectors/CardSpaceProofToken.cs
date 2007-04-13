@@ -1,5 +1,5 @@
 //
-// NativePolicyElement.cs
+// CardSpaceProofToken.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
@@ -25,47 +25,39 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
-#pragma warning disable 414
 using System;
 using System.Collections.ObjectModel;
+using System.IdentityModel.Tokens;
 using System.Runtime.InteropServices;
 using System.Xml;
 
 namespace System.IdentityModel.Selectors
 {
-	// FIXME: it does not seem to marshal this object as expected ...
-	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-	struct NativePolicyElement
+	class CardSpaceProofToken : SecurityToken
 	{
-		// This field order must be fixed for win32 API interop:
-		string target;
-		string issuer;
-		string parameters;
-		string privacy_link;
-		int privacy_ver;
-		bool is_managed;
+		DateTime valid_to;
+		ReadOnlyCollection<SecurityKey> keys;
 
-		public NativePolicyElement (
-			XmlElement target, XmlElement issuer,
-			Collection<XmlElement> parameters,
-			Uri privacyNoticeLink,
-			int privacyNoticeVersion,
-			bool isManagedIssuer)
+		public CardSpaceProofToken (DateTime validTo, AsymmetricSecurityKey proofKey)
 		{
-			if (target == null)
-				throw new ArgumentException ("target");
-			if (parameters == null)
-				throw new ArgumentException ("parameters");
-			this.target = target.OuterXml;
-			this.issuer = issuer != null ? issuer.OuterXml : null;
-			this.parameters = null;
-			foreach (XmlElement el in parameters)
-				this.parameters += el.OuterXml;
-			this.privacy_link = privacyNoticeLink != null ? privacyNoticeLink.ToString () : null;
-			privacy_ver = privacyNoticeVersion;
-			is_managed = isManagedIssuer;
+			valid_to = validTo;
+			keys = new ReadOnlyCollection<SecurityKey> (new SecurityKey [] {proofKey});
+		}
+
+		public override DateTime ValidFrom {
+			get { return DateTime.MinValue.ToUniversalTime (); }
+		}
+
+		public override DateTime ValidTo {
+			get { return valid_to; }
+		}
+
+		public override string Id {
+			get { throw new NotImplementedException (); }
+		}
+
+		public override ReadOnlyCollection<SecurityKey> SecurityKeys {
+			get { return keys; }
 		}
 	}
 }
-#pragma warning restore
