@@ -1,3 +1,7 @@
+2007-04-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* gettoken.cs : by default, test self-issued card.
+
 2007-04-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* gettoken.cs : now it works on .NET;

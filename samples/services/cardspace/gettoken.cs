@@ -36,14 +36,15 @@ public class Test
 				.WriteTo (AddressingVersion.WSAddressing10, w);
 
 		}
+		XmlElement issuer = null;//doc.DocumentElement.LastChild as XmlElement;
 		string wst = "http://schemas.xmlsoap.org/ws/2005/02/trust";
 		string infocard = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 		XmlElement p = doc.CreateElement ("Claims", wst);
 		p.SetAttribute ("Dialect", ClaimTypes.Name);
 		XmlElement ct = doc.CreateElement ("ClaimType", infocard);
-		ct.SetAttribute ("Uri", ClaimTypes.Email);
+		//ct.SetAttribute ("Uri", ClaimTypes.Email);
+		ct.SetAttribute ("Uri", ClaimTypes.PPID);
 		p.AppendChild (ct);
-		XmlElement issuer = doc.DocumentElement.LastChild as XmlElement;
 		GenericXmlSecurityToken token = CardSpaceSelector.GetToken (
 			endpoint, new XmlElement [] {p}, issuer, WSSecurityTokenSerializer.DefaultInstance);
 		XmlWriterSettings s = new XmlWriterSettings ();
@@ -51,7 +52,13 @@ public class Test
 		using (XmlWriter xw = XmlWriter.Create (Console.Out, s)) {
 			WSSecurityTokenSerializer.DefaultInstance.WriteToken (
 				xw, token);
+			// This cannot be serialized.
+			//WSSecurityTokenSerializer.DefaultInstance.WriteToken (
+			//	xw, token.ProofToken);
 		}
+		AsymmetricSecurityKey pk = token.ProofToken.SecurityKeys [0]
+			as AsymmetricSecurityKey;
+		Console.WriteLine (pk.HasPrivateKey ());
 	}
 }
 
