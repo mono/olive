@@ -8,7 +8,35 @@ all: \
 	samplesvc7.exe samplecli7.exe \
 	samplesvc8.exe samplecli8.exe \
 	samplesvc9.exe samplecli9.exe \
-	samplesvc10.exe samplecli10.exe
+	samplesvc10.exe samplecli10.exe \
+	samplesvc11.exe samplecli11.exe \
+	samplesvc12.exe samplecli12.exe \
+	samplesvc13.exe samplecli13.exe \
+	samplesvc14.exe samplecli14.exe
+
+samplesvc14.exe : samplesvc14.cs
+	gmcs -pkg:olive samplesvc14.cs
+
+samplecli14.exe : samplecli14.cs
+	gmcs -pkg:olive samplecli14.cs
+
+samplesvc13.exe : samplesvc13.cs
+	gmcs -pkg:olive samplesvc13.cs
+
+samplecli13.exe : samplecli13.cs
+	gmcs -pkg:olive samplecli13.cs
+
+samplesvc12.exe : samplesvc12.cs
+	gmcs -pkg:olive samplesvc12.cs
+
+samplecli12.exe : samplecli12.cs
+	gmcs -pkg:olive samplecli12.cs
+
+samplesvc11.exe : samplesvc11.cs
+	gmcs -pkg:olive samplesvc11.cs
+
+samplecli11.exe : samplecli11.cs
+	gmcs -pkg:olive samplecli11.cs
 
 samplesvc10.exe : samplesvc10.cs
 	gmcs -pkg:olive samplesvc10.cs
@@ -81,4 +109,8 @@ clean:
 	rm -f samplesvc8.exe samplesvc8.exe.mdb samplecli8.exe samplecli8.exe.mdb 
 	rm -f samplesvc9.exe samplesvc9.exe.mdb samplecli9.exe samplecli9.exe.mdb 
 	rm -f samplesvc10.exe samplesvc10.exe.mdb samplecli10.exe samplecli10.exe.mdb 
+	rm -f samplesvc11.exe samplesvc11.exe.mdb samplecli11.exe samplecli11.exe.mdb 
+	rm -f samplesvc12.exe samplesvc12.exe.mdb samplecli12.exe samplecli12.exe.mdb 
+	rm -f samplesvc13.exe samplesvc13.exe.mdb samplecli13.exe samplecli13.exe.mdb 
+	rm -f samplesvc14.exe samplesvc14.exe.mdb samplecli14.exe samplecli14.exe.mdb 
 

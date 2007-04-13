@@ -1,3 +1,12 @@
+2007-04-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : more verbose.
+	* samplecli11.cs, samplesvc11.cs : mutual sslnego sample.
+	* samplecli12.cs, samplesvc12.cs : spnego sample.
+	* samplecli13.cs, samplesvc13.cs : WSHttpBinding+IssuedToken sample.
+	* samplecli14.cs, samplesvc14.cs : issued token sample.
+	* Makefile : added all above.
+
 2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc10.cs : with this temporary addition, you might be able to

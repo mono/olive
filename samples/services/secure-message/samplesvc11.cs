@@ -55,7 +55,7 @@ Console.WriteLine ();
 		SymmetricSecurityBindingElement sbe =
 			new SymmetricSecurityBindingElement ();
 		sbe.ProtectionTokenParameters =
-			new SslSecurityTokenParameters ();
+			new SslSecurityTokenParameters (true);
 		ServiceHost host = new ServiceHost (typeof (Foo));
 		HttpTransportBindingElement hbe =
 			new HttpTransportBindingElement ();
@@ -64,8 +64,8 @@ Console.WriteLine ();
 		host.AddServiceEndpoint ("IFoo",
 			binding, new Uri ("http://localhost:8080"));
 		ServiceCredentials cred = new ServiceCredentials ();
-		cred.SecureConversationAuthentication.SecurityStateEncoder =
-			new MyEncoder ();
+		//cred.SecureConversationAuthentication.SecurityStateEncoder =
+		//	new MyEncoder ();
 		cred.ServiceCertificate.Certificate =
 			new X509Certificate2 ("test.pfx", "mono");
 		cred.ClientCertificate.Authentication.CertificateValidationMode =
