@@ -40,8 +40,6 @@ namespace System.ServiceModel
 
 		public const string MSSerialization = "http://schemas.microsoft.com/2003/10/Serialization/";
 
-		public const string WSSX509Token = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
-
 		public const string WssKeyIdentifierX509Thumbptint = "http://docs.oasis-open.org/wss/oasis-wss-soap-message-security-1.1#ThumbprintSHA1";
 
 		public const string WssBase64BinaryEncodingType = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-soap-message-security-1.0#Base64Binary";
@@ -51,6 +49,8 @@ namespace System.ServiceModel
 		public const string XmlDsig = "http://www.w3.org/2000/09/xmldsig#";
 
 		public const string WSSSamlToken = "http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV1.1";
+		public const string WSSX509Token = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-x509-token-profile-1.0#X509v3";
+		public const string WssKeyIdentifierSamlAssertion = "http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.0#SAMLAssertionID";
 		public const string WSSUserNameToken = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#UsernameToken";
 		public const string WsscContextToken = "http://schemas.xmlsoap.org/ws/2005/02/sc/sct";
 		public const string WSSKerberosToken = "http://docs.oasis-open.org/wss/oasis-wss-kerberos-token-profile-1.1#GSS_Kerberosv5_AP_REQ";
@@ -63,6 +63,7 @@ namespace System.ServiceModel
 		public const string WsaNamespace = "http://www.w3.org/2005/08/addressing";
 		public const string WsuNamespace = "http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd";
 		public const string WsscNamespace = "http://schemas.xmlsoap.org/ws/2005/02/sc";
+		public const string WsidNamespace = "http://schemas.xmlsoap.org/ws/2005/05/identity";
 
 		public const string WstIssueAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Issue";
 		public const string WstRenewAction = "http://schemas.xmlsoap.org/ws/2005/02/trust/RST/Renew";
@@ -88,6 +89,9 @@ namespace System.ServiceModel
 		public const string WstRenewRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Renew";
 		public const string WstCancelRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Cancel";
 		public const string WstValidateRequest = "http://schemas.xmlsoap.org/ws/2005/02/trust/Validate";
+
+		public const string WstSymmetricKeyTypeUri = "http://schemas.xmlsoap.org/ws/2005/02/trust/SymmetricKey";
+		public const string WstAsymmetricKeyTypeUri = "http://schemas.xmlsoap.org/ws/2005/02/trust/AsymmetricKey";
 
 		public const string LifetimeFormat = "yyyy-MM-dd'T'HH:mm:ss.fffZ";
 

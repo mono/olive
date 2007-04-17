@@ -333,6 +333,8 @@ namespace System.ServiceModel.Security
 					return new X509ThumbprintKeyIdentifierClause (Convert.FromBase64String (value));
 				case Constants.WssKeyIdentifierEncryptedKey:
 					return new InternalEncryptedKeyIdentifierClause (Convert.FromBase64String (value));
+				case Constants.WssKeyIdentifierSamlAssertion:
+					return new SamlAssertionKeyIdentifierClause (value);
 				default:
 					// It is kinda weird but it throws XmlException here ...
 					throw new XmlException (String.Format ("KeyIdentifier type '{0}' is not supported in WSSecurityTokenSerializer.", valueType));
@@ -631,7 +633,8 @@ namespace System.ServiceModel.Security
 			    (keyIdentifierClause is X509ThumbprintKeyIdentifierClause && !WSS1_0) ||
 			    keyIdentifierClause is EncryptedKeyIdentifierClause ||
 			    keyIdentifierClause is BinarySecretKeyIdentifierClause ||
-			    keyIdentifierClause is InternalEncryptedKeyIdentifierClause)
+			    keyIdentifierClause is InternalEncryptedKeyIdentifierClause ||
+			    keyIdentifierClause is SamlAssertionKeyIdentifierClause)
 				return true;
 			else
 				return false;
@@ -678,6 +681,8 @@ namespace System.ServiceModel.Security
 				WriteBinarySecretKeyIdentifierClause (writer, (BinarySecretKeyIdentifierClause) keyIdentifierClause);
 			else if (keyIdentifierClause is InternalEncryptedKeyIdentifierClause)
 				WriteInternalEncryptedKeyIdentifierClause (writer, (InternalEncryptedKeyIdentifierClause) keyIdentifierClause);
+			else if (keyIdentifierClause is SamlAssertionKeyIdentifierClause)
+				WriteSamlAssertionKeyIdentifierClause (writer, (SamlAssertionKeyIdentifierClause) keyIdentifierClause);
 			else
 				throw new NotImplementedException (String.Format ("Security key identifier clause '{0}' is not either implemented or supported.", keyIdentifierClause.GetType ()));
 
@@ -784,6 +789,16 @@ namespace System.ServiceModel.Security
 			w.WriteEndElement ();
 		}
 
+		void WriteSamlAssertionKeyIdentifierClause (XmlWriter w, SamlAssertionKeyIdentifierClause ic)
+		{
+			w.WriteStartElement ("o", "SecurityTokenReference", Constants.WssNamespace);
+			w.WriteStartElement ("o", "KeyIdentifier", Constants.WssNamespace);
+			w.WriteAttributeString ("ValueType", Constants.WssKeyIdentifierSamlAssertion);
+			w.WriteString (ic.AssertionId);
+			w.WriteEndElement ();
+			w.WriteEndElement ();
+		}
+
 		[MonoTODO]
 		protected override void WriteTokenCore (
 			XmlWriter writer, SecurityToken token)
@@ -815,7 +830,7 @@ namespace System.ServiceModel.Security
 			else if (token is SamlSecurityToken)
 				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
 			else if (token is GenericXmlSecurityToken)
-				throw new NotImplementedException ("WriteTokenCore() is not implemented for " + token);
+				((GenericXmlSecurityToken) token).TokenXml.WriteTo (writer);
 			else if (token is WrappedKeySecurityToken)
 				WriteWrappedKeySecurityToken (writer, (WrappedKeySecurityToken) token);
 			else if (token is DerivedKeySecurityToken)

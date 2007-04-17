@@ -156,18 +156,36 @@ namespace System.ServiceModel.Security.Tokens
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Collection<XmlElement> CreateRequestParameters (
 			MessageSecurityVersion messageSecurityVersion,
 			SecurityTokenSerializer securityTokenSerializer)
 		{
 			XmlDocument doc = new XmlDocument ();
-			doc.AppendChild (doc.CreateElement ("dummy"));
-			XPathNavigator nav = doc.CreateNavigator ();
-			nav.MoveToFirstChild ();
-			XmlWriter w = nav.AppendChild ();
+			Collection<XmlElement> ret = new Collection<XmlElement> ();
+			// KeyType
+			string keyTypeUri =
+				KeyType == SecurityKeyType.SymmetricKey ?
+				Constants.WstSymmetricKeyTypeUri :
+				Constants.WstAsymmetricKeyTypeUri;
+			XmlElement kt = doc.CreateElement ("t", "KeyType", Constants.WstNamespace);
+			kt.AppendChild (doc.CreateTextNode (keyTypeUri));
+			ret.Add (kt);
 
-			throw new NotImplementedException ();
+			// ClaimTypes
+			XmlElement cts = doc.CreateElement ("t", "Claims", Constants.WstNamespace);
+			foreach (ClaimTypeRequirement req in ClaimTypeRequirements) {
+				XmlElement el = doc.CreateElement ("wsid", "ClaimType", Constants.WsidNamespace);
+				el.SetAttribute ("Uri", req.ClaimType);
+				if (req.IsOptional)
+					el.SetAttribute ("Optional", "true");
+				cts.AppendChild (el);
+			}
+			ret.Add (cts);
+
+			// Additional parameters
+			foreach (XmlElement el in AdditionalRequestParameters)
+				ret.Add (el);
+			return ret;
 		}
 
 		protected override void InitializeSecurityTokenRequirement (SecurityTokenRequirement requirement)

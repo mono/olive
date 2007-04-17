@@ -1,3 +1,8 @@
+2007-04-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IssuedSecurityTokenParameters.cs :
+	  implemented CreateRequestParameters().
+
 2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TlsClientSession.cs, TlsServerSession.cs,

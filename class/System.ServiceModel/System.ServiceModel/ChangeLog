@@ -1,3 +1,7 @@
+2007-04-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Constants.cs : added couple of consts.
+
 2007-04-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Constants.cs : added WsaIdentityUri.
