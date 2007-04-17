@@ -42,15 +42,15 @@ namespace System.IdentityModel.Selectors
 		string target;
 		string issuer;
 		string parameters;
-		string privacy_link;
-		int privacy_ver;
+		string policy_link;
+		int policy_ver;
 		bool is_managed;
 
 		public NativePolicyElement (
 			XmlElement target, XmlElement issuer,
 			Collection<XmlElement> parameters,
-			Uri privacyNoticeLink,
-			int privacyNoticeVersion,
+			Uri policyNoticeLink,
+			int policyNoticeVersion,
 			bool isManagedIssuer)
 		{
 			if (target == null)
@@ -62,8 +62,8 @@ namespace System.IdentityModel.Selectors
 			this.parameters = null;
 			foreach (XmlElement el in parameters)
 				this.parameters += el.OuterXml;
-			this.privacy_link = privacyNoticeLink != null ? privacyNoticeLink.ToString () : null;
-			privacy_ver = privacyNoticeVersion;
+			this.policy_link = policyNoticeLink != null ? policyNoticeLink.ToString () : null;
+			policy_ver = policyNoticeVersion;
 			is_managed = isManagedIssuer;
 		}
 	}

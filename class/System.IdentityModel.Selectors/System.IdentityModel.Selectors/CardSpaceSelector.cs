@@ -110,7 +110,7 @@ namespace System.IdentityModel.Selectors
 			XmlElement requiredRemoteTokenIssuer,
 			SecurityTokenSerializer serializer)
 		{
-			CardSpacePolicyElement pe = new CardSpacePolicyElement (endpoint, requiredRemoteTokenIssuer, new Collection<XmlElement> (new List<XmlElement> (policy)), null, 0, false);
+			CardSpacePolicyElement pe = new CardSpacePolicyElement (endpoint, requiredRemoteTokenIssuer, new Collection<XmlElement> (new List<XmlElement> (policy)), null, 0, requiredRemoteTokenIssuer != null);
 			return GetToken (new CardSpacePolicyElement [] {pe}, serializer);
 		}
 
@@ -136,7 +136,7 @@ namespace System.IdentityModel.Selectors
 		{
 			switch (error) {
 			default:
-				throw new CardSpaceException (String.Format ("not implemented error type: {0:X}", error));
+				throw new CardSpaceException (String.Format ("identity selector returned an error: {0:X}", error));
 			}
 		}
 

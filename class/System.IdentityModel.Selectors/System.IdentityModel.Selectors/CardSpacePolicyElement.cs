@@ -36,28 +36,28 @@ namespace System.IdentityModel.Selectors
 		public CardSpacePolicyElement (
 			XmlElement target, XmlElement issuer,
 			Collection<XmlElement> parameters,
-			Uri privacyNoticeLink,
-			int privacyNoticeVersion,
+			Uri policyNoticeLink,
+			int policyNoticeVersion,
 			bool isManagedIssuer)
 		{
 			this.target = target;
 			this.issuer = issuer;
 			this.parameters = parameters ?? new Collection<XmlElement> ();
-			this.privacy_link = privacyNoticeLink;
-			privacy_ver = privacyNoticeVersion;
+			this.policy_link = policyNoticeLink;
+			policy_ver = policyNoticeVersion;
 			is_managed = isManagedIssuer;
 		}
 
 		XmlElement target;
 		XmlElement issuer;
 		Collection<XmlElement> parameters;
-		Uri privacy_link;
-		int privacy_ver;
+		Uri policy_link;
+		int policy_ver;
 		bool is_managed;
 
 		internal NativePolicyElement GetNativeObject ()
 		{
-			return new NativePolicyElement (target, issuer, parameters, privacy_link, privacy_ver, is_managed);
+			return new NativePolicyElement (target, issuer, parameters, policy_link, policy_ver, is_managed);
 		}
 
 		public bool IsManagedIssuer {
@@ -75,13 +75,13 @@ namespace System.IdentityModel.Selectors
 		}
 
 		public Uri PolicyNoticeLink {
-			get { return privacy_link; }
-			set { privacy_link = value; }
+			get { return policy_link; }
+			set { policy_link = value; }
 		}
 
 		public int PolicyNoticeVersion {
-			get { return privacy_ver; }
-			set { privacy_ver = value; }
+			get { return policy_ver; }
+			set { policy_ver = value; }
 		}
 
 		public XmlElement Target {
