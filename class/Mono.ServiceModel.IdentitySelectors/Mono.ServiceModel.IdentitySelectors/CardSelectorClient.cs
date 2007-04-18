@@ -101,14 +101,40 @@ namespace Mono.ServiceModel.IdentitySelectors
 		#endregion
 
 		public virtual GenericXmlSecurityToken GetToken (
-			EndpointAddress target,
-			EndpointAddress issuer,
-			Collection<ClaimTypeRequirement> requirements,
-			Collection<XmlElement> additionalRequestParameters,
-			Uri policyNoticeLink,
-			int policyNoticeVersion)
+			CardSpacePolicyElement [] policyChain,
+			SecurityTokenSerializer serializer)
 		{
-			CardSelectionContext ctx = new CardSelectionContext (target, issuer, requirements, additionalRequestParameters, policyNoticeLink, policyNoticeVersion);
+			// FIXME: sort out what is supposed to be done here.
+			foreach (CardSpacePolicyElement policy in policyChain)
+				return GetToken (policy.Target, policy.Issuer,
+					  policy.Parameters,
+					  policy.PolicyNoticeLink,
+					  policy.PolicyNoticeVersion);
+			throw new Exception ("INTERNAL ERROR: no policy to process");
+		}
+
+		public virtual GenericXmlSecurityToken GetToken (
+			XmlElement target, XmlElement issuer,
+			Collection<XmlElement> parameters,
+			Uri policyNoticeLink, int policyNoticeVersion)
+		{
+			Collection<ClaimTypeRequirement> reqs = new Collection<ClaimTypeRequirement> ();
+			Collection<XmlElement> alist = new Collection<XmlElement> ();
+			foreach (XmlElement el in parameters) {
+				if (el.LocalName == "Claims" && el.NamespaceURI == Constants.WstNamespace)
+					foreach (XmlElement c in el.ChildNodes)
+						reqs.Add (new ClaimTypeRequirement (c.GetAttribute ("Uri"), c.GetAttribute ("Optional") == "true"));
+				else
+					alist.Add (el);
+			}
+
+			CardSelectionContext ctx = new CardSelectionContext (
+				EndpointAddress.ReadFrom (XmlDictionaryReader.CreateDictionaryReader (new XmlNodeReader (target))),
+				EndpointAddress.ReadFrom (XmlDictionaryReader.CreateDictionaryReader (new XmlNodeReader (issuer))),
+				reqs,
+				alist,
+				policyNoticeLink,
+				policyNoticeVersion);
 
 			IdentityCard card = SelectCardToSend (ctx);
 

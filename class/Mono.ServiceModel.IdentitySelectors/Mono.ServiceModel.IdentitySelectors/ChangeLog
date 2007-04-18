@@ -1,0 +1,7 @@
+2007-04-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* CardSelectionContext.cs
+	  CardSelectorClient.cs
+	  Constants.cs
+	  IdentityCard.cs
+	  IdentityCardEncryption.cs : initial commit.

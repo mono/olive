@@ -1,0 +1,4 @@
+2007-04-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IdentityCardTest.cs
+	  IdentityCardEncryptionTest.cs : initial commit.

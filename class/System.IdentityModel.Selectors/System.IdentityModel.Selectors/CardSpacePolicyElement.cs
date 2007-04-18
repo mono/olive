@@ -55,11 +55,6 @@ namespace System.IdentityModel.Selectors
 		int policy_ver;
 		bool is_managed;
 
-		internal NativePolicyElement GetNativeObject ()
-		{
-			return new NativePolicyElement (target, issuer, parameters, policy_link, policy_ver, is_managed);
-		}
-
 		public bool IsManagedIssuer {
 			get { return is_managed; }
 			set { is_managed = value; }

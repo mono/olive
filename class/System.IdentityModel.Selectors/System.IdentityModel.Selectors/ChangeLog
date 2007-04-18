@@ -1,3 +1,15 @@
+2007-04-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	Now the implementation is moved to Mono.ServiceModel.IdentitySelectors.
+	* CardSpaceSelector.cs : now it is reflection based.
+	* CardSpacePolicyElement.cs : removed NativePolicyElement usage.
+	* NativePolicyElement.cs
+	  AsymmetricProofTokenSecurityKey.cs
+	  CardSpaceProofToken.cs
+	  NativeGenericXmlToken.cs
+	  NativeInfocardCryptoHandle.cs
+	  NativeInfocardHandleType.cs : removed.
+
 2007-04-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* CardSpacePolicyElement.cs, NativePolicyElement.cs :
