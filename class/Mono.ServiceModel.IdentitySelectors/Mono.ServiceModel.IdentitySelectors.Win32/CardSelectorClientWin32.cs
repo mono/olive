@@ -36,7 +36,7 @@ using System.IdentityModel.Tokens;
 using System.Runtime.InteropServices;
 using System.Xml;
 
-namespace Mono.ServiceModel.IdentitySelectors
+namespace Mono.ServiceModel.IdentitySelectors.Win32
 {
 	public class CardSelectorClientWin32 : CardSelectorClient
 	{

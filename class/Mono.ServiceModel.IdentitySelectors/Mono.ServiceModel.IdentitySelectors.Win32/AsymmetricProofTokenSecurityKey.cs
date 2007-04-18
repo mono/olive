@@ -32,7 +32,7 @@ using System.Runtime.InteropServices;
 using System.Security.Cryptography;
 using System.Xml;
 
-namespace System.IdentityModel.Selectors
+namespace Mono.ServiceModel.IdentitySelectors.Win32
 {
 	class AsymmetricProofTokenSecurityKey : AsymmetricSecurityKey, IDisposable
 	{

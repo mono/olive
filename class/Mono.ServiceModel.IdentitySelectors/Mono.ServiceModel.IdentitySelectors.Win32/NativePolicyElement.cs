@@ -32,7 +32,7 @@ using System.Collections.ObjectModel;
 using System.Runtime.InteropServices;
 using System.Xml;
 
-namespace System.IdentityModel.Selectors
+namespace Mono.ServiceModel.IdentitySelectors.Win32
 {
 	// FIXME: it does not seem to marshal this object as expected ...
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]

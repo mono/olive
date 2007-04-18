@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace System.IdentityModel.Selectors
+namespace Mono.ServiceModel.IdentitySelectors.Win32
 {
 	enum NativeInfocardHandleType
 	{

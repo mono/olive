@@ -33,7 +33,7 @@ using System.IdentityModel.Tokens;
 using System.Runtime.InteropServices;
 using System.Xml;
 
-namespace System.IdentityModel.Selectors
+namespace Mono.ServiceModel.IdentitySelectors.Win32
 {
 	[StructLayout (LayoutKind.Sequential, CharSet = CharSet.Unicode)]
 	class NativeGenericXmlToken : IDisposable
