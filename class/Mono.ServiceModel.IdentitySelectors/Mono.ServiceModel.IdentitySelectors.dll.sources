@@ -1,0 +1,9 @@
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+Mono.ServiceModel.IdentitySelectors/CardSelectionContext.cs
+Mono.ServiceModel.IdentitySelectors/CardSelectorClient.cs
+Mono.ServiceModel.IdentitySelectors/Constants.cs
+Mono.ServiceModel.IdentitySelectors/IdentityCard.cs
+Mono.ServiceModel.IdentitySelectors/IdentityCardEncryption.cs
