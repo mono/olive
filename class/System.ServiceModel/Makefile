@@ -3,7 +3,8 @@ SUBDIRS =
 include ../../build/rules.make
 
 RESOURCE_FILES = \
-	resources/WS-Addressing.schema
+	resources/WS-Addressing.schema	\
+	resources/ws-addr.xsd
 
 LIBRARY = System.ServiceModel.dll
 LIB_MCS_FLAGS = \

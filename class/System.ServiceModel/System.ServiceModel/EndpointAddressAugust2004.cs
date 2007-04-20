@@ -73,7 +73,7 @@ namespace System.ServiceModel
 
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		void IXmlSerializable.ReadXml (XmlReader reader)

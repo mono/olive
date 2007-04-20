@@ -300,28 +300,7 @@ namespace System.ServiceModel
 			XmlDictionaryWriter writer)
 		{
 			if (addressingVersion == AddressingVersion.WSAddressing10) {
-				writer.WriteStartElement ("Address", addressingVersion.Namespace);
-				writer.WriteString (Uri.AbsoluteUri);
-				writer.WriteEndElement ();
-
-				if (Identity == null)
-					return;
-
-				writer.WriteStartElement ("Identity", Constants.WsaIdentityUri);
-				X509CertificateEndpointIdentity x509 =
-					Identity as X509CertificateEndpointIdentity;
-				if (x509 != null) {
-					KeyInfo ki = new KeyInfo ();
-					KeyInfoX509Data x = new KeyInfoX509Data ();
-					foreach (X509Certificate2 cert in x509.Certificates)
-						x.AddCertificate (cert);
-					ki.AddClause (x);
-					ki.GetXml ().WriteTo (writer);
-				} else {
-					DataContractSerializer ds = new DataContractSerializer (Identity.IdentityClaim.GetType ());
-					ds.WriteObject (writer, Identity.IdentityClaim);
-				}
-				writer.WriteEndElement ();
+				((IXmlSerializable) EndpointAddress10.FromEndpointAddress (this)).WriteXml (writer);
 			} else {
 				writer.WriteString (Uri.AbsoluteUri);
 			}

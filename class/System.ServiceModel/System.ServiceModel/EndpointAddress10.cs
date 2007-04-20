@@ -29,10 +29,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Net.Security;
+using System.Reflection;
+using System.Runtime.Serialization;
+using System.Security.Cryptography.X509Certificates;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Configuration;
-using System.ServiceModel.Description;
 using System.Text;
 using System.Xml;
 using System.Xml.Schema;
@@ -40,12 +42,16 @@ using System.Xml.Serialization;
 
 namespace System.ServiceModel
 {
-	[MonoTODO]
 	[XmlSchemaProvider ("GetSchema")]
 	[XmlRoot ("EndpointReference", Namespace = "http://www.w3.org/2005/08/addressing")]
 	public class EndpointAddress10 : IXmlSerializable
 	{
+		static readonly Uri w3c_anonymous = new Uri (Constants.WsaAnonymousUri);
 		EndpointAddress address;
+
+		private EndpointAddress10 () // for serialization
+		{
+		}
 
 		internal EndpointAddress10 (EndpointAddress address)
 		{
@@ -59,7 +65,10 @@ namespace System.ServiceModel
 
 		public static XmlQualifiedName GetSchema (XmlSchemaSet xmlSchemaSet)
 		{
-			throw new NotImplementedException ();
+			if (xmlSchemaSet == null)
+				throw new ArgumentNullException ("xmlSchemaSet");
+			xmlSchemaSet.Add (XmlSchema.Read (typeof (EndpointAddress10).Assembly.GetManifestResourceStream ("ws-addr.xsd"), null));
+			return new XmlQualifiedName ("EndpointReferenceType", Constants.WSA1);
 		}
 
 		public EndpointAddress ToEndpointAddress ()
@@ -69,7 +78,7 @@ namespace System.ServiceModel
 
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		void IXmlSerializable.ReadXml (XmlReader reader)
@@ -79,11 +88,30 @@ namespace System.ServiceModel
 
 		void IXmlSerializable.WriteXml (XmlWriter writer)
 		{
-			address.WriteTo (
-				AddressingVersion.WSAddressing10, 
-				writer, 
-				"Address", 
-				AddressingVersion.WSAddressing10.Namespace);
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			writer.WriteStartElement ("Address", Constants.WSA1);
+			writer.WriteString (address.Uri.AbsoluteUri);
+			writer.WriteEndElement ();
+
+			if (address.Identity == null)
+				return;
+
+			writer.WriteStartElement ("Identity", Constants.WsaIdentityUri);
+			X509CertificateEndpointIdentity x509 =
+				address.Identity as X509CertificateEndpointIdentity;
+			if (x509 != null) {
+				KeyInfo ki = new KeyInfo ();
+				KeyInfoX509Data x = new KeyInfoX509Data ();
+				foreach (X509Certificate2 cert in x509.Certificates)
+					x.AddCertificate (cert);
+				ki.AddClause (x);
+				ki.GetXml ().WriteTo (writer);
+			} else {
+				DataContractSerializer ds = new DataContractSerializer (address.Identity.IdentityClaim.GetType ());
+				ds.WriteObject (writer, address.Identity.IdentityClaim);
+			}
+			writer.WriteEndElement ();
 		}
 	}
 }

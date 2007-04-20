@@ -1,3 +1,8 @@
+2007-04-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddressTest.cs : fixed some warnings.
+	* EndpointAddress10Test.cs : new test.
+
 2007-04-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointAddressTest.cs : added WriteContentsTo and WriteTo tests

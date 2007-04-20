@@ -1,3 +1,13 @@
+2007-04-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddress.cs,
+	  EndpointAddress10.cs,
+	  EndpointAddressAugust2004.cs :
+	  some rewrite on WriteXml(). For WSA10, it is now based on XML
+	  serializer. (Read methods won't go that way btw.)
+	  IXmlSerializable.GetSchema() in both versions return null.
+	  public GetSchema() returns schema from W3C.
+
 2007-04-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Constants.cs : added couple of consts.

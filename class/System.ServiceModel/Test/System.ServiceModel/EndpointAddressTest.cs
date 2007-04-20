@@ -286,7 +286,7 @@ namespace MonoTests.System.ServiceModel
 			XmlReader src = XmlReader.Create (new StringReader (xml));
 			XmlDictionaryReader reader =
 				XmlDictionaryReader.CreateDictionaryReader (src);
-			EndpointAddress a = EndpointAddress.ReadFrom (reader);
+			EndpointAddress.ReadFrom (reader);
 		}
 
 		[Test]
@@ -297,10 +297,7 @@ namespace MonoTests.System.ServiceModel
 			XmlReader src = XmlReader.Create (new StringReader (xml));
 			XmlDictionaryReader reader =
 				XmlDictionaryReader.CreateDictionaryReader (src);
-			EndpointAddress a = EndpointAddress.ReadFrom (reader);
-			Assert.IsNotNull (a, "#1");
-			Assert.AreEqual ("http://schemas.microsoft.com/2005/12/ServiceModel/Addressing/Anonymous", a.Uri.AbsoluteUri, "#2");
-			Assert.IsTrue (a.IsAnonymous, "#3");
+			EndpointAddress.ReadFrom (reader);
 		}
 
 		[Test]

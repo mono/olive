@@ -81,6 +81,7 @@ System.ServiceModel/ChannelFactoryTest.cs
 System.ServiceModel/ChannelFactory_1Test.cs
 System.ServiceModel/ClientBaseTest.cs
 System.ServiceModel/ClientCredentialsSecurityTokenManagerTest.cs
+System.ServiceModel/EndpointAddress10Test.cs
 System.ServiceModel/EndpointAddressBuilderTest.cs
 System.ServiceModel/EndpointAddressTest.cs
 System.ServiceModel/EndpointBehaviorCollectionTest.cs
