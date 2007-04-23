@@ -165,6 +165,7 @@ withmcs:
 
 dll-sources:
 	echo "../../build/common/Consts.cs" > $(LIBRARY).sources
+	echo "../../build/common/Locale.cs" >> $(LIBRARY).sources
 	echo "../../build/common/MonoTODOAttribute.cs" >> $(LIBRARY).sources
 	ls */*.cs >> $(LIBRARY).sources
 	cd Test; ls */*.cs > ../$(LIBRARY:.dll=_test.dll).sources; cd ..
