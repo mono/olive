@@ -28,7 +28,7 @@ all-local: force-recompile
 
 .PHONY: force-recompile
 force-recompile:
-	touch -t 197001010001.00 ../lib/$(PROFILE)/$(LIBRARY)
+	touch -t 198001010001.00 ../lib/$(PROFILE)/$(LIBRARY)
 	@rm -f $(WITHOUT_RUNTIME_DEP)
 	@echo "** Forcing recompilation. The current library was built without parts that depend on: [$(RUNTIME_DEP_FILE)] and now can be built with those dependencies"
 endif
