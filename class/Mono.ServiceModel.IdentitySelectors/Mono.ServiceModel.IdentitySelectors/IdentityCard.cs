@@ -28,6 +28,7 @@
 using System;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
 using System.Xml;
 
 namespace Mono.ServiceModel.IdentitySelectors
@@ -76,6 +77,8 @@ namespace Mono.ServiceModel.IdentitySelectors
 			}
 		}
 
+		const string date_format = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFZ";
+
 		byte [] certificate;
 
 		// metadata
@@ -119,6 +122,14 @@ namespace Mono.ServiceModel.IdentitySelectors
 			get { return issuer; }
 		}
 
+		public DateTime TimeIssued {
+			get { return issued; }
+		}
+
+		public DateTime TimeExpires {
+			get { return expires; }
+		}
+
 		public byte [] Certificate {
 			get { return certificate; }
 		}
@@ -155,10 +166,10 @@ namespace Mono.ServiceModel.IdentitySelectors
 				reader.ReadElementContentAsString ("Issuer", ns));
 			reader.MoveToContent ();
 			issued = XmlConvert.ToDateTime (
-				reader.ReadElementContentAsString ("TimeIssued", ns));
+				reader.ReadElementContentAsString ("TimeIssued", ns), XmlDateTimeSerializationMode.Utc);
 			reader.MoveToContent ();
 			expires = XmlConvert.ToDateTime (
-				reader.ReadElementContentAsString ("TimeExpires", ns));
+				reader.ReadElementContentAsString ("TimeExpires", ns), XmlDateTimeSerializationMode.Utc);
 			reader.MoveToContent ();
 			if (reader.IsStartElement ("TokenServiceList", ns)) {
 				reader.ReadStartElement ("TokenServiceList", ns);
@@ -207,7 +218,7 @@ namespace Mono.ServiceModel.IdentitySelectors
 				reader.ReadElementContentAsString ("HashSalt", ns));
 			reader.MoveToContent ();
 			last_updated = XmlConvert.ToDateTime (
-				reader.ReadElementContentAsString ("TimeLastUpdated", ns));
+				reader.ReadElementContentAsString ("TimeLastUpdated", ns), XmlDateTimeSerializationMode.Utc);
 			reader.MoveToContent ();
 			issuer_id = reader.ReadElementContentAsString ("IssuerId", ns);
 			reader.MoveToContent ();
@@ -250,6 +261,88 @@ namespace Mono.ServiceModel.IdentitySelectors
 			reader.ReadEndElement ();
 			reader.MoveToContent ();
 			reader.ReadEndElement ();
+		}
+
+		public void Save (XmlWriter xmlWriter)
+		{
+			XmlDictionaryWriter writer = XmlDictionaryWriter.CreateDictionaryWriter (xmlWriter);
+
+			string ns = Constants.WsidNamespace;
+			writer.WriteStartElement ("RoamingStore", ns);
+			writer.WriteStartElement ("RoamingInformationCard", ns);
+			// metadata
+			writer.WriteStartElement ("InformationCardMetaData", ns);
+			writer.WriteAttributeString ("xml:lang", lang);
+			writer.WriteStartElement ("InformationCardReference", ns);
+			writer.WriteElementString ("CardId", ns, id);
+			writer.WriteElementString ("CardVersion", ns, version);
+			writer.WriteEndElement ();
+			writer.WriteElementString ("CardName", ns, name);
+			writer.WriteStartElement ("CardImage", ns);
+			writer.WriteAttributeString ("MimeType", image_mime);
+			writer.WriteString (Convert.ToBase64String (image));
+			writer.WriteEndElement ();
+			writer.WriteElementString ("Issuer", ns, issuer.ToString ());
+			writer.WriteElementString ("TimeIssued", ns, XmlConvert.ToString (issued, date_format));
+			writer.WriteElementString ("TimeExpires", ns, XmlConvert.ToString (expires, date_format));
+			if (token_services.Count > 0) {
+				
+				writer.WriteStartElement ("TokenServiceList", ns);
+				foreach (EndpointAddress ea in token_services) {
+					writer.WriteStartElement ("TokenService", ns);
+					// FIXME: do we need different ones?
+					ea.WriteTo (AddressingVersion.WSAddressing10, writer);
+					writer.WriteEndElement ();
+				}
+				writer.WriteEndElement ();
+			}
+
+			writer.WriteStartElement ("SupportedTokenTypeList", ns);
+			foreach (Uri u in supported_token_types)
+				writer.WriteElementString ("TokenType", Constants.WstNamespace, u.ToString ());
+			writer.WriteEndElement ();
+
+			writer.WriteStartElement ("SupportedClaimTypeList", ns);
+			foreach (ClaimTypeDefinition cd in supported_claim_types) {
+				writer.WriteStartElement ("SupportedClaimType", ns);
+				writer.WriteAttributeString ("Uri", cd.Uri);
+				writer.WriteElementString ("DisplayTag", ns, cd.DisplayTag);
+				writer.WriteElementString ("Description", ns, cd.Description);
+				writer.WriteEndElement ();
+			}
+			writer.WriteEndElement ();
+
+			writer.WriteStartElement ("IsSelfIssued", ns);
+			writer.WriteString (XmlConvert.ToString (self_issued));
+			writer.WriteEndElement ();
+			writer.WriteStartElement ("HashSalt", ns);
+			writer.WriteString (Convert.ToBase64String (hash_salt));
+			writer.WriteEndElement ();
+			writer.WriteElementString ("TimeLastUpdated", ns, XmlConvert.ToString (last_updated, XmlDateTimeSerializationMode.Utc));
+			writer.WriteElementString ("IssuerId", ns, issuer_id);
+			writer.WriteElementString ("IssuerName", ns, issuer_name);
+			writer.WriteElementString ("BackgroundColor", ns, XmlConvert.ToString (back_color));
+
+			writer.WriteEndElement (); // InformationCardMetaData
+
+			// private data
+			writer.WriteStartElement ("InformationCardPrivateData", ns);
+			writer.WriteElementString ("MasterKey", ns, Convert.ToBase64String (master_key));
+			if (claim_values.Count > 0) {
+				writer.WriteStartElement ("ClaimValueList", ns);
+				foreach (ClaimValue cv in claim_values) {
+					writer.WriteStartElement ("ClaimValue", ns);
+					writer.WriteAttributeString ("Uri", cv.Uri);
+					writer.WriteElementString ("Value", ns, cv.Value);
+					writer.WriteEndElement ();
+				}
+				writer.WriteEndElement ();
+			}
+
+			writer.WriteEndElement (); // InformationCardPrivateData
+
+			writer.WriteEndElement ();
+			writer.WriteEndElement ();
 		}
 	}
 }

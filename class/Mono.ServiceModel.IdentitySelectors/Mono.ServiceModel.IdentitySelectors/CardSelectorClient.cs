@@ -58,21 +58,17 @@ namespace Mono.ServiceModel.IdentitySelectors
 			string password = ReceivePassword ();
 			if (password == null)
 				return;
-			StoreCard (ProcessImport (filename, password));
+			IdentityCard card = ProcessImport (filename, password);
+			IdentityStore.GetDefaultStore ().StoreCard (card, password);
 		}
 
 		protected IdentityCard ProcessImport (string filename, string password)
 		{
 			string xml = new IdentityCardEncryption ().Decrypt (
-				"Test/resources/rupert.crds", "monkeydance");
+				filename, password);
 			IdentityCard card = new IdentityCard ();
 			card.Load (XmlReader.Create (new StringReader (xml)));
 			return card;
-		}
-
-		protected void StoreCard (IdentityCard card)
-		{
-			// FIXME: implement
 		}
 
 		#endregion
@@ -113,7 +109,7 @@ namespace Mono.ServiceModel.IdentitySelectors
 			throw new Exception ("INTERNAL ERROR: no policy to process");
 		}
 
-		public virtual GenericXmlSecurityToken GetToken (
+		GenericXmlSecurityToken GetToken (
 			XmlElement target, XmlElement issuer,
 			Collection<XmlElement> parameters,
 			Uri policyNoticeLink, int policyNoticeVersion)

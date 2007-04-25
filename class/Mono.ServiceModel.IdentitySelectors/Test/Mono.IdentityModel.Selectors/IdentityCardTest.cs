@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IO;
 using System.Xml;
 using Mono.ServiceModel.IdentitySelectors;
 using NUnit.Framework;
@@ -38,10 +39,36 @@ namespace MonoTests.Mono.ServiceModel.IdentitySelectors
 		[Test]
 		public void Load ()
 		{
-			new IdentityCard ().Load (XmlReader.Create (
-				"Test/resources/rupert.xml"));
+			IdentityCard ic = new IdentityCard ();
+			ic.Load (XmlReader.Create ("Test/resources/rupert.xml"));
+			Assert.AreEqual (DateTimeKind.Utc, ic.TimeIssued.Kind, "#1");
+			Assert.AreEqual (11, ic.TimeIssued.Hour, "#2");
+			Assert.AreEqual (23, ic.TimeExpires.Hour, "#3");
 			new IdentityCard ().Load (XmlReader.Create (
 				"Test/resources/managed.xml"));
+		}
+
+		[Test]
+		public void SaveRoundtrip ()
+		{
+			SaveRoundtrip ("Test/resources/rupert.xml");
+			SaveRoundtrip ("Test/resources/managed.xml");
+		}
+		
+		void SaveRoundtrip (string file)
+		{
+			IdentityCard ic = new IdentityCard ();
+			ic.Load (XmlReader.Create (file));
+			MemoryStream ms = new MemoryStream ();
+			XmlWriterSettings xws = new XmlWriterSettings ();
+			using (XmlWriter xw = XmlWriter.Create (ms, xws)) {
+				ic.Save (xw);
+			}
+			string actual = new StreamReader (new MemoryStream (ms.ToArray ())).ReadToEnd ();
+			XmlDocument doc = new XmlDocument ();
+			doc.Load (file);
+			string expected = doc.OuterXml;
+			Assert.AreEqual (expected, actual);
 		}
 	}
 }

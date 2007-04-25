@@ -1,3 +1,8 @@
+2007-04-25  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IdentityCard.cs : implemented Save. It was rather xs:dateTime fixes.
+	* IdentityStore.cs, CardSelectorClient.cs : some store implementation.
+
 2007-04-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* CardSelectionContext.cs
