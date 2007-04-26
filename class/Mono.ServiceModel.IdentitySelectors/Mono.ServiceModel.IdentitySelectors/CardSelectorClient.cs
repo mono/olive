@@ -65,7 +65,7 @@ namespace Mono.ServiceModel.IdentitySelectors
 		protected IdentityCard ProcessImport (string filename, string password)
 		{
 			string xml = new IdentityCardEncryption ().Decrypt (
-				filename, password);
+				new StreamReader (filename).ReadToEnd (), password);
 			IdentityCard card = new IdentityCard ();
 			card.Load (XmlReader.Create (new StringReader (xml)));
 			return card;

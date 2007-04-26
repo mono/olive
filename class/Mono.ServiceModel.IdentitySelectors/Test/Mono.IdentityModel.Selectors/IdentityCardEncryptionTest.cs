@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IO;
+using System.Text;
 using System.Xml;
 using Mono.ServiceModel.IdentitySelectors;
 using NUnit.Framework;
@@ -38,10 +40,27 @@ namespace MonoTests.Mono.ServiceModel.IdentitySelectors
 		[Test]
 		public void Import ()
 		{
+			string encxml = new StreamReader ("Test/resources/rupert.crds").ReadToEnd ();
 			string xml = new IdentityCardEncryption ().Decrypt (
-				"Test/resources/rupert.crds", "monkeydance");
+				encxml, "monkeydance");
 			XmlDocument doc = new XmlDocument ();
 			doc.LoadXml (xml);
+		}
+
+		[Test]
+		public void Export ()
+		{
+			byte [] salt = Convert.FromBase64String ("ofkHGOy0pioOd7++N2a52w==");
+			byte [] iv = Convert.FromBase64String ("OzFSoAlrfj11g246TM4How==");
+			XmlDocument doc = new XmlDocument ();
+			doc.Load ("Test/resources/rupert.xml");
+			doc.RemoveChild (doc.FirstChild);
+			byte [] result = new IdentityCardEncryption ().Encrypt (doc.OuterXml, "monkeydance", salt, iv);
+			string resultText = Encoding.UTF8.GetString (result);
+
+			string roundtrip = new IdentityCardEncryption ().Decrypt (resultText, "monkeydance");
+			doc = new XmlDocument ();
+			doc.LoadXml (roundtrip);
 		}
 	}
 }
