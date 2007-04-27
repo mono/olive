@@ -2,7 +2,9 @@ default namespace = "http://schemas.xmlsoap.org/ws/2005/05/identity"
 datatypes xs = "http://www.w3.org/2001/XMLSchema"
 namespace wst = "http://schemas.xmlsoap.org/ws/2005/02/trust"
 
-element  RoamingStore {
+grammar {
+
+start = element  RoamingStore {
   element  RoamingInformationCard {
     element  InformationCardMetaData {
       attribute  xml:lang { text },
@@ -38,6 +40,10 @@ element  RoamingStore {
                 }
               }
             }?
+          },
+          element  UserCredential {
+            element DisplayCredentialHint { any* },
+            credentialElement
           }
         }+
       }?,
@@ -68,4 +74,23 @@ element  RoamingStore {
       }?
     }
   }+
+}
+
+any-content =
+	element * { attribute * { text }* | any-content* } |
+	text
+
+credentialElement =
+  element  UsernamePasswordCredential {
+    element  Username { text }?
+  } |
+  element  X509V3Credential {
+    # specified in xmldsig schema
+    any-content
+  } |
+  element  KerberosV5Credential { attribute * { text}* } |
+  element  SelfIssuedCredential {
+    element  PrivatePersonalIdentifier { any-content }
+  }
+
 }

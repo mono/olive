@@ -1,3 +1,8 @@
+2007-04-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IdentityCard.cs : TokenService contains UserCredential as well as
+	  EndpointAddress.
+
 2007-04-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* IdentityCardEncryption.cs, CardSelectorClient.cs :

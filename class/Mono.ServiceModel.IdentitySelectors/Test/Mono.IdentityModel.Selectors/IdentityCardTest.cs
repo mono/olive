@@ -61,14 +61,18 @@ namespace MonoTests.Mono.ServiceModel.IdentitySelectors
 			ic.Load (XmlReader.Create (file));
 			MemoryStream ms = new MemoryStream ();
 			XmlWriterSettings xws = new XmlWriterSettings ();
+			xws.OmitXmlDeclaration = true;
 			using (XmlWriter xw = XmlWriter.Create (ms, xws)) {
 				ic.Save (xw);
 			}
-			string actual = new StreamReader (new MemoryStream (ms.ToArray ())).ReadToEnd ();
 			XmlDocument doc = new XmlDocument ();
 			doc.Load (file);
+			if (doc.FirstChild is XmlDeclaration)
+				doc.RemoveChild (doc.FirstChild);
 			string expected = doc.OuterXml;
-			Assert.AreEqual (expected, actual);
+			doc.Load (new MemoryStream (ms.ToArray ()));
+			string actual = doc.OuterXml;
+			Assert.AreEqual (expected, actual, file);
 		}
 	}
 }

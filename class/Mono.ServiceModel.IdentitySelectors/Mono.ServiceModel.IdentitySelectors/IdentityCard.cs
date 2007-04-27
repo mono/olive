@@ -27,9 +27,12 @@
 //
 using System;
 using System.Collections.ObjectModel;
+using System.Security.Cryptography.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace Mono.ServiceModel.IdentitySelectors
 {
@@ -77,6 +80,102 @@ namespace Mono.ServiceModel.IdentitySelectors
 			}
 		}
 
+		public class TokenService
+		{
+			EndpointAddress address;
+			UserCredential credential;
+
+			public EndpointAddress Address {
+				get { return address; }
+				set { address = value; }
+			}
+			
+			public UserCredential Credential {
+				get { return credential; }
+				set { credential = value; }
+			}
+
+			public void ReadXml (XmlReader reader)
+			{
+				// FIXME: do we need different versions?
+				address = EndpointAddress.ReadFrom (AddressingVersion.WSAddressing10, reader);
+				reader.MoveToContent ();
+				// FIXME: create custom serializer
+				credential = new XmlSerializer (typeof (UserCredential)).Deserialize (reader) as UserCredential;
+			}
+
+			public void WriteXml (XmlWriter writer)
+			{
+				address.WriteTo (AddressingVersion.WSAddressing10, writer);
+				// FIXME: create custom serializer
+				new XmlSerializer (typeof (UserCredential)).Serialize (writer, credential);
+			}
+		}
+
+		[XmlRoot ("UserCredential", Namespace = Constants.WsidNamespace)]
+		public class UserCredential
+		{
+			string hint;
+			UsernamePasswordCredential username;
+			X509V3Credential x509;
+
+			public string DisplayCredentialHint {
+				get { return hint; }
+				set { hint = value; }
+			}
+
+			public UsernamePasswordCredential Username {
+				get { return username; }
+				set { username = value; }
+			}
+
+			public X509V3Credential X509V3 {
+				get { return x509; }
+				set { x509 = value; }
+			}
+		}
+
+		public class UsernamePasswordCredential
+		{
+			string username;
+
+			public string Username {
+				get { return username; }
+				set { username = value; }
+			}
+
+			// password is not stored.
+		}
+
+		public class X509V3Credential : IXmlSerializable
+		{
+			KeyInfoX509Data data;
+
+			public KeyInfoX509Data X509Data {
+				get { return data; }
+				set { data = value; }
+			}
+
+			public void WriteXml (XmlWriter w)
+			{
+				if (data != null)
+					data.GetXml ().WriteTo (w);
+			}
+
+			public void ReadXml (XmlReader r)
+			{
+				r.MoveToContent ();
+				XmlDocument doc = new XmlDocument ();
+				data = new KeyInfoX509Data ();
+				data.LoadXml (doc.ReadNode (r) as XmlElement);
+			}
+
+			XmlSchema IXmlSerializable.GetSchema ()
+			{
+				return null;
+			}
+		}
+
 		const string date_format = "yyyy-MM-dd'T'HH:mm:ss.FFFFFFFZ";
 
 		byte [] certificate;
@@ -87,8 +186,8 @@ namespace Mono.ServiceModel.IdentitySelectors
 		DateTime issued, expires;
 		string image_mime;
 		byte [] image;
-		Collection<EndpointAddress> token_services =
-			new Collection<EndpointAddress> ();
+		Collection<TokenService> token_services =
+			new Collection<TokenService> ();
 		Collection<Uri> supported_token_types = new Collection<Uri> ();
 		Collection<ClaimTypeDefinition> supported_claim_types =
 			new Collection<ClaimTypeDefinition> ();
@@ -179,7 +278,9 @@ namespace Mono.ServiceModel.IdentitySelectors
 				     reader.MoveToContent ()) {
 					reader.ReadStartElement ("TokenService", ns);
 					reader.MoveToContent ();
-					token_services.Add (EndpointAddress.ReadFrom (reader));
+					TokenService ts = new TokenService ();
+					ts.ReadXml (reader);
+					token_services.Add (ts);
 					reader.MoveToContent ();
 					reader.ReadEndElement ();
 				}
@@ -288,10 +389,9 @@ namespace Mono.ServiceModel.IdentitySelectors
 			if (token_services.Count > 0) {
 				
 				writer.WriteStartElement ("TokenServiceList", ns);
-				foreach (EndpointAddress ea in token_services) {
+				foreach (TokenService ts in token_services) {
 					writer.WriteStartElement ("TokenService", ns);
-					// FIXME: do we need different ones?
-					ea.WriteTo (AddressingVersion.WSAddressing10, writer);
+					ts.WriteXml (writer);
 					writer.WriteEndElement ();
 				}
 				writer.WriteEndElement ();
