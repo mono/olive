@@ -37,6 +37,7 @@ using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 
 namespace System.ServiceModel
 {
@@ -251,42 +252,70 @@ namespace System.ServiceModel
 			XmlReader reader)
 		{
 			reader.MoveToContent ();
-			if (reader.NodeType == XmlNodeType.Element &&
+			if (reader.NodeType != XmlNodeType.Element ||
+			    reader.IsEmptyElement)
+				throw new ArgumentException ("Cannot detect appropriate WS-Addressing Address element.");
+
+			reader.Read ();
+			reader.MoveToContent ();
+
+			if (addressingVersion == null) {
+				if (reader.NamespaceURI == AddressingVersion.WSAddressing10.Namespace)
+					addressingVersion = AddressingVersion.WSAddressing10;
+				else
+				if (reader.NamespaceURI == AddressingVersion.WSAddressingAugust2004.Namespace)
+					addressingVersion = AddressingVersion.WSAddressingAugust2004;
+				else
+					throw new ArgumentException ("Cannot detect appropriate WS-Addressing version.");
+			}
+
+			EndpointAddress ea = ReadContents (addressingVersion, reader);
+
+			reader.MoveToContent ();
+			reader.ReadEndElement ();
+			return ea;
+		}
+		
+		private static EndpointAddress ReadContents (
+			AddressingVersion addressingVersion, XmlReader reader)
+		{
+			Uri uri = null;
+			MetadataSet metadata = null;
+			EndpointIdentity identity = null;
+			reader.MoveToContent ();
+			if (reader.LocalName == "Address" && 
+			    reader.NamespaceURI == addressingVersion.Namespace &&
+			    reader.NodeType == XmlNodeType.Element &&
+			    !reader.IsEmptyElement)
+				uri = new Uri (reader.ReadElementContentAsString ());
+			else
+				throw new XmlException (String.Format (
+					"Expecting 'Address' from namespace '{0}', but found '{1}' from namespace '{2}'",
+					addressingVersion.Namespace, reader.LocalName, reader.NamespaceURI));
+
+			reader.MoveToContent ();
+			if (reader.LocalName == "Metadata" &&
+			    reader.NamespaceURI == addressingVersion.Namespace &&
 			    !reader.IsEmptyElement) {
 				reader.Read ();
+				metadata = (MetadataSet) new XmlSerializer (typeof (MetadataSet)).Deserialize (reader);
 				reader.MoveToContent ();
-
-				if (addressingVersion == null) {
-					if (reader.NamespaceURI == AddressingVersion.WSAddressing10.Namespace)
-						addressingVersion = AddressingVersion.WSAddressing10;
-					else
-					if (reader.NamespaceURI == AddressingVersion.WSAddressingAugust2004.Namespace)
-						addressingVersion = AddressingVersion.WSAddressingAugust2004;
-					else
-						throw new ArgumentException ("Cannot detect appropriate WS-Addressing version.");
-				}
-				
-				if (reader.LocalName == "Address" && 
-					reader.NamespaceURI == addressingVersion.Namespace &&
-					reader.NodeType == XmlNodeType.Element &&
-					!reader.IsEmptyElement) {
-
-					EndpointAddress a = new EndpointAddress (
-						reader.ReadElementContentAsString ());
-					if (addressingVersion == AddressingVersion.WSAddressing10 && 
-						a.Uri == w3c_anonymous)
-						a = new EndpointAddress (anonymous_role);
-
-					reader.MoveToContent ();
-					reader.ReadEndElement ();
-					return a;
-				}
-
-				throw new XmlException (String.Format (
-						"Expecting 'Address' from namespace '{0}', but found '{1}' from namespace '{2}'",
-						addressingVersion.Namespace, reader.LocalName, reader.NamespaceURI));
+				reader.ReadEndElement ();
 			}
-			throw new ArgumentException ("Cannot detect appropriate WS-Addressing Address element.");
+			reader.MoveToContent ();
+			if (reader.LocalName == "Identity" &&
+			    reader.NamespaceURI == Constants.WsaIdentityUri) {
+				// FIXME: implement
+				reader.Skip ();
+			}
+
+			if (addressingVersion == AddressingVersion.WSAddressing10 && uri == w3c_anonymous)
+				uri = anonymous_role;
+
+			if (metadata == null)
+				return new EndpointAddress (uri, identity);
+			return new EndpointAddress (uri, identity,
+				AddressHeader.CreateAddressHeader (metadata));
 		}
 
 		public override string ToString ()

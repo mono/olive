@@ -97,6 +97,10 @@ namespace System.ServiceModel
 			if (address.Identity == null)
 				return;
 
+			if (address.Headers != null)
+				foreach (AddressHeader ah in address.Headers)
+					ah.WriteAddressHeader (writer);
+
 			writer.WriteStartElement ("Identity", Constants.WsaIdentityUri);
 			X509CertificateEndpointIdentity x509 =
 				address.Identity as X509CertificateEndpointIdentity;
