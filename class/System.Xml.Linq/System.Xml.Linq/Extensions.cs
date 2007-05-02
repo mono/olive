@@ -1,5 +1,3 @@
-#if NET_2_0
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -52,6 +50,87 @@ namespace System.Xml.Linq
 				foreach (XAttribute attr in item.Attributes (name))
 					yield return attr;
 		}
+
+		[MonoTODO]
+		public static IEnumerable<XNode> DescendantNodes<T> (
+			this IEnumerable<T> source) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XNode> DescendantNodesAndSelf (
+			this IEnumerable<XElement> source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> Descendants<T> (
+			this IEnumerable<T> source) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> Descendants<T> (
+			this IEnumerable<T> source, XName name) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> DescendantsAndSelf (
+			this IEnumerable<XElement> source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> DescendantsAndSelf (
+			this IEnumerable<XElement> source, XName name)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> Elements<T> (
+			this IEnumerable<T> source) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XElement> Elements<T> (
+			this IEnumerable<T> source, XName name) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<T> InDocumentOrder<T> (
+			this IEnumerable<T> source) where T : XNode
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static IEnumerable<XNode> Nodes<T> (
+			this IEnumerable<T> source) where T : XContainer
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static void Remove (this IEnumerable<XAttribute> source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static void Remove<T> (this IEnumerable<T> source) where T : XNode
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
-#endif

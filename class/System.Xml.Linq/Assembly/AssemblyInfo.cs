@@ -37,8 +37,8 @@ using System.Runtime.InteropServices;
 
 // General Information about the System.Xml.Linq assembly
 
-[assembly: AssemblyVersion (Consts.FxVersion)]
-[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyVersion ("2.0.0.0")]
+[assembly: SatelliteContractVersion ("2.0.0.0")]
 
 [assembly: AssemblyTitle ("System.Xml.Linq.dll")]
 [assembly: AssemblyDescription ("System.Xml.Linq.dll")]
@@ -48,7 +48,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright ("(c) 2003 Various Authors")]
 [assembly: AssemblyTrademark ("")]
 
-[assembly: CLSCompliant (true)]
+[assembly: CLSCompliant (false)]
 [assembly: AssemblyDefaultAlias ("System.Xml.Linq.dll")]
 [assembly: AssemblyInformationalVersion ("0.0.0.1")]
 [assembly: NeutralResourcesLanguage ("en-US")]

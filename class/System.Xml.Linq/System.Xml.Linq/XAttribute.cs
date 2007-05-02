@@ -1,18 +1,10 @@
-#if NET_2_0
-
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO;
-using System.Text;
 using System.Xml;
-
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
 
 namespace System.Xml.Linq
 {
-	public class XAttribute
+	public class XAttribute : XObject
 	{
 		static IEnumerable <XAttribute> emptySequence =
 			new List <XAttribute> ();
@@ -23,7 +15,8 @@ namespace System.Xml.Linq
 
 		XName name;
 		object value;
-		XElement parent;
+		XAttribute next;
+		XAttribute previous;
 
 		public XAttribute (XAttribute source)
 		{
@@ -37,16 +30,28 @@ namespace System.Xml.Linq
 			this.value = XUtil.ToString (value);
 		}
 
+		[MonoTODO]
+		public bool IsNamespaceDeclaration {
+			get { throw new NotImplementedException (); }
+		}
+
 		public XName Name {
 			get { return name; }
 		}
 
-		public XElement Parent {
-			get { return parent; }
-			internal set {
-				parent = value;
-				value.InternalAppendAttribute (this);
-			}
+		[MonoTODO]
+		public XAttribute NextAttribute {
+			get { return next; }
+		}
+
+		[MonoTODO]
+		public override XmlNodeType NodeType {
+			get { return XmlNodeType.Attribute; }
+		}
+
+		[MonoTODO]
+		public XAttribute PreviousAttribute {
+			get { return previous; }
 		}
 
 		public string Value {
@@ -54,6 +59,7 @@ namespace System.Xml.Linq
 			set { this.value = value; }
 		}
 
+		/*
 		public override bool Equals (object obj)
 		{
 			XAttribute a = obj as XAttribute;
@@ -79,15 +85,29 @@ namespace System.Xml.Linq
 		}
 
 		// FIXME: similar conversion methods follow.
+		*/
 
 		public void Remove ()
 		{
-			if (parent != null) {
-				parent.InternalRemoveAttribute (this);
-				parent = null;
+			next = null;
+			previous = null;
+
+			if (Parent != null) {
+				Parent.InternalRemoveAttribute (this);
+				Parent = null;
 			}
+		}
+
+		[MonoTODO]
+		public void SetValue (object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
 		}
 	}
 }
-
-#endif

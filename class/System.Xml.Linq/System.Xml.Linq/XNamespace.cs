@@ -51,6 +51,23 @@ namespace System.Xml.Linq
 		public string Uri {
 			get { return uri; }
 		}
+
+		public override bool Equals (object other)
+		{
+			XNamespace ns = other as XNamespace;
+			return ns != null && uri == ns.uri;
+		}
+
+		public override int GetHashCode ()
+		{
+			return uri.GetHashCode ();
+		}
+
+		[MonoTODO]
+		public override string ToString ()
+		{
+			return uri.ToString ();
+		}
 	}
 }
 

@@ -12,6 +12,7 @@ using XPI = System.Xml.Linq.XProcessingInstruction;
 
 namespace System.Xml.Linq
 {
+	/*
 	// Iterators
 	internal class XFilterIterator <T> : IEnumerable <T>
 	{
@@ -75,6 +76,7 @@ namespace System.Xml.Linq
 			return GetEnumerator ();
 		}
 	}
+	*/
 
 #if !LIST_BASED
 	internal class XChildrenIterator : IEnumerable <object>
@@ -90,15 +92,14 @@ namespace System.Xml.Linq
 		public IEnumerator <object> GetEnumerator ()
 		{
 			if (n == null) {
-				n = source.FirstChild;
+				n = source.FirstNode;
 				if (n == null)
 					yield break;
 			}
 			do {
 				yield return n;
-				n = n.NextSibling;
-			} while (n != source.LastChild);
-			yield break;
+				n = n.NextNode;
+			} while (n != source.LastNode);
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

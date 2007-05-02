@@ -1,5 +1,30 @@
 2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XText.cs
+	  XNode.cs
+	  XDeclaration.cs
+	  XElement.cs
+	  XObjectChangeEventArgs.cs
+	  XNodeEqualityComparer.cs
+	  XComment.cs
+	  XObject.cs
+	  XNodeDocumentOrderComparer.cs
+	  XCData.cs
+	  XObjectChange.cs
+	  XObjectChangeEventHandler.cs
+	  XDocument.cs
+	  XProcessingInstruction.cs
+	  XDocumentType.cs
+	  XContainer.cs : new files (split from System.Xml.Linq.cs).
+	* System.Xml.XLinq.cs : removed old file.
+	* XAttribute.cs
+	  Extensions.cs
+	  XIterators.cs
+	  XNamespace.cs : updated to Orcas beta1 API. The entire code just
+	  does not work. The API updates are mostly for testing compilers.
+
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XElementSequence.cs, Extensions.cs : renamed former to latter.
 
 2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
