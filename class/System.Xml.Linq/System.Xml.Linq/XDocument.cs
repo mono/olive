@@ -5,9 +5,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
-
 namespace System.Xml.Linq
 {
 	public class XDocument : XContainer
@@ -64,33 +61,47 @@ namespace System.Xml.Linq
 
 		public static XDocument Load (string uri)
 		{
-			return Load (uri, false);
+			return Load (uri, LoadOptions.None);
 		}
 
-		public static XDocument Load (string uri, bool preserveWhitespaces)
+		public static XDocument Load (string uri, LoadOptions options)
 		{
 			XmlReaderSettings s = new XmlReaderSettings ();
-			s.IgnoreWhitespace = !preserveWhitespaces;
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (uri, s)) {
-				return Load (r);
+				return LoadCore (r);
 			}
 		}
 
 		public static XDocument Load (TextReader reader)
 		{
-			return Load (reader, false);
+			return Load (reader, LoadOptions.None);
 		}
 
-		public static XDocument Load (TextReader reader, bool preserveWhitespaces)
+		public static XDocument Load (TextReader reader, LoadOptions options)
 		{
 			XmlReaderSettings s = new XmlReaderSettings ();
-			s.IgnoreWhitespace = !preserveWhitespaces;
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (reader, s)) {
-				return Load (r);
+				return LoadCore (r);
 			}
 		}
 
 		public static XDocument Load (XmlReader reader)
+		{
+			return Load (reader, LoadOptions.None);
+		}
+
+		public static XDocument Load (XmlReader reader, LoadOptions options)
+		{
+			XmlReaderSettings s = new XmlReaderSettings ();
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
+			using (XmlReader r = XmlReader.Create (reader, s)) {
+				return LoadCore (r);
+			}
+		}
+
+		static XDocument LoadCore (XmlReader reader)
 		{
 			XDocument doc = new XDocument ();
 			if (reader.ReadState == ReadState.Initial)
@@ -122,23 +133,23 @@ namespace System.Xml.Linq
 
 		public static XDocument Parse (string s)
 		{
-			return Parse (s, false);
+			return Parse (s, LoadOptions.None);
 		}
 
-		public static XDocument Parse (string s, bool preserveWhitespaces)
+		public static XDocument Parse (string s, LoadOptions options)
 		{
-			return Load (new StringReader (s), preserveWhitespaces);
+			return Load (new StringReader (s), options);
 		}
 
 		public void Save (string filename)
 		{
-			Save (filename, false);
+			Save (filename, SaveOptions.None);
 		}
 
-		public void Save (string filename, bool ignoreWhitespaces)
+		public void Save (string filename, SaveOptions options)
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();
-			if (ignoreWhitespaces) {
+			if ((options & SaveOptions.DisableFormatting) == 0) {
 				// hacky!
 				s.Indent = true;
 				s.IndentChars = String.Empty;
@@ -151,13 +162,13 @@ namespace System.Xml.Linq
 
 		public void Save (TextWriter tw)
 		{
-			Save (tw, false);
+			Save (tw, SaveOptions.None);
 		}
 
-		public void Save (TextWriter tw, bool ignoreWhitespaces)
+		public void Save (TextWriter tw, SaveOptions options)
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();
-			if (ignoreWhitespaces) {
+			if ((options & SaveOptions.DisableFormatting) == 0) {
 				// hacky!
 				s.Indent = true;
 				s.IndentChars = String.Empty;

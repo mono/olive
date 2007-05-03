@@ -32,23 +32,25 @@ namespace System.Xml.Linq
 		[MonoTODO]
 		public static XNamespace Get (string uri)
 		{
-			throw new NotImplementedException ();
+			return new XNamespace (uri);
 		}
 
 		[MonoTODO]
-		public XName GetName (string uri)
+		public XName GetName (string localName)
 		{
-			throw new NotImplementedException ();
+			return new XName (localName, this);
 		}
 
 		string uri;
 
-		XNamespace (string uri)
+		XNamespace (string namespaceName)
 		{
-			this.uri = uri;
+			if (namespaceName == null)
+				throw new ArgumentNullException ("namespaceName");
+			uri = namespaceName;
 		}
 
-		public string Uri {
+		public string NamespaceName {
 			get { return uri; }
 		}
 

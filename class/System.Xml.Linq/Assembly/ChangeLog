@@ -1,3 +1,8 @@
+2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* AssemblyInfo.cs :
+	  Use winfx pub key. Fixed CLS compliance (true in beta1).
+
 2007-05-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AssemblyInfo.cs : fixed version and CLS compliance.

@@ -3,6 +3,8 @@
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 System.Xml.Linq/Extensions.cs
+System.Xml.Linq/LoadOptions.cs
+System.Xml.Linq/SaveOptions.cs
 System.Xml.Linq/XAttribute.cs
 System.Xml.Linq/XCData.cs
 System.Xml.Linq/XComment.cs
@@ -22,6 +24,7 @@ System.Xml.Linq/XObjectChange.cs
 System.Xml.Linq/XObjectChangeEventArgs.cs
 System.Xml.Linq/XObjectChangeEventHandler.cs
 System.Xml.Linq/XProcessingInstruction.cs
+System.Xml.Linq/XStreamingElement.cs
 System.Xml.Linq/XText.cs
 System.Xml.Linq/XUtil.cs
 System.Xml.Schema/Extensions.cs

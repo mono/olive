@@ -208,33 +208,47 @@ namespace System.Xml.Linq
 
 		public static XElement Load (string uri)
 		{
-			return Load (uri, false);
+			return Load (uri, LoadOptions.None);
 		}
 
-		public static XElement Load (string uri, bool preserveWhitespaces)
+		public static XElement Load (string uri, LoadOptions options)
 		{
 			XmlReaderSettings s = new XmlReaderSettings ();
-			s.IgnoreWhitespace = !preserveWhitespaces;
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (uri, s)) {
-				return Load (r);
+				return LoadCore (r);
 			}
 		}
 
 		public static XElement Load (TextReader tr)
 		{
-			return Load (tr, false);
+			return Load (tr, LoadOptions.None);
 		}
 
-		public static XElement Load (TextReader tr, bool preserveWhitespaces)
+		public static XElement Load (TextReader tr, LoadOptions options)
 		{
 			XmlReaderSettings s = new XmlReaderSettings ();
-			s.IgnoreWhitespace = !preserveWhitespaces;
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (tr, s)) {
-				return Load (r);
+				return LoadCore (r);
 			}
 		}
 
-		public static XElement Load (XmlReader r)
+		public static XElement Load (XmlReader reader)
+		{
+			return Load (reader, LoadOptions.None);
+		}
+
+		public static XElement Load (XmlReader reader, LoadOptions options)
+		{
+			XmlReaderSettings s = new XmlReaderSettings ();
+			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
+			using (XmlReader r = XmlReader.Create (reader, s)) {
+				return LoadCore (r);
+			}
+		}
+
+		static XElement LoadCore (XmlReader r)
 		{
 			XElement e = new XElement (r);
 			using (XmlWriter w = e.CreateWriter ()) {
@@ -259,12 +273,12 @@ namespace System.Xml.Linq
 
 		public static XElement Parse (string s)
 		{
-			return Parse (s, false);
+			return Parse (s, LoadOptions.None);
 		}
 
-		public static XElement Parse (string s, bool preserveWhitespaces)
+		public static XElement Parse (string s, LoadOptions options)
 		{
-			return Load (new StringReader (s), preserveWhitespaces);
+			return Load (new StringReader (s), options);
 		}
 
 		public void RemoveAll ()
@@ -283,13 +297,13 @@ namespace System.Xml.Linq
 
 		public void Save (string filename)
 		{
-			Save (filename, false);
+			Save (filename, SaveOptions.None);
 		}
 
-		public void Save (string filename, bool ignoreWhitespaces)
+		public void Save (string filename, SaveOptions options)
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();
-			if (ignoreWhitespaces) {
+			if ((options & SaveOptions.DisableFormatting) != 0) {
 				// hacky!
 				s.Indent = true;
 				s.IndentChars = String.Empty;
@@ -302,13 +316,13 @@ namespace System.Xml.Linq
 
 		public void Save (TextWriter tw)
 		{
-			Save (tw, false);
+			Save (tw, SaveOptions.None);
 		}
 
-		public void Save (TextWriter tw, bool ignoreWhitespaces)
+		public void Save (TextWriter tw, SaveOptions options)
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();
-			if (ignoreWhitespaces) {
+			if ((options & SaveOptions.DisableFormatting) != 0) {
 				// hacky!
 				s.Indent = true;
 				s.IndentChars = String.Empty;
@@ -399,14 +413,14 @@ namespace System.Xml.Linq
 
 		public override void WriteTo (XmlWriter w)
 		{
-			w.WriteStartElement (name.LocalName, name.Namespace.Uri);
+			w.WriteStartElement (name.LocalName, name.Namespace.NamespaceName);
 
 			if (attributes != null) {
 				foreach (XAttribute a in attributes) {
 					if (a.Name.Namespace == XNamespace.Xmlns && a.Name.LocalName != String.Empty)
-						w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.Uri, a.Value);
+						w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
 					else
-						w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.Uri, a.Value);
+						w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.NamespaceName, a.Value);
 				}
 			}
 

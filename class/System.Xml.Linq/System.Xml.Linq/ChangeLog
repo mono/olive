@@ -1,4 +1,20 @@
-2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	yuck, I was updating things based on March CTP, not Beta1 ...
+	* LoadOptions.cs
+	  SaveOptions.cs
+	  XStreamingElement.cs : new missing files.
+	* XNode.cs
+	  XDeclaration.cs
+	  XElement.cs
+	  XObject.cs
+	  XDocument.cs
+	  XDocumentType.cs
+	  XContainer.cs : thus, updated again.
+	* XName.cs
+	  XNamespace.cs : updates, plus some implementation.
+
+2007-05-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XText.cs
 	  XNode.cs

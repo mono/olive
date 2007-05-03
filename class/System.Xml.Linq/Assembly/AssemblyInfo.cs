@@ -48,7 +48,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright ("(c) 2003 Various Authors")]
 [assembly: AssemblyTrademark ("")]
 
-[assembly: CLSCompliant (false)]
+[assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.Xml.Linq.dll")]
 [assembly: AssemblyInformationalVersion ("0.0.0.1")]
 [assembly: NeutralResourcesLanguage ("en-US")]
@@ -56,4 +56,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../msfinal.pub")]
+[assembly: AssemblyKeyFile("../winfx.pub")]

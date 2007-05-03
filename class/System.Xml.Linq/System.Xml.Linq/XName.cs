@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 
@@ -11,56 +12,22 @@ using XPI = System.Xml.Linq.XProcessingInstruction;
 
 namespace System.Xml.Linq
 {
-	public sealed class XName
+	[Serializable]
+	public sealed class XName : IEquatable<XName>, ISerializable
 	{
-		string expanded;
 		string local;
 		XNamespace ns;
 
-		private XName (string expanded)
+		internal XName (string local, XNamespace ns)
 		{
-			string ns = null;
-			if (expanded == null || expanded.Length == 0)
-				throw ErrorInvalidExpandedName ();
-			this.expanded = expanded;
-			if (expanded [0] == '{') {
-				for (int i = 1; i < expanded.Length; i++) {
-					if (expanded [i] == '}')
-						ns = expanded.Substring (1, i - 1);
-				}
-				if (ns == null || ns.Length == 0) // {}foo is invalid
-					throw ErrorInvalidExpandedName ();
-				if (expanded.Length == ns.Length + 2) // {foo} is invalid
-					throw ErrorInvalidExpandedName ();
-				local = expanded.Substring (ns.Length + 2);
-			}
-			else {
-				local = expanded;
-				ns = String.Empty;
-			}
-			this.ns = XNamespace.Get (ns);
+			this.local = XmlConvert.VerifyNCName (local);
+			this.ns = ns;
 		}
 
-		private XName (string local, string ns)
-		{
-			this.local = local;
-			this.ns = XNamespace.Get (ns);
-		}
-
-		private Exception ErrorInvalidExpandedName ()
+		static Exception ErrorInvalidExpandedName ()
 		{
 			return new ArgumentException ("Invalid expanded name.");
 		}
-
-/*
-		string ExpandedName {
-			get {
-				if (expanded == null)
-					expanded = ns != null ? String.Concat ("{", ns, "}", local) : local;
-				return expanded;
-			}
-		}
-*/
 
 		public string LocalName {
 			get { return local; }
@@ -70,20 +37,50 @@ namespace System.Xml.Linq
 			get { return ns; }
 		}
 
+		public string NamespaceName {
+			get { return ns.NamespaceName; }
+		}
+
 		public override bool Equals (object obj)
 		{
 			XName n = obj as XName;
 			return n != null && this == n;
 		}
 
+		bool IEquatable<XName>.Equals (XName other)
+		{
+			return this == other;
+		}
+
 		public static XName Get (string expandedName)
 		{
-			return new XName (expandedName);
+			if (expandedName == null)
+				throw new ArgumentNullException ("expandedName");
+			string ns = null, local = null;
+			if (expandedName.Length == 0)
+				throw ErrorInvalidExpandedName ();
+			//this.expanded = expandedName;
+			if (expandedName [0] == '{') {
+				for (int i = 1; i < expandedName.Length; i++) {
+					if (expandedName [i] == '}')
+						ns = expandedName.Substring (1, i - 1);
+				}
+				if (ns == null || ns.Length == 0) // {}foo is invalid
+					throw ErrorInvalidExpandedName ();
+				if (expandedName.Length == ns.Length + 2) // {foo} is invalid
+					throw ErrorInvalidExpandedName ();
+				local = expandedName.Substring (ns.Length + 2);
+			}
+			else {
+				local = expandedName;
+				ns = String.Empty;
+			}
+			return Get (local, ns);
 		}
 
 		public static XName Get (string localName, string namespaceName)
 		{
-			return new XName (localName, namespaceName);
+			return XNamespace.Get (namespaceName).GetName (localName);
 		}
 
 		public override int GetHashCode ()
@@ -116,6 +113,12 @@ namespace System.Xml.Linq
 		{
 			return base.ToString ();
 			//return ExpandedName;
+		}
+
+		[MonoTODO]
+		void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
+		{
+			throw new NotImplementedException ();
 		}
 	}
 }

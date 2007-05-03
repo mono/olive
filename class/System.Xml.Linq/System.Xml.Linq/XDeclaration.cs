@@ -5,9 +5,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
-
 namespace System.Xml.Linq
 {
 	public class XDeclaration
@@ -45,19 +42,20 @@ namespace System.Xml.Linq
 			set { version = value; }
 		}
 
+		/*
 		public string Xml {
 			get {
-				return String.Concat ("<?xml ",
-					version != null ? "version=\"" + version + "\" " : null,
-					encoding != null ? "encoding=\"" + encoding + "\" " : null,
-					standalone != null ? "standalone=\"" + standalone + "\" " : null,
-					"?>");
 			}
 		}
+		*/
 
 		public override string ToString ()
 		{
-			return Xml;
+			return String.Concat ("<?xml ",
+				version != null ? "version=\"" + version + "\" " : null,
+				encoding != null ? "encoding=\"" + encoding + "\" " : null,
+				standalone != null ? "standalone=\"" + standalone + "\" " : null,
+				"?>");
 		}
 
 		/*

@@ -5,9 +5,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
-
 namespace System.Xml.Linq
 {
 	public class XDocumentType : XNode

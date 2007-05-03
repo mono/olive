@@ -1,0 +1,5 @@
+2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XDocumentTest.cs
+	  XNameTest.cs
+	  XNamespaceTest.cs : initial commit.

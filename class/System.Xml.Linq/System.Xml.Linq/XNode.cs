@@ -5,9 +5,6 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
-
 namespace System.Xml.Linq
 {
 	public abstract class XNode : XObject
@@ -90,14 +87,20 @@ namespace System.Xml.Linq
 		}
 #endif
 
-		public string Xml {
-			get {
-				StringWriter sw = new StringWriter ();
-				XmlWriter xw = XmlWriter.Create (sw);
-				WriteTo (xw);
-				xw.Close ();
-				return sw.ToString ();
+		public string ToString (SaveOptions options)
+		{
+			StringWriter sw = new StringWriter ();
+			XmlWriterSettings s = new XmlWriterSettings ();
+			if ((options & SaveOptions.DisableFormatting) == 0) {
+				// hacky!
+				s.Indent = true;
+				s.IndentChars = String.Empty;
+				s.NewLineChars = String.Empty;
 			}
+			XmlWriter xw = XmlWriter.Create (sw, s);
+			WriteTo (xw);
+			xw.Close ();
+			return sw.ToString ();
 		}
 
 		public void AddAfterSelf (object content)
@@ -182,7 +185,7 @@ namespace System.Xml.Linq
 			case XmlNodeType.CDATA:
 				return new XCData (r.Value);
 			case XmlNodeType.ProcessingInstruction:
-				return new XPI (r.Name, r.Value);
+				return new XProcessingInstruction (r.Name, r.Value);
 			case XmlNodeType.Comment:
 				return new XComment (r.Value);
 			case XmlNodeType.DocumentType:
@@ -207,7 +210,7 @@ namespace System.Xml.Linq
 
 		public override string ToString ()
 		{
-			return Xml;
+			return ToString (SaveOptions.None);
 		}
 
 		public abstract void WriteTo (XmlWriter w);

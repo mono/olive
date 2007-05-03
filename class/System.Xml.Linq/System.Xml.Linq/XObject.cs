@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace System.Xml.Linq
 {
-	public abstract class XObject
+	public abstract class XObject : IXmlLineInfo
 	{
 		internal XObject ()
 		{
@@ -11,9 +12,16 @@ namespace System.Xml.Linq
 
 		XElement parent;
 		List<object> annotations;
+		string baseuri;
+		int line, column;
 
 		public event XObjectChangeEventHandler Changing;
 		public event XObjectChangeEventHandler Changed;
+
+		public string BaseUri {
+			get { return baseuri; }
+			internal set { baseuri = value; }
+		}
 
 		public XDocument Document {
 			get {
@@ -85,6 +93,22 @@ namespace System.Xml.Linq
 			for (int i = 0; i < annotations.Count; i++)
 				if (annotations [i].GetType () == type)
 					annotations.RemoveAt (i);
+		}
+
+		[MonoTODO]
+		int IXmlLineInfo.LineNumber {
+			get { return line; }
+		}
+
+		[MonoTODO]
+		int IXmlLineInfo.LinePosition {
+			get { return column; }
+		}
+
+		[MonoTODO]
+		bool IXmlLineInfo.HasLineInfo ()
+		{
+			return line > 0;
 		}
 	}
 }
