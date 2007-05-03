@@ -13,35 +13,26 @@ namespace System.Xml.Linq
 		{
 		}
 
-#if LIST_BASED
-		List <object> list = new List <object> ();
+		XNode first;
+		XNode last;
 
 		public XNode FirstNode {
-			get { return list.Count > 0 ? (XNode) list [0] : null; }
-		}
-
-		public XNode LastNode{
-			get { return list.Count > 0 ? (XNode) list [list.Count - 1] : null; }
-		}
-#else
-		XNode lastChild;
-
-		public XNode FirstNode {
-			get { return lastChild != null ? lastChild.InternalNext : null; }
+			get { return first; }
+			internal set { first = value; }
 		}
 
 		public XNode LastNode {
-			get { return lastChild; }
+			get { return last; }
+			internal set { last = value; }
 		}
-#endif
 
-		void CheckChildType (object o)
+		void CheckChildType (object o, bool addFirst)
 		{
 			if (o == null || o is string || o is XNode)
 				return;
 			if (o is IEnumerable) {
 				foreach (object oc in ((IEnumerable) o))
-					CheckChildType (oc);
+					CheckChildType (oc, addFirst);
 				return;
 			}
 			else
@@ -66,24 +57,18 @@ namespace System.Xml.Linq
 //				AddAttribute ((XAttribute) content);
 //				return;
 //			}
-			CheckChildType (content);
-#if LIST_BASED
-			if (content is XNode)
-				((XNode) content).Parent = this as XElement;
-			list.Add (content);
-#else
+
 			XNode n = XUtil.ToNode (content);
+			CheckChildType (n, false);
+			OnAdded (n, false);
 			n.Parent = this as XElement;
-			if (lastChild == null) {
-				lastChild = n;
-				n.InternalNext = n;
-			}
+			if (first == null)
+				last = first = n;
 			else {
-				XNode firstChild = lastChild != null ? lastChild.InternalNext : null;
-				lastChild.UpdateTree (this, n);
-				n.UpdateTree (this, firstChild);
+				last.NextNode = n;
+				n.PreviousNode = last;
+				last = n;
 			}
-#endif
 		}
 
 		public void Add (params object [] content)
@@ -100,23 +85,17 @@ namespace System.Xml.Linq
 //				AddAttribute ((XAttribute) content);
 //				return;
 //			}
-			CheckChildType (content);
-#if LIST_BASED
-			if (content is XNode)
-				((XNode) content).Parent = this as XElement;
-			list.Insert (0, content);
-#else
 			XNode n = XUtil.ToNode (content);
+			OnAdded (n, true);
+			CheckChildType (n, true);
 			n.Parent = this as XElement;
-			if (lastChild == null) {
-				lastChild = n;
-				n.InternalNext = n;
-			}
+			if (first == null)
+				first = last = n;
 			else {
-				n.UpdateTree (this, lastChild.InternalNext);
-				lastChild.UpdateTree (this, n);
+				n.NextNode = first;
+				first.PreviousNode = n;
+				first = n;
 			}
-#endif
 		}
 
 		public void AddFirst (params object [] content)
@@ -131,81 +110,11 @@ namespace System.Xml.Linq
 			throw new NotImplementedException ();
 		}
 
-#if LIST_BASED
-		internal object GetNextSibling (object target)
-		{
-			int i = list.IndexOf (target);
-			return i + 1 == list.Count ? null : list [i + 1];
-		}
-
-		internal void InsertBefore (object from, object target)
-		{
-//			if (target is XAttribute) {
-//				AddAttribute ((XAttribute) target);
-//				return;
-//			}
-			CheckChildType (target);
-			int index = list.IndexOf (from);
-			if (target is XNode)
-				((XNode) target).Parent = this as XElement;
-			list.Insert (index, target);
-		}
-
-		internal void InsertBefore (object from, params object [] target)
-		{
-			foreach (object o in target)
-				CheckChildType (o);
-			if (target.Length == 0)
-				return;
-			int index = list.IndexOf (from);
-			if (index == 0) {
-				List <object> tmp = list;
-				list = new List <object> (list.Count + target.Length);
-				Add (target);
-				list.AddRange (tmp);
-			} else {
-				InsertAfter (list [index - 1], target);
-			}
-		}
-
-		internal void InsertAfter (object from, object target)
-		{
-//			if (target is XAttribute) {
-//				AddAttribute ((XAttribute) target);
-//				return;
-//			}
-			CheckChildType (target);
-			int index = list.IndexOf (from);
-			if (target is XNode)
-				((XNode) target).Parent = this as XElement;
-			list.Insert (index + 1, target);
-		}
-
-		internal void InsertAfter (object from, params object [] target)
-		{
-			for (int i = 0; i < target.Length; i++) {
-				CheckChildType (target [i]);
-				InsertAfter (from, target [i]);
-				from = target [i];
-			}
-		}
-
-		internal void RemoveChild (object target)
-		{
-			list.Remove (target);
-		}
-#endif
-
 		public IEnumerable <XNode> Nodes ()
 		{
-#if LIST_BASED
-			foreach (XNode n in list)
-				yield return n;
-#else
 			//return new XChildrenIterator (this);
 			for (XNode n = FirstNode; n != null; n = n.NextNode)
 				yield return n;
-#endif
 		}
 
 		public IEnumerable<XNode> DescendantNodes ()
@@ -259,37 +168,20 @@ namespace System.Xml.Linq
 			return null;
 		}
 
-		/*
-		public void ReadContentFrom (XmlReader reader)
+		internal void ReadContentFrom (XmlReader reader)
 		{
-			if (reader.IsEmptyElement)
-				reader.Read ();
-			else {
-				reader.Read ();
-				do {
-					if (reader.NodeType == XmlNodeType.EndElement)
-						// end of the element.
-						break;
-					if (reader.NodeType == XmlNodeType.Text)
-						Add (reader.Value);
-					else
-						Add (XNode.ReadFrom (reader));
-				} while (reader.Read ());
-				reader.Read ();
+			while (!reader.EOF) {
+				if (reader.NodeType == XmlNodeType.EndElement)
+					// end of the element.
+					break;
+				Add (XNode.ReadFrom (reader));
 			}
 		}
-		*/
 
 		public void RemoveNodes ()
 		{
-#if LIST_BASED
-			foreach (object o in list)
-				if (o is XNode)
-					((XNode) o).Parent = null;
-#else
 			foreach (XNode n in Nodes ())
 				n.Remove ();
-#endif
 		}
 
 		public void ReplaceNodes (object content)
@@ -317,5 +209,9 @@ namespace System.Xml.Linq
 			}
 		}
 		*/
+
+		internal virtual void OnAdded (XNode item, bool addFirst)
+		{
+		}
 	}
 }

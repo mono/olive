@@ -1,5 +1,11 @@
 2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XElementTest.cs : new test.
+	* XNamespaceTest.cs
+	  XDocumentTest.cs : some tests for simple tree structure.
+
+2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XDocumentTest.cs
 	  XNameTest.cs
 	  XNamespaceTest.cs : initial commit.

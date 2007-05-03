@@ -108,11 +108,11 @@ namespace System.Xml.Linq
 			return ! (n1 == n2);
 		}
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
-			//return ExpandedName;
+			if (ns == XNamespace.Blank)
+				return local;
+			return String.Concat ("{", ns.NamespaceName, "}", local);
 		}
 
 		[MonoTODO]

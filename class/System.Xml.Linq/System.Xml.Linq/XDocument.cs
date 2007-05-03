@@ -94,7 +94,7 @@ namespace System.Xml.Linq
 
 		public static XDocument Load (XmlReader reader, LoadOptions options)
 		{
-			XmlReaderSettings s = new XmlReaderSettings ();
+			XmlReaderSettings s = reader.Settings.Clone ();
 			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (reader, s)) {
 				return LoadCore (r);
@@ -113,22 +113,21 @@ namespace System.Xml.Linq
 					reader.GetAttribute ("standalone"));
 				reader.Read ();
 			}
-			/*
-			if (reader.NodeType == XmlNodeType.DocumentType) {
-				doc.Add (new XDocumentType (
-					reader.Name,
-					reader.GetAttribute ("PUBLIC"),
-					reader.GetAttribute ("SYSTEM"),
-					reader.Value));
-				reader.Read ();
-			}
-			*/
-			for (; !reader.EOF; reader.Read ())
-				if (reader.NodeType == XmlNodeType.Text)
-					doc.Add (reader.Value);
-				else
-					doc.Add (XNode.ReadFrom (reader));
+			doc.ReadContentFrom (reader);
+			if (doc.Root == null)
+				throw new InvalidOperationException ("The document element is missing.");
 			return doc;
+		}
+
+		static void ValidateWhitespace (string s)
+		{
+			for (int i = 0; i < s.Length; i++)
+				switch (s [i]) {
+				case ' ': case '\t': case '\n': case '\r':
+					continue;
+				default:
+					throw new ArgumentException ("Non-whitespace text appears directly in the document.");
+				}
 		}
 
 		public static XDocument Parse (string s)
@@ -194,6 +193,27 @@ namespace System.Xml.Linq
 			}
 			foreach (XNode node in Nodes ())
 				node.WriteTo (w);
+		}
+
+		internal override void OnAdded (XNode node, bool addFirst)
+		{
+			if (node == null)
+				throw new InvalidOperationException ("Only a node is allowed here");
+
+			if (node is XText)
+				ValidateWhitespace (((XText) node).Value);
+			else if (node is XDocumentType) {
+				if (DocumentType != null)
+					throw new InvalidOperationException ("There already is another document type declaration");
+				if (Root != null && !addFirst)
+					throw new InvalidOperationException ("A document type cannot be added after the document element");
+			}
+			else if (node is XElement) {
+				if (Root != null)
+					throw new InvalidOperationException ("There already is another document element");
+				if (DocumentType != null && addFirst)
+					throw new InvalidOperationException ("An element cannot be added before the document type declaration");
+			}
 		}
 	}
 }

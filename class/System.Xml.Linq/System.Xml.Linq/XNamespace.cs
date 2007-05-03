@@ -1,13 +1,9 @@
-#if NET_2_0
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using XPI = System.Xml.Linq.XProcessingInstruction;
 
 namespace System.Xml.Linq
 {
@@ -60,6 +56,16 @@ namespace System.Xml.Linq
 			return ns != null && uri == ns.uri;
 		}
 
+		public static bool operator == (XNamespace o1, XNamespace o2)
+		{
+			return (object) o1 != null ? o1.Equals (o2) : (object) o2 == null;
+		}
+
+		public static bool operator != (XNamespace o1, XNamespace o2)
+		{
+			return ! (o1 == o2);
+		}
+
 		public override int GetHashCode ()
 		{
 			return uri.GetHashCode ();
@@ -72,5 +78,3 @@ namespace System.Xml.Linq
 		}
 	}
 }
-
-#endif

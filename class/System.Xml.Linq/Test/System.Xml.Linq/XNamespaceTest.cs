@@ -71,5 +71,14 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual ("http://www.w3.org/XML/1998/namespace", XNamespace.Xml.NamespaceName, "#1");
 			Assert.AreEqual ("http://www.w3.org/2000/xmlns/", XNamespace.Xmlns.NamespaceName, "#2");
 		}
+
+		[Test]
+		public void Equals ()
+		{
+			Assert.IsTrue (XNamespace.Blank.Equals (XNamespace.Get ("")), "#1");
+			Assert.IsTrue (XNamespace.Blank == XNamespace.Get (""), "#2");
+			Assert.IsFalse (XNamespace.Blank.Equals (XNamespace.Get (" ")), "#3");
+			Assert.IsFalse (XNamespace.Blank == XNamespace.Get (" "), "#4");
+		}
 	}
 }

@@ -33,20 +33,6 @@ namespace System.Xml.Linq
 			Add (source.Nodes ());
 		}
 
-		// for Load()
-		XElement (XmlReader source)
-		{
-			if (source.NodeType != XmlNodeType.Element)
-				throw new InvalidOperationException ();
-			name = XName.Get (source.LocalName, source.NamespaceURI);
-			if (source.MoveToFirstAttribute ()) {
-				do {
-					SetAttributeValue (XName.Get (source.LocalName, source.NamespaceURI), source.Value);
-				} while (source.MoveToNextAttribute ());
-				source.MoveToElement ();
-			}
-		}
-
 		public XElement (XName name)
 		{
 			this.name = name;
@@ -241,7 +227,7 @@ namespace System.Xml.Linq
 
 		public static XElement Load (XmlReader reader, LoadOptions options)
 		{
-			XmlReaderSettings s = new XmlReaderSettings ();
+			XmlReaderSettings s = reader.Settings.Clone ();
 			s.IgnoreWhitespace = (options & LoadOptions.PreserveWhitespace) == 0;
 			using (XmlReader r = XmlReader.Create (reader, s)) {
 				return LoadCore (r);
@@ -250,26 +236,26 @@ namespace System.Xml.Linq
 
 		static XElement LoadCore (XmlReader r)
 		{
-			XElement e = new XElement (r);
-			using (XmlWriter w = e.CreateWriter ()) {
-				if (r.ReadState == ReadState.Initial) {
-					while (!r.EOF)
-						w.WriteNode (r, false);
-				}
-				else
-					w.WriteNode (r, false);
+			r.MoveToContent ();
+			if (r.NodeType != XmlNodeType.Element)
+				throw new InvalidOperationException ("The XmlReader must be positioned at an element");
+			XName name = XName.Get (r.LocalName, r.NamespaceURI);
+			XElement e = new XElement (name);
+			if (r.MoveToFirstAttribute ()) {
+				do {
+					e.SetAttributeValue (XName.Get (r.LocalName, r.NamespaceURI), r.Value);
+				} while (r.MoveToNextAttribute ());
+				r.MoveToElement ();
 			}
+			if (!r.IsEmptyElement) {
+				r.Read ();
+				e.ReadContentFrom (r);
+				r.ReadEndElement ();
+			}
+			else
+				r.Read ();
 			return e;
 		}
-
-		/*
-		public static explicit operator bool (XElement e)
-		{
-			return e.Value == "true";
-		}
-
-		// FIXME: similar operator overloads should go here.
-		*/
 
 		public static XElement Parse (string s)
 		{
@@ -290,8 +276,9 @@ namespace System.Xml.Linq
 		public void RemoveAttributes ()
 		{
 			if (attributes != null)
+				// FIXME: should avoid modification?
 				foreach (XAttribute a in attributes)
-					a.Parent = null;
+					a.Remove ();
 			attributes = null;
 		}
 
@@ -482,6 +469,12 @@ namespace System.Xml.Linq
 		public void SetValue (object value)
 		{
 			throw new NotImplementedException ();
+		}
+
+		internal override void OnAdded (XNode node, bool addFirst)
+		{
+			if (node is XDocument || node is XDocumentType)
+				throw new ArgumentException (String.Format ("A node of type {0} cannot be added as a content", node.GetType ()));
 		}
 	}
 }

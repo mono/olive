@@ -51,10 +51,16 @@ namespace System.Xml.Linq
 
 		public override string ToString ()
 		{
-			return String.Concat ("<?xml ",
-				version != null ? "version=\"" + version + "\" " : null,
-				encoding != null ? "encoding=\"" + encoding + "\" " : null,
-				standalone != null ? "standalone=\"" + standalone + "\" " : null,
+			return String.Concat ("<?xml",
+				version != null ? " version=\"" : null,
+				version != null ?  version : null,
+				version != null ? "\"" : null,
+				encoding != null ? " encoding=\"" : null,
+				encoding != null ?  encoding : null,
+				encoding != null ? "\"" : null,
+				standalone != null ? " standalone=\"" : null,
+				standalone != null ?  standalone : null,
+				standalone != null ? "\"" : null,
 				"?>");
 		}
 

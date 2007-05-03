@@ -1,5 +1,16 @@
 2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNode.cs
+	  XElement.cs
+	  XDocument.cs
+	  XContainer.cs : some basic tree implementation.
+	  Removed list-based code. Fixed erroneous reader settings.
+	* XDeclaration.cs : removed extra space in ToString().
+	* XNamespace.cs : added operator overloads.
+	* XName.cs : implemented ToString().
+
+2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
+
 	yuck, I was updating things based on March CTP, not Beta1 ...
 	* LoadOptions.cs
 	  SaveOptions.cs

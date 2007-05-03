@@ -5,6 +5,8 @@ using System.IO;
 using System.Text;
 using System.Xml;
 
+using XPI = System.Xml.Linq.XProcessingInstruction;
+
 namespace System.Xml.Linq
 {
 	public abstract class XNode : XObject
@@ -21,13 +23,13 @@ namespace System.Xml.Linq
 			throw new NotImplementedException ();
 		}
 
-#if !LIST_BASED
-		XNode next;
-#endif
 		static XNodeEqualityComparer eq_comparer =
 			new XNodeEqualityComparer ();
 		static XNodeDocumentOrderComparer order_comparer =
 			new XNodeDocumentOrderComparer ();
+
+		XNode previous;
+		XNode next;
 
 		internal XNode ()
 		{
@@ -42,50 +44,14 @@ namespace System.Xml.Linq
 		}
 
 		public XNode PreviousNode {
-			get {
-				if (Parent == null || object.ReferenceEquals (Parent.FirstNode, this))
-					return null;
-#if LIST_BASED
-				IEnumerator e = Parent.Nodes ().GetEnumerator ();
-				for (object o = null; e.MoveNext (); o = e.Current)
-					if (object.ReferenceEquals (e.Current, this))
-						return (XNode) o;
-				return null;
-#else
-				for (XNode n = Parent.LastNode.next; n != null; n = n.next)
-					if (n.next == this)
-						return n;
-				return null;
-#endif
-			}
+			get { return previous; }
+			internal set { previous = value; }
 		}
 
 		public XNode NextNode {
-			get {
-				if (Parent == null || object.ReferenceEquals (Parent.LastNode, this))
-					return null;
-#if LIST_BASED
-				return (XNode) Parent.GetNextSibling (this);
-#else
-				return next;
-#endif
-			}
-		}
-
-#if !LIST_BASED
-		internal XNode InternalNext {
 			get { return next; }
-			set { next = value; }
+			internal set { next = value; }
 		}
-#endif
-
-#if !LIST_BASED
-		internal void UpdateTree (XContainer parent, XNode next)
-		{
-			this.Parent = parent as XElement;
-			this.next = next;
-		}
-#endif
 
 		public string ToString (SaveOptions options)
 		{
@@ -107,72 +73,40 @@ namespace System.Xml.Linq
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-#if LIST_BASED
-			Parent.InsertAfter (this, content);
-#else
-			/*
 			XNode n = XUtil.ToNode (content);
 			n.Parent = Parent;
-			n.next = next;
+			n.previous = this;
 			next = n;
-			if (Parent.LastNode == null || object.ReferenceEquals (Parent.LastNode, this))
+			if (Parent.LastNode == this)
 				Parent.LastNode = n;
-			*/
-			throw new NotImplementedException ();
-#endif
 		}
 
 		public void AddAfterSelf (params object [] content)
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-#if LIST_BASED
-			Parent.InsertAfter (this, content);
-#else
-			/*
-			foreach (object o in new XFilterIterator <object> (content, null))
+			foreach (object o in content)
 				AddAfterSelf (o);
-			*/
-			throw new NotImplementedException ();
-#endif
 		}
 
 		public void AddBeforeSelf (object content)
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-#if LIST_BASED
-			Parent.InsertBefore (this, content);
-#else
-			/*
 			XNode n = XUtil.ToNode (content);
 			n.Parent = Parent;
 			n.next = this;
-			XNode p = PreviousSibling;
-			if (p != null)
-				PreviousSibling.next = n;
-			else
-				Parent.LastChild.next = this;
-			if (Parent.LastChild == null || object.ReferenceEquals (Parent.LastChild, this))
-				Parent.LastChild = n;
-			*/
-			throw new NotImplementedException ();
-#endif
+			previous = n;
+			if (Parent.FirstNode == this)
+				Parent.FirstNode = n;
 		}
 
 		public void AddBeforeSelf (params object [] content)
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-#if LIST_BASED
-			Parent.InsertBefore (this, content);
-#else
-			/*
-			foreach (object o in new XFilterIterator <object> (content, null))
-				AddBeforeSelf (o);
-			*/
-			throw new NotImplementedException ();
-#endif
+			for (int i = content.Length - 1; i >= 0; i--)
+				AddBeforeSelf (content [i]);
 		}
 
 		public static XNode ReadFrom (XmlReader r)
@@ -180,32 +114,42 @@ namespace System.Xml.Linq
 			switch (r.NodeType) {
 			case XmlNodeType.Element:
 				return XElement.Load (r);
+			case XmlNodeType.Whitespace:
+			case XmlNodeType.SignificantWhitespace:
 			case XmlNodeType.Text:
-				throw new InvalidOperationException ();
+				XText t = new XText (r.Value);
+				r.Read ();
+				return t;
 			case XmlNodeType.CDATA:
-				return new XCData (r.Value);
+				XCData c = new XCData (r.Value);
+				r.Read ();
+				return c;
 			case XmlNodeType.ProcessingInstruction:
-				return new XProcessingInstruction (r.Name, r.Value);
+				XPI pi = new XPI (r.Name, r.Value);
+				r.Read ();
+				return pi;
 			case XmlNodeType.Comment:
-				return new XComment (r.Value);
+				XComment cm = new XComment (r.Value);
+				r.Read ();
+				return cm;
 			case XmlNodeType.DocumentType:
-				return new XDocumentType (r.Name,
+				XDocumentType d = new XDocumentType (r.Name,
 					r.GetAttribute ("PUBLIC"),
 					r.GetAttribute ("System"),
 					r.Value);
+				r.Read ();
+				return d;
 			default:
-				throw new NotSupportedException ();
+				throw new NotSupportedException (String.Format ("Node type {0} is not supported", r.NodeType));
 			}
 		}
 
 		public void Remove ()
 		{
-#if LIST_BASED
-			Parent.RemoveChild (this);
-#else
 			PreviousNode.next = NextNode;
+			previous = null;
+			next = null;
 			Parent = null;
-#endif
 		}
 
 		public override string ToString ()
@@ -215,16 +159,17 @@ namespace System.Xml.Linq
 
 		public abstract void WriteTo (XmlWriter w);
 
-		[MonoTODO]
 		public IEnumerable<XElement> Ancestors ()
 		{
-			throw new NotImplementedException ();
+			for (XElement el = Parent; el != null; el = el.Parent)
+				yield return el;
 		}
 
-		[MonoTODO]
 		public IEnumerable<XElement> Ancestors (XName name)
 		{
-			throw new NotImplementedException ();
+			foreach (XElement el in Ancestors ())
+				if (el.Name == name)
+					yield return el;
 		}
 
 		[MonoTODO]
