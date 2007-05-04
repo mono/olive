@@ -10,7 +10,7 @@ namespace System.Xml.Linq
 		{
 		}
 
-		XElement parent;
+		XContainer owner;
 		List<object> annotations;
 		string baseuri;
 		int line, column;
@@ -25,22 +25,25 @@ namespace System.Xml.Linq
 
 		public XDocument Document {
 			get {
-				XContainer e = Parent;
-				if (e == null)
-					return null;
-				do {
-					XContainer p = e.Parent;
-					if (p == null)
-						return e as XDocument; // might be XElement
-				} while (true);
+				if (this is XDocument)
+					return (XDocument) this;
+
+				for (XContainer e = owner; e != null; e = e.owner)
+					if (e is XDocument)
+						return (XDocument) e;
+				return null;
 			}
 		}
 
 		public abstract XmlNodeType NodeType { get; }
 
 		public XElement Parent {
-			get { return parent; }
-			internal set { parent = value; }
+			get { return owner as XElement; }
+		}
+
+		internal void SetOwner (XContainer node)
+		{
+			owner = node;
 		}
 
 		public void AddAnnotation (object annotation)

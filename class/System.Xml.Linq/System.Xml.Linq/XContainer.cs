@@ -61,7 +61,7 @@ namespace System.Xml.Linq
 			XNode n = XUtil.ToNode (content);
 			CheckChildType (n, false);
 			OnAdded (n, false);
-			n.Parent = this as XElement;
+			n.SetOwner (this);
 			if (first == null)
 				last = first = n;
 			else {
@@ -88,7 +88,7 @@ namespace System.Xml.Linq
 			XNode n = XUtil.ToNode (content);
 			OnAdded (n, true);
 			CheckChildType (n, true);
-			n.Parent = this as XElement;
+			n.SetOwner (this);
 			if (first == null)
 				first = last = n;
 			else {

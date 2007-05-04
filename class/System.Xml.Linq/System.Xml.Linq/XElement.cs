@@ -20,7 +20,8 @@ namespace System.Xml.Linq
 		}
 
 		XName name;
-		List <XAttribute> attributes;
+		//List <XAttribute> attributes;
+		XAttribute attr_first, attr_last;
 
 		public XElement (XName name, object value)
 		{
@@ -44,6 +45,7 @@ namespace System.Xml.Linq
 			Add (contents);
 		}
 
+		/*
 		internal List <XAttribute> SafeAttributes {
 			get {
 				if (attributes == null)
@@ -51,19 +53,20 @@ namespace System.Xml.Linq
 				return attributes;
 			}
 		}
+		*/
 
-		[MonoTODO]
 		public XAttribute FirstAttribute {
-			get { throw new NotImplementedException (); }
+			get { return attr_first; }
+			internal set { attr_first = value; }
 		}
 
-		[MonoTODO]
 		public XAttribute LastAttribute {
-			get { throw new NotImplementedException (); }
+			get { return attr_last; }
+			internal set { attr_last = value; }
 		}
 
 		public bool HasAttributes {
-			get { return attributes != null && attributes.Count > 0; }
+			get { return attr_first != null; }
 		}
 
 		public bool HasElements {
@@ -121,9 +124,7 @@ namespace System.Xml.Linq
 
 		public XAttribute Attribute (XName name)
 		{
-			if (attributes == null)
-				return null;
-			foreach (XAttribute a in attributes)
+			foreach (XAttribute a in Attributes ())
 				if (a.Name == name)
 					return a;
 			return null;
@@ -131,17 +132,16 @@ namespace System.Xml.Linq
 
 		public IEnumerable <XAttribute> Attributes ()
 		{
-			return attributes != null ? attributes : XAttribute.EmptySequence;
+			for (XAttribute a = attr_first; a != null; a = a.NextAttribute)
+				yield return a;
 		}
 
+		// huh?
 		public IEnumerable <XAttribute> Attributes (XName name)
 		{
-			XAttribute a = Attribute (name);
-			if (a == null)
-				return XAttribute.EmptySequence;
-			List <XAttribute> list = new List <XAttribute> ();
-			list.Add (a);
-			return list;
+			foreach (XAttribute a in Attributes ())
+				if (a.Name == name)
+					yield return a;
 		}
 
 		/*
@@ -177,6 +177,7 @@ namespace System.Xml.Linq
 		}
 		*/
 
+/*
 		// Only XAttribute.set_Parent() can invoke this.
 		internal void InternalAppendAttribute (XAttribute attr)
 		{
@@ -191,6 +192,7 @@ namespace System.Xml.Linq
 				throw new SystemException ("INTERNAL ERROR: should not happen.");
 			attributes.Remove (attr);
 		}
+*/
 
 		public static XElement Load (string uri)
 		{
@@ -243,7 +245,11 @@ namespace System.Xml.Linq
 			XElement e = new XElement (name);
 			if (r.MoveToFirstAttribute ()) {
 				do {
-					e.SetAttributeValue (XName.Get (r.LocalName, r.NamespaceURI), r.Value);
+					// not sure how current Orcas behavior makes sense here though ...
+					if (r.LocalName == "xmlns" && r.NamespaceURI == XNamespace.Xmlns.NamespaceName)
+						e.SetAttributeValue (XNamespace.Blank.GetName ("xmlns"), r.Value);
+					else
+						e.SetAttributeValue (XName.Get (r.LocalName, r.NamespaceURI), r.Value);
 				} while (r.MoveToNextAttribute ());
 				r.MoveToElement ();
 			}
@@ -275,11 +281,8 @@ namespace System.Xml.Linq
 
 		public void RemoveAttributes ()
 		{
-			if (attributes != null)
-				// FIXME: should avoid modification?
-				foreach (XAttribute a in attributes)
-					a.Remove ();
-			attributes = null;
+			while (attr_first != null)
+				attr_last.Remove ();
 		}
 
 		public void Save (string filename)
@@ -367,48 +370,31 @@ namespace System.Xml.Linq
 					a.Remove ();
 			} else {
 				if (a == null) {
-					new XAttribute (name, value).Parent = this;
+					a = new XAttribute (name, value);
+					a.SetOwner (this);
+					if (attr_first == null) {
+						attr_first = a;
+						attr_last = a;
+					} else {
+						attr_last.NextAttribute = a;
+						a.PreviousAttribute = attr_last;
+						attr_last = a;
+					}
 				}
 				else
 					a.Value = XUtil.ToString (value);
 			}
 		}
 
-		/*
-		public void SetAttributeNode (XAttribute attr)
-		{
-			foreach (XAttribute a in Attributes (attr.Name))
-				a.Remove ();
-			attr.Parent = this;
-		}
-
-		public void SetElement (XName name, object value)
-		{
-			IEnumerator <XElement> en = Elements (name).GetEnumerator ();
-			XElement e = en.MoveNext () ? en.Current : null;
-			if (value == null) {
-				if (e != null)
-					e.Remove ();
-			} else {
-				if (e == null)
-					Add (new XElement (name, value));
-				else
-					e.Value = XUtil.ToString (value);
-			}
-		}
-		*/
-
 		public override void WriteTo (XmlWriter w)
 		{
 			w.WriteStartElement (name.LocalName, name.Namespace.NamespaceName);
 
-			if (attributes != null) {
-				foreach (XAttribute a in attributes) {
-					if (a.Name.Namespace == XNamespace.Xmlns && a.Name.LocalName != String.Empty)
-						w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
-					else
-						w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.NamespaceName, a.Value);
-				}
+			foreach (XAttribute a in Attributes ()) {
+				if (a.Name.Namespace == XNamespace.Xmlns && a.Name.LocalName != String.Empty)
+					w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
+				else
+					w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.NamespaceName, a.Value);
 			}
 
 			foreach (XNode node in Nodes ())

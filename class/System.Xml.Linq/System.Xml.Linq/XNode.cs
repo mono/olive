@@ -11,16 +11,14 @@ namespace System.Xml.Linq
 {
 	public abstract class XNode : XObject
 	{
-		[MonoTODO]
 		public static int CompareDocumentOrder (XNode n1, XNode n2)
 		{
-			throw new NotImplementedException ();
+			return order_comparer.Compare (n1, n2);
 		}
 
-		[MonoTODO]
 		public static bool DeepEquals (XNode n1, XNode n2)
 		{
-			throw new NotImplementedException ();
+			return eq_comparer.Equals (n1, n2);
 		}
 
 		static XNodeEqualityComparer eq_comparer =
@@ -74,7 +72,7 @@ namespace System.Xml.Linq
 			if (Parent == null)
 				throw new InvalidOperationException ();
 			XNode n = XUtil.ToNode (content);
-			n.Parent = Parent;
+			n.SetOwner (Parent);
 			n.previous = this;
 			next = n;
 			if (Parent.LastNode == this)
@@ -94,7 +92,7 @@ namespace System.Xml.Linq
 			if (Parent == null)
 				throw new InvalidOperationException ();
 			XNode n = XUtil.ToNode (content);
-			n.Parent = Parent;
+			n.SetOwner (Parent);
 			n.next = this;
 			previous = n;
 			if (Parent.FirstNode == this)
@@ -149,7 +147,7 @@ namespace System.Xml.Linq
 			PreviousNode.next = NextNode;
 			previous = null;
 			next = null;
-			Parent = null;
+			SetOwner (null);
 		}
 
 		public override string ToString ()

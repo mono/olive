@@ -104,5 +104,49 @@ namespace MonoTests.System.Xml.Linq
 			el.Add (new XDeclaration ("1.0", null, null));
 			Assert.AreEqual ("<?xml version=\"1.0\"?>", ((XText) el.FirstNode).Value, "#1");
 		}
+
+		[Test]
+		public void SetAttribute ()
+		{
+			XElement el = new XElement (XName.Get ("foo"));
+			el.SetAttributeValue (XName.Get ("a1"), "v1");
+			XAttribute a = el.FirstAttribute;
+			Assert.IsNotNull (a, "#1-1");
+			Assert.AreEqual (el, a.Parent, "#1-2");
+			Assert.IsNotNull (el.LastAttribute, "#1-3");
+			Assert.AreEqual (a, el.LastAttribute, "#1-4");
+			Assert.AreEqual ("a1", a.Name.LocalName, "#1-5");
+			Assert.AreEqual ("v1", a.Value, "#1-6");
+			Assert.IsNull (a.PreviousAttribute, "#1-7");
+			Assert.IsNull (a.NextAttribute, "#1-8");
+
+			el.SetAttributeValue (XName.Get ("a2"), "v2");
+			Assert.IsFalse (el.FirstAttribute == el.LastAttribute, "#2-1");
+			Assert.AreEqual ("a2", el.LastAttribute.Name.LocalName, "#2-2");
+
+			el.SetAttributeValue (XName.Get ("a1"), "v3");
+			XAttribute b = el.FirstAttribute;
+			Assert.IsNotNull (b, "#2-3");
+			Assert.IsNotNull (el.LastAttribute, "#2-4");
+			Assert.AreEqual ("a1", b.Name.LocalName, "#2-5");
+			Assert.AreEqual ("v3", b.Value, "#2-6");
+			Assert.AreEqual (a, b, "#2-7");
+			XAttribute c = el.LastAttribute;
+			Assert.AreEqual (a, c.PreviousAttribute, "#2-8");
+
+			a.Remove ();
+			Assert.IsNull (a.Parent, "#3-1");
+			Assert.IsNull (a.PreviousAttribute, "#3-2");
+			Assert.IsNull (a.NextAttribute, "#3-3");
+			Assert.IsNull (c.PreviousAttribute, "#3-4");
+			Assert.IsNull (c.NextAttribute, "#3-5");
+
+			el.RemoveAttributes ();
+			Assert.IsFalse (el.HasAttributes, "#4-1");
+			Assert.IsNull (b.Parent, "#4-2");
+			Assert.IsNull (c.Parent, "#4-3");
+			Assert.IsNull (el.FirstAttribute, "#4-4");
+			Assert.IsNull (el.LastAttribute, "#4-5");
+		}
 	}
 }

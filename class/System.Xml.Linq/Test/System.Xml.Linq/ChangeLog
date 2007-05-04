@@ -1,3 +1,8 @@
+2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XAttributeTest.cs : new test, for XAttribute.
+	* XElementTest.cs : attribute related tests.
+
 2007-05-03  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XElementTest.cs : new test.
