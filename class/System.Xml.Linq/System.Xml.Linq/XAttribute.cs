@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
 using System.Xml;
 
 namespace System.Xml.Linq
@@ -13,7 +14,7 @@ namespace System.Xml.Linq
 		}
 
 		XName name;
-		object value;
+		string value;
 		XAttribute next;
 		XAttribute previous;
 
@@ -77,16 +78,40 @@ namespace System.Xml.Linq
 			previous = null;
 		}
 
-		[MonoTODO]
 		public void SetValue (object value)
 		{
+			if (value == null)
+				throw new ArgumentNullException ("value");
 			this.value = XUtil.ToString (value);
 		}
 
-		[MonoTODO]
+		static readonly char [] escapeChars = new char [] {'<', '>', '&', '"'};
+
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			StringBuilder sb = new StringBuilder ();
+			sb.Append (name.ToString ());
+			sb.Append ("=\"");
+			int start = 0;
+			do {
+				int idx = value.IndexOfAny (escapeChars, start);
+				if (idx < 0) {
+					if (start > 0)
+						sb.Append (value, start, value.Length - start);
+					else
+						sb.Append (value);
+					sb.Append ("\"");
+					return sb.ToString ();
+				}
+				sb.Append (value, start, idx - start);
+				switch (value [idx]) {
+				case '&': sb.Append ("&amp;"); break;
+				case '<': sb.Append ("&lt;"); break;
+				case '>': sb.Append ("&gt;"); break;
+				case '"': sb.Append ("&quot;"); break;
+				}
+				start = idx + 1;
+			} while (true);
 		}
 	}
 }

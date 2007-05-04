@@ -19,9 +19,11 @@ namespace System.Xml.Linq
 		// FIXME: implement
 		public static string ToString (object o)
 		{
+			if (o == null)
+				throw new InvalidOperationException ("Attempt to get string from null");
 			if (o is string)
 				return (string) o;
-			throw new NotImplementedException ();
+			return o.ToString ();
 		}
 
 		public static bool ToBoolean (object o)

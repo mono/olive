@@ -1,5 +1,15 @@
 2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNode.cs : Nodes() is safe for removal of current item.
+	* XElement.cs : Attributes() is safe for ditto. Removed unused code.
+	* XUtil.cs : ToString() handles any type of object.
+	* Extensions.cs : implemented everything but sorter.
+	* XAttribute.cs : SetValue() and ToString() are done.
+	* XNode.cs : set missing tree link info in AddBeforeSelf() and
+	  AddAfterSelf(). ReplaceWith() are done.
+
+2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XNode.cs
 	  XElement.cs
 	  XAttribute.cs

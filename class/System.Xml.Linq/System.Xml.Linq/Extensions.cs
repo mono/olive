@@ -51,60 +51,68 @@ namespace System.Xml.Linq
 					yield return attr;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XNode> DescendantNodes<T> (
 			this IEnumerable<T> source) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XNode n in item.DescendantNodes ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XNode> DescendantNodesAndSelf (
 			this IEnumerable<XElement> source)
 		{
-			throw new NotImplementedException ();
+			foreach (XElement item in source)
+				foreach (XNode n in item.DescendantNodesAndSelf ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> Descendants<T> (
 			this IEnumerable<T> source) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XElement n in item.Descendants ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> Descendants<T> (
 			this IEnumerable<T> source, XName name) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XElement n in item.Descendants (name))
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> DescendantsAndSelf (
 			this IEnumerable<XElement> source)
 		{
-			throw new NotImplementedException ();
+			foreach (XElement item in source)
+				foreach (XElement n in item.DescendantsAndSelf ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> DescendantsAndSelf (
 			this IEnumerable<XElement> source, XName name)
 		{
-			throw new NotImplementedException ();
+			foreach (XElement item in source)
+				foreach (XElement n in item.DescendantsAndSelf (name))
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> Elements<T> (
 			this IEnumerable<T> source) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XElement n in item.Elements ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> Elements<T> (
 			this IEnumerable<T> source, XName name) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XElement n in item.Elements (name))
+					yield return n;
 		}
 
 		[MonoTODO]
@@ -114,23 +122,24 @@ namespace System.Xml.Linq
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XNode> Nodes<T> (
 			this IEnumerable<T> source) where T : XContainer
 		{
-			throw new NotImplementedException ();
+			foreach (XContainer item in source)
+				foreach (XNode n in item.Nodes ())
+					yield return n;
 		}
 
-		[MonoTODO]
 		public static void Remove (this IEnumerable<XAttribute> source)
 		{
-			throw new NotImplementedException ();
+			foreach (XAttribute item in source)
+				item.Remove ();
 		}
 
-		[MonoTODO]
 		public static void Remove<T> (this IEnumerable<T> source) where T : XNode
 		{
-			throw new NotImplementedException ();
+			foreach (T item in source)
+				item.Remove ();
 		}
 	}
 }

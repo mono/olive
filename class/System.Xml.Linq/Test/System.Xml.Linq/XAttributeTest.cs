@@ -10,6 +10,23 @@ namespace MonoTests.System.Xml.Linq
 	[TestFixture]
 	public class XAttributeTest
 	{
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ConstructorNameNull ()
+		{
+			XAttribute a = new XAttribute (null, "v");
+			
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ConstructorValueNull ()
+		{
+			XAttribute a = new XAttribute (XName.Get ("a"), null);
+			
+		}
+
 		[Test]
 		public void IsNamespaceDeclaration ()
 		{
@@ -44,6 +61,25 @@ namespace MonoTests.System.Xml.Linq
 			foreach (XAttribute a in doc.Root.Attributes ())
 				Assert.AreEqual (doc, a.Document, "#2");
 			Assert.AreEqual (doc, doc.Document, "#3");
+		}
+
+		[Test]
+		public void SetValue ()
+		{
+			XAttribute a = new XAttribute (XName.Get ("a"), "v");
+			a.SetValue (new XDeclaration ("1.0", null, null));
+			// value object is converted to a string.
+			Assert.AreEqual ("<?xml version=\"1.0\"?>", a.Value, "#1");
+		}
+
+		[Test]
+		public void ToString ()
+		{
+			XAttribute a = new XAttribute (XName.Get ("a"), "v");
+			Assert.AreEqual ("a=\"v\"", a.ToString ());
+
+			a = new XAttribute (XName.Get ("a"), " >_< ");
+			Assert.AreEqual ("a=\" &gt;_&lt; \"", a.ToString ());
 		}
 	}
 }

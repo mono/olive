@@ -74,6 +74,9 @@ namespace System.Xml.Linq
 			XNode n = XUtil.ToNode (content);
 			n.SetOwner (Parent);
 			n.previous = this;
+			n.next = next;
+			if (next != null)
+				next.previous = n;
 			next = n;
 			if (Parent.LastNode == this)
 				Parent.LastNode = n;
@@ -83,8 +86,11 @@ namespace System.Xml.Linq
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-			foreach (object o in content)
-				AddAfterSelf (o);
+			XNode n = this;
+			foreach (object o in content) {
+				n.AddAfterSelf (o);
+				n = n.NextNode;
+			}
 		}
 
 		public void AddBeforeSelf (object content)
@@ -93,7 +99,10 @@ namespace System.Xml.Linq
 				throw new InvalidOperationException ();
 			XNode n = XUtil.ToNode (content);
 			n.SetOwner (Parent);
+			n.previous = previous;
 			n.next = this;
+			if (previous != null)
+				previous.next = n;
 			previous = n;
 			if (Parent.FirstNode == this)
 				Parent.FirstNode = n;
@@ -103,8 +112,8 @@ namespace System.Xml.Linq
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-			for (int i = content.Length - 1; i >= 0; i--)
-				AddBeforeSelf (content [i]);
+			foreach (object o in content)
+				AddBeforeSelf (o);
 		}
 
 		public static XNode ReadFrom (XmlReader r)
@@ -144,7 +153,17 @@ namespace System.Xml.Linq
 
 		public void Remove ()
 		{
-			PreviousNode.next = NextNode;
+			if (Parent == null)
+				throw new InvalidOperationException ("Parent is missing");
+
+			if (Parent.FirstNode == this)
+				Parent.FirstNode = next;
+			if (Parent.LastNode == this)
+				Parent.LastNode = previous;
+			if (previous != null)
+				previous.next = next;
+			if (next != null)
+				next.previous = previous;
 			previous = null;
 			next = null;
 			SetOwner (null);
@@ -228,16 +247,16 @@ namespace System.Xml.Linq
 				yield return n;
 		}
 
-		[MonoTODO]
 		public void ReplaceWith (object item)
 		{
-			throw new NotImplementedException ();
+			AddAfterSelf (item);
+			Remove ();
 		}
 
-		[MonoTODO]
-		public void ReplaceWith (params object [] item)
+		public void ReplaceWith (params object [] items)
 		{
-			throw new NotImplementedException ();
+			AddAfterSelf (items);
+			Remove ();
 		}
 	}
 }

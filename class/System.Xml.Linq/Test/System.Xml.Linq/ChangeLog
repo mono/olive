@@ -1,5 +1,12 @@
 2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XElementTest.cs : added tests for Add[Before|After]Self().
+	* XAttributeTest.cs :
+	  added tests for SetValue(), ToString() and ctor.
+	* ExtensionsTest.cs : new file, tests for extension methods.
+
+2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XAttributeTest.cs : new test, for XAttribute.
 	* XElementTest.cs : attribute related tests.
 

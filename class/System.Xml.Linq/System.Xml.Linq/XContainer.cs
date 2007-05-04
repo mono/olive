@@ -112,9 +112,11 @@ namespace System.Xml.Linq
 
 		public IEnumerable <XNode> Nodes ()
 		{
-			//return new XChildrenIterator (this);
-			for (XNode n = FirstNode; n != null; n = n.NextNode)
+			XNode next;
+			for (XNode n = FirstNode; n != null; n = next) {
+				next = n.NextNode;
 				yield return n;
+			}
 		}
 
 		public IEnumerable<XNode> DescendantNodes ()

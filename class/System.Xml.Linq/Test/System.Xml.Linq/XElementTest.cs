@@ -148,5 +148,78 @@ namespace MonoTests.System.Xml.Linq
 			Assert.IsNull (el.FirstAttribute, "#4-4");
 			Assert.IsNull (el.LastAttribute, "#4-5");
 		}
+
+		[Test]
+		public void AddAfterSelf ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.FirstNode.AddAfterSelf ("text");
+			XText t = el.FirstNode.NextNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("text", t.Value, "#2");
+			XElement bar = t.NextNode as XElement;
+			Assert.IsNotNull (bar, "#3");
+			Assert.AreEqual ("bar", bar.Name.LocalName, "#4");
+		}
+
+		[Test]
+		public void AddAfterSelfList ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.FirstNode.AddAfterSelf (new XText [] {
+				new XText ("t1"),
+				new XText ("t2"),
+				new XText ("t3")});
+			XText t = el.FirstNode.NextNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("t1", t.Value, "#2");
+			Assert.AreEqual ("t2", ((XText) t.NextNode).Value, "#3");
+			Assert.AreEqual ("t3", ((XText) t.NextNode.NextNode).Value, "#4");
+			XElement bar = t.NextNode.NextNode.NextNode as XElement;
+			Assert.IsNotNull (bar, "#5");
+			Assert.AreEqual ("bar", bar.Name.LocalName, "#6");
+		}
+
+		[Test]
+		public void AddBeforeSelf ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.FirstNode.AddBeforeSelf ("text");
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("text", t.Value, "#2");
+			XElement foo = t.NextNode as XElement;
+			Assert.IsNotNull (foo, "#3");
+			Assert.AreEqual ("foo", foo.Name.LocalName, "#4");
+		}
+
+		[Test]
+		public void AddBeforeSelfList ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.FirstNode.AddBeforeSelf (new XText [] {
+				new XText ("t1"),
+				new XText ("t2"),
+				new XText ("t3")});
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("t1", t.Value, "#2");
+			Assert.AreEqual ("t2", ((XText) t.NextNode).Value, "#3");
+			Assert.AreEqual ("t3", ((XText) t.NextNode.NextNode).Value, "#4");
+			XElement foo = t.NextNode.NextNode.NextNode as XElement;
+			Assert.IsNotNull (foo, "#5");
+			Assert.AreEqual ("foo", foo.Name.LocalName, "#6");
+		}
+
+		[Test]
+		public void ReplaceWith ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			XNode fc = el.FirstNode;
+			fc.ReplaceWith("test");
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("test", t.Value, "#2");
+		}
 	}
 }

@@ -45,16 +45,6 @@ namespace System.Xml.Linq
 			Add (contents);
 		}
 
-		/*
-		internal List <XAttribute> SafeAttributes {
-			get {
-				if (attributes == null)
-					attributes = new List <XAttribute> ();
-				return attributes;
-			}
-		}
-		*/
-
 		public XAttribute FirstAttribute {
 			get { return attr_first; }
 			internal set { attr_first = value; }
@@ -132,8 +122,11 @@ namespace System.Xml.Linq
 
 		public IEnumerable <XAttribute> Attributes ()
 		{
-			for (XAttribute a = attr_first; a != null; a = a.NextAttribute)
+			XAttribute next;
+			for (XAttribute a = attr_first; a != null; a = next) {
+				next = a.NextAttribute;
 				yield return a;
+			}
 		}
 
 		// huh?
@@ -176,23 +169,6 @@ namespace System.Xml.Linq
 			return i;
 		}
 		*/
-
-/*
-		// Only XAttribute.set_Parent() can invoke this.
-		internal void InternalAppendAttribute (XAttribute attr)
-		{
-			if (attr.Parent != this)
-				throw new SystemException ("INTERNAL ERROR: should not happen.");
-			SafeAttributes.Add (attr);
-		}
-
-		internal void InternalRemoveAttribute (XAttribute attr)
-		{
-			if (attr.Parent != this)
-				throw new SystemException ("INTERNAL ERROR: should not happen.");
-			attributes.Remove (attr);
-		}
-*/
 
 		public static XElement Load (string uri)
 		{
