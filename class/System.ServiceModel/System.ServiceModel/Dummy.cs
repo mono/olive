@@ -46,8 +46,8 @@ namespace System.ServiceModel.MsmqIntegration
 
 namespace System.ServiceModel.PeerResolvers
 {
-	public interface IPeerResolverContract {}
-	public class CustomPeerResolverService {}
+        //public interface IPeerResolverContract {}
+        //public class CustomPeerResolverService {}
 	public class PeerCustomResolverSettings {}
 	public class PeerResolverSettings {}
 	public class RefreshInfo {}
@@ -60,4 +60,3 @@ namespace System.ServiceModel.PeerResolvers
 	public class UnregisterInfo {}
 	public class UpdateInfo {}
 }
-
