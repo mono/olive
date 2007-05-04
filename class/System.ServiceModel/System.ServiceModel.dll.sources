@@ -603,6 +603,8 @@ System.ServiceModel.Dispatcher/XPathMessageContext.cs
 System.ServiceModel.Dispatcher/XPathMessageFilter.cs
 System.ServiceModel.Dispatcher/XPathMessageFilterTable.cs
 System.ServiceModel.Dispatcher/XPathNavigatorException.cs
+System.ServiceModel.PeerResolvers/CustomPeerResolverService.cs
+System.ServiceModel.PeerResolvers/IPeerResolverContract.cs
 System.ServiceModel.Security.Tokens/AuthenticatorCommunicationObject.cs
 System.ServiceModel.Security.Tokens/BinarySecretSecurityToken.cs
 System.ServiceModel.Security.Tokens/ClaimTypeRequirement.cs
