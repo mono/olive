@@ -1,5 +1,10 @@
 2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNodeDocumentOrderComparer.cs : implemented.
+	* XObject.cs : Owner is internally referenced now.
+
+2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XNodeEqualityComparer.cs : implemented.
 
 2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>

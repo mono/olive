@@ -41,6 +41,10 @@ namespace System.Xml.Linq
 			get { return owner as XElement; }
 		}
 
+		internal XContainer Owner {
+			get { return owner; }
+		}
+
 		internal void SetOwner (XContainer node)
 		{
 			owner = node;

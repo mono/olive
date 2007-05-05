@@ -1,5 +1,9 @@
 2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNodeDocumentOrderComparerTest.cs : new test.
+
+2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XTextTest.cs : test for NodeType (and whitespace),
 	* XNodeEqualityComparerTest.cs : test for GetHashCode(null) and
 	  Compare().
