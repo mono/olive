@@ -4,10 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.Xml.Linq
 {
-	public class XDocument : XContainer
+	[XmlRoot ("XDocument")]
+	[XmlSchemaProvider ("GetSchemaType")]
+	public class XDocument : XContainer, IXmlSerializable
 	{
 		XDeclaration xmldecl;
 
@@ -104,19 +108,24 @@ namespace System.Xml.Linq
 		static XDocument LoadCore (XmlReader reader)
 		{
 			XDocument doc = new XDocument ();
+			doc.ReadContent (reader);
+			return doc;
+		}
+
+		void ReadContent (XmlReader reader)
+		{
 			if (reader.ReadState == ReadState.Initial)
 				reader.Read ();
 			if (reader.NodeType == XmlNodeType.XmlDeclaration) {
-				doc.Declaration = new XDeclaration (
+				Declaration = new XDeclaration (
 					reader.GetAttribute ("version"),
 					reader.GetAttribute ("encoding"),
 					reader.GetAttribute ("standalone"));
 				reader.Read ();
 			}
-			doc.ReadContentFrom (reader);
-			if (doc.Root == null)
+			ReadContentFrom (reader);
+			if (Root == null)
 				throw new InvalidOperationException ("The document element is missing.");
-			return doc;
 		}
 
 		static void ValidateWhitespace (string s)
@@ -214,6 +223,27 @@ namespace System.Xml.Linq
 				if (DocumentType != null && addFirst)
 					throw new InvalidOperationException ("An element cannot be added before the document type declaration");
 			}
+		}
+
+		[MonoTODO]
+		public static XmlSchemaType GetSchemaType (XmlSchemaSet schemas)
+		{
+			throw new NotImplementedException ();
+		}
+
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+			Save (writer);
+		}
+
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+			ReadContent (reader);
+		}
+
+		XmlSchema IXmlSerializable.GetSchema ()
+		{
+			return null;
 		}
 	}
 }

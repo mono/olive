@@ -1,3 +1,12 @@
+2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XNode.cs
+	  XDocument.cs
+	  XElement.cs
+	  XContainer.cs
+	  XUtil.cs : added members for schema support.
+	  Shrink object array so that sequential strings are concatenated.
+
 2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XNode.cs : Nodes() is safe for removal of current item.

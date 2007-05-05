@@ -212,14 +212,55 @@ namespace MonoTests.System.Xml.Linq
 		}
 
 		[Test]
+		public void AddBeforeSelfList2 ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.FirstNode.AddBeforeSelf ("t1", "t2", "t3");
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("t1t2t3", t.Value, "#2");
+			XElement foo = t.NextNode as XElement;
+			Assert.IsNotNull (foo, "#3");
+			Assert.AreEqual ("foo", foo.Name.LocalName, "#4");
+		}
+
+		[Test]
 		public void ReplaceWith ()
 		{
 			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
 			XNode fc = el.FirstNode;
-			fc.ReplaceWith("test");
+			fc.ReplaceWith ("test");
 			XText t = el.FirstNode as XText;
 			Assert.IsNotNull (t, "#1");
 			Assert.AreEqual ("test", t.Value, "#2");
+		}
+
+		[Test]
+		public void ReplaceAll ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.ReplaceAll ("test");
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("test", t.Value, "#2");
+			Assert.AreEqual (1, new List<XNode> (el.Nodes ()).Count, "#3");
+		}
+
+		[Test]
+		public void ReplaceAllList ()
+		{
+			XElement el = XElement.Parse ("<root><foo/><bar/></root>");
+			el.ReplaceAll (
+				new XText ("test1"),
+				new XText ("test2"),
+				new XText ("test3"));
+			XText t = el.FirstNode as XText;
+			Assert.IsNotNull (t, "#1");
+			Assert.AreEqual ("test1", t.Value, "#2");
+			t = el.LastNode as XText;
+			Assert.IsNotNull (t, "#3");
+			Assert.AreEqual ("test3", t.Value, "#4");
+			Assert.AreEqual (3, new List<XNode> (el.Nodes ()).Count, "#5");
 		}
 	}
 }

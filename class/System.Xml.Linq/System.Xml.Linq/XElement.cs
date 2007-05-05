@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Xml;
-
-using XPI = System.Xml.Linq.XProcessingInstruction;
-
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.Xml.Linq
 {
-	public class XElement : XContainer
+	[XmlRoot ("XElement")]
+	[XmlSchemaProvider ("GetSchemaType")]
+	public class XElement : XContainer, IXmlSerializable
 	{
 		static IEnumerable <XElement> emptySequence =
 			new List <XElement> ();
@@ -397,16 +398,16 @@ namespace System.Xml.Linq
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public void ReplaceAll (object item)
 		{
-			throw new NotImplementedException ();
+			RemoveNodes ();
+			Add (item);
 		}
 
-		[MonoTODO]
 		public void ReplaceAll (params object [] items)
 		{
-			throw new NotImplementedException ();
+			RemoveNodes ();
+			Add (items);
 		}
 
 		[MonoTODO]
@@ -421,22 +422,45 @@ namespace System.Xml.Linq
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public void SetElementValue (XName name, object value)
 		{
-			throw new NotImplementedException ();
+			XElement el = new XElement (name, value);
+			RemoveNodes ();
+			Add (el);
 		}
 
-		[MonoTODO]
 		public void SetValue (object value)
 		{
-			throw new NotImplementedException ();
+			XNode n = XUtil.ToNode (value);
+			RemoveNodes ();
+			Add (n);
 		}
 
 		internal override void OnAdded (XNode node, bool addFirst)
 		{
 			if (node is XDocument || node is XDocumentType)
 				throw new ArgumentException (String.Format ("A node of type {0} cannot be added as a content", node.GetType ()));
+		}
+
+		[MonoTODO]
+		public static XmlSchemaType GetSchemaType (XmlSchemaSet schemas)
+		{
+			throw new NotImplementedException ();
+		}
+
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+			Save (writer);
+		}
+
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+			ReadContentFrom (reader);
+		}
+
+		XmlSchema IXmlSerializable.GetSchema ()
+		{
+			return null;
 		}
 	}
 }

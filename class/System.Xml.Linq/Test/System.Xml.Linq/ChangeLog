@@ -1,3 +1,8 @@
+2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XElementTest.cs : Tests for ReplaceAll() and AddBeforeSelf() for
+	  sequential strings.
+
 2007-05-04  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XElementTest.cs : added tests for Add[Before|After]Self().

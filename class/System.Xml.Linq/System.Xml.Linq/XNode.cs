@@ -87,7 +87,7 @@ namespace System.Xml.Linq
 			if (Parent == null)
 				throw new InvalidOperationException ();
 			XNode n = this;
-			foreach (object o in content) {
+			foreach (object o in XUtil.ShrinkArray (content)) {
 				n.AddAfterSelf (o);
 				n = n.NextNode;
 			}
@@ -112,7 +112,7 @@ namespace System.Xml.Linq
 		{
 			if (Parent == null)
 				throw new InvalidOperationException ();
-			foreach (object o in content)
+			foreach (object o in XUtil.ShrinkArray (content))
 				AddBeforeSelf (o);
 		}
 

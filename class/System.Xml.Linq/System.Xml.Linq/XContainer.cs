@@ -53,10 +53,6 @@ namespace System.Xml.Linq
 		{
 			if (content == null)
 				return;
-//			if (content is XAttribute) {
-//				AddAttribute ((XAttribute) content);
-//				return;
-//			}
 
 			XNode n = XUtil.ToNode (content);
 			CheckChildType (n, false);
@@ -73,35 +69,26 @@ namespace System.Xml.Linq
 
 		public void Add (params object [] content)
 		{
-			for (int i = 0; i < content.Length; i++)
-				Add (content [i]);
+			foreach (object o in XUtil.ShrinkArray (content))
+				Add (o);
 		}
 
 		public void AddFirst (object content)
 		{
-			if (content == null)
-				return;
-//			if (content is XAttribute) {
-//				AddAttribute ((XAttribute) content);
-//				return;
-//			}
-			XNode n = XUtil.ToNode (content);
-			OnAdded (n, true);
-			CheckChildType (n, true);
-			n.SetOwner (this);
 			if (first == null)
-				first = last = n;
-			else {
-				n.NextNode = first;
-				first.PreviousNode = n;
-				first = n;
-			}
+				Add (content);
+			else
+				first.AddBeforeSelf (content);
 		}
 
 		public void AddFirst (params object [] content)
 		{
-			for (int i = content.Length - 1; i >= 0; i--)
-				AddFirst (content [i]);
+			if (content == null)
+				return;
+			if (first == null)
+				Add (content);
+			else
+				first.AddBeforeSelf (content);
 		}
 
 		[MonoTODO]

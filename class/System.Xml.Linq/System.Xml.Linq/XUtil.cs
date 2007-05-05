@@ -1,5 +1,3 @@
-#if NET_2_0
-
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -71,6 +69,25 @@ namespace System.Xml.Linq
 				throw new NotImplementedException ();
 			throw new ArgumentException ();
 		}
+
+		public static IEnumerable<object> ShrinkArray (params object [] content)
+		{
+			if (content == null || content.Length == 0)
+				yield break;
+			string prev = null;
+			foreach (object o in content) {
+				if (o is XNode) {
+					if (prev != null) {
+						yield return prev;
+						prev = null;
+					}
+					yield return o;
+				} else {
+					prev += o;
+				}
+			}
+			if (prev != null)
+				yield return prev;
+		}
 	}
 }
-#endif
