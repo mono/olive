@@ -1,5 +1,9 @@
 2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNodeEqualityComparer.cs : implemented.
+
+2007-05-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XNode.cs
 	  XDocument.cs
 	  XElement.cs

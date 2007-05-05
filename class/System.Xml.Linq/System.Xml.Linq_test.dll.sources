@@ -4,3 +4,5 @@ System.Xml.Linq/XDocumentTest.cs
 System.Xml.Linq/XElementTest.cs
 System.Xml.Linq/XNameTest.cs
 System.Xml.Linq/XNamespaceTest.cs
+System.Xml.Linq/XNodeEqualityComparerTest.cs
+System.Xml.Linq/XTextTest.cs
