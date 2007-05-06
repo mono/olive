@@ -5,57 +5,50 @@ using System.Xml.Linq;
 
 namespace System.Xml.XPath
 {
-	[MonoTODO]
 	public static class Extensions
 	{
-		[MonoTODO]
 		public static XPathNavigator CreateNavigator (this XNode node)
 		{
 			return CreateNavigator (node, new NameTable ());
 		}
 
-		[MonoTODO]
 		public static XPathNavigator CreateNavigator (this XNode node, XmlNameTable nameTable)
 		{
-			throw new NotImplementedException ();
+			return new XNodeNavigator (node, nameTable);
 		}
 
-		[MonoTODO]
 		public static object XPathEvaluate (this XNode node, string expression)
 		{
 			return XPathEvaluate (node, expression, null);
 		}
 
-		[MonoTODO]
 		public static object XPathEvaluate (this XNode node, string expression, IXmlNamespaceResolver nsResolver)
 		{
 			return CreateNavigator (node).Evaluate (expression, nsResolver);
 		}
 
-		[MonoTODO]
 		public static XElement XPathSelectElement (this XNode node, string xpath)
 		{
 			return XPathSelectElement (node, xpath, null);
 		}
 
-		[MonoTODO]
 		public static XElement XPathSelectElement (this XNode node, string xpath, IXmlNamespaceResolver nsResolver)
 		{
 			XPathNavigator nav = CreateNavigator (node).SelectSingleNode (xpath, nsResolver);
-			throw new NotImplementedException ();
+			return nav.UnderlyingObject as XElement;
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> XPathSelectElements (this XNode node, string xpath)
 		{
 			return XPathSelectElements (node, xpath, null);
 		}
 
-		[MonoTODO]
 		public static IEnumerable<XElement> XPathSelectElements (this XNode node, string xpath, IXmlNamespaceResolver nsResolver)
 		{
 			XPathNodeIterator iter = CreateNavigator (node).Select (xpath, nsResolver);
-			throw new NotImplementedException ();
+			foreach (XPathNavigator nav in iter)
+				if (nav.UnderlyingObject is XElement)
+					yield return (XElement) nav.UnderlyingObject;
 		}
 	}
 }

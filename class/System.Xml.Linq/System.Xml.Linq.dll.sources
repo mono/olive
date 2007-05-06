@@ -19,6 +19,7 @@ System.Xml.Linq/XNamespace.cs
 System.Xml.Linq/XNode.cs
 System.Xml.Linq/XNodeDocumentOrderComparer.cs
 System.Xml.Linq/XNodeEqualityComparer.cs
+System.Xml.Linq/XNodeNavigator.cs
 System.Xml.Linq/XNodeReader.cs
 System.Xml.Linq/XNodeWriter.cs
 System.Xml.Linq/XObject.cs

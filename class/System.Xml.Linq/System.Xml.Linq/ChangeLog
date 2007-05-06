@@ -1,5 +1,9 @@
 2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNodeNavigator.cs : implemented XPathNavigator (untested!)
+
+2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XContainer.cs
 	  XNodeWriter.cs : implemented CreateWriter().
 	* XElement.cs : when writing default xmlns attribute, namespace URI
