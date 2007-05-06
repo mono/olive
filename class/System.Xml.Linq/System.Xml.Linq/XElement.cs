@@ -21,7 +21,6 @@ namespace System.Xml.Linq
 		}
 
 		XName name;
-		//List <XAttribute> attributes;
 		XAttribute attr_first, attr_last;
 
 		public XElement (XName name, object value)
@@ -137,39 +136,6 @@ namespace System.Xml.Linq
 				if (a.Name == name)
 					yield return a;
 		}
-
-		/*
-		public override bool Equals (object obj)
-		{
-			XElement e = obj as XElement;
-			if (e == null || name != e.name)
-				return false;
-			IEnumerator e1 = Nodes ().GetEnumerator ();
-			IEnumerator e2 = e.Nodes ().GetEnumerator ();
-			do {
-				if (e1.MoveNext ()) {
-					if (e2.MoveNext ()) {
-						if (!e1.Equals (e2.Current))
-							return false;
-					}
-					else
-						return false;
-				}
-				else if (e2.MoveNext ())
-					return false;
-			} while (true);
-		}
-
-		public override int GetHashCode ()
-		{
-			int i = name.GetHashCode ();
-			foreach (XAttribute a in Attributes ())
-				i ^= a.GetHashCode ();
-			foreach (object o in Content ())
-				i ^= o.GetHashCode ();
-			return i;
-		}
-		*/
 
 		public static XElement Load (string uri)
 		{
@@ -380,22 +346,38 @@ namespace System.Xml.Linq
 			w.WriteEndElement ();
 		}
 
-		[MonoTODO]
 		public XNamespace GetDefaultNamespace ()
 		{
-			throw new NotImplementedException ();
+			for (XElement el = this; el != null; el = el.Parent)
+				foreach (XAttribute a in el.Attributes ())
+					if (a.IsNamespaceDeclaration && a.Name.Namespace == XNamespace.Blank)
+						return XNamespace.Get (a.Value);
+			return XNamespace.Blank; // nothing is declared.
 		}
 
-		[MonoTODO]
 		public XNamespace GetNamespaceOfPrefix (string prefix)
 		{
-			throw new NotImplementedException ();
+			for (XElement el = this; el != null; el = el.Parent)
+				foreach (XAttribute a in el.Attributes ())
+					if (a.IsNamespaceDeclaration && a.Name.LocalName == prefix)
+						return XNamespace.Get (a.Value);
+			return XNamespace.Blank; // nothing is declared.
 		}
 
-		[MonoTODO]
 		public string GetPrefixOfNamespace (XNamespace ns)
 		{
-			throw new NotImplementedException ();
+			foreach (string prefix in GetPrefixOfNamespaceCore (ns))
+				if (GetNamespaceOfPrefix (prefix) == ns)
+					return prefix;
+			return null; // nothing is declared
+		}
+		
+		IEnumerable<string> GetPrefixOfNamespaceCore (XNamespace ns)
+		{
+			for (XElement el = this; el != null; el = el.Parent)
+				foreach (XAttribute a in el.Attributes ())
+					if (a.IsNamespaceDeclaration && a.Value == ns.NamespaceName)
+						yield return a.Name.Namespace == XNamespace.Blank ? String.Empty : a.Name.LocalName;
 		}
 
 		public void ReplaceAll (object item)
@@ -410,16 +392,16 @@ namespace System.Xml.Linq
 			Add (items);
 		}
 
-		[MonoTODO]
 		public void ReplaceAttributes (object item)
 		{
-			throw new NotImplementedException ();
+			RemoveAttributes ();
+			Add (item);
 		}
 
-		[MonoTODO]
 		public void ReplaceAttributes (params object [] items)
 		{
-			throw new NotImplementedException ();
+			RemoveAttributes ();
+			Add (items);
 		}
 
 		public void SetElementValue (XName name, object value)

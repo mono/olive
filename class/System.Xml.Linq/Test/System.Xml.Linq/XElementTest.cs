@@ -262,5 +262,55 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual ("test3", t.Value, "#4");
 			Assert.AreEqual (3, new List<XNode> (el.Nodes ()).Count, "#5");
 		}
+
+		[Test]
+		public void ReplaceAttributes ()
+		{
+			XElement el = XElement.Parse ("<root x='y'><foo a='b'/></root>");
+			Assert.IsTrue (el.Attributes ().GetEnumerator ().MoveNext (), "#0");
+			el.ReplaceAttributes ("test");
+			Assert.IsTrue (el.FirstNode is XElement, "#1");
+			Assert.IsTrue (el.LastNode is XText, "#2");
+			Assert.IsFalse (el.Attributes ().GetEnumerator ().MoveNext (), "#3");
+		}
+
+		[Test]
+		public void GetDefaultNamespace ()
+		{
+			XElement el = XElement.Parse ("<root xmlns='urn:foo'><foo><xxx/></foo><x:bar xmlns:x='urn:bar'><yyy/></x:bar><baz xmlns=''><zzz /></baz></root>");
+			XNamespace ns1 = XNamespace.Get ("urn:foo");
+			Assert.AreEqual (ns1, el.GetDefaultNamespace (), "#1");
+			XElement foo = (XElement) el.FirstNode;
+			Assert.AreEqual (ns1, foo.GetDefaultNamespace (), "#2");
+			Assert.AreEqual (ns1, ((XElement) foo.FirstNode).GetDefaultNamespace (), "#3");
+			XElement bar = (XElement) foo.NextNode;
+			Assert.AreEqual (ns1, bar.GetDefaultNamespace (), "#4");
+			Assert.AreEqual (ns1, ((XElement) bar.FirstNode).GetDefaultNamespace (), "#5");
+			XElement baz = (XElement) bar.NextNode;
+			Assert.AreEqual (XNamespace.Blank, baz.GetDefaultNamespace (), "#6");
+			Assert.AreEqual (XNamespace.Blank, ((XElement) baz.FirstNode).GetDefaultNamespace (), "#7");
+		}
+
+		[Test]
+		public void GetPrefixNamespace ()
+		{
+			XElement el = XElement.Parse ("<x:root xmlns:x='urn:foo'><foo><xxx/></foo><x:bar xmlns:x='urn:bar'><yyy/></x:bar><baz xmlns=''><zzz /></baz></x:root>");
+			XNamespace ns1 = XNamespace.Get ("urn:foo");
+			XNamespace ns2 = XNamespace.Get ("urn:bar");
+			Assert.AreEqual (ns1, el.GetNamespaceOfPrefix ("x"), "#1-1");
+			Assert.AreEqual ("x", el.GetPrefixOfNamespace (ns1), "#1-2");
+			XElement foo = (XElement) el.FirstNode;
+			Assert.AreEqual (ns1, foo.GetNamespaceOfPrefix ("x"), "#2-1");
+			Assert.AreEqual ("x", foo.GetPrefixOfNamespace (ns1), "#2-2");
+			Assert.AreEqual (ns1, ((XElement) foo.FirstNode).GetNamespaceOfPrefix ("x"), "#3-1");
+			Assert.AreEqual ("x", ((XElement) foo.FirstNode).GetPrefixOfNamespace (ns1), "#3-2");
+			XElement bar = (XElement) foo.NextNode;
+			Assert.AreEqual (ns2, bar.GetNamespaceOfPrefix ("x"), "#4-1");
+			Assert.AreEqual ("x", bar.GetPrefixOfNamespace (ns2), "#4-2");
+			Assert.AreEqual (null, bar.GetPrefixOfNamespace (ns1), "#4-3");
+			Assert.AreEqual (ns2, ((XElement) bar.FirstNode).GetNamespaceOfPrefix ("x"), "#5-1");
+			Assert.AreEqual ("x", ((XElement) bar.FirstNode).GetPrefixOfNamespace (ns2), "#5-2");
+			Assert.AreEqual (null, ((XElement) bar.FirstNode).GetPrefixOfNamespace (ns1), "#5-3");
+		}
 	}
 }
