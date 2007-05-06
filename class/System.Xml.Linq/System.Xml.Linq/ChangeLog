@@ -1,5 +1,13 @@
 2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNode.cs
+	  XNodeReader.cs : implemented XNode.CreateReader().
+	* XDeclaration.cs : removed extra code.
+	* XElement.cs : support explicit IsEmpty value (like XmlElement).
+	* XProcessingInstruction.cs : null check.
+
+2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XElement.cs : implemented namespace retrieval, and
 	  ReplaceAttributes().
 

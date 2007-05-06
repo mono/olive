@@ -6,12 +6,16 @@ namespace System.Xml.Linq
 	public class XProcessingInstruction : XNode
 	{
 		string name;
-		string value;
+		string data;
 
-		public XProcessingInstruction (string name, string value)
+		public XProcessingInstruction (string name, string data)
 		{
+			if (name == null)
+				throw new ArgumentNullException ("name");
+			if (data == null)
+				throw new ArgumentNullException ("data");
 			this.name = name;
-			this.value = value;
+			this.data = data;
 		}
 
 		public XProcessingInstruction (XProcessingInstruction other)
@@ -19,12 +23,16 @@ namespace System.Xml.Linq
 			if (other == null)
 				throw new ArgumentNullException ("other");
 			this.name = other.name;
-			this.value = other.value;
+			this.data = other.data;
 		}
 
 		public string Data {
-			get { return value; }
-			set { this.value = value; }
+			get { return data; }
+			set {
+				if (value == null)
+					throw new ArgumentNullException ("value");
+				this.data = value;
+			}
 		}
 
 		public override XmlNodeType NodeType {
@@ -33,12 +41,16 @@ namespace System.Xml.Linq
 
 		public string Target {
 			get { return name; }
-			set { name = value; }
+			set {
+				if (value == null)
+					throw new ArgumentNullException ("value");
+				name = value;
+			}
 		}
 
 		public override void WriteTo (XmlWriter w)
 		{
-			w.WriteProcessingInstruction (name, value);
+			w.WriteProcessingInstruction (name, data);
 		}
 	}
 }

@@ -42,13 +42,6 @@ namespace System.Xml.Linq
 			set { version = value; }
 		}
 
-		/*
-		public string Xml {
-			get {
-			}
-		}
-		*/
-
 		public override string ToString ()
 		{
 			return String.Concat ("<?xml",

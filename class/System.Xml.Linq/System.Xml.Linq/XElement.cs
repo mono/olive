@@ -22,6 +22,7 @@ namespace System.Xml.Linq
 
 		XName name;
 		XAttribute attr_first, attr_last;
+		bool explicit_is_empty;
 
 		public XElement (XName name, object value)
 		{
@@ -69,7 +70,8 @@ namespace System.Xml.Linq
 		}
 
 		public bool IsEmpty {
-			get { return !Nodes ().GetEnumerator ().MoveNext (); }
+			get { return !Nodes ().GetEnumerator ().MoveNext () && explicit_is_empty; }
+			internal set { explicit_is_empty = value; }
 		}
 
 		public XName Name {
@@ -200,9 +202,10 @@ namespace System.Xml.Linq
 				r.Read ();
 				e.ReadContentFrom (r);
 				r.ReadEndElement ();
-			}
-			else
+			} else {
+				e.explicit_is_empty = true;
 				r.Read ();
+			}
 			return e;
 		}
 
@@ -343,7 +346,10 @@ namespace System.Xml.Linq
 			foreach (XNode node in Nodes ())
 				node.WriteTo (w);
 
-			w.WriteEndElement ();
+			if (explicit_is_empty)
+				w.WriteEndElement ();
+			else
+				w.WriteFullEndElement ();
 		}
 
 		public XNamespace GetDefaultNamespace ()

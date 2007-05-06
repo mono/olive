@@ -1,5 +1,10 @@
 2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XProcessingInstructionTest.cs
+	  XNodeReaderTest.cs : new tests.
+
+2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XElementTest.cs :
 	  test for ReplaceAttributes(), GetDefaultNamespace(), 
 	  GetPrefixOfNamespace() and GetNamespaceOfPrefix().

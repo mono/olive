@@ -189,10 +189,9 @@ namespace System.Xml.Linq
 					yield return el;
 		}
 
-		[MonoTODO]
 		public XmlReader CreateReader ()
 		{
-			throw new NotImplementedException ();
+			return new XNodeReader (this);
 		}
 
 		public IEnumerable<XElement> ElementsAfterSelf ()
