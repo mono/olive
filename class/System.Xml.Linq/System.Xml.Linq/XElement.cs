@@ -337,8 +337,12 @@ namespace System.Xml.Linq
 			w.WriteStartElement (name.LocalName, name.Namespace.NamespaceName);
 
 			foreach (XAttribute a in Attributes ()) {
-				if (a.Name.Namespace == XNamespace.Xmlns && a.Name.LocalName != String.Empty)
-					w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
+				if (a.IsNamespaceDeclaration) {
+					if (a.Name.Namespace == XNamespace.Xmlns)
+						w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
+					else
+						w.WriteAttributeString ("xmlns", a.Value);
+				}
 				else
 					w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.NamespaceName, a.Value);
 			}

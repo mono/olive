@@ -15,7 +15,6 @@ namespace MonoTests.System.Xml.Linq
 		{
 			string xml = "<root><foo a='v' /><bar></bar><baz>simple text<!-- comment --><mixed1 /><mixed2><![CDATA[cdata]]><?some-pi with-data ?></mixed2></baz></root>";
 			XDocument doc = XDocument.Parse (xml);
-Console.WriteLine (((XElement) ((XElement) doc.Root.LastNode).LastNode).LastNode.PreviousNode.NodeType);
 			XmlReader xr = doc.CreateReader ();
 			StringWriter sw = new StringWriter ();
 			XmlWriterSettings s = new XmlWriterSettings ();
@@ -32,7 +31,6 @@ Console.WriteLine (((XElement) ((XElement) doc.Root.LastNode).LastNode).LastNode
 		{
 			string xml = "<?xml version='1.0' encoding='utf-16'?><root><foo a='v' /><bar></bar><baz>simple text<!-- comment --><mixed1 /><mixed2><![CDATA[cdata]]><?some-pi with-data ?></mixed2></baz></root>";
 			XDocument doc = XDocument.Parse (xml);
-Console.WriteLine (((XElement) ((XElement) doc.Root.LastNode).LastNode).LastNode.PreviousNode.NodeType);
 			XmlReader xr = doc.CreateReader ();
 			StringWriter sw = new StringWriter ();
 			XmlWriter xw = XmlWriter.Create (sw);

@@ -91,10 +91,9 @@ namespace System.Xml.Linq
 				first.AddBeforeSelf (content);
 		}
 
-		[MonoTODO]
 		public XmlWriter CreateWriter ()
 		{
-			throw new NotImplementedException ();
+			return new XNodeWriter (this);
 		}
 
 		public IEnumerable <XNode> Nodes ()

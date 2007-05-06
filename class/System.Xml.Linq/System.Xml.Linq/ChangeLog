@@ -1,5 +1,12 @@
 2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XContainer.cs
+	  XNodeWriter.cs : implemented CreateWriter().
+	* XElement.cs : when writing default xmlns attribute, namespace URI
+	  should be w3c xmlns URI (unlike blank in XLinq's context).
+
+2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XNode.cs
 	  XNodeReader.cs : implemented XNode.CreateReader().
 	* XDeclaration.cs : removed extra code.
