@@ -66,6 +66,11 @@ namespace System.Xml.Linq
 			return ! (o1 == o2);
 		}
 
+		public static implicit operator XNamespace (string s)
+		{
+			return s != null ? XNamespace.Get (s) : null;
+		}
+
 		public override int GetHashCode ()
 		{
 			return uri.GetHashCode ();
