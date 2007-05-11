@@ -1,3 +1,8 @@
+2007-05-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* CardspaceSelector.cs : so I forgot that I've updated namespace name
+	  for win32 client impl.
+
 2007-04-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	Now the implementation is moved to Mono.ServiceModel.IdentitySelectors.

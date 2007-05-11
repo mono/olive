@@ -46,7 +46,7 @@ namespace System.IdentityModel.Selectors
 			string implName;
 			switch (Environment.GetEnvironmentVariable ("MONO_IDENTITY_SELECTOR_TYPE")) {
 			default:
-				implName = "Mono.ServiceModel.IdentitySelectors.CardSelectorClientWin32, Mono.ServiceModel.IdentitySelectors,  Version=3.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756";
+				implName = "Mono.ServiceModel.IdentitySelectors.Win32.CardSelectorClientWin32, Mono.ServiceModel.IdentitySelectors,  Version=3.0.0.0, Culture=neutral, PublicKeyToken=0738eb9f132ed756";
 				break;
 			}
 			impl_type = Type.GetType (implName);
