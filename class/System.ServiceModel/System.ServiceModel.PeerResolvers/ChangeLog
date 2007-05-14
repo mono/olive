@@ -1,0 +1,9 @@
+2007-05-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IPeerResolverContract.cs CustomPeerResolverService.cs :
+	  whitespaces should be replaced with tabs.
+
+2007-05-04 Marcos Cobena (marcoscobena@gmail.com)
+
+	* IPeerResolverContract.cs
+	  CustomPeerResolverService.cs : Initial implementations.

@@ -9,13 +9,13 @@
 
 namespace System.ServiceModel.PeerResolvers
 {
-        public interface IPeerResolverContract
-        {
-                ServiceSettingsResponseInfo GetServiceSettings ();
-                RefreshResponseInfo Refresh (RefreshInfo refreshInfo);
-                RegisterResponseInfo Register (RegisterInfo registerInfo);
-                ResolveResponseInfo Resolve (ResolveInfo resolveInfo);
-                void Unregister (UnregisterInfo unregisterInfo);
-                RegisterResponseInfo Update (UpdateInfo updateInfo);
-        }
+	public interface IPeerResolverContract
+	{
+		ServiceSettingsResponseInfo GetServiceSettings ();
+		RefreshResponseInfo Refresh (RefreshInfo refreshInfo);
+		RegisterResponseInfo Register (RegisterInfo registerInfo);
+		ResolveResponseInfo Resolve (ResolveInfo resolveInfo);
+		void Unregister (UnregisterInfo unregisterInfo);
+		RegisterResponseInfo Update (UpdateInfo updateInfo);
+	}
 }
