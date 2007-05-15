@@ -32,6 +32,18 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty OpacityProperty;
 		public static readonly DependencyProperty TransformProperty;
 		public static readonly DependencyProperty RelativeTransformProperty;
+
+		static Brush ()
+		{
+			Type btype = typeof (Brush);
+			
+			OpacityProperty = DependencyProperty.Register (
+				"Opacity", typeof (double), btype);
+			TransformProperty = DependencyProperty.Register (
+				"Transform", typeof (TransformGroup), btype);
+			RelativeTransformProperty = DependencyProperty.Register (
+				"RelativeTransform", typeof (TransformGroup), btype);
+		}
 		
 		public Brush ()
 		{
@@ -39,31 +51,31 @@ namespace System.Windows.Media {
 
 		public double Opacity {
 			get {
-				throw new NotImplementedException ();
+				return (double) GetValue (OpacityProperty);
 			}
 			
 			set {
-				throw new NotImplementedException ();
+				SetValue (OpacityProperty, value);
 			}
 		}
 		
 		public TransformGroup RelativeTransform {
 			get {
-				throw new NotImplementedException ();
+				return (TransformGroup) GetValue (RelativeTransformProperty);
 			}
 
 			set {
-				throw new NotImplementedException ();
+				SetValue (RelativeTransformProperty, value);
 			}
 		}
 		
 		public TransformGroup Transform {
 			get {
-				throw new NotImplementedException ();
+				return (TransformGroup) GetValue (TransformProperty);
 			}
 
 			set {
-				throw new NotImplementedException ();
+				SetValue (TransformProperty, value);
 			}
 		}
 	}

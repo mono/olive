@@ -1,11 +1,9 @@
 //
-// DependencyObject.cs
+// BezierSegment.cs
 //
 // Author:
-//   Iain McCoy (iain@mccoy.id.au)
 //   Miguel de Icaza (miguel@novell.com)
 //
-// Copyright 2005 Iain McCoy
 // Copyright 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -27,47 +25,56 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
 
-namespace System.Windows {
-	public class DependencyObject {
-		string name;
-		private static Dictionary<Type,Dictionary<string,DependencyProperty>> property_declarations =
-			new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+namespace System.Windows.Media {
+	public sealed class BezierSegment : PathSegment {
+
+		static BezierSegment ()
+		{
+			Point1Property = DependencyProperty.Register (
+				"Point1", typeof (Point), typeof (BezierSegment));
+			Point2Property = DependencyProperty.Register (
+				"Point2", typeof (Point), typeof (BezierSegment));
+			Point3Property = DependencyProperty.Register (
+				"Point3", typeof (Point), typeof (BezierSegment));
+		}
 		
-		public virtual object GetValue(DependencyProperty dp)
+		public BezierSegment ()
 		{
-			throw new NotImplementedException ();
 		}
-
-		public void SetValue<T>(DependencyProperty dp, T value)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public DependencyObject FindName (string name)
-		{
-			throw new NotImplementedException ();			
-		}
-
-		public string Name {
+		
+		public Point Point1 {
 			get {
-				return name;
+				return (Point) GetValue (Point1Property);
+			}
+			
+			set {
+				SetValue (Point1Property, value);
 			}
 		}
-
-		internal static void Register (Type t, DependencyProperty dp)
-                {
-			Dictionary<string,DependencyProperty> type_declarations;
-			
-			if (!property_declarations.TryGetValue (t, out type_declarations)){
-				property_declarations [t] = new Dictionary<string,DependencyProperty>();
+		
+		public Point Point2 {
+			get {
+				return (Point) GetValue (Point2Property);
 			}
-
-			if (!type_declarations.ContainsKey (dp.Name))
-				type_declarations [dp.Name] = dp;
-			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
-                }
+			
+			set {
+				SetValue (Point2Property, value);
+			}
+		}
+		
+		public Point Point3 {
+			get {
+				return (Point) GetValue (Point3Property);
+			}
+			
+			set {
+				SetValue (Point3Property, value);
+			}
+		}
+		
+		public static readonly DependencyProperty Point1Property;
+		public static readonly DependencyProperty Point2Property;
+		public static readonly DependencyProperty Point3Property;
 	}
 }

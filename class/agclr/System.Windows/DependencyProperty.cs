@@ -2,8 +2,11 @@
 // DependencyProperty.cs
 //
 // Author:
+//   Iain McCoy (iain@mccoy.id.au)
 //   Miguel de Icaza (miguel@novell.com)
+// 
 //
+// Copyright 2005 Iain McCoy
 // Copyright 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -28,9 +31,40 @@
 
 namespace System.Windows {
 	public class DependencyProperty {
+		readonly internal PropertyMetadata DefaultMetadata;
+		readonly internal string Name;
+		readonly internal Type OwnerType;
+		readonly internal Type PropertyType;
+		readonly internal bool IsAttached;
+
+		private DependencyProperty (bool isAttached, string name, Type propertyType, Type ownerType,
+					    PropertyMetadata defaultMetadata)
+		{
+			this.IsAttached = isAttached;
+			this.DefaultMetadata = (defaultMetadata == null ? new PropertyMetadata() : defaultMetadata);
+			
+			this.Name = name;
+			this.OwnerType = ownerType;
+			this.PropertyType = propertyType;
+		}
 
 		public DependencyProperty ()
 		{
+			// useless constructor.
+		}
+
+		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType)
+		{
+			return Register (name, propertyType, ownerType, null);
+		}
+
+		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType,
+							     PropertyMetadata typeMetadata)
+		{
+			DependencyProperty dp = new DependencyProperty (false, name, propertyType, ownerType,
+									typeMetadata);
+			DependencyObject.Register (ownerType, dp);
+			return dp;
 		}
 	}
 }

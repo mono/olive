@@ -1,5 +1,5 @@
 //
-// Canvas.cs
+// KeyboardEventArgs.cs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -25,21 +25,41 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Windows;
 
-namespace System.Windows.Controls {
-	public class Canvas : Panel {
+namespace System.Windows.Input {
+	
+	public sealed class KeyboardEventArgs : EventArgs {
+		bool ctrl, shift;
+		int key, platform_key_code;
 		
-		static Canvas ()
+	        public KeyboardEventArgs ()
 		{
-			LeftProperty = DependencyProperty.Register (
-				"Left", typeof (double), typeof (Canvas));
-
-			TopProperty = DependencyProperty.Register (
-				"Top", typeof (double), typeof (Canvas));
 		}
 
-		public static readonly DependencyProperty LeftProperty;
-		public static readonly DependencyProperty TopProperty;
+		internal KeyboardEventArgs (bool ctrl, int key, int platform_key_code, bool shift)
+		{
+			this.ctrl = ctrl;
+			this.key = key;
+			this.platform_key_code = platform_key_code;
+			this.shift = shift;
+		}
+		
+	        public bool Ctrl {
+	                get { return ctrl; }
+	                set { ctrl = value; }
+	        }
+	        public int Key {
+	                get { return key; } 
+	                set { key = value; } 
+	        }
+	        public int PlatformKeyCode {
+	                get { return platform_key_code; }
+	                set { platform_key_code = value; }
+	        }
+	        public bool Shift {
+	                get { return shift; }
+	                set { shift = value; }
+	        }
 	}
+	
 }

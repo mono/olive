@@ -26,13 +26,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System.Windows.Media;
+using System.Windows;
 
 namespace System.Windows.Controls {
-	public class Panel {
-		Brush background;
-
+	public class Panel : FrameworkElement {
 		public static readonly DependencyProperty ChildrenProperty;
 		public static readonly DependencyProperty BackgroundProperty;
+
+		static Panel ()
+		{
+			ChildrenProperty = DependencyProperty.Register (
+				"Children", typeof (VisualCollection), typeof (Panel));
+
+			BackgroundProperty = DependencyProperty.Register (
+				"Background", typeof (Brush), typeof (Panel));
+		}
 		
 		public Panel ()
 		{
@@ -40,21 +48,21 @@ namespace System.Windows.Controls {
 		
 		public Brush Background {
 			get {
-				return background;
+				return (Brush) GetValue (BackgroundProperty);
 			}
 			
 			set {
-				background = value;
+				SetValue (BackgroundProperty, value);
 			}
 		}
 		
-		public System.Windows.Media.VisualCollection Children {
+		public VisualCollection Children {
 			get {
-				throw new NotImplementedException ();
+				return (VisualCollection) GetValue (BackgroundProperty);
 			}
 			
 			set {
-				throw new NotImplementedException ();
+				SetValue (ChildrenProperty, value);
 			}
 		}
 		

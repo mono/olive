@@ -1,11 +1,9 @@
 //
-// DependencyObject.cs
+// Point.cs
 //
 // Author:
-//   Iain McCoy (iain@mccoy.id.au)
 //   Miguel de Icaza (miguel@novell.com)
 //
-// Copyright 2005 Iain McCoy
 // Copyright 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -27,47 +25,76 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
 
 namespace System.Windows {
-	public class DependencyObject {
-		string name;
-		private static Dictionary<Type,Dictionary<string,DependencyProperty>> property_declarations =
-			new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+	public struct Point  {
+		double x, y;
+
+		public Point (double x, double y)
+		{
+			this.x = x;
+			this.y = y;
+		}
+
+		public static bool Equals (Point point1, Point point2)
+		{
+			return point1.x == point2.x && point1.y == point2.y;
+		}
 		
-		public virtual object GetValue(DependencyProperty dp)
+		public override bool Equals (object o)
 		{
-			throw new NotImplementedException ();
-		}
+			if (!(o is Point))
+				return false;
 
-		public void SetValue<T>(DependencyProperty dp, T value)
+			return Equals (this, (Point) o);
+		}
+		
+		public bool Equals (Point value)
 		{
-			throw new NotImplementedException ();
+			return value.x == x && value.y == y;
 		}
-
-		public DependencyObject FindName (string name)
-		{
-			throw new NotImplementedException ();			
-		}
-
-		public string Name {
-			get {
-				return name;
-			}
-		}
-
-		internal static void Register (Type t, DependencyProperty dp)
-                {
-			Dictionary<string,DependencyProperty> type_declarations;
 			
-			if (!property_declarations.TryGetValue (t, out type_declarations)){
-				property_declarations [t] = new Dictionary<string,DependencyProperty>();
-			}
+		public override int GetHashCode ()
+		{
+			return ((int) x) ^ ((int) y);
+		}
+			
+		public void Offset (double offsetX, double offsetY)
+		{
+			x += offsetX;
+			y += offsetY;
+		}
+		
+		public override string ToString ()
+		{
+			return String.Format ("{0},{1}", x, y);
+		}
 
-			if (!type_declarations.ContainsKey (dp.Name))
-				type_declarations [dp.Name] = dp;
-			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
-                }
+		public static bool operator == (Point point1, Point point2)
+		{
+			return (point1.x == point2.x) && (point1.y == point2.y);
+		}
+		
+		public static bool operator != (Point point1, Point point2)
+		{
+			return point1.x != point2.x || point1.y != point2.y;
+		}
+		
+		public static explicit operator Size (Point point)
+		{
+			return new Size (point.x, point.y);
+		}
+		
+
+		public double X {
+			get { return x; } 
+			set { x = value; } 
+		}
+		
+		public double Y {
+			get { return y; }
+			set { y = value; } 
+		}
+
 	}
 }

@@ -1,11 +1,9 @@
 //
-// DependencyObject.cs
+// LineSegment.cs
 //
 // Author:
-//   Iain McCoy (iain@mccoy.id.au)
 //   Miguel de Icaza (miguel@novell.com)
 //
-// Copyright 2005 Iain McCoy
 // Copyright 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -27,47 +25,26 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
 
-namespace System.Windows {
-	public class DependencyObject {
-		string name;
-		private static Dictionary<Type,Dictionary<string,DependencyProperty>> property_declarations =
-			new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+namespace System.Windows.Media {
+	public sealed class LineSegment : PathSegment {
 		
-		public virtual object GetValue(DependencyProperty dp)
+		static LineSegment ()
 		{
-			throw new NotImplementedException ();
+			PointProperty = DependencyProperty.Register (
+				"Point", typeof (Point), typeof (LineSegment));
 		}
-
-		public void SetValue<T>(DependencyProperty dp, T value)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public DependencyObject FindName (string name)
-		{
-			throw new NotImplementedException ();			
-		}
-
-		public string Name {
+		
+		public Point Point {
 			get {
-				return name;
+				return (Point) GetValue (PointProperty);
+			}
+			
+			set {
+				SetValue (PointProperty, value);
 			}
 		}
-
-		internal static void Register (Type t, DependencyProperty dp)
-                {
-			Dictionary<string,DependencyProperty> type_declarations;
-			
-			if (!property_declarations.TryGetValue (t, out type_declarations)){
-				property_declarations [t] = new Dictionary<string,DependencyProperty>();
-			}
-
-			if (!type_declarations.ContainsKey (dp.Name))
-				type_declarations [dp.Name] = dp;
-			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
-                }
+		
+		public static readonly DependencyProperty PointProperty;
 	}
 }

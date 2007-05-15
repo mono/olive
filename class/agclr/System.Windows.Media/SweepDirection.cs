@@ -1,5 +1,5 @@
 //
-// Canvas.cs
+// SweepDirectio.cs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -25,21 +25,12 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Windows;
 
-namespace System.Windows.Controls {
-	public class Canvas : Panel {
-		
-		static Canvas ()
-		{
-			LeftProperty = DependencyProperty.Register (
-				"Left", typeof (double), typeof (Canvas));
-
-			TopProperty = DependencyProperty.Register (
-				"Top", typeof (double), typeof (Canvas));
-		}
-
-		public static readonly DependencyProperty LeftProperty;
-		public static readonly DependencyProperty TopProperty;
+namespace System.Windows.Media {
+	
+	[Serializable]
+	public enum SweepDirection {
+		Counterclockwise,
+		Clockwise
 	}
 }

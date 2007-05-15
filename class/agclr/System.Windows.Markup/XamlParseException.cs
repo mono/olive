@@ -1,11 +1,9 @@
 //
-// DependencyObject.cs
+// XamlParseException.cs
 //
 // Author:
-//   Iain McCoy (iain@mccoy.id.au)
 //   Miguel de Icaza (miguel@novell.com)
 //
-// Copyright 2005 Iain McCoy
 // Copyright 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
@@ -27,47 +25,35 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
 
-namespace System.Windows {
-	public class DependencyObject {
-		string name;
-		private static Dictionary<Type,Dictionary<string,DependencyProperty>> property_declarations =
-			new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+// Temporary namespace, need to fix olive/class/PresentationFramework namespaces
+namespace System.Windows.Serialization {
+	public class XamlParseException : SystemException {
+		uint line, col;
 		
-		public virtual object GetValue(DependencyProperty dp)
+		internal XamlParseException ()
 		{
-			throw new NotImplementedException ();
+			line = 0;
+			col = 0;
 		}
-
-		public void SetValue<T>(DependencyProperty dp, T value)
+		
+		internal XamlParseException (string msg) : base (msg)
 		{
-			throw new NotImplementedException ();
+			line = 0;
+			col = 0;
 		}
-
-		public DependencyObject FindName (string name)
+		
+		internal XamlParseException (uint line, uint col)
 		{
-			throw new NotImplementedException ();			
+			this.line = line;
+			this.col = col;
 		}
-
-		public string Name {
-			get {
-				return name;
-			}
+		
+		public uint LineNumber {
+			get { return line; }
 		}
-
-		internal static void Register (Type t, DependencyProperty dp)
-                {
-			Dictionary<string,DependencyProperty> type_declarations;
-			
-			if (!property_declarations.TryGetValue (t, out type_declarations)){
-				property_declarations [t] = new Dictionary<string,DependencyProperty>();
-			}
-
-			if (!type_declarations.ContainsKey (dp.Name))
-				type_declarations [dp.Name] = dp;
-			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
-                }
+		public uint LinePosition {
+			get { return col; }
+		}
 	}
 }
