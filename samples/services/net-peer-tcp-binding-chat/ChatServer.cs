@@ -13,20 +13,32 @@ using System.ServiceModel.PeerResolvers;
 
 namespace ChatServer
 {
-        public class ChatServer
-        {
-                public static void Main ()
-                {
-                        CustomPeerResolverService cprs;
-                        ServiceHost host;
+	public class ChatServer
+	{
+		public static void Main ()
+		{
+			CustomPeerResolverService cprs;
+			ServiceHost sh;
 
-                        try {
-                                cprs = new CustomPeerResolverService ();
+			try {
+				cprs = new CustomPeerResolverService ();
 
-                                cprs.RefreshInterval = TimeSpan.FromSeconds (5);
-                        } catch (Exception e) {
-                                Console.WriteLine ("[!] {0}", e.Message);
-                        }
-                }
-        }
+				cprs.RefreshInterval = TimeSpan.FromSeconds(5);
+
+				sh = new ServiceHost(cprs);
+				
+				cprs.ControlShape = true;
+				cprs.Open();
+				sh.Open(TimeSpan.FromDays(1000000));
+				
+				Console.WriteLine("Server started successfully.");
+				Console.ReadLine();
+				
+				cprs.Close();
+				sh.Close();
+			} catch (Exception e) {
+				Console.WriteLine ("[!] {0}", e.Message);
+			}
+		}
+	}
 }
