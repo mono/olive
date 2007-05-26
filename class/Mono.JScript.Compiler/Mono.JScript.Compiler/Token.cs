@@ -11,7 +11,8 @@ namespace Mono.JScript.Compiler
 		/// </summary>
 		public enum Type
 		{
-			EOF = 0,
+			None = 0,
+			EndOfInput = 0,
 
 			//Punctuator
 			LeftBrace,// {
@@ -40,12 +41,12 @@ namespace Mono.JScript.Compiler
 			LessLess,// << 
 			GreaterGreater,// >> 
 			GreaterGreaterGreater,// >>> 
-			And,// & 
+			Ampersand,// & 
 			Bar,// | 
 			Circumflex,// ^
 			Bang,// ! 
 			Tilda,// ~ 
-			AndAnd,// && 
+			AmpersandAmpersand,// && 
 			BarBar,// || 
 			Question,// ? 
 			Colon,// :
@@ -57,11 +58,11 @@ namespace Mono.JScript.Compiler
 			LessLessEqual,// <<=
 			GreaterGreaterEqual,// >>= 
 			GreaterGreaterGreaterEqual,// >>>= 
-			AndEqual,// &= 
+			AmpersandEqual,// &= 
 			BarEqual,// |= 
 			CircumflexEqual,// ^=
-			Slash,// / 
-			SlashEqual,// /=
+			Divide,// / 
+			DivideEqual,// /=
 
 			//Keywords
 			Break,
@@ -129,12 +130,14 @@ namespace Mono.JScript.Compiler
 			False,
 			NumericLiteral,
 			HexIntegerLiteral,
+			OctalIntegerLiteral,
 			StringLiteral,
 			RegularExpressionLiteral,
 
 			Identifier,
 
-			Error
+			Bad,
+			Comment
 		}
 
 		public Token(Token.Type Kind, int StartPosition, int StartLine, int StartColumn, bool FirstOnLine)

@@ -36,12 +36,12 @@ namespace Mono.JScript.Compiler
 			//whereas we already know it here
 
 			if (!Advance())
-				return new Token (Token.Type.EOF, position, row, position - lineStartPosition, position == lineStartPosition);
+				return new Token (Token.Type.EndOfInput, position, row, position - lineStartPosition, position == lineStartPosition);
 
 			StripWhiteSpace();
 
 			if (!Advance())
-				return new Token (Token.Type.EOF, position, row, position - lineStartPosition, position == lineStartPosition);
+				return new Token (Token.Type.EndOfInput, position, row, position - lineStartPosition, position == lineStartPosition);
 
 			char next = source[position];
 			int nextPos;
@@ -172,13 +172,13 @@ namespace Mono.JScript.Compiler
 					nextPos = position + 1;
 					if (nextPos < source.Length && source[nextPos] == '&') {
 						position++;
-						return CreateToken(Token.Type.AndAnd);
+						return CreateToken(Token.Type.AmpersandAmpersand);
 					}
 					else if (nextPos < source.Length && source[nextPos] == '=') {
 						position++;
-						return CreateToken(Token.Type.AndEqual);
+						return CreateToken(Token.Type.AmpersandEqual);
 					}
-					return CreateToken(Token.Type.And);
+					return CreateToken (Token.Type.Ampersand);
 				case '|':
 					nextPos = position + 1;
 					if (nextPos < source.Length && source[nextPos] == '|') {
@@ -207,7 +207,7 @@ namespace Mono.JScript.Compiler
 					nextPos = position + 1;
 					if (nextPos < source.Length && source[nextPos] == '=') {
 						position++;
-						return CreateToken(Token.Type.SlashEqual);
+						return CreateToken(Token.Type.DivideEqual);
 					}
 					else if (nextPos < source.Length && source[nextPos] == '/') {
 						position++;
@@ -219,7 +219,7 @@ namespace Mono.JScript.Compiler
 						CreateBlockComment();
 						return GetNext ();
 					}
-					return CreateToken(Token.Type.Slash);
+					return CreateToken(Token.Type.Divide);
 				case '0':
 				case '1':
 				case '2':
@@ -288,7 +288,7 @@ namespace Mono.JScript.Compiler
 				case '_':
 					return this.CreateIdentOrKeyword();
 			}
-			return CreateToken(Token.Type.Error);
+			return CreateToken(Token.Type.Bad);
 		}
 
 		public RegularExpressionLiteralToken ScanRegularExpression (Token Divide)
@@ -412,6 +412,7 @@ namespace Mono.JScript.Compiler
 				current = new Token (type, position, row, position - lineStartPosition, position == lineStartPosition);
 				return current;
 			}
+			this.IDTable.InsertIdentifier (result);
 			current = new Token (Token.Type.Identifier, position, row, position - lineStartPosition, position == lineStartPosition);
 			return current;
 		}
@@ -441,7 +442,7 @@ namespace Mono.JScript.Compiler
 					case '.': {
 							dot++;
 							if (dot > 1) {
-								current = new Token (Token.Type.Error, position, row, position - lineStartPosition, position == lineStartPosition);
+								current = new Token (Token.Type.Bad, position, row, position - lineStartPosition, position == lineStartPosition);
 								return current;
 							}
 							builder.Append(next);

@@ -19,7 +19,7 @@ namespace Mono.JScript.Compiler.Tests
 			//Assert.AreEqual("10", l1.Value());
 			Assert.AreEqual (Token.Type.SemiColon, l1.GetNext().Kind);    
 			//Assert.IsFalse(l1.Advance());
-			Assert.AreEqual (Token.Type.EOF, l1.GetNext().Kind);   
+			Assert.AreEqual (Token.Type.EndOfInput, l1.GetNext().Kind);   
 		}
 
 		[Test]
@@ -31,7 +31,7 @@ namespace Mono.JScript.Compiler.Tests
 			Assert.AreEqual (Token.Type.PlusPlus, l1.GetNext().Kind);
 			Assert.AreEqual (Token.Type.SemiColon, l1.GetNext().Kind);
 			//Assert.IsFalse(l1.Advance());
-			Assert.AreEqual (Token.Type.EOF, l1.GetNext().Kind);
+			Assert.AreEqual (Token.Type.EndOfInput, l1.GetNext ().Kind);
 		}
 
 		[Test]
@@ -43,7 +43,7 @@ namespace Mono.JScript.Compiler.Tests
 			Assert.AreEqual (Token.Type.MinusMinus, l1.GetNext().Kind);
 			Assert.AreEqual (Token.Type.SemiColon, l1.GetNext().Kind);
 			//Assert.IsFalse(l1.Advance());
-			Assert.AreEqual (Token.Type.EOF, l1.GetNext().Kind);
+			Assert.AreEqual (Token.Type.EndOfInput, l1.GetNext ().Kind);
 		}
 	}
 }

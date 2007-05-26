@@ -39,10 +39,21 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="Mono.JScript.Compiler.ParseTree\BlockStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\Expression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\Statement.cs" />
+    <Compile Include="Mono.JScript.Compiler\BadToken.cs" />
     <Compile Include="Mono.JScript.Compiler\Comment.cs" />
+    <Compile Include="Mono.JScript.Compiler\Compiler.cs" />
+    <Compile Include="Mono.JScript.Compiler\DList.cs" />
+    <Compile Include="Mono.JScript.Compiler\Identifier.cs" />
     <Compile Include="Mono.JScript.Compiler\IdentifierTable.cs" />
+    <Compile Include="Mono.JScript.Compiler\JavaScriptCompiler.cs" />
+    <Compile Include="Mono.JScript.Compiler\NumericLiteralToken.cs" />
+    <Compile Include="Mono.JScript.Compiler\Parser.cs" />
     <Compile Include="Mono.JScript.Compiler\RegularExpressionLiteralToken.cs" />
     <Compile Include="Mono.JScript.Compiler\SourceLocation.cs" />
+    <Compile Include="Mono.JScript.Compiler\StringLiteralToken.cs" />
     <Compile Include="Mono.JScript.Compiler\TextSpan.cs" />
     <Compile Include="Mono.JScript.Compiler\Tokenizer.cs" />
     <Compile Include="Mono.JScript.Compiler\Token.cs" />
@@ -54,7 +65,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Mono.JScript.Compiler.Hosting\" />
-    <Folder Include="Mono.JScript.Compiler.ParseTree\" />
     <Folder Include="Mono.JScript.Compiler.Shell\" />
   </ItemGroup>
 </Project>
