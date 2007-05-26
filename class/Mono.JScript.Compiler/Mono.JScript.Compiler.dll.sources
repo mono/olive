@@ -1,7 +1,7 @@
-Mono.JScript.Compiler/ILexer.cs
-Mono.JScript.Compiler/IParser.cs
-Mono.JScript.Compiler/JScriptLexer.cs
-Mono.JScript.Compiler/JScriptParser.cs
-Mono.JScript.Compiler/Location.cs
-Mono.JScript.Compiler/SourceFile.cs
+Mono.JScript.Compiler/Comment.cs
+Mono.JScript.Compiler/IdentifierTable.cs
+Mono.JScript.Compiler/RegularExpressionLiteralToken.cs
+Mono.JScript.Compiler/SourceLocation.cs
+Mono.JScript.Compiler/TextSpan.cs
 Mono.JScript.Compiler/Token.cs
+Mono.JScript.Compiler/Tokenizer.cs
