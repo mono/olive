@@ -1,0 +1,13 @@
+http://www.dotnetguru.org/articles/dossiers/creercompilo/compilateurdnet.htm
+http://tirania.org/blog/archive/2007/May-23.html
+http://www.mono-project.com/Moonlight#JavaScript_compiler
+
+
+
+TODO LIST:
+
+* Analyse lexicale: c'est à dire reconnaître les mots dans le code source à compiler (par exemple pour le MyJScript: "var", "function", "if" ou "+"),
+* Analyse syntaxique: c'est à dire vérifier que les mots sont bien dans le bon ordre,
+* Construction d'un arbre syntaxique: c'est à dire construire en mémoire un arbre représentant le code à compiler,
+* Générer: parcourir l'arbre en mémoire et générer le code,
+* Compiler: compiler le code en du code IL binaire.

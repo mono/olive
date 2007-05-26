@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual C# Express 2005
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.JScript.Compiler.Tests", "test\Mono.JScript.Compiler.Tests.csproj", "{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Mono.JScript.Compiler", "Mono.JScript.Compiler.csproj", "{03952B85-C1DB-4253-B822-AF37BD6B1C66}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
