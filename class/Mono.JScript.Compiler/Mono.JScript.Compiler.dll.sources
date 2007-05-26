@@ -5,3 +5,14 @@ Mono.JScript.Compiler/SourceLocation.cs
 Mono.JScript.Compiler/TextSpan.cs
 Mono.JScript.Compiler/Token.cs
 Mono.JScript.Compiler/Tokenizer.cs
+Mono.JScript.Compiler/BadToken.cs
+Mono.JScript.Compiler/Compiler.cs
+Mono.JScript.Compiler/DList.cs
+Mono.JScript.Compiler/Identifier.cs
+Mono.JScript.Compiler/JavaScriptCompiler.cs
+Mono.JScript.Compiler/NumericLiteralToken.cs
+Mono.JScript.Compiler/Parser.cs
+Mono.JScript.Compiler/StringLiteralToken.cs
+Mono.JScript.Compiler.ParseTree/BlockStatement.cs
+Mono.JScript.Compiler.ParseTree/Expression.cs
+Mono.JScript.Compiler.ParseTree/Statement.cs
