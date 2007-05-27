@@ -525,6 +525,9 @@ namespace Mono.JScript.Compiler
 			keywords.Add("null", Token.Type.Null);
 			keywords.Add("true", Token.Type.True);
 			keywords.Add("false", Token.Type.False);
+
+			foreach (string key in keywords.Keys)
+				IDTable.InsertIdentifier (key);
 		}
 
 		private void StripWhiteSpace()
@@ -554,12 +557,34 @@ namespace Mono.JScript.Compiler
 
 		private void CreateBlockComment()
 		{
-			throw new Exception("The method or operation is not implemented.");
+			int startPosition = position;
+			int startline = row;
+			int startcolumn = position - lineStartPosition;
+			char next = source[position];
+			StringBuilder builder = new StringBuilder ();
+			while ((next != '*') && (position + 1 < source.Length) && (source[position + 1] != '/')) {
+				builder.Append (next);
+				if (next == '\n') {
+					row++;
+					lineStartPosition = position;
+				}
+				position++;
+				next = source[position];
+			}
+			comments.Add (new Comment (builder.ToString (), new TextSpan (startline, startcolumn, row, position - lineStartPosition, startPosition, position)));
 		}
 
 		private void CreateLineComment()
 		{
-			throw new Exception("The method or operation is not implemented.");
+			int startPosition = position;
+			char next = source[position];
+			StringBuilder builder = new StringBuilder();
+			while (next != '\n' && position < source.Length) {
+				builder.Append (next);
+				position++;
+				next = source[position];
+			}
+			comments.Add(new Comment(builder.ToString(),new TextSpan(row, startPosition - lineStartPosition, row, position - lineStartPosition, startPosition,position)));
 		}
 	}
 }

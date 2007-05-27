@@ -6,24 +6,31 @@ namespace Mono.JScript.Compiler
 {
 	public class IdentifierTable
 	{
+
+		private Dictionary<string, Identifier> identifiers;
 		public IdentifierTable ()
 		{
-			throw new NotImplementedException ();
+			identifiers = new Dictionary<string, Identifier> ();
 		}
 
 		public Identifier InsertIdentifier (string Spelling)
 		{
-			throw new NotImplementedException ();
+			Identifier result = identifiers[Spelling];
+			if (result == null) {
+				result = new Identifier (Spelling, this);
+				identifiers.Add (Spelling, result);
+			}
+			return result;
 		}
 
 		public Identifier InsertIdentifier (char[] Text, int StartIndex, int Count)
 		{
-			throw new NotImplementedException ();
+			return InsertIdentifier (Text.ToString ());
+			//TODO : must have to do something to do with count and StartIndex
 		}
-
-		
+				
 		public int NextIdentifierID {
-			get { throw new NotImplementedException (); } 
+			get { return identifiers.Count; } 
 		}
 
 	}

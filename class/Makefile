@@ -12,6 +12,7 @@ SUBDIRS = \
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
 	WindowsBase			\
+	Mono.JScript.Compiler			\	
 	PresentationFramework		\
 	System.Runtime.Serialization	\
 	System.IdentityModel		\
