@@ -1,5 +1,9 @@
 2007-05-27  Olivier Dufour  <olivier.duff@gmail.com>
 
+	* Go ahead in parser
+	
+2007-05-27  Olivier Dufour  <olivier.duff@gmail.com>
+
 	* Add a lof of stubs :BlockStatement, Expression, Statement, BadToken, Compiler, DList, Identifier, JavaScriptCompiler, NumericLiteralToken, Parser, StringLiteralToken
 	* Start to done the manual parser
 	
