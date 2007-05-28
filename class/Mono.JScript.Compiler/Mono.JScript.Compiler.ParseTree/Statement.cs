@@ -11,7 +11,8 @@ namespace Mono.JScript.Compiler.ParseTree
 
 		public Statement (Operation Opcode, TextSpan Location)
 		{
-			throw new NotImplementedException ();
+			this.Opcode = Opcode;
+			this.Location = Location;
 		}
 
 		public enum Operation

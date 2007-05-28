@@ -11,6 +11,8 @@ namespace Mono.JScript.Compiler.ParseTree
 
 		public Expression (Operation Opcode, TextSpan Location)
 		{
+			this.Opcode = Opcode;
+			this.Location = Location;
 		}
 
 		public enum Operation

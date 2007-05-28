@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Mono.JScript.Compiler
 {
-	public struct Token
+	public class Token
 	{
 		/// <summary>
 		/// Token types from ECMA-262
@@ -154,6 +154,14 @@ namespace Mono.JScript.Compiler
 		public readonly int StartLine;
 		public readonly int StartPosition;
 		private bool firstOnLine;
+		public Token InsertSemicolonBefore()
+		{
+			throw new NotImplementedException();
+		}
+
+		public virtual int Width {
+			get { throw new NotImplementedException(); }
+		}
 
 		public bool FirstOnLine
 		{

@@ -8,9 +8,10 @@ namespace Mono.JScript.Compiler.ParseTree
 	{
 		public readonly DList<Statement, BlockStatement> Children;
 		
-		public BlockStatement (DList<Statement, BlockStatement> Children, TextSpan Location) : base(Statement.Operation.Block, Location)
+		public BlockStatement (DList<Statement, BlockStatement> Children, TextSpan Location) 
+			:base(Statement.Operation.Block, Location)
 		{
-			throw new NotImplementedException ();
+			this.Children = Children;
 		}
 
 	}

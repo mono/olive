@@ -39,32 +39,98 @@
   </Target>
   -->
   <ItemGroup>
+    <Compile Include="Mono.JScript.Compiler.Hosting\LanguageProvider.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ArgumentList.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ArrayLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\BinaryOperatorExpression.cs" />
     <Compile Include="Mono.JScript.Compiler.ParseTree\BlockStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\BreakOrContinueStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\CaseClause.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\CatchClause.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\DeclarationForInStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\DeclarationForStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\DefaultCaseClause.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\DoStatement.cs" />
     <Compile Include="Mono.JScript.Compiler.ParseTree\Expression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ExpressionForInStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ExpressionForStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ExpressionListElement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ExpressionStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\FinallyClause.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ForInStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ForStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\FunctionDefinition.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\FunctionExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\FunctionStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\HexLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\IdentifierExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\IfStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\InitializerVariableDeclaration.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\InvocationExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\LabelStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\LoopStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\NullExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\NumericLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ObjectLiteralElement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ObjectLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\OctalLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\Parameter.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\QualifiedExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\RegularExpressionLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ReturnOrThrowStatement.cs" />
     <Compile Include="Mono.JScript.Compiler.ParseTree\Statement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\StringLiteralExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\SubscriptExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\SwitchStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\TernaryOperatorExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\TryStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\UnaryOperatorExpression.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\ValueCaseClause.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\VariableDeclaration.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\VariableDeclarationListElement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\VariableDeclarationStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\WhileStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.ParseTree\WithStatement.cs" />
+    <Compile Include="Mono.JScript.Compiler.Shell\CommandLine.cs" />
+    <Compile Include="Mono.JScript.Compiler.Shell\ConsoleOptions.cs" />
     <Compile Include="Mono.JScript.Compiler\BadToken.cs" />
     <Compile Include="Mono.JScript.Compiler\Comment.cs" />
     <Compile Include="Mono.JScript.Compiler\Compiler.cs" />
+    <Compile Include="Mono.JScript.Compiler\CompilerOption.cs" />
+    <Compile Include="Mono.JScript.Compiler\Diagnostic.cs" />
     <Compile Include="Mono.JScript.Compiler\DList.cs" />
+    <Compile Include="Mono.JScript.Compiler\Engine.cs" />
+    <Compile Include="Mono.JScript.Compiler\EngineOptions.cs" />
+    <Compile Include="Mono.JScript.Compiler\GlobalEnum.cs" />
+    <Compile Include="Mono.JScript.Compiler\HexIntegerLiteralToken.cs" />
     <Compile Include="Mono.JScript.Compiler\Identifier.cs" />
+    <Compile Include="Mono.JScript.Compiler\IdentifierMappingTable.cs" />
     <Compile Include="Mono.JScript.Compiler\IdentifierTable.cs" />
+    <Compile Include="Mono.JScript.Compiler\IdentifierToken.cs" />
     <Compile Include="Mono.JScript.Compiler\JavaScriptCompiler.cs" />
     <Compile Include="Mono.JScript.Compiler\NumericLiteralToken.cs" />
+    <Compile Include="Mono.JScript.Compiler\OctalIntegerLiteralToken.cs" />
+    <Compile Include="Mono.JScript.Compiler\OptionsParser.cs" />
     <Compile Include="Mono.JScript.Compiler\Parser.cs" />
     <Compile Include="Mono.JScript.Compiler\RegularExpressionLiteralToken.cs" />
-    <Compile Include="Mono.JScript.Compiler\SourceLocation.cs" />
+    <Compile Include="Mono.JScript.Compiler\RowanGenerator.cs" />
+    <Compile Include="Mono.JScript.Compiler\SplayTree.cs" />
     <Compile Include="Mono.JScript.Compiler\StringLiteralToken.cs" />
+    <Compile Include="Mono.JScript.Compiler\Strings.cs" />
+    <Compile Include="Mono.JScript.Compiler\Table.cs" />
+    <Compile Include="Mono.JScript.Compiler\TextPoint.cs" />
     <Compile Include="Mono.JScript.Compiler\TextSpan.cs" />
+    <Compile Include="Mono.JScript.Compiler\TokenCategorizer.cs" />
     <Compile Include="Mono.JScript.Compiler\Tokenizer.cs" />
     <Compile Include="Mono.JScript.Compiler\Token.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Scripting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Silverlight\Microsoft.Scripting.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Mono.JScript.Compiler.Hosting\" />
-    <Folder Include="Mono.JScript.Compiler.Shell\" />
   </ItemGroup>
 </Project>

@@ -1,35 +1,22 @@
-﻿using System.Reflection;
-using System.Runtime.CompilerServices;
+//
+// AssemblyInfo.cs
+//
+// Author:
+//   Olivier Dufour ( olivier.duff@gmail.com)
+//
+
+using System;
+using System.Reflection;
 using System.Runtime.InteropServices;
 
-// Les informations générales relatives à un assembly dépendent de 
-// l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
-// associées à un assembly.
-[assembly: AssemblyTitle("Mono.JScript.Compiler")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("PepsiCo France")]
-[assembly: AssemblyProduct("Mono.JScript.Compiler")]
-[assembly: AssemblyCopyright("Copyright © PepsiCo France 2007")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+[assembly: AssemblyVersion (Consts.FxVersion)]
 
-// L'affectation de la valeur false à ComVisible rend les types invisibles dans cet assembly 
-// aux composants COM. Si vous devez accéder à un type dans cet assembly à partir de 
-// COM, affectez la valeur true à l'attribut ComVisible sur ce type.
-[assembly: ComVisible(false)]
+[assembly: AssemblyTitle ("Microsoft.JScript.Compiler")]
+[assembly: AssemblyDescription ("")]
+[assembly: CLSCompliant (true)]
+[assembly: AssemblyFileVersion ("1.0.0.0")]
+[assembly: ComVisible (false)]
 
-// Le GUID suivant est pour l'ID de la typelib si ce projet est exposé à COM
-[assembly: Guid("bd021e21-0dfa-4ff9-a9d3-c66f81d30e1c")]
+[assembly: AssemblyDelaySign (true)]
+[assembly: AssemblyKeyFile ("../mono.pub")]
 
-// Les informations de version pour un assembly se composent des quatre valeurs suivantes :
-//
-//      Version principale
-//      Version secondaire 
-//      Numéro de build
-//      Révision
-//
-// Vous pouvez spécifier toutes les valeurs ou indiquer les numéros de révision et de build par défaut 
-// en utilisant '*', comme indiqué ci-dessous :
-[assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]

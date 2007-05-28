@@ -79,13 +79,16 @@ namespace Mono.JScript.Compiler
 
 		public Expression ParseExpression (ref List<Comment> Comments)
 		{
-			throw new NotImplementedException ();
+			Expression ex = ParseExpression();
+			Comments = lexer.Comments;
+			return ex;
 		}
 
 		public Statement ParseStatement (ref List<Comment> Comments)
 		{
-			return ParseStatement ();
+			Statement sta = ParseStatement ();
 			Comments = lexer.Comments;
+			return sta;
 		}
 
 		private Statement ParseStatement ()
@@ -138,14 +141,13 @@ namespace Mono.JScript.Compiler
 					Next ();
 					ParseExpression ();
 					break;
+				default:
+					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
+					break;
 			}
 			//TODO
-			/*
-		| proc_call { $$ = $1; }
-		| inner_call
-		| increment_or_decremente
-		*/
-			throw new Exception ("The method or operation is not implemented.");
+			return new Statement(Statement.Operation.Block, new TextSpan(0, 0, 0, 0, 0, 0));
+			
 		}
 
 		private void ParseVarDeclaration ()
@@ -208,7 +210,7 @@ namespace Mono.JScript.Compiler
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseExpression ()
+		private Expression ParseExpression ()
 		{
 			switch (current.Kind) {
 				case Token.Type.Equal:
@@ -250,7 +252,13 @@ namespace Mono.JScript.Compiler
 				case Token.Type.New:
 					ParseNew ();
 					break;
+				default:
+					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
+					break;
 			}
+			//TODO
+			return new Expression(Expression.Operation.Bang, new TextSpan(0, 0, 0, 0, 0, 0));
+			
 		}
 
 		private void ParseGreaterGreater ()
