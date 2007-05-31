@@ -1,3 +1,9 @@
+2007-05-31  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* rename Mono.JScript.Compiler => Microsoft.JScript.Compiler
+	* rename Mono.JScript.Runtime => Microsoft.JScript.Runtime
+	* rename Mono.Scripting => Microsoft.Scripting
+	
 2007-05-30  Joel Reed  <joelwreed@comcast.com>
 
 	* add initial code for System.ServiceModel.Web.dll, with
