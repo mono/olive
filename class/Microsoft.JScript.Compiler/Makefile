@@ -1,7 +1,7 @@
-thisdir = class/Mono.JScript.Compiler
+thisdir = class/Microsoft.JScript.Compiler
 include ../../build/rules.make
 
-LIBRARY = Mono.JScript.Compiler.dll
+LIBRARY = Microsoft.JScript.Compiler.dll
 
 LIB_MCS_FLAGS = -r:System.dll
 
