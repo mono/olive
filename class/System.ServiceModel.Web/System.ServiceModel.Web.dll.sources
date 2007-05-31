@@ -1,0 +1,13 @@
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+SyndicationFeed.cs
+SyndicationItem.cs
+Atom10Serializer.cs
+TextSyndicationContent.cs
+SyndicationContent.cs
+TextSyndicationContentKind.cs
+SyndicationSerializer.cs
+Rss20Serializer.cs
+SyndicationLink.cs

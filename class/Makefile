@@ -16,7 +16,8 @@ SUBDIRS = \
 	System.Runtime.Serialization	\
 	System.IdentityModel		\
 	System.IdentityModel.Selectors	\
-	System.ServiceModel
+	System.ServiceModel \
+	System.ServiceModel.Web
 
 DIST_PROFILE_DIRS = net_3_0
 
