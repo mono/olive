@@ -1,7 +1,7 @@
-thisdir = class/Mono.Scripting
+thisdir = class/Microsoft.Scripting
 include ../../build/rules.make
 
-LIBRARY = Mono.Scripting.dll
+LIBRARY = Microsoft.Scripting.dll
 
 LIB_MCS_FLAGS = -r:WindowsBase.dll -r:System.dll
 
