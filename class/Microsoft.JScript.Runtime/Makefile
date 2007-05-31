@@ -1,7 +1,7 @@
-thisdir = class/Mono.JScript.Runtime
+thisdir = class/Microsoft.JScript.Runtime
 include ../../build/rules.make
 
-LIBRARY = Mono.JScript.Runtime.dll
+LIBRARY = Microsoft.JScript.Runtime.dll
 
 LIB_MCS_FLAGS = -r:WindowsBase.dll -r:System.dll
 
