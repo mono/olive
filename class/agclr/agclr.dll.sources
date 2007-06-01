@@ -49,9 +49,12 @@ System.Windows.Media/FillRule.cs
 System.Windows.Media/Geometry.cs
 System.Windows.Media/LineSegment.cs
 System.Windows.Media/PathSegment.cs
+System.Windows.Media/PenLineCap.cs
+System.Windows.Media/PenLineJoin.cs
 System.Windows.Media/PolyBezierSegment.cs
 System.Windows.Media/PolyLineSegment.cs
 System.Windows.Media/PolyQuadraticBezierSegment.cs
+System.Windows.Media/Stretch.cs
 System.Windows.Media/SweepDirection.cs
 System.Windows.Media/TransformCollection.cs
 System.Windows.Media/Transform.cs
