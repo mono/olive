@@ -1,3 +1,4 @@
-2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
 
+	* Downloader.cs: New. (incomplete)
 	* Rect.cs: New. Structure (imcomplete)

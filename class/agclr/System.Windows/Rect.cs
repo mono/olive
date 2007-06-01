@@ -30,8 +30,19 @@ namespace System.Windows {
 
 	public struct Rect {
 
+		private double x, y, w, h;
+
 		public Rect (double x, double y, double width, double height)
 		{
+			this.x = x;
+			this.y = y;
+			w = width;
+			h = height;
+		}
+
+		public override string ToString ()
+		{
+			return String.Format ("{0},{1},{2},{3}", x, y, w, h);
 		}
 	}
 }
