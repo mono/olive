@@ -16,6 +16,15 @@ namespace Mono.JScript.Compiler
 			this.endPosition = EndPosition;
 		}
 
+		internal TextSpan (Token start, Token end)
+		{
+			this.startLine = start.StartLine;
+			this.startColumn = start.StartColumn;
+			this.endLine = end.StartLine;
+			this.endColumn = end.StartColumn + end.Width;
+			this.startPosition = end.StartPosition + end.Width;
+			this.endPosition = EndPosition;
+		}
 
 		private int startLine;
 		private int startColumn;

@@ -16,10 +16,15 @@ namespace Mono.JScript.Compiler
 			lexer = new Tokenizer (Input, IDTable);
 		}
 
+		#region private fields
+
 		private Tokenizer lexer;
 		private Token current;
 		private List<String> SyntaxError = new List<string>();
 		private bool syntaxIncomplete = false;
+		#endregion
+
+		#region public methods
 
 		public DList<Statement, BlockStatement> ParseProgram (ref List<Comment> Comments)
 		{
@@ -35,48 +40,7 @@ namespace Mono.JScript.Compiler
 			Comments = lexer.Comments;
 			return result;
 		}
-
-		public Statement ParseFunctionDeclaration()
-		{
-			Token start = current;
-			Next ();
-			CheckSyntaxExpected (Token.Type.Identifier);
-			Next ();
-			CheckSyntaxExpected(Token.Type.LeftParenthesis);
-			Next ();
-			ParseListParametter ();
-			CheckSyntaxExpected (Token.Type.RightParenthesis);
-			Next ();
-			ParseBlock ();
-			return new Statement (Statement.Operation.Function, new TextSpan (start.StartLine,start.StartColumn,lexer.Position.Line,lexer.Position.Column, start.StartPosition,lexer.Position.Index));
-		}
-
-		private void ParseListParametter ()
-		{
-			CheckSyntaxExpected (Token.Type.Identifier);
-			Next ();
-			while (current.Kind == Token.Type.Coma) {
-				Next ();
-				CheckSyntaxExpected (Token.Type.Identifier);
-				Next ();
-			}
-		}
-
-		private void ParseBlock ()
-		{
-			CheckSyntaxExpected (Token.Type.LeftBrace);
-			Next ();
-			ParseListStatement ();
-			CheckSyntaxExpected (Token.Type.RightBrace);
-		}
-
-		private void ParseListStatement ()
-		{
-			while (current.Kind != Token.Type.RightBrace && current.Kind != Token.Type.EndOfInput) {
-				ParseStatement ();
-			}
-		}
-
+				
 		public Expression ParseExpression (ref List<Comment> Comments)
 		{
 			Expression ex = ParseExpression();
@@ -89,6 +53,90 @@ namespace Mono.JScript.Compiler
 			Statement sta = ParseStatement ();
 			Comments = lexer.Comments;
 			return sta;
+		}
+
+		public bool SyntaxIncomplete ()
+		{
+			return syntaxIncomplete;
+		}
+
+		public bool SyntaxOK ()
+		{
+			return (SyntaxError.Count > 0);
+		}
+
+		#endregion
+
+		private Statement ParseFunctionDeclaration()
+		{
+			Token start = current;
+
+			Next ();
+			CheckSyntaxExpected (Token.Type.Identifier);
+			Identifier id = ((IdentifierToken)current).Spelling;
+			TextPoint NameLocation = new TextPoint (this.current.StartPosition);
+
+			Next ();
+			CheckSyntaxExpected(Token.Type.LeftParenthesis);
+			TextPoint leftParenLocation = new TextPoint(this.current.StartPosition);
+			
+			Next ();
+			List<Parameter> parametters = ParseListParametter ();
+			CheckSyntaxExpected (Token.Type.RightParenthesis);
+			TextPoint rightParenLocation = new TextPoint (this.current.StartPosition);
+			Token headerEnd = this.current;
+			
+			Next ();
+			BlockStatement body = ParseBlock ();
+			TextSpan location = new TextSpan (start,current);
+			TextSpan HeaderLocation = new TextSpan (start,headerEnd);
+
+
+			FunctionDefinition func = new FunctionDefinition(id,parametters,body,location,HeaderLocation,NameLocation,leftParenLocation,rightParenLocation);
+			return new FunctionStatement (func);
+		}
+		
+		private List<Parameter> ParseListParametter ()
+		{
+			List<Parameter> result = new List<Parameter>();
+			if (current.Kind == Token.Type.RightParenthesis)
+				return result;
+
+			CheckSyntaxExpected (Token.Type.Identifier);
+			Next ();
+			TextPoint comma;
+			while (current.Kind == Token.Type.Comma) {
+				comma = new TextPoint (current.StartPosition);
+				Next ();
+				CheckSyntaxExpected (Token.Type.Identifier);
+				result.Add (new Parameter ((current as IdentifierToken).Spelling, new TextSpan (current, current), comma));
+				Next ();
+			}
+			return result;
+		}
+
+		private BlockStatement ParseBlock ()
+		{
+			Token start = current;
+			DList<Statement,BlockStatement> children = new DList<Statement,BlockStatement>();
+
+			CheckSyntaxExpected (Token.Type.LeftBrace);
+			
+			Next ();
+			List<Statement> statements = ParseListStatement ();
+			foreach (Statement statement in statements)
+				children.Append (statement);
+			CheckSyntaxExpected (Token.Type.RightBrace);
+			return new BlockStatement (children, new TextSpan (start, current));
+		}
+
+		private List<Statement> ParseListStatement ()
+		{
+			List<Statement> result = new List<Statement>();
+			while (current.Kind != Token.Type.RightBrace && current.Kind != Token.Type.EndOfInput) {
+				result.Add(ParseStatement ());
+			}
+			return result;
 		}
 
 		private Statement ParseStatement ()
@@ -330,21 +378,13 @@ namespace Mono.JScript.Compiler
 		{
 			current = lexer.GetNext ();
 		}
+
 		private void CheckSyntaxExpected (Token.Type type)
 		{
 			if (current.Kind != type)
 				SyntaxError.Add (Enum.GetName (typeof(Token.Type), type) + " expected.");
 		}
 
-		public bool SyntaxIncomplete ()
-		{
-			return syntaxIncomplete;
-		}
-
-		public bool SyntaxOK ()
-		{
-			return (SyntaxError.Count > 0);
-		}
 
 	}
 }

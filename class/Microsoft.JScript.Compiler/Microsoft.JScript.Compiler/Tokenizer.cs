@@ -65,7 +65,7 @@ namespace Mono.JScript.Compiler
 				case ';':
 					return CreateToken(Token.Type.SemiColon);
 				case ',':
-					return CreateToken(Token.Type.Coma);
+					return CreateToken(Token.Type.Comma);
 				case '<':
 					nextPos = position + 1;
 					if (nextPos < source.Length && source[nextPos] == '=') {

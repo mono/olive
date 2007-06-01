@@ -23,7 +23,7 @@ namespace Mono.JScript.Compiler
 			RightBracket,// ]
 			Dot,// .
 			SemiColon,// ;
-			Coma,// , 
+			Comma,// , 
 			Less,// < 
 			Greater,// > 
 			LessEqual,// <=
