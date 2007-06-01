@@ -1,3 +1,7 @@
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* RectangleGeometry.cs: New.
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* PenLineCap.cs: New. enum required to complete S.W.Shapes
