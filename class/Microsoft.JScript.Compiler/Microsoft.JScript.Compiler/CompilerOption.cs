@@ -8,13 +8,11 @@ namespace Mono.JScript.Compiler
 	{
 		public CompilerOptions()
 		{
-			throw new NotImplementedException();
 		}
 
 		public override object Clone()
 		{
-			throw new NotImplementedException();
+			return this.MemberwiseClone ();
 		}
 	}
-
 }

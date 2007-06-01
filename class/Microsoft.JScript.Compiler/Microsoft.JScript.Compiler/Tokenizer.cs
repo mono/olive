@@ -294,7 +294,21 @@ namespace Mono.JScript.Compiler
 
 		public RegularExpressionLiteralToken ScanRegularExpression (Token Divide)
 		{
-			throw new NotImplementedException();
+			int startpos = Divide.StartPosition;
+			int startrow = Divide.StartLine;
+			int startcol = Divide.StartColumn;
+
+			Token current = Divide[this];
+			StringBuilder regexp = new StringBuilder ();
+			while (current.Kind == Token.Type.Divide) {
+				//get the value of the current token
+				for (int i = 0; i < current.Width; i++)
+					regexp.Append(source [position + i]);
+				current = Divide[this];
+			}
+			//TODO flags maybe but not always so must peek and not advance
+			//TODO firstonline
+			return new RegularExpressionLiteralToken (regexp.ToString (), "", position - startpos, startpos, startrow, startcol, false);
 		}
 		
 
@@ -307,10 +321,17 @@ namespace Mono.JScript.Compiler
 			get { return comments; }
 		}
 
+		// we gain a that we only move on position (I have see that on an other compiler)
+		// but maybe it is better with working with sourcelocation object directely
+		// it perform less but more OO ...
 		public SourceLocation Position
 		{
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return new SourceLocation(position, row, position - lineStartPosition +1); }
+			set {
+				position = value.Index;
+				row = value.Line;
+				lineStartPosition = position - value.Column + 1;
+			}
 		}
 
 		#region token
@@ -553,7 +574,6 @@ namespace Mono.JScript.Compiler
 			row++;
 			lineStartPosition = position;
 			position++;
-
 		}
 
 		private void CreateBlockComment()

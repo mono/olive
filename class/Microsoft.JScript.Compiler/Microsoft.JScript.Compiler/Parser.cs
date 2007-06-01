@@ -22,6 +22,7 @@ namespace Mono.JScript.Compiler
 		private Token current;
 		private List<String> SyntaxError = new List<string>();
 		private bool syntaxIncomplete = false;
+
 		#endregion
 
 		#region public methods
@@ -62,12 +63,12 @@ namespace Mono.JScript.Compiler
 
 		public bool SyntaxOK ()
 		{
-			return (SyntaxError.Count > 0);
+			return (diagnostics.Count > 0);
 		}
 
 		#endregion
 
-		private Statement ParseFunctionDeclaration()
+		private FunctionStatement ParseFunctionDeclaration ()
 		{
 			Token start = current;
 
@@ -143,52 +144,35 @@ namespace Mono.JScript.Compiler
 		{
 			switch (current.Kind) {
 				case Token.Type.LeftBrace:
-					ParseBlock ();
-					break;
+					return ParseBlock ();
 				case Token.Type.Var:
-					ParseVarDeclaration ();
-					break;
+					return ParseVarDeclaration ();
 				case Token.Type.If:
-					ParseIfElse ();
-					break;
+					return ParseIfElse ();
 				case Token.Type.While:
-					ParseWhile ();
-					break;
+					return ParseWhile ();
 				case Token.Type.Do:
-					ParseDo ();
-					break;
+					return ParseDo ();
 				case Token.Type.For:
-					ParseFor ();
-					break;
+					return ParseFor ();
 				case Token.Type.Continue:
-					ParseContinue ();
-					break;
-				case Token.Type.With:
-					ParseWith ();
-					break;
-				case Token.Type.Switch:
-					ParseSwitch ();
-					break;
-				case Token.Type.Throw:
-					ParseThrow ();
-					break;
-				case Token.Type.Try:
-					ParseTry ();
-					break;
 				case Token.Type.Break:
-					ParseBreak ();
-					break;
+					return ParseBreakOrContinue ();
+				case Token.Type.With:
+					return ParseWith ();
+				case Token.Type.Switch:
+					return ParseSwitch ();
+				case Token.Type.Try:
+					return ParseTry ();
+				case Token.Type.Throw:
 				case Token.Type.Return:
-					ParseReturn ();
-					break;
+					return ParseReturnOrThrow ();
 				case Token.Type.Function:
-					ParseFunctionDeclaration ();
-					break;
+					return ParseFunctionDeclaration ();
 				case Token.Type.Identifier:
-					Token ident = current;
+					IdentifierToken ident = current as IdentifierToken;
 					Next ();
-					ParseExpression ();
-					break;
+					return ParseExpressionStatement ();
 				default:
 					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
 					break;
@@ -198,66 +182,121 @@ namespace Mono.JScript.Compiler
 			
 		}
 
-		private void ParseVarDeclaration ()
+		private ExpressionStatement ParseExpressionStatement ()
+		{
+			Token start = current;
+			Expression expr = ParseExpression();
+			return new ExpressionStatement (expr, new TextSpan (start, current));
+		}
+
+		private VariableDeclarationStatement ParseVarDeclaration ()
+		{
+			Token start = current;
+			List<VariableDeclarationListElement> declarations = new List<VariableDeclarationListElement>();
+			do {
+				Next ();
+				CheckSyntaxExpected (Token.Type.Identifier);
+				Identifier name = (current as IdentifierToken).Spelling;
+				Next ();
+				VariableDeclaration declaration;
+				if (current.Kind == Token.Type.Equal) {
+					Token start2 = current;
+					Next ();
+					Expression initializer = ParseExpression ();
+					declaration = new InitializerVariableDeclaration (name, initializer, new TextSpan (start2, current), new TextPoint (start2.StartPosition));
+					Next ();
+				}
+				else
+					declaration = new VariableDeclaration (name, new TextSpan (current, current));
+
+				VariableDeclarationListElement vardeclarListElt = new VariableDeclarationListElement (declaration, new TextPoint (current.StartPosition));
+				declarations.Add (vardeclarListElt);
+			} while (current.Kind == Token.Type.Comma);
+			VariableDeclarationStatement statement = new VariableDeclarationStatement (declarations, new TextSpan (start, current));
+			CheckSyntaxExpected (Token.Type.SemiColon);
+			return statement;
+		}
+
+		private IfStatement ParseIfElse ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseIfElse ()
+		private WhileStatement ParseWhile ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseWhile ()
+		private DoStatement ParseDo ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseDo ()
+		private ForStatement ParseFor ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseFor ()
+		private BreakOrContinueStatement ParseBreakOrContinue ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseContinue ()
+		private WithStatement ParseWith ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseWith ()
+		private SwitchStatement ParseSwitch ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseSwitch ()
+		private ReturnOrThrowStatement ParseReturnOrThrow ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseThrow ()
+		private TryStatement ParseTry ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
-
-		private void ParseTry ()
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private void ParseReturn ()
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private void ParseBreak ()
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
+		/*
+		ArgumentList.cs
+		ArrayLiteralExpression.cs
+		BinaryOperatorExpression.cs
+		CaseClause.cs
+		CatchClause.cs
+		DeclarationForInStatement.cs
+		DeclarationForStatement.cs
+		DefaultCaseClause.cs
+		ExpressionForInStatement.cs
+		ExpressionForStatement.cs
+		ExpressionListElement.cs
+		FinallyClause.cs
+		ForInStatement.cs
+		FunctionDefinition.cs
+		HexLiteralExpression.cs
+		IdentifierExpression.cs
+		InvocationExpression.cs
+		LabelStatement.cs
+		LoopStatement.cs
+		NullExpression.cs
+		NumericLiteralExpression.cs
+		ObjectLiteralElement.cs
+		ObjectLiteralExpression.cs
+		OctalLiteralExpression.cs
+		Parameter.cs
+		QualifiedExpression.cs
+		RegularExpressionLiteralExpression.cs
+		StringLiteralExpression.cs
+		SubscriptExpression.cs
+		TernaryOperatorExpression.cs
+		UnaryOperatorExpression.cs
+		ValueCaseClause.cs
+		VariableDeclaration.cs
+		VariableDeclarationListElement.cs
+		 */
 		private Expression ParseExpression ()
 		{
 			switch (current.Kind) {
@@ -309,62 +348,62 @@ namespace Mono.JScript.Compiler
 			
 		}
 
-		private void ParseGreaterGreater ()
+		private Expression ParseGreaterGreater ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseStar ()
+		private Expression ParseStar ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseNew ()
+		private Expression ParseNew ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseMemberCall ()
+		private Expression ParseMemberCall ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseLessLess ()
+		private Expression ParseLessLess ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParsePercent ()
+		private Expression ParsePercent ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseDivide ()
+		private Expression ParseDivide ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseMinus ()
+		private Expression ParseMinus ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseMinusMinus ()
+		private Expression ParseMinusMinus ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParsePlus ()
+		private Expression ParsePlus ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParsePlusPlus ()
+		private Expression ParsePlusPlus ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private void ParseFunctionCall ()
+		private FunctionExpression ParseFunctionCall ()
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
@@ -381,10 +420,52 @@ namespace Mono.JScript.Compiler
 
 		private void CheckSyntaxExpected (Token.Type type)
 		{
-			if (current.Kind != type)
-				SyntaxError.Add (Enum.GetName (typeof(Token.Type), type) + " expected.");
+			if (current.Kind == type)
+				return;
+
+			//default
+			DiagnosticCode code = DiagnosticCode.SyntaxError;
+
+			switch (type) {
+				case Token.Type.Case:
+				case Token.Type.Default:
+					code = DiagnosticCode.CaseOrDefaultExpected;
+					break;
+				case Token.Type.Identifier:
+					code = DiagnosticCode.IdentifierExpected;
+					break;
+				case Token.Type.LeftBrace:
+					code = DiagnosticCode.LeftBraceExpected;
+					break;
+				case Token.Type.LeftParenthesis:
+					code = DiagnosticCode.LeftParenExpected;
+					break;
+				case Token.Type.SemiColon:
+					current.InsertSemicolonBefore ();
+					return;
+			}
+				diagnostics.Add(new Diagnostic(code, new TextSpan(current.StartLine,current.StartColumn, lexer.Position.Line, lexer.Position.Column,current.StartPosition, lexer.Position.Index)));
 		}
 
+		private List<Diagnostic> diagnostics;
 
+		public List<Diagnostic> Diagnostics { get {	return diagnostics;	} }
+		/* TODO 
+			SwitchHasMultipleDefaults,
+			TryHasNoHandlers,
+			BadDivideOrRegularExpressionLiteral,
+			EnclosingLabelShadowed,
+			NoEnclosingLabel,
+			BreakContextInvalid,
+			ContinueContextInvalid,
+			ContinueLabelInvalid,
+			MalformedEscapeSequence,
+			HexLiteralNoDigits,
+			MalformedNumericLiteral,
+			NumericLiteralThenIdentifier,
+			UnterminatedStringLiteral,
+			UnterminatedComment,
+			ExtraneousCharacter
+		 */
 	}
 }

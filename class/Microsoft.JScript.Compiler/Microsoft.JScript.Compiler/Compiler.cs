@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Scripting.Internal.Ast;
+using Mono.JScript.Compiler.ParseTree;
 
 namespace Mono.JScript.Compiler
 {
@@ -11,34 +11,47 @@ namespace Mono.JScript.Compiler
 		{
 		}
 
-		public CodeBlock CompileExpression(string Input, ref List<Diagnostic> Diagnostics)
+		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileExpression(string Input, ref List<Diagnostic> Diagnostics)
 		{
-			throw new NotImplementedException();
+			return CompileExpression (Input.ToCharArray (), ref Diagnostics);
 		}
 
-		public CodeBlock CompileExpression(char[] Input, ref List<Diagnostic> Diagnostics)
+		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
 		{
-			throw new NotImplementedException();
+			Parser parser = new Parser (Input, new IdentifierTable ());
+			List<Comment> comments = null;
+			Expression expr = parser.ParseExpression (ref comments);
+			Diagnostics = parser.Diagnostics;
+			//TODO return
+			return null;
 		}
 
-		public CodeBlock CompileProgram(char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
+		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
 		{
-			throw new NotImplementedException();
+			return CompileProgram (Input, ref Diagnostics, ref IncompleteInput, false);
 		}
 
-		public CodeBlock CompileProgram(char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
+		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
 		{
-			throw new NotImplementedException();
+			Parser parser = new Parser (Input, new IdentifierTable ());
+			List<Comment> comments = null;
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			Diagnostics = parser.Diagnostics;
+			IncompleteInput = parser.SyntaxIncomplete();
+			//TODO return
+			return null;
 		}
 
-		public Statement CompileStatement(char[] Input)
+		public Mono.JScript.Compiler.ParseTree.Statement CompileStatement(char[] Input)
 		{
-			throw new NotImplementedException();
+			Parser parser = new Parser (Input, new IdentifierTable ());
+			List<Comment> comments = null;
+			return parser.ParseStatement (ref comments);
 		}
 
 		public Statement CompileStatement(string Input)
 		{
-			throw new NotImplementedException();
+			return CompileStatement (Input.ToCharArray ());
 		}
 	}
 }

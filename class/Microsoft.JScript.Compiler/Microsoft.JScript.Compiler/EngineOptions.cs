@@ -8,12 +8,14 @@ namespace Mono.JScript.Compiler
 	{
 		public EngineOptions()
 		{
-			throw new NotImplementedException();
 		}
+		
+		//TODO Default value
+		private int maximumRecursion;
 
 		public int MaximumRecursion {
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }  
+			get { return maximumRecursion; }
+			set { maximumRecursion = value; }  
 		}
 	}
 

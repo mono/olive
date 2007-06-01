@@ -11,28 +11,45 @@ namespace Mono.JScript.Compiler
 	{
 		public JavaScriptCompiler(Engine engine) : base(engine)
 		{
-			throw new NotImplementedException();
 		}
 
 		public override CodeBlock ParseExpressionCode(CompilerContext Context)
 		{
-			throw new NotImplementedException();
+			Compiler compiler = new Compiler();
+			List<Diagnostic> diagnostics = null;
+			return compiler.CompileExpression (Context.SourceUnit.GetCode (), ref diagnostics);
 		}
 
 		public override CodeBlock ParseFile(CompilerContext Context)
 		{
-			throw new NotImplementedException();
+			Compiler compiler = new Compiler ();
+			List<Diagnostic> diagnostics = null;
+			bool incompleteInput = false;
+			return compiler.CompileProgram (Context.SourceUnit.GetCode ().ToCharArray (), ref diagnostics, ref incompleteInput);
 		}
 
 		public override CodeBlock ParseInteractiveCode(CompilerContext cc, bool allowIncomplete, out InteractiveCodeProperties properties)
 		{
-			throw new NotImplementedException();
+			Compiler compiler = new Compiler ();
+			List<Diagnostic> diagnostics = null;
+			bool IncompleteInput = false;
+			CodeBlock result = compiler.CompileProgram (cc.SourceUnit.GetCode ().ToCharArray(), ref diagnostics, ref IncompleteInput, false);
+			//TODO properties
+			properties = InteractiveCodeProperties.IsEmpty;
+			if (allowIncomplete && IncompleteInput) 
+			{
+				throw new Exception ("Incomplete code!");
+			}
+			//TODO
+			return result;
 		}
 				
 		public override CodeBlock ParseStatementCode(CompilerContext Context)
 		{
-			throw new NotImplementedException();
+			Compiler compiler = new Compiler ();
+			List<Diagnostic> diagnostics = null;
+			bool IncompleteInput = false;
+			return compiler.CompileProgram (Context.SourceUnit.GetCode ().ToCharArray (), ref diagnostics, ref IncompleteInput, false);
 		}
-
 	}
 }

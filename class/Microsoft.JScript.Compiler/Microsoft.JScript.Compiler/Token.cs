@@ -12,7 +12,7 @@ namespace Mono.JScript.Compiler
 		public enum Type
 		{
 			None = 0,
-			EndOfInput = 0,
+			EndOfInput = 1,
 
 			//Punctuator
 			LeftBrace,// {
@@ -154,13 +154,18 @@ namespace Mono.JScript.Compiler
 		public readonly int StartLine;
 		public readonly int StartPosition;
 		private bool firstOnLine;
+		private Token next = null;
+
 		public Token InsertSemicolonBefore()
 		{
-			throw new NotImplementedException();
+			Token semicolon = new Token (Token.Type.SemiColon, StartPosition, StartLine, StartColumn, false);
+			semicolon.next = this;
+			return semicolon;
 		}
 
+		//by default 1 must be change in inherited token which differ
 		public virtual int Width {
-			get { throw new NotImplementedException(); }
+			get { return 1; }
 		}
 
 		public bool FirstOnLine
@@ -169,7 +174,11 @@ namespace Mono.JScript.Compiler
 		}
 		public Token this[Tokenizer InputStream]
 		{
-			get { return InputStream.GetNext(); }
+			get { 
+				if (next == null)
+					return InputStream.GetNext(); 
+				return next;
+			}
 		}
 
 	}

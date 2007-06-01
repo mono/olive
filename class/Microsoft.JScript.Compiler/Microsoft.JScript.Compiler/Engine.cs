@@ -12,9 +12,7 @@ namespace Mono.JScript.Compiler
 	{
 		public Engine(LanguageProvider provider, EngineOptions engineOptions)
 			: base(provider, engineOptions)
-
 		{
-			throw new NotImplementedException();
 		}
 
 		public override void AddAssembly(Assembly assembly)

@@ -19,7 +19,7 @@ namespace Mono.JScript.Compiler
 
 		public void InsertIfNotPresent(KeyType Key, ValueType Value)
 		{
-			throw new NotImplementedException();
+			Insert (Key, Value, false);
 		}
 
 		public ValueType Lookup(KeyType Key)

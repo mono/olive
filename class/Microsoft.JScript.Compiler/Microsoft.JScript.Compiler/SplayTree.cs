@@ -13,12 +13,12 @@ namespace Mono.JScript.Compiler
 
 		public void AddAsLeftChild(SplayTree Child)
 		{
-			throw new NotImplementedException();
+			this.left = Child;
 		}
 
 		public void AddAsRightChild(SplayTree Child)
 		{
-			throw new NotImplementedException();
+			this.right = Child;
 		}
 
 		public void SplayToRoot()
@@ -31,11 +31,14 @@ namespace Mono.JScript.Compiler
 			throw new NotImplementedException();
 		}
 
+		private SplayTree left;
+		private SplayTree right;
+
 		public SplayTree Left {
-			get { throw new NotImplementedException(); }
+			get { return left; }
 		}
 		public SplayTree Right {
-			get { throw new NotImplementedException(); }
+			get { return right; }
 		}
 	}
 }

@@ -1,6 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Text;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting.Shell;
 using Microsoft.Scripting;
@@ -11,31 +8,31 @@ namespace Mono.JScript.Compiler.Hosting
 	{
 		public LanguageProvider(ScriptDomainManager environment) : base(environment)
 		{
-			throw new NotImplementedException();
 		}
 
 		public override CommandLine GetCommandLine()
 		{
-			throw new NotImplementedException();
+			return new Mono.JScript.Compiler.Shell.CommandLine ();
 		}
 
 		public override ScriptEngine GetEngine(Microsoft.Scripting.EngineOptions options)
 		{
-			throw new NotImplementedException();
+			 return new Engine (this, (Mono.JScript.Compiler.EngineOptions)options);
 		}
 
 		public override Microsoft.Scripting.OptionsParser GetOptionsParser()
 		{
-			throw new NotImplementedException();
+			return new Mono.JScript.Compiler.OptionsParser ();
 		}
 
 		public override Microsoft.Scripting.Hosting.TokenCategorizer GetTokenCategorizer()
 		{
-			throw new NotImplementedException();
+			return new Mono.JScript.Compiler.TokenCategorizer ();
 		}
 
+		//TODO Test to get exact name maybe + version or "JScript"
 		public override string LanguageDisplayName {
-			get { throw new NotImplementedException(); }
+			get { return "JavaScript"; }
 		}
 	}
 

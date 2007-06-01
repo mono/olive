@@ -6,13 +6,15 @@ namespace Mono.JScript.Compiler
 {
 	public struct TextPoint
 	{
+		private int position;
+
 		public TextPoint(int Position)
 		{
-			throw new NotImplementedException();
+			position = Position;
 		}
 
 		public int Position {
-			get { throw new NotImplementedException(); }
+			get { return position; }
 		}
 	}
 
