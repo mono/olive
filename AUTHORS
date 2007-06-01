@@ -1,0 +1,29 @@
+Atsushi Enomoto (atsushi@ximian.com)
+	Communications Foundation
+		ServiceModel
+		IdentityModel/
+		IdentityModel.Selectors
+		Runtime.Serialization/
+
+	System.Xml.Xlinq
+	
+Chris Toshok (toshok@ximian.com)
+	PresentationCore
+
+Ian McCoy (iain@mccoy.id.au)
+	XAML Parser in 
+
+Antonello Provenzano  <antonello@deveel.com
+	System.Data.Linq
+	
+Ankit Jain
+	System.Runtime.Serialization
+	
+Jordi Mas
+	Workflow Foundation
+
+Joel Reed (joel.reed@ddiworld.com)
+	System.Syndication
+
+Stephen A Jazdzewski (Steve@Jazd.com)
+	System.Syndmication

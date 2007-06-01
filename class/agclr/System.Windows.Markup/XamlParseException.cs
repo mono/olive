@@ -48,6 +48,13 @@ namespace System.Windows.Serialization {
 			this.line = line;
 			this.col = col;
 		}
+
+		internal XamlParseException (int line, int col, string msg)
+			: base (String.Format ("({0},{1}): {2}", line, col, msg))
+		{
+			this.line = (uint) line;
+			this.col = (uint) col;
+		}
 		
 		public uint LineNumber {
 			get { return line; }
