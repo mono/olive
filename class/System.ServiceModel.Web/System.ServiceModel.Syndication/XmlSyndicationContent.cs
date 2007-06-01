@@ -1,5 +1,5 @@
 //
-// SyndicationLink.cs
+// XmlSyndicationContent.cs
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
@@ -27,88 +27,85 @@
 //
 
 
+
+
 using System;
 using System.Xml;
-using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.ServiceModel.Syndication;
 
 namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
-	public class SyndicationLink {
-
+	public class XmlSyndicationContent : SyndicationContent {
 		[MonoTODO]
-		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
+		public XmlSyndicationContent (string type, XmlElement element)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri)
+		public XmlSyndicationContent (string type, SyndicationElementExtension extension)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
+		public XmlSyndicationContent (string type, object xmlSerializerExtension, XmlSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
+		public XmlSyndicationContent (string type, object dataContractExtension, XmlObjectSerializer dateContractSerializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri uri)
+		public XmlSyndicationContent (XmlReader reader, int maxContentSize)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri urk, string mediaType)
+		public XmlDictionaryReader GetReaderAtContent()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Dictionary <XmlQualifiedName, string> AttributeExtensions {
+		[MonoTODO]
+		public TContent ReadContent <TContent> ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TContent ReadContent <TContent> (XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TContent ReadContent <TContent> (XmlObjectSerializer dataContractSerializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void WriteContentsTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension Extension {
 			get {throw new NotImplementedException ();}
 		}
 
-		public long Length {
+		public override string Type {
 			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string MediaType {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string Title {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		private Uri uri;
-		private string relationshipType;
-
-		public SyndicationLink(Uri uri)
-		{
-			this.uri = uri;
-		}
-
-		public Uri Uri
-		{
-			get { return uri; }
-			set { uri = value; }
-		}
-
-		public string RelationshipType
-		{
-			get { return relationshipType; }
-			set { relationshipType = value; }
 		}
 	}
 }

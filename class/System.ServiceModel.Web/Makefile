@@ -3,7 +3,7 @@ SUBDIRS =
 include ../../build/rules.make
 
 LIBRARY = System.ServiceModel.Web.dll
-LIB_MCS_FLAGS = -r:System.dll -r:System.Xml.dll
+LIB_MCS_FLAGS = -r:System.dll -r:System.Xml.dll -r:../lib/net_3_0/System.Runtime.Serialization.dll
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 

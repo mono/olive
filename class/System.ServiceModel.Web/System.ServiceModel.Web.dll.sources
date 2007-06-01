@@ -11,3 +11,10 @@ System.ServiceModel.Syndication/TextSyndicationContentKind.cs
 System.ServiceModel.Syndication/SyndicationSerializer.cs
 System.ServiceModel.Syndication/Rss20Serializer.cs
 System.ServiceModel.Syndication/SyndicationLink.cs
+System.ServiceModel.Syndication/SyndicationElementExtension.cs         
+System.ServiceModel.Syndication/SyndicationElementExtensionCollection.cs
+System.ServiceModel.Syndication/SyndicationElementExtensionKind.cs
+System.ServiceModel.Syndication/SyndicationPerson.cs
+System.ServiceModel.Syndication/SyndicationVersion.cs
+System.ServiceModel.Syndication/UrlSyndicationContent.cs
+System.ServiceModel.Syndication/XmlSyndicationContent.cs

@@ -1,5 +1,5 @@
 //
-// SyndicationLink.cs
+// SyndicationPerson.cs
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
@@ -29,45 +29,81 @@
 
 using System;
 using System.Xml;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ServiceModel.Syndication;
 
 namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
-	public class SyndicationLink {
-
+	public class SyndicationPerson {
 		[MonoTODO]
-		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
+		public SyndicationPerson ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri)
+		public SyndicationPerson (string email)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
+		public SyndicationPerson (string email, string name, string uri)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
+		public Collection <TExtension> ReadElementExtensions <TExtension> (string extensionName, string extensionNamespace)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri uri)
+		public Collection <TExtension> ReadElementExtensions <TExtension> (string extensionName, string extensionNamespace,
+										   XmlSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri urk, string mediaType)
+		public Collection <TExtension> ReadElementExtensions <TExtension> (string extensionName, string extensionNamespace,
+										   XmlObjectSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual bool TryParseElement (XmlReader reader, SyndicationSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual bool TryParseAttribute (string name, string ns, string value,
+								   SyndicationSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public XmlReader GetReaderAtElementExtensions ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, SyndicationSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual void WriteElementExtensions (XmlWriter writer, SyndicationSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
@@ -76,39 +112,23 @@ namespace System.ServiceModel.Syndication
 			get {throw new NotImplementedException ();}
 		}
 
-		public long Length {
+		public SyndicationElementExtensionCollection ElementExtensions {
+			get {throw new NotImplementedException ();}
+		}
+
+		public string Email {
 			get {throw new NotImplementedException ();}
 			set {throw new NotImplementedException ();}
 		}
 
-		public string MediaType {
+		public string Name {
 			get {throw new NotImplementedException ();}
 			set {throw new NotImplementedException ();}
 		}
 
-		public string Title {
+		public string Uri {
 			get {throw new NotImplementedException ();}
 			set {throw new NotImplementedException ();}
-		}
-
-		private Uri uri;
-		private string relationshipType;
-
-		public SyndicationLink(Uri uri)
-		{
-			this.uri = uri;
-		}
-
-		public Uri Uri
-		{
-			get { return uri; }
-			set { uri = value; }
-		}
-
-		public string RelationshipType
-		{
-			get { return relationshipType; }
-			set { relationshipType = value; }
 		}
 	}
 }

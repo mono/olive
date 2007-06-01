@@ -1,5 +1,5 @@
 //
-// SyndicationLink.cs
+// SyndicationElementExtensionCollection.cs
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
@@ -29,86 +29,61 @@
 
 using System;
 using System.Xml;
-using System.Collections.Generic;
+using System.Xml.Serialization;
+using System.Runtime.Serialization;
+using System.Collections.ObjectModel;
 
 namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
-	public class SyndicationLink {
-
+	public class SyndicationElementExtensionCollection : Collection <SyndicationElementExtension> {
 		[MonoTODO]
-		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
+		public void Add (XmlElement xmlElemnt)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri)
+		public void Add (object extension)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
+		public void Add (object xmlSerializerExtention, XmlSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
+		public void Add (string outerName, string outerNamespace, object dataContractExtension)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri uri)
+		public void Add (string outerName, string outerNamespace, object dataContractExtension,
+										 XmlObjectSerializer dataContractSerializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri urk, string mediaType)
+		public void Add (object dataContractExtension, DataContractSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Dictionary <XmlQualifiedName, string> AttributeExtensions {
-			get {throw new NotImplementedException ();}
-		}
-
-		public long Length {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string MediaType {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string Title {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		private Uri uri;
-		private string relationshipType;
-
-		public SyndicationLink(Uri uri)
+		[MonoTODO]
+		protected override void InsertItem (int index, SyndicationElementExtension item)
 		{
-			this.uri = uri;
+			throw new NotImplementedException ();
 		}
 
-		public Uri Uri
+		[MonoTODO]
+		protected override void SetItem (int index, SyndicationElementExtension item)
 		{
-			get { return uri; }
-			set { uri = value; }
-		}
-
-		public string RelationshipType
-		{
-			get { return relationshipType; }
-			set { relationshipType = value; }
+			throw new NotImplementedException ();
 		}
 	}
 }

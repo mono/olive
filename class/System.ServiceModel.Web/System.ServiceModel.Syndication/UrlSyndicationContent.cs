@@ -1,5 +1,5 @@
 //
-// SyndicationLink.cs
+// UrlSyndicationContent.cs
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
@@ -29,86 +29,30 @@
 
 using System;
 using System.Xml;
-using System.Collections.Generic;
+using System.ServiceModel.Syndication;
 
 namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
-	public class SyndicationLink {
-
+	public class UrlSyndicationContent : SyndicationContent {
 		[MonoTODO]
-		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
+		public UrlSyndicationContent (Uri uri, string mediaType)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri)
+		protected override void WriteContentsTo (XmlWriter writer)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri uri)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		public static SyndicationLink CreateSelfLink (Uri urk, string mediaType)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public Dictionary <XmlQualifiedName, string> AttributeExtensions {
+		public override string Type {
 			get {throw new NotImplementedException ();}
 		}
 
-		public long Length {
+		public Uri Url {
 			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string MediaType {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		public string Title {
-			get {throw new NotImplementedException ();}
-			set {throw new NotImplementedException ();}
-		}
-
-		private Uri uri;
-		private string relationshipType;
-
-		public SyndicationLink(Uri uri)
-		{
-			this.uri = uri;
-		}
-
-		public Uri Uri
-		{
-			get { return uri; }
-			set { uri = value; }
-		}
-
-		public string RelationshipType
-		{
-			get { return relationshipType; }
-			set { relationshipType = value; }
 		}
 	}
 }
