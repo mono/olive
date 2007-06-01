@@ -1,0 +1,4 @@
+2007-05-31  Joel Reed  <joelwreed@comcast.com>
+
+	* Move System.ServiceModel.Syndication files into a subdirectory
+
