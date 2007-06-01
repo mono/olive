@@ -1,6 +1,7 @@
 Internal.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs
+../../build/common/MonoTODOAttribute.cs
 ../PresentationFramework/System.Windows.Serialization/IAddChild.cs
 ../PresentationFramework/System.Windows.Serialization/BamlAttributeUsage.cs
 ../PresentationFramework/System.Windows.Serialization/Mapper.cs
@@ -23,6 +24,7 @@ Assembly/AssemblyInfo.cs
 ../PresentationFramework/System.Windows.Serialization/XamlPropertyComplexStartNode.cs
 ../PresentationFramework/Mono.Windows.Serialization/XamlParser.cs
 ../PresentationFramework/Mono.Windows.Serialization/ParserConsumerBase.cs
+System.Windows/Downloader.cs
 System.Windows/FrameworkElement.cs
 System.Windows/Point.cs
 System.Windows/ResourceCollection.cs
