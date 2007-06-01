@@ -1,4 +1,6 @@
 2007-05-31  Joel Reed  <joelwreed@comcast.com>
 
+	* add more testcases and stubbed out classes from Stephen A Jazdzewski
+
 	* Move System.ServiceModel.Syndication files into a subdirectory
 
