@@ -1,0 +1,6 @@
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* BrowserInformation.cs: New.
+	* HtmlObject.cs: New. Incomplete.
+	* HtmlPage.cs: New. Incomplete.
+	* ScriptableObject.cs: New. Incomplete.

@@ -1,0 +1,4 @@
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile: New.
+	* System.Silverlight.dll.sources: New.
