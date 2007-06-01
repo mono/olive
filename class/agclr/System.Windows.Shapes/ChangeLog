@@ -1,5 +1,9 @@
-2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* Ellipse.cs: New.
+	* Line.cs: New.
+	* Path.cs: New.
+	* Polygon.cs: New.
+	* Polyline.cs: New.
 	* Rectangle.cs: New.
 	* Shape.cs: New.
