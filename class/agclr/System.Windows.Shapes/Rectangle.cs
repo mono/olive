@@ -30,8 +30,8 @@ namespace System.Windows.Shapes {
 
 	public class Rectangle : Shape {
 
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusXProperty", typeof (double), typeof (Rectangle));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusYProperty", typeof (double), typeof (Rectangle));
+		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusX", typeof (double), typeof (Rectangle));
+		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusY", typeof (double), typeof (Rectangle));
 
 		public Rectangle ()
 		{

@@ -32,8 +32,8 @@ namespace System.Windows.Shapes {
 
 	public class Polyline : Shape {
 
-		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register ("FillRuleProperty", typeof (FillRule), typeof (Polyline));
-		public static readonly DependencyProperty PointsProperty = DependencyProperty.Register ("PointsProperty", typeof (Point[]), typeof (Polyline));
+		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register ("FillRule", typeof (FillRule), typeof (Polyline));
+		public static readonly DependencyProperty PointsProperty = DependencyProperty.Register ("Points", typeof (Point[]), typeof (Polyline));
 
 		public Polyline ()
 		{

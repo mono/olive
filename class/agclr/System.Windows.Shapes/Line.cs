@@ -30,10 +30,10 @@ namespace System.Windows.Shapes {
 
 	public class Line : Shape {
 
-		public static readonly DependencyProperty X1Property = DependencyProperty.Register ("X1Property", typeof (double), typeof (Line));
-		public static readonly DependencyProperty Y1Property = DependencyProperty.Register ("Y1Property", typeof (double), typeof (Line));
-		public static readonly DependencyProperty X2Property = DependencyProperty.Register ("X2Property", typeof (double), typeof (Line));
-		public static readonly DependencyProperty Y2Property = DependencyProperty.Register ("Y2Property", typeof (double), typeof (Line));
+		public static readonly DependencyProperty X1Property = DependencyProperty.Register ("X1", typeof (double), typeof (Line));
+		public static readonly DependencyProperty Y1Property = DependencyProperty.Register ("Y1", typeof (double), typeof (Line));
+		public static readonly DependencyProperty X2Property = DependencyProperty.Register ("X2", typeof (double), typeof (Line));
+		public static readonly DependencyProperty Y2Property = DependencyProperty.Register ("Y2", typeof (double), typeof (Line));
 
 		public Line ()
 		{

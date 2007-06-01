@@ -32,7 +32,7 @@ namespace System.Windows.Shapes {
 
 	public class Path : Shape {
 
-		public static readonly DependencyProperty DataProperty = DependencyProperty.Register ("DataProperty", typeof (Geometry), typeof (Path));
+		public static readonly DependencyProperty DataProperty = DependencyProperty.Register ("Data", typeof (Geometry), typeof (Path));
 		
 		public Path ()
 		{
