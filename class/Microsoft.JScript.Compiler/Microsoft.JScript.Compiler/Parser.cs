@@ -219,32 +219,159 @@ namespace Mono.JScript.Compiler
 
 		private IfStatement ParseIfElse ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next ();
+			CheckSyntaxExpected (Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Expression condition = ParseExpression ();
+			CheckSyntaxExpected (Token.Type.RightParenthesis);
+			Token rightParen = current;
+			Statement ifBody = ParseStatement ();
+			Statement elseBody = null;
+			TextPoint elsePoint = new TextPoint();
+			if (current.Kind == Token.Type.Else) {
+				elsePoint = new TextPoint(current.StartPosition);
+				elseBody = ParseStatement ();
+			}
+			return new IfStatement (condition, ifBody, elseBody, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition), elsePoint);
 		}
 
 		private WhileStatement ParseWhile ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next ();
+			CheckSyntaxExpected (Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Expression condition = ParseExpression ();
+			CheckSyntaxExpected (Token.Type.RightParenthesis);
+			Token rightParen = current;
+			Statement body = ParseStatement ();
+			return new WhileStatement (condition, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 		}
 
 		private DoStatement ParseDo ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next ();
+			Statement body = ParseStatement ();
+			Next ();
+			CheckSyntaxExpected (Token.Type.While);
+			Token whileToken = current;
+			Next ();
+			CheckSyntaxExpected (Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Expression condition = ParseExpression ();
+			CheckSyntaxExpected (Token.Type.RightParenthesis);
+			Token rightParen = current;
+			Next ();
+			CheckSyntaxExpected (Token.Type.SemiColon);
+			return new DoStatement (body, condition, new TextSpan (start, current), new TextSpan (start, start), new TextPoint (whileToken.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 		}
 
-		private ForStatement ParseFor ()
+		//TODO: use sub function to slim this one
+		private LoopStatement ParseFor ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Token firstSemiColon;
+			Expression condition;
+			Token secondSemiColon;
+			Expression increment;
+			Token rightParen;
+			Statement body;
+			Next ();
+			CheckSyntaxExpected (Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Next();
+			if (current.Kind == Token.Type.Var) {
+				VariableDeclarationStatement varDecl = ParseVarDeclaration ();
+
+				if (current.Kind == Token.Type.In) {
+					//DeclarationForInStatement
+				} else {
+					CheckSyntaxExpected (Token.Type.SemiColon);
+					firstSemiColon = current;
+					Next ();
+					condition = ParseExpression ();
+					CheckSyntaxExpected (Token.Type.SemiColon);
+					secondSemiColon = current;
+					Next ();
+					increment = ParseExpression ();
+					CheckSyntaxExpected (Token.Type.RightParenthesis);
+					rightParen = current;
+					Next ();
+					body = ParseStatement ();
+					return new DeclarationForStatement (varDecl.Declarations, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+				}
+				CheckSyntaxExpected (Token.Type.SemiColon);
+				firstSemiColon = current;
+				Next ();
+				condition = ParseExpression ();
+				CheckSyntaxExpected (Token.Type.SemiColon);
+				secondSemiColon = current;
+				Next ();
+				increment = ParseExpression ();
+				CheckSyntaxExpected (Token.Type.RightParenthesis);
+				rightParen = current;
+				Next ();
+				body = ParseStatement ();
+				return new DeclarationForStatement (varDecl.Declarations, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+				//DeclarationForStatement
+				
+			} else {
+				Expression initial = ParseExpression ();
+				
+				if (current.Kind == Token.Type.In) {
+					//ExpressionForInStatement
+					Token inToken = current;
+					Next ();
+					Expression collection = ParseExpression ();
+					CheckSyntaxExpected (Token.Type.RightParenthesis);
+					rightParen = current;
+					Next ();
+					body = ParseStatement ();
+					return new ExpressionForInStatement (initial, collection, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+				}
+				CheckSyntaxExpected (Token.Type.SemiColon);
+				firstSemiColon = current;
+				Next ();
+				condition = ParseExpression ();
+				CheckSyntaxExpected (Token.Type.SemiColon);
+				secondSemiColon = current;
+				Next ();
+				increment = ParseExpression ();
+				CheckSyntaxExpected (Token.Type.RightParenthesis);
+				rightParen = current;
+				Next ();
+				body = ParseStatement ();
+				return new ExpressionForStatement (initial, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+			}
 		}
 
 		private BreakOrContinueStatement ParseBreakOrContinue ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Statement.Operation opcode = Statement.Operation.Continue;
+			if (current.Kind == Token.Type.Break)
+				opcode = Statement.Operation.Break;
+			Next();
+			CheckSyntaxExpected(Token.Type.Identifier);
+			Identifier label = (current as IdentifierToken).Spelling;
+			return new BreakOrContinueStatement (opcode, label, new TextSpan (start, current), new TextPoint (current.StartPosition));
 		}
 
 		private WithStatement ParseWith ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next();
+			CheckSyntaxExpected(Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Expression scope = ParseExpression();
+			CheckSyntaxExpected(Token.Type.RightParenthesis);
+			Token rightParen = current;
+			Next();
+			Statement body = ParseStatement();
+
+			return new WithStatement (scope, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 		}
 
 		private SwitchStatement ParseSwitch ()
@@ -267,11 +394,7 @@ namespace Mono.JScript.Compiler
 		BinaryOperatorExpression.cs
 		CaseClause.cs
 		CatchClause.cs
-		DeclarationForInStatement.cs
-		DeclarationForStatement.cs
 		DefaultCaseClause.cs
-		ExpressionForInStatement.cs
-		ExpressionForStatement.cs
 		ExpressionListElement.cs
 		FinallyClause.cs
 		ForInStatement.cs

@@ -1,5 +1,10 @@
 2007-06-01  Olivier Dufour  <olivier.duff@gmail.com>
 
+	* Fill a lot of Parse function
+TODO : unit test to test parser and lexer fully
+	
+2007-06-01  Olivier Dufour  <olivier.duff@gmail.com>
+
 	* Fill a lot of easy stub class
 	* Make a lot of needed parser function and change return with what is in ParseTree
 	
