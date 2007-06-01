@@ -59,5 +59,9 @@ System.Windows.Media/TransformGroup.cs
 System.Windows.Media/VisualCollection.cs
 System.Windows.Media/Visual.cs
 System.Windows.Shapes/Ellipse.cs
+System.Windows.Shapes/Line.cs
+System.Windows.Shapes/Path.cs
+System.Windows.Shapes/Polygon.cs
+System.Windows.Shapes/Polyline.cs
 System.Windows.Shapes/Rectangle.cs
 System.Windows.Shapes/Shape.cs

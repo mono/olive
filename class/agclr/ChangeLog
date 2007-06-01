@@ -1,3 +1,8 @@
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Shapes.Line, Path, Polygon
+	and Polyline (namespace should be complete)
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* agclr.dll.sources: Added System.Windows.Shapes.Ellipse, Rectangle
