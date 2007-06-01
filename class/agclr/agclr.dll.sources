@@ -58,3 +58,6 @@ System.Windows.Media/Transform.cs
 System.Windows.Media/TransformGroup.cs
 System.Windows.Media/VisualCollection.cs
 System.Windows.Media/Visual.cs
+System.Windows.Shapes/Ellipse.cs
+System.Windows.Shapes/Rectangle.cs
+System.Windows.Shapes/Shape.cs
