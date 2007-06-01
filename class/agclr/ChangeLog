@@ -1,3 +1,8 @@
+2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Rect and System.Windows.
+	Media.RectangleGeometry
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* agclr.dll.sources: Added System.Windows.Media.PenLineCap, 

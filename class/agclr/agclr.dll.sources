@@ -26,6 +26,7 @@ Assembly/AssemblyInfo.cs
 System.Windows/FrameworkElement.cs
 System.Windows/Point.cs
 System.Windows/ResourceCollection.cs
+System.Windows/Rect.cs
 System.Windows/Size.cs
 System.Windows/TriggerCollection.cs
 System.Windows/UIElement.cs
@@ -54,6 +55,7 @@ System.Windows.Media/PenLineJoin.cs
 System.Windows.Media/PolyBezierSegment.cs
 System.Windows.Media/PolyLineSegment.cs
 System.Windows.Media/PolyQuadraticBezierSegment.cs
+System.Windows.Media/RectangleGeometry.cs
 System.Windows.Media/Stretch.cs
 System.Windows.Media/SweepDirection.cs
 System.Windows.Media/TransformCollection.cs
