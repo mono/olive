@@ -1,0 +1,3 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DialogResult.cs FileDialogFileInfo.cs OpenFileDialog.cs : stubs.
