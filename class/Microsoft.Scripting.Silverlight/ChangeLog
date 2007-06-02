@@ -1,0 +1,8 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile
+	  Microsoft.Scripting.Silverlight.dll.sources :
+	  new files.
+
+	  To build this assembly, you will have to download IronPython 2.0
+	  alpha, and put Microsoft.Scripting.dll in ../lib/net_3_0 for now.

@@ -1,0 +1,11 @@
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+Microsoft.Scripting.Silverlight/ErrorHandler.cs
+Microsoft.Scripting.Silverlight/HtmlDocumentMemberInjector.cs
+Microsoft.Scripting.Silverlight/HtmlElementMemberInjector.cs
+Microsoft.Scripting.Silverlight/IDlrNameScope.cs
+Microsoft.Scripting.Silverlight/SilverlightPAL.cs
+Microsoft.Scripting.Silverlight/SilverlightScriptHost.cs
+Microsoft.Scripting.Silverlight/XamlDlrScriptHost.cs

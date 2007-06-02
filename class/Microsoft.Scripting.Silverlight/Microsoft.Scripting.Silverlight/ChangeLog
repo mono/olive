@@ -1,0 +1,7 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ErrorHandler.cs HtmlDocumentMemberInjector.cs
+	  HtmlElementMemberInjector.cs IDlrNameScope.cs
+	  SilverlightPAL.cs SilverlightScriptHost.cs XamlDlrScriptHost.cs :
+	  stub all.
+
