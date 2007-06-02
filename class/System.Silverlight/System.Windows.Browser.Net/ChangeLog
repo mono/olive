@@ -1,0 +1,5 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* BrowserHttpWebRequest.cs SoapHttpClientProtocol.cs :
+	  stubs (not going to implement by myself)
+

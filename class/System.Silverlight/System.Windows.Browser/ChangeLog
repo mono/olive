@@ -1,3 +1,10 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* BrowserRuntimeSettings.cs HtmlDocument.cs HtmlElement.cs
+	  HtmlElementCollection.cs HtmlEventArgs.cs HtmlTimer.cs
+	  HttpUtility.cs ScriptableAttribute.cs :
+	  stubs (not going to implement by myself)
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* BrowserInformation.cs: New.

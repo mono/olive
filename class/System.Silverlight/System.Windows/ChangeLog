@@ -1,0 +1,4 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ApplicationUnhandledExceptionEventArgs.cs WebApplication.cs :
+	  (practically) stubs.

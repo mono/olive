@@ -1,3 +1,8 @@
+2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.Silverlight.dll.sources :
+	  all remaining stubs are belong to me.
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Makefile: New.
