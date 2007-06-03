@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-//TODO move to Mono.Scripting
-namespace Mono.JScript.Compiler
+
+namespace Microsoft.Scripting
 {
 	public class SourceLocation
 	{

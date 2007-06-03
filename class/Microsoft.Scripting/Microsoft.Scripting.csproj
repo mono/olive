@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{162ED7C8-3FA6-49CE-A7EF-C1A11FFFCCE5}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Microsoft.Scripting</RootNamespace>
+    <AssemblyName>Microsoft.Scripting</AssemblyName>
+    <StartupObject>
+    </StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ItemGroup>
+    <Compile Include="Microsoft.Scripting.Actions\ActionBinder.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\ErrorSink.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\GlobalEnums.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\LanguageProvider.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\ScriptCompiler.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\ScriptEngine.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\TokenCategorizer.cs" />
+    <Compile Include="Microsoft.Scripting.Hosting\TokenInfo.cs" />
+    <Compile Include="Microsoft.Scripting.Internal\Microsoft.Scripting.Internal.Ast\BlockStatement.cs" />
+    <Compile Include="Microsoft.Scripting.Internal\Microsoft.Scripting.Internal.Ast\CodeBlock.cs" />
+    <Compile Include="Microsoft.Scripting.Internal\Microsoft.Scripting.Internal.Ast\Expression.cs" />
+    <Compile Include="Microsoft.Scripting.Internal\Microsoft.Scripting.Internal.Ast\Statement.cs" />
+    <Compile Include="Microsoft.Scripting.Shell\CommandLine.cs" />
+    <Compile Include="Microsoft.Scripting.Shell\ConsoleOptions.cs" />
+    <Compile Include="Microsoft.Scripting\CodeContext.cs" />
+    <Compile Include="Microsoft.Scripting\CompilerContext.cs" />
+    <Compile Include="Microsoft.Scripting\CompilerOptions.cs" />
+    <Compile Include="Microsoft.Scripting\ContextId.cs" />
+    <Compile Include="Microsoft.Scripting\EngineOptions.cs" />
+    <Compile Include="Microsoft.Scripting\GlobalEnums.cs" />
+    <Compile Include="Microsoft.Scripting\IAttributesCollection.cs" />
+    <Compile Include="Microsoft.Scripting\LanguageContext.cs" />
+    <Compile Include="Microsoft.Scripting\OptionsParser.cs" />
+    <Compile Include="Microsoft.Scripting\Scope.cs" />
+    <Compile Include="Microsoft.Scripting\ScriptDomainManager.cs" />
+    <Compile Include="Microsoft.Scripting\ScriptModule.cs" />
+    <Compile Include="Microsoft.Scripting\SourceLocation.cs" />
+    <Compile Include="Microsoft.Scripting\SourceSpan.cs" />
+    <Compile Include="Microsoft.Scripting\SourceUnit.cs" />
+    <Compile Include="Microsoft.Scripting\SourceUnitReader.cs" />
+    <Compile Include="Microsoft.Scripting\SymbolId.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Microsoft.Scripting.Internal\Microsoft.Scripting.Internal.Generation\" />
+  </ItemGroup>
+</Project>
