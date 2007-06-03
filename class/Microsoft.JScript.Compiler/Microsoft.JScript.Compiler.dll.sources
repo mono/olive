@@ -1,3 +1,7 @@
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
 Microsoft.JScript.Compiler/BadToken.cs
 Microsoft.JScript.Compiler/Comment.cs
 Microsoft.JScript.Compiler/Compiler.cs

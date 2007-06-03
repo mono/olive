@@ -42,8 +42,7 @@ namespace Mono.JScript.Compiler
 			set { throw new NotImplementedException(); }
 		}
 
-		public override Microsoft.Scripting.EngineOptions EngineOptions
-		{
+		public override Microsoft.Scripting.EngineOptions EngineOptions	{
 			get { throw new NotImplementedException(); }
 			set { throw new NotImplementedException(); }
 		}
