@@ -52,130 +52,130 @@ namespace System.Windows {
 	        	ClipProperty = DependencyProperty.Register ("Clip", typeof (Geometry), ttype);
 	        	RenderTransformProperty = DependencyProperty.Register ("RenderTransform", typeof (Transform), ttype);
 	        	TriggersProperty = DependencyProperty.Register ("Triggers", typeof (TriggerCollection), ttype);
-		        	OpacityMaskProperty = DependencyProperty.Register ("OpacityMask", typeof (Brush), ttype);
-		        	RenderTransformOriginProperty = DependencyProperty.Register ("RenderTransformOrigin", typeof (Point), ttype);
-		        	CursorProperty = DependencyProperty.Register ("Cursor", typeof (Cursors), ttype);
-		        	IsHitTestVisibleProperty = DependencyProperty.Register ("IsHitTestVisible", typeof (bool), ttype);
-		        	VisibilityProperty = DependencyProperty.Register ("Visibility", typeof (Visibility), ttype);
-		        	ResourcesProperty = DependencyProperty.Register ("Resources", typeof(ResourceCollection), ttype);
-			}
+			OpacityMaskProperty = DependencyProperty.Register ("OpacityMask", typeof (Brush), ttype);
+			RenderTransformOriginProperty = DependencyProperty.Register ("RenderTransformOrigin", typeof (Point), ttype);
+			CursorProperty = DependencyProperty.Register ("Cursor", typeof (Cursors), ttype);
+			IsHitTestVisibleProperty = DependencyProperty.Register ("IsHitTestVisible", typeof (bool), ttype);
+			VisibilityProperty = DependencyProperty.Register ("Visibility", typeof (Visibility), ttype);
+			ResourcesProperty = DependencyProperty.Register ("Resources", typeof(ResourceCollection), ttype);
+		}
 			
-		        public UIElement ()
-			{
+		public UIElement ()
+		{
+		}
+		
+		public Geometry Clip {
+			get {
+				return (Geometry) GetValue (ClipProperty);
 			}
-		
-		        public Geometry Clip {
-		                get {
-					return (Geometry) GetValue (ClipProperty);
-				}
 				
-		                set {
-					SetValue (ClipProperty, value);
-				}
-		        }
-		
-		        public Cursors Cursor {
-		                get {
-					return (Cursors) GetValue (CursorProperty);
-				}
-				
-		                set {
-					SetValue (CursorProperty, value);
-				}
+			set {
+				SetValue (ClipProperty, value);
 			}
+		}
 		
-		        public bool IsHitTestVisible {
-		                get {
-					return (bool) GetValue (IsHitTestVisibleProperty);
-				}
+		public Cursors Cursor {
+			get {
+				return (Cursors) GetValue (CursorProperty);
+			}
 				
-		                set {
-					SetValue (IsHitTestVisibleProperty, value);
-				}
-		        }
+			set {
+				SetValue (CursorProperty, value);
+			}
+		}
 		
-		        public double Opacity {
-		                get {
-					return (double) GetValue (OpacityProperty);
-				}
+		public bool IsHitTestVisible {
+			get {
+				return (bool) GetValue (IsHitTestVisibleProperty);
+			}
 				
-		                set {
-					SetValue (OpacityProperty, value);
-				}
-		        }
+			set {
+				SetValue (IsHitTestVisibleProperty, value);
+			}
+		}
 		
-		        public Brush OpacityMask {
-		                get {
-					return (Brush) GetValue (OpacityMaskProperty);
-				}
+		public double Opacity {
+			get {
+				return (double) GetValue (OpacityProperty);
+			}
 				
-		                set {
-					SetValue (OpacityMaskProperty, value);
-				}
-		        }
+			set {
+				SetValue (OpacityProperty, value);
+			}
+		}
 		
-		        public Transform RenderTransform {
-		                get {
-					return (Transform) GetValue (RenderTransformProperty);
-				}
+		public Brush OpacityMask {
+			get {
+				return (Brush) GetValue (OpacityMaskProperty);
+			}
 				
-		                set {
-					SetValue (RenderTransformProperty, value);
-				}
-		        }
+			set {
+				SetValue (OpacityMaskProperty, value);
+			}
+		}
 		
-		        public Point RenderTransformOrigin {
-		                get {
-					return (Point) GetValue (RenderTransformOriginProperty);
-				}
+		public Transform RenderTransform {
+			get {
+				return (Transform) GetValue (RenderTransformProperty);
+			}
 				
-		                set {
-					SetValue (RenderTransformOriginProperty, value);
-				}
-		        }
+			set {
+				SetValue (RenderTransformProperty, value);
+			}
+		}
 		
-		        public ResourceCollection Resources {
-		                get {
-					return (ResourceCollection) GetValue (ResourcesProperty);
-				}
+		public Point RenderTransformOrigin {
+			get {
+				return (Point) GetValue (RenderTransformOriginProperty);
+			}
 				
-		                set {
-					SetValue (ResourcesProperty, value);
-				}
-		        }
+			set {
+				SetValue (RenderTransformOriginProperty, value);
+			}
+		}
 		
-		        public TriggerCollection Triggers {
-		                get {
-					return (TriggerCollection) GetValue (TriggersProperty);
-				}
+		public ResourceCollection Resources {
+			get {
+				return (ResourceCollection) GetValue (ResourcesProperty);
+			}
 				
-		                set {
-					SetValue (TriggersProperty, value);
-				}
-		        }
+			set {
+				SetValue (ResourcesProperty, value);
+			}
+		}
 		
-		        public Visibility Visibility {
-		                get {
-					return (Visibility) GetValue (VisibilityProperty);
-				}
+		public TriggerCollection Triggers {
+			get {
+				return (TriggerCollection) GetValue (TriggersProperty);
+			}
 				
-		                set {
-					SetValue (VisibilityProperty, value);
-				}
-		        }
+			set {
+				SetValue (TriggersProperty, value);
+			}
+		}
 		
-		        public event EventHandler GotFocus;
-		        public event EventHandler LostFocus;
-		        public event EventHandler Loaded;
+		public Visibility Visibility {
+			get {
+				return (Visibility) GetValue (VisibilityProperty);
+			}
+				
+			set {
+				SetValue (VisibilityProperty, value);
+			}
+		}
+		
+		public event EventHandler GotFocus;
+		public event EventHandler LostFocus;
+		public event EventHandler Loaded;
 			
-		        public event KeyboardEventHandler KeyDown;
-		        public event KeyboardEventHandler KeyUp;
+		public event KeyboardEventHandler KeyDown;
+		public event KeyboardEventHandler KeyUp;
 		
-		        public event MouseEventHandler MouseEnter;
-		        public event EventHandler MouseLeave;
+		public event MouseEventHandler MouseEnter;
+		public event EventHandler MouseLeave;
 		
-		        public event MouseEventHandler MouseLeftButtonDown;
-		        public event MouseEventHandler MouseLeftButtonUp;
-		        public event MouseEventHandler MouseMove;
+		public event MouseEventHandler MouseLeftButtonDown;
+		public event MouseEventHandler MouseLeftButtonUp;
+		public event MouseEventHandler MouseMove;
 	}
 }
