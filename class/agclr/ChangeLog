@@ -1,3 +1,8 @@
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* agclr.dll.sources: Added System.Windows.Media.*Brush and related 
+	classes (to compile).
+
 2007-06-03  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* agclr.dll.sources: Added System.Windows.Media.Matrix and [Matrix|
