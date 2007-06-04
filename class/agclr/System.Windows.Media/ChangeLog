@@ -1,3 +1,20 @@
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* BrushMappingMode.cs: New.
+	* Color.cs: New (incomplete)
+	* ColorInterpretationMode.cs: New.
+	* Colors.cs: New (incomplete)
+	* GradientBrush.cs: New.
+	* GradientSpreadMethod.cs: New.
+	* GradientStopCollection.cs: New.
+	* GradientStop.cs: New.
+	* ImageBrush.cs: New.
+	* LinearGradientBrush.cs: New.
+	* RadialGradientBrush.cs: New.
+	* SolidColorBrush.cs: New.
+	* TileBrush.cs: New.
+	* VideoBrush.cs: New.
+
 2007-06-03  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Matrix.cs: New.
