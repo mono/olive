@@ -24,6 +24,7 @@ Assembly/AssemblyInfo.cs
 ../PresentationFramework/System.Windows.Serialization/XamlPropertyComplexStartNode.cs
 ../PresentationFramework/Mono.Windows.Serialization/XamlParser.cs
 ../PresentationFramework/Mono.Windows.Serialization/ParserConsumerBase.cs
+Mono/NativeMethods.cs
 System.Windows/Downloader.cs
 System.Windows/ErrorEventArgs.cs
 System.Windows/ErrorEventHandler.cs

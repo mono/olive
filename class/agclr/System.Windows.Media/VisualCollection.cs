@@ -26,8 +26,15 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using MS.Internal;
+using Mono;
+
 namespace System.Windows.Media {
-	public class VisualCollection {
+	public class VisualCollection : Collection<Visual> {
+		
+		internal VisualCollection (IntPtr native) : base (native)
+		{
+		}
 		
 		public VisualCollection ()
 		{

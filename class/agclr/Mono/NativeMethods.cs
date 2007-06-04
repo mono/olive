@@ -1,5 +1,5 @@
 //
-// Canvas.cs
+// Panel.cs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -25,26 +25,49 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System;
 using System.Windows;
+using System.Runtime.InteropServices;
 
-namespace System.Windows.Controls {
-	public class Canvas : Panel {
-		static Canvas ()
-		{
-			LeftProperty = DependencyProperty.Register (
-				"Left", typeof (double), typeof (Canvas));
+namespace Mono {
 
-			TopProperty = DependencyProperty.Register (
-				"Top", typeof (double), typeof (Canvas));
-		}
+	internal static class NativeMethods {
 
-		public static readonly DependencyProperty LeftProperty;
-		public static readonly DependencyProperty TopProperty;
+#region Base
+		[DllImport("moon")]
+		internal extern static void base_ref (IntPtr ptr);
 
-		// Temporarily public, for testing.
-		public Canvas (IntPtr native_object)
-		{
-			native = native_object;
-		}
+		[DllImport("moon")]
+		internal extern static void base_unref (IntPtr ptr);
+#endregion
+
+#region Items
+		[DllImport("moon")]
+		internal extern static IntPtr item_get_surface (IntPtr item);
+		
+		[DllImport("moon")]
+		internal extern static void item_invalidate (IntPtr item);
+
+		[DllImport("moon")]
+		internal extern static void item_set_transform (IntPtr item, double [] transform);
+
+		[DllImport("moon")]
+		internal extern static void item_set_transform_origin (IntPtr item, Point p);
+#endregion
+
+#region Panel
+		[DllImport("moon")]
+		internal extern static IntPtr panel_get_children_collection (IntPtr panel);
+#endregion
+
+#region Collections
+		[DllImport("moon")]
+		internal extern static IntPtr collection_add (IntPtr obj);
+#endregion
+		
+#region Shapes
+		[DllImport("moon")]
+		internal extern static IntPtr rectangle_new (double x, double y, double w, double h);
+#endregion
 	}
 }

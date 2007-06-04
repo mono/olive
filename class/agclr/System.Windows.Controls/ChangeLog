@@ -1,0 +1,11 @@
+2007-06-04  Miguel de Icaza  <miguel@novell.com>
+
+	* Canvas.cs: Add native IntPtr field that points to the native
+	canvas object.
+
+	Should this be part of DependencyObject?  
+
+	Need to decide.
+
+	* Panel.cs: Add the early binding to the collection.
+
