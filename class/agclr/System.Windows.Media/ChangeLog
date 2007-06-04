@@ -1,3 +1,13 @@
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Matrix.cs: New.
+	* MatrixTransform.cs: New.
+	* RotateTransform.cs: New.
+	* ScaleTransform.cs: New.
+	* SkewTransform.cs: New.
+	* Transform.cs: Inherits from DependencyObject
+	* TranslateTransform.cs: New.
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* RectangleGeometry.cs: New.

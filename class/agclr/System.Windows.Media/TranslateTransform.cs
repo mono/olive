@@ -1,10 +1,10 @@
 //
-// Transform.cs
+// System.Windows.Media.TranslateTransform class
 //
-// Author:
-//   Miguel de Icaza (miguel@novell.com)
+// Authors:
+//	Sebastien Pouliot  <sebastien@ximian.com>
 //
-// Copyright 2007 Novell, Inc.
+// Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -13,10 +13,10 @@
 // distribute, sublicense, and/or sell copies of the Software, and to
 // permit persons to whom the Software is furnished to do so, subject to
 // the following conditions:
-// 
+//
 // The above copyright notice and this permission notice shall be
 // included in all copies or substantial portions of the Software.
-// 
+//
 // THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
@@ -27,10 +27,24 @@
 //
 
 namespace System.Windows.Media {
-	public class Transform : DependencyObject {
-		
-		public Transform ()
+
+	public class TranslateTransform : Transform {
+
+		public static readonly DependencyProperty XProperty = DependencyProperty.Register ("X", typeof (double), typeof (TranslateTransform));
+		public static readonly DependencyProperty YProperty = DependencyProperty.Register ("Y", typeof (double), typeof (TranslateTransform));
+
+		public TranslateTransform ()
 		{
+		}
+
+		public double X {
+			get { return (double) GetValue (XProperty); }
+			set { SetValue (XProperty, value); }
+		}
+
+		public double Y {
+			get { return (double) GetValue (YProperty); }
+			set { SetValue (YProperty, value); }
 		}
 	}
 }
