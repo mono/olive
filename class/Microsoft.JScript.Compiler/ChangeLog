@@ -1,5 +1,12 @@
 2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
 
+	* Finished all parsing of statement
+	* Remove ref to own MS.Scripting
+	
+Note : Dlist seems core list to build the tree. So it must use the splaytree to have better search because according wikipedia splay tree is good to make a search.
+		
+2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
+
 	* Add switch to parser
 	* fix bug for null ref and not initialize ref for test
 	* Add small test for Parser

@@ -1,5 +1,0 @@
-
-
-- do the parser and all extra stuff
-- do the Mono.scripting lib
-- move sourcelocation to it

@@ -70,6 +70,10 @@ namespace Mono.JScript.Compiler
 
 		#endregion
 
+		#region private methods
+
+		#region statements
+
 		private FunctionStatement ParseFunctionDeclaration ()
 		{
 			Token start = current;
@@ -94,7 +98,7 @@ namespace Mono.JScript.Compiler
 			TextSpan location = new TextSpan (start,current);
 			TextSpan HeaderLocation = new TextSpan (start,headerEnd);
 			
-			FunctionDefinition func = new FunctionDefinition(id,parametters,body,location,HeaderLocation,NameLocation,leftParenLocation,rightParenLocation);
+			FunctionDefinition func = new FunctionDefinition(id, parametters, body, location, HeaderLocation, NameLocation, leftParenLocation, rightParenLocation);
 			return new FunctionStatement (func);
 		}
 		
@@ -169,8 +173,9 @@ namespace Mono.JScript.Compiler
 				case Token.Type.Try:
 					return ParseTry ();
 				case Token.Type.Throw:
+					return ParseThrow ();
 				case Token.Type.Return:
-					return ParseReturnOrThrow ();
+					return ParseReturn ();
 				case Token.Type.Function:
 					return ParseFunctionDeclaration ();
 				case Token.Type.Identifier:
@@ -449,31 +454,78 @@ namespace Mono.JScript.Compiler
 			return result;
 		}
 
-		private ReturnOrThrowStatement ParseReturnOrThrow ()
+		private ReturnOrThrowStatement ParseReturn ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next ();
+			Expression expr = null;
+			if (current.Kind != Token.Type.SemiColon)
+				expr = ParseExpression();
+
+			return new ReturnOrThrowStatement (Statement.Operation.Return, expr, new TextSpan (start, current));
+
+		}
+
+		private ReturnOrThrowStatement ParseThrow ()
+		{
+			Token start = current;
+			Next ();
+			Expression expr = ParseExpression ();
+			return new ReturnOrThrowStatement (Statement.Operation.Throw, expr, new TextSpan (start, current));
 		}
 
 		private TryStatement ParseTry ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next ();
+			BlockStatement block = ParseBlock ();
+			Next();
+			bool flag = false;
+			CatchClause catchClause = null;
+			FinallyClause finallyClause = null;
+
+			if (current.Kind == Token.Type.Catch) {
+				Token start2 = current;
+				flag = true;
+				Next ();
+				CheckSyntaxExpected (Token.Type.LeftParenthesis);
+				Token left = current;
+				Next ();
+				CheckSyntaxExpected (Token.Type.Identifier);
+				Token id = current;
+				Identifier name = (current as IdentifierToken).Spelling;
+				Next();
+				CheckSyntaxExpected (Token.Type.RightParenthesis);
+				Token right = current;
+				Next();
+				BlockStatement handler = ParseBlock();
+				catchClause = new CatchClause(name, handler,new TextSpan(start2,current), new TextSpan(id, id), new TextPoint(left.StartPosition),new TextPoint(right.StartPosition));
+			} 
+
+			if (current.Kind == Token.Type.Finally) {
+				Token start3 = current;
+				flag = true;
+				Next ();
+				BlockStatement handler2 = ParseBlock();
+				finallyClause = new FinallyClause(handler2,new TextSpan(start3,current));
+			}
+
+			if (flag) {
+				diagnostics.Add(new Diagnostic(DiagnosticCode.TryHasNoHandlers,new TextSpan(start,current)));
+			}
+			return new TryStatement (block, catchClause, finallyClause, new TextSpan (start, current));
 		}
 		/*
 		ArgumentList.cs
 		ArrayLiteralExpression.cs
 		BinaryOperatorExpression.cs
-		CaseClause.cs
-		CatchClause.cs
-		DefaultCaseClause.cs
 		ExpressionListElement.cs
-		FinallyClause.cs
 		ForInStatement.cs
 		FunctionDefinition.cs
 		HexLiteralExpression.cs
 		IdentifierExpression.cs
 		InvocationExpression.cs
 		LabelStatement.cs
-		LoopStatement.cs
 		NullExpression.cs
 		NumericLiteralExpression.cs
 		ObjectLiteralElement.cs
@@ -486,10 +538,14 @@ namespace Mono.JScript.Compiler
 		SubscriptExpression.cs
 		TernaryOperatorExpression.cs
 		UnaryOperatorExpression.cs
-		ValueCaseClause.cs
 		VariableDeclaration.cs
 		VariableDeclarationListElement.cs
 		 */
+
+		#endregion
+
+		#region expressions
+
 		private Expression ParseExpression ()
 		{
 			Token start = current; //ident
@@ -617,6 +673,10 @@ namespace Mono.JScript.Compiler
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
+		#endregion
+
+		#region helpers
+
 		private void Next ()
 		{
 			current = lexer.GetNext ();
@@ -649,13 +709,17 @@ namespace Mono.JScript.Compiler
 					return;
 			}
 				diagnostics.Add(new Diagnostic(code, new TextSpan(current.StartLine,current.StartColumn, lexer.Position.Line, lexer.Position.Column,current.StartPosition, lexer.Position.Index)));
-		}
+			}
+
+		#endregion
+
+		#endregion
 
 		private List<Diagnostic> diagnostics;
 
 		public List<Diagnostic> Diagnostics { get {	return diagnostics;	} }
+
 		/* TODO 
-			TryHasNoHandlers,
 			BadDivideOrRegularExpressionLiteral,
 			EnclosingLabelShadowed,
 			NoEnclosingLabel,
