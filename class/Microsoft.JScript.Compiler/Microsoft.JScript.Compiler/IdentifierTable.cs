@@ -15,8 +15,8 @@ namespace Mono.JScript.Compiler
 
 		public Identifier InsertIdentifier (string Spelling)
 		{
-			Identifier result = identifiers[Spelling];
-			if (result == null) {
+			Identifier result;
+			if (!identifiers.TryGetValue(Spelling, out result)) {
 				result = new Identifier (Spelling, this);
 				identifiers.Add (Spelling, result);
 			}

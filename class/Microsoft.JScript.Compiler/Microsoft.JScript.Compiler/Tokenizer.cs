@@ -430,12 +430,11 @@ namespace Mono.JScript.Compiler
 			}
 			string result = builder.ToString();
 			Token.Type type;
-			if (keywords.TryGetValue(result, out type)) {
-				current = new Token (type, position, row, position - lineStartPosition, position == lineStartPosition);
-				return current;
+			if (!keywords.TryGetValue(result, out type)) {
+				this.IDTable.InsertIdentifier (result);
 			}
-			this.IDTable.InsertIdentifier (result);
-			current = new Token (Token.Type.Identifier, position, row, position - lineStartPosition, position == lineStartPosition);
+			Identifier id = new Identifier(result, IDTable);
+			current = new IdentifierToken (id, result.Length, Token.Type.Identifier, position, row, position - lineStartPosition, position == lineStartPosition);
 			return current;
 		}
 
@@ -475,7 +474,7 @@ namespace Mono.JScript.Compiler
 				break;
 			}
 			string result = builder.ToString();
-			current = new Token (Token.Type.NumericLiteral, position, row, position - lineStartPosition, position == lineStartPosition);
+			current = new NumericLiteralToken (result, position, row, position - lineStartPosition, position == lineStartPosition);
 			return current;
 		}
 

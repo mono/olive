@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using NUnit.Core;
 using NUnit.Framework;
+using Mono.JScript.Compiler;
 
 namespace Mono.JScript.Compiler.Tests
 {
@@ -10,14 +11,21 @@ namespace Mono.JScript.Compiler.Tests
 	public class ParserTest
 	{
 		[Test]
-		public void GlobalTest()
+		public void SyntaxOKTest()
 		{
-			/*IParser p1 = new JScriptParser("var } function + i 'Hello',");
-			Assert.IsFalse(p1.Parse());
-			Assert.AreEqual(1, p1.Errors.Count);
-			Assert.AreEqual("MJS0300", p1.Errors[0].ErrorNumber); // MJS300 = Erreur de syntaxe
-			Assert.AreEqual(1, p1.Errors[0].Line);
-			Assert.AreEqual(5, p1.Errors[0].Column);*/
+			Parser parser = new Parser("var } function + i 'Hello',".ToCharArray());
+			List<Comment> comments = new List<Comment> ();
+			parser.ParseProgram (ref comments);
+			Assert.IsFalse (parser.SyntaxOK());
+		}
+
+		[Test]
+		public void VarTest ()
+		{
+			Parser parser = new Parser ("var a = 10;".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			parser.ParseProgram (ref comments);
+			Assert.IsTrue (parser.SyntaxOK ());
 		}
 	}
 }

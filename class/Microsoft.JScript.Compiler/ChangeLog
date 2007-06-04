@@ -1,3 +1,10 @@
+2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* Add switch to parser
+	* fix bug for null ref and not initialize ref for test
+	* Add small test for Parser
+	* use of custom token in tokenizer
+	
 2007-06-03  Olivier Dufour  <olivier.duff@gmail.com>
 
 	* Make it compilable on linux

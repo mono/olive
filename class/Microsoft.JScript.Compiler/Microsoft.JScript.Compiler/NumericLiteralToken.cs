@@ -4,7 +4,17 @@ using System.Text;
 
 namespace Mono.JScript.Compiler
 {
-	public class NumericLiteralToken
+	public class NumericLiteralToken : Token
 	{
+		public readonly string Spelling;
+
+		public NumericLiteralToken (string Spelling, int StartCharacterPosition, int StartLine, int StartColumn, bool FirstOnLine)
+			:base(Token.Type.NumericLiteral, StartCharacterPosition, StartLine, StartColumn, FirstOnLine)
+		{
+			this.Spelling = Spelling;
+		}
+
+		public override int Width { get { return Spelling.Length; } }
+
 	}
 }

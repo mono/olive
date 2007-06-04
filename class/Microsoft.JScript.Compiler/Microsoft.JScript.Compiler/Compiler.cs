@@ -15,7 +15,7 @@ namespace Mono.JScript.Compiler
 		{
 			return CompileExpression (Input.ToCharArray (), ref Diagnostics);
 		}
-
+		[MonoTODO]
 		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
 		{
 			Parser parser = new Parser (Input, new IdentifierTable ());
@@ -31,6 +31,7 @@ namespace Mono.JScript.Compiler
 			return CompileProgram (Input, ref Diagnostics, ref IncompleteInput, false);
 		}
 
+		[MonoTODO]
 		public Microsoft.Scripting.Internal.Ast.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
 		{
 			Parser parser = new Parser (Input, new IdentifierTable ());

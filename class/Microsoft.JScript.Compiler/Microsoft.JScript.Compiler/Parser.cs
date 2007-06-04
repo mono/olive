@@ -14,6 +14,8 @@ namespace Mono.JScript.Compiler
 		public Parser (char[] Input, IdentifierTable IDTable)
 		{
 			lexer = new Tokenizer (Input, IDTable);
+			diagnostics = new List<Diagnostic> ();
+			Next (); // innit on first token 
 		}
 
 		#region private fields
@@ -91,8 +93,7 @@ namespace Mono.JScript.Compiler
 			BlockStatement body = ParseBlock ();
 			TextSpan location = new TextSpan (start,current);
 			TextSpan HeaderLocation = new TextSpan (start,headerEnd);
-
-
+			
 			FunctionDefinition func = new FunctionDefinition(id,parametters,body,location,HeaderLocation,NameLocation,leftParenLocation,rightParenLocation);
 			return new FunctionStatement (func);
 		}
@@ -128,7 +129,9 @@ namespace Mono.JScript.Compiler
 			foreach (Statement statement in statements)
 				children.Append (statement);
 			CheckSyntaxExpected (Token.Type.RightBrace);
-			return new BlockStatement (children, new TextSpan (start, current));
+			BlockStatement block = new BlockStatement (children, new TextSpan (start, current));
+			children.Parent = block;
+			return block;
 		}
 
 		private List<Statement> ParseListStatement ()
@@ -142,6 +145,7 @@ namespace Mono.JScript.Compiler
 
 		private Statement ParseStatement ()
 		{
+			Token start = current;
 			switch (current.Kind) {
 				case Token.Type.LeftBrace:
 					return ParseBlock ();
@@ -170,16 +174,12 @@ namespace Mono.JScript.Compiler
 				case Token.Type.Function:
 					return ParseFunctionDeclaration ();
 				case Token.Type.Identifier:
-					IdentifierToken ident = current as IdentifierToken;
-					Next ();
 					return ParseExpressionStatement ();
 				default:
 					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
 					break;
 			}
-			//TODO
-			return new Statement(Statement.Operation.Block, new TextSpan(0, 0, 0, 0, 0, 0));
-			
+			return new Statement(Statement.Operation.Block, new TextSpan(start,current));
 		}
 
 		private ExpressionStatement ParseExpressionStatement ()
@@ -376,7 +376,77 @@ namespace Mono.JScript.Compiler
 
 		private SwitchStatement ParseSwitch ()
 		{
-			throw new Exception ("The method or operation is not implemented.");
+			Token start = current;
+			Next();
+			CheckSyntaxExpected(Token.Type.LeftParenthesis);
+			Token leftParen = current;
+			Expression Value = ParseExpression();
+			CheckSyntaxExpected(Token.Type.RightParenthesis);
+			Token rightParen = current;
+			Next();
+			CheckSyntaxExpected (Token.Type.LeftBrace);
+			Token leftBrace = current;
+			Next ();
+			DList<CaseClause, SwitchStatement> cases = new DList<CaseClause, SwitchStatement> ();
+			bool defaultFlag = false;
+			while (current.Kind == Token.Type.Case || current.Kind == Token.Type.Default) {
+				if (current.Kind == Token.Type.Case)
+					cases.Append (ParseValueCaseClause ());
+				else {
+					if (defaultFlag)
+						diagnostics.Add (new Diagnostic (DiagnosticCode.SwitchHasMultipleDefaults, new TextSpan (start, current)));
+					cases.Append (ParseDefaultCaseClause ());
+					defaultFlag = true;
+				}
+				Next ();			
+			}
+			CheckSyntaxExpected (Token.Type.RightBrace);
+			SwitchStatement switchStatement = new SwitchStatement (Value, cases, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition), new TextPoint (leftBrace.StartPosition));
+			cases.Parent = switchStatement;
+			return switchStatement;
+		}
+
+		private DefaultCaseClause ParseDefaultCaseClause ()
+		{
+			Token start = current;
+			Next ();
+			CheckSyntaxExpected (Token.Type.Colon);
+			Token colon = current;
+			Next ();
+			DList<Statement, CaseClause> children = new DList<Statement,CaseClause>();
+			do {
+				if (current.Kind == Token.Type.Case
+					|| current.Kind == Token.Type.Default
+					|| current.Kind == Token.Type.RightBrace
+					|| current.Kind == Token.Type.EndOfInput)
+					break;
+				children.Append (ParseStatement ());
+			} while (true);
+			DefaultCaseClause result = new DefaultCaseClause (children, new TextSpan (start, current), new TextSpan (start, colon), new TextPoint (colon.StartPosition));
+			children.Parent = result;
+			return result;
+		}
+
+		private ValueCaseClause ParseValueCaseClause ()
+		{
+			Token start = current;
+			Next ();
+			Expression expression = ParseExpression ();
+			CheckSyntaxExpected (Token.Type.Colon);
+			Token colon = current;
+			Next ();
+			DList<Statement, CaseClause> children = new DList<Statement, CaseClause> ();
+			do {
+				if (current.Kind == Token.Type.Case
+					|| current.Kind == Token.Type.Default
+					|| current.Kind == Token.Type.RightBrace
+					|| current.Kind == Token.Type.EndOfInput)
+					break;
+				children.Append (ParseStatement ());
+			} while (true);
+			ValueCaseClause result = new ValueCaseClause (expression, children, new TextSpan (start, current), new TextSpan (start, colon), new TextPoint (colon.StartPosition));
+			children.Parent = result;
+			return result;
 		}
 
 		private ReturnOrThrowStatement ParseReturnOrThrow ()
@@ -422,6 +492,8 @@ namespace Mono.JScript.Compiler
 		 */
 		private Expression ParseExpression ()
 		{
+			Token start = current; //ident
+			Next ();
 			switch (current.Kind) {
 				case Token.Type.Equal:
 					ParseSetVar ();
@@ -462,13 +534,22 @@ namespace Mono.JScript.Compiler
 				case Token.Type.New:
 					ParseNew ();
 					break;
+				case Token.Type.Colon:
+				case Token.Type.SemiColon:
+					ParseIdentifier ();
+					break;
 				default:
 					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
 					break;
 			}
-			//TODO
-			return new Expression(Expression.Operation.Bang, new TextSpan(0, 0, 0, 0, 0, 0));
 			
+			return new Expression(Expression.Operation.Bang, new TextSpan(start,current));
+			
+		}
+
+		private void ParseIdentifier ()
+		{
+			throw new Exception ("The method or operation is not implemented.");
 		}
 
 		private Expression ParseGreaterGreater ()
@@ -574,7 +655,6 @@ namespace Mono.JScript.Compiler
 
 		public List<Diagnostic> Diagnostics { get {	return diagnostics;	} }
 		/* TODO 
-			SwitchHasMultipleDefaults,
 			TryHasNoHandlers,
 			BadDivideOrRegularExpressionLiteral,
 			EnclosingLabelShadowed,
