@@ -1,5 +1,5 @@
 //
-// System.Windows.Media.Color enum
+// System.Windows.Media.Color struct
 //
 // Authors:
 //	Sebastien Pouliot  <sebastien@ximian.com>
@@ -28,10 +28,12 @@
 
 namespace System.Windows.Media {
 
-		[MonoTODO]
-	public struct Color : IFormattable, IEquatable<Color> {
+	public struct Color {
 
+		// maybe we should keep the 4 floats value and compute the argb on them
+		// but that would require 4 times the memory
 		private uint argb;
+
 
 		private Color (uint value)
 		{
@@ -48,16 +50,132 @@ namespace System.Windows.Media {
 			return new Color (0xFF000000 | (uint) (r << 16 | g << 8 | b));
 		}
 
-		[MonoTODO]
-		public string ToString (string format, IFormatProvider formatProvider)
+		public static Color FromScRgb (float a, float r, float g, float b)
 		{
- 			throw new NotImplementedException ();
+			return FromArgb ((byte)(255 * a), (byte)(255 * r), (byte)(255 * g), (byte)(255 * b));
 		}
 
-		[MonoTODO]
-		public bool Equals (Color other)
+
+		public byte A {
+			get { return (byte)(argb >> 24); }
+			set { argb = (uint)((value << 24) | (argb & 0x00FFFFFF)); }
+		}
+
+		public byte R {
+			get { return (byte)((argb >> 16) & 0xFF); }
+			set { argb = (uint)((value << 16) | (argb & 0xFF00FFFF)); }
+		}
+
+		public byte G {
+			get { return (byte)((argb >> 8) & 0xFF); }
+			set { argb = (uint)((value << 8) | (argb & 0xFFFF00FF)); }
+		}
+
+		public byte B {
+			get { return (byte)(argb & 0xFF); }
+			set { argb = (uint)(value | (argb & 0xFFFFFF00)); }
+		}
+
+		public float ScA {
+			get { return (A / 255.0f); }
+			set { A = (byte)(255 * value); }
+		}
+
+		public float ScR {
+			get { return (R / 255.0f); }
+			set { R = (byte)(255 * value); }
+		}
+
+		public float ScG {
+			get { return (G / 255.0f); }
+			set { G = (byte)(255 * value); }
+		}
+
+		public float ScB {
+			get { return (B / 255.0f); }
+			set { B = (byte)(255 * value); }
+		}
+
+
+		public void Clamp ()
 		{
- 			throw new NotImplementedException ();
+			// not applicable as long as we keep the color defined as a uint
+		}
+
+		public override int GetHashCode ()
+		{
+			return (int) argb;
+		}
+
+		public override bool Equals (object o)
+		{
+			return (o is Color) ? Equals ((Color)o) : false;
+		}
+
+		public bool Equals (Color color)
+		{
+			return (argb == color.argb);
+		}
+
+		public static bool Equals (Color color1, Color color2)
+		{
+			return (color1.argb == color2.argb);
+		}
+
+		public override string ToString ()
+		{
+			return String.Format ("#{0:8X}", argb);
+		}
+
+		public static Color Add (Color color1, Color color2)
+		{
+			return (color1 + color2);
+		}
+
+		public static bool AreClose (Color color1, Color color2)
+		{
+			// argb needs to be identical for colors to be close
+			// but close colors could happen if we kept the colors as 4 float components
+			return (color1.argb == color2.argb);
+		}
+
+		public static Color Multiply (Color color, float coefficient)
+		{
+			return color * coefficient;
+		}
+
+		public static Color Substract (Color color1, Color color2)
+		{
+			return color1 - color2;
+		}
+
+
+		public static Color operator + (Color color1, Color color2)
+		{
+			return Color.FromArgb ((byte)(color1.A + color2.A), (byte)(color1.R + color2.R), 
+				(byte)(color1.G + color2.G), (byte)(color1.B + color2.B));
+		}
+
+		public static Color operator * (Color color, float coefficient)
+		{
+			return Color.FromScRgb (color.ScA * coefficient, color.ScR * coefficient, color.ScG * coefficient,
+				color.ScB * coefficient);
+		}
+
+		public static Color operator - (Color color1, Color color2)
+		{
+			return Color.FromArgb ((byte)(color1.A - color2.A), (byte)(color1.R - color2.R), 
+				(byte)(color1.G - color2.G), (byte)(color1.B - color2.B));
+		}
+
+		public static bool operator == (Color color1, Color color2)
+		{
+			return (color1.argb == color2.argb);
+		}
+
+		public static bool operator != (Color color1, Color color2)
+		{
+			return (color1.argb != color2.argb);
 		}
 	}
 }
