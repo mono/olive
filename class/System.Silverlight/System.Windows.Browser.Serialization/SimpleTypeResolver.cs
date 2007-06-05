@@ -11,7 +11,8 @@ namespace System.Windows.Browser.Serialization
 		{
 			if (id == null)
 				throw new ArgumentNullException ("id");
-			throw new NotImplementedException ();
+
+			return Type.GetType (id);
 		}
 		
 		[MonoTODO]
@@ -19,7 +20,8 @@ namespace System.Windows.Browser.Serialization
 		{
 			if (type == null)
 				throw new ArgumentNullException ("type");
-			throw new NotImplementedException ();
+
+			return type.FullName;
 		}
 	}
 }

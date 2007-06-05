@@ -1,0 +1,4 @@
+2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JavaScriptSerializerTest.cs, SimpleTypeResolverTest.cs :
+	  new tests.

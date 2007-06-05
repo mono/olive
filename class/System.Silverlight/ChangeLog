@@ -1,3 +1,7 @@
+2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.Silverlight_test.dll.sources : now we have some tests.
+
 2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.Silverlight.dll.sources :
