@@ -1,5 +1,16 @@
 2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
 
+	* EllipseGeometry.cs: New.
+	* GeometryCollection.cs: New.
+	* GeometryGroup.cs: New.
+	* LineGeometry.cs: New.
+	* PathFigureCollection.cs: New.
+	* PathFigure.cs: New.
+	* PathGeometry.cs: New.
+	* PathSegmentCollection.cs: New.
+
+2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
+
 	* BrushMappingMode.cs: New.
 	* Color.cs: New (incomplete)
 	* ColorInterpretationMode.cs: New.
