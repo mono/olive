@@ -1,3 +1,8 @@
+2007-06-04  Joel Reed  <joelwreed@comcast.com>
+
+	* add properties and constructor implementations for 
+	UrlSyndicationContent and XmlSyndicationContent
+
 2007-05-31  Joel Reed  <joelwreed@comcast.com>
 
 	* add more testcases and stubbed out classes from Stephen A Jazdzewski

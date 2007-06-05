@@ -3,8 +3,10 @@
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
+//      Joel W. Reed (joelwreed@gmail.com)
 //
 // Copyright (C) 2007 Stephen A Jazdzewski
+// Copyright (C) 2007 Joel W. Reed
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -37,6 +39,10 @@ namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
 	public class SyndicationElementExtension {
+
+		private object dataObject;
+		private object dataSerializer;
+
 		[MonoTODO]
 		public SyndicationElementExtension (XmlElement element)
 		{
@@ -65,13 +71,15 @@ namespace System.ServiceModel.Syndication
 		[MonoTODO]
 		public SyndicationElementExtension (object xmlSerializerExtension, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			dataObject = xmlSerializerExtension;
+			dataSerializer = serializer;
 		}
 
 		[MonoTODO]
 		public SyndicationElementExtension (object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			dataObject = dataContractExtension;
+			dataSerializer = dataContractSerializer;
 		}
 
 		[MonoTODO]
@@ -85,11 +93,11 @@ namespace System.ServiceModel.Syndication
 		}
 
 		public object Object {
-			get {throw new NotImplementedException ();}
+			get { return dataObject;}
 		}
 
 		public object ObjectSerializer {
-			get {throw new NotImplementedException ();}
+			get { return dataSerializer;}
 		}
 	}
 }

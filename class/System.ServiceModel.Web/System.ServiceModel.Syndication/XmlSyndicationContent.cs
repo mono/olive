@@ -1,10 +1,12 @@
 //
 // XmlSyndicationContent.cs
 //
-// Author:
+// Authors:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
+//      Joel W. Reed (joelwreed@gmail.com)
 //
 // Copyright (C) 2007 Stephen A Jazdzewski
+// Copyright (C) 2007 Joel W. Reed
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -27,8 +29,6 @@
 //
 
 
-
-
 using System;
 using System.Xml;
 using System.Xml.Serialization;
@@ -39,28 +39,32 @@ namespace System.ServiceModel.Syndication
 {
 	[MonoTODO]
 	public class XmlSyndicationContent : SyndicationContent {
-		[MonoTODO]
+
+		private string type;
+		private SyndicationElementExtension extension;
+
 		public XmlSyndicationContent (string type, XmlElement element)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			this.extension = new SyndicationElementExtension(element);
 		}
 
-		[MonoTODO]
 		public XmlSyndicationContent (string type, SyndicationElementExtension extension)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			this.extension = extension;
 		}
 
-		[MonoTODO]
 		public XmlSyndicationContent (string type, object xmlSerializerExtension, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			this.extension = new SyndicationElementExtension(xmlSerializerExtension, serializer);
 		}
 
-		[MonoTODO]
-		public XmlSyndicationContent (string type, object dataContractExtension, XmlObjectSerializer dateContractSerializer)
+		public XmlSyndicationContent (string type, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			this.extension = new SyndicationElementExtension(dataContractExtension, dataContractSerializer);
 		}
 
 		[MonoTODO]
@@ -101,11 +105,11 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public SyndicationElementExtension Extension {
-			get {throw new NotImplementedException ();}
+			get { return extension; }
 		}
 
 		public override string Type {
-			get {throw new NotImplementedException ();}
+			get { return type; }
 		}
 	}
 }

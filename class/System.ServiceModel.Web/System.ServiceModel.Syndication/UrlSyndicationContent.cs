@@ -3,8 +3,10 @@
 //
 // Author:
 //      Stephen A Jazdzewski (Steve@Jazd.com)
+//      Joel W. Reed (joelwreed@gmail.com)
 //
 // Copyright (C) 2007 Stephen A Jazdzewski
+// Copyright (C) 2007 Joel W. Reed
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -28,17 +30,21 @@
 
 
 using System;
+using System.Net;
 using System.Xml;
 using System.ServiceModel.Syndication;
 
 namespace System.ServiceModel.Syndication
 {
-	[MonoTODO]
 	public class UrlSyndicationContent : SyndicationContent {
-		[MonoTODO]
-		public UrlSyndicationContent (Uri uri, string mediaType)
+
+		private string type;
+		private Uri url;
+
+		public UrlSyndicationContent (Uri url, string mediaType)
 		{
-			throw new NotImplementedException ();
+			this.url = url;
+			this.type = mediaType;
 		}
 
 		[MonoTODO]
@@ -48,11 +54,11 @@ namespace System.ServiceModel.Syndication
 		}
 
 		public override string Type {
-			get {throw new NotImplementedException ();}
+			get { return type;}
 		}
 
 		public Uri Url {
-			get {throw new NotImplementedException ();}
+			get { return url; }
 		}
 	}
 }
