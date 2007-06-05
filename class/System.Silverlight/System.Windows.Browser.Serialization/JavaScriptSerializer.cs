@@ -15,8 +15,8 @@ namespace System.Windows.Browser.Serialization
 		List<JavaScriptConverter> converters = new List<JavaScriptConverter> ();
 
 		public JavaScriptSerializer ()
-			: this (new SimpleTypeResolver ())
 		{
+			// with null type resolver.
 		}
 		
 		public JavaScriptSerializer (JavaScriptTypeResolver resolver)
@@ -133,7 +133,25 @@ namespace System.Windows.Browser.Serialization
 				if (i == input.Length || input [i] != '}')
 					throw new ArgumentException (String.Format ("Invalid JSON object format; '}}' is expected, at {0}", i));
 				i++;
-				return dic;
+
+				// creates a resolved instance if required.
+				if (resolver == null || !dic.ContainsKey ("__type"))
+					return dic;
+				Type type = resolver.ResolveType (dic ["__type"] as string);
+				if (type == null)
+					// FIXME: could be different kind of exception?
+					throw new InvalidOperationException (String.Format ("Type '{0}' cannot be resolved", dic ["__type"]));
+
+				object o = Activator.CreateInstance (type, false);
+				foreach (KeyValuePair<string,object> p in dic) {
+					if (p.Key == "__type")
+						continue;
+					PropertyInfo prop = type.GetProperty (p.Key);
+					if (prop != null)
+						// ChangeType() is needed for example setting double value to int property.
+						prop.SetValue (o, Convert.ChangeType (p.Value, prop.PropertyType), empty_args);
+				}
+				return o;
 			default:
 				if ('0' <= c && c <= '9' || c == '-')
 					return ReadNumericLiteral (input, ref i);
@@ -370,8 +388,23 @@ Console.WriteLine ("[{0}]", sb);
 					output.Append (']');
 				} else {
 					output.Append ('{');
+					bool hasItem = false;
+					if (resolver != null) {
+						string id = resolver.ResolveTypeId (type);
+						if (id != null) {
+							hasItem = true;
+							output.Append ("\"__type\":\"").Append (type.AssemblyQualifiedName.ToString ()).Append ("\"");
+						}
+					}
 					foreach (PropertyInfo pi in type.GetProperties ())
-						Serialize (pi.GetValue (obj, empty_args), output, recursion + 1);
+						if (pi.GetCustomAttributes (typeof (ScriptIgnoreAttribute), false).Length == 0) {
+							if (hasItem)
+								output.Append (',');
+							output.Append ('"').Append (EscapeStringLiteral (pi.Name)).Append ("\":");
+							Serialize (pi.GetValue (obj, empty_args), output, recursion + 1);
+							hasItem = true;
+						}
+					output.Append ('}');
 				}
 				break;
 			}

@@ -1,5 +1,10 @@
 2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JavaScriptSerializer.cs : when JavaScriptTypeResolver is passed,
+	  it tries to serialize objects using "__type" item.
+
+2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SimpleTypeResolver.cs : almost hacky implementation.
 	  JavaScriptSerializer.cs :
 	  implemented Serialize() and DeserializeObject().

@@ -28,6 +28,18 @@ namespace MonoTests.System.Windows.Browser.Serialization
 			Assert.AreEqual ("\"test\\r\\n/string\\f\"", ser.Serialize ("test\r\n/string\f"), "#2");
 		}
 
+		[Test]
+		public void SerializeObject ()
+		{
+			JavaScriptSerializer ser = new JavaScriptSerializer ();
+			string s1 = @"{""P1"":""x1"",""P2"":123}";
+			Assert.AreEqual (s1, ser.Serialize (new Foo ()), "#1");
+
+			ser = new JavaScriptSerializer (new SimpleTypeResolver ());
+			string s2 = @"{""__type"":""" + typeof (Foo).AssemblyQualifiedName + @""",""P1"":""x1"",""P2"":123}";
+			Assert.AreEqual (s2, ser.Serialize (new Foo ()), "#2");
+		}
+
 		#endregion
 
 		#region Deserialization
@@ -202,6 +214,61 @@ namespace MonoTests.System.Windows.Browser.Serialization
 			Assert.IsNotNull (b, "#9-5");
 			Assert.AreEqual (4, b.Length, "#9-6");
 			Assert.IsTrue (b [3] is JSONObject, "#9-7");
+		}
+
+		[Test]
+		public void DeserializeObjectWithResolver ()
+		{
+			Assert.IsNotNull (new SimpleTypeResolver ().ResolveType (typeof (Foo).AssemblyQualifiedName), "premise#1");
+
+			JavaScriptSerializer ser = new JavaScriptSerializer (new SimpleTypeResolver ());
+			string s1 = @"{""__type"":""" + typeof (Foo).AssemblyQualifiedName + @""",""P1"":""x1"",""P2"":123}";
+			Foo f = ser.DeserializeObject (s1) as Foo;
+			Assert.IsNotNull (f, "#1:" + ser.DeserializeObject (s1));
+
+			// put __type at last
+			string s2 = @"{""P1"":""x1"",""P2"":123,""__type"":""" + typeof (Foo).AssemblyQualifiedName + @"""}";
+			f = ser.DeserializeObject (s2) as Foo;
+			Assert.IsNotNull (f, "#2");
+
+			try {
+				ser.DeserializeObject ("{\"__type\":\"UnresolvableType, nonexistent\"}");
+				Assert.Fail ("#3");
+			} catch (InvalidOperationException) {
+			}
+		}
+
+		#endregion
+
+		#region Serialization classes
+
+		class Foo
+		{
+			public Foo ()
+			{
+				P1 = "x1";
+				P2 = 123;
+				P3 = "y1";
+			}
+
+			string p1, p3;
+			int p2;
+
+			public string P1 {
+				get { return p1; }
+				set { p1 = value; }
+			}
+
+			public int P2 {
+				get { return p2; }
+				set { p2 = value; }
+			}
+
+			[ScriptIgnore]
+			public string P3 {
+				get { return p3; }
+				set { p3 = value; }
+			}
 		}
 
 		#endregion
