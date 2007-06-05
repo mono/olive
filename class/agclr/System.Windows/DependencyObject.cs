@@ -64,6 +64,9 @@ namespace System.Windows {
 				property_declarations [t] = new Dictionary<string,DependencyProperty>();
 			}
 
+			Console.WriteLine ("This code is not bound to unmanaged code");
+			return;
+			
 			if (!type_declarations.ContainsKey (dp.Name))
 				type_declarations [dp.Name] = dp;
 			else
