@@ -49,6 +49,8 @@ System.Windows.Input/KeyboardEventHandler.cs
 System.Windows.Input/MouseEventArgs.cs
 System.Windows.Input/MouseEventHandler.cs
 System.Windows.Markup/XamlParseException.cs
+System.Windows.Media/AlignmentX.cs
+System.Windows.Media/AlignmentY.cs
 System.Windows.Media/ArcSegment.cs
 System.Windows.Media/BezierSegment.cs
 System.Windows.Media/Brush.cs
@@ -71,6 +73,8 @@ System.Windows.Media/LineGeometry.cs
 System.Windows.Media/LineSegment.cs
 System.Windows.Media/MatrixTransform.cs
 System.Windows.Media/Matrix.cs
+System.Windows.Media/MediaAttribute.cs
+System.Windows.Media/MediaAttributeCollection.cs
 System.Windows.Media/PathFigure.cs
 System.Windows.Media/PathFigureCollection.cs
 System.Windows.Media/PathGeometry.cs
@@ -81,6 +85,7 @@ System.Windows.Media/PenLineJoin.cs
 System.Windows.Media/PolyBezierSegment.cs
 System.Windows.Media/PolyLineSegment.cs
 System.Windows.Media/PolyQuadraticBezierSegment.cs
+System.Windows.Media/QuadraticBezierSegment.cs
 System.Windows.Media/RadialGradientBrush.cs
 System.Windows.Media/RectangleGeometry.cs
 System.Windows.Media/RotateTransform.cs
