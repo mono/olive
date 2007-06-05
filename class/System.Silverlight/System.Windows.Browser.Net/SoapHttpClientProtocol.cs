@@ -30,6 +30,12 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
+		[MonoTODO]
+		protected void CancelAsync (object userState)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public class ServiceParameter
 		{
 			string name;
