@@ -18,3 +18,4 @@ System.ServiceModel.Syndication/SyndicationPerson.cs
 System.ServiceModel.Syndication/SyndicationVersion.cs
 System.ServiceModel.Syndication/UrlSyndicationContent.cs
 System.ServiceModel.Syndication/XmlSyndicationContent.cs
+System.ServiceModel.Syndication/SyndicationCategory.cs

@@ -1,5 +1,5 @@
 //
-// Microsoft.TeamFoundation.VersionControl.Client.SyndicationSerializerTest
+// Microsoft.TeamFoundation.VersionControl.Client.Atom10SerializerTest
 //
 // Authors:
 //	Joel Reed (joelwreed@gmail.com)
@@ -37,7 +37,7 @@ namespace System.ServiceModel.Syndication
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class SyndicationSerializerTest
+	public class Atom10SerializerTest
 	{
 		string FileToString(string path)
 		{
@@ -51,14 +51,9 @@ namespace System.ServiceModel.Syndication
 			return x;
 		}
 
-		string AtomFeedToString(string id)
+		string FeedToString(string id)
 		{
 			return FileToString(String.Format("Test/{0}.atom.xml", id));
-		}
-
-		string RssFeedToString(string id)
-		{
-			return FileToString(String.Format("Test/{0}.rss.xml", id));
 		}
 
 		string SyndicationFeedToString(SyndicationFeed f)
@@ -80,7 +75,7 @@ namespace System.ServiceModel.Syndication
 		[Test]
 		public void Serialize_EmptyFeed()
 		{
-			string a1 = AtomFeedToString("EmptyFeed");
+			string a1 = FeedToString("EmptyFeed");
 			string a2 = SyndicationFeedToString(FeedLib.EmptyFeed);
 			Assert.AreEqual(a1, a2);
 		}
@@ -88,7 +83,7 @@ namespace System.ServiceModel.Syndication
 		[Test]
 		public void Serialize_FeedNoItems()
 		{
-			string a1 = AtomFeedToString("FeedNoItems");
+			string a1 = FeedToString("FeedNoItems");
 			string a2 = SyndicationFeedToString(FeedLib.FeedNoItems);
 			Assert.AreEqual(a1, a2);
 		}
@@ -96,10 +91,19 @@ namespace System.ServiceModel.Syndication
 		[Test]
 		public void Serialize_FeedWithItems()
 		{
-			string a1 = AtomFeedToString("FeedWithItems");
+			string a1 = FeedToString("FeedWithItems");
 			string a2 = SyndicationFeedToString(FeedLib.FeedWithItems);
 			Assert.AreEqual(a1, a2);
 		}
+
+		[Test]
+		public void Serialize_FeedNoItemsSimpleProps()
+		{
+			string a1 = FeedToString("FeedNoItemsSimpleProps");
+			string a2 = SyndicationFeedToString(FeedLib.FeedNoItemsSimpleProps);
+			Assert.AreEqual(a1, a2);
+		}
+
 	}
 }
 

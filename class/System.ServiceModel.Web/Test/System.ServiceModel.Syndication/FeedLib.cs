@@ -26,6 +26,23 @@ class FeedLib
 		}
 	}
 
+	public static SyndicationFeed FeedNoItemsSimpleProps
+	{
+		get {
+			SyndicationFeed f = new SyndicationFeed();						
+			f.Id = "FeedNoItems";
+			f.Title = SyndicationContent.CreatePlaintextTextSyndicationContent("My Title");
+			f.Copyright = SyndicationContent.CreatePlaintextTextSyndicationContent("My Copyright");
+
+			f.Generator = "My Generator";
+			f.Language = "My Language";
+			f.ImageUrl = new Uri("http://example.org/image.png");
+			f.Copyright = SyndicationContent.CreatePlaintextTextSyndicationContent("My Description");			
+
+			return f;
+		}
+	}
+
 	public static SyndicationFeed FeedWithItems
 	{
 		get {

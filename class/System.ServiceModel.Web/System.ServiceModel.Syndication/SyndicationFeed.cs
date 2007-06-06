@@ -44,6 +44,8 @@ namespace System.ServiceModel.Syndication
 		private string language;
 		private Uri imageUrl;
 		private Collection<SyndicationLink> links;
+		private Collection <SyndicationCategory> categories;
+		private Collection <SyndicationPerson> contributors;
 
 		public SyndicationFeed()
 		{
@@ -117,6 +119,14 @@ namespace System.ServiceModel.Syndication
 		public TextSyndicationContent Title {
 			get { return title; }
 			set { title = value; }
+		}
+
+		public Collection <SyndicationPerson> Contributors {
+			get { return contributors; }
+		}
+
+		public Collection <SyndicationCategory> Categories {
+			get { return categories; }
 		}
 	}
 }

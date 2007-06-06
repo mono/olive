@@ -1,5 +1,6 @@
 System.ServiceModel.Syndication/SyndicationFeedTest.cs
 System.ServiceModel.Syndication/SyndicationItemTest.cs
 System.ServiceModel.Syndication/FeedLib.cs
-System.ServiceModel.Syndication/SyndicationSerializerTest.cs
+System.ServiceModel.Syndication/Atom10SerializerTest.cs
 System.ServiceModel.Syndication/SyndicationContentTest.cs
+System.ServiceModel.Syndication/Rss20SerializerTest.cs

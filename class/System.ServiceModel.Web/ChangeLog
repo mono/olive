@@ -1,3 +1,8 @@
+2007-06-05  Joel Reed  <joelwreed@comcast.com>
+
+	* add SyndicationCategory stubbed out class from Stephen A Jazdzewski,
+	add RSS serialization tests, add richer atom feed serialization test
+
 2007-06-04  Joel Reed  <joelwreed@comcast.com>
 
 	* add properties and constructor implementations for 

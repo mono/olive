@@ -31,6 +31,7 @@ class SyndicationSerializerUtil
 		DumpFeed(FeedLib.EmptyFeed, "EmptyFeed");
 		DumpFeed(FeedLib.FeedNoItems, "FeedNoItems");
 		DumpFeed(FeedLib.FeedWithItems, "FeedWithItems");
+		DumpFeed(FeedLib.FeedNoItemsSimpleProps, "FeedNoItemsSimpleProps");
 		return 0;
 	}
 }
