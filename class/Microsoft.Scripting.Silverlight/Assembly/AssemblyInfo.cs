@@ -37,15 +37,15 @@ using System.Runtime.InteropServices;
 
 // General Information about the Microsoft.Scripting.Silverlight assembly
 
-[assembly: AssemblyVersion ("3.5.0.0")]
-[assembly: SatelliteContractVersion ("3.5.0.0")]
+[assembly: AssemblyVersion ("1.0.0.0")]
+[assembly: SatelliteContractVersion ("1.0.0.0")]
 
 [assembly: AssemblyTitle ("Microsoft.Scripting.Silverlight.dll")]
 [assembly: AssemblyDescription ("Microsoft.Scripting.Silverlight.dll")]
 [assembly: AssemblyConfiguration ("Development version")]
 [assembly: AssemblyCompany ("MONO development team")]
 [assembly: AssemblyProduct ("MONO CLI")]
-[assembly: AssemblyCopyright ("(c) 2003 Various Authors")]
+[assembly: AssemblyCopyright ("(c) 2007 Various Authors")]
 [assembly: AssemblyTrademark ("")]
 
 [assembly: CLSCompliant (true)]
@@ -56,4 +56,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../orcas.pub")]
+[assembly: AssemblyKeyFile ("../msfinal3.pub")]
