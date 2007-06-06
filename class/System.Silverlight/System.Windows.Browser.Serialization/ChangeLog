@@ -1,3 +1,9 @@
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JavaScriptSerializer.cs :
+	  Implemented ConvertToType().
+	  Support JavaScriptConverters in deserialization phase.
+
 2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JavaScriptSerializer.cs : when JavaScriptTypeResolver is passed,

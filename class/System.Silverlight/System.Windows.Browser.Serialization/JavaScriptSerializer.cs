@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Security.Permissions;
 
+using IJSONObject = System.Collections.Generic.IDictionary<string,object>;
+
 namespace System.Windows.Browser.Serialization
 {
 	public class JavaScriptSerializer
@@ -26,10 +28,21 @@ namespace System.Windows.Browser.Serialization
 			this.resolver = resolver;
 		}
 
-		[MonoTODO]
 		public T ConvertToType<T> (object obj)
 		{
-			throw new NotImplementedException ();
+			if (obj is T)
+				return (T) obj;
+			if (obj is IJSONObject)
+				return (T) ConvertTo ((IJSONObject) obj, typeof (T));
+
+			try {
+				// I'm not sure if System.Convert is used here.
+				// (unlike ASP.NET Ajax; since there is no
+				//  TypeDescriptor in silverlight System.dll)
+				return (T) Convert.ChangeType (obj, typeof (T));
+			} catch (InvalidCastException ex) {
+				throw new InvalidOperationException (String.Format ("Cannot convert object of type {0} to {1}", obj != null ? obj.GetType ().FullName : "(null)", typeof (T)), ex);
+			}
 		}
 		
 		public T Deserialize<T> (string input)
@@ -113,7 +126,7 @@ namespace System.Windows.Browser.Serialization
 				return list.ToArray ();
 			case '{':
 				i++;
-				Dictionary<string,object> dic = new Dictionary<string,object> ();
+				IJSONObject dic = new Dictionary<string,object> ();
 				i = SkipSpaces (input, i);
 				bool repeat = false;
 				while (repeat || i < input.Length && input [i] != '}') {
@@ -142,16 +155,7 @@ namespace System.Windows.Browser.Serialization
 					// FIXME: could be different kind of exception?
 					throw new InvalidOperationException (String.Format ("Type '{0}' cannot be resolved", dic ["__type"]));
 
-				object o = Activator.CreateInstance (type, false);
-				foreach (KeyValuePair<string,object> p in dic) {
-					if (p.Key == "__type")
-						continue;
-					PropertyInfo prop = type.GetProperty (p.Key);
-					if (prop != null)
-						// ChangeType() is needed for example setting double value to int property.
-						prop.SetValue (o, Convert.ChangeType (p.Value, prop.PropertyType), empty_args);
-				}
-				return o;
+				return ConvertTo (dic, type);
 			default:
 				if ('0' <= c && c <= '9' || c == '-')
 					return ReadNumericLiteral (input, ref i);
@@ -165,6 +169,26 @@ namespace System.Windows.Browser.Serialization
 			}
 
 			throw new ArgumentException (String.Format ("Invalid JSON format; extra token at {0}", i));
+		}
+
+		object ConvertTo (IJSONObject dic, Type type)
+		{
+			// try custom converters, and then default deserialization.
+			foreach (JavaScriptConverter conv in converters)
+				foreach (Type t in conv.SupportedTypes)
+					if (t == type)
+						return conv.Deserialize (dic, type, this);
+
+			object o = Activator.CreateInstance (type, false);
+			foreach (KeyValuePair<string,object> p in dic) {
+				if (p.Key == "__type")
+					continue;
+				PropertyInfo prop = type.GetProperty (p.Key);
+				if (prop != null)
+					// ChangeType() is needed for example setting double value to int property.
+					prop.SetValue (o, Convert.ChangeType (p.Value, prop.PropertyType), empty_args);
+			}
+			return o;
 		}
 
 		static int SkipSpaces (string s, int i)
@@ -342,7 +366,6 @@ Console.WriteLine ("[{0}]", sb);
 				break;
 			case TypeCode.Char:
 			case TypeCode.String:
-				// FIXME: escape string
 				output.Append ('"').Append (EscapeStringLiteral (obj.ToString ())).Append ('"');
 				break;
 			case TypeCode.Byte:
@@ -366,8 +389,8 @@ Console.WriteLine ("[{0}]", sb);
 				break;
 			case TypeCode.Object:
 			case TypeCode.Empty:
-				if (obj is IDictionary<string,object>) {
-					IDictionary<string,object> map = (IDictionary<string,object>) obj;
+				if (obj is IJSONObject) {
+					IJSONObject map = (IJSONObject) obj;
 					output.Append ('{');
 					foreach (KeyValuePair<string,object> p in map) {
 						output.Append ('"').Append (p.Key).Append ("\":");

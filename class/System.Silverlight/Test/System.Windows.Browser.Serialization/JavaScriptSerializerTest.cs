@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Windows.Browser.Serialization;
 
 using NUnit.Framework;
@@ -240,7 +241,70 @@ namespace MonoTests.System.Windows.Browser.Serialization
 
 		#endregion
 
-		#region Serialization classes
+		#region Conversion
+
+		[Test]
+		public void ConvertToType ()
+		{
+			JavaScriptSerializer ser = new JavaScriptSerializer ();
+			Assert.AreEqual (1, ser.ConvertToType<int> ("1"), "#1");
+			try {
+				ser.ConvertToType<int> ("\"1\"");
+				Assert.Fail ("#2");
+			} catch (AssertionException) {
+				throw;
+			} catch (Exception) { // .NET throws System.Exception (!)
+			}
+
+			string [] arr1 = new string [] {"A", "B", "C"};
+			Assert.AreEqual (arr1, ser.ConvertToType<object> (arr1), "#3");
+			try {
+				ser.ConvertToType<string> (arr1);
+				Assert.Fail ("#4"); // at least no concat.
+			} catch (InvalidOperationException) {
+			}
+
+			JSONObject dic = new JSONObject ();
+			dic.Add ("P1", "x");
+			dic.Add ("P2", 1);
+			dic.Add ("__type", "bogus");
+			dic.Add ("extra", 1); // any extra members are ignored
+			Foo f = ser.ConvertToType<Foo> (dic);
+			Assert.AreEqual ("x", f.P1, "#5");
+			Assert.AreEqual (1, f.P2, "#6");
+
+			ser.RegisterConverters (new JavaScriptConverter [] {new MyConverter1 ()});
+			try {
+				ser.ConvertToType<Foo> (dic);
+				Assert.Fail ("#7");
+			} catch (WebException) {
+			}
+		}
+
+		#endregion
+
+		#region classes
+
+		class MyConverter1 : JavaScriptConverter
+		{
+			public override IEnumerable<Type> SupportedTypes {
+				get { yield return typeof (Foo); }
+			}
+
+			public override object Deserialize (
+				IDictionary<string, object> dictionary,
+				Type type,
+				JavaScriptSerializer serializer)
+			{
+				throw new WebException ();// something unusual
+			}
+		
+			public override IDictionary<string, object> Serialize (
+				object obj, JavaScriptSerializer serializer)
+			{
+				throw new WebException ();// something unusual
+			}
+		}
 
 		class Foo
 		{
