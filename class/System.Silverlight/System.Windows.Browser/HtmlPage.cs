@@ -51,11 +51,11 @@ namespace System.Windows.Browser {
 			get { return null; }
 			set { ; }
 		}
-/*
+
 		public static HtmlDocument Document {
 			get { return null; }
 		}
-*/
+
 		public static Uri DocumentUri {
 			get { return null; }
 		}

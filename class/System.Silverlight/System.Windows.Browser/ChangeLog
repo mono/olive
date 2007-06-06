@@ -1,3 +1,8 @@
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* HtmlPage.cs : uncomment Document.
+	* ScriptableAttribute.cs : more attribute targets.
+
 2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* BrowserRuntimeSettings.cs HtmlDocument.cs HtmlElement.cs
