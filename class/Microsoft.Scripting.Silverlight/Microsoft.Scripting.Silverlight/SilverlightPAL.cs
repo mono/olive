@@ -5,59 +5,72 @@ using Microsoft.Scripting.Hosting;
 
 namespace Microsoft.Scripting.Silverlight
 {
+	// Actually I doubt that IronPython 2.0alpha1 can create this instance 
+	// according to the constructor sequence:
+	//	ScriptDomainManager.CurrentManager
+	//	-> .TryCreateLocal(null,out manager)
+	//	-> .GetSetupInformation()
+	//	   returns new ScriptEnvironmentSetup(true)
+	//	-> .ctor(setup[above])
+	//	-> setup.CreatePAL()
+	//	-> Utils.Reflection.CreateInstance<PAL>(PALType)
+	//
+	// In the sequence above, there is no chance to set this type during
+	// the instantiation process of ScriptDomainManager.CurrentManager.
+
 	public class SilverlightPAL : PlatformAdaptationLayer
 	{
 		[MonoTODO]
 		public override bool DirectoryExists (string path)
 		{
-			throw new NotImplementedException ();
+			return base.DirectoryExists (path);
 		}
 
 		[MonoTODO]
 		public override bool FileExists (string path)
 		{
-			throw new NotImplementedException ();
+			return base.FileExists (path);
 		}
 
 		[MonoTODO]
 		public override string [] GetFiles (string path, string searchPattern)
 		{
-			throw new NotImplementedException ();
+			return base.GetFiles (path, searchPattern);
 		}
 
 		[MonoTODO]
 		public override string GetFullPath (string path)
 		{
-			throw new NotImplementedException ();
+			return base.GetFullPath (path);
 		}
 
 		[MonoTODO]
 		public override Assembly LoadAssembly (string name)
 		{
-			throw new NotImplementedException ();
+			return base.LoadAssembly (name);
 		}
 
 		[MonoTODO]
 		public override Stream OpenInputFileStream (string path)
 		{
-			throw new NotImplementedException ();
+			return base.OpenInputFileStream (path);
 		}
 
 		[MonoTODO]
 		public override Stream OpenOutputFileStream (string path)
 		{
-			throw new NotImplementedException ();
+			return base.OpenOutputFileStream (path);
 		}
 
 		[MonoTODO]
 		public override void TerminateScriptExecution (int exitCode)
 		{
-			throw new NotImplementedException ();
+			base.TerminateScriptExecution (exitCode);
 		}
 
 		[MonoTODO]
 		public override System.Action<System.Exception> EventExceptionHandler {
-			get { throw new NotImplementedException (); }
+			get { return base.EventExceptionHandler; }
 		}
 	}
 }

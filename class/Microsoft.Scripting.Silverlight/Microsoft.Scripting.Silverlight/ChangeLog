@@ -1,3 +1,8 @@
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ErrorHandler.cs
+	  SilverlightPAL.cs : some comments.
+
 2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ErrorHandler.cs HtmlDocumentMemberInjector.cs
