@@ -1,5 +1,12 @@
 2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* HtmlElementMemberInjector.cs IDlrNameScope.cs XamlDlrScriptHost.cs
+	  ErrorHandler.cs HtmlDocumentMemberInjector.cs SilverlightPAL.cs :
+	  headers.
+	* SilverlightScriptHost.cs : header. For now directly invoke base.
+
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ErrorHandler.cs
 	  SilverlightPAL.cs : some comments.
 
