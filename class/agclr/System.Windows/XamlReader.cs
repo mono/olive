@@ -37,14 +37,7 @@ namespace System.Windows {
 
 		public static DependencyObject Load (string xaml)
 		{
-			XmlTextReader tr = new XmlTextReader (new StringReader (xaml));
-
-			//
-			// This uses the names from Ian McCoy's implementation
-			// which has not yet been updated to the final API
-			// and is even on a different namespace
-			//
-			return (DependencyObject) System.Windows.Serialization.Parser.LoadXml (tr);
+			throw new NotImplementedException ();
 		}
 		
 		public static DependencyObject Load (string xaml, bool createNamescope)

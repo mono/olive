@@ -1,5 +1,5 @@
 //
-// Panel.cs
+// NativeMethods.cs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -33,6 +33,9 @@ namespace Mono {
 
 	internal static class NativeMethods {
 
+		[DllImport("moon")]
+		internal extern static void runtime_init ();
+		
 #region Base
 		[DllImport("moon")]
 		internal extern static void base_ref (IntPtr ptr);
@@ -41,6 +44,17 @@ namespace Mono {
 		internal extern static void base_unref (IntPtr ptr);
 #endregion
 
+		[DllImport("moon")]
+		internal extern static IntPtr dependency_property_lookup (Value.Kind type, string name);
+
+		[DllImport("moon")]
+		internal extern static IntPtr dependency_object_get_value (IntPtr obj, IntPtr property);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr dependency_object_set_value (IntPtr obj, IntPtr property, Value val);
+
+		
+		
 #region Items
 		[DllImport("moon")]
 		internal extern static IntPtr item_get_surface (IntPtr item);
@@ -59,6 +73,11 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr panel_get_children_collection (IntPtr panel);
 #endregion
+		
+#region Canvas
+		[DllImport("moon")]
+		internal extern static IntPtr canvas_new ();
+#endregion
 
 #region Collections
 		[DllImport("moon")]
@@ -67,7 +86,7 @@ namespace Mono {
 		
 #region Shapes
 		[DllImport("moon")]
-		internal extern static IntPtr rectangle_new (double x, double y, double w, double h);
+		internal extern static IntPtr rectangle_new ();
 #endregion
 	}
 }

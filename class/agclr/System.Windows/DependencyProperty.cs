@@ -28,43 +28,38 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows {
 	public class DependencyProperty {
-		readonly internal PropertyMetadata DefaultMetadata;
-		readonly internal string Name;
-		readonly internal Type OwnerType;
-		readonly internal Type PropertyType;
-		readonly internal bool IsAttached;
-
-		private DependencyProperty (bool isAttached, string name, Type propertyType, Type ownerType,
-					    PropertyMetadata defaultMetadata)
-		{
-			this.IsAttached = isAttached;
-			this.DefaultMetadata = (defaultMetadata == null ? new PropertyMetadata() : defaultMetadata);
-			
-			this.Name = name;
-			this.OwnerType = ownerType;
-			this.PropertyType = propertyType;
-		}
-
+		internal IntPtr native;
+		
 		public DependencyProperty ()
 		{
 			// useless constructor.
 		}
 
-		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType)
+		internal DependencyProperty (IntPtr handle)
 		{
-			return Register (name, propertyType, ownerType, null);
+			native = handle;
+		}
+		
+		internal static DependencyProperty Lookup (Value.Kind type, string name)
+		{
+			IntPtr handle = NativeMethods.dependency_property_lookup (type, name);
+
+			if (handle == IntPtr.Zero)
+				return null;
+
+			return new DependencyProperty (handle);
 		}
 
-		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType,
-							     PropertyMetadata typeMetadata)
+		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType)
 		{
-			DependencyProperty dp = new DependencyProperty (false, name, propertyType, ownerType,
-									typeMetadata);
-			DependencyObject.Register (ownerType, dp);
-			return dp;
+			Console.WriteLine ("This way of registering properties is no longer supported:");
+			Console.WriteLine ("owner={0} {1} of type {2}", ownerType, name, propertyType);
+
+			return null;
 		}
 	}
 }

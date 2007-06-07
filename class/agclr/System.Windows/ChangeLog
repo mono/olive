@@ -1,3 +1,19 @@
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* DependecyObject.cs: Partial implementation for GetValue. 
+
+	Drop tons of dead code.
+
+	* DependencyProperty.cs: Rework to use the native dependency
+	objects instead of implementing a managed one.
+
+	Both DependencyObject and DependencyProperty are now wrappers to
+	the unmanaged version for now.    We will need to extend this
+	later to support the managed components when we are ready. 
+
+	* FrameworkElement.cs: Update to new DependencyProperty
+	framework. 
+
 2007-06-03  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* ErrorEventArgs.cs: New.

@@ -26,25 +26,27 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System.Windows;
+using Mono;
 
 namespace System.Windows.Controls {
 	public class Canvas : Panel {
-		static Canvas ()
-		{
-			LeftProperty = DependencyProperty.Register (
-				"Left", typeof (double), typeof (Canvas));
-
-			TopProperty = DependencyProperty.Register (
-				"Top", typeof (double), typeof (Canvas));
-		}
-
 		public static readonly DependencyProperty LeftProperty;
 		public static readonly DependencyProperty TopProperty;
 
-		// Temporarily public, for testing.
-		public Canvas (IntPtr native_object)
+		static Canvas ()
 		{
-			native = native_object;
+			LeftProperty = DependencyProperty.Lookup (Value.Kind.CANVAS, "Left");
+			TopProperty = DependencyProperty.Lookup (Value.Kind.CANVAS, "Top");
+		}
+
+		public Canvas ()
+		{
+			native = Mono.NativeMethods.canvas_new ();
+		}
+
+		internal Canvas (IntPtr raw)
+		{
+			native = raw;
 		}
 	}
 }

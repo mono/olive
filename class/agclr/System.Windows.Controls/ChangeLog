@@ -1,3 +1,8 @@
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* Canvas.cs, Panel.cs: Rework to use the dependency properties
+	registered in the unmanaged side, remove dead code.
+
 2007-06-04  Miguel de Icaza  <miguel@novell.com>
 
 	* Canvas.cs: Add native IntPtr field that points to the native

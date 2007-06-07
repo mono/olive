@@ -27,50 +27,146 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System.Collections.Generic;
+using System.Collections;
+using Mono;
+using System.Windows;
+using System.Windows.Controls;
+using System.Runtime.InteropServices;
 
 namespace System.Windows {
 	public class DependencyObject {
-		string name;
-		private static Dictionary<Type,Dictionary<string,DependencyProperty>> property_declarations =
-			new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+		static Hashtable objects = new Hashtable ();
+		internal IntPtr native;
 		
-		public virtual object GetValue(DependencyProperty dp)
+		//
+		// This is mostly copied from Gtk#'s Object.GetObject
+		// we need to take into account in the future:
+		//    WeakReferences
+		//    ToggleReferences (talk to Mike)
+		//
+		// 
+		internal static DependencyObject Lookup (Value.Kind k, IntPtr ptr)
 		{
+			if (ptr == IntPtr.Zero)
+				return null;
+
+			object reference = objects [ptr];
+			if (reference != null)
+				return (DependencyObject) reference;
+
+			return (DependencyObject) CreateObject (k, ptr);
+		}
+
+		static object CreateObject (Value.Kind k, IntPtr raw)
+		{
+			if (k <= Value.Kind.DEPENDENCY_OBJECT)
+				throw new Exception ("the kind has to be a derived DependencyObject");
+			
+			switch (k){
+			case Value.Kind.UIELEMENT:
+				return null;
+
+			case Value.Kind.PANEL:
+				return null;
+
+			case Value.Kind.CANVAS:
+				return new Canvas (raw);
+
+			case Value.Kind.TIMELINE: return null;
+			case Value.Kind.TRANSFORM: return null;
+			case Value.Kind.ROTATETRANSFORM: return null;
+			case Value.Kind.SCALETRANSFORM: return null;
+			case Value.Kind.TRANSLATETRANSFORM: return null;
+			case Value.Kind.MATRIXTRANSFORM: return null;
+			case Value.Kind.STORYBOARD: return null;
+			case Value.Kind.DOUBLEANIMATION: return null;
+			case Value.Kind.COLORANIMATION: return null;
+			case Value.Kind.POINTANIMATION: return null;
+			case Value.Kind.SHAPE: return null;
+			case Value.Kind.ELLIPSE: return null;
+			case Value.Kind.LINE: return null;
+			case Value.Kind.PATH: return null;
+			case Value.Kind.POLYGON: return null;
+			case Value.Kind.POLYLINE: return null;
+			case Value.Kind.RECTANGLE: return null;
+			case Value.Kind.GEOMETRY: return null;
+			case Value.Kind.GEOMETRYGROUP: return null;
+			case Value.Kind.ELLIPSEGEOMETRY: return null;
+			case Value.Kind.LINEGEOMETRY: return null;
+			case Value.Kind.PATHGEOMETRY: return null;
+			case Value.Kind.RECTANGLEGEOMETRY: return null;
+			case Value.Kind.FRAMEWORKELEMENT: return null;
+			case Value.Kind.NAMESCOPE: return null;
+			case Value.Kind.CLOCK: return null;
+			case Value.Kind.ANIMATIONCLOCK: return null;
+			case Value.Kind.CLOCKGROUP: return null;
+			case Value.Kind.BRUSH: return null;
+			case Value.Kind.SOLIDCOLORBRUSH: return null;
+			case Value.Kind.PATHFIGURE: return null;
+			case Value.Kind.ARCSEGMENT: return null;
+			case Value.Kind.BEZIERSEGMENT: return null;
+			case Value.Kind.LINESEGMENT: return null;
+			case Value.Kind.POLYBEZIERSEGMENT: return null;
+			case Value.Kind.POLYLINESEGMENT: return null;
+			case Value.Kind.POLYQUADRATICBEZIERSEGMENT: return null;
+			case Value.Kind.QUADRATICBEZIERSEGMENT: return null;
+			case Value.Kind.TRIGGERACTION: return null;
+			case Value.Kind.BEGINSTORYBOARD: return null;
+			case Value.Kind.EVENTTRIGGER: return null;
+			}
+
+			return null;
+		}
+
+		public virtual object GetValue (DependencyProperty property)
+		{
+			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
+
+			if (x == IntPtr.Zero)
+				return null;
+
+			unsafe {
+				byte *px = (byte *) x;
+				Value.Kind k = (Value.Kind) (*((int *)px));
+
+				px += 4;
+				
+				switch (k) {
+				case Value.Kind.INVALID:
+					return null;
+					
+				case Value.Kind.BOOL:
+					throw new NotImplementedException ();
+					
+				case Value.Kind.DOUBLE:
+					return *((double *) px);
+					
+				case Value.Kind.INT64:
+					return *((long *) px);
+					
+				case Value.Kind.INT32:
+					return *((int *) px);
+
+				case Value.Kind.STRING:
+					return Marshal.PtrToStringAuto ((IntPtr) px);
+				}
+				
+				//
+				// If it is a dependency object
+				if (k > Value.Kind.DEPENDENCY_OBJECT){
+					IntPtr vptr = *((IntPtr *) px);
+					if (vptr == IntPtr.Zero)
+						return null;
+					
+					return DependencyObject.Lookup (k, vptr);
+				}
+			}
+			
 			throw new NotImplementedException ();
 		}
 
-		public void SetValue<T>(DependencyProperty dp, T value)
+		public virtual void SetValue<T> (DependencyProperty property, T obj)
 		{
-			throw new NotImplementedException ();
 		}
-
-		public DependencyObject FindName (string name)
-		{
-			throw new NotImplementedException ();			
-		}
-
-		public string Name {
-			get {
-				return name;
-			}
-		}
-
-		internal static void Register (Type t, DependencyProperty dp)
-                {
-			Dictionary<string,DependencyProperty> type_declarations;
-			
-			if (!property_declarations.TryGetValue (t, out type_declarations)){
-				property_declarations [t] = new Dictionary<string,DependencyProperty>();
-			}
-
-			Console.WriteLine ("This code is not bound to unmanaged code");
-			return;
-			
-			if (!type_declarations.ContainsKey (dp.Name))
-				type_declarations [dp.Name] = dp;
-			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
-                }
 	}
 }

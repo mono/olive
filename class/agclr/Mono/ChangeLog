@@ -1,3 +1,11 @@
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs: add new dependency_property_lookup,
+	dependency_object_get_value, dependency_object_set_value,
+	canvas_new.
+
+	update rectangle_new
+
 2007-06-04  Miguel de Icaza  <miguel@novell.com>
 
 	* NativeMethods.cs: Added the beginning of the bindings to `moon'.

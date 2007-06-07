@@ -1,3 +1,9 @@
+2007-06-07  Miguel de Icaza  <miguel@novell.com>
+
+	* Drop the use of the native XAML parser
+
+	* Add Value.cs
+
 2007-06-05  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* agclr.dll.sources: Added System.Windows.Media.Alignment[X|Y] enums,

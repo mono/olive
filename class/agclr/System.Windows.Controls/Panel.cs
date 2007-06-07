@@ -32,18 +32,13 @@ using Mono;
 
 namespace System.Windows.Controls {
 	public class Panel : FrameworkElement {
-		internal IntPtr native;
-		
 		public static readonly DependencyProperty ChildrenProperty;
 		public static readonly DependencyProperty BackgroundProperty;
 
 		static Panel ()
 		{
-			ChildrenProperty = DependencyProperty.Register (
-				"Children", typeof (VisualCollection), typeof (Panel));
-
-			BackgroundProperty = DependencyProperty.Register (
-				"Background", typeof (Brush), typeof (Panel));
+			ChildrenProperty = DependencyProperty.Lookup (Value.Kind.PANEL, "Children");
+			BackgroundProperty = DependencyProperty.Lookup (Value.Kind.PANEL, "Background");
 		}
 		
 		public Panel ()
@@ -62,22 +57,7 @@ namespace System.Windows.Controls {
 		
 		public VisualCollection Children {
 			get {
-				object v = GetValue (ChildrenProperty);
-				if (v != null)
-					return (VisualCollection) v;
-
-				//
-				// Should this be done really in some sort of callback
-				// in "GetValue"?
-				//
-				// Should it have been the "default" value?
-				//
-				VisualCollection value = new VisualCollection (
-					NativeMethods.panel_get_children_collection (native));
-				
-				SetValue (ChildrenProperty, value);
-				
-				return value;
+				return (VisualCollection) GetValue (ChildrenProperty);
 			}
 			
 			set {

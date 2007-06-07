@@ -25,6 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows {
 	public abstract class FrameworkElement : UIElement {
@@ -32,8 +33,8 @@ namespace System.Windows {
 		
 		static FrameworkElement ()
 		{
-			WidthProperty = DependencyProperty.Register ("Width", typeof (double), typeof (FrameworkElement));
-			HeightProperty = DependencyProperty.Register ("Height", typeof (double), typeof (FrameworkElement));
+			WidthProperty = DependencyProperty.Lookup (Value.Kind.FRAMEWORKELEMENT, "Width");
+			HeightProperty = DependencyProperty.Lookup (Value.Kind.FRAMEWORKELEMENT, "Height");
 		}
 		
 	        public FrameworkElement ()
