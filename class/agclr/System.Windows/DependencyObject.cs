@@ -136,7 +136,9 @@ namespace System.Windows {
 					return null;
 					
 				case Value.Kind.BOOL:
-					throw new NotImplementedException ();
+					if ((*((int *) px)) == 0)
+						return false;
+					return true;
 					
 				case Value.Kind.DOUBLE:
 					return *((double *) px);
@@ -165,8 +167,72 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		//
+		// Ok, only the unmanaged known types would end up calling the
+		// unmanaged side, so we do not have to worry about other types
+		//
+		public void SetValueBoxed (DependencyProperty property, object v)
+		{
+			unsafe {
+				Value value;
+				void *vp = &value;
+				byte *p = (byte *) vp;
+				p += 4;
+
+				if (v is DependencyObject){
+					DependencyObject dov = (DependencyObject) v;
+
+					if (dov.native == IntPtr.Zero)
+						throw new Exception (String.Format (
+							"Object {0} has not set its native property", dov.GetType()));
+					
+
+					//
+					// Keep track of this object, so we know how to map it
+					// on the way out.
+					//
+					objects [dov.native] = dov;
+					*((IntPtr *) p) = dov.native;
+				} if (v is int){
+					value.k = Value.Kind.INT32;
+					*((int *) p) = (int) v;
+				} else if (v is bool){
+					value.k = Value.Kind.BOOL;
+					*((int *) p) = ((bool)v) ? 1 : 0;
+				} else if (v is double){
+					value.k = Value.Kind.DOUBLE;
+					*((double *) p) = (double) v;
+				} else if (v is long){
+					value.k = Value.Kind.INT64;
+					*((long *) p) = (long) v;
+				} else if (v is ulong){
+					value.k = Value.Kind.UINT64;
+					*((ulong *) p) = (ulong) v;
+				} else if (v is string){
+					value.k = Value.Kind.STRING;
+
+					byte[] bytes = System.Text.Encoding.UTF8.GetBytes (v as string);
+					IntPtr result = Marshal.AllocHGlobal (bytes.Length + 1);
+					Marshal.Copy (bytes, 0, result, bytes.Length);
+					Marshal.WriteByte (result, bytes.Length, 0);
+
+					*((IntPtr *) p) = result;
+				}
+			}
+		}
+
+		//
+		// This signature seems incredibly painful, why make
+		// it generic if we still have to dig into its
+		// internals?  am I missing something fundamentally
+		// awesome about it.  Perhaps for derived classes it
+		// would be awesome?  as it stands its just annoying.
+		//
 		public virtual void SetValue<T> (DependencyProperty property, T obj)
 		{
+			// Call another routine to avoid getting a billion copies
+			// of the same code, one per data type.
+			SetValueBoxed (property, obj);
 		}
 	}
 }

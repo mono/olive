@@ -1,5 +1,12 @@
 2007-06-07  Miguel de Icaza  <miguel@novell.com>
 
+	* Hosting.cs: New file, helper tool.
+
+	* Value.cs: new file, the managed reprensetation of the unmanaged
+	Value. 
+
+	* NativeMethods.cs: xaml_create_from_str.
+
 	* NativeMethods.cs: add new dependency_property_lookup,
 	dependency_object_get_value, dependency_object_set_value,
 	canvas_new.

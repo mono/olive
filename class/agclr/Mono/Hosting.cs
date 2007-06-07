@@ -1,7 +1,6 @@
 //
-// XamlReader.cs: this is a reader that wraps Ian McCoy's Xaml Reader
-// that he wrote for the Google Summer of Code 2005 and exposes the
-// API required in Silverlight.
+// Hosting.cs: Provide some hosting APIs, these are here only temporarily,
+// they should not be exposed to the public though.
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -27,31 +26,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System;
+using System.Windows;
 
-using System.Xml;
-using System.IO;
-using Mono;
+namespace Mono {
+	public class Hosting {
 
-namespace System.Windows {
-	
-	public static class XamlReader {
-
-		public static DependencyObject Load (string xaml)
+		public static IntPtr GetNativeObject (DependencyObject obj)
 		{
-			if (xaml == null)
-				throw new ArgumentNullException ("xaml");
-			
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml);
+			if (obj == null)
+				throw new ArgumentNullException ("obj");
 
-			if (top == IntPtr.Zero)
-				return null;
-
-			throw new Exception ();
-		}
-		
-		public static DependencyObject Load (string xaml, bool createNamescope)
-		{
-			throw new NotImplementedException ();
+			return obj.native;
 		}
 	}
 }

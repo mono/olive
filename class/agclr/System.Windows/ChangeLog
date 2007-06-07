@@ -1,5 +1,14 @@
 2007-06-07  Miguel de Icaza  <miguel@novell.com>
 
+	* DependencyObject.cs: handle bools.
+
+	* XamlReader.cs: Some bits, need to get the unmanaged Value.Kind
+	so I can create the proper managed object upon returning from
+	Load. 
+
+	* DependencyObject.cs (SetValue<T>): Implement this, now we only
+	need to test this ;-)
+
 	* DependecyObject.cs: Partial implementation for GetValue. 
 
 	Drop tons of dead code.
