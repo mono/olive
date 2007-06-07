@@ -34,29 +34,33 @@ namespace System.Windows.Browser {
 		{
 		}
 
+		internal HtmlObject (IntPtr handle)
+			: base (handle)
+		{
+		}
+
 		[MonoTODO]
 		public bool AttachEvent (string eventName, EventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
-/*
+
 		[MonoTODO]
 		public bool AttachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
 			throw new NotImplementedException ();
 		}
-*/
+
 		[MonoTODO]
 		public void DetachEvent (string eventName, EventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
-/*
+
 		[MonoTODO]
 		public void DetachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
 			throw new NotImplementedException ();
 		}
-*/
 	}
 }

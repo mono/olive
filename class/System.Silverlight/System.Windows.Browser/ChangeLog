@@ -1,5 +1,15 @@
 2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* HtmlElementCollection.cs HtmlDocument.cs : header.
+	* HtmlEventArgs.cs : header. fixed inheritance.
+	* ScriptableObject.cs : added unmanaged pointer field.
+	  added internal InvokeMethod() (practically a stub).
+	* HtmlElement.cs : some members can use GetProperty<T>() and
+	  InvokeMethod() above.
+	* HtmlObject.cs : uncomment some. Added internal .ctor(IntPtr).
+
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* HtmlPage.cs : uncomment Document.
 	* ScriptableAttribute.cs : more attribute targets.
 

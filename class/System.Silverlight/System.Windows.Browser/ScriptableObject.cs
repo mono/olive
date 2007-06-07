@@ -29,26 +29,42 @@
 namespace System.Windows.Browser {
 
 	public class ScriptableObject : IDisposable {
+		IntPtr handle;
+		string script_key;
 
 		public ScriptableObject ()
 		{
 		}
 
+		internal ScriptableObject (IntPtr handle)
+		{
+			// FIXME: do we need to do registration or whatever?
+			this.handle = handle;
+		}
+
 		protected virtual void Dispose ()
 		{
+			// FIXME: same as .ctor().
 		}
 
 		void IDisposable.Dispose ()
 		{
+			Dispose ();
 		}
 
 		[MonoTODO]
 		public virtual void SetProperty (string name, object value)
 		{
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
 		public T GetProperty<T>(string name)
+		{
+			throw new NotImplementedException ();
+		}
+
+		internal object InvokeMethod (string name, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}
