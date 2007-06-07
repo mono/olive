@@ -1,3 +1,9 @@
+2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* FileDialogFileInfo.cs,
+	  OpenFileDialog.cs : some imaginary implementation using DllImports
+	  where those unmanaged functions do not exist.
+
 2007-06-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DialogResult.cs FileDialogFileInfo.cs OpenFileDialog.cs : stubs.

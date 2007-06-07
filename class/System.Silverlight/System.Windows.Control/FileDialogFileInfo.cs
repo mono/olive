@@ -5,21 +5,29 @@ namespace System.Windows.Hosting
 {
 	public class FileDialogFileInfo
 	{
+		string name, path;
+
+		internal FileDialogFileInfo (string name, string path)
+		{
+			this.name = name;
+			this.path = path;
+		}
+
 		[MonoTODO]
 		public Stream OpenRead ()
 		{
-			throw new NotImplementedException ();
+			return File.OpenRead (path);
 		}
 
 		[MonoTODO]
 		public TextReader OpenText ()
 		{
-			throw new NotImplementedException ();
+			return File.OpenText (path);
 		}
 
 		[MonoTODO]
 		public string Name {
-			get { throw new NotImplementedException (); }
+			get { return name; }
 		}
 	}
 }
