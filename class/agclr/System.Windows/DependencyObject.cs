@@ -50,7 +50,7 @@ namespace System.Windows {
 		//    ToggleReferences (talk to Mike)
 		//
 		// 
-		internal static DependencyObject Lookup (Value.Kind k, IntPtr ptr)
+		internal static DependencyObject Lookup (Kind k, IntPtr ptr)
 		{
 			if (ptr == IntPtr.Zero)
 				return null;
@@ -62,62 +62,62 @@ namespace System.Windows {
 			return (DependencyObject) CreateObject (k, ptr);
 		}
 
-		static object CreateObject (Value.Kind k, IntPtr raw)
+		static object CreateObject (Kind k, IntPtr raw)
 		{
-			if (k <= Value.Kind.DEPENDENCY_OBJECT)
+			if (k <= Kind.DEPENDENCY_OBJECT)
 				throw new Exception ("the kind has to be a derived DependencyObject");
 			
 			switch (k){
-			case Value.Kind.UIELEMENT:
+			case Kind.UIELEMENT:
 				return null;
 
-			case Value.Kind.PANEL:
+			case Kind.PANEL:
 				return null;
 
-			case Value.Kind.CANVAS:
+			case Kind.CANVAS:
 				return new Canvas (raw);
 
-			case Value.Kind.TIMELINE: return null;
-			case Value.Kind.TRANSFORM: return null;
-			case Value.Kind.ROTATETRANSFORM: return null;
-			case Value.Kind.SCALETRANSFORM: return null;
-			case Value.Kind.TRANSLATETRANSFORM: return null;
-			case Value.Kind.MATRIXTRANSFORM: return null;
-			case Value.Kind.STORYBOARD: return null;
-			case Value.Kind.DOUBLEANIMATION: return null;
-			case Value.Kind.COLORANIMATION: return null;
-			case Value.Kind.POINTANIMATION: return null;
-			case Value.Kind.SHAPE: return null;
-			case Value.Kind.ELLIPSE: return null;
-			case Value.Kind.LINE: return null;
-			case Value.Kind.PATH: return null;
-			case Value.Kind.POLYGON: return null;
-			case Value.Kind.POLYLINE: return null;
-			case Value.Kind.RECTANGLE: return null;
-			case Value.Kind.GEOMETRY: return null;
-			case Value.Kind.GEOMETRYGROUP: return null;
-			case Value.Kind.ELLIPSEGEOMETRY: return null;
-			case Value.Kind.LINEGEOMETRY: return null;
-			case Value.Kind.PATHGEOMETRY: return null;
-			case Value.Kind.RECTANGLEGEOMETRY: return null;
-			case Value.Kind.FRAMEWORKELEMENT: return null;
-			case Value.Kind.NAMESCOPE: return null;
-			case Value.Kind.CLOCK: return null;
-			case Value.Kind.ANIMATIONCLOCK: return null;
-			case Value.Kind.CLOCKGROUP: return null;
-			case Value.Kind.BRUSH: return null;
-			case Value.Kind.SOLIDCOLORBRUSH: return null;
-			case Value.Kind.PATHFIGURE: return null;
-			case Value.Kind.ARCSEGMENT: return null;
-			case Value.Kind.BEZIERSEGMENT: return null;
-			case Value.Kind.LINESEGMENT: return null;
-			case Value.Kind.POLYBEZIERSEGMENT: return null;
-			case Value.Kind.POLYLINESEGMENT: return null;
-			case Value.Kind.POLYQUADRATICBEZIERSEGMENT: return null;
-			case Value.Kind.QUADRATICBEZIERSEGMENT: return null;
-			case Value.Kind.TRIGGERACTION: return null;
-			case Value.Kind.BEGINSTORYBOARD: return null;
-			case Value.Kind.EVENTTRIGGER: return null;
+			case Kind.TIMELINE: return null;
+			case Kind.TRANSFORM: return null;
+			case Kind.ROTATETRANSFORM: return null;
+			case Kind.SCALETRANSFORM: return null;
+			case Kind.TRANSLATETRANSFORM: return null;
+			case Kind.MATRIXTRANSFORM: return null;
+			case Kind.STORYBOARD: return null;
+			case Kind.DOUBLEANIMATION: return null;
+			case Kind.COLORANIMATION: return null;
+			case Kind.POINTANIMATION: return null;
+			case Kind.SHAPE: return null;
+			case Kind.ELLIPSE: return null;
+			case Kind.LINE: return null;
+			case Kind.PATH: return null;
+			case Kind.POLYGON: return null;
+			case Kind.POLYLINE: return null;
+			case Kind.RECTANGLE: return null;
+			case Kind.GEOMETRY: return null;
+			case Kind.GEOMETRYGROUP: return null;
+			case Kind.ELLIPSEGEOMETRY: return null;
+			case Kind.LINEGEOMETRY: return null;
+			case Kind.PATHGEOMETRY: return null;
+			case Kind.RECTANGLEGEOMETRY: return null;
+			case Kind.FRAMEWORKELEMENT: return null;
+			case Kind.NAMESCOPE: return null;
+			case Kind.CLOCK: return null;
+			case Kind.ANIMATIONCLOCK: return null;
+			case Kind.CLOCKGROUP: return null;
+			case Kind.BRUSH: return null;
+			case Kind.SOLIDCOLORBRUSH: return null;
+			case Kind.PATHFIGURE: return null;
+			case Kind.ARCSEGMENT: return null;
+			case Kind.BEZIERSEGMENT: return null;
+			case Kind.LINESEGMENT: return null;
+			case Kind.POLYBEZIERSEGMENT: return null;
+			case Kind.POLYLINESEGMENT: return null;
+			case Kind.POLYQUADRATICBEZIERSEGMENT: return null;
+			case Kind.QUADRATICBEZIERSEGMENT: return null;
+			case Kind.TRIGGERACTION: return null;
+			case Kind.BEGINSTORYBOARD: return null;
+			case Kind.EVENTTRIGGER: return null;
 			}
 
 			return null;
@@ -132,35 +132,35 @@ namespace System.Windows {
 
 			unsafe {
 				byte *px = (byte *) x;
-				Value.Kind k = (Value.Kind) (*((int *)px));
+				Kind k = (Kind) (*((int *)px));
 
 				px += 4;
 				
 				switch (k) {
-				case Value.Kind.INVALID:
+				case Kind.INVALID:
 					return null;
 					
-				case Value.Kind.BOOL:
+				case Kind.BOOL:
 					if ((*((int *) px)) == 0)
 						return false;
 					return true;
 					
-				case Value.Kind.DOUBLE:
+				case Kind.DOUBLE:
 					return *((double *) px);
 					
-				case Value.Kind.INT64:
+				case Kind.INT64:
 					return *((long *) px);
 					
-				case Value.Kind.INT32:
+				case Kind.INT32:
 					return *((int *) px);
 
-				case Value.Kind.STRING:
+				case Kind.STRING:
 					return Marshal.PtrToStringAuto ((IntPtr) px);
 				}
 				
 				//
 				// If it is a dependency object
-				if (k > Value.Kind.DEPENDENCY_OBJECT){
+				if (k > Kind.DEPENDENCY_OBJECT){
 					IntPtr vptr = *((IntPtr *) px);
 					if (vptr == IntPtr.Zero)
 						return null;
@@ -199,22 +199,22 @@ namespace System.Windows {
 					objects [dov.native] = dov;
 					*((IntPtr *) p) = dov.native;
 				} if (v is int){
-					value.k = Value.Kind.INT32;
+					value.k = Kind.INT32;
 					*((int *) p) = (int) v;
 				} else if (v is bool){
-					value.k = Value.Kind.BOOL;
+					value.k = Kind.BOOL;
 					*((int *) p) = ((bool)v) ? 1 : 0;
 				} else if (v is double){
-					value.k = Value.Kind.DOUBLE;
+					value.k = Kind.DOUBLE;
 					*((double *) p) = (double) v;
 				} else if (v is long){
-					value.k = Value.Kind.INT64;
+					value.k = Kind.INT64;
 					*((long *) p) = (long) v;
 				} else if (v is ulong){
-					value.k = Value.Kind.UINT64;
+					value.k = Kind.UINT64;
 					*((ulong *) p) = (ulong) v;
 				} else if (v is string){
-					value.k = Value.Kind.STRING;
+					value.k = Kind.STRING;
 
 					byte[] bytes = System.Text.Encoding.UTF8.GetBytes (v as string);
 					IntPtr result = Marshal.AllocHGlobal (bytes.Length + 1);

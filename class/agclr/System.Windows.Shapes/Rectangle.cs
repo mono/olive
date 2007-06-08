@@ -31,9 +31,9 @@ namespace System.Windows.Shapes {
 	public class Rectangle : Shape {
 
 		public static readonly DependencyProperty RadiusXProperty =
-			DependencyProperty.Lookup (Value.Kind.RECTANGLE, "RadiusX");
+			DependencyProperty.Lookup (Kind.RECTANGLE, "RadiusX");
 		public static readonly DependencyProperty RadiusYProperty =
-			DependencyProperty.Lookup (Value.Kind.RECTANGLE, "RadiusY");
+			DependencyProperty.Lookup (Kind.RECTANGLE, "RadiusY");
 
 		public Rectangle ()
 		{

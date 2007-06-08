@@ -3,6 +3,7 @@ Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs
 ../../build/common/MonoTODOAttribute.cs
 Mono/Hosting.cs
+Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
 System.Windows/Downloader.cs

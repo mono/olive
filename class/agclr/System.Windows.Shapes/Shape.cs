@@ -33,27 +33,27 @@ namespace System.Windows.Shapes {
 	public abstract class Shape : FrameworkElement {
 
 		public static readonly DependencyProperty FillProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "Fill");
+			DependencyProperty.Lookup (Kind.SHAPE, "Fill");
 		public static readonly DependencyProperty StretchProperty = 
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "Stretch");
+			DependencyProperty.Lookup (Kind.SHAPE, "Stretch");
 		public static readonly DependencyProperty StrokeProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "Stroke");
+			DependencyProperty.Lookup (Kind.SHAPE, "Stroke");
 		public static readonly DependencyProperty StrokeDashArrayProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashArray");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeDashArray");
 		public static readonly DependencyProperty StrokeDashCapProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashCap");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeDashCap");
 		public static readonly DependencyProperty StrokeDashOffsetProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashOffset");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeDashOffset");
 		public static readonly DependencyProperty StrokeEndLineCapProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeEndLineDashCap");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeEndLineDashCap");
 		public static readonly DependencyProperty StrokeLineJoinProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeLineJoin");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeLineJoin");
 		public static readonly DependencyProperty StrokeMiterLimitProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeMiterLimit");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeMiterLimit");
 		public static readonly DependencyProperty StrokeStartLineCapProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeStartLineDashCap");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeStartLineDashCap");
 		public static readonly DependencyProperty StrokeThicknessProperty =
-			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeThickness");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeThickness");
 		
 		public Shape ()
 		{

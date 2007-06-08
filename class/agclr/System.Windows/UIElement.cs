@@ -49,16 +49,16 @@ namespace System.Windows {
 		{
 			Type ttype = typeof (UIElement);
 			
-	        	OpacityProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Opacity");
-	        	ClipProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Clip");
-	        	RenderTransformProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "RenderTransform");
-	        	TriggersProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Triggers");
-			OpacityMaskProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "OpacityMask");
-			RenderTransformOriginProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "RenderTransformOrigin");
-			CursorProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Cursor");
-			IsHitTestVisibleProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "IsHitTestVisible");
-			VisibilityProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Visibility");
-			ResourcesProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Resources");
+	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity");
+	        	ClipProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Clip");
+	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform");
+	        	TriggersProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Triggers");
+			OpacityMaskProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "OpacityMask");
+			RenderTransformOriginProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransformOrigin");
+			CursorProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Cursor");
+			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible");
+			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility");
+			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources");
 		}
 			
 		public UIElement ()

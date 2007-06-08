@@ -32,11 +32,11 @@ namespace System.Windows.Media {
 
 		static ArcSegment ()
 		{
-			PointProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "Point");
-			SizeProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "Size");
-			RotationAngleProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "RotationAngle");
-			IsLargeArcProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "IsLargeArc");
-			SweepDirectionProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "SweepDirection");
+			PointProperty = DependencyProperty.Lookup (Kind.ARCSEGMENT, "Point");
+			SizeProperty = DependencyProperty.Lookup (Kind.ARCSEGMENT, "Size");
+			RotationAngleProperty = DependencyProperty.Lookup (Kind.ARCSEGMENT, "RotationAngle");
+			IsLargeArcProperty = DependencyProperty.Lookup (Kind.ARCSEGMENT, "IsLargeArc");
+			SweepDirectionProperty = DependencyProperty.Lookup (Kind.ARCSEGMENT, "SweepDirection");
 			
 		}
 		

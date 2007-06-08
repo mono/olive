@@ -45,7 +45,7 @@ namespace Mono {
 #endregion
 
 		[DllImport("moon")]
-		internal extern static IntPtr dependency_property_lookup (Value.Kind type, string name);
+		internal extern static IntPtr dependency_property_lookup (Kind type, string name);
 
 		[DllImport("moon")]
 		internal extern static IntPtr dependency_object_get_value (IntPtr obj, IntPtr property);
@@ -54,7 +54,7 @@ namespace Mono {
 		internal extern static IntPtr dependency_object_set_value (IntPtr obj, IntPtr property, Value val);
 
 		[DllImport("moon")]
-	    	internal extern static IntPtr xaml_create_from_str (string xaml, out Value.Kind kind);
+	    	internal extern static IntPtr xaml_create_from_str (string xaml, out Kind kind);
 	    
 		
 #region Items

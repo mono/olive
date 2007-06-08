@@ -37,8 +37,8 @@ namespace System.Windows.Controls {
 
 		static Panel ()
 		{
-			ChildrenProperty = DependencyProperty.Lookup (Value.Kind.PANEL, "Children");
-			BackgroundProperty = DependencyProperty.Lookup (Value.Kind.PANEL, "Background");
+			ChildrenProperty = DependencyProperty.Lookup (Kind.PANEL, "Children");
+			BackgroundProperty = DependencyProperty.Lookup (Kind.PANEL, "Background");
 		}
 		
 		public Panel ()

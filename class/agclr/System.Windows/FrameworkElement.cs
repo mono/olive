@@ -33,8 +33,8 @@ namespace System.Windows {
 		
 		static FrameworkElement ()
 		{
-			WidthProperty = DependencyProperty.Lookup (Value.Kind.FRAMEWORKELEMENT, "Width");
-			HeightProperty = DependencyProperty.Lookup (Value.Kind.FRAMEWORKELEMENT, "Height");
+			WidthProperty = DependencyProperty.Lookup (Kind.FRAMEWORKELEMENT, "Width");
+			HeightProperty = DependencyProperty.Lookup (Kind.FRAMEWORKELEMENT, "Height");
 		}
 		
 	        public FrameworkElement ()

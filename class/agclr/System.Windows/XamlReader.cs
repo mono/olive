@@ -41,7 +41,7 @@ namespace System.Windows {
 			if (xaml == null)
 				throw new ArgumentNullException ("xaml");
 
-			Value.Kind kind;
+			Kind kind;
 			IntPtr top = NativeMethods.xaml_create_from_str (xaml, out kind);
 
 			if (top == IntPtr.Zero)

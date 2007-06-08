@@ -1,3 +1,7 @@
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	*  Kind.cs: Split the values here.
+
 2007-06-07  Miguel de Icaza  <miguel@novell.com>
 
 	* Hosting.cs: New file, helper tool.

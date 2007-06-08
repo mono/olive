@@ -35,8 +35,8 @@ namespace System.Windows.Controls {
 
 		static Canvas ()
 		{
-			LeftProperty = DependencyProperty.Lookup (Value.Kind.CANVAS, "Left");
-			TopProperty = DependencyProperty.Lookup (Value.Kind.CANVAS, "Top");
+			LeftProperty = DependencyProperty.Lookup (Kind.CANVAS, "Left");
+			TopProperty = DependencyProperty.Lookup (Kind.CANVAS, "Top");
 		}
 
 		public Canvas ()

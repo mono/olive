@@ -49,7 +49,7 @@ namespace System.Windows {
 			native = handle;
 		}
 		
-		internal static DependencyProperty Lookup (Value.Kind type, string name)
+		internal static DependencyProperty Lookup (Kind type, string name)
 		{
 			IntPtr handle = NativeMethods.dependency_property_lookup (type, name);
 
