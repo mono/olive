@@ -45,12 +45,26 @@ namespace MonoTests.JScript.Compiler
 			//Assert.IsFalse(l1.Advance());
 			Assert.AreEqual (Token.Type.EndOfInput, l1.GetNext ().Kind);
 		}
-		
+
 		[Test]
 		public void WhitespaceTest ()
 		{
 			Tokenizer t = new Tokenizer (" ".ToCharArray (), new IdentifierTable ());
 			Assert.AreEqual (Token.Type.EndOfInput, t.GetNext ().Kind);
+		}
+
+		[Test]
+		public void LineCommentTest ()
+		{
+			Tokenizer t = new Tokenizer ("// \n ;".ToCharArray (), new IdentifierTable ());
+			Assert.AreEqual (Token.Type.SemiColon, t.GetNext ().Kind);
+		}
+
+		[Test]
+		public void BlockCommentTest ()
+		{
+			Tokenizer t = new Tokenizer ("/*abcdef*/ ;".ToCharArray (), new IdentifierTable ());
+			Assert.AreEqual (Token.Type.SemiColon, t.GetNext ().Kind);
 		}
 	}
 }

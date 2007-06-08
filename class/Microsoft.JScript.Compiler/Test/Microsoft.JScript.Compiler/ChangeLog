@@ -1,3 +1,7 @@
+2007-06-08  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* LexerTest.cs, ParserTest.cs: Enable/add more tests.
+
 2007-06-07  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* SplayTreeTest.cs, TableTest.cs: Added.
