@@ -59,7 +59,12 @@ namespace System.Windows {
 			if (reference != null)
 				return (DependencyObject) reference;
 
-			return (DependencyObject) CreateObject (k, ptr);
+			DependencyObject dop = (DependencyObject) CreateObject (k, ptr);
+			if (dop == null){
+				Console.WriteLine ("agclr: Returning a null object, did not know how to construct {0}", k);
+			}
+
+			return dop;
 		}
 
 		static object CreateObject (Kind k, IntPtr raw)
@@ -118,6 +123,22 @@ namespace System.Windows {
 			case Kind.TRIGGERACTION: return null;
 			case Kind.BEGINSTORYBOARD: return null;
 			case Kind.EVENTTRIGGER: return null;
+			case Kind.STROKE_COLLECTION: return null;
+			case Kind.INLINES: return null;
+			case Kind.STYLUSPOINT_COLLECTION: return null;
+			case Kind.KEYFRAME_COLLECTION: return null;
+			case Kind.TIMELINEMARKER_COLLECTION: return null;
+			case Kind.GEOMETRY_COLLECTION: return null;
+			case Kind.GRADIENTSTOP_COLLECTION: return null;
+			case Kind.MEDIAATTRIBUTE_COLLECTION: return null;
+			case Kind.PATHFIGURE_COLLECTION: return null;
+			case Kind.PATHSEGMENT_COLLECTION: return null;
+			case Kind.TIMELINE_COLLECTION: return null;
+			case Kind.TRANSFORM_COLLECTION: return null;
+			case Kind.VISUAL_COLLECTION: return null;
+			case Kind.RESOURCE_COLLECTION: return null;
+			case Kind.TRIGGERACTION_COLLECTION: return null;
+			case Kind.TRIGGER_COLLECTION: return null;
 			}
 
 			return null;
@@ -125,14 +146,18 @@ namespace System.Windows {
 
 		public virtual object GetValue (DependencyProperty property)
 		{
+			if (property == null)
+				throw new ArgumentNullException ("property");
+			
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
 
 			if (x == IntPtr.Zero)
 				return null;
 
+			Kind k;
 			unsafe {
 				byte *px = (byte *) x;
-				Kind k = (Kind) (*((int *)px));
+				k = (Kind) (*((int *)px));
 
 				px += 4;
 				
@@ -168,8 +193,8 @@ namespace System.Windows {
 					return DependencyObject.Lookup (k, vptr);
 				}
 			}
-			
-			throw new NotImplementedException ();
+
+			throw new NotImplementedException (String.Format ("Do not know how to convert {0}", k));
 		}
 
 		//
