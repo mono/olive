@@ -51,5 +51,12 @@ namespace Mono.JScript.Compiler
 			bool IncompleteInput = false;
 			return compiler.CompileProgram (Context.SourceUnit.GetCode ().ToCharArray (), ref diagnostics, ref IncompleteInput, false);
 		}
+
+#if !SILVERLIGHT
+		public override SourceUnit ParseCodeDom (System.CodeDom.CodeObject codeDom)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
 	}
 }

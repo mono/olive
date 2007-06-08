@@ -6,12 +6,12 @@ namespace Mono.JScript.Compiler.Shell
 {
 	public sealed class CommandLine : Microsoft.Scripting.Shell.CommandLine
 	{
-		public CommandLine()
+		public CommandLine ()
 		{
 			throw new NotImplementedException();
 		}
 
-		protected override int RunCommand(string command)
+		protected override int RunCommand (string command)
 		{
 			throw new NotImplementedException();
 		}
@@ -25,8 +25,13 @@ namespace Mono.JScript.Compiler.Shell
 		protected override string PromptContinuation {
 			get { throw new NotImplementedException(); }
 		}
-	}
 
- 
+#if !SILVERLIGHT
+		protected override int RunFile (string filename)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
+	}
 
 }

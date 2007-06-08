@@ -14,8 +14,9 @@ namespace Mono.JScript.Compiler.ParseTree
 		private readonly TextPoint RightParen;
 		private readonly TextPoint Else;
 
-		public IfStatement(Expression Condition, Statement IfBody, Statement ElseBody, TextSpan Location, TextSpan HeaderLocation, TextPoint LeftParen, TextPoint RightParen, TextPoint Else)
-			:base(Operation.If, Location)
+		public IfStatement (Expression Condition, Statement IfBody, Statement ElseBody, TextSpan Location,
+				    TextSpan HeaderLocation, TextPoint LeftParen, TextPoint RightParen, TextPoint Else)
+			: base (Operation.If, Location)
 		{
 			this.Condition = Condition;
 			this.IfBody = IfBody;

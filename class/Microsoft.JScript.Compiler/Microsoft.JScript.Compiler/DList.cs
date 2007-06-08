@@ -4,6 +4,8 @@ using System.Text;
 
 namespace Mono.JScript.Compiler
 {
+	// FIXME: do we need to reimplement linkedlist?
+
 	// double linked list because of name so must have a node somewhere
 	public class DList<ElementType, ParentType>
 	{
@@ -17,25 +19,37 @@ namespace Mono.JScript.Compiler
 
 		public void Append (ElementType Item)
 		{
-			Node newNode = new Node(Item);
+			Node newNode = new Node (Item);
 			if (tail != null) {
 				tail.Next = newNode;
 				newNode.Previous = tail;
-			}
-			else
+			} else {
 				head = newNode;
+			}
 
 			tail = newNode;
 		}
 
+		// FIXME: test it
 		public DList<ElementType, ParentType> Copy ()
 		{
 			DList<ElementType, ParentType> result = new DList<ElementType, ParentType> ();
-			//while (ite)
-			//result.Append(
-			return null;
+			DList<ElementType, ParentType>.Iterator insert_it = new DList<ElementType, ParentType>.Iterator (this);
+			DList<ElementType, ParentType>.Iterator enum_it = new DList<ElementType, ParentType>.Iterator (result);
+
+			while (true) {
+				enum_it.Advance ();
+				if (!enum_it.ElementAvailable)
+					break;
+
+				insert_it.Insert (enum_it.Element);
+			}
+
+			return result;
+
 		}
 
+		// FIXME: null tail
 		public ElementType Last ()
 		{
 			return tail.Data;

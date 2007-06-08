@@ -26,6 +26,7 @@ namespace Mono.JScript.Compiler
 			this.row = 1;
 			this.lineStartPosition = 0;
 			this.comments = new List<Comment> ();
+			// move that to static ctor?
 			InitKeywords();
 		}
 
@@ -37,14 +38,14 @@ namespace Mono.JScript.Compiler
 			//whereas we already know it here
 
 			if (!Advance())
-				return new Token (Token.Type.EndOfInput, position, row, position - lineStartPosition, position == lineStartPosition);
+				return new Token (Token.Type.EndOfInput, position, Line, Column, FirstOnLine);
 
 			StripWhiteSpace();
 
 			if (!Advance())
-				return new Token (Token.Type.EndOfInput, position, row, position - lineStartPosition, position == lineStartPosition);
+				return new Token (Token.Type.EndOfInput, position, Line, Column, FirstOnLine);
 
-			char next = source[position];
+			char next = source [position];
 			int nextPos;
 			switch (next)
 			{
@@ -310,18 +311,12 @@ namespace Mono.JScript.Compiler
 			//TODO firstonline
 			return new RegularExpressionLiteralToken (regexp.ToString (), "", position - startpos, startpos, startrow, startcol, false);
 		}
-		
-
-		private bool Advance()
-		{
-			return ((source != null) && position < source.Length);
-		}
 
 		public List<Comment> Comments {
 			get { return comments; }
 		}
 
-		// we gain a that we only move on position (I have see that on an other compiler)
+		// we gain that we only move on position (I have see that on an other compiler)
 		// but maybe it is better with working with sourcelocation object directely
 		// it perform less but more OO ...
 		public SourceLocation Position
@@ -336,105 +331,51 @@ namespace Mono.JScript.Compiler
 
 		#region token
 
-		private Token CreateToken(Token.Type tokenType)
+		private Token CreateToken (Token.Type tokenType)
 		{
-			current = new Token (tokenType, position, row, position - lineStartPosition, position == lineStartPosition);
+			current = new Token (tokenType, position, Line, Column, FirstOnLine);
 			position++;
 			return current;
 		}
 
-		private Token CreateToken(Token.Type tokenType, string value)
+		private Token CreateToken (Token.Type tokenType, string value)
 		{
-			current = new Token (tokenType, position, row, position - lineStartPosition, position == lineStartPosition);
+			current = new Token (tokenType, position, Line, Column, FirstOnLine);
 			position++;
 			return current;
 		}
 		
-		private Token CreateIdentOrKeyword()
+		private Token CreateIdentOrKeyword ()
 		{
-			StringBuilder builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder ();
 
-			while (Advance()) {
-				char next = source[position];
-				switch (next) {
-					case '0':
-					case '1':
-					case '2':
-					case '3':
-					case '4':
-					case '5':
-					case '6':
-					case '7':
-					case '8':
-					case '9':
-					case 'a':
-					case 'b':
-					case 'c':
-					case 'd':
-					case 'e':
-					case 'f':
-					case 'g':
-					case 'h':
-					case 'i':
-					case 'j':
-					case 'k':
-					case 'l':
-					case 'm':
-					case 'n':
-					case 'o':
-					case 'p':
-					case 'q':
-					case 'r':
-					case 's':
-					case 't':
-					case 'u':
-					case 'v':
-					case 'w':
-					case 'x':
-					case 'y':
-					case 'z':
-					case 'A':
-					case 'B':
-					case 'C':
-					case 'D':
-					case 'E':
-					case 'F':
-					case 'G':
-					case 'H':
-					case 'I':
-					case 'J':
-					case 'K':
-					case 'L':
-					case 'M':
-					case 'N':
-					case 'O':
-					case 'P':
-					case 'Q':
-					case 'R':
-					case 'S':
-					case 'T':
-					case 'U':
-					case 'V':
-					case 'W':
-					case 'X':
-					case 'Y':
-					case 'Z':
-					case '$':
-					case '_': {
-							builder.Append(next);
-							position++;
-							continue;
-					}
+			while (Advance ()) {
+				char next = source [position];
+
+				if (Char.IsLetterOrDigit (next) || next == '$' || next == '_') {
+					builder.Append (next);
+					position++;
+					continue;
 				}
+
 				break;
 			}
-			string result = builder.ToString();
+
+
+			string result = builder.ToString ();
+
 			Token.Type type;
-			if (!keywords.TryGetValue(result, out type)) {
+			bool keyword = keywords.TryGetValue (result, out type);
+
+			if (keyword) {
+				current = new Token (type, position, Line, Column, FirstOnLine);
+			} else {
 				this.IDTable.InsertIdentifier (result);
+				Identifier id = new Identifier (result, IDTable);
+				current = new IdentifierToken (id, result.Length, Token.Type.Identifier, position, Line,
+					Column, FirstOnLine);
 			}
-			Identifier id = new Identifier(result, IDTable);
-			current = new IdentifierToken (id, result.Length, Token.Type.Identifier, position, row, position - lineStartPosition, position == lineStartPosition);
+			
 			return current;
 		}
 
@@ -443,7 +384,7 @@ namespace Mono.JScript.Compiler
 			StringBuilder builder = new StringBuilder();
 			int dot = 0;
 
-			while (Advance()) {
+			while (Advance ()) {
 				char next = source[position];
 				switch (next) {
 					case '0':
@@ -551,31 +492,22 @@ namespace Mono.JScript.Compiler
 				IDTable.InsertIdentifier (key);
 		}
 
-		private void StripWhiteSpace()
+		private void StripWhiteSpace ()
 		{
-			char next = source[position];
-			while (next == ' ' || next == '\t' || next == '\r' || next == '\n')
-			{
+			char next = source [position];
+			while (next == ' ' || next == '\t' || next == '\r' || next == '\n') {
 				if (next == '\n')
-				{
-					NextRow();
-				}
+					NextRow ();
 				else if (next != '\r')
 					position++;
 				if (position >= source.Length)
 					break;
-				next = source[position];
+
+				next = source [position];
 			}
 		}
 
-		private void NextRow ()
-		{
-			row++;
-			lineStartPosition = position;
-			position++;
-		}
-
-		private void CreateBlockComment()
+		private void CreateBlockComment ()
 		{
 			int startPosition = position;
 			int startline = row;
@@ -591,10 +523,10 @@ namespace Mono.JScript.Compiler
 				position++;
 				next = source[position];
 			}
-			comments.Add (new Comment (builder.ToString (), new TextSpan (startline, startcolumn, row, position - lineStartPosition, startPosition, position)));
+			comments.Add (new Comment (builder.ToString (), new TextSpan (startline, startcolumn, Line, Column, startPosition, position)));
 		}
 
-		private void CreateLineComment()
+		private void CreateLineComment ()
 		{
 			int startPosition = position;
 			char next = source[position];
@@ -605,6 +537,50 @@ namespace Mono.JScript.Compiler
 				next = source[position];
 			}
 			comments.Add(new Comment(builder.ToString(),new TextSpan(row, startPosition - lineStartPosition, row, position - lineStartPosition, startPosition,position)));
+		}
+
+		// Utilities
+
+		// TODO: replace source [position] with Peek () and Read ()
+		int Peek ()
+		{
+			if (position >= source.Length)
+				return -1;
+
+			return source [position];
+		}
+
+		int Read ()
+		{
+			if (position >= source.Length)
+				return -1;
+
+			return source [position++];
+		}
+
+		bool Advance ()
+		{
+			return Peek () != -1;
+		}
+
+		bool FirstOnLine
+		{
+			get { return position == lineStartPosition; }
+		}
+
+		int Column {
+			get { return position - lineStartPosition; }
+		}
+
+		int Line {
+			get { return row; }
+		}
+
+		private void NextRow ()
+		{
+			row++;
+			lineStartPosition = position;
+			position++;
 		}
 	}
 }

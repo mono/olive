@@ -1,0 +1,4 @@
+2007-06-07  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* CommandLine.cs: Added RunFile () (ifdefed in
+	Microsoft.Scripting.dll) 

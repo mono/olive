@@ -1,0 +1,8 @@
+2007-06-07  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* Table.cs: Implemented using SplayTree.
+	* Tokenizer.cs: Tokenize keywords properly. Added helper methods and
+	properties.
+	* JavaScriptCompiler.cs: Added ParseCodeDom ().
+	* DList.cs (Copy): Implemented.
+	* SourceLocation.cs: Removed (it is in Microsoft.Scripting.dll).
