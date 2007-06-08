@@ -32,7 +32,7 @@ using System.Windows;
 namespace Mono {
 	public class Hosting {
 
-		public static IntPtr GetNativeObject (DependencyObject obj)
+		internal static IntPtr GetNativeObject (DependencyObject obj)
 		{
 			if (obj == null)
 				throw new ArgumentNullException ("obj");
