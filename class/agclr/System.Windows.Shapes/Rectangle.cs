@@ -49,5 +49,10 @@ namespace System.Windows.Shapes {
 			get { return (double) GetValue (RadiusYProperty); }
 			set { SetValue (RadiusYProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.RECTANGLE;
+		}
 	}
 }

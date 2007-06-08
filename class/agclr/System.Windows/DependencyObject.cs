@@ -31,6 +31,7 @@ using System.Collections;
 using Mono;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Runtime.InteropServices;
 
 namespace System.Windows {
@@ -136,7 +137,9 @@ namespace System.Windows {
 			case Kind.PATHSEGMENT_COLLECTION: return null;
 			case Kind.TIMELINE_COLLECTION: return null;
 			case Kind.TRANSFORM_COLLECTION: return null;
-			case Kind.VISUAL_COLLECTION: return null;
+			case Kind.VISUAL_COLLECTION:
+				return new VisualCollection (raw);
+				
 			case Kind.RESOURCE_COLLECTION: return null;
 			case Kind.TRIGGERACTION_COLLECTION: return null;
 			case Kind.TRIGGER_COLLECTION: return null;
@@ -247,6 +250,15 @@ namespace System.Windows {
 					Marshal.WriteByte (result, bytes.Length, 0);
 
 					*((IntPtr *) p) = result;
+				} else if (v is DependencyObject){
+					DependencyObject x = v as DependencyObject;
+					
+					value.k = x.GetKind ();
+					if (value.k == Kind.DEPENDENCY_OBJECT){
+						throw new NotImplementedException (
+						   String.Format ("Class {0} does not implement GetKind", x));
+					}
+					*((IntPtr *) p) = x.native;
 				} else
 					throw new NotImplementedException (String.Format ("Do not know how to encode {0} yet", v.GetType ()));
 			}
@@ -268,6 +280,11 @@ namespace System.Windows {
 			Value v = GetAsValue (obj);
 
 			NativeMethods.dependency_object_set_value (native, property.native, v);
+		}
+
+		protected internal virtual Kind GetKind ()
+		{
+			return Kind.DEPENDENCY_OBJECT;
 		}
 	}
 }
