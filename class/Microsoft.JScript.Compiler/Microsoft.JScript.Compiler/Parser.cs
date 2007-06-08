@@ -7,7 +7,8 @@ namespace Mono.JScript.Compiler
 {
 	public class Parser
 	{
-		public Parser (char[] Input) : this(Input,new IdentifierTable())
+		public Parser (char[] Input)
+			: this (Input, new IdentifierTable ())
 		{
 		}
 
@@ -65,7 +66,7 @@ namespace Mono.JScript.Compiler
 
 		public bool SyntaxOK ()
 		{
-			return (diagnostics.Count > 0);
+			return diagnostics.Count == 0;
 		}
 
 		#endregion
@@ -80,7 +81,7 @@ namespace Mono.JScript.Compiler
 
 			Next ();
 			CheckSyntaxExpected (Token.Type.Identifier);
-			Identifier id = ((IdentifierToken)current).Spelling;
+			Identifier id = ((IdentifierToken) current).Spelling;
 			TextPoint NameLocation = new TextPoint (this.current.StartPosition);
 
 			Next ();
@@ -287,6 +288,7 @@ namespace Mono.JScript.Compiler
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
 			Token leftParen = current;
 			Next();
+
 			if (current.Kind == Token.Type.Var) {
 				VariableDeclarationStatement varDecl = ParseVarDeclaration ();
 
@@ -305,8 +307,13 @@ namespace Mono.JScript.Compiler
 					rightParen = current;
 					Next ();
 					body = ParseStatement ();
-					return new DeclarationForStatement (varDecl.Declarations, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+					return new DeclarationForStatement (varDecl.Declarations, condition, increment, body,
+						new TextSpan (start, current), new TextSpan (start, rightParen),
+						new TextPoint (firstSemiColon.StartPosition),
+						new TextPoint (secondSemiColon.StartPosition),
+						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				}
+
 				CheckSyntaxExpected (Token.Type.SemiColon);
 				firstSemiColon = current;
 				Next ();
@@ -319,7 +326,11 @@ namespace Mono.JScript.Compiler
 				rightParen = current;
 				Next ();
 				body = ParseStatement ();
-				return new DeclarationForStatement (varDecl.Declarations, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+				return new DeclarationForStatement (varDecl.Declarations, condition, increment, body,
+					new TextSpan (start, current), new TextSpan (start, rightParen),
+					new TextPoint (firstSemiColon.StartPosition),
+					new TextPoint (secondSemiColon.StartPosition),
+					new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				//DeclarationForStatement
 				
 			} else {
@@ -334,8 +345,11 @@ namespace Mono.JScript.Compiler
 					rightParen = current;
 					Next ();
 					body = ParseStatement ();
-					return new ExpressionForInStatement (initial, collection, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+					return new ExpressionForInStatement (initial, collection, body, new TextSpan (start, current),
+						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
+						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				}
+
 				CheckSyntaxExpected (Token.Type.SemiColon);
 				firstSemiColon = current;
 				Next ();
@@ -348,7 +362,10 @@ namespace Mono.JScript.Compiler
 				rightParen = current;
 				Next ();
 				body = ParseStatement ();
-				return new ExpressionForStatement (initial, condition, increment, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
+				return new ExpressionForStatement (initial, condition, increment, body,
+					new TextSpan (start, current), new TextSpan (start, rightParen),
+					new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition),
+					new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 			}
 		}
 
@@ -708,8 +725,9 @@ namespace Mono.JScript.Compiler
 					current.InsertSemicolonBefore ();
 					return;
 			}
-				diagnostics.Add(new Diagnostic(code, new TextSpan(current.StartLine,current.StartColumn, lexer.Position.Line, lexer.Position.Column,current.StartPosition, lexer.Position.Index)));
-			}
+				diagnostics.Add (new Diagnostic (code, new TextSpan (current.StartLine, current.StartColumn,
+					lexer.Position.Line, lexer.Position.Column, current.StartPosition, lexer.Position.Index)));
+		}
 
 		#endregion
 
@@ -717,7 +735,9 @@ namespace Mono.JScript.Compiler
 
 		private List<Diagnostic> diagnostics;
 
-		public List<Diagnostic> Diagnostics { get {	return diagnostics;	} }
+		public List<Diagnostic> Diagnostics {
+			get { return diagnostics; }
+		}
 
 		/* TODO 
 			BadDivideOrRegularExpressionLiteral,

@@ -1,3 +1,9 @@
+2007-06-08  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* Parser.cs (SyntaxOK): No errors == fine.
+	* Tokenizer.cs: Replace source [position] with ReadChar () and
+	PeekChar ().
+
 2007-06-07  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* Table.cs: Implemented using SplayTree.

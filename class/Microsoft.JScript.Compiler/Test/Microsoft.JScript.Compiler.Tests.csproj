@@ -28,8 +28,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="LexerTest.cs" />
-    <Compile Include="ParserTest.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\LexerTest.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\ParserTest.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\SplayTreeTest.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\TableTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

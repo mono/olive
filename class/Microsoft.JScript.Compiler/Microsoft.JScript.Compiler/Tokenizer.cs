@@ -45,183 +45,170 @@ namespace Mono.JScript.Compiler
 			if (!Advance())
 				return new Token (Token.Type.EndOfInput, position, Line, Column, FirstOnLine);
 
-			char next = source [position];
-			int nextPos;
-			switch (next)
+			int c = ReadChar ();
+			int next = PeekChar ();
+
+			switch (c)
 			{
 				case '{':
-					return CreateToken(Token.Type.LeftBrace);
+					return CreateToken (Token.Type.LeftBrace);
 				case '}':
-					return CreateToken(Token.Type.RightBrace);
+					return CreateToken (Token.Type.RightBrace);
 				case '(':
-					return CreateToken(Token.Type.LeftParenthesis);
+					return CreateToken (Token.Type.LeftParenthesis);
 				case ')':
-					return CreateToken(Token.Type.RightParenthesis);
+					return CreateToken (Token.Type.RightParenthesis);
 				case '[':
-					return CreateToken(Token.Type.LeftBracket);
+					return CreateToken (Token.Type.LeftBracket);
 				case ']':
-					return CreateToken(Token.Type.RightBracket);
+					return CreateToken (Token.Type.RightBracket);
 				case '.':
-					return CreateToken(Token.Type.Dot);
+					return CreateToken (Token.Type.Dot);
 				case ';':
-					return CreateToken(Token.Type.SemiColon);
+					return CreateToken (Token.Type.SemiColon);
 				case ',':
-					return CreateToken(Token.Type.Comma);
+					return CreateToken (Token.Type.Comma);
 				case '<':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.LessEqual);
-					}
-					else if (nextPos < source.Length && source[nextPos] == '<') {
-						position++;
-						nextPos = position + 1;
-						if (nextPos < source.Length && source[nextPos] == '=') {
-							position++;
-							return CreateToken(Token.Type.LessLessEqual);
+
+					if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.LessEqual);
+					} else if (next == '<') {
+						ReadChar ();
+						next = PeekChar ();
+						if (next == '=') {
+							ReadChar ();
+							return CreateToken (Token.Type.LessLessEqual);
+						} else {
+							return CreateToken (Token.Type.LessLess);
 						}
-						return CreateToken(Token.Type.LessLess);					
+					} else {
+						return CreateToken (Token.Type.Less);
 					}
-					return CreateToken(Token.Type.Less);
 				case '>':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.GreaterEqual);
-					}
-					else if (nextPos < source.Length && source[nextPos] == '>') {
-						position++;
-						nextPos = position + 1;
-						if (nextPos < source.Length && source[nextPos] == '=') {
-							position++;
-							return CreateToken(Token.Type.GreaterGreaterEqual);
+					if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.GreaterEqual);
+					} else if (next == '>') {
+						ReadChar ();
+						next = PeekChar ();
+						if (next == '=') {
+							ReadChar ();
+							return CreateToken (Token.Type.GreaterGreaterEqual);
+						} else {
+							return CreateToken (Token.Type.GreaterGreater);
 						}
-						else if (nextPos < source.Length && source[nextPos] == '>') {
-							position++;
-							nextPos = position + 1;
-							if (nextPos < source.Length && source[nextPos] == '=') {
-								position++;
-								return CreateToken(Token.Type.GreaterGreaterGreaterEqual);
-							}
-							return CreateToken(Token.Type.GreaterGreaterGreater);
-						}
-						return CreateToken(Token.Type.GreaterGreater);
+					} else {
+						return CreateToken (Token.Type.Greater);
 					}
-					return CreateToken(Token.Type.Greater);
 				case '=':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						nextPos = position + 1;
-						if (nextPos < source.Length && source[nextPos] == '=') {
-							position++;
-							return CreateToken(Token.Type.EqualEqualEqual);
+					if (next == '=') {
+						ReadChar ();
+						next = PeekChar ();
+						if (next == '=') {
+							ReadChar ();
+							return CreateToken (Token.Type.EqualEqualEqual);
+						} else {
+							return CreateToken (Token.Type.EqualEqual);
 						}
-						else
-							return CreateToken(Token.Type.EqualEqual);
+					} else {
+						return CreateToken (Token.Type.Equal);
 					}
-					else
-						return CreateToken(Token.Type.Equal);
 				case '!':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						nextPos = position + 1;
-						if (nextPos < source.Length && source[nextPos] == '=') {
-							position++;
-							return CreateToken(Token.Type.BangEqualEqual);
+					if (next == '=') {
+						ReadChar ();
+						next = PeekChar ();
+						if (next == '=') {
+							ReadChar ();
+							return CreateToken (Token.Type.BangEqualEqual);
+						} else {
+							return CreateToken (Token.Type.BangEqual);
 						}
-						return CreateToken(Token.Type.BangEqual);
 					}
 					break;
 				case '+':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '+') {
-						position++;
-						return CreateToken(Token.Type.PlusPlus);
+					if (next == '+') {
+						ReadChar ();
+						return CreateToken (Token.Type.PlusPlus);
+					} else if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.PlusEqual);
+					} else {
+						return CreateToken (Token.Type.Plus);
 					}
-					else if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.PlusEqual);
-					}
-					return CreateToken(Token.Type.Plus);
 				case '-':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '-') {
-						position++;
-						return CreateToken(Token.Type.MinusMinus);
+					if (next == '-') {
+						ReadChar ();
+						return CreateToken (Token.Type.MinusMinus);
+					} else if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.MinusEqual);
+					} else {
+						return CreateToken (Token.Type.Minus);
 					}
-					else if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.MinusEqual);
-					}
-					return CreateToken(Token.Type.Minus);
 				case '*':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.StarEqual);
+					if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.StarEqual);
+					} else {
+						return CreateToken (Token.Type.Star);
 					}
-					return CreateToken(Token.Type.Star);
 				case '%':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.PercentEqual);
+					if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.PercentEqual);
+					} else {
+						return CreateToken (Token.Type.Percent);
 					}
-					return CreateToken(Token.Type.Percent);
 				case '&':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '&') {
-						position++;
-						return CreateToken(Token.Type.AmpersandAmpersand);
+					if (next == '&') {
+						ReadChar ();
+						return CreateToken (Token.Type.AmpersandAmpersand);
+					} else if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.AmpersandEqual);
+					} else {
+						return CreateToken (Token.Type.Ampersand);
 					}
-					else if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.AmpersandEqual);
-					}
-					return CreateToken (Token.Type.Ampersand);
 				case '|':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '|') {
-						position++;
-						return CreateToken(Token.Type.BarBar);
+					if (next == '|') {
+						ReadChar ();
+						return CreateToken (Token.Type.BarBar);
+					} else if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.BarEqual);
+					} else {
+						return CreateToken (Token.Type.Bar);
 					}
-					else if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.BarEqual);
-					}
-					return CreateToken(Token.Type.Bar);
 				case '^':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.CircumflexEqual);
+					if (next == '^') {
+						ReadChar ();
+						return CreateToken (Token.Type.CircumflexEqual);
+					} else {
+						return CreateToken (Token.Type.Circumflex);
 					}
-					return CreateToken(Token.Type.Circumflex);
 				case '~':
-					return CreateToken(Token.Type.Tilda);
+					return CreateToken (Token.Type.Tilda);
 				case '?':
-					return CreateToken(Token.Type.Question);
+					return CreateToken (Token.Type.Question);
 				case ':':
-					return CreateToken(Token.Type.Colon);
+					return CreateToken (Token.Type.Colon);
 				case '/':
-					nextPos = position + 1;
-					if (nextPos < source.Length && source[nextPos] == '=') {
-						position++;
-						return CreateToken(Token.Type.DivideEqual);
-					}
-					else if (nextPos < source.Length && source[nextPos] == '/') {
-						position++;
-						CreateLineComment();
-						return GetNext();
-					}
-					else if (nextPos < source.Length && source[nextPos] == '*') {
-						position++;
-						CreateBlockComment();
+					if (next == '=') {
+						ReadChar ();
+						return CreateToken (Token.Type.DivideEqual);
+					} else if (next == '/') {
+						// FIXME
+						ReadChar ();
+						CreateLineComment ();
 						return GetNext ();
+					} else if (next == '*') {
+						ReadChar ();
+						CreateBlockComment ();
+						return GetNext ();
+					} else {
+						return CreateToken (Token.Type.Divide);
 					}
-					return CreateToken(Token.Type.Divide);
 				case '0':
 				case '1':
 				case '2':
@@ -232,7 +219,7 @@ namespace Mono.JScript.Compiler
 				case '7':
 				case '8':
 				case '9':
-					return CreateNumericLiteralToken();
+					return CreateNumericLiteralToken (c);
 
 				case 'a':
 				case 'b':
@@ -288,9 +275,9 @@ namespace Mono.JScript.Compiler
 				case 'Z':
 				case '$':
 				case '_':
-					return this.CreateIdentOrKeyword();
+					return this.CreateIdentOrKeyword (c);
 			}
-			return CreateToken(Token.Type.Bad);
+			return CreateToken (Token.Type.Bad);
 		}
 
 		public RegularExpressionLiteralToken ScanRegularExpression (Token Divide)
@@ -334,33 +321,29 @@ namespace Mono.JScript.Compiler
 		private Token CreateToken (Token.Type tokenType)
 		{
 			current = new Token (tokenType, position, Line, Column, FirstOnLine);
-			position++;
 			return current;
 		}
 
 		private Token CreateToken (Token.Type tokenType, string value)
 		{
 			current = new Token (tokenType, position, Line, Column, FirstOnLine);
-			position++;
 			return current;
 		}
 		
-		private Token CreateIdentOrKeyword ()
+		private Token CreateIdentOrKeyword (int first)
 		{
 			StringBuilder builder = new StringBuilder ();
+			builder.Append ((char) first);
 
 			while (Advance ()) {
-				char next = source [position];
-
-				if (Char.IsLetterOrDigit (next) || next == '$' || next == '_') {
-					builder.Append (next);
-					position++;
+				int next = PeekChar ();
+				if (Char.IsLetterOrDigit ((char) next) || next == '$' || next == '_') {
+					builder.Append ((char) next);
+					ReadChar ();
 					continue;
 				}
-
 				break;
 			}
-
 
 			string result = builder.ToString ();
 
@@ -379,13 +362,14 @@ namespace Mono.JScript.Compiler
 			return current;
 		}
 
-		private Token CreateNumericLiteralToken()
+		private Token CreateNumericLiteralToken (int first)
 		{
-			StringBuilder builder = new StringBuilder();
+			StringBuilder builder = new StringBuilder ();
+			builder.Append ((char) first);
 			int dot = 0;
 
 			while (Advance ()) {
-				char next = source[position];
+				int next = PeekChar ();
 				switch (next) {
 					case '0':
 					case '1':
@@ -397,151 +381,154 @@ namespace Mono.JScript.Compiler
 					case '7':
 					case '8':
 					case '9': {
-							builder.Append(next);
-							position++;
+							builder.Append ((char) next);
+							ReadChar ();
 							continue;
 						}
 					case '.': {
+							ReadChar ();
 							dot++;
 							if (dot > 1) {
-								current = new Token (Token.Type.Bad, position, row, position - lineStartPosition, position == lineStartPosition);
+								current = new Token (Token.Type.Bad, position, Line, Column, FirstOnLine);
 								return current;
 							}
-							builder.Append(next);
-							position++;
+							builder.Append ((char) next);
 							continue;
 						}
 				}
 				break;
 			}
-			string result = builder.ToString();
-			current = new NumericLiteralToken (result, position, row, position - lineStartPosition, position == lineStartPosition);
+			string result = builder.ToString ();
+			current = new NumericLiteralToken (result, position, Line, Column, FirstOnLine);
 			return current;
 		}
 
 		#endregion
 		
-		private void InitKeywords()
+		private void InitKeywords ()
 		{
-			keywords = new Dictionary<string, Token.Type>();
-			keywords.Add("break", Token.Type.Break);
-			keywords.Add("else", Token.Type.Else);
-			keywords.Add("new", Token.Type.New);
-			keywords.Add("var", Token.Type.Var);
-			keywords.Add("case", Token.Type.Case);
-			keywords.Add("finally", Token.Type.Finally);
-			keywords.Add("return", Token.Type.Return);
-			keywords.Add("void", Token.Type.Void);
-			keywords.Add("catch", Token.Type.Catch); 
-			keywords.Add("for", Token.Type.For);
-			keywords.Add("switch", Token.Type.Switch); 
-			keywords.Add("while", Token.Type.While);
-			keywords.Add("continue", Token.Type.Continue); 
-			keywords.Add("function", Token.Type.Function); 
-			keywords.Add("this", Token.Type.This); 
-			keywords.Add("with", Token.Type.With);
-			keywords.Add("default", Token.Type.Default); 
-			keywords.Add("if", Token.Type.If); 
-			keywords.Add("throw", Token.Type.Throw);
-			keywords.Add("delete", Token.Type.Delete); 
-			keywords.Add("in", Token.Type.In); 
-			keywords.Add("try", Token.Type.Try);
-			keywords.Add("do", Token.Type.Do); 
-			keywords.Add("instanceof", Token.Type.Instanceof); 
-			keywords.Add("typeof", Token.Type.Typeof);
+			keywords = new Dictionary<string, Token.Type> ();
+			keywords.Add ("break", Token.Type.Break);
+			keywords.Add ("else", Token.Type.Else);
+			keywords.Add ("new", Token.Type.New);
+			keywords.Add ("var", Token.Type.Var);
+			keywords.Add ("case", Token.Type.Case);
+			keywords.Add ("finally", Token.Type.Finally);
+			keywords.Add ("return", Token.Type.Return);
+			keywords.Add ("void", Token.Type.Void);
+			keywords.Add ("catch", Token.Type.Catch); 
+			keywords.Add ("for", Token.Type.For);
+			keywords.Add ("switch", Token.Type.Switch); 
+			keywords.Add ("while", Token.Type.While);
+			keywords.Add ("continue", Token.Type.Continue); 
+			keywords.Add ("function", Token.Type.Function); 
+			keywords.Add ("this", Token.Type.This); 
+			keywords.Add ("with", Token.Type.With);
+			keywords.Add ("default", Token.Type.Default); 
+			keywords.Add ("if", Token.Type.If); 
+			keywords.Add ("throw", Token.Type.Throw);
+			keywords.Add ("delete", Token.Type.Delete); 
+			keywords.Add ("in", Token.Type.In); 
+			keywords.Add ("try", Token.Type.Try);
+			keywords.Add ("do", Token.Type.Do); 
+			keywords.Add ("instanceof", Token.Type.Instanceof); 
+			keywords.Add ("typeof", Token.Type.Typeof);
 
 			//FuturekeyWord
-			keywords.Add("abstract", Token.Type.Abstract);
-			keywords.Add("enum", Token.Type.Enum);
-			keywords.Add("int", Token.Type.Int);
-			keywords.Add("short", Token.Type.Short);
-			keywords.Add("boolean", Token.Type.Boolean);
-			keywords.Add("Export", Token.Type.Export);
-			keywords.Add("interface", Token.Type.Interface);
-			keywords.Add("static", Token.Type.Static);
-			keywords.Add("byte", Token.Type.Byte);
-			keywords.Add("extends", Token.Type.Extends);
-			keywords.Add("long", Token.Type.Long);
-			keywords.Add("super", Token.Type.Super);
-			keywords.Add("char", Token.Type.Char);
-			keywords.Add("final", Token.Type.Final);
-			keywords.Add("native", Token.Type.Native);
-			keywords.Add("synchronized", Token.Type.Synchronized);
-			keywords.Add("class", Token.Type.Class);
-			keywords.Add("float", Token.Type.Float);
-			keywords.Add("package", Token.Type.Package);
-			keywords.Add("throws", Token.Type.Throws);
-			keywords.Add("const", Token.Type.Const);
-			keywords.Add("goto", Token.Type.Goto);
-			keywords.Add("private", Token.Type.Private);
-			keywords.Add("transient", Token.Type.Transient);
-			keywords.Add("debugger", Token.Type.Debugger);
-			keywords.Add("implements", Token.Type.Implements);
-			keywords.Add("protected", Token.Type.Protected);
-			keywords.Add("volatile", Token.Type.Volatile);
-			keywords.Add("double", Token.Type.Double);
-			keywords.Add("import", Token.Type.Import);
-			keywords.Add("public", Token.Type.Public);
+			keywords.Add ("abstract", Token.Type.Abstract);
+			keywords.Add ("enum", Token.Type.Enum);
+			keywords.Add ("int", Token.Type.Int);
+			keywords.Add ("short", Token.Type.Short);
+			keywords.Add ("boolean", Token.Type.Boolean);
+			keywords.Add ("Export", Token.Type.Export);
+			keywords.Add ("interface", Token.Type.Interface);
+			keywords.Add ("static", Token.Type.Static);
+			keywords.Add ("byte", Token.Type.Byte);
+			keywords.Add ("extends", Token.Type.Extends);
+			keywords.Add ("long", Token.Type.Long);
+			keywords.Add ("super", Token.Type.Super);
+			keywords.Add ("char", Token.Type.Char);
+			keywords.Add ("final", Token.Type.Final);
+			keywords.Add ("native", Token.Type.Native);
+			keywords.Add ("synchronized", Token.Type.Synchronized);
+			keywords.Add ("class", Token.Type.Class);
+			keywords.Add ("float", Token.Type.Float);
+			keywords.Add ("package", Token.Type.Package);
+			keywords.Add ("throws", Token.Type.Throws);
+			keywords.Add ("const", Token.Type.Const);
+			keywords.Add ("goto", Token.Type.Goto);
+			keywords.Add ("private", Token.Type.Private);
+			keywords.Add ("transient", Token.Type.Transient);
+			keywords.Add ("debugger", Token.Type.Debugger);
+			keywords.Add ("implements", Token.Type.Implements);
+			keywords.Add ("protected", Token.Type.Protected);
+			keywords.Add ("volatile", Token.Type.Volatile);
+			keywords.Add ("double", Token.Type.Double);
+			keywords.Add ("import", Token.Type.Import);
+			keywords.Add ("public", Token.Type.Public);
 		
 			//literal
-			keywords.Add("null", Token.Type.Null);
-			keywords.Add("true", Token.Type.True);
-			keywords.Add("false", Token.Type.False);
+			keywords.Add ("null", Token.Type.Null);
+			keywords.Add ("true", Token.Type.True);
+			keywords.Add ("false", Token.Type.False);
 
 			foreach (string key in keywords.Keys)
 				IDTable.InsertIdentifier (key);
 		}
 
+		// FIXME '\r'?
 		private void StripWhiteSpace ()
 		{
-			char next = source [position];
-			while (next == ' ' || next == '\t' || next == '\r' || next == '\n') {
-				if (next == '\n')
-					NextRow ();
-				else if (next != '\r')
-					position++;
-				if (position >= source.Length)
-					break;
+			int next = PeekChar ();
 
-				next = source [position];
+			while (next == ' ' || next == '\t' || next == '\r' || next == '\n') {
+				ReadChar ();
+				next = PeekChar ();
 			}
 		}
 
 		private void CreateBlockComment ()
 		{
 			int startPosition = position;
-			int startline = row;
-			int startcolumn = position - lineStartPosition;
-			char next = source[position];
-			StringBuilder builder = new StringBuilder ();
-			while ((next != '*') && (position + 1 < source.Length) && (source[position + 1] != '/')) {
-				builder.Append (next);
-				if (next == '\n') {
-					row++;
-					lineStartPosition = position;
-				}
-				position++;
-				next = source[position];
+			int startLine = Line;
+			int startColumn = Column;
+			StringBuilder sb = new StringBuilder ();
+
+			int c = ReadChar ();
+
+			while (c != -1 && (c != '*' || PeekChar () != '/')) {
+				sb.Append ((char) c);
+				c = ReadChar ();
 			}
-			comments.Add (new Comment (builder.ToString (), new TextSpan (startline, startcolumn, Line, Column, startPosition, position)));
+
+			if (PeekChar () == '/')
+				ReadChar ();
+
+			comments.Add (new Comment (sb.ToString (), new TextSpan (startLine, startColumn, Line, Column, startPosition, position)));
 		}
 
 		private void CreateLineComment ()
 		{
+			StringBuilder sb = new StringBuilder ();
 			int startPosition = position;
-			char next = source[position];
-			StringBuilder builder = new StringBuilder();
-			while (next != '\n' && position < source.Length) {
-				builder.Append (next);
-				position++;
-				next = source[position];
+
+			int c = PeekChar ();
+
+			while (c != -1 && c != '\n') {
+				sb.Append ((char) c);
+				ReadChar ();
+				c = PeekChar ();
 			}
-			comments.Add(new Comment(builder.ToString(),new TextSpan(row, startPosition - lineStartPosition, row, position - lineStartPosition, startPosition,position)));
+
+			// eat '\n'
+			ReadChar ();
+		
+			comments.Add (new Comment (sb.ToString (), new TextSpan (Line, Column, Line, Column, startPosition,
+				position)));
 		}
 
 		// Utilities
 
-		// TODO: replace source [position] with Peek () and Read ()
 		int Peek ()
 		{
 			if (position >= source.Length)
@@ -556,6 +543,24 @@ namespace Mono.JScript.Compiler
 				return -1;
 
 			return source [position++];
+		}
+
+		int ReadChar ()
+		{
+			int c = Read ();
+
+			if (c == '\n') {
+				++row;
+				lineStartPosition = position;
+			}
+
+			return c;
+		}
+
+		// we can add putback
+		int PeekChar ()
+		{
+			return Peek ();
 		}
 
 		bool Advance ()
@@ -574,13 +579,6 @@ namespace Mono.JScript.Compiler
 
 		int Line {
 			get { return row; }
-		}
-
-		private void NextRow ()
-		{
-			row++;
-			lineStartPosition = position;
-			position++;
 		}
 	}
 }
