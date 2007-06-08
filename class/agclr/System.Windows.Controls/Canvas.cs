@@ -48,5 +48,10 @@ namespace System.Windows.Controls {
 		{
 			native = raw;
 		}
+
+		static internal Canvas FromPtr (IntPtr raw)
+		{
+			return new Canvas (raw);
+		}
 	}
 }
