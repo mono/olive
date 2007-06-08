@@ -1,3 +1,7 @@
+2007-06-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Update.
+
 2007-06-08  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Kind.cs: Add DOUBLE_ARRAY and POINT_ARRAY.
