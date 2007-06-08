@@ -27,22 +27,33 @@
 //
 
 using System.Windows.Media;
-
+using Mono;
 namespace System.Windows.Shapes {
 
 	public abstract class Shape : FrameworkElement {
 
-		public static readonly DependencyProperty FillProperty = DependencyProperty.Register ("Fill", typeof (Brush), typeof (Shape));
-		public static readonly DependencyProperty StretchProperty = DependencyProperty.Register ("Stretch", typeof (Stretch), typeof (Shape));
-		public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register ("Stroke", typeof (Brush), typeof (Shape));
-		public static readonly DependencyProperty StrokeDashArrayProperty = DependencyProperty.Register ("StrokeDashArray", typeof (double[]), typeof (Shape));
-		public static readonly DependencyProperty StrokeDashCapProperty = DependencyProperty.Register ("StrokeDashCap", typeof (PenLineCap), typeof (Shape));
-		public static readonly DependencyProperty StrokeDashOffsetProperty = DependencyProperty.Register ("StrokeDashOffset", typeof (double), typeof (Shape));
-		public static readonly DependencyProperty StrokeEndLineCapProperty = DependencyProperty.Register ("StrokeEndLineDashCap", typeof (PenLineCap), typeof (Shape));
-		public static readonly DependencyProperty StrokeLineJoinProperty = DependencyProperty.Register ("StrokeLineJoin", typeof (PenLineJoin), typeof (Shape));
-		public static readonly DependencyProperty StrokeMiterLimitProperty = DependencyProperty.Register ("StrokeMiterLimit", typeof (double), typeof (Shape));
-		public static readonly DependencyProperty StrokeStartLineCapProperty = DependencyProperty.Register ("StrokeStartLineDashCap", typeof (PenLineCap), typeof (Shape));
-		public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register ("StrokeThickness", typeof (double), typeof (Shape));
+		public static readonly DependencyProperty FillProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "Fill");
+		public static readonly DependencyProperty StretchProperty = 
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "Stretch");
+		public static readonly DependencyProperty StrokeProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "Stroke");
+		public static readonly DependencyProperty StrokeDashArrayProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashArray");
+		public static readonly DependencyProperty StrokeDashCapProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashCap");
+		public static readonly DependencyProperty StrokeDashOffsetProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeDashOffset");
+		public static readonly DependencyProperty StrokeEndLineCapProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeEndLineDashCap");
+		public static readonly DependencyProperty StrokeLineJoinProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeLineJoin");
+		public static readonly DependencyProperty StrokeMiterLimitProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeMiterLimit");
+		public static readonly DependencyProperty StrokeStartLineCapProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeStartLineDashCap");
+		public static readonly DependencyProperty StrokeThicknessProperty =
+			DependencyProperty.Lookup (Value.Kind.SHAPE, "StrokeThickness");
 		
 		public Shape ()
 		{

@@ -37,6 +37,11 @@ namespace System.Windows {
 	public class DependencyObject {
 		static Hashtable objects = new Hashtable ();
 		internal IntPtr native;
+
+		static DependencyObject ()
+		{
+			NativeMethods.runtime_init ();
+		}
 		
 		//
 		// This is mostly copied from Gtk#'s Object.GetObject

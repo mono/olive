@@ -25,22 +25,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 	public sealed class ArcSegment : PathSegment {
 
 		static ArcSegment ()
 		{
-			PointProperty = DependencyProperty.Register (
-				"Point", typeof (Point), typeof (ArcSegment));
-			SizeProperty = DependencyProperty.Register (
-				"Size", typeof (Point), typeof (ArcSegment));
-			RotationAngleProperty = DependencyProperty.Register (
-				"RotationAngle", typeof (double), typeof (ArcSegment));
-			IsLargeArcProperty = DependencyProperty.Register (
-				"IsLargeArc", typeof (bool), typeof (ArcSegment));
-			SweepDirectionProperty = DependencyProperty.Register (
-				"SweepDirection", typeof (SweepDirection), typeof (ArcSegment));
+			PointProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "Point");
+			SizeProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "Size");
+			RotationAngleProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "RotationAngle");
+			IsLargeArcProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "IsLargeArc");
+			SweepDirectionProperty = DependencyProperty.Lookup (Value.Kind.ARCSEGMENT, "SweepDirection");
 			
 		}
 		

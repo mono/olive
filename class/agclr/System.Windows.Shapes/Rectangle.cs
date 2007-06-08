@@ -25,13 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Shapes {
 
 	public class Rectangle : Shape {
 
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusX", typeof (double), typeof (Rectangle));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusY", typeof (double), typeof (Rectangle));
+		public static readonly DependencyProperty RadiusXProperty =
+			DependencyProperty.Lookup (Value.Kind.RECTANGLE, "RadiusX");
+		public static readonly DependencyProperty RadiusYProperty =
+			DependencyProperty.Lookup (Value.Kind.RECTANGLE, "RadiusY");
 
 		public Rectangle ()
 		{

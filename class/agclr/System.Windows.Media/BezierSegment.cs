@@ -25,18 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 	public sealed class BezierSegment : PathSegment {
 
 		static BezierSegment ()
 		{
-			Point1Property = DependencyProperty.Register (
-				"Point1", typeof (Point), typeof (BezierSegment));
-			Point2Property = DependencyProperty.Register (
-				"Point2", typeof (Point), typeof (BezierSegment));
-			Point3Property = DependencyProperty.Register (
-				"Point3", typeof (Point), typeof (BezierSegment));
+			Point1Property = DependencyProperty.Lookup (Value.Kind.BEZIERSEGMENT, "Point1");
+			Point2Property = DependencyProperty.Lookup (Value.Kind.BEZIERSEGMENT, "Point2");
+			Point3Property = DependencyProperty.Lookup (Value.Kind.BEZIERSEGMENT, "Point3");
 		}
 		
 		public BezierSegment ()

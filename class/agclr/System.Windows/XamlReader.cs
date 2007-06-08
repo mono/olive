@@ -40,13 +40,14 @@ namespace System.Windows {
 		{
 			if (xaml == null)
 				throw new ArgumentNullException ("xaml");
-			
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml);
+
+			Value.Kind kind;
+			IntPtr top = NativeMethods.xaml_create_from_str (xaml, out kind);
 
 			if (top == IntPtr.Zero)
 				return null;
 
-			throw new Exception ();
+			return DependencyObject.Lookup (kind, top);
 		}
 		
 		public static DependencyObject Load (string xaml, bool createNamescope)

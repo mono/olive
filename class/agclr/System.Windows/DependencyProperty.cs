@@ -33,6 +33,11 @@ using Mono;
 namespace System.Windows {
 	public class DependencyProperty {
 		internal IntPtr native;
+
+		static DependencyProperty ()
+		{
+			NativeMethods.runtime_init ();
+		}
 		
 		public DependencyProperty ()
 		{

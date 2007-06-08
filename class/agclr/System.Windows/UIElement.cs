@@ -29,6 +29,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
+using Mono;
 
 namespace System.Windows {
 	public abstract class UIElement : Visual {
@@ -48,16 +49,16 @@ namespace System.Windows {
 		{
 			Type ttype = typeof (UIElement);
 			
-	        	OpacityProperty = DependencyProperty.Register ("Opacity", typeof (double), ttype);
-	        	ClipProperty = DependencyProperty.Register ("Clip", typeof (Geometry), ttype);
-	        	RenderTransformProperty = DependencyProperty.Register ("RenderTransform", typeof (Transform), ttype);
-	        	TriggersProperty = DependencyProperty.Register ("Triggers", typeof (TriggerCollection), ttype);
-			OpacityMaskProperty = DependencyProperty.Register ("OpacityMask", typeof (Brush), ttype);
-			RenderTransformOriginProperty = DependencyProperty.Register ("RenderTransformOrigin", typeof (Point), ttype);
-			CursorProperty = DependencyProperty.Register ("Cursor", typeof (Cursors), ttype);
-			IsHitTestVisibleProperty = DependencyProperty.Register ("IsHitTestVisible", typeof (bool), ttype);
-			VisibilityProperty = DependencyProperty.Register ("Visibility", typeof (Visibility), ttype);
-			ResourcesProperty = DependencyProperty.Register ("Resources", typeof(ResourceCollection), ttype);
+	        	OpacityProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Opacity");
+	        	ClipProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Clip");
+	        	RenderTransformProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "RenderTransform");
+	        	TriggersProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Triggers");
+			OpacityMaskProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "OpacityMask");
+			RenderTransformOriginProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "RenderTransformOrigin");
+			CursorProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Cursor");
+			IsHitTestVisibleProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "IsHitTestVisible");
+			VisibilityProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Visibility");
+			ResourcesProperty = DependencyProperty.Lookup (Value.Kind.UIELEMENT, "Resources");
 		}
 			
 		public UIElement ()
