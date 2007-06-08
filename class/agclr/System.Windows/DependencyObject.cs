@@ -276,10 +276,14 @@ namespace System.Windows {
 		{
 			if (property == null)
 				throw new ArgumentNullException ("property");
+
+			if (obj == null){
+				NativeMethods.dependency_object_set_value (native, property.native, IntPtr.Zero);
+				return;
+			}
 			
 			Value v = GetAsValue (obj);
-
-			NativeMethods.dependency_object_set_value (native, property.native, v);
+			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 		}
 
 		protected internal virtual Kind GetKind ()

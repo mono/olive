@@ -51,7 +51,10 @@ namespace Mono {
 		internal extern static IntPtr dependency_object_get_value (IntPtr obj, IntPtr property);
 		
 		[DllImport("moon")]
-		internal extern static IntPtr dependency_object_set_value (IntPtr obj, IntPtr property, Value val);
+		internal extern static IntPtr dependency_object_set_value (IntPtr obj, IntPtr property, ref Value val);
+
+		[DllImport("moon")]
+		internal extern static IntPtr dependency_object_set_value (IntPtr obj, IntPtr property, IntPtr zero);
 
 		[DllImport("moon")]
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, out Kind kind);
