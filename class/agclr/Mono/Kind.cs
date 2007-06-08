@@ -45,6 +45,8 @@ namespace Mono {
 		REPEATBEHAVIOR = 10,
 		DURATION = 11,
 		INT64 = 12,
+		DOUBLE_ARRAY = 13,
+		POINT_ARRAY = 14,
 		
 		DEPENDENCY_OBJECT = 1000,
 		
