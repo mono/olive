@@ -113,5 +113,10 @@ namespace System.Windows.Shapes {
 			get { return (double) GetValue (StrokeThicknessProperty); }
 			set { SetValue (StrokeThicknessProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.SHAPE;
+		}
 	}
 }

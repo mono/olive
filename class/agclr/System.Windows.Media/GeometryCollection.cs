@@ -25,11 +25,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using System;
 using MS.Internal;
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class GeometryCollection : Collection<Geometry> {
+		internal GeometryCollection (IntPtr native) : base (native)
+		{
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.GEOMETRY_COLLECTION;
+		}
 	}
 }

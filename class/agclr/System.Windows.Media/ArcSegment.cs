@@ -99,5 +99,9 @@ namespace System.Windows.Media {
 	        public static readonly DependencyProperty IsLargeArcProperty;
 	        public static readonly DependencyProperty SweepDirectionProperty;
 			
+		protected internal override Kind GetKind ()
+		{
+			return Kind.ARCSEGMENT;
+		}
 	}
 }

@@ -60,5 +60,6 @@ namespace System.Windows.Media {
 			get { return (GradientSpreadMethod) GetValue (SpreadMethodProperty); }
 			set { SetValue (SpreadMethodProperty, value); }
 		}
+
 	}
 }

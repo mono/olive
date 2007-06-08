@@ -25,7 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 	public abstract class Geometry : DependencyObject {
 		public static readonly DependencyProperty FillRuleProperty;
@@ -59,6 +59,11 @@ namespace System.Windows.Media {
 			set {
 				SetValue (TransformProperty, value);
 			}
+		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.GEOMETRY;
 		}
 		
 	}

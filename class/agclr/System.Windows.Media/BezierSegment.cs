@@ -73,5 +73,10 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty Point1Property;
 		public static readonly DependencyProperty Point2Property;
 		public static readonly DependencyProperty Point3Property;
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.BEZIERSEGMENT;
+		}
 	}
 }
