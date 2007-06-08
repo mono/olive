@@ -1,5 +1,4 @@
-Microsoft.JScript.Compiler/LexerTest.cs
+Microsoft.JScript.Compiler/TokenizerTest.cs
 Microsoft.JScript.Compiler/ParserTest.cs
 Microsoft.JScript.Compiler/SplayTreeTest.cs
 Microsoft.JScript.Compiler/TableTest.cs
-

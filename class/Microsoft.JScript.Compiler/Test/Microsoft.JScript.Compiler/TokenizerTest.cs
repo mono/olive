@@ -5,7 +5,7 @@ using Mono.JScript.Compiler;
 namespace MonoTests.JScript.Compiler
 {
 	[TestFixture]
-	public class LexerTest
+	public class TokenizerTest
 	{
 		[Test]
 		public void AffectTest()
