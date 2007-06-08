@@ -26,4 +26,5 @@ System.Windows.Control/FileDialogFileInfo.cs
 System.Windows.Control/OpenFileDialog.cs
 System.Windows.Hosting/Callback.cs
 System.Windows/ApplicationUnhandledExceptionEventArgs.cs
+System.Windows/ScriptableObjectGenerator.cs
 System.Windows/WebApplication.cs

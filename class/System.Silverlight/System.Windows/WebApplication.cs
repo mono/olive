@@ -22,10 +22,11 @@ namespace System.Windows
 		}
 
 		readonly IntPtr instance;
+		IDictionary<string, string> startup_args;
 
 		private WebApplication ()
 		{
-			instance = GetCurrentInstance ();
+			//instance = GetCurrentInstance ();
 		}
 
 		[MonoTODO]
@@ -44,18 +45,42 @@ namespace System.Windows
 			if (atts.Length == 0)
 				throw new NotSupportedException ("The argument object type does not have a ScriptableAttribute");
 
-			throw new NotImplementedException ();
+			string js = ScriptableObjectGenerator.GenerateJavaScript (scriptKey, instance);
+			// FIXME: probably we need to hook script access to the
+			// contents of this script object.
+
+			// ... so, can we just eval this generated JS?
+			Console.WriteLine (js);
+			//HtmlPage.Document.InvokeMethod ("eval", js);
 		}
 
+		// it is non-null on silverlight apps, and null on console apps
 		[MonoTODO]
 		public IDictionary<string, string> StartupArguments {
-			get { throw new NotImplementedException (); }
+			get { return startup_args; }
 		}
 
 		public event EventHandler<ApplicationUnhandledExceptionEventArgs> ApplicationUnhandledException;
 
+		internal T GetProperty<T> (IntPtr obj, string name)
+		{
+			return (T) GetPropertyInternal (instance, obj, name);
+		}
+
+		internal T InvokeMethod<T> (IntPtr obj, string name, params object [] args)
+		{
+			return (T) InvokeMethodInternal (instance, obj, name, args);
+		}
+
+		// note that those functions do not exist
 		[DllImport ("moon")]
 		static extern IntPtr GetCurrentInstance ();
+
+		[DllImport ("moon")]
+		static extern object GetPropertyInternal (IntPtr xpp, IntPtr obj, string name);
+
+		[DllImport ("moon")]
+		static extern object InvokeMethodInternal (IntPtr xpp, IntPtr obj, string name, object [] args);
 	}
 }
 

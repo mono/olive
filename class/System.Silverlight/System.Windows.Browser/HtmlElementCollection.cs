@@ -31,14 +31,22 @@ namespace System.Windows.Browser
 {
 	public class HtmlElementCollection
 	{
+		IntPtr node_list;
+
+		internal HtmlElementCollection (IntPtr nodeList)
+		{
+			this.node_list = nodeList;
+		}
+
 		[MonoTODO]
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return WebApplication.Current.GetProperty<int> (node_list, "length"); }
 		}
 
 		[MonoTODO]
 		public HtmlElement this [int i] {
-			get { throw new NotImplementedException (); }
+			// is this approach (creating HtmlElement every time) bogus?
+			get { return new HtmlElement (WebApplication.Current.InvokeMethod<IntPtr> (node_list, "item", i)); }
 		}
 	}
 }
