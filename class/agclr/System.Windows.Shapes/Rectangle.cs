@@ -37,6 +37,7 @@ namespace System.Windows.Shapes {
 
 		public Rectangle ()
 		{
+			native = NativeMethods.rectangle_new ();
 		}
 
 		public double RadiusX {

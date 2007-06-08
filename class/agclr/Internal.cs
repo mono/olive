@@ -25,12 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 using System;
+using System.Windows;
 
 namespace MS.Internal {
-	public /* abstract */ class Collection<T> {
-		IntPtr native;
-
+	//
+	// It seems that this only works for DependencyObjects, but its not in 
+	// the public contract
+	//
+	public abstract class Collection<T> : DependencyObject {
 		public Collection ()
 		{
 			//
@@ -51,6 +55,12 @@ namespace MS.Internal {
 		
 		public void Add (T t)
 		{
+			unsafe {
+				Value v = DependencyObject.GetAsValue (t);
+				void *p = &v;
+				
+				NativeMethods.collection_add (native, (IntPtr) p);
+			}
 		}
 	}
 }

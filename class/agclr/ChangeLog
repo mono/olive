@@ -1,3 +1,7 @@
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Derive from DependencyObject, add Add method. 
+
 2007-06-07  Miguel de Icaza  <miguel@novell.com>
 
 	* Drop the use of the native XAML parser

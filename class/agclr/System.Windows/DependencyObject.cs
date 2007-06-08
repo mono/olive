@@ -62,6 +62,7 @@ namespace System.Windows {
 			DependencyObject dop = (DependencyObject) CreateObject (k, ptr);
 			if (dop == null){
 				Console.WriteLine ("agclr: Returning a null object, did not know how to construct {0}", k);
+				Console.WriteLine (Environment.StackTrace);
 			}
 
 			return dop;
@@ -198,13 +199,12 @@ namespace System.Windows {
 		}
 
 		//
-		// Ok, only the unmanaged known types would end up calling the
-		// unmanaged side, so we do not have to worry about other types
+		// How do we support "null" values, should the caller take care of that?
 		//
-		public void SetValueBoxed (DependencyProperty property, object v)
+		internal static Value GetAsValue (object v)
 		{
+			Value value;
 			unsafe {
-				Value value;
 				void *vp = &value;
 				byte *p = (byte *) vp;
 				p += 4;
@@ -247,8 +247,10 @@ namespace System.Windows {
 					Marshal.WriteByte (result, bytes.Length, 0);
 
 					*((IntPtr *) p) = result;
-				}
+				} else
+					throw new NotImplementedException (String.Format ("Do not know how to encode {0} yet", v.GetType ()));
 			}
+			return value;
 		}
 
 		//
@@ -260,9 +262,12 @@ namespace System.Windows {
 		//
 		public virtual void SetValue<T> (DependencyProperty property, T obj)
 		{
-			// Call another routine to avoid getting a billion copies
-			// of the same code, one per data type.
-			SetValueBoxed (property, obj);
+			if (property == null)
+				throw new ArgumentNullException ("property");
+			
+			Value v = GetAsValue (obj);
+
+			NativeMethods.dependency_object_set_value (native, property.native, v);
 		}
 	}
 }

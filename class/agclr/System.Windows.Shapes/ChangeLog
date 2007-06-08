@@ -1,3 +1,9 @@
+2007-06-08  Miguel de Icaza  <miguel@novell.com>
+
+	* Rectangle.cs: First binding.
+
+	* Shape.cs: Fix some names.
+
 2007-06-01  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* Ellipse.cs: New.

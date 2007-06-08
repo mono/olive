@@ -83,7 +83,7 @@ namespace Mono {
 
 #region Collections
 		[DllImport("moon")]
-		internal extern static IntPtr collection_add (IntPtr obj);
+		internal extern static IntPtr collection_add (IntPtr collection, IntPtr value);
 #endregion
 		
 #region Shapes

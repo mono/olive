@@ -54,7 +54,8 @@ namespace System.Windows {
 			IntPtr handle = NativeMethods.dependency_property_lookup (type, name);
 
 			if (handle == IntPtr.Zero)
-				return null;
+				throw new Exception (
+					String.Format ("DependencyProperty.Lookup: {0} lacks {1}", type, name));
 
 			return new DependencyProperty (handle);
 		}

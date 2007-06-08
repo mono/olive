@@ -45,13 +45,13 @@ namespace System.Windows.Shapes {
 		public static readonly DependencyProperty StrokeDashOffsetProperty =
 			DependencyProperty.Lookup (Kind.SHAPE, "StrokeDashOffset");
 		public static readonly DependencyProperty StrokeEndLineCapProperty =
-			DependencyProperty.Lookup (Kind.SHAPE, "StrokeEndLineDashCap");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeEndLineCap");
 		public static readonly DependencyProperty StrokeLineJoinProperty =
 			DependencyProperty.Lookup (Kind.SHAPE, "StrokeLineJoin");
 		public static readonly DependencyProperty StrokeMiterLimitProperty =
 			DependencyProperty.Lookup (Kind.SHAPE, "StrokeMiterLimit");
 		public static readonly DependencyProperty StrokeStartLineCapProperty =
-			DependencyProperty.Lookup (Kind.SHAPE, "StrokeStartLineDashCap");
+			DependencyProperty.Lookup (Kind.SHAPE, "StrokeStartLineCap");
 		public static readonly DependencyProperty StrokeThicknessProperty =
 			DependencyProperty.Lookup (Kind.SHAPE, "StrokeThickness");
 		
