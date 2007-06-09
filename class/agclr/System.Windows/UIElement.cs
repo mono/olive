@@ -47,8 +47,6 @@ namespace System.Windows {
 	
 		static UIElement ()
 		{
-			Type ttype = typeof (UIElement);
-			
 	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity");
 	        	ClipProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Clip");
 	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform");

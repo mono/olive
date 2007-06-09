@@ -25,13 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 
 	public class GradientStop : DependencyObject {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (GradientStop));
-		public static readonly DependencyProperty OffsetProperty = DependencyProperty.Register ("Offset", typeof (double), typeof (GradientStop));
+		public static readonly DependencyProperty ColorProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Color");
+		public static readonly DependencyProperty OffsetProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Offset");
 
 
 		public GradientStop ()

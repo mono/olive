@@ -33,8 +33,8 @@ namespace System.Windows.Media {
 
 		static Geometry ()
 		{
-			FillRuleProperty = DependencyProperty.Register ("FillRule", typeof (FillRule), typeof (Geometry));
-			TransformProperty = DependencyProperty.Register ("Transform", typeof (TransformGroup), typeof (Geometry));
+			FillRuleProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "FillRule");
+			TransformProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "Transform");
 		}
 
 		public Geometry ()

@@ -26,13 +26,17 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using Mono;
+
 namespace System.Windows.Media {
 
 	public class EllipseGeometry : Geometry {
 
-		public static readonly DependencyProperty CenterProperty = DependencyProperty.Register ("Center", typeof (Point), typeof (EllipseGeometry));
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusX", typeof (double), typeof (EllipseGeometry));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusY", typeof (double), typeof (EllipseGeometry));
+		public static readonly DependencyProperty CenterProperty =
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "Center");
+		public static readonly DependencyProperty RadiusXProperty =
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusX");
+		public static readonly DependencyProperty RadiusYProperty =
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusY");
 
 		public EllipseGeometry ()
 		{

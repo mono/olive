@@ -25,13 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class ImageBrush : Brush {
 
-		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Register ("DownloadProgress", typeof (double), typeof (ImageBrush));
-		public static readonly DependencyProperty ImageSourceProperty = DependencyProperty.Register ("ImageSource", typeof (Uri), typeof (ImageBrush));
+		public static readonly DependencyProperty DownloadProgressProperty =
+			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "DownloadProgress");
+		public static readonly DependencyProperty ImageSourceProperty =
+			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource");
 
 
 		public ImageBrush ()

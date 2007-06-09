@@ -25,18 +25,17 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 
 	public class VideoBrush : TileBrush {
 
-		public static readonly DependencyProperty SourceNameProperty = DependencyProperty.Register ("SourceName", typeof (string), typeof (VideoBrush));
-
+		public static readonly DependencyProperty SourceNameProperty =
+			DependencyProperty.Lookup (Kind.VIDEOBRUSH, "SourceName");
 
 		public VideoBrush ()
 		{
 		}
-
 
 		public string SourceName {
 			get { return (string) GetValue (SourceNameProperty); }

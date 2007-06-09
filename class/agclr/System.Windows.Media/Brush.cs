@@ -35,14 +35,9 @@ namespace System.Windows.Media {
 
 		static Brush ()
 		{
-			Type btype = typeof (Brush);
-			
-			OpacityProperty = DependencyProperty.Register (
-				"Opacity", typeof (double), btype);
-			TransformProperty = DependencyProperty.Register (
-				"Transform", typeof (TransformGroup), btype);
-			RelativeTransformProperty = DependencyProperty.Register (
-				"RelativeTransform", typeof (TransformGroup), btype);
+			OpacityProperty = DependencyProperty.Lookup (Kind.BRUSH, "Opacity");
+			TransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "Transform");
+			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform");
 		}
 		
 		public Brush ()

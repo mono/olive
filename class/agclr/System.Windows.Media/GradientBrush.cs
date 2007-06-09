@@ -25,15 +25,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class GradientBrush : Brush {
 
-		public static readonly DependencyProperty ColorInterpretationModeProperty = DependencyProperty.Register ("ColorInterpretationMode", typeof (ColorInterpretationMode), typeof (GradientBrush));
-		public static readonly DependencyProperty GradientStopsProperty = DependencyProperty.Register ("GradientStops", typeof (GradientStopCollection), typeof (GradientBrush));
-		public static readonly DependencyProperty MappingModeProperty = DependencyProperty.Register ("MappingMode", typeof (BrushMappingMode), typeof (GradientBrush));
-		public static readonly DependencyProperty SpreadMethodProperty = DependencyProperty.Register ("SpreadMethod", typeof (GradientSpreadMethod), typeof (GradientBrush));
+		public static readonly DependencyProperty ColorInterpretationModeProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpretationMode");
+		public static readonly DependencyProperty GradientStopsProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "GradientStops");
+		public static readonly DependencyProperty MappingModeProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "MappingMode");
+		public static readonly DependencyProperty SpreadMethodProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "SpreadMethod");
 
 
 		public GradientBrush ()
