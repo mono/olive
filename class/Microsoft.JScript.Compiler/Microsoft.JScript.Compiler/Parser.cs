@@ -77,30 +77,7 @@ namespace Mono.JScript.Compiler
 
 		private FunctionStatement ParseFunctionDeclaration ()
 		{
-			Token start = current;
-
-			Next ();
-			CheckSyntaxExpected (Token.Type.Identifier);
-			Identifier id = ((IdentifierToken) current).Spelling;
-			TextPoint NameLocation = new TextPoint (this.current.StartPosition);
-
-			Next ();
-			CheckSyntaxExpected(Token.Type.LeftParenthesis);
-			TextPoint leftParenLocation = new TextPoint(this.current.StartPosition);
-			
-			Next ();
-			List<Parameter> parametters = ParseListParametter ();
-			CheckSyntaxExpected (Token.Type.RightParenthesis);
-			TextPoint rightParenLocation = new TextPoint (this.current.StartPosition);
-			Token headerEnd = this.current;
-			
-			Next ();
-			BlockStatement body = ParseBlock ();
-			TextSpan location = new TextSpan (start,current);
-			TextSpan HeaderLocation = new TextSpan (start,headerEnd);
-			
-			FunctionDefinition func = new FunctionDefinition(id, parametters, body, location, HeaderLocation, NameLocation, leftParenLocation, rightParenLocation);
-			return new FunctionStatement (func);
+			return new FunctionStatement (ParseFunctionDefinition());
 		}
 		
 		private List<Parameter> ParseListParametter ()
@@ -562,7 +539,123 @@ namespace Mono.JScript.Compiler
 		#endregion
 
 		#region expressions
+		//MemberExpression
+		/*
+		MemberExpression [ Expression ]
+		MemberExpression . Identifier*/
 
+		private Expression ParseMemberExpression ()
+		{
+			Token start = current; //ident
+			switch (current.Kind) {
+				case Token.Type.This:
+					return new Expression (Expression.Operation.This, new TextSpan(current,current));
+				case Token.Type.Identifier:
+					return new IdentifierExpression ((current as IdentifierToken).Spelling, new TextSpan (current, current));
+				case Token.Type.Null:
+					return new NullExpression (new TextSpan(current,current));
+				case Token.Type.True:
+					return new Expression (Expression.Operation.True, new TextSpan (current, current));
+				case Token.Type.False:
+					return new Expression (Expression.Operation.False, new TextSpan (current, current));
+				case Token.Type.NumericLiteral:
+					return new NumericLiteralExpression ((current as NumericLiteralToken).Spelling, new TextSpan(current,current));
+				case Token.Type.StringLiteral:
+					return new StringLiteralExpression ((current as StringLiteralToken).Value ,(current as StringLiteralToken).Spelling, new TextSpan (current, current));
+				case Token.Type.LeftBracket:
+					return ParseArrayLiteral ();
+				case Token.Type.LeftBrace:
+					return ParseObjectLiteral ();
+				case Token.Type.Function:
+					return new FunctionExpression (ParseFunctionDefinition ()); ;
+				case Token.Type.New:
+					return ParseNew ();
+				default:
+					SyntaxError.Add ("Statement start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+					return new Expression (Expression.Operation.SyntaxError, new TextSpan (start, current));
+				}
+		}
+
+		private FunctionDefinition ParseFunctionDefinition ()
+		{
+			Token start = current;
+
+			Next ();
+			CheckSyntaxExpected (Token.Type.Identifier);
+			Identifier id = ((IdentifierToken)current).Spelling;
+			TextPoint NameLocation = new TextPoint (this.current.StartPosition);
+
+			Next ();
+			CheckSyntaxExpected (Token.Type.LeftParenthesis);
+			TextPoint leftParenLocation = new TextPoint (this.current.StartPosition);
+
+			Next ();
+			List<Parameter> parametters = ParseListParametter ();
+			CheckSyntaxExpected (Token.Type.RightParenthesis);
+			TextPoint rightParenLocation = new TextPoint (this.current.StartPosition);
+			Token headerEnd = this.current;
+
+			Next ();
+			BlockStatement body = ParseBlock ();
+			TextSpan location = new TextSpan (start, current);
+			TextSpan HeaderLocation = new TextSpan (start, headerEnd);
+
+			return new FunctionDefinition (id, parametters, body, location, HeaderLocation, NameLocation, leftParenLocation, rightParenLocation);
+		}
+
+		private Expression ParseObjectLiteral ()
+		{
+			Token start = current;
+			Next ();
+			List<ObjectLiteralElement> elements = new List<ObjectLiteralElement> ();
+			if (current.Kind == Token.Type.RightBrace) {
+				return new ObjectLiteralExpression (elements, new TextSpan (start, current));
+			}
+			
+			ObjectLiteralElement element;
+			TextPoint comma = new TextPoint ();
+			TextPoint colon = new TextPoint ();
+			do {
+				if (current.Kind != Token.Type.Identifier
+					&& current.Kind != Token.Type.StringLiteral
+					&& current.Kind != Token.Type.NumericLiteral) {
+					//diagnostics.Add(new Diagnostic(DiagnosticCode.
+					//TODO here
+				}
+				Expression name = ParseExpression ();
+				CheckSyntaxExpected (Token.Type.Colon);
+				colon = new TextPoint (current.StartPosition);
+				Next ();
+				Expression val = ParseExpression ();
+				element = new ObjectLiteralElement (name, val, colon, comma);
+				elements.Add (element);
+				comma = new TextPoint (current.StartPosition);
+			} while (current.Kind == Token.Type.Comma);
+			CheckSyntaxExpected (Token.Type.RightBrace);
+			elements.Add (element);
+			return new ObjectLiteralExpression (elements, new TextSpan (start, current));
+		}
+
+		private ArrayLiteralExpression ParseArrayLiteral ()
+		{
+			Token start = current;
+			Next();
+			List<ExpressionListElement> elements = new List<ExpressionListElement> ();
+			if (current.Kind == Token.Type.RightBracket) {
+				return new ArrayLiteralExpression (elements, new TextSpan(start, current));
+			}
+			// TODO elision?
+			TextPoint comma = new TextPoint();
+			do {
+				Expression exp = ParseExpression ();
+				ExpressionListElement element = new ExpressionListElement (exp, comma);
+				elements.Add (element);
+				comma = new TextPoint(current.StartPosition);
+			} while (current.Kind == Token.Type.Comma);
+			CheckSyntaxExpected (Token.Type.RightBracket);
+			return new ArrayLiteralExpression (elements, new TextSpan(start, current));
+		}
+		
 		private Expression ParseExpression ()
 		{
 			Token start = current; //ident
@@ -609,7 +702,7 @@ namespace Mono.JScript.Compiler
 					break;
 				case Token.Type.Colon:
 				case Token.Type.SemiColon:
-					ParseIdentifier ();
+					ParseNew ();//TODO
 					break;
 				default:
 					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
@@ -618,11 +711,6 @@ namespace Mono.JScript.Compiler
 			
 			return new Expression(Expression.Operation.Bang, new TextSpan(start,current));
 			
-		}
-
-		private void ParseIdentifier ()
-		{
-			throw new Exception ("The method or operation is not implemented.");
 		}
 
 		private Expression ParseGreaterGreater ()

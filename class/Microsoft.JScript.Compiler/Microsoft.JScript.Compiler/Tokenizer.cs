@@ -29,7 +29,7 @@ namespace Mono.JScript.Compiler
 			// move that to static ctor?
 			InitKeywords();
 		}
-
+		//TODO : unicode \u
 		public Token GetNext()
 		{
 			//Must use CreateToken everytime we create a Token to avoid issue of location
@@ -209,6 +209,10 @@ namespace Mono.JScript.Compiler
 					} else {
 						return CreateToken (Token.Type.Divide);
 					}
+				case '"':
+				case '\'':
+					return CreateStringLiteralToken (c);
+
 				case '0':
 				case '1':
 				case '2':
@@ -330,6 +334,103 @@ namespace Mono.JScript.Compiler
 			return current;
 		}
 		
+		private Token CreateStringLiteralToken (int q)
+		{
+			int quote = q;// " or '
+			int startPosition = position;
+			int startLine = Line;
+			int startColumn = Column;
+			StringBuilder builder = new StringBuilder ();
+
+			while (Advance ()) {
+				int c = PeekChar ();
+				if (c == quote)
+					break;
+				if (c == -1 || c == '\n') {
+					return new BadToken ("string is never closed!", DiagnosticCode.SyntaxError, startPosition, startLine, startColumn, FirstOnLine);
+				}
+				if (c == '\\') {
+					ReadChar ();
+					c = PeekChar ();
+					switch (c) {
+						case '\'':
+							c = '\''; 
+							break;
+						case '"' :
+							c = '"';//not sure
+							break;
+						case '\\':
+							c = '\\';
+							break;
+						case 'b':
+							c = '\b';
+							break;
+						case 'f':
+							c = '\f';
+							break;
+						case 'n':
+							c = '\n';
+							break;
+						case 'r':
+							c = '\r';
+							break;
+						case 't':
+							c = '\t';
+							break;
+						case 'v':
+							c = '\v';
+							break;
+						case 'x'://2 hex digits
+							ReadChar ();//next
+							int r2 = 0;
+							for (int i =0;i<2;i++) {
+								ReadChar ();
+								int d = PeekChar ();
+								if (d >= '0' && d <= '9')
+									d -= '0';
+								else if (d >= 'A' && d <= 'F')
+									d = d - 'A' + 10;
+								else if (d >= 'a' && d <= 'f')
+									d = d - 'a' + 10;
+								else
+									return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+								r2 = (r2 << 4) | d;
+							}
+							c = r2;
+							break;
+						case 'u'://4 hex digits
+							ReadChar ();//next
+							int r4 = 0;
+							for (int i = 0; i < 4; i++) {
+								ReadChar ();
+								int d = PeekChar ();
+								if (d >= '0' && d <= '9')
+									d -= '0';
+								else if (d >= 'A' && d <= 'F')
+									d = d - 'A' + 10;
+								else if (d >= 'a' && d <= 'f')
+									d = d - 'a' + 10;
+								else
+									return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+								r4 = (r4 << 4) | d;
+							}
+							c = r4;
+							break;
+						default:
+							//TODO 0 [lookahead ?DecimalDigit] or NonEscapeCharacter
+							return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+					}
+				}
+				builder.Append ((char)c);
+				ReadChar ();
+			}
+			//TODO : understand diff between spelling and value here!
+			string spelling = builder.ToString();
+			string value = builder.ToString ();// same ???
+
+			return new StringLiteralToken (spelling, value, startPosition, startLine, startColumn, FirstOnLine);
+		}
+
 		private Token CreateIdentOrKeyword (int first)
 		{
 			StringBuilder builder = new StringBuilder ();

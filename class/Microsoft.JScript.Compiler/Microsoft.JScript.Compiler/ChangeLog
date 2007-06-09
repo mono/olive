@@ -1,3 +1,8 @@
+2007-06-10  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* StringLiteralToken implementation and create in Tokenizer
+	* Parser go ahead in expression but still a lot of work
+	
 2007-06-08  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* Parser.cs (SyntaxOK): No errors == fine.
