@@ -1,3 +1,8 @@
+2007-06-09  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (SetValue): Also consider class hierarchy,
+	so a SolidBrush can be assigned to a Brush.
+
 2007-06-08  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs (GetAsValue): Helper.

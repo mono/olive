@@ -299,9 +299,10 @@ namespace System.Windows {
 				NativeMethods.dependency_object_set_value (native, property.native, IntPtr.Zero);
 				return;
 			}
-			
+
+			Type t = obj.GetType ();
 			Value v;
-			if (obj.GetType () == property.type)
+			if (t == property.type || property.type.IsAssignableFrom (t))
 				v = GetAsValue (obj);
 			else
 				v = GetAsValue (Convert.ChangeType (obj, property.type));
