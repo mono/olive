@@ -37,6 +37,7 @@ namespace System.Windows.Media {
 
 		public RotateTransform ()
 		{
+			native = Mono.NativeMethods.rotate_transform_new ();
 		}
 
 

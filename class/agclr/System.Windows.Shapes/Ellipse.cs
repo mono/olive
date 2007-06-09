@@ -32,6 +32,7 @@ namespace System.Windows.Shapes {
 
 		public Ellipse ()
 		{
+			native = Mono.NativeMethods.ellipse_new ();
 		}
 	}
 }

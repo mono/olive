@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public GeometryGroup ()
 		{
+			native = NativeMethods.geometry_group_new ();
 		}
 
 		public GeometryCollection Children {

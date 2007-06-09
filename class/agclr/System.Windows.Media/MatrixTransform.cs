@@ -34,6 +34,7 @@ namespace System.Windows.Media {
 
 		public MatrixTransform ()
 		{
+			native = Mono.NativeMethods.matrix_transform_new ();
 		}
 
 		public Matrix X {

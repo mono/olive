@@ -34,6 +34,11 @@ namespace System.Windows.Media {
 			PointsProperty = DependencyProperty.Register (
 				"Points", typeof (Point []), typeof (PolyQuadraticBezierSegment));
 		}
+
+		public PolyQuadraticBezierSegment ()
+		{
+			native = Mono.NativeMethods.poly_quadratic_segment_new ();
+		}
 		
 		public Point [] Points {
 			set {

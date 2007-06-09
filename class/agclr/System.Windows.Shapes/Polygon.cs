@@ -27,6 +27,7 @@
 //
 
 using System.Windows.Media;
+using Mono;
 
 namespace System.Windows.Shapes {
 
@@ -37,6 +38,7 @@ namespace System.Windows.Shapes {
 
 		public Polygon ()
 		{
+			native = NativeMethods.polygon_new();
 		}
 
 		public FillRule FillRule {

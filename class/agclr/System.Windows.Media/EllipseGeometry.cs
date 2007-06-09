@@ -36,6 +36,7 @@ namespace System.Windows.Media {
 
 		public EllipseGeometry ()
 		{
+			native = NativeMethods.ellipse_geometry_new ();
 		}
 
 		public Point Center {

@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 		
 		public BezierSegment ()
 		{
+			native = NativeMethods.bezier_segment_new ();
 		}
 		
 		public Point Point1 {

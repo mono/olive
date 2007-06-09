@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 
 		public ScaleTransform ()
 		{
+			native = Mono.NativeMethods.scale_transform_new ();
 		}
 
 

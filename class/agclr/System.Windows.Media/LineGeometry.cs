@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public LineGeometry ()
 		{
+			native = Mono.NativeMethods.line_geometry_new ();
 		}
 
 		public Point EndPoint {

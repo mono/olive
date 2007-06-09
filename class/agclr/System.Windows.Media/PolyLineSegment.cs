@@ -25,6 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 	public sealed class PolyLineSegment : PathSegment {
@@ -33,6 +34,11 @@ namespace System.Windows.Media {
 		{
 			PointsProperty = DependencyProperty.Register (
 				"Points", typeof (Point []), typeof (PolyLineSegment));
+		}
+
+		public PolyLineSegment ()
+		{
+			native = NativeMethods.poly_line_segment_new ();
 		}
 		
 		public Point [] Points {

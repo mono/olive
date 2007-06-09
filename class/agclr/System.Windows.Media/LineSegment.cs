@@ -34,6 +34,11 @@ namespace System.Windows.Media {
 			PointProperty = DependencyProperty.Register (
 				"Point", typeof (Point), typeof (LineSegment));
 		}
+
+		public LineSegment ()
+		{
+			native = Mono.NativeMethods.line_segment_new ();
+		}
 		
 		public Point Point {
 			get {

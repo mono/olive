@@ -34,6 +34,7 @@ namespace System.Windows.Media {
 
 		public PathGeometry ()
 		{
+			native = Mono.NativeMethods.path_geometry_new ();
 		}
 
 		public PathFigureCollection Figures {

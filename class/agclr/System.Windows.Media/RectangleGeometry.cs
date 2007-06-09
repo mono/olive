@@ -36,6 +36,7 @@ namespace System.Windows.Media {
 
 		public RectangleGeometry ()
 		{
+			native = Mono.NativeMethods.rectangle_geometry_new ();
 		}
 
 		public double RadiusX {

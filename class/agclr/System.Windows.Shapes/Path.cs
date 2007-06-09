@@ -36,6 +36,7 @@ namespace System.Windows.Shapes {
 		
 		public Path ()
 		{
+			native = Mono.NativeMethods.path_new ();
 		}
 
 		public Geometry RadiusX {

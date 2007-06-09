@@ -37,6 +37,7 @@ namespace System.Windows.Shapes {
 
 		public Line ()
 		{
+			native = Mono.NativeMethods.line_new ();
 		}
 
 		public double X1 {

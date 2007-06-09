@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public TranslateTransform ()
 		{
+			native = Mono.NativeMethods.translate_transform_new ();
 		}
 
 		public double X {

@@ -1,3 +1,7 @@
+2007-06-09  Miguel de Icaza  <miguel@novell.com>
+
+	* Everywhere: bind to our existing C++ methods.
+
 2007-06-08  Miguel de Icaza  <miguel@novell.com>
 
 	* Internal.cs: Derive from DependencyObject, add Add method. 
