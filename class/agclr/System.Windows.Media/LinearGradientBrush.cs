@@ -25,13 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 
 	public class LinearGradientBrush : GradientBrush {
 
-		public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register ("StartPoint", typeof (Point), typeof (LinearGradientBrush));
-		public static readonly DependencyProperty EndPointProperty = DependencyProperty.Register ("EndPoint", typeof (Point), typeof (LinearGradientBrush));
+		public static readonly DependencyProperty StartPointProperty =
+			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "StartPoint");
+		public static readonly DependencyProperty EndPointProperty =
+			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "EndPoint");
 
 
 		public LinearGradientBrush ()

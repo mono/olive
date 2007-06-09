@@ -25,15 +25,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class RotateTransform : Transform {
 
-		public static readonly DependencyProperty AngleProperty = DependencyProperty.Register ("Angle", typeof (double), typeof (RotateTransform));
-		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register ("CenterX", typeof (double), typeof (RotateTransform));
-		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register ("CenterY", typeof (double), typeof (RotateTransform));
-
+		public static readonly DependencyProperty AngleProperty =
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "Angle");
+		public static readonly DependencyProperty CenterXProperty =
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterX");
+		public static readonly DependencyProperty CenterYProperty =
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterY");
 
 		public RotateTransform ()
 		{

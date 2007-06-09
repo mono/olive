@@ -25,13 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 
 	public class QuadraticBezierSegment : PathSegment {
 
-		public static readonly DependencyProperty Point1Property = DependencyProperty.Register ("Point1", typeof (Point), typeof (QuadraticBezierSegment));
-		public static readonly DependencyProperty Point2Property = DependencyProperty.Register ("Point2", typeof (Point), typeof (QuadraticBezierSegment));
+		public static readonly DependencyProperty Point1Property =
+			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point1");
+		public static readonly DependencyProperty Point2Property =
+			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point2");
 
 		public QuadraticBezierSegment ()
 		{

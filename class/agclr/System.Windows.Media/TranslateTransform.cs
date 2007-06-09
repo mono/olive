@@ -25,13 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class TranslateTransform : Transform {
 
-		public static readonly DependencyProperty XProperty = DependencyProperty.Register ("X", typeof (double), typeof (TranslateTransform));
-		public static readonly DependencyProperty YProperty = DependencyProperty.Register ("Y", typeof (double), typeof (TranslateTransform));
+		public static readonly DependencyProperty XProperty =
+			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "X");
+		public static readonly DependencyProperty YProperty =
+			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "Y");
 
 		public TranslateTransform ()
 		{

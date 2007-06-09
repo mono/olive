@@ -25,13 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class LineGeometry : Geometry {
 
-		public static readonly DependencyProperty EndPointProperty = DependencyProperty.Register ("EndPoint", typeof (Point), typeof (LineGeometry));
-		public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register ("StartPoint", typeof (Point), typeof (LineGeometry));
+		public static readonly DependencyProperty EndPointProperty =
+			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "EndPoint");
+		public static readonly DependencyProperty StartPointProperty =
+			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "StartPoint");
 
 		public LineGeometry ()
 		{

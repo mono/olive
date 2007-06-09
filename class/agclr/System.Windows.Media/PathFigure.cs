@@ -30,10 +30,14 @@ namespace System.Windows.Media {
 
 	public class PathFigure : DependencyObject {
 
-		public static readonly DependencyProperty IsClosedProperty = DependencyProperty.Register ("IsClosed", typeof (bool), typeof (PathFigure));
-		public static readonly DependencyProperty IsFilledProperty = DependencyProperty.Register ("IsFilled", typeof (bool), typeof (PathFigure));
-		public static readonly DependencyProperty SegmentsProperty = DependencyProperty.Register ("Segments", typeof (PathSegmentCollection), typeof (PathFigure));
-		public static readonly DependencyProperty StartPointProperty = DependencyProperty.Register ("StartPoint", typeof (Point), typeof (PathFigure));
+		public static readonly DependencyProperty IsClosedProperty =
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsClosed");
+		public static readonly DependencyProperty IsFilledProperty = 
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsFilled");
+		public static readonly DependencyProperty SegmentsProperty = 
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "Segments");
+		public static readonly DependencyProperty StartPointProperty = 
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "StartPoint");
 
 		public PathFigure ()
 		{

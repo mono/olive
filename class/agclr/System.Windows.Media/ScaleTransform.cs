@@ -25,16 +25,19 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 
 	public class ScaleTransform : Transform {
 
-		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register ("CenterX", typeof (double), typeof (ScaleTransform));
-		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register ("CenterY", typeof (double), typeof (ScaleTransform));
-		public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register ("ScaleX", typeof (double), typeof (ScaleTransform));
-		public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register ("ScaleY", typeof (double), typeof (ScaleTransform));
-
+		public static readonly DependencyProperty CenterXProperty =
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterX");
+		public static readonly DependencyProperty CenterYProperty =
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterY");
+		public static readonly DependencyProperty ScaleXProperty =
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleX");
+		public static readonly DependencyProperty ScaleYProperty =
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleY");
 
 		public ScaleTransform ()
 		{

@@ -25,14 +25,14 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 	public sealed class LineSegment : PathSegment {
 		
 		static LineSegment ()
 		{
-			PointProperty = DependencyProperty.Register (
-				"Point", typeof (Point), typeof (LineSegment));
+			PointProperty = DependencyProperty.Lookup (Kind.LINESEGMENT, "Point");
 		}
 
 		public LineSegment ()
