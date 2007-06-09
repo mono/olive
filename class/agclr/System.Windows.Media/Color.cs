@@ -32,7 +32,13 @@ namespace System.Windows.Media {
 
 		// maybe we should keep the 4 floats value and compute the argb on them
 		// but that would require 4 times the memory
-		private uint argb;
+
+		// Its internal for now, but we should turn Color into a binary
+		// compatible format so we can pass that directly to Value, right
+		// now we are using a hack that creates the value out of the argb
+		// to be able to call C++'s uint32 constructor, but we should be
+		// passing all doubles instead.
+		internal uint argb;
 
 
 		private Color (uint value)

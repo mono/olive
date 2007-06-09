@@ -58,8 +58,10 @@ namespace Mono {
 
 		[DllImport("moon")]
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, out Kind kind);
-	    
-		
+
+		[DllImport("moon")]
+		internal extern static Value value_color_from_argb (uint c);
+
 #region Items
 		[DllImport("moon")]
 		internal extern static IntPtr item_get_surface (IntPtr item);
@@ -79,19 +81,20 @@ namespace Mono {
 		internal extern static IntPtr panel_get_children_collection (IntPtr panel);
 #endregion
 		
-#region Canvas
-		[DllImport("moon")]
-		internal extern static IntPtr canvas_new ();
-#endregion
-
 #region Collections
 		[DllImport("moon")]
 		internal extern static IntPtr collection_add (IntPtr collection, IntPtr value);
 #endregion
 		
-#region Shapes
+#region Constructors
 		[DllImport("moon")]
 		internal extern static IntPtr rectangle_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr solid_color_brush_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr canvas_new ();
 #endregion
 	}
 }

@@ -31,14 +31,18 @@ namespace System.Windows.Media {
 
 	public class SolidColorBrush : Brush {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush));
-
+		public static readonly DependencyProperty ColorProperty = DependencyProperty.Lookup (Kind.SOLIDCOLORBRUSH, "Color");
 
 		public SolidColorBrush ()
 		{
+			native = NativeMethods.solid_color_brush_new ();
 		}
 
-
+		public SolidColorBrush (Color c) : this ()
+		{
+			SetValue (ColorProperty, c);
+		}
+		
 		public Color Color {
 			get { return (Color) GetValue (ColorProperty); }
 			set { SetValue (ColorProperty, value); }

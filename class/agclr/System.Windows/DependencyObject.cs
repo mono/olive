@@ -259,8 +259,11 @@ namespace System.Windows {
 						   String.Format ("Class {0} does not implement GetKind", x));
 					}
 					*((IntPtr *) p) = x.native;
+				} else if (v is Color){
+					value = NativeMethods.value_color_from_argb (((Color) v).argb);
 				} else
-					throw new NotImplementedException (String.Format ("Do not know how to encode {0} yet", v.GetType ()));
+					throw new NotImplementedException (
+						String.Format ("Do not know how to encode {0} yet", v.GetType ()));
 			}
 			return value;
 		}
@@ -277,6 +280,11 @@ namespace System.Windows {
 			if (property == null)
 				throw new ArgumentNullException ("property");
 
+			if (native == IntPtr.Zero){
+				throw new Exception (
+					"Uninitialized object: this object has not set its native handle or overwritten SetValue");
+			}
+			
 			if (obj == null){
 				NativeMethods.dependency_object_set_value (native, property.native, IntPtr.Zero);
 				return;
