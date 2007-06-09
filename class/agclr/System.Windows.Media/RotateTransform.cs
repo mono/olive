@@ -32,11 +32,11 @@ namespace System.Windows.Media {
 	public class RotateTransform : Transform {
 
 		public static readonly DependencyProperty AngleProperty =
-			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "Angle");
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "Angle", typeof (double));
 		public static readonly DependencyProperty CenterXProperty =
-			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterX");
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterX", typeof (double));
 		public static readonly DependencyProperty CenterYProperty =
-			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterY");
+			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterY", typeof (double));
 
 		public RotateTransform ()
 		{

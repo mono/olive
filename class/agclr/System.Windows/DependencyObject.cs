@@ -268,12 +268,22 @@ namespace System.Windows {
 			return value;
 		}
 
+
 		//
 		// This signature seems incredibly painful, why make
 		// it generic if we still have to dig into its
 		// internals?  am I missing something fundamentally
 		// awesome about it.  Perhaps for derived classes it
 		// would be awesome?  as it stands its just annoying.
+		//
+
+		//
+		// SetValue differs from SetValue in that the caller
+		// code has ensured the proper type is being passed (which
+		// is already the case for anything that is a setter as the
+		// setters are strongly typed)
+		//
+		// External users go through SetValue that can do conversions.
 		//
 		public virtual void SetValue<T> (DependencyProperty property, T obj)
 		{
@@ -290,7 +300,12 @@ namespace System.Windows {
 				return;
 			}
 			
-			Value v = GetAsValue (obj);
+			Value v;
+			if (obj.GetType () == property.type)
+				v = GetAsValue (obj);
+			else
+				v = GetAsValue (Convert.ChangeType (obj, property.type));
+			
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 		}
 

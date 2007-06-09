@@ -32,13 +32,13 @@ namespace System.Windows.Media {
 	public class GradientBrush : Brush {
 
 		public static readonly DependencyProperty ColorInterpretationModeProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpretationMode");
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpretationMode", typeof (ColorInterpretationMode));
 		public static readonly DependencyProperty GradientStopsProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "GradientStops");
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "GradientStops", typeof (GradientStopCollection));
 		public static readonly DependencyProperty MappingModeProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "MappingMode");
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "MappingMode", typeof (BrushMappingMode));
 		public static readonly DependencyProperty SpreadMethodProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "SpreadMethod");
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "SpreadMethod", typeof (GradientSpreadMethod));
 
 
 		public GradientBrush ()

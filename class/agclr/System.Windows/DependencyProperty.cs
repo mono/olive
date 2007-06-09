@@ -33,7 +33,8 @@ using Mono;
 namespace System.Windows {
 	public class DependencyProperty {
 		internal IntPtr native;
-
+		internal Type type;
+		
 		static DependencyProperty ()
 		{
 			NativeMethods.runtime_init ();
@@ -44,12 +45,13 @@ namespace System.Windows {
 			// useless constructor.
 		}
 
-		internal DependencyProperty (IntPtr handle)
+		internal DependencyProperty (IntPtr handle, Type t)
 		{
 			native = handle;
+			type = t;
 		}
 		
-		internal static DependencyProperty Lookup (Kind type, string name)
+		internal static DependencyProperty Lookup (Kind type, string name, Type t)
 		{
 			IntPtr handle = NativeMethods.dependency_property_lookup (type, name);
 
@@ -57,7 +59,7 @@ namespace System.Windows {
 				throw new Exception (
 					String.Format ("DependencyProperty.Lookup: {0} lacks {1}", type, name));
 
-			return new DependencyProperty (handle);
+			return new DependencyProperty (handle, t);
 		}
 
 		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType)

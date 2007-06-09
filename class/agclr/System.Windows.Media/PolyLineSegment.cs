@@ -32,7 +32,7 @@ namespace System.Windows.Media {
 		
 		static PolyLineSegment ()
 		{
-			PointsProperty = DependencyProperty.Lookup (Kind.POLYLINESEGMENT, "Points");
+			PointsProperty = DependencyProperty.Lookup (Kind.POLYLINESEGMENT, "Points", typeof (Point[]));
 		}
 
 		public PolyLineSegment ()

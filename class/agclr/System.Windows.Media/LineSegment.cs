@@ -32,7 +32,7 @@ namespace System.Windows.Media {
 		
 		static LineSegment ()
 		{
-			PointProperty = DependencyProperty.Lookup (Kind.LINESEGMENT, "Point");
+			PointProperty = DependencyProperty.Lookup (Kind.LINESEGMENT, "Point", typeof (Point));
 		}
 
 		public LineSegment ()

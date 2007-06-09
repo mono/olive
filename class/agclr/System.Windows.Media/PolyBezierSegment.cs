@@ -31,7 +31,7 @@ namespace System.Windows.Media {
 		
 		static PolyBezierSegment ()
 		{
-			PointsProperty = DependencyProperty.Lookup (Kind.POLYBEZIERSEGMENT, "Points");
+			PointsProperty = DependencyProperty.Lookup (Kind.POLYBEZIERSEGMENT, "Points", typeof (Point []));
 		}
 
 		public PolyBezierSegment ()

@@ -31,7 +31,7 @@ namespace System.Windows.Media {
 	public class VideoBrush : TileBrush {
 
 		public static readonly DependencyProperty SourceNameProperty =
-			DependencyProperty.Lookup (Kind.VIDEOBRUSH, "SourceName");
+			DependencyProperty.Lookup (Kind.VIDEOBRUSH, "SourceName", typeof (string));
 
 		public VideoBrush ()
 		{

@@ -32,9 +32,9 @@ namespace System.Windows.Media {
 	public class LineGeometry : Geometry {
 
 		public static readonly DependencyProperty EndPointProperty =
-			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "EndPoint");
+			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "EndPoint", typeof (Point));
 		public static readonly DependencyProperty StartPointProperty =
-			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "StartPoint");
+			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "StartPoint", typeof (Point));
 
 		public LineGeometry ()
 		{

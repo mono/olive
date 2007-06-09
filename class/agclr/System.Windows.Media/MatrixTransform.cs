@@ -31,14 +31,14 @@ namespace System.Windows.Media {
 	public class MatrixTransform : Transform {
 
 		public static readonly DependencyProperty MatrixProperty =
-			DependencyProperty.Lookup (Kind.MATRIXTRANSFORM, "Matrix");
+			DependencyProperty.Lookup (Kind.MATRIXTRANSFORM, "Matrix", typeof (Matrix));
 
 		public MatrixTransform ()
 		{
 			native = Mono.NativeMethods.matrix_transform_new ();
 		}
 
-		public Matrix X {
+		public Matrix Matrix {
 			get { return (Matrix) GetValue (MatrixProperty); }
 			set { SetValue (MatrixProperty, value); }
 		}

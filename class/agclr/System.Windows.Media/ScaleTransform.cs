@@ -31,13 +31,13 @@ namespace System.Windows.Media {
 	public class ScaleTransform : Transform {
 
 		public static readonly DependencyProperty CenterXProperty =
-			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterX");
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterX", typeof (double));
 		public static readonly DependencyProperty CenterYProperty =
-			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterY");
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterY", typeof (double));
 		public static readonly DependencyProperty ScaleXProperty =
-			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleX");
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleX", typeof (double));
 		public static readonly DependencyProperty ScaleYProperty =
-			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleY");
+			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleY", typeof (double));
 
 		public ScaleTransform ()
 		{

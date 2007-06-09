@@ -32,9 +32,9 @@ namespace System.Windows.Media {
 	public class ImageBrush : Brush {
 
 		public static readonly DependencyProperty DownloadProgressProperty =
-			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "DownloadProgress");
+			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "DownloadProgress", typeof (double));
 		public static readonly DependencyProperty ImageSourceProperty =
-			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource");
+			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource", typeof (Uri));
 
 
 		public ImageBrush ()

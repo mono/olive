@@ -32,11 +32,11 @@ namespace System.Windows.Media {
 	public class EllipseGeometry : Geometry {
 
 		public static readonly DependencyProperty CenterProperty =
-			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "Center");
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "Center", typeof (Point));
 		public static readonly DependencyProperty RadiusXProperty =
-			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusX");
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusX", typeof (double));
 		public static readonly DependencyProperty RadiusYProperty =
-			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusY");
+			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusY", typeof (double));
 
 		public EllipseGeometry ()
 		{

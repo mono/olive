@@ -31,13 +31,13 @@ namespace System.Windows.Media {
 	public class PathFigure : DependencyObject {
 
 		public static readonly DependencyProperty IsClosedProperty =
-			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsClosed");
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsClosed", typeof (bool));
 		public static readonly DependencyProperty IsFilledProperty = 
-			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsFilled");
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsFilled", typeof (bool));
 		public static readonly DependencyProperty SegmentsProperty = 
-			DependencyProperty.Lookup (Kind.PATHFIGURE, "Segments");
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "Segments", typeof (PathSegmentCollection));
 		public static readonly DependencyProperty StartPointProperty = 
-			DependencyProperty.Lookup (Kind.PATHFIGURE, "StartPoint");
+			DependencyProperty.Lookup (Kind.PATHFIGURE, "StartPoint", typeof (Point));
 
 		public PathFigure ()
 		{

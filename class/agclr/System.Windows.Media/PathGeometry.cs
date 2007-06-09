@@ -31,7 +31,7 @@ namespace System.Windows.Media {
 	public class PathGeometry : Geometry {
 
 		public static readonly DependencyProperty FiguresProperty =
-			DependencyProperty.Lookup (Kind.PATHGEOMETRY, "Figures");
+			DependencyProperty.Lookup (Kind.PATHGEOMETRY, "Figures", typeof (PathFigureCollection));
 
 		public PathGeometry ()
 		{

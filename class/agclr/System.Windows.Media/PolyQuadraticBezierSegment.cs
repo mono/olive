@@ -32,7 +32,7 @@ namespace System.Windows.Media {
 		static PolyQuadraticBezierSegment ()
 		{
 			PointsProperty = DependencyProperty.Lookup (
-				Kind.POLYQUADRATICBEZIERSEGMENT, "Points");
+				Kind.POLYQUADRATICBEZIERSEGMENT, "Points", typeof (Point[]));
 		}
 
 		public PolyQuadraticBezierSegment ()

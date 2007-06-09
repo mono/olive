@@ -32,9 +32,9 @@ namespace System.Windows.Media {
 	public class TranslateTransform : Transform {
 
 		public static readonly DependencyProperty XProperty =
-			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "X");
+			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "X", typeof (double));
 		public static readonly DependencyProperty YProperty =
-			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "Y");
+			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "Y", typeof (double));
 
 		public TranslateTransform ()
 		{

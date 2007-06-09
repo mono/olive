@@ -31,9 +31,9 @@ namespace System.Windows.Media {
 	public class LinearGradientBrush : GradientBrush {
 
 		public static readonly DependencyProperty StartPointProperty =
-			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "StartPoint");
+			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "StartPoint", typeof (Point));
 		public static readonly DependencyProperty EndPointProperty =
-			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "EndPoint");
+			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "EndPoint", typeof (Point));
 
 
 		public LinearGradientBrush ()

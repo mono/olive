@@ -31,9 +31,9 @@ namespace System.Windows.Media {
 	public class GradientStop : DependencyObject {
 
 		public static readonly DependencyProperty ColorProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Color");
+			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Color", typeof (Color));
 		public static readonly DependencyProperty OffsetProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Offset");
+			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Offset", typeof (double));
 
 
 		public GradientStop ()

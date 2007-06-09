@@ -32,7 +32,7 @@ namespace System.Windows.Media {
 	public class GeometryGroup : Geometry {
 
 		public static readonly DependencyProperty ChildrenProperty =
-			DependencyProperty.Lookup (Kind.GEOMETRYGROUP, "Children");
+			DependencyProperty.Lookup (Kind.GEOMETRYGROUP, "Children", typeof (GeometryCollection));
 
 		public GeometryGroup ()
 		{

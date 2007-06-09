@@ -31,9 +31,9 @@ namespace System.Windows.Media {
 	public class QuadraticBezierSegment : PathSegment {
 
 		public static readonly DependencyProperty Point1Property =
-			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point1");
+			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point1", typeof (Point));
 		public static readonly DependencyProperty Point2Property =
-			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point2");
+			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point2", typeof (Point));
 
 		public QuadraticBezierSegment ()
 		{

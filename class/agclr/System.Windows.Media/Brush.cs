@@ -35,9 +35,9 @@ namespace System.Windows.Media {
 
 		static Brush ()
 		{
-			OpacityProperty = DependencyProperty.Lookup (Kind.BRUSH, "Opacity");
-			TransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "Transform");
-			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform");
+			OpacityProperty = DependencyProperty.Lookup (Kind.BRUSH, "Opacity", typeof (double));
+			TransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "Transform", typeof (TransformGroup));
+			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform", typeof (TransformGroup));
 		}
 		
 		public Brush ()

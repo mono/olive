@@ -47,16 +47,16 @@ namespace System.Windows {
 	
 		static UIElement ()
 		{
-	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity");
-	        	ClipProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Clip");
-	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform");
-	        	TriggersProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Triggers");
-			OpacityMaskProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "OpacityMask");
-			RenderTransformOriginProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransformOrigin");
-			CursorProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Cursor");
-			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible");
-			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility");
-			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources");
+	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity", typeof (double));
+	        	ClipProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Clip", typeof (Geometry));
+	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform", typeof (Transform));
+	        	TriggersProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Triggers", typeof (TriggerCollection));
+			OpacityMaskProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "OpacityMask", typeof (Brush));
+			RenderTransformOriginProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransformOrigin", typeof (Point));
+			CursorProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Cursor", typeof (Cursors));
+			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible", typeof (bool));
+			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility", typeof (Visibility));
+			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceCollection));
 		}
 			
 		public UIElement ()

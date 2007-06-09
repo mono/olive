@@ -31,9 +31,9 @@ namespace System.Windows.Media {
 
 		static BezierSegment ()
 		{
-			Point1Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point1");
-			Point2Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point2");
-			Point3Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point3");
+			Point1Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point1", typeof (Point));
+			Point2Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point2", typeof (Point));
+			Point3Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point3", typeof (Point));
 		}
 		
 		public BezierSegment ()
