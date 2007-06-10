@@ -53,7 +53,7 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[Test]
-		public void SyndicationItem_EmptyConstructor()
+		public void SyndicationItem_DateTests()
 		{
 			Console.WriteLine(DateTime.Now);
 			SyndicationItem item = new SyndicationItem();
