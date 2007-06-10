@@ -51,6 +51,16 @@ namespace System.ServiceModel.Syndication
 			Assert.IsNotNull(item.LastUpdatedTime);
 			Assert.IsNull(item.Copyright);
 		}
+
+		[Test]
+		public void SyndicationItem_EmptyConstructor()
+		{
+			Console.WriteLine(DateTime.Now);
+			SyndicationItem item = new SyndicationItem();
+			Console.WriteLine(item.PublishDate);
+			Console.WriteLine(item.LastUpdatedTime);
+		}
+
 	}
 }
 

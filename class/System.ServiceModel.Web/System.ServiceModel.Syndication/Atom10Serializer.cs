@@ -70,6 +70,13 @@ namespace System.ServiceModel.Syndication
 			writer.WriteElementString("id", item.Id);
 			WriteXml(writer, item.Title, "title");
 			WriteXml(writer, item.Summary, "summary");
+			
+			//			if (item.PublishDate != null)
+				{
+					string date = item.PublishDate.ToUniversalTime().ToString("s");
+					writer.WriteElementString("published", date + "Z");
+				}
+
 			writer.WriteEndElement();
 		}
 
