@@ -37,7 +37,7 @@ namespace System.ServiceModel.Syndication
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class Rss20SerializerTest
+	public class Rss20SerializerTest : Rss20Serializer
 	{
 		string FileToString(string path)
 		{
@@ -65,11 +65,20 @@ namespace System.ServiceModel.Syndication
 			using (XmlTextWriter writer = new XmlTextWriter(strWriter))
 			{
 				writer.Formatting = Formatting.Indented;
-				Atom10Serializer serializer = new Atom10Serializer();
+				Rss20Serializer serializer = new Rss20Serializer();
 				serializer.WriteTo(writer, f);
 			}
 
 			return strWriter.ToString();
+		}
+
+		[Test]
+		public void Serializer_Properties()
+		{
+			Assert.AreEqual(FeedName, "channel");
+			Assert.AreEqual(FeedNamespace, "");
+			Assert.AreEqual(ItemName, "item");
+			Assert.AreEqual(ItemNamespace, "");
 		}
 
 		[Test]

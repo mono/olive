@@ -37,7 +37,7 @@ namespace System.ServiceModel.Syndication
 	using NUnit.Framework;
 
 	[TestFixture]
-	public class Atom10SerializerTest
+	public class Atom10SerializerTest : Atom10Serializer
 	{
 		string FileToString(string path)
 		{
@@ -70,6 +70,15 @@ namespace System.ServiceModel.Syndication
 			}
 
 			return strWriter.ToString();
+		}
+
+		[Test]
+		public void Serializer_Properties()
+		{
+			Assert.AreEqual(FeedName, "feed");
+			Assert.AreEqual(FeedNamespace, "http://www.w3.org/2005/Atom");
+			Assert.AreEqual(ItemName, "entry");
+			Assert.AreEqual(ItemNamespace, "http://www.w3.org/2005/Atom");
 		}
 
 		[Test]
