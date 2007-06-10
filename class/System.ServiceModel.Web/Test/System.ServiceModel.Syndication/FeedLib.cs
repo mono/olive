@@ -61,7 +61,12 @@ class FeedLib
 
 					i.Title = SyndicationContent.CreatePlaintextTextSyndicationContent(p);
 					i.Summary = new TextSyndicationContent(String.Format("<b>{0} in bold letters</b>", p), TextSyndicationContentKind.Html);
-	
+					i.Content = new TextSyndicationContent("My Content");
+					i.Copyright = new TextSyndicationContent("My Copyright");
+					i.LastUpdatedTime = FixedChangedDate;
+					i.PublishDate = FixedChangedDate;
+					i.SourceFeed = f;
+
 					f.Items.Add(i);
 				}
 
