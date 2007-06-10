@@ -43,7 +43,11 @@ namespace System.Windows.Media {
 			native = Mono.NativeMethods.rotate_transform_new ();
 		}
 
-
+		internal RotateTransform (IntPtr raw)
+		{
+			native = raw;
+		}
+	
 		public double Angle {
 			get { return (double) GetValue (AngleProperty); }
 			set { SetValue (AngleProperty, value); }

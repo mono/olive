@@ -44,7 +44,11 @@ namespace System.Windows.Media {
 			native = Mono.NativeMethods.scale_transform_new ();
 		}
 
-
+		internal ScaleTransform (IntPtr raw)
+		{
+			native = raw;
+		}
+		
 		public double CenterX {
 			get { return (double) GetValue (CenterXProperty); }
 			set { SetValue (CenterXProperty, value); }

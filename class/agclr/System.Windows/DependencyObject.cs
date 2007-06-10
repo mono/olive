@@ -32,6 +32,7 @@ using Mono;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 
 namespace System.Windows {
@@ -84,25 +85,47 @@ namespace System.Windows {
 			case Kind.CANVAS:
 				return new Canvas (raw);
 
-			case Kind.TIMELINE: return null;
-			case Kind.TRANSFORM: return null;
-			case Kind.ROTATETRANSFORM: return null;
-			case Kind.SCALETRANSFORM: return null;
-			case Kind.TRANSLATETRANSFORM: return null;
-			case Kind.MATRIXTRANSFORM: return null;
+			case Kind.TIMELINE:
+				return null;
+				
+			case Kind.ROTATETRANSFORM:
+				return new RotateTransform (raw);
+				
+			case Kind.SCALETRANSFORM:
+				return new ScaleTransform (raw);
+
+			case Kind.TRANSLATETRANSFORM:
+				return new TranslateTransform (raw);
+				
+			case Kind.MATRIXTRANSFORM:
+				return new MatrixTransform (raw);
+				
 			case Kind.STORYBOARD: return null;
 			case Kind.DOUBLEANIMATION: return null;
 			case Kind.COLORANIMATION: return null;
 			case Kind.POINTANIMATION: return null;
-			case Kind.SHAPE: return null;
-			case Kind.ELLIPSE: return null;
-			case Kind.LINE: return null;
-			case Kind.PATH: return null;
-			case Kind.POLYGON: return null;
-			case Kind.POLYLINE: return null;
-			case Kind.RECTANGLE: return null;
-			case Kind.GEOMETRY: return null;
-			case Kind.GEOMETRYGROUP: return null;
+				
+			case Kind.ELLIPSE:
+				return new Ellipse (raw);
+				
+			case Kind.LINE:
+				return new Line (raw);
+				
+			case Kind.PATH:
+				return new Path (raw);
+				
+			case Kind.POLYGON:
+				return new Polygon (raw);
+				
+			case Kind.POLYLINE:
+				return new Polyline (raw);
+				
+			case Kind.RECTANGLE:
+				return new Rectangle (raw);
+				
+			case Kind.GEOMETRYGROUP:
+				return new GeometryGroup (raw);
+				
 			case Kind.ELLIPSEGEOMETRY: return null;
 			case Kind.LINEGEOMETRY: return null;
 			case Kind.PATHGEOMETRY: return null;
@@ -143,6 +166,12 @@ namespace System.Windows {
 			case Kind.RESOURCE_COLLECTION: return null;
 			case Kind.TRIGGERACTION_COLLECTION: return null;
 			case Kind.TRIGGER_COLLECTION: return null;
+				
+			case Kind.TRANSFORM:
+			case Kind.SHAPE:
+			case Kind.GEOMETRY:
+				throw new NotImplementedException (
+					String.Format ("Should never get an abstract class from unmanaged code {0}", k));
 			}
 
 			return null;

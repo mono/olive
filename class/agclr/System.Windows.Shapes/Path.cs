@@ -39,6 +39,11 @@ namespace System.Windows.Shapes {
 			native = Mono.NativeMethods.path_new ();
 		}
 
+		internal Path (IntPtr raw)
+		{
+			native = raw;
+		}
+
 		public Geometry RadiusX {
 			get { return (Geometry) GetValue (DataProperty); }
 			set { SetValue (DataProperty, value); }

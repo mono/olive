@@ -40,6 +40,11 @@ namespace System.Windows.Shapes {
 			native = Mono.NativeMethods.line_new ();
 		}
 
+		internal Line (IntPtr raw)
+		{
+			native = raw;
+		}
+		
 		public double X1 {
 			get { return (double) GetValue (X1Property); }
 			set { SetValue (X1Property, value); }

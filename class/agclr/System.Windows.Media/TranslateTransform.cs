@@ -41,6 +41,11 @@ namespace System.Windows.Media {
 			native = Mono.NativeMethods.translate_transform_new ();
 		}
 
+		internal TranslateTransform (IntPtr raw)
+		{
+			native = raw;
+		}
+		
 		public double X {
 			get { return (double) GetValue (XProperty); }
 			set { SetValue (XProperty, value); }

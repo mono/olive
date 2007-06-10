@@ -39,6 +39,11 @@ namespace System.Windows.Shapes {
 		{
 		}
 
+		internal Polyline (IntPtr raw)
+		{
+			native = raw;
+		}
+		
 		public FillRule FillRule {
 			get { return (FillRule) GetValue (FillRuleProperty); }
 			set { SetValue (FillRuleProperty, value); }

@@ -34,5 +34,10 @@ namespace System.Windows.Shapes {
 		{
 			native = Mono.NativeMethods.ellipse_new ();
 		}
+
+		internal Ellipse (IntPtr raw)
+		{
+			native = raw;
+		}
 	}
 }

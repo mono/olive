@@ -41,6 +41,11 @@ namespace System.Windows.Shapes {
 			native = NativeMethods.polygon_new();
 		}
 
+		internal Polygon (IntPtr raw)
+		{
+			native = raw;
+		}
+		
 		public FillRule FillRule {
 			get { return (FillRule) GetValue (FillRuleProperty); }
 			set { SetValue (FillRuleProperty, value); }

@@ -39,6 +39,11 @@ namespace System.Windows.Media {
 			native = NativeMethods.geometry_group_new ();
 		}
 
+		internal GeometryGroup (IntPtr raw)
+		{
+			native = raw;
+		}
+
 		public GeometryCollection Children {
 			get { return (GeometryCollection) GetValue (ChildrenProperty); }
 			set { SetValue (ChildrenProperty, value); }

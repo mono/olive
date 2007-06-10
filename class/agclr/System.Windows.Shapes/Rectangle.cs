@@ -40,6 +40,11 @@ namespace System.Windows.Shapes {
 			native = NativeMethods.rectangle_new ();
 		}
 
+		internal Rectangle (IntPtr raw)
+		{
+			native = raw;
+		}
+
 		public double RadiusX {
 			get { return (double) GetValue (RadiusXProperty); }
 			set { SetValue (RadiusXProperty, value); }

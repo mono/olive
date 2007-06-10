@@ -38,6 +38,11 @@ namespace System.Windows.Media {
 			native = Mono.NativeMethods.matrix_transform_new ();
 		}
 
+		internal MatrixTransform (IntPtr raw)
+		{
+			native = raw;
+		}
+
 		public Matrix Matrix {
 			get { return (Matrix) GetValue (MatrixProperty); }
 			set { SetValue (MatrixProperty, value); }
