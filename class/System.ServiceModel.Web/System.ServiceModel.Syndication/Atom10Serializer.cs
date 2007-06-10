@@ -71,11 +71,21 @@ namespace System.ServiceModel.Syndication
 			WriteXml(writer, item.Title, "title");
 			WriteXml(writer, item.Summary, "summary");
 			
-			//			if (item.PublishDate != null)
+			DateTime defDate = new DateTime(0);
+			if (item.PublishDate != defDate)
 				{
 					string date = item.PublishDate.ToUniversalTime().ToString("s");
 					writer.WriteElementString("published", date + "Z");
 				}
+
+			if (item.LastUpdatedTime != defDate)
+				{
+					string date = item.LastUpdatedTime.ToUniversalTime().ToString("s");
+					writer.WriteElementString("updated", date + "Z");
+				}
+
+			WriteXml(writer, item.Content, "content");
+			WriteXml(writer, item.Copyright, "rights");
 
 			writer.WriteEndElement();
 		}

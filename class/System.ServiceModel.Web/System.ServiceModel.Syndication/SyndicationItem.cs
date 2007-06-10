@@ -42,6 +42,12 @@ namespace System.ServiceModel.Syndication
 		private DateTime lastUpdatedTime;
 		private TextSyndicationContent copyright;
 
+		public SyndicationItem()
+		{
+			publishDate = new DateTime(0);
+			lastUpdatedTime = new DateTime(0);
+		}
+
 		public void WriteTo(XmlWriter writer, SyndicationSerializer serializer)
 		{
 			serializer.WriteTo(writer, this);

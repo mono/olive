@@ -47,20 +47,12 @@ namespace System.ServiceModel.Syndication
 			Assert.IsNull(item.Summary);
 			Assert.IsNull(item.Content);
 			Assert.IsNull(item.SourceFeed);
-			Assert.IsNotNull(item.PublishDate);
-			Assert.IsNotNull(item.LastUpdatedTime);
 			Assert.IsNull(item.Copyright);
-		}
 
-		[Test]
-		public void SyndicationItem_DateTests()
-		{
-			Console.WriteLine(DateTime.Now);
-			SyndicationItem item = new SyndicationItem();
-			Console.WriteLine(item.PublishDate);
-			Console.WriteLine(item.LastUpdatedTime);
+			DateTime defDate = new DateTime(0);
+			Assert.AreEqual(item.PublishDate, defDate);
+			Assert.AreEqual(item.LastUpdatedTime, defDate);
 		}
-
 	}
 }
 
