@@ -185,8 +185,18 @@ namespace System.Windows {
 
 				case Kind.STRING:
 					return Marshal.PtrToStringAuto ((IntPtr) px);
+
+				case Kind.COLOR: {
+					IntPtr vptr = *((IntPtr *) px);
+					if (vptr == IntPtr.Zero)
+						return new Color ();
+					
+					double *dp = (double *) vptr;
+					
+					return Color.FromScRgb ((float) dp [3], (float) dp [0], (float) dp [1], (float)dp [2]);
+					}
 				}
-				
+
 				//
 				// If it is a dependency object
 				if (k > Kind.DEPENDENCY_OBJECT){

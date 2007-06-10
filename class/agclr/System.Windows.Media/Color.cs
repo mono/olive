@@ -130,7 +130,7 @@ namespace System.Windows.Media {
 
 		public override string ToString ()
 		{
-			return String.Format ("#{0:8X}", argb);
+			return String.Format ("#{0,8:X}", argb);
 		}
 
 		public static Color Add (Color color1, Color color2)
