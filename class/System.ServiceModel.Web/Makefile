@@ -19,7 +19,7 @@ NO_TEST = yes
 endif
 
 test-data-ondotnet:
-	csc -out:SyndicationSerializerUtil.exe -r:System.ServiceModel.Web.dll $(LIB_MCS_FLAGS) Test\\System.ServiceModel.Syndication\\SyndicationSerializerUtil.cs Test\\System.ServiceModel.Syndication\\FeedLib.cs
+	csc -out:SyndicationSerializerUtil.exe -r:../lib/net_3_0/System.ServiceModel.Web.dll $(LIB_MCS_FLAGS) Test\\System.ServiceModel.Syndication\\SyndicationSerializerUtil.cs Test\\System.ServiceModel.Syndication\\FeedLib.cs
 	./SyndicationSerializerUtil.exe
 
 test-data:
