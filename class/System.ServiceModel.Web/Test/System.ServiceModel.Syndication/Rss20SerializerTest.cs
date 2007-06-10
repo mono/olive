@@ -75,42 +75,42 @@ namespace System.ServiceModel.Syndication
 		[Test]
 		public void Serializer_Properties()
 		{
-			Assert.AreEqual(FeedName, "channel");
-			Assert.AreEqual(FeedNamespace, "");
-			Assert.AreEqual(ItemName, "item");
-			Assert.AreEqual(ItemNamespace, "");
+			Assert.AreEqual("rss", FeedName);
+			Assert.AreEqual("", FeedNamespace);
+			Assert.AreEqual("item", ItemName);
+			Assert.AreEqual("", ItemNamespace);
 		}
 
 		[Test]
 		public void Serialize_EmptyFeed()
 		{
-			string a1 = FeedToString("EmptyFeed");
-			string a2 = SyndicationFeedToString(FeedLib.EmptyFeed);
-			Assert.AreEqual(a1, a2);
+			string expected = FeedToString("EmptyFeed");
+			string actual = SyndicationFeedToString(FeedLib.EmptyFeed);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
 		public void Serialize_FeedNoItems()
 		{
-			string a1 = FeedToString("FeedNoItems");
-			string a2 = SyndicationFeedToString(FeedLib.FeedNoItems);
-			Assert.AreEqual(a1, a2);
+			string expected = FeedToString("FeedNoItems");
+			string actual = SyndicationFeedToString(FeedLib.FeedNoItems);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
 		public void Serialize_FeedWithItems()
 		{
-			string a1 = FeedToString("FeedWithItems");
-			string a2 = SyndicationFeedToString(FeedLib.FeedWithItems);
-			Assert.AreEqual(a1, a2);
+			string expected = FeedToString("FeedWithItems");
+			string actual = SyndicationFeedToString(FeedLib.FeedWithItems);
+			Assert.AreEqual(expected, actual);
 		}
 
 		[Test]
 		public void Serialize_FeedNoItemsSimpleProps()
 		{
-			string a1 = FeedToString("FeedNoItemsSimpleProps");
-			string a2 = SyndicationFeedToString(FeedLib.FeedNoItemsSimpleProps);
-			Assert.AreEqual(a1, a2);
+			string expected = FeedToString("FeedNoItemsSimpleProps");
+			string actual = SyndicationFeedToString(FeedLib.FeedNoItemsSimpleProps);
+			Assert.AreEqual(expected, actual);
 		}
 
 	}

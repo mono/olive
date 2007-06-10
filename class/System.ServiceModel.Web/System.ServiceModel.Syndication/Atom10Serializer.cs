@@ -38,11 +38,21 @@ namespace System.ServiceModel.Syndication
 		{
 			writer.WriteStartElement(FeedName, FeedNamespace);
 
+			if (!String.IsNullOrEmpty(feed.Language))
+					writer.WriteAttributeString("xml:lang", feed.Language);
+
 			WriteXml(writer, feed.Title, "title", true);
 			writer.WriteElementString("id", feed.Id);
+			WriteXml(writer, feed.Copyright, "rights");
 
 			string updated = feed.LastUpdatedTime.ToUniversalTime().ToString("s");
 			writer.WriteElementString("updated", updated + "Z");
+
+			if (feed.ImageUrl != null)
+				writer.WriteElementString("logo", feed.ImageUrl.ToString());
+
+			if (!String.IsNullOrEmpty(feed.Generator))
+				writer.WriteElementString("generator", feed.Generator);
 
 			WriteXml(writer, feed.Description, "summary");
 

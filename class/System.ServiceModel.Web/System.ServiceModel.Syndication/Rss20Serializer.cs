@@ -36,6 +36,7 @@ namespace System.ServiceModel.Syndication
 		internal override void WriteXml(XmlWriter writer, SyndicationFeed feed)
 		{
 			writer.WriteStartElement(FeedName, FeedNamespace);
+			writer.WriteStartElement("channel", FeedNamespace);
 			writer.WriteElementString("id", feed.Id);
 
 			WriteXml(writer, feed.Title, "title");
@@ -59,7 +60,7 @@ namespace System.ServiceModel.Syndication
 		}
 
 		protected override string FeedName { 
-			get { return "channel"; } 
+			get { return "rss"; } 
 		}
 
 		protected override string FeedNamespace { 
