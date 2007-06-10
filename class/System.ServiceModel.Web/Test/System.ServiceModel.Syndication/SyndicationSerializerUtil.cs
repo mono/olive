@@ -1,4 +1,7 @@
 using System;
+using System.IO;
+using System.Xml;
+using System.ServiceModel.Syndication;
 
 class SyndicationSerializerUtil
 {
@@ -7,7 +10,7 @@ class SyndicationSerializerUtil
 	public static void DumpFeed(SyndicationFeed f, string label)
 	{
 		string path = Path.Combine("Test", label);
-		f.LastUpdatedTime = FeedLib.FixedChangedDate
+		f.LastUpdatedTime = FeedLib.FixedChangedDate;
 
 		using (XmlTextWriter writer = new XmlTextWriter(path + ".atom.xml", null))
 			{
