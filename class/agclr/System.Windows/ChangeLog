@@ -1,3 +1,8 @@
+2007-06-10  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: Add support for marshalling arrays of
+	doubles. 
+
 2007-06-09  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs (SetValue): Also consider class hierarchy,

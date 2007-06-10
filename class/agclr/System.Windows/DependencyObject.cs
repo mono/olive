@@ -183,9 +183,11 @@ namespace System.Windows {
 				throw new ArgumentNullException ("property");
 			
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
-
-			if (x == IntPtr.Zero)
+			if (x == IntPtr.Zero){
+				Console.WriteLine ("Found null for object {0}, with property {1}");
+				
 				return null;
+			}
 
 			Kind k;
 			unsafe {
@@ -257,15 +259,20 @@ namespace System.Windows {
 					if (dov.native == IntPtr.Zero)
 						throw new Exception (String.Format (
 							"Object {0} has not set its native property", dov.GetType()));
-					
 
 					//
 					// Keep track of this object, so we know how to map it
-					// on the way out.
+					// if it comes back. 
 					//
 					objects [dov.native] = dov;
+					value.k = dov.GetKind ();
+					if (value.k == Kind.DEPENDENCY_OBJECT){
+						throw new NotImplementedException (
+                                                  String.Format ("Class {0} does not implement GetKind", dov));
+					}
+
 					*((IntPtr *) p) = dov.native;
-				} if (v is int){
+				} else if (v is int){
 					value.k = Kind.INT32;
 					*((int *) p) = (int) v;
 				} else if (v is bool){
@@ -289,20 +296,26 @@ namespace System.Windows {
 					Marshal.WriteByte (result, bytes.Length, 0);
 
 					*((IntPtr *) p) = result;
-				} else if (v is DependencyObject){
-					DependencyObject x = v as DependencyObject;
+				} else if (v is double []){
+					double [] dv = (double []) v;
+
+					value.k = Kind.DOUBLE_ARRAY;
+					IntPtr result = Marshal.AllocHGlobal (8 + sizeof (double) * dv.Length);
+					int *ip = (int *) result;
+					ip [0] = dv.Length;
+					ip [1] = 1;  // refcount;
+					double *dp = (double *) ip;
+					dp++;
+					foreach (double d in dv)
+						*dp++ = d;
 					
-					value.k = x.GetKind ();
-					if (value.k == Kind.DEPENDENCY_OBJECT){
-						throw new NotImplementedException (
-						   String.Format ("Class {0} does not implement GetKind", x));
-					}
-					*((IntPtr *) p) = x.native;
+					*((IntPtr *) p) = result;
 				} else if (v is Color){
 					value = NativeMethods.value_color_from_argb (((Color) v).argb);
-				} else
+				} else {
 					throw new NotImplementedException (
 						String.Format ("Do not know how to encode {0} yet", v.GetType ()));
+				}
 			}
 			return value;
 		}

@@ -1,3 +1,7 @@
+2007-06-10  Miguel de Icaza  <miguel@novell.com>
+
+	* Line.cs: Register properties properly
+
 2007-06-08  Miguel de Icaza  <miguel@novell.com>
 
 	* Rectangle.cs: First binding.

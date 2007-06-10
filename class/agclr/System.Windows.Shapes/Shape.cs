@@ -75,7 +75,6 @@ namespace System.Windows.Shapes {
 		}
 
 		public double[] StrokeDashArray {
-			get { return (double[]) GetValue (StrokeDashArrayProperty); }
 			set { SetValue (StrokeDashArrayProperty, value); }
 		}
 

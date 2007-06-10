@@ -25,15 +25,19 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Shapes {
 
 	public class Line : Shape {
 
-		public static readonly DependencyProperty X1Property = DependencyProperty.Register ("X1", typeof (double), typeof (Line));
-		public static readonly DependencyProperty Y1Property = DependencyProperty.Register ("Y1", typeof (double), typeof (Line));
-		public static readonly DependencyProperty X2Property = DependencyProperty.Register ("X2", typeof (double), typeof (Line));
-		public static readonly DependencyProperty Y2Property = DependencyProperty.Register ("Y2", typeof (double), typeof (Line));
+		public static readonly DependencyProperty X1Property =
+			DependencyProperty.Lookup (Kind.LINE, "X1", typeof (double));
+		public static readonly DependencyProperty Y1Property =
+			DependencyProperty.Lookup (Kind.LINE, "Y1", typeof (double));
+		public static readonly DependencyProperty X2Property =
+			DependencyProperty.Lookup (Kind.LINE, "X2", typeof (double));
+		public static readonly DependencyProperty Y2Property =
+			DependencyProperty.Lookup (Kind.LINE, "Y2", typeof (double));
 
 		public Line ()
 		{
