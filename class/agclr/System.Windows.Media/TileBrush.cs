@@ -25,14 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class TileBrush : Brush {
 
-		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Register ("AlignmentX", typeof (double), typeof (TileBrush));
-		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Register ("AlignmentY", typeof (double), typeof (TileBrush));
-		public static readonly DependencyProperty StretchProperty = DependencyProperty.Register ("Stretch", typeof (Stretch), typeof (TileBrush));
+		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AlignmentX", typeof (TileBrush));
+		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AlignmentY", typeof (TileBrush));
+		public static readonly DependencyProperty StretchProperty = DependencyProperty.Lookup (Kind.INT32, "Stretch", typeof (TileBrush));
 
 
 		public TileBrush ()

@@ -25,14 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class RectangleGeometry : Geometry {
 
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusX", typeof (double), typeof (RectangleGeometry));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusY", typeof (double), typeof (RectangleGeometry));
-		public static readonly DependencyProperty RectProperty = DependencyProperty.Register ("Rect", typeof (Rect), typeof (RectangleGeometry));
+		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Lookup (Kind.DOUBLE, "RadiusX", typeof (RectangleGeometry));
+		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.DOUBLE, "RadiusY", typeof (RectangleGeometry));
+		public static readonly DependencyProperty RectProperty = DependencyProperty.Lookup (Kind.RECT, "Rect", typeof (RectangleGeometry));
 
 		public RectangleGeometry ()
 		{

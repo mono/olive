@@ -25,12 +25,13 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class MediaAttribute : DependencyObject {
 
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Register ("Value", typeof (string), typeof (MediaAttribute));
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Lookup (Kind.STRING, "Value", typeof (MediaAttribute));
 
 		public MediaAttribute ()
 		{

@@ -1,3 +1,9 @@
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* RadialGradientBrush.cs, TileBrush.cs, RectangleGeometry.cs,
+	  MediaAttribute.cs, SkewTransform.cs: Move from
+	  DependencyProperty.Register to DependencyProperty.Lookup.
+
 2007-06-05  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Color.cs: Complete, needs testing (and maybe change to use 4 float

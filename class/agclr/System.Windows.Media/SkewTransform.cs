@@ -25,15 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class SkewTransform : Transform {
 
-		public static readonly DependencyProperty AngleXProperty = DependencyProperty.Register ("AngleX", typeof (double), typeof (SkewTransform));
-		public static readonly DependencyProperty AngleYProperty = DependencyProperty.Register ("AngleY", typeof (double), typeof (SkewTransform));
-		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register ("CenterX", typeof (double), typeof (SkewTransform));
-		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register ("CenterY", typeof (double), typeof (SkewTransform));
+		public static readonly DependencyProperty AngleXProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AngleX", typeof (SkewTransform));
+		public static readonly DependencyProperty AngleYProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AngleY", typeof (SkewTransform));
+		public static readonly DependencyProperty CenterXProperty = DependencyProperty.Lookup (Kind.DOUBLE, "CenterX", typeof (SkewTransform));
+		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Lookup (Kind.DOUBLE, "CenterY", typeof (SkewTransform));
 
 
 		public SkewTransform ()

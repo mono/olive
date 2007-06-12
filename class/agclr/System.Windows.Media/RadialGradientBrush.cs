@@ -25,15 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class RadialGradientBrush : GradientBrush {
 
-		public static readonly DependencyProperty CenterProperty = DependencyProperty.Register ("Center", typeof (Point), typeof (RadialGradientBrush));
-		public static readonly DependencyProperty GradientOriginProperty = DependencyProperty.Register ("GradientOrigin", typeof (Point), typeof (RadialGradientBrush));
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Register ("RadiusX", typeof (Point), typeof (RadialGradientBrush));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Register ("RadiusY", typeof (Point), typeof (RadialGradientBrush));
+		public static readonly DependencyProperty CenterProperty = DependencyProperty.Lookup (Kind.POINT, "Center", typeof (RadialGradientBrush));
+		public static readonly DependencyProperty GradientOriginProperty = DependencyProperty.Lookup (Kind.POINT, "GradientOrigin", typeof (RadialGradientBrush));
+		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Lookup (Kind.POINT, "RadiusX", typeof (RadialGradientBrush));
+		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.POINT, "RadiusY", typeof (RadialGradientBrush));
 
 
 		public RadialGradientBrush ()
