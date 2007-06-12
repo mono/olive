@@ -1,5 +1,11 @@
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Downloader.cs: Implement Uri property - since Uri is not an object
+	  inherited from DependencyObject, in unmanaged land it's stored as a
+	  string.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* DependencyProperty.cs: Delete Register.
 	* Downloader.cs: Move from DependencyProperty.Register to
 	  DependencyProperty.Lookup.

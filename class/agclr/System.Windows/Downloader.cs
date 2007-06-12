@@ -35,7 +35,7 @@ namespace System.Windows {
 		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Lookup (Kind.STRING, "ResponseText", typeof (Downloader));
 		public static readonly DependencyProperty StatusProperty = DependencyProperty.Lookup (Kind.INT32, "Status", typeof (Downloader));
 		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.STRING, "StatusText", typeof (Downloader));
-		public static readonly DependencyProperty UriProperty;//TODO// = DependencyProperty.Lookup ("Uri", Kind.URI, typeof (Downloader));
+		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.STRING, "Uri", typeof (Downloader));
 
 
 		public Downloader ()
@@ -64,8 +64,15 @@ namespace System.Windows {
 		}
 
 		public Uri Uri {
-			get { return (Uri) GetValue (UriProperty); }
-			set { SetValue (UriProperty, value); }
+			get {
+				// Uri is not a DependencyObject, we save it as a string
+				string uri = (string) GetValue (UriProperty);
+				return new Uri (uri);
+			}
+			set {
+				string uri = value.OriginalString;
+				SetValue (UriProperty, uri); 
+			}
 		}
 
 
