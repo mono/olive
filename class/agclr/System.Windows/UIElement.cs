@@ -32,6 +32,7 @@ using System.Windows.Input;
 using Mono;
 
 namespace System.Windows {
+	
 	public abstract class UIElement : Visual {
 	        public static readonly DependencyProperty OpacityProperty;
 	        public static readonly DependencyProperty ClipProperty;
@@ -162,14 +163,14 @@ namespace System.Windows {
 				SetValue (VisibilityProperty, value);
 			}
 		}
-		
+
 		public event EventHandler GotFocus;
 		public event EventHandler LostFocus;
 		public event EventHandler Loaded;
 			
 		public event KeyboardEventHandler KeyDown;
 		public event KeyboardEventHandler KeyUp;
-		
+
 		public event MouseEventHandler MouseEnter;
 		public event EventHandler MouseLeave;
 		

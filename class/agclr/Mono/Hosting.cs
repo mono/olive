@@ -28,6 +28,7 @@
 //
 using System;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace Mono {
 	public class Hosting {
@@ -38,6 +39,12 @@ namespace Mono {
 				throw new ArgumentNullException ("obj");
 
 			return obj.native;
+		}
+
+		internal static void SurfaceAttach (IntPtr raw, Canvas c)
+		{
+			NativeMethods.surface_attach (raw, c.native);
+			Events.InitSurface (raw);
 		}
 	}
 }

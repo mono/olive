@@ -35,7 +35,20 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static void runtime_init ();
-		
+
+		[DllImport("moon")]
+		internal extern static void register_events (IntPtr surface,
+							     CallbackMouseEvent motion,
+							     CallbackMouseEvent down,
+							     CallbackMouseEvent up,
+							     CallbackMouseEvent enter,
+							     PlainEvent got_focus,
+							     PlainEvent lost_focus,
+							     PlainEvent loaded,
+							     PlainEvent mouse_leave,
+							     KeyboardEvent keydown,
+							     KeyboardEvent keyup);
+	
 #region Base
 		[DllImport("moon")]
 		internal extern static void base_ref (IntPtr ptr);
@@ -190,5 +203,8 @@ namespace Mono {
 		internal extern static IntPtr begin_storyboard_new ();
 
 #endregion
+
+		[DllImport ("moon")]
+		internal extern static IntPtr surface_attach (IntPtr surface, IntPtr toplevel);
 	}
 }
