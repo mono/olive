@@ -149,7 +149,6 @@ namespace System.Windows {
 			case Kind.BEGINSTORYBOARD: return null;
 			case Kind.EVENTTRIGGER: return null;
 			case Kind.STROKE_COLLECTION: return null;
-			case Kind.INLINES: return null;
 			case Kind.STYLUSPOINT_COLLECTION: return null;
 			case Kind.KEYFRAME_COLLECTION: return null;
 			case Kind.TIMELINEMARKER_COLLECTION: return null;

@@ -1,3 +1,8 @@
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Remove Kind.INLINES, it's not implemented in
+	  unmanaged code.
+
 2007-06-10  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs: Add support for marshalling arrays of
