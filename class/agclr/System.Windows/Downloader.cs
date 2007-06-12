@@ -25,16 +25,17 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows {
 
 	public sealed class Downloader : DependencyObject {
 
-		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Register ("DownloadProgress", typeof (double), typeof (Downloader));
-		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Register ("ResponseText", typeof (string), typeof (Downloader));
-		public static readonly DependencyProperty StatusProperty = DependencyProperty.Register ("Status", typeof (int), typeof (Downloader));
-		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Register ("StatusText", typeof (string), typeof (Downloader));
-		public static readonly DependencyProperty UriProperty = DependencyProperty.Register ("Uri", typeof (Uri), typeof (Downloader));
+		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Lookup (Kind.DOUBLE, "DownloadProgress", typeof (Downloader));
+		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Lookup (Kind.STRING, "ResponseText", typeof (Downloader));
+		public static readonly DependencyProperty StatusProperty = DependencyProperty.Lookup (Kind.INT32, "Status", typeof (Downloader));
+		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.STRING, "StatusText", typeof (Downloader));
+		public static readonly DependencyProperty UriProperty;//TODO// = DependencyProperty.Lookup ("Uri", Kind.URI, typeof (Downloader));
 
 
 		public Downloader ()

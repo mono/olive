@@ -1,5 +1,11 @@
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* DependencyProperty.cs: Delete Register.
+	* Downloader.cs: Move from DependencyProperty.Register to
+	  DependencyProperty.Lookup.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* DependencyObject.cs: Added back Inlines.
 
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 

@@ -50,8 +50,7 @@ namespace System.Windows {
 			native = handle;
 			type = t;
 		}
-		
-		internal static DependencyProperty Lookup (Kind type, string name, Type t)
+		internal static DependencyProperty Lookup (Kind type, string name, Type ownerType)
 		{
 			IntPtr handle = NativeMethods.dependency_property_lookup (type, name);
 
@@ -59,15 +58,10 @@ namespace System.Windows {
 				throw new Exception (
 					String.Format ("DependencyProperty.Lookup: {0} lacks {1}", type, name));
 
-			return new DependencyProperty (handle, t);
-		}
-
-		internal static DependencyProperty Register (string name, Type propertyType, Type ownerType)
-		{
-			Console.WriteLine ("This way of registering properties is no longer supported:");
-			Console.WriteLine ("owner={0} {1} of type {2}", ownerType, name, propertyType);
-
-			return null;
+			if (ownerType == null)
+				throw new ArgumentNullException ("ownerType");
+			
+			return new DependencyProperty (handle, ownerType);
 		}
 	}
 }
