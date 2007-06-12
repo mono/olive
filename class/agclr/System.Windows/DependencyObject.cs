@@ -141,6 +141,7 @@ namespace System.Windows {
 			case Kind.ARCSEGMENT: return null;
 			case Kind.BEZIERSEGMENT: return null;
 			case Kind.LINESEGMENT: return null;
+			case Kind.INLINES: return null;
 			case Kind.POLYBEZIERSEGMENT: return null;
 			case Kind.POLYLINESEGMENT: return null;
 			case Kind.POLYQUADRATICBEZIERSEGMENT: return null;

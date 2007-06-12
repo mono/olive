@@ -1,5 +1,9 @@
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* DependencyObject.cs: Added back Inlines.
+
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* DependencyObject.cs: Remove Kind.INLINES, it's not implemented in
 	  unmanaged code.
 
