@@ -1,3 +1,8 @@
+2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Polyline.cs, Path.cs, Polygon.cs: Move from
+	  DependencyProperty.Register to DependencyProperty.Lookup.
+
 2007-06-10  Miguel de Icaza  <miguel@novell.com>
 
 	* Line.cs: Register properties properly

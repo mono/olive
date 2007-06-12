@@ -27,13 +27,14 @@
 //
 
 using System.Windows.Media;
+using Mono;
 
 namespace System.Windows.Shapes {
 
 	public class Polyline : Shape {
 
-		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register ("FillRule", typeof (FillRule), typeof (Polyline));
-		public static readonly DependencyProperty PointsProperty = DependencyProperty.Register ("Points", typeof (Point[]), typeof (Polyline));
+		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYGON, "FillRule", typeof (Polyline));
+		public static readonly DependencyProperty PointsProperty = DependencyProperty.Lookup (Kind.POINT_ARRAY, "Points", typeof (Polyline));
 
 		public Polyline ()
 		{

@@ -33,8 +33,8 @@ namespace System.Windows.Shapes {
 
 	public class Polygon : Shape {
 
-		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register ("FillRule", typeof (FillRule), typeof (Polygon));
-		public static readonly DependencyProperty PointsProperty = DependencyProperty.Register ("Points", typeof (Point[]), typeof (Polygon));
+		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYGON, "FillRule", typeof (Polygon));
+		public static readonly DependencyProperty PointsProperty = DependencyProperty.Lookup (Kind.POINT_ARRAY, "Points", typeof (Polygon));
 
 		public Polygon ()
 		{
