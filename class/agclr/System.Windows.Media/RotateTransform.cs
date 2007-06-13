@@ -38,14 +38,12 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty CenterYProperty =
 			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "CenterY", typeof (double));
 
-		public RotateTransform ()
+		public RotateTransform () : base (NativeMethods.rotate_transform_new ())
 		{
-			native = Mono.NativeMethods.rotate_transform_new ();
 		}
 
-		internal RotateTransform (IntPtr raw)
+		internal RotateTransform (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 	
 		public double Angle {

@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 		{
 		}
 		
-		public VisualCollection ()
+		public VisualCollection () : base (NativeMethods.visual_collection_new ())
 		{
-			native = NativeMethods.visual_collection_new ();
 		}
 		
 		protected internal override Kind GetKind ()

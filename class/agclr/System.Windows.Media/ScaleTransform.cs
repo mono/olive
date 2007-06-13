@@ -39,9 +39,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty ScaleYProperty =
 			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "ScaleY", typeof (double));
 
-		public ScaleTransform ()
+		public ScaleTransform () : base (NativeMethods.scale_transform_new ())
 		{
-			native = Mono.NativeMethods.scale_transform_new ();
 		}
 
 		internal ScaleTransform (IntPtr raw)

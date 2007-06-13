@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty StartPointProperty =
 			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "StartPoint", typeof (Point));
 
-		public LineGeometry ()
+		public LineGeometry () : base (Mono.NativeMethods.line_geometry_new ())
 		{
-			native = Mono.NativeMethods.line_geometry_new ();
 		}
 
 		public Point EndPoint {

@@ -33,9 +33,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty FiguresProperty =
 			DependencyProperty.Lookup (Kind.PATHGEOMETRY, "Figures", typeof (PathFigureCollection));
 
-		public PathGeometry ()
+		public PathGeometry () : base (NativeMethods.path_geometry_new ())
 		{
-			native = Mono.NativeMethods.path_geometry_new ();
 		}
 
 		public PathFigureCollection Figures {

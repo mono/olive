@@ -34,9 +34,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty ColorProperty =
 			DependencyProperty.Lookup (Kind.SOLIDCOLORBRUSH, "Color", typeof (Color));
 
-		public SolidColorBrush ()
+		public SolidColorBrush () : base (NativeMethods.solid_color_brush_new ())
 		{
-			native = NativeMethods.solid_color_brush_new ();
 		}
 
 		public SolidColorBrush (Color c) : this ()

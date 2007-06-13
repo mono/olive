@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 			DependencyProperty.Lookup (Kind.LINEARGRADIENTBRUSH, "EndPoint", typeof (Point));
 
 
-		public LinearGradientBrush ()
+		public LinearGradientBrush () : base (NativeMethods.linear_gradient_brush_new ())
 		{
-			native = NativeMethods.linear_gradient_brush_new ();
 		}
 
 

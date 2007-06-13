@@ -34,14 +34,12 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty ChildrenProperty =
 			DependencyProperty.Lookup (Kind.GEOMETRYGROUP, "Children", typeof (GeometryCollection));
 
-		public GeometryGroup ()
+		public GeometryGroup () : base (NativeMethods.geometry_group_new ())
 		{
-			native = NativeMethods.geometry_group_new ();
 		}
 
-		internal GeometryGroup (IntPtr raw)
+		internal GeometryGroup (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 
 		public GeometryCollection Children {

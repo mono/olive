@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 			Point3Property = DependencyProperty.Lookup (Kind.BEZIERSEGMENT, "Point3", typeof (Point));
 		}
 		
-		public BezierSegment ()
+		public BezierSegment () : base (NativeMethods.bezier_segment_new ())
 		{
-			native = NativeMethods.bezier_segment_new ();
 		}
 		
 		public Point Point1 {

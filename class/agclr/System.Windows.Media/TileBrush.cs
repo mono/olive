@@ -36,9 +36,12 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty StretchProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "Stretch", typeof (int));
 
 
-		public TileBrush ()
+		public TileBrush () : base (NativeMethods.tile_brush_new ())
 		{
-			native = NativeMethods.tile_brush_new ();
+		}
+		
+		internal TileBrush (IntPtr raw) : base (raw)
+		{
 		}
 
 

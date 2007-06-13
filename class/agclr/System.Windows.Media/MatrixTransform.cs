@@ -33,9 +33,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty MatrixProperty =
 			DependencyProperty.Lookup (Kind.MATRIXTRANSFORM, "Matrix", typeof (Matrix));
 
-		public MatrixTransform ()
+		public MatrixTransform () : base (NativeMethods.matrix_transform_new ())
 		{
-			native = Mono.NativeMethods.matrix_transform_new ();
 		}
 
 		internal MatrixTransform (IntPtr raw)

@@ -30,7 +30,7 @@ using Mono;
 namespace System.Windows.Media {
 	public abstract class Visual : DependencyObject {
 
-		public Visual ()
+		internal Visual (IntPtr raw) : base (raw)
 		{
 		}
 

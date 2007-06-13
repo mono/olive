@@ -35,9 +35,8 @@ namespace System.Windows.Media {
 				Kind.POLYQUADRATICBEZIERSEGMENT, "Points", typeof (Point[]));
 		}
 
-		public PolyQuadraticBezierSegment ()
+		public PolyQuadraticBezierSegment () : base (NativeMethods.poly_quadratic_segment_new ())
 		{
-			native = Mono.NativeMethods.poly_quadratic_segment_new ();
 		}
 		
 		public Point [] Points {

@@ -35,9 +35,8 @@ namespace System.Windows.Media {
 			PointsProperty = DependencyProperty.Lookup (Kind.POLYLINESEGMENT, "Points", typeof (Point[]));
 		}
 
-		public PolyLineSegment ()
+		public PolyLineSegment () : base (NativeMethods.poly_line_segment_new ())
 		{
-			native = NativeMethods.poly_line_segment_new ();
 		}
 		
 		public Point [] Points {

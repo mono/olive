@@ -32,9 +32,8 @@ using Mono;
 namespace System.Windows.Media {
 
 	public class PathSegmentCollection : Collection<PathSegment> {
-		public PathSegmentCollection ()
+		public PathSegmentCollection () : base (NativeMethods.path_segment_collection_new ())
 		{
-			native = NativeMethods.path_segment_collection_new ();
 		}
 		
 		protected internal override Kind GetKind ()

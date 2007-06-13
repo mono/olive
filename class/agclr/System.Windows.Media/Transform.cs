@@ -29,10 +29,12 @@ using Mono;
 namespace System.Windows.Media {
 	public class Transform : DependencyObject {
 		
-		public Transform ()
+		public Transform () : base (NativeMethods.transform_new ())
 		{
-			if (GetKind () == Kind.TRANSFORM)
-				native = NativeMethods.transform_new ();
+		}
+		
+		internal Transform (IntPtr raw) : base (raw)
+		{
 		}
 
 		protected internal override Kind GetKind ()

@@ -39,9 +39,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty StartPointProperty = 
 			DependencyProperty.Lookup (Kind.PATHFIGURE, "StartPoint", typeof (Point));
 
-		public PathFigure ()
+		public PathFigure () : base (NativeMethods.path_figure_new ())
 		{
-			native = NativeMethods.path_figure_new ();
 		}
 
 		public bool IsClosed {

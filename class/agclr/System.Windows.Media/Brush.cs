@@ -40,10 +40,12 @@ namespace System.Windows.Media {
 			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform", typeof (TransformGroup));
 		}
 		
-		public Brush ()
+		public Brush () : base (NativeMethods.brush_new ())
 		{
-			if (GetKind () == Kind.BRUSH)
-				native = NativeMethods.brush_new ();
+		}
+		
+		internal Brush (IntPtr raw) : base (raw)
+		{
 		}
 
 		public double Opacity {

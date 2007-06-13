@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty YProperty =
 			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "Y", typeof (double));
 
-		public TranslateTransform ()
+		public TranslateTransform () : base (NativeMethods.translate_transform_new ())
 		{
-			native = Mono.NativeMethods.translate_transform_new ();
 		}
 
 		internal TranslateTransform (IntPtr raw)

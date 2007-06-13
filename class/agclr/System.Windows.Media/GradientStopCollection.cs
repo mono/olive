@@ -32,9 +32,8 @@ using Mono;
 namespace System.Windows.Media {
 
 	public class GradientStopCollection : Collection<GradientStop> {
-		public GradientStopCollection ()
+		public GradientStopCollection () : base (NativeMethods.gradient_stop_collection_new ())
 		{
-			native = NativeMethods.gradient_stop_collection_new ();
 		}
 		
 		protected internal override Kind GetKind ()

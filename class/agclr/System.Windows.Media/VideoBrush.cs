@@ -33,9 +33,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty SourceNameProperty =
 			DependencyProperty.Lookup (Kind.VIDEOBRUSH, "SourceName", typeof (string));
 
-		public VideoBrush ()
+		public VideoBrush () : base (NativeMethods.video_brush_new ())
 		{
-			native = NativeMethods.video_brush_new ();
 		}
 
 		public string SourceName {

@@ -38,9 +38,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty RadiusYProperty =
 			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "RadiusY", typeof (double));
 
-		public EllipseGeometry ()
+		public EllipseGeometry () : base (NativeMethods.ellipse_geometry_new ())
 		{
-			native = NativeMethods.ellipse_geometry_new ();
 		}
 
 		public Point Center {

@@ -35,9 +35,8 @@ namespace System.Windows.Media {
 			PointProperty = DependencyProperty.Lookup (Kind.LINESEGMENT, "Point", typeof (Point));
 		}
 
-		public LineSegment ()
+		public LineSegment () : base (Mono.NativeMethods.line_segment_new ())
 		{
-			native = Mono.NativeMethods.line_segment_new ();
 		}
 		
 		public Point Point {

@@ -37,9 +37,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "RadiusY", typeof (double));
 
 
-		public RadialGradientBrush ()
+		public RadialGradientBrush () : base (NativeMethods.radial_gradient_brush_new ())
 		{
-			native = NativeMethods.radial_gradient_brush_new ();
 		}
 
 

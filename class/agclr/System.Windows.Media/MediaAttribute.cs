@@ -33,9 +33,8 @@ namespace System.Windows.Media {
 
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Lookup (Kind.MEDIAATTRIBUTE, "Value", typeof (string));
 
-		public MediaAttribute ()
+		public MediaAttribute () : base (NativeMethods.media_attribute_new ())
 		{
-			native = NativeMethods.media_attribute_new ();
 		}
 
 		public string Value {

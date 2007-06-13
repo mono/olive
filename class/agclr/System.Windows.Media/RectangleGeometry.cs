@@ -35,9 +35,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.RECTANGLEGEOMETRY, "RadiusY", typeof (double));
 		public static readonly DependencyProperty RectProperty = DependencyProperty.Lookup (Kind.RECTANGLEGEOMETRY, "Rect", typeof (Rect));
 
-		public RectangleGeometry ()
+		public RectangleGeometry () : base (NativeMethods.rectangle_geometry_new ())
 		{
-			native = Mono.NativeMethods.rectangle_geometry_new ();
 		}
 
 		public double RadiusX {

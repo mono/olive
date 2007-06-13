@@ -30,9 +30,8 @@ namespace System.Windows.Media {
 	public class TransformGroup : Transform {
 		public static readonly DependencyProperty ChildrenProperty;
 		
-		public TransformGroup ()
+		public TransformGroup () : base (NativeMethods.transform_group_new ())
 		{
-			native = Mono.NativeMethods.transform_group_new ();
 		}
 
 		public TransformCollection Children {

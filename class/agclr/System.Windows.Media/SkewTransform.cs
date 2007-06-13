@@ -37,9 +37,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty CenterYProperty = DependencyProperty.Lookup (Kind.SKEWTRANSFORM, "CenterY", typeof (double));
 
 
-		public SkewTransform ()
+		public SkewTransform () : base (NativeMethods.skew_transform_new ())
 		{
-			native = NativeMethods.skew_transform_new ();
 		}
 
 

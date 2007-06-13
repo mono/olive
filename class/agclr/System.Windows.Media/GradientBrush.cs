@@ -41,10 +41,12 @@ namespace System.Windows.Media {
 			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "SpreadMethod", typeof (GradientSpreadMethod));
 
 
-		public GradientBrush ()
+		public GradientBrush () : base (NativeMethods.gradient_brush_new ())
 		{
-			if (GetKind () == Kind.GRADIENTBRUSH)
-				native = NativeMethods.gradient_brush_new ();
+		}
+		
+		internal GradientBrush (IntPtr raw) : base (raw)
+		{
 		}
 
 

@@ -36,9 +36,8 @@ namespace System.Windows.Media {
 			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Offset", typeof (double));
 
 
-		public GradientStop ()
+		public GradientStop () : base (NativeMethods.gradient_stop_new ())
 		{
-			native = NativeMethods.gradient_stop_new ();
 		}
 
 

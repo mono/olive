@@ -37,9 +37,8 @@ namespace System.Windows.Media {
 			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource", typeof (Uri));
 
 
-		public ImageBrush ()
+		public ImageBrush () : base(NativeMethods.image_brush_new ())
 		{
-			native = NativeMethods.image_brush_new ();
 		}
 
 

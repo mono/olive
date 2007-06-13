@@ -35,9 +35,8 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty Point2Property =
 			DependencyProperty.Lookup (Kind.QUADRATICBEZIERSEGMENT, "Point2", typeof (Point));
 
-		public QuadraticBezierSegment ()
+		public QuadraticBezierSegment () : base (NativeMethods.quadratic_bezier_segment_new ())
 		{
-			native = NativeMethods.quadratic_bezier_segment_new ();
 		}
 
 		public Point Point1 {
