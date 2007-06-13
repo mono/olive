@@ -177,5 +177,11 @@ namespace System.Windows {
 		public event MouseEventHandler MouseLeftButtonDown;
 		public event MouseEventHandler MouseLeftButtonUp;
 		public event MouseEventHandler MouseMove;
+
+		internal void InvokeMouseMove (MouseEventArgs m)
+		{
+			MouseMove (this, m);
+		}
+		
 	}
 }

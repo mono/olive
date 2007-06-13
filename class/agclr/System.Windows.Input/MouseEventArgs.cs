@@ -29,12 +29,16 @@
 namespace System.Windows.Input {
 	
 	public sealed class MouseEventArgs : EventArgs {
-		bool ctrl, shift;
-
-		internal MouseEventArgs (bool ctrl, bool shift)
+		DependencyObject o;
+		int state;
+		double x, y;
+		
+		internal MouseEventArgs (DependencyObject o, int state, double x, double y)
 		{
-			this.ctrl = ctrl;
-			this.shift = shift;
+			this.o = o;
+			this.state = state;
+			this.x = x;
+			this.y = y;
 		}
 		
 		public MouseEventArgs ()
@@ -43,7 +47,8 @@ namespace System.Windows.Input {
 
 		public Point GetPosition (UIElement uiElement)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine ("We should get the matrix and figure what this really is");
+			return new Point (x, y);
 		}
 
 #if not_yet_done
@@ -59,12 +64,22 @@ namespace System.Windows.Input {
 #endif
 		
 		public bool Ctrl {
-			get { return ctrl; }
-			set { ctrl = value; }
+			get { return (state & 4) != 0; }
+			set {
+				if (value)
+					state |= 4;
+				else
+					state &= ~4;
+			}
 		}
 		public bool Shift {
-			get { return shift; } 
-			set { shift = value; }
+			get { return (state & 1) != 0; } 
+			set {
+				if (value)
+					state |= 1;
+				else
+					state &= ~1;
+			}
 		}
 	}
 }
