@@ -61,5 +61,11 @@ namespace System.Windows.Media {
 			get { return (double) GetValue (RadiusYProperty); }
 			set { SetValue (RadiusYProperty, value); }
 		}
+#if false
+		protected internal override Kind GetKind ()
+		{
+			return Kind.RADIALGRADIENTBRUSH;
+		}
+#endif
 	}
 }

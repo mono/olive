@@ -59,6 +59,10 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
+		protected internal override Kind GetKind ()
+		{
+			return Kind.IMAGEBRUSH;
+		}
 
 		public event ErrorEventHandler ImageFailed;
 	}

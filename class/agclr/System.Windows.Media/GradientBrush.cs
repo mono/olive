@@ -66,5 +66,10 @@ namespace System.Windows.Media {
 			set { SetValue (SpreadMethodProperty, value); }
 		}
 
+		protected internal override Kind GetKind ()
+		{
+			return Kind.GRADIENTBRUSH;
+		}
+
 	}
 }

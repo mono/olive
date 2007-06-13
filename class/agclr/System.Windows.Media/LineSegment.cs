@@ -51,5 +51,10 @@ namespace System.Windows.Media {
 		}
 		
 		public static readonly DependencyProperty PointProperty;
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.LINESEGMENT;
+		}
 	}
 }

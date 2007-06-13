@@ -25,7 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Media {
 	public class TransformGroup : Transform {
 		public static readonly DependencyProperty ChildrenProperty;
@@ -43,6 +43,11 @@ namespace System.Windows.Media {
 			set {
 				throw new NotImplementedException ();
 			}
+		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.TRANSFORMGROUP;
 		}
 	}
 }

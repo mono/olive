@@ -63,5 +63,10 @@ namespace System.Windows.Media {
 			get { return (Point) GetValue (StartPointProperty); }
 			set { SetValue (StartPointProperty, value); }
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PATHFIGURE;
+		}
 	}
 }

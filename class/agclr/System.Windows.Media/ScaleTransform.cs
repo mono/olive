@@ -68,5 +68,10 @@ namespace System.Windows.Media {
 			get { return (double) GetValue (ScaleYProperty); }
 			set { SetValue (ScaleYProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.SCALETRANSFORM;
+		}
 	}
 }

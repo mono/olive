@@ -41,5 +41,10 @@ namespace System.Windows.Media {
 			get { return (string) GetValue (SourceNameProperty); }
 			set { SetValue (SourceNameProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.VIDEOBRUSH;
+		}
 	}
 }

@@ -50,5 +50,10 @@ namespace System.Windows.Media {
 			get { return (double) GetValue (OffsetProperty); }
 			set { SetValue (OffsetProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.GRADIENTSTOP;
+		}
 	}
 }

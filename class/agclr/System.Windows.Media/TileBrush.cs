@@ -55,5 +55,10 @@ namespace System.Windows.Media {
 			get { return (Stretch) GetValue (StretchProperty); }
 			set { SetValue (StretchProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.TILEBRUSH;
+		}
 	}
 }

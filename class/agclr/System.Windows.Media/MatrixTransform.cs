@@ -47,5 +47,10 @@ namespace System.Windows.Media {
 			get { return (Matrix) GetValue (MatrixProperty); }
 			set { SetValue (MatrixProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.MATRIXTRANSFORM;
+		}
 	}
 }

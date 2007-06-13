@@ -42,5 +42,10 @@ namespace System.Windows.Media {
 			get { return (PathFigureCollection) GetValue (FiguresProperty); }
 			set { SetValue (FiguresProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PATHGEOMETRY;
+		}
 	}
 }

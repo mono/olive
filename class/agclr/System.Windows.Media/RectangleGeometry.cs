@@ -54,5 +54,10 @@ namespace System.Windows.Media {
 			get { return (Rect) GetValue (RectProperty); }
 			set { SetValue (RectProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.RECTANGLEGEOMETRY;
+		}
 	}
 }

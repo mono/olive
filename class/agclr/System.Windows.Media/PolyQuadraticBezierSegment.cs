@@ -47,5 +47,10 @@ namespace System.Windows.Media {
 		}
 		
 		public static readonly DependencyProperty PointsProperty;
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.POLYQUADRATICBEZIERSEGMENT;
+		}
 	}
 }

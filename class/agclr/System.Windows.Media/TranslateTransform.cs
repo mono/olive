@@ -55,5 +55,10 @@ namespace System.Windows.Media {
 			get { return (double) GetValue (YProperty); }
 			set { SetValue (YProperty, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.TRANSLATETRANSFORM;
+		}
 	}
 }

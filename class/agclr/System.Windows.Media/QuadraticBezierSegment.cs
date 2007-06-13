@@ -48,5 +48,10 @@ namespace System.Windows.Media {
 			get { return (Point) GetValue (Point2Property); }
 			set { SetValue (Point2Property, value); }
 		}
+
+		protected internal override Kind GetKind ()
+		{
+			return Kind.QUADRATICBEZIERSEGMENT;
+		}
 	}
 }
