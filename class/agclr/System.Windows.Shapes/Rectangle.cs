@@ -35,14 +35,12 @@ namespace System.Windows.Shapes {
 		public static readonly DependencyProperty RadiusYProperty =
 			DependencyProperty.Lookup (Kind.RECTANGLE, "RadiusY", typeof (double));
 
-		public Rectangle ()
+		public Rectangle () : base (NativeMethods.rectangle_new ())
 		{
-			native = NativeMethods.rectangle_new ();
 		}
 
-		internal Rectangle (IntPtr raw)
+		internal Rectangle (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 
 		public double RadiusX {

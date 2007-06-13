@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Polyline.cs, Path.cs, Ellipse.cs, Shape.cs, Rectangle.cs, Line.cs,
+	  Polygon.cs: First part of fixing internal constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Polyline.cs: Use native constructors.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 

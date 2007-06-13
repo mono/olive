@@ -55,7 +55,7 @@ namespace System.Windows.Shapes {
 		public static readonly DependencyProperty StrokeThicknessProperty =
 			DependencyProperty.Lookup (Kind.SHAPE, "StrokeThickness", typeof (double));
 		
-		public Shape ()
+		public Shape (IntPtr raw) : base (raw)
 		{
 		}
 

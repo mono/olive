@@ -39,14 +39,12 @@ namespace System.Windows.Shapes {
 		public static readonly DependencyProperty Y2Property =
 			DependencyProperty.Lookup (Kind.LINE, "Y2", typeof (double));
 
-		public Line ()
+		public Line () : base (Mono.NativeMethods.line_new ())
 		{
-			native = Mono.NativeMethods.line_new ();
 		}
 
-		internal Line (IntPtr raw)
+		internal Line (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 		
 		public double X1 {

@@ -35,14 +35,12 @@ namespace System.Windows.Shapes {
 
 		public static readonly DependencyProperty DataProperty = DependencyProperty.Lookup (Kind.PATH, "Data", typeof (Geometry));
 		
-		public Path ()
+		public Path () :  base (Mono.NativeMethods.path_new ())
 		{
-			native = Mono.NativeMethods.path_new ();
 		}
 
-		internal Path (IntPtr raw)
+		internal Path (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 
 		public Geometry RadiusX {

@@ -36,14 +36,12 @@ namespace System.Windows.Shapes {
 		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYLINE, "FillRule", typeof (Polygon));
 		public static readonly DependencyProperty PointsProperty = DependencyProperty.Lookup (Kind.POLYLINE, "Points", typeof (Point []));
 
-		public Polyline ()
+		public Polyline () : base (NativeMethods.polyline_new ())
 		{
-			native = NativeMethods.polyline_new ();
 		}
 
-		internal Polyline (IntPtr raw)
+		internal Polyline (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 		
 		public FillRule FillRule {

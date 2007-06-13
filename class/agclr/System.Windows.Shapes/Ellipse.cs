@@ -31,14 +31,12 @@ namespace System.Windows.Shapes {
 
 	public class Ellipse : Shape {
 
-		public Ellipse ()
+		public Ellipse () : base (Mono.NativeMethods.ellipse_new ())
 		{
-			native = Mono.NativeMethods.ellipse_new ();
 		}
 
-		internal Ellipse (IntPtr raw)
+		internal Ellipse (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 		
 		protected internal override Kind GetKind ()
