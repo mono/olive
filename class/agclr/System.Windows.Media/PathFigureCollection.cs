@@ -27,9 +27,15 @@
 //
 
 using MS.Internal;
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class PathFigureCollection : Collection<PathFigure> {
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PATHFIGURE_COLLECTION;
+		}
 	}
 }

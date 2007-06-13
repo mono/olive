@@ -27,9 +27,15 @@
 //
 
 using MS.Internal;
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class PathSegmentCollection : Collection<PathSegment> {
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PATHSEGMENT_COLLECTION;
+		}
 	}
 }

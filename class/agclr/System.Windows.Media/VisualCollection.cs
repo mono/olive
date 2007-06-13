@@ -39,5 +39,10 @@ namespace System.Windows.Media {
 		public VisualCollection ()
 		{
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.VISUAL_COLLECTION;
+		}
 	}
 }

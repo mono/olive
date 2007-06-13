@@ -27,6 +27,7 @@
 //
 
 using MS.Internal;
+using Mono;
 
 namespace System.Windows.Media {
 
@@ -36,6 +37,11 @@ namespace System.Windows.Media {
 		public DependencyObject GetItemByName (string AttributeName)
 		{
 			throw new NotImplementedException ();
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.MEDIAATTRIBUTE_COLLECTION;
 		}
 	}
 }

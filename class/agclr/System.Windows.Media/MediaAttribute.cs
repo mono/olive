@@ -41,5 +41,10 @@ namespace System.Windows.Media {
 			get { return (string) GetValue (ValueProperty); }
 			set { SetValue (ValueProperty, value); }
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.MEDIAATTRIBUTE;
+		}
 	}
 }

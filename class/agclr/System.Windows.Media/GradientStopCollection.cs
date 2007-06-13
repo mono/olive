@@ -27,9 +27,14 @@
 //
 
 using MS.Internal;
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class GradientStopCollection : Collection<GradientStop> {
+		protected internal override Kind GetKind ()
+		{
+			return Kind.GRADIENTSTOP_COLLECTION;
+		}
 	}
 }
