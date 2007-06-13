@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Panel.cs: Fix constructor, don't construct anything if we're not the
+	  class to construct.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Panel.cs: Use native constructors.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
