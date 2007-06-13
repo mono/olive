@@ -96,11 +96,38 @@ namespace Mono {
 #region Panel
 		[DllImport("moon")]
 		internal extern static IntPtr panel_get_children_collection (IntPtr panel);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr panel_new ();
 #endregion
 		
 #region Collections
 		[DllImport("moon")]
 		internal extern static IntPtr collection_add (IntPtr collection, IntPtr value);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr resource_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr trigger_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr gradient_stop_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_attribute_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr path_figure_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr path_segment_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr visual_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr geometry_collection_new ();
 #endregion
 		
 #region Constructors
@@ -113,6 +140,36 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr radial_gradient_brush_new ();
 
+		[DllImport("moon")]
+		internal extern static IntPtr brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr gradient_brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr gradient_stop_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr image_brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr linear_gradient_brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_attribute_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr skew_transform_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr tile_brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr transform_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr video_brush_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr canvas_new ();
 
@@ -184,6 +241,9 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static IntPtr transform_group_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr downloader_new ();
 
 #endregion
 		
