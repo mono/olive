@@ -35,7 +35,7 @@ namespace MS.Internal {
 	// the public contract
 	//
 	public abstract class Collection<T> : DependencyObject {
-		public Collection ()
+		public Collection () : base (IntPtr.Zero)
 		{
 			//
 			// We really need to revisit native collections, should
@@ -48,9 +48,8 @@ namespace MS.Internal {
 			throw new NotImplementedException ();
 		}
 		
-		internal Collection (IntPtr n)
+		internal Collection (IntPtr n) : base (n)
 		{
-			native = n;
 		}
 		
 		public void Add (T t)
