@@ -1,3 +1,7 @@
+2007-06-12  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Kind.cs: Updated (RADIALGRADIENTBRUSH)
+
 2007-06-12  Jeffrey Stedfast  <fejj@gnome.org>
 
 	* Kind.cs: Updated (added MediaBase and MediaElement)
