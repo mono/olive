@@ -62,5 +62,10 @@ namespace MS.Internal {
 				NativeMethods.collection_add (native, (IntPtr) p);
 			}
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.COLLECTION;
+		}
 	}
 }

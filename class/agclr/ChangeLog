@@ -1,3 +1,7 @@
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Test/Test.usertasks: Implement GetKind.
+
 2007-06-09  Miguel de Icaza  <miguel@novell.com>
 
 	* Everywhere: bind to our existing C++ methods.
