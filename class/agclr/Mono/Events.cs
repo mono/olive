@@ -32,7 +32,7 @@ namespace Mono {
 
 	delegate void CallbackMouseEvent (IntPtr target, int state, double x, double y);
 	delegate void PlainEvent (IntPtr target);
-	delegate void KeyboardEvent (IntPtr target, int state, int platformcode, int key);
+	delegate bool KeyboardEvent (IntPtr target, int state, int platformcode, int key);
 	
 	internal class Events {
 		static CallbackMouseEvent mouse_motion      = new CallbackMouseEvent (mouse_motion_notify_callback);
@@ -48,6 +48,20 @@ namespace Mono {
 		static PlainEvent loaded      = new PlainEvent (loaded_callback);
 		static PlainEvent mouse_leave = new PlainEvent (mouse_leave_callback);
 
+		static UIElement ElementFromPtr (IntPtr target)
+		{
+			object o = DependencyObject.Lookup (target);
+			if (o == null){
+				Console.WriteLine ("Motion event for {0} that was never registered", target);
+				return null;
+			}
+			UIElement e = o as UIElement;
+			if (e == null)
+				throw new Exception (String.Format ("The object registered for {0} was not an UIElement", target));
+
+			return e;
+		}
+					    
 		static void got_focus_callback (IntPtr target)
 		{
 		}
@@ -64,34 +78,54 @@ namespace Mono {
 		{
 		}
 
-		static void keyup_callback (IntPtr target, int state, int platformcode, int key)
+		static bool keyup_callback (IntPtr target, int state, int platformcode, int key)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return false;
+
+			// TODO: map the key
+			return false;
 		}
 
-		static void keydown_callback (IntPtr target, int state, int platformcode, int key)
+		static bool keydown_callback (IntPtr target, int state, int platformcode, int key)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return false;
+			
+			// TODO: map the key
+			return false;
 		}
 		
 		static void mouse_motion_notify_callback (IntPtr target, int state, double x, double y)
 		{
-			object o = DependencyObject.Lookup (target);
-			if (o == null){
-				Console.WriteLine ("Motion event for {0} that was never registered", target);
-				return;
-			}
-			UIElement e = o as UIElement;
+			UIElement e = ElementFromPtr (target);
 			if (e == null)
-				throw new Exception ("An object that is a UIElement is no longer that");
+				return;
+			
 
-			e.InvokeMouseMove (new MouseEventArgs (e, state, x, y));
+			e.InvokeMouseMove (new MouseEventArgs (state, x, y));
 		}
 		
 		static void mouse_button_down_callback (IntPtr target, int state, double x, double y)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return;
+			
+
+			e.InvokeMouseButtonDown (new MouseEventArgs (state, x, y));
 		}
 		
 		static void mouse_button_up_callback (IntPtr target, int state, double x, double y)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return;
+			
+
+			e.InvokeMouseButtonUp (new MouseEventArgs (state, x, y));
 		}
 		
 		static void mouse_enter_callback (IntPtr target, int state, double x, double y)

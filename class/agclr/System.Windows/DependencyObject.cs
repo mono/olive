@@ -38,7 +38,20 @@ using System.Runtime.InteropServices;
 namespace System.Windows {
 	public class DependencyObject {
 		static Hashtable objects = new Hashtable ();
-		internal IntPtr native;
+		internal IntPtr _native;
+
+		internal IntPtr native {
+			get {
+				return _native;
+			}
+
+			set {
+				_native = value;
+				if (objects.Contains (value))
+					return;
+				objects [value] = this;
+			}
+		}
 
 		static DependencyObject ()
 		{

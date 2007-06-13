@@ -185,6 +185,22 @@ namespace System.Windows {
 			if (h != null)
 				h (this, m);
 		}
+
+		internal void InvokeMouseButtonDown (MouseEventArgs m)
+		{
+			MouseEventHandler h = MouseLeftButtonDown;
+
+			if (h != null)
+				h (this, m);
+		}
+
+		internal void InvokeMouseButtonUp (MouseEventArgs m)
+		{
+			MouseEventHandler h = MouseLeftButtonUp;
+
+			if (h != null)
+				h (this, m);
+		}
 		
 	}
 }

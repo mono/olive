@@ -29,13 +29,11 @@ using Mono;
 namespace System.Windows.Input {
 	
 	public sealed class MouseEventArgs : EventArgs {
-		UIElement o;
 		int state;
 		double x, y;
 		
-		internal MouseEventArgs (UIElement o, int state, double x, double y)
+		internal MouseEventArgs (int state, double x, double y)
 		{
-			this.o = o;
 			this.state = state;
 			this.x = x;
 			this.y = y;

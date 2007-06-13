@@ -1,3 +1,7 @@
+2007-06-13  Miguel de Icaza  <miguel@novell.com>
+
+	* Events.cs: Add a couple of new events. 
+
 2007-06-12  Jeffrey Stedfast  <fejj@gnome.org>
 
 	* Kind.cs: Updated (removed Video)
