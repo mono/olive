@@ -31,6 +31,7 @@ namespace System.Windows.Media {
 		
 		public Transform ()
 		{
+			native = NativeMethods.transform_new ();
 		}
 
 		protected internal override Kind GetKind ()

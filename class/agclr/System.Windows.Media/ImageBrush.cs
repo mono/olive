@@ -39,6 +39,7 @@ namespace System.Windows.Media {
 
 		public ImageBrush ()
 		{
+			native = NativeMethods.image_brush_new ();
 		}
 
 

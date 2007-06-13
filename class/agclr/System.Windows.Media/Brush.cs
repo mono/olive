@@ -42,6 +42,7 @@ namespace System.Windows.Media {
 		
 		public Brush ()
 		{
+			native = NativeMethods.brush_new ();
 		}
 
 		public double Opacity {

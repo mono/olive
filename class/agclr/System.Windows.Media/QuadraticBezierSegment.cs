@@ -37,6 +37,7 @@ namespace System.Windows.Media {
 
 		public QuadraticBezierSegment ()
 		{
+			native = NativeMethods.quadratic_bezier_segment_new ();
 		}
 
 		public Point Point1 {

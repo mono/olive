@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public MediaAttribute ()
 		{
+			native = NativeMethods.media_attribute_new ();
 		}
 
 		public string Value {

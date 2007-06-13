@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 
 		public GradientStop ()
 		{
+			native = NativeMethods.gradient_stop_new ();
 		}
 
 

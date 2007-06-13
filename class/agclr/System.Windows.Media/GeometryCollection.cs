@@ -36,6 +36,11 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		public GeometryCollection ()
+		{
+			native = NativeMethods.geometry_collection_new ();
+		}
+		
 		protected internal override Kind GetKind ()
 		{
 			return Kind.GEOMETRY_COLLECTION;

@@ -43,6 +43,7 @@ namespace System.Windows.Media {
 
 		public GradientBrush ()
 		{
+			native = NativeMethods.gradient_brush_new ();
 		}
 
 

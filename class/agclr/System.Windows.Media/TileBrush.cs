@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 
 		public TileBrush ()
 		{
+			native = NativeMethods.tile_brush_new ();
 		}
 
 

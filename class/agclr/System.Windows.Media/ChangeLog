@@ -1,5 +1,15 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* GradientStopCollection.cs, VisualCollection.cs, Brush.cs,
+	  PathSegmentCollection.cs, LinearGradientBrush.cs,
+	  QuadraticBezierSegment.cs, TileBrush.cs, GradientBrush.cs,
+	  GradientStop.cs, Transform.cs, MediaAttributeCollection.cs,
+	  ImageBrush.cs, MediaAttribute.cs, SkewTransform.cs,
+	  GeometryCollection.cs, VideoBrush.cs, PathFigureCollection.cs: Use
+	  native constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Visual.cs: Implement GetKind.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 

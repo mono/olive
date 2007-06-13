@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public VideoBrush ()
 		{
+			native = NativeMethods.video_brush_new ();
 		}
 
 		public string SourceName {

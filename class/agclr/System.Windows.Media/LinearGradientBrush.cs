@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 
 		public LinearGradientBrush ()
 		{
+			native = NativeMethods.linear_gradient_brush_new ();
 		}
 
 

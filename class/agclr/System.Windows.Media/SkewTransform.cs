@@ -39,6 +39,7 @@ namespace System.Windows.Media {
 
 		public SkewTransform ()
 		{
+			native = NativeMethods.skew_transform_new ();
 		}
 
 

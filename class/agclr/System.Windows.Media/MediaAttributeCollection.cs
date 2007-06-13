@@ -32,7 +32,11 @@ using Mono;
 namespace System.Windows.Media {
 
 	public class MediaAttributeCollection : Collection<MediaAttribute> {
-
+		public MediaAttributeCollection ()
+		{
+			native = NativeMethods.media_attribute_collection_new ();
+		}
+		
 		[MonoTODO]
 		public DependencyObject GetItemByName (string AttributeName)
 		{
