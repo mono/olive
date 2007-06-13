@@ -34,6 +34,11 @@ using Mono;
 namespace System.Windows {
 
 	public class TriggerCollection : MS.Internal.Collection<int> {
+		public TriggerCollection ()
+		{
+			native = NativeMethods.trigger_collection_new ();
+		}
+		
 		protected internal override Kind GetKind ()
 		{
 			return Kind.TRIGGER_COLLECTION;

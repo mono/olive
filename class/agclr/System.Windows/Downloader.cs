@@ -40,6 +40,7 @@ namespace System.Windows {
 
 		public Downloader ()
 		{
+			native = NativeMethods.downloader_new ();
 		}
 
 
