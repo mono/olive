@@ -33,7 +33,7 @@ namespace System.Windows.Shapes {
 
 	public class Path : Shape {
 
-		public static readonly DependencyProperty DataProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "Data", typeof (Path));
+		public static readonly DependencyProperty DataProperty = DependencyProperty.Lookup (Kind.PATH, "Data", typeof (Geometry));
 		
 		public Path ()
 		{
