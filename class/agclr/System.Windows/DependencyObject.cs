@@ -58,6 +58,16 @@ namespace System.Windows {
 			NativeMethods.runtime_init ();
 		}
 
+		internal DependencyObject (IntPtr raw)
+		{
+			native = raw;
+		}
+		
+		// Delete this constructor once everything is using the IntPtr one.
+		internal DependencyObject ()
+		{
+		}
+		
 		//
 		// This is mostly copied from Gtk#'s Object.GetObject
 		// we need to take into account in the future:
@@ -439,7 +449,7 @@ namespace System.Windows {
 
 			if (native == IntPtr.Zero){
 				throw new Exception (
-					"Uninitialized object: this object has not set its native handle or overwritten SetValue");
+					string.Format ("Uninitialized object: this object ({0}) has not set its native handle or overwritten SetValue", GetType ().FullName));
 			}
 			
 			if (obj == null){

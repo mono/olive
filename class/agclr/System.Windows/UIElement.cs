@@ -64,6 +64,10 @@ namespace System.Windows {
 		{
 		}
 		
+		internal UIElement (IntPtr raw) : base (raw)
+		{
+		}
+		
 		public Geometry Clip {
 			get {
 				return (Geometry) GetValue (ClipProperty);

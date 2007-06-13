@@ -40,6 +40,10 @@ namespace System.Windows {
 	        public FrameworkElement ()
 		{
 		}
+		
+		internal FrameworkElement (IntPtr raw) : base (raw)
+		{
+		}
 	
 		internal FrameworkElement (object parent)
 		{

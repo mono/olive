@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* UIElement.cs, DependencyObject.cs, FrameworkElement.cs: First part of
+	  fixing internal constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* TriggerCollection.cs, Downloader.cs, ResourceCollection.cs: Use
 	  native constructors.
 
