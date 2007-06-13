@@ -1,6 +1,6 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
-	* Downloader.cs, DependencyObject.cs: NativeMethods.downloader_new ()
+	* Downloader.cs, DependencyObject.cs: Second pass on constructors.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
