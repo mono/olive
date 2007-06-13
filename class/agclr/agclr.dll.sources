@@ -39,7 +39,7 @@ System.Windows.Media/Brush.cs
 System.Windows.Media/BrushMappingMode.cs
 System.Windows.Media/Color.cs
 System.Windows.Media/Colors.cs
-System.Windows.Media/ColorInterpretationMode.cs
+System.Windows.Media/ColorInterpolationMode.cs
 System.Windows.Media/EllipseGeometry.cs
 System.Windows.Media/FillRule.cs
 System.Windows.Media/Geometry.cs
