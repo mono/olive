@@ -63,11 +63,6 @@ namespace System.Windows {
 			native = raw;
 		}
 		
-		// Delete this constructor once everything is using the IntPtr one.
-		internal DependencyObject ()
-		{
-		}
-		
 		//
 		// This is mostly copied from Gtk#'s Object.GetObject
 		// we need to take into account in the future:

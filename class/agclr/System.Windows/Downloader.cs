@@ -38,9 +38,8 @@ namespace System.Windows {
 		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
 
-		public Downloader ()
+		public Downloader () : base (NativeMethods.downloader_new ())
 		{
-			native = NativeMethods.downloader_new ();
 		}
 
 
