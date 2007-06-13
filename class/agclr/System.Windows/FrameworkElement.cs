@@ -37,19 +37,10 @@ namespace System.Windows {
 			HeightProperty = DependencyProperty.Lookup (Kind.FRAMEWORKELEMENT, "Height", typeof (double));
 		}
 		
-	        public FrameworkElement ()
-		{
-		}
-		
 		internal FrameworkElement (IntPtr raw) : base (raw)
 		{
 		}
-	
-		internal FrameworkElement (object parent)
-		{
-			this.parent = parent;
-		}
-		
+			
 	        public double Height {
 	                get {
 				return (double) GetValue (HeightProperty);
