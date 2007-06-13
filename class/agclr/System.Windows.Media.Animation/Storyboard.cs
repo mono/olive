@@ -42,6 +42,11 @@ namespace System.Windows.Media.Animation {
 			TargetNameProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetName", typeof (string));
 		}			
 
+		internal Storyboard (IntPtr raw) : base (raw)
+		{
+		}
+
+
 		public Storyboard ()
 			: base (Mono.NativeMethods.storyboard_new ())
 		{

@@ -32,6 +32,7 @@ using Mono;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 
@@ -130,7 +131,9 @@ namespace System.Windows {
 			case Kind.MATRIXTRANSFORM:
 				return new MatrixTransform (raw);
 				
-			case Kind.STORYBOARD: return null;
+			case Kind.STORYBOARD:
+				return new Storyboard (raw);
+
 			case Kind.DOUBLEANIMATION: return null;
 			case Kind.COLORANIMATION: return null;
 			case Kind.POINTANIMATION: return null;
