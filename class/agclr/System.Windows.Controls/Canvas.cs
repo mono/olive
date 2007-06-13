@@ -39,14 +39,12 @@ namespace System.Windows.Controls {
 			TopProperty = DependencyProperty.Lookup (Kind.CANVAS, "Top", typeof (double));
 		}
 
-		public Canvas ()
+		public Canvas () : base (NativeMethods.canvas_new ())
 		{
-			native = Mono.NativeMethods.canvas_new ();
 		}
 
-		internal Canvas (IntPtr raw)
+		internal Canvas (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 
 		static internal Canvas FromPtr (IntPtr raw)

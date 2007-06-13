@@ -41,10 +41,12 @@ namespace System.Windows.Controls {
 			BackgroundProperty = DependencyProperty.Lookup (Kind.PANEL, "Background", typeof (Brush));
 		}
 		
-		public Panel ()
+		public Panel () : base (NativeMethods.panel_new ())
 		{
-			if (GetKind () == Kind.PANEL)
-				native = NativeMethods.panel_new ();
+		}
+		
+		internal Panel (IntPtr raw) : base (raw)
+		{
 		}
 
 		public Brush Background {

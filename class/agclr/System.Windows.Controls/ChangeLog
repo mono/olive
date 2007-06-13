@@ -1,5 +1,9 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Canvas.cs, Panel.cs: Second pass on constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Panel.cs: Fix constructor, don't construct anything if we're not the
 	  class to construct.
 
