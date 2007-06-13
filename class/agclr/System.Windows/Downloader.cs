@@ -31,11 +31,11 @@ namespace System.Windows {
 
 	public sealed class Downloader : DependencyObject {
 
-		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Lookup (Kind.DOUBLE, "DownloadProgress", typeof (Downloader));
-		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Lookup (Kind.STRING, "ResponseText", typeof (Downloader));
-		public static readonly DependencyProperty StatusProperty = DependencyProperty.Lookup (Kind.INT32, "Status", typeof (Downloader));
-		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.STRING, "StatusText", typeof (Downloader));
-		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.STRING, "Uri", typeof (Downloader));
+		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "DownloadProgress", typeof (double));
+		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "ResponseText", typeof (string));
+		public static readonly DependencyProperty StatusProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Status", typeof (int));
+		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
+		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
 
 		public Downloader ()
