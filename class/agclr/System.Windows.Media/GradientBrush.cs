@@ -31,8 +31,8 @@ namespace System.Windows.Media {
 
 	public class GradientBrush : Brush {
 
-		public static readonly DependencyProperty ColorInterpretationModeProperty =
-			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpretationMode", typeof (ColorInterpretationMode));
+		public static readonly DependencyProperty ColorInterpolationModeProperty =
+			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpolationMode", typeof (ColorInterpolationMode));
 		public static readonly DependencyProperty GradientStopsProperty =
 			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "GradientStops", typeof (GradientStopCollection));
 		public static readonly DependencyProperty MappingModeProperty =
@@ -46,9 +46,9 @@ namespace System.Windows.Media {
 		}
 
 
-		public ColorInterpretationMode ColorInterpretationMode {
-			get { return (ColorInterpretationMode) GetValue (ColorInterpretationModeProperty); }
-			set { SetValue (ColorInterpretationModeProperty, value); }
+		public ColorInterpolationMode ColorInterpolationMode {
+			get { return (ColorInterpolationMode) GetValue (ColorInterpolationModeProperty); }
+			set { SetValue (ColorInterpolationModeProperty, value); }
 		}
 
 		public GradientStopCollection GradientStops {

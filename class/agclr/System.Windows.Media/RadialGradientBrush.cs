@@ -31,10 +31,10 @@ namespace System.Windows.Media {
 
 	public class RadialGradientBrush : GradientBrush {
 
-		public static readonly DependencyProperty CenterProperty = DependencyProperty.Lookup (Kind.POINT, "Center", typeof (RadialGradientBrush));
-		public static readonly DependencyProperty GradientOriginProperty = DependencyProperty.Lookup (Kind.POINT, "GradientOrigin", typeof (RadialGradientBrush));
-		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Lookup (Kind.POINT, "RadiusX", typeof (RadialGradientBrush));
-		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.POINT, "RadiusY", typeof (RadialGradientBrush));
+		public static readonly DependencyProperty CenterProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "Center", typeof (Point));
+		public static readonly DependencyProperty GradientOriginProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "GradientOrigin", typeof (Point));
+		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "RadiusX", typeof (double));
+		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "RadiusY", typeof (double));
 
 
 		public RadialGradientBrush ()

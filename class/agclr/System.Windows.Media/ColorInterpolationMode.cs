@@ -28,7 +28,7 @@
 
 namespace System.Windows.Media {
 
-	public enum ColorInterpretationMode {
+	public enum ColorInterpolationMode {
 		SbRgbLinearInterpolation,
 		SRgbLinearInterpolation
 	}

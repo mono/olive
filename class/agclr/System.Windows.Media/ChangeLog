@@ -1,3 +1,11 @@
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* RadialGradientBrush.cs: Fix DependencyProperty.Lookup calls, I got
+	  the parameters mixed up.
+	* ColorInterpolationMode.cs, GradientBrush.cs,
+	  ColorInterpretationMode.cs: Fix typo (rename
+	  ColorInterpretationMode to ColorInterpolationMode).
+
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* RadialGradientBrush.cs, TileBrush.cs, RectangleGeometry.cs,
