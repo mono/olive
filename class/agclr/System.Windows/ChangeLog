@@ -19,12 +19,13 @@
 
 2007-06-13  Miguel de Icaza  <miguel@novell.com>
 
-	* DependencyObject.cs (native): turn into a property, so we can
+	* DependencyObject.cs (FindObject): implement.
+
+	(native): turn into a property, so we can
 	track all the mappings.  For example creating managed objects
 	otherwise that are never marshalled would have never been
 	registered. 
 
-	
 2007-06-12  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Downloader.cs: Implement Uri property - since Uri is not an object

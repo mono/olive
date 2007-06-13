@@ -457,6 +457,16 @@ namespace System.Windows {
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 		}
 
+		public DependencyObject FindObject (string name)
+		{
+			Kind k;
+			IntPtr o = NativeMethods.dependency_object_find_name (native, name, out k);
+			if (o == IntPtr.Zero)
+				return null;
+
+			return Lookup (k, o);
+		}
+
 		protected internal virtual Kind GetKind ()
 		{
 			return Kind.DEPENDENCY_OBJECT;
