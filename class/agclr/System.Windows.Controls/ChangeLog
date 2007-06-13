@@ -1,5 +1,9 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Panel.cs: Use native constructors.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Canvas.cs, Panel.cs: Implement GetKind.
 
 2007-06-07  Miguel de Icaza  <miguel@novell.com>

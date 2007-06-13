@@ -43,6 +43,7 @@ namespace System.Windows.Controls {
 		
 		public Panel ()
 		{
+			native = NativeMethods.panel_new ();
 		}
 
 		public Brush Background {
