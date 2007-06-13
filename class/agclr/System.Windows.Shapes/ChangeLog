@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Polyline.cs, Path.cs, Ellipse.cs, Line.cs, Polygon.cs: Implement
+	  GetKind.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Polyline.cs, Path.cs, Polygon.cs: Fix property lookup, the parameters
 	  were mixed up.
 

@@ -54,5 +54,10 @@ namespace System.Windows.Shapes {
 			get { return (Point[]) GetValue (PointsProperty); }
 			set { SetValue (PointsProperty, value); }
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.POLYLINE;
+		}
 	}
 }

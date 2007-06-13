@@ -68,5 +68,10 @@ namespace System.Windows.Shapes {
 			get { return (double) GetValue (Y2Property); }
 			set { SetValue (Y2Property, value); }
 		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.LINE;
+		}
 	}
 }
