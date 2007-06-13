@@ -31,9 +31,9 @@ namespace System.Windows.Media {
 
 	public class TileBrush : Brush {
 
-		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AlignmentX", typeof (TileBrush));
-		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Lookup (Kind.DOUBLE, "AlignmentY", typeof (TileBrush));
-		public static readonly DependencyProperty StretchProperty = DependencyProperty.Lookup (Kind.INT32, "Stretch", typeof (TileBrush));
+		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentX", typeof (double));
+		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentY", typeof (double));
+		public static readonly DependencyProperty StretchProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "Stretch", typeof (int));
 
 
 		public TileBrush ()

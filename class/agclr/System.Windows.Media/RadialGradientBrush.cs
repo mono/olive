@@ -39,6 +39,7 @@ namespace System.Windows.Media {
 
 		public RadialGradientBrush ()
 		{
+			native = NativeMethods.radial_gradient_brush_new ();
 		}
 
 

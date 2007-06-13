@@ -1,5 +1,12 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* RadialGradientBrush.cs: Construct this object properly.
+	* TileBrush.cs, RectangleGeometry.cs, MediaAttribute.cs,
+	  SkewTransform.cs: Fix property lookup, the parameters were mixed
+	  up.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* RadialGradientBrush.cs: Fix DependencyProperty.Lookup calls, I got
 	  the parameters mixed up.
 	* ColorInterpolationMode.cs, GradientBrush.cs,

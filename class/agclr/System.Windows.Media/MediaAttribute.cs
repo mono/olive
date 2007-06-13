@@ -31,7 +31,7 @@ namespace System.Windows.Media {
 
 	public class MediaAttribute : DependencyObject {
 
-		public static readonly DependencyProperty ValueProperty = DependencyProperty.Lookup (Kind.STRING, "Value", typeof (MediaAttribute));
+		public static readonly DependencyProperty ValueProperty = DependencyProperty.Lookup (Kind.MEDIAATTRIBUTE, "Value", typeof (string));
 
 		public MediaAttribute ()
 		{
