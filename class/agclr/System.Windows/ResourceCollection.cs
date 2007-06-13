@@ -29,9 +29,14 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
+using Mono;
 
 namespace System.Windows {
 
 	public class ResourceCollection : MS.Internal.Collection<int> {
+		protected internal override Kind GetKind ()
+		{
+			return Kind.RESOURCE_COLLECTION;
+		}
 	}
 }

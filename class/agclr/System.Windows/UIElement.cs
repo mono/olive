@@ -202,5 +202,9 @@ namespace System.Windows {
 				h (this, m);
 		}
 		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.UIELEMENT;
+		}
 	}
 }

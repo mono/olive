@@ -72,5 +72,10 @@ namespace System.Windows {
 	
 	        public static readonly DependencyProperty WidthProperty;
 	        public static readonly DependencyProperty HeightProperty;
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.FRAMEWORKELEMENT;
+		}
 	}
 }

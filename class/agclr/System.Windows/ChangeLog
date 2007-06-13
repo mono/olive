@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* TriggerCollection.cs, UIElement.cs, Downloader.cs,
+	  ResourceCollection.cs, FrameworkElement.cs: Implement GetKind.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Downloader.cs: Fix property lookup, the parameters were mixed up.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 

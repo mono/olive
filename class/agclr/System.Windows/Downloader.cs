@@ -110,5 +110,10 @@ namespace System.Windows {
 		public event EventHandler DownloadProgressChanged;
 
 		public event EventHandler DownloadFailed;
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.DOWNLOADER;
+		}
 	}
 }
