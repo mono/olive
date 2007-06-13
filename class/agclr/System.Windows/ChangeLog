@@ -1,3 +1,8 @@
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Finished implementation of get/setvalue
+	  marshalling.
+
 2007-06-13  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs (native): turn into a property, so we can

@@ -233,6 +233,9 @@ namespace System.Windows {
 				case Kind.DOUBLE:
 					return *((double *) px);
 					
+				case Kind.UINT64:
+					return *((ulong *) px);
+					
 				case Kind.INT64:
 					return *((long *) px);
 					
@@ -242,6 +245,42 @@ namespace System.Windows {
 				case Kind.STRING:
 					return Marshal.PtrToStringAuto ((IntPtr) px);
 
+				case Kind.POINT: {
+					IntPtr vptr = *((IntPtr *) px);
+					double *dp = (double *) vptr;
+					
+					return new Point (dp [0], dp [1]);
+				}
+					
+				case Kind.RECT: {
+					IntPtr vptr = *((IntPtr *) px);
+					double *dp = (double *) vptr;
+					
+					return new Rect (dp [0], dp [1], dp [2], dp [3]);				
+				}
+				
+				case Kind.DOUBLE_ARRAY: {
+					IntPtr vptr = *((IntPtr *) px);
+					int count = *(int*) vptr;
+					double * data = (double*) ((byte*)vptr + 8);
+					double [] values = new double [count];
+					for (int i = 0; i < count; i++) {
+						values [i] = data [i];
+					}
+					return values;
+				}
+					
+				case Kind.POINT_ARRAY: {
+					IntPtr vptr = *((IntPtr *) px);
+					int count = *(int*) vptr;
+					Point * data = (Point*) ((byte*)vptr + 8);
+					Point [] values = new Point [count];
+					for (int i = 0; i < count; i++) {
+						values [i] = data [i];
+					}
+					return values;
+				}
+					
 				case Kind.COLOR: {
 					IntPtr vptr = *((IntPtr *) px);
 					if (vptr == IntPtr.Zero)
@@ -250,7 +289,13 @@ namespace System.Windows {
 					double *dp = (double *) vptr;
 					
 					return Color.FromScRgb ((float) dp [3], (float) dp [0], (float) dp [1], (float)dp [2]);
-					}
+				}
+					
+				// These have no managed representation yet.
+				case Kind.REPEATBEHAVIOR:
+				case Kind.DURATION: 
+				case Kind.KEYTIME:
+					break;
 				}
 
 				//
@@ -334,6 +379,31 @@ namespace System.Windows {
 					foreach (double d in dv)
 						*dp++ = d;
 					
+					*((IntPtr *) p) = result;
+				} else if (v is Point []){
+					Point [] dv = (Point []) v;
+
+					value.k = Kind.POINT_ARRAY;
+					IntPtr result = Marshal.AllocHGlobal (8 + sizeof (Point) * dv.Length);
+					int *ip = (int *) result;
+					ip [0] = dv.Length;
+					ip [1] = 1;  // refcount;
+					Point * dp = (Point *) ((byte*) ip + 8);
+					for (int i = 0; i < dv.Length; i++)
+						dp [i] = dv [i];
+					
+					*((IntPtr *) p) = result;
+				} else if (v is Rect) {
+					Rect rect = (Rect) v;
+					value.k = Kind.RECT;
+					IntPtr result = Marshal.AllocHGlobal (sizeof (Rect));
+					Marshal.StructureToPtr (rect, result, false);
+					*((IntPtr *) p) = result;
+				} else if (v is Point) {
+					Point pnt = (Point) v;
+					value.k = Kind.POINT;
+					IntPtr result = Marshal.AllocHGlobal (sizeof (Point));
+					Marshal.StructureToPtr (pnt, result, false);
 					*((IntPtr *) p) = result;
 				} else if (v is Color){
 					value = NativeMethods.value_color_from_argb (((Color) v).argb);
