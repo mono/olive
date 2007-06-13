@@ -1,5 +1,10 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Brush.cs, GradientBrush.cs, Transform.cs: Fix constructor, don't
+	  construct anything if we're not the class to construct.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* GradientStopCollection.cs, VisualCollection.cs, Brush.cs,
 	  PathSegmentCollection.cs, LinearGradientBrush.cs,
 	  QuadraticBezierSegment.cs, TileBrush.cs, GradientBrush.cs,
