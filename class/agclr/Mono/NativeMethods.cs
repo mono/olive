@@ -109,6 +109,9 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static IntPtr solid_color_brush_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr radial_gradient_brush_new ();
 
 		[DllImport("moon")]
 		internal extern static IntPtr canvas_new ();
