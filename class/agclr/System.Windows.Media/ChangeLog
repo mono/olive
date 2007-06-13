@@ -1,5 +1,9 @@
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Visual.cs: Implement GetKind.
+
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* GradientStopCollection.cs, VisualCollection.cs,
 	  PathSegmentCollection.cs, PathSegment.cs,
 	  MediaAttributeCollection.cs, MediaAttribute.cs,

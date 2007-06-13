@@ -25,6 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 
 namespace System.Windows.Media {
 	public abstract class Visual : DependencyObject {
@@ -41,6 +42,11 @@ namespace System.Windows.Media {
 		public bool ReleaseMouseCapture ()
 		{
 			throw new NotImplementedException ();
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.VISUAL;
 		}
 	}
 }
