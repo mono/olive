@@ -1,3 +1,8 @@
+2007-06-13  Miguel de Icaza  <miguel@novell.com>
+
+	* Support for Storyboard class, still need the C API from Chris to
+	test this.
+
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Internal.cs: Second pass at constructor fixing.

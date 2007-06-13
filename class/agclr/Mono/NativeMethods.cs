@@ -248,6 +248,27 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr downloader_new ();
 
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_new ();
+
+#endregion
+
+#region Storyboard
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_begin (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_pause (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_resume (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_seek (IntPtr native, long timespan);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr storyboard_stop (IntPtr native);
+		
 #endregion
 		
 #region APIs that we do not have a Managed class implemented yet.
@@ -265,9 +286,6 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static IntPtr point_animation_using_key_frames_new ();
-
-		[DllImport("moon")]
-		internal extern static IntPtr storyboard_new ();
 
 		[DllImport("moon")]
 		internal extern static IntPtr begin_storyboard_new ();

@@ -8,6 +8,7 @@ Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
 System.Windows/Downloader.cs
+System.Windows/Duration.cs
 System.Windows/ErrorEventArgs.cs
 System.Windows/ErrorEventHandler.cs
 System.Windows/ErrorType.cs
@@ -84,6 +85,12 @@ System.Windows.Media/TranslateTransform.cs
 System.Windows.Media/VideoBrush.cs
 System.Windows.Media/VisualCollection.cs
 System.Windows.Media/Visual.cs
+System.Windows.Media.Animation/FillBehavior.cs
+System.Windows.Media.Animation/ParallelTimeline.cs
+System.Windows.Media.Animation/RepeatBehavior.cs
+System.Windows.Media.Animation/Storyboard.cs
+System.Windows.Media.Animation/Timeline.cs
+System.Windows.Media.Animation/TimelineGroup.cs
 System.Windows.Shapes/Ellipse.cs
 System.Windows.Shapes/Line.cs
 System.Windows.Shapes/Path.cs
