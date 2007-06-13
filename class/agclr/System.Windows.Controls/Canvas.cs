@@ -53,5 +53,9 @@ namespace System.Windows.Controls {
 		{
 			return new Canvas (raw);
 		}
+		protected internal override Kind GetKind ()
+		{
+			return Kind.CANVAS;
+		}
 	}
 }

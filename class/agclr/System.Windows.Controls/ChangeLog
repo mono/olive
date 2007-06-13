@@ -1,3 +1,7 @@
+2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Canvas.cs, Panel.cs: Implement GetKind.
+
 2007-06-07  Miguel de Icaza  <miguel@novell.com>
 
 	* Canvas.cs, Panel.cs: Rework to use the dependency properties

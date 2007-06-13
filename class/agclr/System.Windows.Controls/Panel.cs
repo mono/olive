@@ -65,5 +65,9 @@ namespace System.Windows.Controls {
 			}
 		}
 		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PANEL;
+		}
 	}
 }
