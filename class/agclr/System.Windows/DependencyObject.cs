@@ -44,7 +44,7 @@ namespace System.Windows {
 		{
 			NativeMethods.runtime_init ();
 		}
-		
+
 		//
 		// This is mostly copied from Gtk#'s Object.GetObject
 		// we need to take into account in the future:
@@ -70,6 +70,18 @@ namespace System.Windows {
 			return dop;
 		}
 
+		//
+		// This version only looks up the object, if it has not been exposed,
+		// we return null
+		//
+		internal static DependencyObject Lookup (IntPtr ptr)
+		{
+			if (ptr == IntPtr.Zero)
+				return null;
+
+			return (DependencyObject) objects [ptr];
+		}
+		
 		static object CreateObject (Kind k, IntPtr raw)
 		{
 			if (k <= Kind.DEPENDENCY_OBJECT)
