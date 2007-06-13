@@ -88,6 +88,9 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static void item_set_transform_origin (IntPtr item, Point p);
+
+		[DllImport("moon")]
+		internal extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);
 #endregion
 
 #region Panel

@@ -25,15 +25,15 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using Mono;
 namespace System.Windows.Input {
 	
 	public sealed class MouseEventArgs : EventArgs {
-		DependencyObject o;
+		UIElement o;
 		int state;
 		double x, y;
 		
-		internal MouseEventArgs (DependencyObject o, int state, double x, double y)
+		internal MouseEventArgs (UIElement o, int state, double x, double y)
 		{
 			this.o = o;
 			this.state = state;
@@ -47,8 +47,12 @@ namespace System.Windows.Input {
 
 		public Point GetPosition (UIElement uiElement)
 		{
-			Console.WriteLine ("We should get the matrix and figure what this really is");
-			return new Point (x, y);
+			double nx = x;
+			double ny = y;
+
+			
+			NativeMethods.uielement_transform_point (uiElement.native, ref nx, ref ny);
+			return new Point (nx, ny);
 		}
 
 #if not_yet_done

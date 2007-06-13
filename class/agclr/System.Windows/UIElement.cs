@@ -180,7 +180,10 @@ namespace System.Windows {
 
 		internal void InvokeMouseMove (MouseEventArgs m)
 		{
-			MouseMove (this, m);
+			MouseEventHandler h = MouseMove;
+
+			if (h != null)
+				h (this, m);
 		}
 		
 	}
