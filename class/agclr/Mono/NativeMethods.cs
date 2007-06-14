@@ -299,9 +299,6 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr trigger_action_collection_new ();
 
-		[DllImport("moon")]
-		internal extern static IntPtr event_trigger_new ();
-
 
 #endregion
 
