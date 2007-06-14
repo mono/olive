@@ -31,11 +31,11 @@ namespace System.Windows.Media.Animation
 	public class ColorAnimation : System.Windows.Media.Animation.Animation 
 	{
 		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "BY", typeof (double));
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "By", typeof (double));
 		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "FROM", typeof (double));
-		public static readonly DependencyProperty ToProperty = 
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "TO", typeof (double));
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "From", typeof (double));
+		public static readonly DependencyProperty ToProperty =
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "To", typeof (double));
 
 
 		public ColorAnimation(): base (Mono.NativeMethods.coloranimation_new ())

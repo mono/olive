@@ -31,11 +31,11 @@ namespace System.Windows.Media.Animation
 	public class PointAnimation : System.Windows.Media.Animation.Animation
 	{
 		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "BY", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "By", typeof (double));
 		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "FROM", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "From", typeof (double));
 		public static readonly DependencyProperty ToProperty =
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "TO", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "To", typeof (double));
 
 
 		public PointAnimation(): base (Mono.NativeMethods.pointanimation_new ())

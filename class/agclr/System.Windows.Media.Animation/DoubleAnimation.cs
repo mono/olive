@@ -31,11 +31,11 @@ namespace System.Windows.Media.Animation
 	public class DoubleAnimation : System.Windows.Media.Animation.Animation 
 	{
 		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "BY", typeof (double));
+			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "By", typeof (double));
 		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "FROM", typeof (double));
+			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "From", typeof (double));
 		public static readonly DependencyProperty ToProperty =
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "TO", typeof (double));
+			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "To", typeof (double));
 
 
 		public DoubleAnimation(): base (Mono.NativeMethods.doubleanimation_new ())

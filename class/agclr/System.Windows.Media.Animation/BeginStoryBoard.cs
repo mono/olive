@@ -32,7 +32,7 @@ namespace System.Windows.Media.Animation
 	public sealed class BeginStoryboard : DependencyObject 
 	{
 		public static readonly DependencyProperty StoryBoardProperty = 
-			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "STORYBOARD", typeof (Storyboard));
+			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "Storyboard", typeof (Storyboard));
 
 
 		public BeginStoryboard(): base (Mono.NativeMethods.beginstoryboard_new ())
