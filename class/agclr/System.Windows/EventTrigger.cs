@@ -31,10 +31,10 @@ namespace System.Windows
 	public sealed class EventTrigger : DependencyObject 
 	{
 		public static readonly DependencyProperty ActionsProperty = 
-			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "ACTIONS", typeof (TriggerActionCollection));
+			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "Actions", typeof (TriggerActionCollection));
 
 		public static readonly DependencyProperty RoutedEventProperty = 
-			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "ROUTEDEVENT", typeof (string));
+			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "RoutedEvent", typeof (string));
 
 
 		public EventTrigger(): base (Mono.NativeMethods.eventtrigger_new ())

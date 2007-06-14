@@ -1,3 +1,7 @@
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* EventTrigger.cs: fixed casing issues with properties.
+
 2007-06-14  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs: Add more mappings.
