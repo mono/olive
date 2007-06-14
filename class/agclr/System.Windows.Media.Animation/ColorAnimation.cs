@@ -25,15 +25,16 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 namespace System.Windows.Media.Animation 
-{
-	public class ColorAnimation : Animation 
+{/*
+	public class ColorAnimation : System.Windows.Media.Animation.Animation 
 	{
-		public static readonly DependancyProperty ByProperty = 
+		public static readonly DependencyProperty ByProperty = 
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "BY", typeof (double));
-		public static readonly DependancyProperty FromProperty =
+		public static readonly DependencyProperty FromProperty =
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "FROM", typeof (double));
-		public static readonly DependancyProperty ToProperty = 
+		public static readonly DependencyProperty ToProperty = 
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "TO", typeof (double));
 
 
@@ -48,7 +49,7 @@ namespace System.Windows.Media.Animation
 
 		public Nullable<double> By {
 			get { return (double) GetValue(ByProperty); }
-			set { SetValue(ByProperty, value);
+			set { SetValue(ByProperty, value); }
 		}
 
 		public Nullable<double> From {
@@ -61,9 +62,9 @@ namespace System.Windows.Media.Animation
 			set { SetValue (ToProperty, value); }
 		}
 
-		protected internal override Kind()
+		protected internal override Kind GetKind()
 		{
 			return Kind.COLORANIMATION;
 		}
-	}
+	}*/
 }

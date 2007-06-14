@@ -86,6 +86,7 @@ System.Windows.Media/TranslateTransform.cs
 System.Windows.Media/VideoBrush.cs
 System.Windows.Media/VisualCollection.cs
 System.Windows.Media/Visual.cs
+System.Windows.Media.Animation/Animation.cs
 System.Windows.Media.Animation/BeginStoryBoard.cs
 System.Windows.Media.Animation/ColorAnimation.cs
 System.Windows.Media.Animation/DoubleAnimation.cs

@@ -25,12 +25,14 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
+using System.Windows;
 namespace System.Windows.Media.Animation 
-{
-	public sealed class BeginStoryBoard : DependancyObject 
+{/*
+	public sealed class BeginStoryBoard : DependencyObject 
 	{
-		public static readonly DependancyProperty StoryBoardProperty = 
-			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "STORYBOARD", typeof (StoryBoard));
+		public static readonly DependencyProperty StoryBoardProperty = 
+			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "STORYBOARD", typeof (Storyboard));
 
 
 		public BeginStoryBoard(): base (Mono.NativeMethods.beginstoryboard_new ())
@@ -42,15 +44,15 @@ namespace System.Windows.Media.Animation
 		}
 
 
-		public Nullable<StoryBoard> By {
-			get { return (StoryBoard) GetValue(ByProperty); }
-			set { SetValue(ByProperty, value);
+		public Storyboard By {
+			get { return (Storyboard) GetValue(ByProperty); }
+			set { SetValue(ByProperty, value); }
 		}
 
 
-		protected internal override Kind()
+		protected internal override Kind GetKind()
 		{
 			return Kind.BEGINSTORYBOARD;
 		}
-	}
+	}*/
 }

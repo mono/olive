@@ -25,9 +25,10 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using Mono;
 namespace System.Windows 
-{
-	public sealed class EventTrigger : DependancyObject 
+{/*
+	public sealed class EventTrigger : DependencyObject 
 	{
 		public static readonly DependancyProperty ActionsProperty = 
 			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "ACTIONS", typeof (TriggerActionCollection));
@@ -47,18 +48,18 @@ namespace System.Windows
 
 		public TriggerActionCollection Actions {
 			get { return (TriggerActionCollection) GetValue(ActionsProperty); }
-			set { SetValue(ActionsProperty, value);
+			set { SetValue(ActionsProperty, value); }
 		}
 
 		public string RoutedEvent {
 			get { return (string) GetValue(RoutedEventProperty); }
-			set { SetValue(RoutedEventProperty, value);
+			set { SetValue(RoutedEventProperty, value); }
 		}
 
 
-		protected internal override Kind()
+		protected internal override Kind GetKind()
 		{
 			return Kind.EVENTTRIGGER;
 		}
-	}
+	}*/
 }
