@@ -35,7 +35,7 @@ namespace MS.Internal {
 	// the public contract
 	//
 	public abstract class Collection<T> : DependencyObject {
-		public Collection () : base (IntPtr.Zero)
+		public Collection () : base (NativeMethods.collection_new ())
 		{
 			//
 			// We really need to revisit native collections, should
@@ -45,10 +45,9 @@ namespace MS.Internal {
 			// the "new" versions should be immediately dispossed once
 			// we do a 'set' operation (which should be a bitwise copy).
 			//
-			throw new NotImplementedException ();
 		}
 		
-		internal Collection (IntPtr n) : base (n)
+		internal Collection (IntPtr raw) : base (raw)
 		{
 		}
 		
