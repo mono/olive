@@ -217,7 +217,8 @@ namespace System.Windows {
 			case Kind.MEDIAATTRIBUTE_COLLECTION: return null;
 			case Kind.PATHFIGURE_COLLECTION: return null;
 			case Kind.PATHSEGMENT_COLLECTION: return null;
-			case Kind.TIMELINE_COLLECTION: return null;
+			case Kind.TIMELINE_COLLECTION: 
+				return new TimelineCollection (raw);
 			case Kind.TRANSFORM_COLLECTION: return null;
 			case Kind.VISUAL_COLLECTION:
 				return new VisualCollection (raw);

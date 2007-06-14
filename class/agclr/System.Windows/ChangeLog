@@ -1,3 +1,7 @@
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Creation of TimeLineCollection implemented.
+
 2007-06-14  Alan McGovern <amcgovern@novell.com> 
 
 	* EventTrigger.cs: fixed casing issues with properties.
