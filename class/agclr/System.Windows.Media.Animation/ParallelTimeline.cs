@@ -38,5 +38,14 @@ namespace System.Windows.Media.Animation {
 		{
 			// nothing
 		}
+		
+		public ParallelTimeline () : base (NativeMethods.parallel_timeline_new ())
+		{
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.PARALLELTIMELINE; 
+		}
 	}
 }

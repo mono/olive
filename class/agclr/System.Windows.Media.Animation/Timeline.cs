@@ -48,6 +48,10 @@ namespace System.Windows.Media.Animation {
 		{
 		}
 		
+		public Timeline () : base (NativeMethods.timeline_new ())
+		{
+		}
+		
 		public bool AutoReverse {
 			get {
 				return (bool) GetValue (AutoReverseProperty);

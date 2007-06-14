@@ -1,0 +1,5 @@
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ParallelTimeline.cs, TimelineGroup.cs, Timeline.cs: Constructor
+	  fixes, part 3.
+

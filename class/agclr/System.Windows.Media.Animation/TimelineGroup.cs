@@ -38,6 +38,11 @@ namespace System.Windows.Media.Animation {
 		{
 			// nothing
 		}
+		
+		public TimelineGroup () : base (NativeMethods.timeline_group_new ())
+		{
+			
+		}
 
 		static TimelineGroup ()
 		{
@@ -55,5 +60,10 @@ namespace System.Windows.Media.Animation {
 		}
 
 		public static readonly DependencyProperty ChildrenProperty;
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.TIMELINEGROUP;
+		}
 	}
 }
