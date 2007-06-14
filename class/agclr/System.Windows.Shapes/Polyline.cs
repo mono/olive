@@ -33,7 +33,7 @@ namespace System.Windows.Shapes {
 
 	public class Polyline : Shape {
 
-		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYLINE, "FillRule", typeof (Polygon));
+		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYLINE, "FillRule", typeof (FillRule));
 		public static readonly DependencyProperty PointsProperty = DependencyProperty.Lookup (Kind.POLYLINE, "Points", typeof (Point []));
 
 		public Polyline () : base (NativeMethods.polyline_new ())

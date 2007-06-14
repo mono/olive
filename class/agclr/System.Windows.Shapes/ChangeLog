@@ -1,5 +1,9 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Polyline.cs, Polygon.cs: Fix property type.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Shape.cs: Constructor fixes, part 3.
 
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
