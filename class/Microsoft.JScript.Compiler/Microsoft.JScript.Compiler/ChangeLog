@@ -1,3 +1,7 @@
+2007-06-14  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* go ahead in expression but not finished
+	
 2007-06-10  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* StringLiteralToken implementation and create in Tokenizer

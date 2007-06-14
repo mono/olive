@@ -271,6 +271,23 @@ namespace Mono.JScript.Compiler
 
 				if (current.Kind == Token.Type.In) {
 					//DeclarationForInStatement
+					Token inToken = current;
+					Next ();
+					Expression collection = ParseExpression ();
+					CheckSyntaxExpected (Token.Type.RightParenthesis);
+					rightParen = current;
+					Next ();
+					body = ParseStatement ();
+					VariableDeclaration item;
+					if (varDecl.Declarations.Count == 1) {
+						item = varDecl.Declarations[0].Declaration;
+					} else {
+						item = null;
+						Error (DiagnosticCode.SyntaxError, new TextSpan (start, current));
+					}
+					return new DeclarationForInStatement (item, collection, body, new TextSpan (start, current),
+						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
+						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				} else {
 					CheckSyntaxExpected (Token.Type.SemiColon);
 					firstSemiColon = current;
@@ -308,13 +325,11 @@ namespace Mono.JScript.Compiler
 					new TextPoint (firstSemiColon.StartPosition),
 					new TextPoint (secondSemiColon.StartPosition),
 					new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
-				//DeclarationForStatement
 				
 			} else {
 				Expression initial = ParseExpression ();
 				
 				if (current.Kind == Token.Type.In) {
-					//ExpressionForInStatement
 					Token inToken = current;
 					Next ();
 					Expression collection = ParseExpression ();
@@ -393,7 +408,7 @@ namespace Mono.JScript.Compiler
 					cases.Append (ParseValueCaseClause ());
 				else {
 					if (defaultFlag)
-						diagnostics.Add (new Diagnostic (DiagnosticCode.SwitchHasMultipleDefaults, new TextSpan (start, current)));
+						Error (DiagnosticCode.SwitchHasMultipleDefaults, new TextSpan (start, current));
 					cases.Append (ParseDefaultCaseClause ());
 					defaultFlag = true;
 				}
@@ -509,11 +524,81 @@ namespace Mono.JScript.Compiler
 			}
 			return new TryStatement (block, catchClause, finallyClause, new TextSpan (start, current));
 		}
+		
+		#endregion
+
+		#region expressions
+		
+		private Expression ParseMemberExpression ()
+		{
+			Token start = current;
+			Expression expr;
+			switch (current.Kind) {
+				//primary expression
+				case Token.Type.This:
+					expr = new Expression (Expression.Operation.This, new TextSpan (current, current));
+					break;
+				case Token.Type.Identifier:
+					expr = new IdentifierExpression ((current as IdentifierToken).Spelling, new TextSpan (current, current));
+					break;
+				case Token.Type.Null:
+					expr = new NullExpression (new TextSpan (current, current));
+					break;
+				case Token.Type.True:
+					expr = new Expression (Expression.Operation.True, new TextSpan (current, current));
+					break;
+				case Token.Type.False:
+					expr = new Expression (Expression.Operation.False, new TextSpan (current, current));
+					break;
+				case Token.Type.NumericLiteral:
+					expr = new NumericLiteralExpression ((current as NumericLiteralToken).Spelling, new TextSpan (current, current));
+					break;
+				case Token.Type.StringLiteral:
+					expr = new StringLiteralExpression ((current as StringLiteralToken).Value, (current as StringLiteralToken).Spelling, new TextSpan (current, current));
+					break;
+				case Token.Type.LeftBracket:
+					expr = ParseArrayLiteral ();
+					break;
+				case Token.Type.LeftBrace:
+					expr = ParseObjectLiteral ();
+					break;
+				case Token.Type.LeftParenthesis: // here not sure can be more than one thing... ;(
+					Next ();
+					expr = ParseExpression ();
+					CheckSyntaxExpected (Token.Type.RightParenthesis);
+					Next ();
+					break;
+				//end primary
+				case Token.Type.Function:
+					expr = new FunctionExpression (ParseFunctionDefinition ());
+					break;
+				case Token.Type.New:
+					expr = ParseNew ();
+					break;
+				default:
+					SyntaxError.Add ("expression start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+					return new Expression (Expression.Operation.SyntaxError, new TextSpan (start, current));
+			}
+			
+			start = current;
+
+			switch (current.Kind) {
+				case Token.Type.LeftBracket:
+					Next ();
+					Expression subscript = ParseExpression ();
+					Next ();
+					CheckSyntaxExpected (Token.Type.RightBracket);					
+					return new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
+				case Token.Type.Dot:
+					Next ();
+					CheckSyntaxExpected (Token.Type.Identifier);
+					return new QualifiedExpression (expr, ((IdentifierToken)current).Spelling, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
+			}
+			return expr;
+		}
 		/*
 		ArgumentList.cs
-		ArrayLiteralExpression.cs
 		BinaryOperatorExpression.cs
-		ExpressionListElement.cs
 		ForInStatement.cs
 		FunctionDefinition.cs
 		HexLiteralExpression.cs
@@ -535,47 +620,6 @@ namespace Mono.JScript.Compiler
 		VariableDeclaration.cs
 		VariableDeclarationListElement.cs
 		 */
-
-		#endregion
-
-		#region expressions
-		//MemberExpression
-		/*
-		MemberExpression [ Expression ]
-		MemberExpression . Identifier*/
-
-		private Expression ParseMemberExpression ()
-		{
-			Token start = current; //ident
-			switch (current.Kind) {
-				case Token.Type.This:
-					return new Expression (Expression.Operation.This, new TextSpan(current,current));
-				case Token.Type.Identifier:
-					return new IdentifierExpression ((current as IdentifierToken).Spelling, new TextSpan (current, current));
-				case Token.Type.Null:
-					return new NullExpression (new TextSpan(current,current));
-				case Token.Type.True:
-					return new Expression (Expression.Operation.True, new TextSpan (current, current));
-				case Token.Type.False:
-					return new Expression (Expression.Operation.False, new TextSpan (current, current));
-				case Token.Type.NumericLiteral:
-					return new NumericLiteralExpression ((current as NumericLiteralToken).Spelling, new TextSpan(current,current));
-				case Token.Type.StringLiteral:
-					return new StringLiteralExpression ((current as StringLiteralToken).Value ,(current as StringLiteralToken).Spelling, new TextSpan (current, current));
-				case Token.Type.LeftBracket:
-					return ParseArrayLiteral ();
-				case Token.Type.LeftBrace:
-					return ParseObjectLiteral ();
-				case Token.Type.Function:
-					return new FunctionExpression (ParseFunctionDefinition ()); ;
-				case Token.Type.New:
-					return ParseNew ();
-				default:
-					SyntaxError.Add ("Statement start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
-					return new Expression (Expression.Operation.SyntaxError, new TextSpan (start, current));
-				}
-		}
-
 		private FunctionDefinition ParseFunctionDefinition ()
 		{
 			Token start = current;
@@ -619,8 +663,8 @@ namespace Mono.JScript.Compiler
 				if (current.Kind != Token.Type.Identifier
 					&& current.Kind != Token.Type.StringLiteral
 					&& current.Kind != Token.Type.NumericLiteral) {
-					//diagnostics.Add(new Diagnostic(DiagnosticCode.
-					//TODO here
+					Error (DiagnosticCode.SyntaxError, new TextSpan (current, current));
+					return new Expression (Expression.Operation.SyntaxError, new TextSpan (current, current));					
 				}
 				Expression name = ParseExpression ();
 				CheckSyntaxExpected (Token.Type.Colon);
@@ -655,13 +699,104 @@ namespace Mono.JScript.Compiler
 			CheckSyntaxExpected (Token.Type.RightBracket);
 			return new ArrayLiteralExpression (elements, new TextSpan(start, current));
 		}
-		
+
 		private Expression ParseExpression ()
 		{
-			Token start = current; //ident
+			return ParseExpression (false);
+		}
+
+		private UnaryOperatorExpression ParseUnaryExpression (bool noIn)
+		{
+			Token start = current;
+			UnaryOperatorExpression expr;
+			// get by first token
+			switch (current.Kind) {
+				case Token.Type.LeftParenthesis:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Parenthesized, new TextSpan (start, current));
+					break;
+				case Token.Type.Plus:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlus, new TextSpan (start, current));
+					break;
+				case Token.Type.Minus:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinus, new TextSpan (start, current));
+					break;
+				case Token.Type.PlusPlus:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlusPlus, new TextSpan (start, current));
+					break;
+				case Token.Type.MinusMinus:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinusMinus, new TextSpan (start, current));
+					break;
+				case Token.Type.Bang:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Bang, new TextSpan (start, current));
+					break;
+				case Token.Type.Tilda:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Tilda, new TextSpan (start, current));
+					break;
+				case Token.Type.Delete:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Delete, new TextSpan (start, current));
+					break;
+				case Token.Type.Typeof:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Typeof, new TextSpan (start, current));
+					break;
+				case Token.Type.Void:
+					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Void, new TextSpan (start, current));
+					break;
+				default:
+					SyntaxError.Add ("Unary operator start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+					return null;//TODO
+			}
+			switch (current.Kind) {
+				case Token.Type.PlusPlus:
+					expr = new UnaryOperatorExpression (expr, Expression.Operation.PostfixPlusPlus, new TextSpan (start, current));
+					Next ();
+					break;
+				case Token.Type.MinusMinus:
+					expr = new UnaryOperatorExpression (expr, Expression.Operation.PostfixMinusMinus, new TextSpan (start, current));
+					Next ();
+					break;
+			}
+			return expr;
+		}
+
+		[MonoTODO]
+		private Expression ParseExpression (bool noIn)
+		{
+			Token start = current;
+			// TODO CALL MEMBER AND UNARY EXPRESSION		
+			// RegularExpressionLiteralExpression
+			// HexLiteralExpression
+			// Logical operator
+			// || ou &&
+			//	ou | ou ^ ou &
+			// Conditionnal operator
+			// == ou != ou === ou !== ou < ou > ou <= ou >= ou instanceof ou in (si avec in))
+			//math operator
+			// << ou >> ou >>> ou + ou - ou * ou / ou %
 			Next ();
 			switch (current.Kind) {
+					//assigment
 				case Token.Type.Equal:
+				case Token.Type.StarEqual:
+				case Token.Type.DivideEqual:
+				case Token.Type.PercentEqual:
+				case Token.Type.PlusEqual:
+				case Token.Type.MinusEqual:
+				case Token.Type.GreaterGreaterEqual:
+				case Token.Type.LessLessEqual:
+				case Token.Type.GreaterGreaterGreaterEqual:
+				case Token.Type.AmpersandEqual:
+				case Token.Type.CircumflexEqual:
+				case Token.Type.BangEqual:
 					ParseSetVar ();
 					break;
 				case Token.Type.LeftParenthesis:
@@ -725,6 +860,7 @@ namespace Mono.JScript.Compiler
 
 		private Expression ParseNew ()
 		{
+			//new MemberExpression Arguments
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
@@ -813,8 +949,7 @@ namespace Mono.JScript.Compiler
 					current.InsertSemicolonBefore ();
 					return;
 			}
-				diagnostics.Add (new Diagnostic (code, new TextSpan (current.StartLine, current.StartColumn,
-					lexer.Position.Line, lexer.Position.Column, current.StartPosition, lexer.Position.Index)));
+			Error (code, new TextSpan (current,current));
 		}
 
 		#endregion
@@ -827,6 +962,10 @@ namespace Mono.JScript.Compiler
 			get { return diagnostics; }
 		}
 
+		private void Error(DiagnosticCode code , TextSpan loc)
+		{
+			diagnostics.Add (new Diagnostic (code, loc));
+		}
 		/* TODO 
 			BadDivideOrRegularExpressionLiteral,
 			EnclosingLabelShadowed,
