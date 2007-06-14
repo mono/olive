@@ -1,11 +1,11 @@
 2007-06-14  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* go ahead in expression but not finished
+	* Parser.cs: go ahead in expression but not finished
 	
 2007-06-10  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* StringLiteralToken implementation and create in Tokenizer
-	* Parser go ahead in expression but still a lot of work
+	* StringLiteralToken.cs: implementation and create in Tokenizer
+	* Parser.cs: go ahead in expression but still a lot of work
 	
 2007-06-08  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
