@@ -53,12 +53,11 @@ namespace MS.Internal {
 		
 		public void Add (T t)
 		{
-			unsafe {
-				Value v = DependencyObject.GetAsValue (t);
-				void *p = &v;
-				
-				NativeMethods.collection_add (native, (IntPtr) p);
-			}
+			DependencyObject dob = t as DependencyObject;
+			if (dob != null)
+				NativeMethods.collection_add (native, dob.native);
+			else
+				throw new Exception ("The collection only supports DependencyObjects");
 		}
 		
 		protected internal override Kind GetKind ()
