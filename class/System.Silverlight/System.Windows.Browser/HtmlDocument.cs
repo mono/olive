@@ -35,22 +35,24 @@ namespace System.Windows.Browser
 		{
 		}
 
-		[MonoTODO]
+		internal HtmlDocument (IntPtr handle)
+			: base (handle)
+		{
+		}
+
 		public HtmlElement CreateElement (string tagName)
 		{
-			throw new NotImplementedException ();
+			return new HtmlElement (InvokeMethod<IntPtr> ("createElement", tagName));
 		}
 
-		[MonoTODO]
 		public HtmlElement GetElementById (string id)
 		{
-			throw new NotImplementedException ();
+			return new HtmlElement (InvokeMethod<IntPtr> ("getElementById", id));
 		}
 
-		[MonoTODO]
 		public HtmlElementCollection GetElementsByTagName (string tagName)
 		{
-			throw new NotImplementedException ();
+			return new HtmlElementCollection (InvokeMethod<IntPtr> ("getElementsByTagName", tagName));
 		}
 	}
 }

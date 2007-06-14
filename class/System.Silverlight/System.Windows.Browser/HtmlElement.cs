@@ -44,13 +44,13 @@ namespace System.Windows.Browser
 		[MonoTODO]
 		public void AppendChild (HtmlElement element)
 		{
-			InvokeMethod ("appendChild", element);
+			InvokeMethod ("appendChild", element.Handle);
 		}
 
 		[MonoTODO]
 		public void AppendChild (HtmlElement element, HtmlElement referenceElement)
 		{
-			InvokeMethod ("insertAfter", element, referenceElement);
+			InvokeMethod ("insertAfter", element.Handle, referenceElement.Handle);
 		}
 
 		[MonoTODO]
@@ -62,7 +62,7 @@ namespace System.Windows.Browser
 		[MonoTODO]
 		public string GetAttribute (string name)
 		{
-			return (string) InvokeMethod ("getAttribute", name);
+			return InvokeMethod<string> ("getAttribute", name);
 		}
 
 		[MonoTODO]
@@ -80,7 +80,7 @@ namespace System.Windows.Browser
 		[MonoTODO]
 		public void RemoveChild (HtmlElement element)
 		{
-			InvokeMethod ("removeChild", element);
+			InvokeMethod ("removeChild", element.Handle);
 		}
 
 		[MonoTODO]
@@ -98,7 +98,7 @@ namespace System.Windows.Browser
 		[MonoTODO]
 		public override void SetProperty (string name, object value)
 		{
-			throw new NotImplementedException ();
+			base.SetProperty (name, value);
 		}
 
 		[MonoTODO]
@@ -107,12 +107,10 @@ namespace System.Windows.Browser
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public HtmlElementCollection Children {
-			get { throw new NotImplementedException (); }
+			get { return new HtmlElementCollection (GetProperty<IntPtr> ("childNodes")); }
 		}
 
-		[MonoTODO]
 		public string CssClass {
 			get { return GetProperty<string> ("class"); }
 			set { SetProperty ("class", value); }

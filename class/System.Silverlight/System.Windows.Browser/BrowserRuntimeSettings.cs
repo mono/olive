@@ -1,38 +1,51 @@
 using System;
 using System.Globalization;
+using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace System.Windows.Browser
 {
 	public sealed class BrowserRuntimeSettings
 	{
-		[MonoTODO]
+		[NonSerialized]
+		CultureInfo culture;
+		[NonSerialized]
+		CultureInfo ui_culture;
+
+		bool debug, html, httpnet, script;
+
+		[DllImport ("moonplugin")]
+		static extern void LoadBrowserRuntimeSettings (BrowserRuntimeSettings instance);
+
+		internal BrowserRuntimeSettings ()
+		{
+			culture = Thread.CurrentThread.CurrentCulture;
+			ui_culture = Thread.CurrentThread.CurrentUICulture;
+			LoadBrowserRuntimeSettings (this);
+		}
+
 		public CultureInfo Culture {
-			get { throw new NotImplementedException (); }
+			get { return culture; }
 		}
 
-		[MonoTODO]
 		public bool EnableDebugging {
-			get { throw new NotImplementedException (); }
+			get { return debug; }
 		}
 
-		[MonoTODO]
 		public bool EnableHtmlAccess {
-			get { throw new NotImplementedException (); }
+			get { return html; }
 		}
 
-		[MonoTODO]
 		public bool EnableHttpNetworkAccess {
-			get { throw new NotImplementedException (); }
+			get { return httpnet; }
 		}
 
-		[MonoTODO]
 		public bool EnableScriptAccess {
-			get { throw new NotImplementedException (); }
+			get { return script; }
 		}
 
-		[MonoTODO]
 		public CultureInfo UICulture {
-			get { throw new NotImplementedException (); }
+			get { return ui_culture; }
 		}
 	}
 }

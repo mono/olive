@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Runtime.InteropServices;
+
 namespace System.Windows.Browser {
 
 	public sealed class BrowserInformation {
@@ -35,6 +37,14 @@ namespace System.Windows.Browser {
 		private string platform;
 		private string user_agent;
 		private bool cookie_enabled;
+
+		[DllImport ("moonplugin")]
+		static extern void LoadBrowserInformation (BrowserInformation instance);
+
+		internal BrowserInformation ()
+		{
+			LoadBrowserInformation (this);
+		}
 
 		public BrowserInformation (string name, string version, string platform, string userAgent, bool cookieEnabled)
 		{

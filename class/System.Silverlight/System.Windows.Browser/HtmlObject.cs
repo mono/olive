@@ -25,10 +25,19 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Browser {
 
 	public abstract class HtmlObject : ScriptableObject {
+
+		class HtmlWindow : HtmlObject
+		{
+			internal HtmlWindow (IntPtr handle)
+				: base (handle)
+			{
+			}
+		}
 
 		protected HtmlObject ()
 		{
@@ -39,28 +48,36 @@ namespace System.Windows.Browser {
 		{
 		}
 
-		[MonoTODO]
 		public bool AttachEvent (string eventName, EventHandler handler)
 		{
-			throw new NotImplementedException ();
+			return AttachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
 		}
 
-		[MonoTODO]
 		public bool AttachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
-			throw new NotImplementedException ();
+			return AttachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
 		}
 
-		[MonoTODO]
 		public void DetachEvent (string eventName, EventHandler handler)
 		{
-			throw new NotImplementedException ();
+			DetachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
 		}
 
-		[MonoTODO]
 		public void DetachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
-			throw new NotImplementedException ();
+			DetachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
 		}
+
+		[DllImport ("moonplugin")]
+		static extern bool AttachEvent (IntPtr xpp, IntPtr obj, string name, EventHandler handler);
+
+		[DllImport ("moonplugin")]
+		static extern bool AttachEvent (IntPtr xpp, IntPtr obj, string name, EventHandler<HtmlEventArgs> handler);
+
+		[DllImport ("moonplugin")]
+		static extern void DetachEvent (IntPtr xpp, IntPtr obj, string name, EventHandler handler);
+
+		[DllImport ("moonplugin")]
+		static extern void DetachEvent (IntPtr xpp, IntPtr obj, string name, EventHandler<HtmlEventArgs> handler);
 	}
 }

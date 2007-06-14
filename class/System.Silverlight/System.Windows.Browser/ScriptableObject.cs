@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+
 namespace System.Windows.Browser {
 
 	public class ScriptableObject : IDisposable {
@@ -42,6 +43,10 @@ namespace System.Windows.Browser {
 			this.handle = handle;
 		}
 
+		internal IntPtr Handle {
+			get { return handle; }
+		}
+
 		protected virtual void Dispose ()
 		{
 			// FIXME: same as .ctor().
@@ -52,21 +57,24 @@ namespace System.Windows.Browser {
 			Dispose ();
 		}
 
-		[MonoTODO]
 		public virtual void SetProperty (string name, object value)
 		{
-			throw new NotImplementedException ();
+			WebApplication.SetProperty (handle, name, value);
 		}
 
-		[MonoTODO]
 		public T GetProperty<T>(string name)
 		{
-			throw new NotImplementedException ();
+			return WebApplication.GetProperty<T> (handle, name);
 		}
 
-		internal object InvokeMethod (string name, params object [] args)
+		internal void InvokeMethod (string name, params object [] args)
 		{
-			throw new NotImplementedException ();
+			WebApplication.InvokeMethod (handle, name, args);
+		}
+
+		internal T InvokeMethod<T> (string name, params object [] args)
+		{
+			return WebApplication.InvokeMethod<T> (handle, name, args);
 		}
 	}
 }

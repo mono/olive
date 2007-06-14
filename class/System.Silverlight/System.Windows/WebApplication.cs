@@ -7,10 +7,9 @@ namespace System.Windows
 {
 	public class WebApplication
 	{
-		static object lockobj = new object ();
+		static readonly object lockobj = new object ();
 		static WebApplication current;
 
-		[MonoTODO]
 		public static WebApplication Current {
 			get {
 				if (current == null)
@@ -26,7 +25,13 @@ namespace System.Windows
 
 		private WebApplication ()
 		{
-			//instance = GetCurrentInstance ();
+			object o = AppDomain.CurrentDomain.GetData ("PluginRootClass");
+			if (o is IntPtr)
+				instance = (IntPtr) o;
+		}
+
+		internal IntPtr Instance {
+			get { return instance; }
 		}
 
 		[MonoTODO]
@@ -62,24 +67,35 @@ namespace System.Windows
 
 		public event EventHandler<ApplicationUnhandledExceptionEventArgs> ApplicationUnhandledException;
 
-		internal T GetProperty<T> (IntPtr obj, string name)
+		internal static T GetProperty<T> (IntPtr obj, string name)
 		{
-			return (T) GetPropertyInternal (instance, obj, name);
+			return (T) GetPropertyInternal (Current.instance, obj, name);
 		}
 
-		internal T InvokeMethod<T> (IntPtr obj, string name, params object [] args)
+		internal static void SetProperty (IntPtr obj, string name, object value)
 		{
-			return (T) InvokeMethodInternal (instance, obj, name, args);
+			SetPropertyInternal (Current.instance, obj, name, value);
+		}
+
+		internal static void InvokeMethod (IntPtr obj, string name, params object [] args)
+		{
+			InvokeMethodInternal (Current.instance, obj, name, args);
+		}
+
+		internal static T InvokeMethod<T> (IntPtr obj, string name, params object [] args)
+		{
+			return (T) InvokeMethodInternal (Current.instance, obj, name, args);
 		}
 
 		// note that those functions do not exist
-		[DllImport ("moon")]
-		static extern IntPtr GetCurrentInstance ();
 
-		[DllImport ("moon")]
+		[DllImport ("moonplugin")]
 		static extern object GetPropertyInternal (IntPtr xpp, IntPtr obj, string name);
 
-		[DllImport ("moon")]
+		[DllImport ("moonplugin")]
+		static extern object SetPropertyInternal (IntPtr xpp, IntPtr obj, string name, object value);
+
+		[DllImport ("moonplugin")]
 		static extern object InvokeMethodInternal (IntPtr xpp, IntPtr obj, string name, object [] args);
 	}
 }

@@ -27,6 +27,7 @@
 //
 
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Browser {
 
@@ -39,7 +40,11 @@ namespace System.Windows.Browser {
 		}
 
 		public static BrowserInformation BrowserInformation {
-			get { return browser_info; }
+			get {
+				if (browser_info == null)
+					browser_info = new BrowserInformation ();
+				return browser_info;
+			}
 		}
 
 		public static string Cookies {
@@ -68,40 +73,48 @@ namespace System.Windows.Browser {
 			get { return null; }
 		}
 
-		[MonoTODO]
 		public static void Navigate (string navigateToUri)
 		{
-			throw new NotImplementedException ();
+			Navigate (WebApplication.Current.Instance, navigateToUri);
 		}
 
-		[MonoTODO]
 		public static ScriptableObject Navigate (string navigateToUri, string target)
 		{
-			throw new NotImplementedException ();
+			IntPtr handle = Navigate (WebApplication.Current.Instance, navigateToUri, target, null);
+			return new ScriptableObject (handle);
 		}
 
-		[MonoTODO]
 		public static ScriptableObject Navigate (string navigateToUri, string target, string targetFeatures)
 		{
-			throw new NotImplementedException ();
+			IntPtr handle = Navigate (WebApplication.Current.Instance, navigateToUri, target, targetFeatures);
+			return new ScriptableObject (handle);
 		}
 
-		[MonoTODO]
 		public static void NavigateToBookmark (string bookmark)
 		{
-			throw new NotImplementedException ();
+			NavigateToBookmark (WebApplication.Current.Instance, bookmark);
 		}
 
-		[MonoTODO]
 		public static void Submit ()
 		{
-			throw new NotImplementedException ();
+			Submit (WebApplication.Current.Instance, null);
 		}
 
-		[MonoTODO]
 		public static void Submit (string formId)
 		{
-			throw new NotImplementedException ();
+			Submit (WebApplication.Current.Instance, formId);
 		}
+
+		[DllImport ("moonplugin")]
+		static extern void Navigate (IntPtr npp, string uri);
+
+		[DllImport ("moonplugin")]
+		static extern IntPtr Navigate (IntPtr npp, string uri, string target, string features);
+
+		[DllImport ("moonplugin")]
+		static extern void NavigateToBookmark (IntPtr xpp, string bookmark);
+
+		[DllImport ("moonplugin")]
+		static extern void Submit (IntPtr xpp, string formId);
 	}
 }

@@ -40,13 +40,13 @@ namespace System.Windows.Browser
 
 		[MonoTODO]
 		public int Count {
-			get { return WebApplication.Current.GetProperty<int> (node_list, "length"); }
+			get { return WebApplication.GetProperty<int> (node_list, "length"); }
 		}
 
 		[MonoTODO]
 		public HtmlElement this [int i] {
 			// is this approach (creating HtmlElement every time) bogus?
-			get { return new HtmlElement (WebApplication.Current.InvokeMethod<IntPtr> (node_list, "item", i)); }
+			get { return new HtmlElement (WebApplication.InvokeMethod<IntPtr> (node_list, "item", i)); }
 		}
 	}
 }
