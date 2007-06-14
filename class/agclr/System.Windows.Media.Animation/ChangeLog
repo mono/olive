@@ -1,3 +1,8 @@
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TimelineGroup.cs: Make Children a TimelineCollection.
+	* PointAnimation.cs: Fix native constructor name.
+
 2007-06-14  Alan McGovern <amcgovern@novell.com> 
 
 	* ColorAnimation.cs, DoubleAnimation.cs, PointAnimation.cs, Storyboard.cs:

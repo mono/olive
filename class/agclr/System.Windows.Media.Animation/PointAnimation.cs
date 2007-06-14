@@ -38,7 +38,7 @@ namespace System.Windows.Media.Animation
 			   DependencyProperty.Lookup (Kind.POINTANIMATION, "To", typeof (double));
 
 
-		public PointAnimation(): base (Mono.NativeMethods.pointanimation_new ())
+		public PointAnimation(): base (Mono.NativeMethods.point_animation_new ())
 		{
 		}
 
