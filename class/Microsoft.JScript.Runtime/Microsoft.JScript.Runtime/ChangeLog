@@ -1,5 +1,10 @@
 2007-06-14  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
+	* JSError.cs
+	* Convert.cs: Added.
+
+2007-06-14  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
 	* ConstructTargetN.cs
 	* ErrorType.cs
 	* JSObject.cs
