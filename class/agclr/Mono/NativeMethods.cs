@@ -127,6 +127,9 @@ namespace Mono {
 		internal extern static IntPtr path_segment_collection_new ();
 		
 		[DllImport("moon")]
+		internal extern static IntPtr collection_new ();
+		
+		[DllImport("moon")]
 		internal extern static IntPtr visual_collection_new ();
 		
 		[DllImport("moon")]
@@ -136,6 +139,33 @@ namespace Mono {
 #region Constructors
 		[DllImport("moon")]
 		internal extern static IntPtr rectangle_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr framework_element_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr visual_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr path_segment_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr geometry_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr timeline_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr timeline_group_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr parallel_timeline_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr shape_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr uielement_new ();
 
 		[DllImport("moon")]
 		internal extern static IntPtr solid_color_brush_new ();
