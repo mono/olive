@@ -60,6 +60,10 @@ namespace System.Windows {
 			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceCollection));
 		}
 			
+		public UIElement () : base (NativeMethods.uielement_new ())
+		{
+		}
+		
 		internal UIElement (IntPtr raw) : base (raw)
 		{
 		}

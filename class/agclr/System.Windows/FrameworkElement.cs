@@ -37,36 +37,40 @@ namespace System.Windows {
 			HeightProperty = DependencyProperty.Lookup (Kind.FRAMEWORKELEMENT, "Height", typeof (double));
 		}
 		
+		public FrameworkElement () : base (NativeMethods.framework_element_new ())
+		{
+		}
+		
 		internal FrameworkElement (IntPtr raw) : base (raw)
 		{
 		}
 			
-	        public double Height {
-	                get {
+		public double Height {
+			get {
 				return (double) GetValue (HeightProperty);
 			}
-			
-	                set {
+
+			set {
 				SetValue (HeightProperty, value);
 			}
-	        }
-	
-	        public object Parent {
-	                get { return parent; }
-	        }
-	
-	        public double Width {
-	                get {
+		}
+
+		public object Parent {
+			get { return parent; }
+		}
+
+		public double Width {
+			get {
 				return (double) GetValue (WidthProperty);
-			}
-			
-	                set {
+		}
+
+		set {
 				SetValue (WidthProperty, value);
 			}
-	        }
-	
-	        public static readonly DependencyProperty WidthProperty;
-	        public static readonly DependencyProperty HeightProperty;
+		}
+
+		public static readonly DependencyProperty WidthProperty;
+		public static readonly DependencyProperty HeightProperty;
 		
 		protected internal override Kind GetKind ()
 		{

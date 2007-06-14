@@ -1,3 +1,9 @@
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TriggerCollection.cs, UIElement.cs, Downloader.cs,
+	  ResourceCollection.cs, DependencyObject.cs, FrameworkElement.cs:
+	  Constructor fixes, part 3.
+
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Downloader.cs, DependencyObject.cs: Second pass on constructors.

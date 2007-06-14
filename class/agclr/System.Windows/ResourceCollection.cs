@@ -34,9 +34,12 @@ using Mono;
 namespace System.Windows {
 
 	public class ResourceCollection : MS.Internal.Collection<int> {
-		public ResourceCollection () 
+		public ResourceCollection ()  : base (NativeMethods.resource_collection_new ())
 		{
-			native = NativeMethods.resource_collection_new ();
+		}
+		
+		internal ResourceCollection (IntPtr raw) : base (raw)
+		{
 		}
 		
 		protected internal override Kind GetKind ()

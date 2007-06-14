@@ -41,6 +41,10 @@ namespace System.Windows {
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
 		}
+		
+		internal Downloader (IntPtr raw) : base (raw)
+		{
+		}
 
 
 		public double DownloadProgress {

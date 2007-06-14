@@ -46,7 +46,7 @@ namespace System.Windows {
 				return _native;
 			}
 
-			set {
+			private set {
 				_native = value;
 				if (objects.Contains (value))
 					return;
