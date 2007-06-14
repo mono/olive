@@ -28,9 +28,22 @@
 
 using MS.Internal;
 using System.Windows.Media.Animation;
+using Mono;
 
 namespace System.Windows.Media {
 
 	public class TimelineCollection : Collection<Timeline> {
+		public TimelineCollection () : base (NativeMethods.timeline_collection_new ())
+		{
+		}
+		
+		internal TimelineCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
+		internal protected override Kind GetKind ()
+		{
+			return Kind.TIMELINE_COLLECTION;
+		}
 	}
 }

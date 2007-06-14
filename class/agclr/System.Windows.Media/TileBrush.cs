@@ -31,8 +31,8 @@ namespace System.Windows.Media {
 
 	public class TileBrush : Brush {
 
-		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentX", typeof (double));
-		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentY", typeof (double));
+		public static readonly DependencyProperty AlignmentXProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentX", typeof (AlignmentX));
+		public static readonly DependencyProperty AlignmentYProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "AlignmentY", typeof (AlignmentY));
 		public static readonly DependencyProperty StretchProperty = DependencyProperty.Lookup (Kind.TILEBRUSH, "Stretch", typeof (int));
 
 
@@ -45,13 +45,13 @@ namespace System.Windows.Media {
 		}
 
 
-		public double AlignmentX {
-			get { return (double) GetValue (AlignmentXProperty); }
+		public AlignmentX AlignmentX {
+			get { return (AlignmentX) GetValue (AlignmentXProperty); }
 			set { SetValue (AlignmentXProperty, value); }
 		}
 
-		public double AlignmentY {
-			get { return (double) GetValue (AlignmentYProperty); }
+		public AlignmentY AlignmentY {
+			get { return (AlignmentY) GetValue (AlignmentYProperty); }
 			set { SetValue (AlignmentYProperty, value); }
 		}
 

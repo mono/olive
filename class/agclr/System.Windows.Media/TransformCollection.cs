@@ -26,11 +26,23 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono;
+using MS.Internal;
+
 namespace System.Windows.Media {
-	public class TransformCollection {
+	public class TransformCollection : Collection <Transform>{
 		
-		public TransformCollection ()
+		public TransformCollection () : base (NativeMethods.transform_collection_new ())
 		{
+		}
+		
+		internal TransformCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.TRANSFORM_COLLECTION;
 		}
 	}
 }

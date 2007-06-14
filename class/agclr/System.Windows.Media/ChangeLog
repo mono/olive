@@ -1,5 +1,11 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* TimelineCollection.cs, TransformCollection.cs: Implement.
+	* TileBrush.cs: Fix property types.
+	* PolyQuadraticBezierSegment.cs: Fix native constructor name.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* RadialGradientBrush.cs, PolyLineSegment.cs,
 	  GradientStopCollection.cs, TranslateTransform.cs, Geometry.cs,
 	  PathSegmentCollection.cs, LinearGradientBrush.cs, PathFigure.cs,
