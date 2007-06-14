@@ -31,7 +31,7 @@ namespace System.Windows
 	public sealed class TriggerActionCollection :
 				MS.Internal.Collection<System.Windows.Media.Animation.BeginStoryboard>  
 	{
-		public TriggerActionCollection(): base (Mono.NativeMethods.triggeractioncollection_new ())
+		public TriggerActionCollection(): base (Mono.NativeMethods.trigger_action_collection_new ())
 		{
 		}
 
@@ -42,7 +42,7 @@ namespace System.Windows
 
 		protected internal override Kind GetKind()
 		{
-			return Kind.EVENTTRIGGER;
+			return Kind.TRIGGERACTION_COLLECTION;
 		}
 	}
 }

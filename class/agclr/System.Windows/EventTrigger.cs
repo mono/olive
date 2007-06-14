@@ -37,7 +37,7 @@ namespace System.Windows
 			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "RoutedEvent", typeof (string));
 
 
-		public EventTrigger(): base (Mono.NativeMethods.eventtrigger_new ())
+		public EventTrigger(): base (Mono.NativeMethods.event_trigger_new ())
 		{
 		}
 

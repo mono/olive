@@ -1,5 +1,13 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* TriggerActionCollection.cs, EventTrigger.cs: Fix native constructor
+	  name.
+	* DependencyObject.cs: Construct TriggerActionCollection properly,
+	  implement enum marshalling (treat them like Int32) and fix string
+	  marshalling.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* DependencyObject.cs: Creation of TimeLineCollection implemented.
 
 2007-06-14  Alan McGovern <amcgovern@novell.com> 

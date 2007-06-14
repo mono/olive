@@ -224,7 +224,8 @@ namespace System.Windows {
 				return new VisualCollection (raw);
 				
 			case Kind.RESOURCE_COLLECTION: return null;
-			case Kind.TRIGGERACTION_COLLECTION: return null;
+			case Kind.TRIGGERACTION_COLLECTION: 
+				return new TriggerActionCollection (raw);
 			case Kind.TRIGGER_COLLECTION: return null;
 				
 			case Kind.TRANSFORM:
@@ -278,7 +279,9 @@ namespace System.Windows {
 					return *((int *) px);
 
 				case Kind.STRING:
-					return Marshal.PtrToStringAuto ((IntPtr) px);
+					IntPtr ptr = Marshal.ReadIntPtr((IntPtr) px);
+					string str = Marshal.PtrToStringAuto (ptr);
+					return str;
 
 				case Kind.POINT: {
 					IntPtr vptr = *((IntPtr *) px);
@@ -377,7 +380,7 @@ namespace System.Windows {
 					}
 
 					*((IntPtr *) p) = dov.native;
-				} else if (v is int){
+				} else if (v is int || (v.GetType ().IsEnum && v.GetType ().GetElementType () == typeof (int))){
 					value.k = Kind.INT32;
 					*((int *) p) = (int) v;
 				} else if (v is bool){
