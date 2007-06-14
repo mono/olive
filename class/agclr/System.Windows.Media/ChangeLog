@@ -1,5 +1,9 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* ImageBrush.cs: Marshal Uri as string.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* TimelineCollection.cs, TransformCollection.cs: Implement.
 	* TileBrush.cs: Fix property types.
 	* PolyQuadraticBezierSegment.cs: Fix native constructor name.

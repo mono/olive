@@ -34,7 +34,7 @@ namespace System.Windows.Media {
 		public static readonly DependencyProperty DownloadProgressProperty =
 			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "DownloadProgress", typeof (double));
 		public static readonly DependencyProperty ImageSourceProperty =
-			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource", typeof (Uri));
+			DependencyProperty.Lookup (Kind.IMAGEBRUSH, "ImageSource", typeof (string));
 
 
 		public ImageBrush () : base(NativeMethods.image_brush_new ())
@@ -52,8 +52,17 @@ namespace System.Windows.Media {
 		}
 
 		public Uri ImageSource {
-			get { return (Uri) GetValue (ImageSourceProperty); }
-			set { SetValue (ImageSourceProperty, value); }
+			get { 
+				// Uri is not a DependencyObject, we save it as a string
+				string uri = (string) GetValue (ImageSourceProperty);
+				if (uri == null || uri == string.Empty)
+					return null;
+				return new Uri (uri);
+			}
+			set { 
+				string uri = value.OriginalString;
+				SetValue (ImageSourceProperty, uri); 
+			}
 		}
 
 
