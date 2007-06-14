@@ -80,6 +80,7 @@ System.Windows.Media/SolidColorBrush.cs
 System.Windows.Media/Stretch.cs
 System.Windows.Media/SweepDirection.cs
 System.Windows.Media/TileBrush.cs
+System.Windows.Media/TimelineCollection.cs
 System.Windows.Media/TransformCollection.cs
 System.Windows.Media/Transform.cs
 System.Windows.Media/TransformGroup.cs
