@@ -1,5 +1,5 @@
 //
-// DoubleAnimation.cs
+// EventTrigger.cs
 //
 // Author:
 //   Alan McGovern (amcgovern@novell.com)
@@ -21,50 +21,28 @@
 // EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 // MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 // NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
-// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTEVENTTRIGGERHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using Mono;
-namespace System.Windows.Media.Animation 
+namespace System.Windows 
 {
-	public class DoubleAnimation : System.Windows.Media.Animation.Animation 
+	public sealed class TriggerActionCollection :
+				MS.Internal.Collection<System.Windows.Media.Animation.BeginStoryboard>  
 	{
-		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "BY", typeof (double));
-		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "FROM", typeof (double));
-		public static readonly DependencyProperty ToProperty =
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "TO", typeof (double));
-
-
-		public DoubleAnimation(): base (Mono.NativeMethods.doubleanimation_new ())
+		public TriggerActionCollection(): base (Mono.NativeMethods.triggeractioncollection_new ())
 		{
 		}
 
-		internal DoubleAnimation (IntPtr raw) : base (raw)
+		internal TriggerActionCollection (IntPtr raw) : base (raw)
 		{
 		}
 
-
-		public Nullable<double> By {
-			get { return (double) GetValue(ByProperty); }
-			set { SetValue(ByProperty, value); }
-		}
-
-		public Nullable<double> From {
-			get { return (double) GetValue (FromProperty); }
-			set { SetValue (FromProperty, value); }
-		}
-
-		public Nullable<double> To {
-			get { return (double) GetValue (ToProperty); }
-			set { SetValue (ToProperty, value); }
-		}
 
 		protected internal override Kind GetKind()
 		{
-			return Kind.DOUBLEANIMATION;
+			return Kind.EVENTTRIGGER;
 		}
 	}
 }

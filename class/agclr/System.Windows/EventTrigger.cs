@@ -27,13 +27,13 @@
 //
 using Mono;
 namespace System.Windows 
-{/*
+{
 	public sealed class EventTrigger : DependencyObject 
 	{
-		public static readonly DependancyProperty ActionsProperty = 
+		public static readonly DependencyProperty ActionsProperty = 
 			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "ACTIONS", typeof (TriggerActionCollection));
 
-		public static readonly DependancyProperty RoutedEventProperty = 
+		public static readonly DependencyProperty RoutedEventProperty = 
 			   DependencyProperty.Lookup (Kind.EVENTTRIGGER, "ROUTEDEVENT", typeof (string));
 
 
@@ -61,5 +61,5 @@ namespace System.Windows
 		{
 			return Kind.EVENTTRIGGER;
 		}
-	}*/
+	}
 }

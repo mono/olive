@@ -19,6 +19,7 @@ System.Windows/ResourceCollection.cs
 System.Windows/Rect.cs
 System.Windows/Size.cs
 System.Windows/TriggerCollection.cs
+System.Windows/TriggerActionCollection.cs
 System.Windows/UIElement.cs
 System.Windows/Visibility.cs
 System.Windows/XamlReader.cs

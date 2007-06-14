@@ -28,12 +28,13 @@
 using Mono;
 using System.Windows;
 namespace System.Windows.Media.Animation 
-{/*
+{
 	public abstract class Animation : Timeline 
 	{
 		public Animation(): base (Mono.NativeMethods.animation_new ())
 		{
 		}
+
 
 		internal Animation (IntPtr raw) : base (raw)
 		{
@@ -44,5 +45,5 @@ namespace System.Windows.Media.Animation
 		{
 			return Kind.ANIMATION;
 		}
-	}*/
+	}
 }

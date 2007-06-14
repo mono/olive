@@ -28,25 +28,25 @@
 using Mono;
 using System.Windows;
 namespace System.Windows.Media.Animation 
-{/*
-	public sealed class BeginStoryBoard : DependencyObject 
+{
+	public sealed class BeginStoryboard : DependencyObject 
 	{
 		public static readonly DependencyProperty StoryBoardProperty = 
 			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "STORYBOARD", typeof (Storyboard));
 
 
-		public BeginStoryBoard(): base (Mono.NativeMethods.beginstoryboard_new ())
+		public BeginStoryboard(): base (Mono.NativeMethods.beginstoryboard_new ())
 		{
 		}
 
-		internal BeginStoryBoard (IntPtr raw) : base (raw)
+		internal BeginStoryboard (IntPtr raw) : base (raw)
 		{
 		}
 
 
-		public Storyboard By {
-			get { return (Storyboard) GetValue(ByProperty); }
-			set { SetValue(ByProperty, value); }
+		public Storyboard Storyboard {
+			get { return (Storyboard) GetValue(StoryBoardProperty); }
+			set { SetValue(StoryBoardProperty, value); }
 		}
 
 
@@ -54,5 +54,5 @@ namespace System.Windows.Media.Animation
 		{
 			return Kind.BEGINSTORYBOARD;
 		}
-	}*/
+	}
 }

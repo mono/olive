@@ -27,7 +27,7 @@
 //
 using Mono;
 namespace System.Windows.Media.Animation 
-{/*
+{
 	public class ColorAnimation : System.Windows.Media.Animation.Animation 
 	{
 		public static readonly DependencyProperty ByProperty = 
@@ -66,5 +66,5 @@ namespace System.Windows.Media.Animation
 		{
 			return Kind.COLORANIMATION;
 		}
-	}*/
+	}
 }

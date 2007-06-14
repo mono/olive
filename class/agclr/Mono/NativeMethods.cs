@@ -281,6 +281,28 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr storyboard_new ();
 
+		[DllImport("moon")]
+		internal extern static IntPtr beginstoryboard_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr animation_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr coloranimation_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr doubleanimation_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr triggeractioncollection_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr pointanimation_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr eventtrigger_new ();
+
+
 #endregion
 
 #region Storyboard

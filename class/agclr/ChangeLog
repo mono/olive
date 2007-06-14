@@ -1,5 +1,10 @@
 2007-06-14  Alan McGovern <amcgovern@novell.com> 
 
+	* Fixed typos in files from previous commit
+	* Animation.cs: Implemented
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
 	* Implemented   ColorAnimation,
 			DoubleAnimation, 
 			PointAnimation,
