@@ -1,5 +1,9 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Kind.cs: Update.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* NativeMethods.cs: And even more native methods.
 
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
