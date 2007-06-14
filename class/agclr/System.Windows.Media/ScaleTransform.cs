@@ -43,9 +43,8 @@ namespace System.Windows.Media {
 		{
 		}
 
-		internal ScaleTransform (IntPtr raw)
+		internal ScaleTransform (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 		
 		public double CenterX {

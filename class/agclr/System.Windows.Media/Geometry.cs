@@ -37,6 +37,10 @@ namespace System.Windows.Media {
 			TransformProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "Transform", typeof (TransformGroup));
 		}
 
+		public Geometry () : base (NativeMethods.geometry_new ())
+		{
+		}
+		
 		internal Geometry (IntPtr raw) : base (raw)
 		{
 		}

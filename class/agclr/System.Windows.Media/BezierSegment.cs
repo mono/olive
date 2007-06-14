@@ -40,6 +40,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal BezierSegment (IntPtr raw) : base (raw)
+		{
+		}
+		
 		public Point Point1 {
 			get {
 				return (Point) GetValue (Point1Property);

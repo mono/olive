@@ -39,6 +39,10 @@ namespace System.Windows.Media {
 		public GradientStop () : base (NativeMethods.gradient_stop_new ())
 		{
 		}
+		
+		internal GradientStop (IntPtr raw) : base (raw)
+		{
+		}
 
 
 		public Color Color {

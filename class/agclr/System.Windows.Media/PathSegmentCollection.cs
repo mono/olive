@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal PathSegmentCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
 		protected internal override Kind GetKind ()
 		{
 			return Kind.PATHSEGMENT_COLLECTION;

@@ -39,6 +39,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal PolyLineSegment (IntPtr raw) : base (raw)
+		{
+		}
+		
 		public Point [] Points {
 			set {
 				SetValue (PointsProperty, value);

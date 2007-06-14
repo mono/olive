@@ -30,7 +30,11 @@ using Mono;
 namespace System.Windows.Media {
 	public abstract class PathSegment : DependencyObject {
 		
-		public PathSegment (IntPtr raw) : base (raw)
+		internal PathSegment (IntPtr raw) : base (raw)
+		{
+		}
+		
+		public PathSegment () : base (NativeMethods.path_segment_new ())
 		{
 		}
 		

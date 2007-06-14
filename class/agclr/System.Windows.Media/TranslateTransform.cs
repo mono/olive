@@ -40,9 +40,8 @@ namespace System.Windows.Media {
 		{
 		}
 
-		internal TranslateTransform (IntPtr raw)
+		internal TranslateTransform (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 		
 		public double X {

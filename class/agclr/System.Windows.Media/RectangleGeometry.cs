@@ -38,6 +38,10 @@ namespace System.Windows.Media {
 		public RectangleGeometry () : base (NativeMethods.rectangle_geometry_new ())
 		{
 		}
+		
+		internal RectangleGeometry (IntPtr raw) : base (raw)
+		{
+		}
 
 		public double RadiusX {
 			get { return (double) GetValue (RadiusXProperty); }

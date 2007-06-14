@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		public VideoBrush () : base (NativeMethods.video_brush_new ())
 		{
 		}
+		
+		internal VideoBrush (IntPtr raw) : base (raw)
+		{
+		}
 
 		public string SourceName {
 			get { return (string) GetValue (SourceNameProperty); }

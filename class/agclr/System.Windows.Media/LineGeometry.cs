@@ -39,6 +39,10 @@ namespace System.Windows.Media {
 		public LineGeometry () : base (Mono.NativeMethods.line_geometry_new ())
 		{
 		}
+		
+		internal LineGeometry (IntPtr raw) : base (raw)
+		{
+		}
 
 		public Point EndPoint {
 			get { return (Point) GetValue (EndPointProperty); }

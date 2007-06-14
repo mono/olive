@@ -42,6 +42,10 @@ namespace System.Windows.Media {
 		public PathFigure () : base (NativeMethods.path_figure_new ())
 		{
 		}
+		
+		internal PathFigure (IntPtr raw) : base (raw)
+		{
+		}
 
 		public bool IsClosed {
 			get { return (bool) GetValue (IsClosedProperty); }

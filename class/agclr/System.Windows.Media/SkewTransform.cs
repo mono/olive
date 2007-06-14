@@ -40,6 +40,10 @@ namespace System.Windows.Media {
 		public SkewTransform () : base (NativeMethods.skew_transform_new ())
 		{
 		}
+		
+		internal SkewTransform (IntPtr raw) : base (raw)
+		{
+		}
 
 
 		public double AngleX {

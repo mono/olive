@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		public MediaAttribute () : base (NativeMethods.media_attribute_new ())
 		{
 		}
+		
+		internal MediaAttribute (IntPtr raw) : base (raw)
+		{
+		}
 
 		public string Value {
 			get { return (string) GetValue (ValueProperty); }

@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal PathFigureCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
 		protected internal override Kind GetKind ()
 		{
 			return Kind.PATHFIGURE_COLLECTION;

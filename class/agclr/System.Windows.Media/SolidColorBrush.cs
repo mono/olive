@@ -37,6 +37,10 @@ namespace System.Windows.Media {
 		public SolidColorBrush () : base (NativeMethods.solid_color_brush_new ())
 		{
 		}
+		
+		internal SolidColorBrush (IntPtr raw) : base (raw)
+		{
+		}
 
 		public SolidColorBrush (Color c) : this ()
 		{

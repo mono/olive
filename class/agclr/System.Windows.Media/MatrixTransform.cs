@@ -37,9 +37,8 @@ namespace System.Windows.Media {
 		{
 		}
 
-		internal MatrixTransform (IntPtr raw)
+		internal MatrixTransform (IntPtr raw) : base (raw)
 		{
-			native = raw;
 		}
 
 		public Matrix Matrix {

@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal GradientStopCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
 		protected internal override Kind GetKind ()
 		{
 			return Kind.GRADIENTSTOP_COLLECTION;

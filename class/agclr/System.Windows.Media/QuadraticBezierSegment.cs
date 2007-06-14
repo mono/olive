@@ -38,6 +38,10 @@ namespace System.Windows.Media {
 		public QuadraticBezierSegment () : base (NativeMethods.quadratic_bezier_segment_new ())
 		{
 		}
+		
+		internal QuadraticBezierSegment (IntPtr raw) : base (raw)
+		{
+		}
 
 		public Point Point1 {
 			get { return (Point) GetValue (Point1Property); }

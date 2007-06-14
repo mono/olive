@@ -43,6 +43,10 @@ namespace System.Windows.Media {
 		public ArcSegment () : base (NativeMethods.arc_segment_new ())
 		{
 		}
+		
+		internal ArcSegment (IntPtr raw) : base (raw)
+		{
+		}
 
 	        public bool IsLargeArc {
 	                get {

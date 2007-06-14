@@ -39,6 +39,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal LineSegment (IntPtr raw) : base (raw)
+		{
+		}
+		
 		public Point Point {
 			get {
 				return (Point) GetValue (PointProperty);

@@ -33,6 +33,10 @@ namespace System.Windows.Media {
 		public TransformGroup () : base (NativeMethods.transform_group_new ())
 		{
 		}
+		
+		internal TransformGroup (IntPtr raw) : base (raw)
+		{
+		}
 
 		public TransformCollection Children {
 			get {

@@ -41,6 +41,10 @@ namespace System.Windows.Media {
 		public EllipseGeometry () : base (NativeMethods.ellipse_geometry_new ())
 		{
 		}
+		
+		internal EllipseGeometry (IntPtr raw) : base (raw)
+		{
+		}
 
 		public Point Center {
 			get { return (Point) GetValue (CenterProperty); }

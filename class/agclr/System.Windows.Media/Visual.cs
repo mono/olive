@@ -33,6 +33,10 @@ namespace System.Windows.Media {
 		internal Visual (IntPtr raw) : base (raw)
 		{
 		}
+		
+		public Visual () : base (NativeMethods.visual_new ())
+		{
+		}
 
 		public bool CaptureMouse ()
 		{

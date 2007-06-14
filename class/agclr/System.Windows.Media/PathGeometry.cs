@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		public PathGeometry () : base (NativeMethods.path_geometry_new ())
 		{
 		}
+		
+		internal PathGeometry (IntPtr raw) : base (raw)
+		{
+		}
 
 		public PathFigureCollection Figures {
 			get { return (PathFigureCollection) GetValue (FiguresProperty); }

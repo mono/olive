@@ -36,6 +36,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal MediaAttributeCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
 		[MonoTODO]
 		public DependencyObject GetItemByName (string AttributeName)
 		{

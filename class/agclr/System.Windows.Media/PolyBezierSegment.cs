@@ -38,6 +38,10 @@ namespace System.Windows.Media {
 		{
 		}
 		
+		internal PolyBezierSegment (IntPtr raw) : base (raw)
+		{
+		}
+		
 		public Point [] Points {
 			set {
 				SetValue (PointsProperty, value);
