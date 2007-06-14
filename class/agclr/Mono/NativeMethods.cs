@@ -134,6 +134,12 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr geometry_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr transform_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr timeline_collection_new ();
 #endregion
 		
 #region Constructors
@@ -240,7 +246,7 @@ namespace Mono {
 		internal extern static IntPtr poly_line_segment_new ();
 
 		[DllImport("moon")]
-		internal extern static IntPtr poly_quadratic_segment_new ();
+		internal extern static IntPtr poly_quadratic_bezier_segment_new ();
 
 		[DllImport("moon")]
 		internal extern static IntPtr quadratic_bezier_segment_new ();

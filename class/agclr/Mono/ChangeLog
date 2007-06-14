@@ -1,5 +1,9 @@
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* NativeMethods.cs: And even more native methods.
+
+2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* NativeMethods.cs: More native constructors.
 
 2007-06-13  Jeffrey Stedfast  <fejj@novell.com>
