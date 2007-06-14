@@ -1,3 +1,11 @@
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* Implemented   ColorAnimation,
+			DoubleAnimation, 
+			PointAnimation,
+			BeginStoryBoard,
+			EventTrigger
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Internal.cs: Constructor fixes, part 3.
