@@ -297,9 +297,6 @@ namespace Mono {
 		internal extern static IntPtr coloranimation_new ();
 
 		[DllImport("moon")]
-		internal extern static IntPtr doubleanimation_new ();
-
-		[DllImport("moon")]
 		internal extern static IntPtr trigger_action_collection_new ();
 
 		[DllImport("moon")]
@@ -324,9 +321,6 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr storyboard_stop (IntPtr native);
 		
-#endregion
-		
-#region APIs that we do not have a Managed class implemented yet.
 		[DllImport("moon")]
 		internal extern static IntPtr double_animation_new ();
 
@@ -334,13 +328,19 @@ namespace Mono {
 		internal extern static IntPtr color_animation_new ();
 
 		[DllImport("moon")]
+		internal extern static IntPtr event_trigger_new ();
+
+		[DllImport("moon")]
 		internal extern static IntPtr point_animation_new ();
 
 		[DllImport("moon")]
-		internal extern static IntPtr point_animation_using_key_frames_new ();
+		internal extern static IntPtr begin_storyboard_new ();
+#endregion
+		
+#region APIs that we do not have a Managed class implemented yet.
 
 		[DllImport("moon")]
-		internal extern static IntPtr begin_storyboard_new ();
+		internal extern static IntPtr point_animation_using_key_frames_new ();
 
 #endregion
 

@@ -38,7 +38,7 @@ namespace System.Windows.Media.Animation
 			   DependencyProperty.Lookup (Kind.DOUBLEANIMATION, "To", typeof (double));
 
 
-		public DoubleAnimation(): base (Mono.NativeMethods.doubleanimation_new ())
+		public DoubleAnimation(): base (Mono.NativeMethods.double_animation_new ())
 		{
 		}
 

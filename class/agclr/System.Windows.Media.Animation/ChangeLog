@@ -6,6 +6,11 @@
 2007-06-14  Alan McGovern <amcgovern@novell.com> 
 
 	* ColorAnimation.cs, DoubleAnimation.cs, PointAnimation.cs, Storyboard.cs:
+		fixed the native method constructor call.
+
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* ColorAnimation.cs, DoubleAnimation.cs, PointAnimation.cs, Storyboard.cs:
 		fixed casing issues with properties.
 
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 

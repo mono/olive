@@ -35,7 +35,7 @@ namespace System.Windows.Media.Animation
 			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "Storyboard", typeof (Storyboard));
 
 
-		public BeginStoryboard(): base (Mono.NativeMethods.beginstoryboard_new ())
+		public BeginStoryboard(): base (Mono.NativeMethods.begin_storyboard_new ())
 		{
 		}
 

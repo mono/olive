@@ -38,7 +38,7 @@ namespace System.Windows.Media.Animation
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "To", typeof (double));
 
 
-		public ColorAnimation(): base (Mono.NativeMethods.coloranimation_new ())
+		public ColorAnimation(): base (Mono.NativeMethods.color_animation_new ())
 		{
 		}
 
