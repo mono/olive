@@ -300,13 +300,10 @@ namespace Mono {
 		internal extern static IntPtr doubleanimation_new ();
 
 		[DllImport("moon")]
-		internal extern static IntPtr triggeractioncollection_new ();
+		internal extern static IntPtr trigger_action_collection_new ();
 
 		[DllImport("moon")]
-		internal extern static IntPtr pointanimation_new ();
-
-		[DllImport("moon")]
-		internal extern static IntPtr eventtrigger_new ();
+		internal extern static IntPtr event_trigger_new ();
 
 
 #endregion
@@ -330,9 +327,6 @@ namespace Mono {
 #endregion
 		
 #region APIs that we do not have a Managed class implemented yet.
-		[DllImport("moon")]
-		internal extern static IntPtr event_trigger_new ();
-
 		[DllImport("moon")]
 		internal extern static IntPtr double_animation_new ();
 
