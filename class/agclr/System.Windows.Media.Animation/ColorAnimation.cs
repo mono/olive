@@ -31,9 +31,9 @@ namespace System.Windows.Media.Animation
 	{
 		public static readonly DependancyProperty ByProperty = 
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "BY", typeof (double));
-		public static readonly DependancyProperty FromProperty;
+		public static readonly DependancyProperty FromProperty =
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "FROM", typeof (double));
-		public static readonly DependancyProperty ToProperty;
+		public static readonly DependancyProperty ToProperty = 
 			   DependencyProperty.Lookup (Kind.COLORANIMATION, "TO", typeof (double));
 
 
