@@ -159,26 +159,52 @@ namespace System.Windows {
 			case Kind.GEOMETRYGROUP:
 				return new GeometryGroup (raw);
 				
-			case Kind.ELLIPSEGEOMETRY: return null;
-			case Kind.LINEGEOMETRY: return null;
-			case Kind.PATHGEOMETRY: return null;
-			case Kind.RECTANGLEGEOMETRY: return null;
+			case Kind.ELLIPSEGEOMETRY:
+				return new EllipseGeometry (raw);
+				
+			case Kind.LINEGEOMETRY:
+				return new LineGeometry (raw);
+				
+			case Kind.PATHGEOMETRY:
+				return new PathGeometry (raw);
+				
+			case Kind.RECTANGLEGEOMETRY:
+				return new RectangleGeometry (raw);
+				
 			case Kind.FRAMEWORKELEMENT: return null;
 			case Kind.NAMESCOPE: return null;
 			case Kind.CLOCK: return null;
 			case Kind.ANIMATIONCLOCK: return null;
 			case Kind.CLOCKGROUP: return null;
 			case Kind.BRUSH: return null;
-			case Kind.SOLIDCOLORBRUSH: return null;
-			case Kind.PATHFIGURE: return null;
-			case Kind.ARCSEGMENT: return null;
-			case Kind.BEZIERSEGMENT: return null;
-			case Kind.LINESEGMENT: return null;
+			case Kind.SOLIDCOLORBRUSH:
+				return new SolidColorBrush (raw);
+				
+			case Kind.PATHFIGURE:
+				return new PathFigure (raw);
+				
+			case Kind.ARCSEGMENT:
+				return new ArcSegment (raw);
+				
+			case Kind.BEZIERSEGMENT:
+				return new BezierSegment (raw);
+				
+			case Kind.LINESEGMENT:
+				return new LineSegment (raw);
+				
 			case Kind.INLINES: return null;
-			case Kind.POLYBEZIERSEGMENT: return null;
-			case Kind.POLYLINESEGMENT: return null;
-			case Kind.POLYQUADRATICBEZIERSEGMENT: return null;
-			case Kind.QUADRATICBEZIERSEGMENT: return null;
+			case Kind.POLYBEZIERSEGMENT:
+				return new PolyBezierSegment (raw);
+				
+			case Kind.POLYLINESEGMENT:
+				return new PolyLineSegment (raw);
+				
+			case Kind.POLYQUADRATICBEZIERSEGMENT:
+				return new PolyQuadraticBezierSegment (raw);
+				
+			case Kind.QUADRATICBEZIERSEGMENT:
+				return new QuadraticBezierSegment (raw);
+				
 			case Kind.TRIGGERACTION: return null;
 			case Kind.BEGINSTORYBOARD: return null;
 			case Kind.EVENTTRIGGER: return null;
