@@ -1,3 +1,8 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* NativeMethods.cs: Add collection_remove and fix API signature for
+	collection_add
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Kind.cs: Add Control.

@@ -111,7 +111,10 @@ namespace Mono {
 		
 #region Collections
 		[DllImport("moon")]
-		internal extern static IntPtr collection_add (IntPtr collection, IntPtr value);
+		internal extern static void collection_add (IntPtr collection, IntPtr value);
+
+		[DllImport("moon")]
+		internal extern static void collection_remove (IntPtr collection, IntPtr value);
 		
 		[DllImport("moon")]
 		internal extern static IntPtr resource_collection_new ();
