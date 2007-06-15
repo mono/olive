@@ -1,5 +1,9 @@
 2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* NativeMethods.cs: Remove managed downloader.
+
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* NativeMethods.cs: Add downloader methods.
 
 2007-06-15  Jeffrey Stedfast  <fejj@gnome.org>
