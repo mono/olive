@@ -41,10 +41,6 @@ namespace System.Windows {
 		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
 		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
-		static Downloader ()
-		{
-		}
-
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
 			NativeMethods.base_ref (native);
