@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 		
 		public BezierSegment () : base (NativeMethods.bezier_segment_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal BezierSegment (IntPtr raw) : base (raw)

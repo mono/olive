@@ -36,6 +36,7 @@ namespace System.Windows {
 	public class ResourceCollection : MS.Internal.Collection<int> {
 		public ResourceCollection ()  : base (NativeMethods.resource_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal ResourceCollection (IntPtr raw) : base (raw)

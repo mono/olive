@@ -41,6 +41,7 @@ namespace System.Windows.Media {
 
 		public PathFigure () : base (NativeMethods.path_figure_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal PathFigure (IntPtr raw) : base (raw)

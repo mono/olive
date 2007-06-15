@@ -34,6 +34,7 @@ namespace System.Windows.Media {
 	public class PathSegmentCollection : Collection<PathSegment> {
 		public PathSegmentCollection () : base (NativeMethods.path_segment_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal PathSegmentCollection (IntPtr raw) : base (raw)

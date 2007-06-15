@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 		
 		public GeometryCollection () : base (NativeMethods.geometry_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		protected internal override Kind GetKind ()

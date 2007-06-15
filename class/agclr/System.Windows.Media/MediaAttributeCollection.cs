@@ -34,6 +34,7 @@ namespace System.Windows.Media {
 	public class MediaAttributeCollection : Collection<MediaAttribute> {
 		public MediaAttributeCollection () : base (NativeMethods.media_attribute_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal MediaAttributeCollection (IntPtr raw) : base (raw)

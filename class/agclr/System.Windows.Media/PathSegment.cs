@@ -36,6 +36,7 @@ namespace System.Windows.Media {
 		
 		public PathSegment () : base (NativeMethods.path_segment_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		protected internal override Kind GetKind ()

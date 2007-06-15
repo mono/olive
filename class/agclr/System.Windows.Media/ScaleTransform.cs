@@ -41,6 +41,7 @@ namespace System.Windows.Media {
 
 		public ScaleTransform () : base (NativeMethods.scale_transform_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal ScaleTransform (IntPtr raw) : base (raw)

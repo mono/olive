@@ -42,6 +42,7 @@ namespace System.Windows.Media {
 		
 		public Brush () : base (NativeMethods.brush_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal Brush (IntPtr raw) : base (raw)

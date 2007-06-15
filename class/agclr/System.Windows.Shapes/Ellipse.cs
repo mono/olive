@@ -33,6 +33,7 @@ namespace System.Windows.Shapes {
 
 		public Ellipse () : base (Mono.NativeMethods.ellipse_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal Ellipse (IntPtr raw) : base (raw)

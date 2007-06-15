@@ -34,6 +34,7 @@ namespace System.Windows.Media {
 	public class GradientStopCollection : Collection<GradientStop> {
 		public GradientStopCollection () : base (NativeMethods.gradient_stop_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal GradientStopCollection (IntPtr raw) : base (raw)

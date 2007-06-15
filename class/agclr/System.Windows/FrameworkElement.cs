@@ -39,6 +39,7 @@ namespace System.Windows {
 		
 		public FrameworkElement () : base (NativeMethods.framework_element_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal FrameworkElement (IntPtr raw) : base (raw)

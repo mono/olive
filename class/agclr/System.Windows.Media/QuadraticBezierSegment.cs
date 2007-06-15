@@ -37,6 +37,7 @@ namespace System.Windows.Media {
 
 		public QuadraticBezierSegment () : base (NativeMethods.quadratic_bezier_segment_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal QuadraticBezierSegment (IntPtr raw) : base (raw)

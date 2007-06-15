@@ -37,6 +37,7 @@ namespace System.Windows.Media {
 
 		public PolyQuadraticBezierSegment () : base (NativeMethods.poly_quadratic_bezier_segment_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal PolyQuadraticBezierSegment (IntPtr raw) : base (raw)

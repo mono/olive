@@ -38,6 +38,7 @@ namespace System.Windows.Shapes {
 
 		public Polyline () : base (NativeMethods.polyline_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal Polyline (IntPtr raw) : base (raw)

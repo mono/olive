@@ -37,6 +37,7 @@ namespace System.Windows.Media.Animation
 
 		public BeginStoryboard(): base (Mono.NativeMethods.begin_storyboard_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal BeginStoryboard (IntPtr raw) : base (raw)

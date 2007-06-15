@@ -38,6 +38,7 @@ namespace System.Windows.Media {
 
 		public TranslateTransform () : base (NativeMethods.translate_transform_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal TranslateTransform (IntPtr raw) : base (raw)

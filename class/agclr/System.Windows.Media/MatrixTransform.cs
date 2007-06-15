@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public MatrixTransform () : base (NativeMethods.matrix_transform_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal MatrixTransform (IntPtr raw) : base (raw)

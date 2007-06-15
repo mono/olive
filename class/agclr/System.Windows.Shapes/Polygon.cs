@@ -38,6 +38,7 @@ namespace System.Windows.Shapes {
 
 		public Polygon () : base (NativeMethods.polygon_new())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal Polygon (IntPtr raw) : base (raw)

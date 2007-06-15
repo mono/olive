@@ -37,6 +37,7 @@ namespace System.Windows.Shapes {
 
 		public Rectangle () : base (NativeMethods.rectangle_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal Rectangle (IntPtr raw) : base (raw)

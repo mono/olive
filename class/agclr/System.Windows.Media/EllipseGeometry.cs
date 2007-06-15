@@ -40,6 +40,7 @@ namespace System.Windows.Media {
 
 		public EllipseGeometry () : base (NativeMethods.ellipse_geometry_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal EllipseGeometry (IntPtr raw) : base (raw)

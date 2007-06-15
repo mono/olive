@@ -36,6 +36,7 @@ namespace System.Windows.Media {
 
 		public GeometryGroup () : base (NativeMethods.geometry_group_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal GeometryGroup (IntPtr raw) : base (raw)

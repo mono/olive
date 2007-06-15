@@ -35,6 +35,7 @@ namespace System.Windows.Media {
 
 		public VideoBrush () : base (NativeMethods.video_brush_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal VideoBrush (IntPtr raw) : base (raw)

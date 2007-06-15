@@ -41,7 +41,7 @@ namespace System.Windows.Media.Animation {
 		
 		public TimelineGroup () : base (NativeMethods.timeline_group_new ())
 		{
-			
+			NativeMethods.base_ref (native);
 		}
 
 		static TimelineGroup ()

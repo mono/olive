@@ -33,6 +33,7 @@ namespace System.Windows
 	{
 		public TriggerActionCollection(): base (Mono.NativeMethods.trigger_action_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal TriggerActionCollection (IntPtr raw) : base (raw)

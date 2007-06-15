@@ -40,6 +40,7 @@ namespace System.Windows.Media.Animation
 
 		public ColorAnimation(): base (Mono.NativeMethods.color_animation_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 
 		internal ColorAnimation (IntPtr raw) : base (raw)

@@ -39,6 +39,7 @@ namespace System.Windows.Media {
 
 		public SkewTransform () : base (NativeMethods.skew_transform_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal SkewTransform (IntPtr raw) : base (raw)
