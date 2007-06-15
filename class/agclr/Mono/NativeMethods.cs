@@ -362,6 +362,21 @@ namespace Mono {
 
 #endregion
 
+#region Downloader
+		[DllImport("moon")]
+		internal extern static void downloader_abort (IntPtr handle);
+		
+		[DllImport("moon")]
+		internal extern static string downloader_get_response_text (IntPtr handle, string partname);
+
+		[DllImport("moon")]
+		internal extern static void downloader_open (IntPtr handle, string verb, string uri, bool async);
+
+		[DllImport("moon")]
+		internal extern static void downloader_send (IntPtr handle);
+		
+#endregion
+		
 		[DllImport ("moon")]
 		internal extern static IntPtr surface_attach (IntPtr surface, IntPtr toplevel);
 

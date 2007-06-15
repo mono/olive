@@ -52,7 +52,7 @@ namespace Mono {
 		{
 			object o = DependencyObject.Lookup (target);
 			if (o == null){
-				Console.WriteLine ("Motion event for {0} that was never registered", target);
+				//Console.WriteLine ("Motion event for {0} that was never registered", target);
 				return null;
 			}
 			UIElement e = o as UIElement;
