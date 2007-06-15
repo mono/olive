@@ -1,3 +1,9 @@
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedDownloader.cs: Added.
+	* Downloader.cs: Initialize the native downloader.
+	* DependencyObject.cs: Implement more marshalling.
+
 2007-06-15  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs (CreateObject): Take a ref when an unmanaged

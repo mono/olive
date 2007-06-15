@@ -273,6 +273,7 @@ namespace System.Windows {
 			
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
 			if (x == IntPtr.Zero){
+				if (!property.type.IsSubclassOf (typeof (Nullable)))
 				Console.WriteLine ("Found null for object {0}, with property {1}");
 				
 				return null;
@@ -357,9 +358,35 @@ namespace System.Windows {
 					return Color.FromScRgb ((float) dp [3], (float) dp [0], (float) dp [1], (float)dp [2]);
 				}
 					
-				// These have no managed representation yet.
-				case Kind.REPEATBEHAVIOR:
+				case Kind.MATRIX:
+				{
+					IntPtr vptr = *((IntPtr *) px);
+					if (vptr == IntPtr.Zero)
+						return new Matrix ();
+					
+					double *dp = (double *) vptr;
+					
+					return new Matrix (dp [0], dp [1], dp [2], dp [3], dp [4], dp [5]);					
+					
+				}
 				case Kind.DURATION: 
+				{
+					IntPtr vptr = *((IntPtr *) px);
+					if (vptr == IntPtr.Zero)
+						return Duration.Automatic;
+					
+					return (Duration) Marshal.PtrToStructure (vptr, typeof (Duration));					
+				}
+				case Kind.REPEATBEHAVIOR:
+				{
+					IntPtr vptr = *((IntPtr *) px);
+					if (vptr == IntPtr.Zero)
+						return new RepeatBehavior ();
+					
+					return (RepeatBehavior) Marshal.PtrToStructure (vptr, typeof (RepeatBehavior));					
+				}
+					
+				// These have no managed representation yet.
 				case Kind.KEYTIME:
 					break;
 				}
@@ -473,6 +500,29 @@ namespace System.Windows {
 					*((IntPtr *) p) = result;
 				} else if (v is Color){
 					value = NativeMethods.value_color_from_argb (((Color) v).argb);
+				} else if (v is Matrix) {
+					Matrix mat = (Matrix) v;
+					value.k = Kind.MATRIX;
+					double * result = (double*) Marshal.AllocHGlobal (sizeof (double) * 6);
+					result [0] = mat.M11;
+					result [1] = mat.M12;
+					result [2] = mat.M21;
+					result [3] = mat.M22;
+					result [4] = mat.OffsetX;
+					result [5] = mat.OffsetY;
+					*((IntPtr *) p) = (IntPtr)result;
+				} else if (v is Duration) {
+					Duration d = (Duration) v;
+					value.k = Kind.DURATION;
+					IntPtr result = Marshal.AllocHGlobal (sizeof (Duration));
+					Marshal.StructureToPtr (d, result, false);
+					*((IntPtr *) p) = result;
+				} else if (v is RepeatBehavior) {
+					RepeatBehavior d = (RepeatBehavior) v;
+					value.k = Kind.REPEATBEHAVIOR;
+					IntPtr result = Marshal.AllocHGlobal (sizeof (RepeatBehavior));
+					Marshal.StructureToPtr (d, result, false);
+					*((IntPtr *) p) = result;					
 				} else {
 					throw new NotImplementedException (
 						String.Format ("Do not know how to encode {0} yet", v.GetType ()));

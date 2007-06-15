@@ -37,6 +37,16 @@ namespace System.Windows {
 		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
 		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
+		static Downloader ()
+		{
+			NativeMethods.downloader_set_functions (
+				ManagedDownloader.CreateDownloader, 
+				ManagedDownloader.DestroyDownloader, 
+				ManagedDownloader.Open, 
+				ManagedDownloader.Send, 
+				ManagedDownloader.Abort, 
+				ManagedDownloader.GetResponseText);
+		}
 
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
