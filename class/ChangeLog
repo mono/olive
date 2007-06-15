@@ -1,3 +1,7 @@
+2007-06-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : we can add agclr here. It's mostly stable.
+
 2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
 
 	* remove Microsoft.Scripting (see mailing list for explaination)
