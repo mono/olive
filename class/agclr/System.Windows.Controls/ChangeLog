@@ -1,3 +1,8 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Image.cs: New.
+	* MediaBase.cs: New.
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Control.cs: New.
