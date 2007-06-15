@@ -26,6 +26,8 @@ System.Windows/XamlReader.cs
 System.Windows/PropertyMetadata.cs
 System.Windows.Controls/Canvas.cs
 System.Windows.Controls/Control.cs
+System.Windows.Controls/Image.cs
+System.Windows.Controls/MediaBase.cs
 System.Windows.Controls/Panel.cs
 System.Windows/DependencyObject.cs
 System.Windows/DependencyProperty.cs
