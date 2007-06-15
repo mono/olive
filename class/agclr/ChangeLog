@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Internal.cs: Add Remove to Collection<T>
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* agclr.dll.sources: Add System.Windows.Controls.Control

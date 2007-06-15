@@ -59,6 +59,15 @@ namespace MS.Internal {
 			else
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
+
+		public void Remove (T t)
+		{
+			DependencyObject dob = t as DependencyObject;
+			if (dob != null)
+				NativeMethods.collection_remove (native, dob.native);
+			else
+				throw new Exception ("The collection only supports DependencyObjects");
+		}
 		
 		protected internal override Kind GetKind ()
 		{
