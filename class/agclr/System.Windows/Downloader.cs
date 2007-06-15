@@ -2,7 +2,11 @@
 // System.Windows.Downloader class
 //
 // Authors:
-//	Sebastien Pouliot  <sebastien@ximian.com>
+//	Sebastien Pouliot <sebastien@ximian.com>
+//	Miguel de Icaza   <miguel@ximian.com>
+//
+// TODO:
+//    Register callbacks so we can raise the various events
 //
 // Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
@@ -90,33 +94,24 @@ namespace System.Windows {
 			}
 		}
 
-
-		[MonoTODO]
 		public void Abort ()
 		{
-			throw new NotImplementedException ();
+			NativeMethods.downloader_abort (native);
 		}
 
-		[MonoTODO]
 		public string GetResponseText (string PartName)
 		{
-			throw new NotImplementedException ();
+			return NativeMethods.downloader_get_response_text (native, PartName);
 		}
 
-		[MonoTODO]
 		public void Open (string verb, Uri URI, bool Async)
 		{
-			switch (verb.ToLower ()) {
-			case "get":
-				break;
-			}
-			throw new NotImplementedException ();
+			NativeMethods.downloader_open (native, verb, URI.ToString (), Async);
 		}
 
-		[MonoTODO]
 		public void Send ()
 		{
-			throw new NotImplementedException ();
+			NativeMethods.downloader_send (native);
 		}
 
 

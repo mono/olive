@@ -6,6 +6,10 @@
 
 2007-06-15  Miguel de Icaza  <miguel@novell.com>
 
+	* Downloader.cs: Bind this to the native methods.
+
+	* UIElement.cs: 
+
 	* DependencyObject.cs (CreateObject): Take a ref when an unmanaged
 	object is surfaced to the managed world.
 
