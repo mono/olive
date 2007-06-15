@@ -104,9 +104,15 @@ namespace Mono {
 		internal extern static IntPtr panel_new ();
 #endregion
 
-#region Panel
+#region Controls
 		[DllImport("moon")]
 		internal extern static IntPtr control_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr image_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr media_base_new ();
 #endregion
 		
 #region Collections

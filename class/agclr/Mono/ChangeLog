@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* NativeMethods.cs: Add image_new and media_base_new
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* NativeMethods.cs: Add collection_remove and fix API signature for
