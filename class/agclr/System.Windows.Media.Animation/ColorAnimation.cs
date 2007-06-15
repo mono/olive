@@ -31,11 +31,11 @@ namespace System.Windows.Media.Animation
 	public class ColorAnimation : System.Windows.Media.Animation.Animation 
 	{
 		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "By", typeof (double));
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "By", typeof (Color));
 		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "From", typeof (double));
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "From", typeof (Color));
 		public static readonly DependencyProperty ToProperty =
-			   DependencyProperty.Lookup (Kind.COLORANIMATION, "To", typeof (double));
+			   DependencyProperty.Lookup (Kind.COLORANIMATION, "To", typeof (Color));
 
 
 		public ColorAnimation(): base (Mono.NativeMethods.color_animation_new ())
@@ -48,18 +48,18 @@ namespace System.Windows.Media.Animation
 		}
 
 
-		public Nullable<double> By {
-			get { return (double) GetValue(ByProperty); }
+		public Nullable<Color> By {
+			get { return (Color) GetValue(ByProperty); }
 			set { SetValue(ByProperty, value); }
 		}
 
-		public Nullable<double> From {
-			get { return (double) GetValue (FromProperty); }
+		public Nullable<Color> From {
+			get { return (Color) GetValue (FromProperty); }
 			set { SetValue (FromProperty, value); }
 		}
 
-		public Nullable<double> To {
-			get { return (double) GetValue (ToProperty); }
+		public Nullable<Color> To {
+			get { return (Color) GetValue (ToProperty); }
 			set { SetValue (ToProperty, value); }
 		}
 

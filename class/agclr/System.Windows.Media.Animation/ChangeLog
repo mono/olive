@@ -1,3 +1,7 @@
+2007-06-15  Alan McGovern <amcgovern@novell.com> 
+
+	* ColorAnimation.cs: Fixed typos in the declaration
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* TimelineGroup.cs: Make Children a TimelineCollection.
