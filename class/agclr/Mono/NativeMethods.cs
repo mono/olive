@@ -103,6 +103,11 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr panel_new ();
 #endregion
+
+#region Panel
+		[DllImport("moon")]
+		internal extern static IntPtr control_new ();
+#endregion
 		
 #region Collections
 		[DllImport("moon")]
