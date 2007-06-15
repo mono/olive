@@ -1,3 +1,7 @@
+2007-06-14  Alan McGovern <amcgovern@novell.com> 
+
+	* DependencyObject.cs: Added NameProperty
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* agclr.dll.sources: Add TimelineCollection.

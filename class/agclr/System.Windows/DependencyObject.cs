@@ -56,6 +56,12 @@ namespace System.Windows {
 			}
 		}
 
+		public static readonly DependencyProperty NameProperty = 
+			   DependencyProperty.Lookup (Kind.DEPENDENCY_OBJECT, "Name", typeof (string));
+
+		public string Name {
+			get { return (string) GetValue(NameProperty); }
+		}
 		static DependencyObject ()
 		{
 			NativeMethods.runtime_init ();
