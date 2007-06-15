@@ -76,6 +76,11 @@ namespace Mono {
 
 		static void mouse_leave_callback (IntPtr target)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return;
+
+			e.InvokeMouseLeave ();
 		}
 
 		static bool keyup_callback (IntPtr target, int state, int platformcode, int key)
@@ -130,6 +135,12 @@ namespace Mono {
 		
 		static void mouse_enter_callback (IntPtr target, int state, double x, double y)
 		{
+			UIElement e = ElementFromPtr (target);
+			if (e == null)
+				return;
+			
+
+			e.InvokeMouseEnter (new MouseEventArgs (state, x, y));
 		}
 		
 		internal static void InitSurface (IntPtr surface)

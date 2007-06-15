@@ -205,6 +205,22 @@ namespace System.Windows {
 			if (h != null)
 				h (this, m);
 		}
+
+		internal void InvokeMouseLeave ()
+		{
+			EventHandler h = MouseLeave;
+
+			if (h != null)
+				h (this, EventArgs.Empty);
+		}
+
+		internal void InvokeMouseEnter (MouseEventArgs m)
+		{
+			MouseEventHandler h = MouseEnter;
+
+			if (h != null)
+				h (this, m);
+		}
 		
 		protected internal override Kind GetKind ()
 		{
