@@ -94,27 +94,6 @@ namespace System.Windows {
 			}
 		}
 
-		public void Abort ()
-		{
-			NativeMethods.downloader_abort (native);
-		}
-
-		public string GetResponseText (string PartName)
-		{
-			return NativeMethods.downloader_get_response_text (native, PartName);
-		}
-
-		public void Open (string verb, Uri URI, bool Async)
-		{
-			NativeMethods.downloader_open (native, verb, URI.ToString (), Async);
-		}
-
-		public void Send ()
-		{
-			NativeMethods.downloader_send (native);
-		}
-
-
 		public event EventHandler Completed;
 
 		public event EventHandler DownloadProgressChanged;
