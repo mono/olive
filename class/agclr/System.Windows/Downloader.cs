@@ -43,13 +43,6 @@ namespace System.Windows {
 
 		static Downloader ()
 		{
-			NativeMethods.downloader_set_functions (
-				ManagedDownloader.CreateDownloader, 
-				ManagedDownloader.DestroyDownloader, 
-				ManagedDownloader.Open, 
-				ManagedDownloader.Send, 
-				ManagedDownloader.Abort, 
-				ManagedDownloader.GetResponseText);
 		}
 
 		public Downloader () : base (NativeMethods.downloader_new ())
