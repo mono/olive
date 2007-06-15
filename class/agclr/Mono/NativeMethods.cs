@@ -353,7 +353,10 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static void downloader_send (IntPtr handle);
-		
+
+		internal delegate void UpdateFunction (int kind);
+		[DllImport("moon")]
+		internal extern static void downloader_want_events (IntPtr handle, UpdateFunction func);
 #endregion
 		
 		[DllImport ("moon")]

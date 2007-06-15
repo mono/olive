@@ -41,13 +41,47 @@ namespace System.Windows {
 		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
 		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
+		NativeMethods.UpdateFunction updater;
+
+		void UpdateCallback (int kind)
+		{
+			EventHandler h = null;
+			
+			switch (kind){
+			case 0:
+				h = Completed;
+				break;
+			case 1:
+				h = DownloadProgressChanged;
+				break;
+			case 2:
+				h = DownloadFailed;
+				break;
+			}
+			if (h != null)
+				h (this, EventArgs.Empty);
+		}
+		
+		internal void NotifyWantUpdates ()
+		{
+			updater = new NativeMethods.UpdateFunction (UpdateCallback);
+			NativeMethods.downloader_want_events (native, updater);
+		}
+		
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
 			NativeMethods.base_ref (native);
+
+			// FIXME: We should do this only if an event is hooked up,
+			// currently we do it always.
+			NotifyWantUpdates ();
 		}
 		
 		internal Downloader (IntPtr raw) : base (raw)
 		{
+			// FIXME: We should do this only if an event is hooked up,
+			// currently we do it always.
+			NotifyWantUpdates ();
 		}
 
 
