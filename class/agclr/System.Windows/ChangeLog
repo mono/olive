@@ -1,3 +1,11 @@
+2007-06-15  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (CreateObject): Take a ref when an unmanaged
+	object is surfaced to the managed world.
+
+	(ClearPendingDestroys): Routine that disposes the finalized
+	objects that need to be unrefed
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* TriggerActionCollection.cs, EventTrigger.cs: Fix native constructor

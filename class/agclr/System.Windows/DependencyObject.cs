@@ -38,6 +38,8 @@ using System.Runtime.InteropServices;
 
 namespace System.Windows {
 	public class DependencyObject {
+		static ArrayList PendingDestroys = new ArrayList ();
+		static volatile bool pending = false;
 		static Hashtable objects = new Hashtable ();
 		internal IntPtr _native;
 
@@ -105,7 +107,14 @@ namespace System.Windows {
 		{
 			if (k <= Kind.DEPENDENCY_OBJECT)
 				throw new Exception ("the kind has to be a derived DependencyObject");
+
+			//
+			// FIXME: we should queue a timer
+			//
+			if (pending)
+				ClearPendingDestroys ();
 			
+			NativeMethods.base_ref (raw);
 			switch (k){
 			case Kind.UIELEMENT:
 				return null;
@@ -238,6 +247,25 @@ namespace System.Windows {
 			return null;
 		}
 
+		~DependencyObject ()
+		{
+			lock (PendingDestroys){
+				PendingDestroys.Add (this.native);
+				pending = true;
+			}
+		}
+
+		static void ClearPendingDestroys ()
+		{
+			lock (PendingDestroys){
+				foreach (IntPtr v in PendingDestroys){
+					NativeMethods.base_unref (v);
+				}
+				PendingDestroys.Clear ();
+			}
+			pending = false;
+		}
+		
 		public virtual object GetValue (DependencyProperty property)
 		{
 			if (property == null)
