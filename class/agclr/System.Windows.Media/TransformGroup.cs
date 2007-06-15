@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Media {
 	public class TransformGroup : Transform {
-		public static readonly DependencyProperty ChildrenProperty;
+		public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Lookup (Kind.TRANSFORMGROUP, "Children", typeof (TransformCollection));
 		
 		public TransformGroup () : base (NativeMethods.transform_group_new ())
 		{
@@ -40,13 +40,8 @@ namespace System.Windows.Media {
 		}
 
 		public TransformCollection Children {
-			get {
-				throw new NotImplementedException ();
-			}
-			
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (TransformCollection) GetValue (ChildrenProperty); }
+			set { SetValue (ChildrenProperty, value); }
 		}
 
 		protected internal override Kind GetKind ()

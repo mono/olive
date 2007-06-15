@@ -1,3 +1,7 @@
+2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TransformGroup.cs: Implement ChildrenProperty.
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ImageBrush.cs: Marshal Uri as string.
