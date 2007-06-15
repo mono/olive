@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* agclr.dll.sources: Add System.Windows.Controls.Control
+
 2007-06-14  Alan McGovern <amcgovern@novell.com> 
 
 	* DependencyObject.cs: Added NameProperty
