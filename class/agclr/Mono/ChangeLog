@@ -1,3 +1,7 @@
+2007-06-15  Jeffrey Stedfast  <fejj@gnome.org>
+
+	* Kind.cs: Added Runs/LineBreaks
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* NativeMethods.cs: More native constructor fixes.
