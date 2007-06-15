@@ -50,6 +50,27 @@ namespace Mono {
 			KeyboardEvent keydown,
 			KeyboardEvent keyup);
 	
+#region Downloader
+		//
+		// The downloader callbacks
+		//
+		internal delegate IntPtr downloader_create_state_func  (IntPtr native);
+		internal delegate void   downloader_destroy_state_func (IntPtr state);
+		internal delegate void   downloader_open_func  (string verb, string uri, bool async, IntPtr state);
+		internal delegate void   downloader_send_func  (IntPtr state);
+		internal delegate void   downloader_abort_func (IntPtr state);
+		internal delegate string downloader_get_response_text_func (string part, IntPtr state);
+		
+		[DllImport ("moon")]
+        internal extern static void downloader_set_functions (
+			downloader_create_state_func create_state,
+			downloader_destroy_state_func destroy_state,
+			downloader_open_func open,
+			downloader_send_func send,
+			downloader_abort_func abort,
+			downloader_get_response_text_func get_response);
+#endregion
+		
 #region Base
 		[DllImport("moon")]
 		internal extern static void base_ref (IntPtr ptr);
