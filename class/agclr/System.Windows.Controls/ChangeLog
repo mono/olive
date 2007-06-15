@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Control.cs: New.
+
 2007-06-13  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Canvas.cs, Panel.cs: Second pass on constructors.
