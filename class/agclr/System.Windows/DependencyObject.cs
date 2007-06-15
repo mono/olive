@@ -579,7 +579,7 @@ namespace System.Windows {
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 		}
 
-		public DependencyObject FindObject (string name)
+		public DependencyObject FindName (string name)
 		{
 			Kind k;
 			IntPtr o = NativeMethods.dependency_object_find_name (native, name, out k);

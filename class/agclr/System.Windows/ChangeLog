@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Fix signature (FindName not FindObject)
+
 2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedDownloader.cs, Downloader.cs: Remove managed downloader.
