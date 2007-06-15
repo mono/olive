@@ -55,8 +55,9 @@ namespace System.Windows {
 				h = DownloadProgressChanged;
 				break;
 			case 2:
-				h = DownloadFailed;
-				break;
+				// FIXME - supply some details
+				DownloadFailed (this, new ErrorEventArgs ());
+				return;
 			}
 			if (h != null)
 				h (this, EventArgs.Empty);
@@ -141,7 +142,7 @@ namespace System.Windows {
 
 		public event EventHandler DownloadProgressChanged;
 
-		public event EventHandler DownloadFailed;
+		public event ErrorEventHandler DownloadFailed;
 		
 		protected internal override Kind GetKind ()
 		{

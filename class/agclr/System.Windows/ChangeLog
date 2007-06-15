@@ -1,3 +1,8 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: Fix DownloadFailed type to ErrorEventHandler (not 
+	EventHandler).
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* DependencyObject.cs: Fix signature (FindName not FindObject)
