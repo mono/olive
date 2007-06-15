@@ -222,7 +222,7 @@ namespace System.Windows {
 			case Kind.KEYFRAME_COLLECTION: return null;
 			case Kind.TIMELINEMARKER_COLLECTION: return null;
 			case Kind.GEOMETRY_COLLECTION: return null;
-			case Kind.GRADIENTSTOP_COLLECTION: return null;
+			case Kind.GRADIENTSTOP_COLLECTION: return new GradientStopCollection (raw);
 			case Kind.MEDIAATTRIBUTE_COLLECTION: return null;
 			case Kind.PATHFIGURE_COLLECTION: return null;
 			case Kind.PATHSEGMENT_COLLECTION: return null;

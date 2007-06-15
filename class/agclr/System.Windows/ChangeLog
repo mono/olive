@@ -1,3 +1,7 @@
+2007-06-15  Alan McGovern <amcgovern@novell.com> 
+
+	* DependenctObject.cs: Creating instances of GradientStopCollection instead of null
+
 2007-06-15  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedDownloader.cs: Added.
