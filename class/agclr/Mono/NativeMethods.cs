@@ -75,6 +75,9 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static IntPtr dependency_object_find_name (IntPtr obj, string name, out Kind kind);
+
+		[DllImport("moon")]
+		internal extern static string dependency_object_get_name (IntPtr obj);
 		
 		[DllImport("moon")]
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
@@ -374,7 +377,7 @@ namespace Mono {
 
 		internal delegate void UpdateFunction (int kind);
 		[DllImport("moon")]
-		internal extern static void downloader_want_events (IntPtr handle, UpdateFunction func);
+		internal extern static void downloader_want_events (IntPtr handle, UpdateFunction func, IntPtr closure);
 #endregion
 		
 		[DllImport ("moon")]

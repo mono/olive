@@ -69,7 +69,7 @@ namespace System.Windows {
 		internal void NotifyWantUpdates ()
 		{
 			updater = new NativeMethods.UpdateFunction (UpdateCallback);
-			NativeMethods.downloader_want_events (native, updater);
+			NativeMethods.downloader_want_events (native, updater, IntPtr.Zero);
 		}
 		
 		public Downloader () : base (NativeMethods.downloader_new ())
