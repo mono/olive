@@ -131,6 +131,9 @@ namespace System.Windows {
 			case Kind.CANVAS:
 				return new Canvas (raw);
 
+			case Kind.IMAGE:
+				return new Image (raw);
+
 			case Kind.TIMELINE:
 				return null;
 				

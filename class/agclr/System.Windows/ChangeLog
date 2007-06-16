@@ -1,3 +1,7 @@
+2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* DependencyObject.cs: Add support to create new Image type.
+
 2007-06-15  Jackson Harper  <jackson@ximian.com>
 
 	* XamlReader.cs: Add the callback for creating custom element
