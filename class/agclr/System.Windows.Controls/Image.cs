@@ -53,7 +53,8 @@ namespace System.Windows.Controls {
 		[MonoTODO]
 		public void SetSource (DependencyObject Downloader, string PartName)
 		{
-			throw new NotImplementedException ();
+			// when PartName == null it means to transfer data from downloader to image
+			// (at least according to samples comments)
 		}
 
 		public event ErrorEventHandler ImageFailed;
