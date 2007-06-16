@@ -43,9 +43,10 @@ namespace System.Windows.Controls {
 
 		protected FrameworkElement InitializeFromXaml (string xaml)
 		{
-			IntPtr native_child = NativeMethods.control_initialize_from_xaml (native, xaml);
+			Kind kind;
+			IntPtr native_child = NativeMethods.control_initialize_from_xaml (native, xaml, out kind);
 			
-			DependencyObject o = DependencyObject.Lookup (Kind.FRAMEWORKELEMENT, native_child);
+			DependencyObject o = DependencyObject.Lookup (kind, native_child);
 			return (FrameworkElement) o;
 		}
 
