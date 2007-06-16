@@ -380,5 +380,8 @@ namespace Mono {
 		[DllImport ("moon")]
 		internal extern static IntPtr surface_attach (IntPtr surface, IntPtr toplevel);
 
+		[DllImport ("moon")]
+		internal extern static void image_set_source (IntPtr image, IntPtr downloader, string PartName);
+
 	}
 }

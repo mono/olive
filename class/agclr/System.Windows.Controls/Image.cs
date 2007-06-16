@@ -25,7 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
+using System.Windows;
 using Mono;
 
 namespace System.Windows.Controls {
@@ -50,11 +50,15 @@ namespace System.Windows.Controls {
 			set { SetValue (DownloadProgressProperty, value); }
 		}
 
-		[MonoTODO]
 		public void SetSource (DependencyObject Downloader, string PartName)
 		{
-			// when PartName == null it means to transfer data from downloader to image
-			// (at least according to samples comments)
+			if (Downloader == null)
+				throw new ArgumentNullException ("Downloader");
+
+			if (PartName == null)
+				throw new ArgumentNullException ("PartName");
+
+			NativeMethods.image_set_source (native, Downloader.native, PartName);
 		}
 
 		public event ErrorEventHandler ImageFailed;
