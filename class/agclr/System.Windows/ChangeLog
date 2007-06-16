@@ -1,3 +1,7 @@
+2007-06-16  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Downloader.cs: Handle unset DownloadFailed event.
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* DependencyObject.cs: Add support to create new Image type.

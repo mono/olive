@@ -55,8 +55,11 @@ namespace System.Windows {
 				h = DownloadProgressChanged;
 				break;
 			case 2:
-				// FIXME - supply some details
-				DownloadFailed (this, new ErrorEventArgs ());
+				if (DownloadFailed != null) {
+					// FIXME - supply some details
+					ErrorEventArgs eea = new ErrorEventArgs ();
+					DownloadFailed (this, eea);
+				}
 				return;
 			}
 			if (h != null)
