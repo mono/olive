@@ -364,7 +364,7 @@ namespace Mono {
 		internal extern static void downloader_abort (IntPtr handle);
 		
 		[DllImport("moon")]
-		internal extern static string downloader_get_response_text (IntPtr handle, string partname);
+		internal extern static IntPtr downloader_get_response_text (IntPtr handle, string partname, out uint size);
 
 		[DllImport("moon")]
 		internal extern static void downloader_open (IntPtr handle, string verb, string uri, bool async);

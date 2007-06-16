@@ -125,7 +125,17 @@ namespace System.Windows {
 
 		public string GetResponseText (string PartName)
 		{
-			return NativeMethods.downloader_get_response_text (native, PartName);
+			IntPtr n;
+			uint size;
+			
+			n = NativeMethods.downloader_get_response_text (native, PartName, out size);
+
+			//
+			// This returns the contents as string, but the data is a binary blob
+			//
+			unsafe {
+				return new String ((sbyte *) n, 0, (int) size, System.Text.Encoding.UTF8);
+			}
 		}
 
 		public void Open (string verb, Uri URI, bool Async)
