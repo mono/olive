@@ -62,7 +62,7 @@ namespace System.Windows.Controls {
 			}
 		}
 
-		public Stretch DownloadProgress {
+		public Stretch Stretch {
 			get { return (Stretch) GetValue (StretchProperty); }
 			set { SetValue (StretchProperty, value); }
 		}

@@ -43,7 +43,7 @@ namespace System.Windows.Controls {
 
 		protected FrameworkElement InitializeFromXaml (string xaml)
 		{
-			throw new NotImplementedException ();
+			return (FrameworkElement) XamlReader.Load (xaml);
 		}
 
 		protected internal override Kind GetKind ()
