@@ -31,8 +31,11 @@ using System.Runtime.InteropServices;
 
 namespace Mono {
 
+	internal delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
+
 	internal static class NativeMethods {
 
+	
 		[DllImport("moon")]
 		internal extern static void runtime_init ();
 
@@ -74,7 +77,8 @@ namespace Mono {
 		internal extern static IntPtr dependency_object_find_name (IntPtr obj, string name, out Kind kind);
 		
 		[DllImport("moon")]
-	    	internal extern static IntPtr xaml_create_from_str (string xaml, out Kind kind);
+	    	internal extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
+				Mono.CreateCustomXamlElementCallback ccecb, out Kind kind);
 
 		[DllImport("moon")]
 		internal extern static Value value_color_from_argb (uint c);

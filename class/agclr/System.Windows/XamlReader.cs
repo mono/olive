@@ -31,28 +31,74 @@
 using System.Xml;
 using System.IO;
 using Mono;
+using System.Reflection;
 
 namespace System.Windows {
 	
 	public static class XamlReader {
+	
+		static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_custom_element_callback);
 
 		public static DependencyObject Load (string xaml)
+		{
+			return Load (xaml, true);
+		}
+		
+		public static DependencyObject Load (string xaml, bool createNamescope)
 		{
 			if (xaml == null)
 				throw new ArgumentNullException ("xaml");
 
 			Kind kind;
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml, out kind);
+			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb, out kind);
 
 			if (top == IntPtr.Zero)
 				return null;
 
 			return DependencyObject.Lookup (kind, top);
 		}
-		
-		public static DependencyObject Load (string xaml, bool createNamescope)
+
+		internal static IntPtr create_custom_element_callback (string xmlns, string name)
 		{
-			throw new NotImplementedException ();
+			string ns;
+			string asm;
+			string fullname;
+			
+			ParseXmlns (xmlns, out ns, out asm);
+
+			if (ns == null || asm == null)
+				return IntPtr.Zero;
+
+			fullname = String.Concat (ns, ".", name);
+
+			// TODO: We need to use the downloader here
+			Assembly clientlib = Assembly.LoadFile (asm);
+
+			if (clientlib == null)
+				return IntPtr.Zero;
+
+			DependencyObject res = (DependencyObject) clientlib.CreateInstance (fullname);
+
+			if (res == null)
+				return IntPtr.Zero;
+
+			return res._native;
+		}
+
+		internal static void ParseXmlns (string xmlns, out string ns, out string asm)
+		{
+			ns = null;
+			asm = null;
+
+			string [] decls = xmlns.Split (';');
+			foreach (string decl in decls) {
+				if (decl.StartsWith ("clr-namespace:")) {
+					ns = decl.Substring (14, decl.Length - 14);
+				}
+				if (decl.StartsWith ("assembly=")) {
+					asm = decl.Substring (9, decl.Length - 9);
+				}
+			}
 		}
 	}
 }

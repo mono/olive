@@ -1,3 +1,8 @@
+2007-06-15  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Add the callback for creating custom element
+	types.
+	
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* NativeMethods.cs: Add image_new and media_base_new
