@@ -55,10 +55,20 @@ namespace System.Windows.Controls {
 			if (Downloader == null)
 				throw new ArgumentNullException ("Downloader");
 
-			if (PartName == null)
-				throw new ArgumentNullException ("PartName");
+			if (PartName == null) {
+				// FIXME: this means we must transfer data from Downloader object to this image
+				// hopefully using an API saner than returning a string
+			} else {
+				Downloader dl = (Downloader as Downloader);
+				if (dl != null) {
+					dl.Completed += delegate {
+						End ();
+					};
 
-			NativeMethods.image_set_source (native, Downloader.native, PartName);
+					NativeMethods.image_set_source (native, dl.native, PartName);
+				}
+				// FIXME: else not sure how to (or if) handle non-Downloader objects
+			}
 		}
 
 		public event ErrorEventHandler ImageFailed;

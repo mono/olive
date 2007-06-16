@@ -1,3 +1,8 @@
+2007-06-16  Sebastien Pouliot  <sebastien@ximian.com> 
+
+	* Image.cs: Try to get completed notification.
+	* MediaBase.cs: End-helper for Image.
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* Image.cs: New.

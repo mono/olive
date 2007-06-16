@@ -76,5 +76,12 @@ namespace System.Windows.Controls {
 		{
 			return Kind.MEDIABASE;
 		}
+
+		internal void End ()
+		{
+			if (MediaEnded != null) {
+				MediaEnded (this, EventArgs.Empty);
+			}
+		}
 	}
 }
