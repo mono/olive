@@ -48,8 +48,10 @@ namespace System.Windows.Input {
 			double nx = x;
 			double ny = y;
 
-			
-			NativeMethods.uielement_transform_point (uiElement.native, ref nx, ref ny);
+			// from the samples it seems null is a valid value
+			if (uiElement != null)
+				NativeMethods.uielement_transform_point (uiElement.native, ref nx, ref ny);
+
 			return new Point (nx, ny);
 		}
 
