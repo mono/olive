@@ -386,5 +386,8 @@ namespace Mono {
 		[DllImport ("moon")]
 		internal extern static void image_set_source (IntPtr image, IntPtr downloader, string PartName);
 
+		[DllImport ("moon")]
+		internal extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml);
+
 	}
 }
