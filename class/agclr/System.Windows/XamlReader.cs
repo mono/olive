@@ -32,12 +32,14 @@ using System.Xml;
 using System.IO;
 using Mono;
 using System.Reflection;
+using System.ComponentModel;
 
 namespace System.Windows {
 	
 	public static class XamlReader {
 	
-		static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_custom_element_callback);
+		static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_element);
+		static SetCustomXamlAttributeCallback custom_at_cb = new SetCustomXamlAttributeCallback (set_attribute);
 
 		public static DependencyObject Load (string xaml)
 		{
@@ -50,7 +52,7 @@ namespace System.Windows {
 				throw new ArgumentNullException ("xaml");
 
 			Kind kind;
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb, out kind);
+			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb, custom_at_cb, out kind);
 
 			if (top == IntPtr.Zero)
 				return null;
@@ -58,7 +60,7 @@ namespace System.Windows {
 			return DependencyObject.Lookup (kind, top);
 		}
 
-		internal static IntPtr create_custom_element_callback (string xmlns, string name)
+		internal static IntPtr create_element (string xmlns, string name)
 		{
 			string ns;
 			string asm;
@@ -83,6 +85,40 @@ namespace System.Windows {
 				return IntPtr.Zero;
 
 			return res._native;
+		}
+
+		
+		private static void set_attribute (IntPtr target_ptr, string name, string value)
+		{
+			MethodInfo m = typeof (DependencyObject).GetMethod ("Lookup",
+					BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
+			DependencyObject target = (DependencyObject) m.Invoke (null, new object [] { target_ptr });
+
+			if (target == null) {
+				Console.WriteLine ("unable to create target object from: 0x{0}", target_ptr);
+				return;
+			}
+
+			PropertyDescriptor pd = TypeDescriptor.GetProperties (target).Find (name, true);
+
+			if (pd == null) {
+				Console.WriteLine ("unable to set property ({0}) no property descriptor found", name);
+				return;
+			}
+
+			if (!pd.Converter.CanConvertFrom (typeof (string))) {
+				//
+				// MS does not seem to handle this yet either, but I think a logical improvement
+				// here is to call back into unmanaged code something like xaml_create_object_from_str
+				// with the attribute string, and see if the managed code can parse it, this would
+				// allow you to stick things like Colors and KeySplines on your object and still have
+				// custom setters
+				//
+				Console.WriteLine ("unable to convert property '{0}' from a string", name);
+				return;
+			}
+
+			pd.SetValue (target, pd.Converter.ConvertFrom (value));
 		}
 
 		internal static void ParseXmlns (string xmlns, out string ns, out string asm)

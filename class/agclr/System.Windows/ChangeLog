@@ -1,3 +1,9 @@
+2007-06-16  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Update to set custom attributes (basically a sync
+	with moonlight.cs, I should look into ways of eliminating the code
+	duplication here).
+
 2007-06-16  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* Downloader.cs: Handle unset DownloadFailed event.

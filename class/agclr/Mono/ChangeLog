@@ -1,3 +1,8 @@
+2007-06-16  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Updated to match new xaml_create_from_*
+	function signatures.
+
 2007-06-16  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* NativeMethods.cs: Add "out Kind" parameter to control_initialize_

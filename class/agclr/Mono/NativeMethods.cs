@@ -32,6 +32,7 @@ using System.Runtime.InteropServices;
 namespace Mono {
 
 	internal delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
+	internal delegate void SetCustomXamlAttributeCallback (IntPtr target, string name, string value);
 
 	internal static class NativeMethods {
 
@@ -81,7 +82,9 @@ namespace Mono {
 		
 		[DllImport("moon")]
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
-				Mono.CreateCustomXamlElementCallback ccecb, out Kind kind);
+				Mono.CreateCustomXamlElementCallback ccecb,
+				Mono.SetCustomXamlAttributeCallback scacb,
+				out Kind kind);
 
 		[DllImport("moon")]
 		internal extern static Value value_color_from_argb (uint c);
