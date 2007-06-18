@@ -1,5 +1,14 @@
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Duration.cs: Add an internal constructor and properties used by the
+	  marshaller.
+	* DependencyObject.cs: Fix Duration marshalling, the naive approach of
+	  using Marshal.PtrToStructure/StructureToPtr doesn't work because
+	  the managed structure layout isn't fixed. Also implement TimeSpan
+	  marshalling.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Downloader.cs: Don't request events if we don't have a native object.
 	* Inlines.cs: Construction implemented.
 	* FontWeights.cs: Added.

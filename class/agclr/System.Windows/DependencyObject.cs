@@ -285,7 +285,7 @@ namespace System.Windows {
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
 			if (x == IntPtr.Zero){
 				if (!property.type.IsSubclassOf (typeof (Nullable)))
-				Console.WriteLine ("Found null for object {0}, with property {1}");
+					Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, "?");
 				
 				return null;
 			}
@@ -313,8 +313,14 @@ namespace System.Windows {
 					return *((ulong *) px);
 					
 				case Kind.INT64:
-					return *((long *) px);
-					
+					long v = *((long *) px); 
+					if (property.type == typeof (TimeSpan)) {
+						return new TimeSpan (v);
+					} else if (property.type == typeof (Nullable <TimeSpan>)) {
+						return  new Nullable <TimeSpan> (new TimeSpan (v));
+					} else {
+						return v;					
+					}	
 				case Kind.INT32:
 					return *((int *) px);
 
@@ -386,7 +392,10 @@ namespace System.Windows {
 					if (vptr == IntPtr.Zero)
 						return Duration.Automatic;
 					
-					return (Duration) Marshal.PtrToStructure (vptr, typeof (Duration));					
+					int kind = Marshal.ReadInt32 (vptr);
+					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + 4));
+
+					return new Duration (kind, new TimeSpan (ticks));					
 				}
 				case Kind.REPEATBEHAVIOR:
 				{
@@ -458,6 +467,10 @@ namespace System.Windows {
 				} else if (v is long){
 					value.k = Kind.INT64;
 					*((long *) p) = (long) v;
+				} else if (v is TimeSpan) {
+					TimeSpan ts = (TimeSpan) v;
+					value.k = Kind.INT64;
+					*((long *) p) = ts.Ticks;
 				} else if (v is ulong){
 					value.k = Kind.UINT64;
 					*((ulong *) p) = (ulong) v;
@@ -526,7 +539,8 @@ namespace System.Windows {
 					Duration d = (Duration) v;
 					value.k = Kind.DURATION;
 					IntPtr result = Marshal.AllocHGlobal (sizeof (Duration));
-					Marshal.StructureToPtr (d, result, false);
+					Marshal.WriteInt32 (result, d.KindInternal);
+					Marshal.WriteInt64 ((IntPtr) ((byte*) result + 4), d.TimeSpanInternal.Ticks);
 					*((IntPtr *) p) = result;
 				} else if (v is RepeatBehavior) {
 					RepeatBehavior d = (RepeatBehavior) v;

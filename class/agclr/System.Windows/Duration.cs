@@ -43,10 +43,24 @@ namespace System.Windows {
 		static Duration automatic = new Duration (AUTOMATIC);
 		static Duration forever = new Duration (FOREVER);
 		
+		internal int KindInternal {
+			get { return kind; }
+		}
+		
+		internal TimeSpan TimeSpanInternal {
+			get { return time_span; }
+		}
+		
 		internal Duration (int k)
 		{
 			kind = k;
 			time_span = new TimeSpan (0);
+		}
+		
+		internal Duration (int k, TimeSpan ts)
+		{
+			kind = k;
+			time_span = ts;
 		}
 		
 		public Duration (TimeSpan timeSpan)
