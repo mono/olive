@@ -35,5 +35,14 @@ namespace System.Windows.Documents {
 		public LineBreak ()
 		{
 		}
+		
+		internal LineBreak (IntPtr raw) : base (raw)
+		{
+		}
+		
+		protected internal override Kind GetKind ()
+		{
+			return Kind.LINEBREAK;
+		}
 	}
 }

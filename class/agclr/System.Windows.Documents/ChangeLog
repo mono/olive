@@ -1,3 +1,8 @@
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* LineBreak.cs, Run.cs: Implement construction.
+	* Inline.cs: Fix property types.
+
 2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Glyphs.cs  Inline.cs  LineBreak.cs  Run.cs : new.

@@ -35,5 +35,14 @@ namespace System.Windows.Documents {
 		public Run ()
 		{
 		}
+		
+		internal Run (IntPtr raw) : base (raw)
+		{
+		}
+		
+		internal protected override Kind GetKind ()
+		{
+			return Kind.RUN;
+		}
 	}
 }
