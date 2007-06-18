@@ -1,3 +1,7 @@
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TextBlock.cs: Fix FontWeight signature.
+
 2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TextBlock.cs : actually it was not in the build and needed couple

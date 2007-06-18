@@ -46,7 +46,7 @@ namespace System.Windows.Controls {
 		public static readonly DependencyProperty FontStyleProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontStyle", typeof (FontStyles));
 		public static readonly DependencyProperty FontWeightProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontWeight", typeof (double));
+			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontWeight", typeof (int));
 		public static readonly DependencyProperty ForegroundProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "Foreground", typeof (Brush));
 		public static readonly DependencyProperty InlinesProperty =
@@ -97,8 +97,8 @@ namespace System.Windows.Controls {
 			set { SetValue (FontStyleProperty, value); }
 		}
 
-		public double FontWeight {
-			get { return (double) GetValue (FontWeightProperty); }
+		public FontWeights FontWeight {
+			get { return (FontWeights) GetValue (FontWeightProperty); }
 			set { SetValue (FontWeightProperty, value); }
 		}
 
