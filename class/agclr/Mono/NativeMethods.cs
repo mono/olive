@@ -63,8 +63,26 @@ namespace Mono {
 #endregion
 
 		[DllImport("moon")]
+		internal extern static bool type_get_value_type (Kind type);
+		
+		[DllImport("moon")]
 		internal extern static IntPtr dependency_property_lookup (Kind type, string name);
 
+		[DllImport("moon")]
+		internal extern static Kind dependency_property_get_value_type (IntPtr obj);
+		
+		[DllImport("moon", EntryPoint="dependency_property_get_name")]
+		internal extern static IntPtr _dependency_property_get_name (IntPtr obj);
+
+		internal static string dependency_property_get_name (IntPtr obj)
+		{
+			IntPtr p = _dependency_property_get_name (obj);
+			if (p == IntPtr.Zero)
+				return null;
+			
+			return Marshal.PtrToStringAnsi (p);
+		}
+		
 		[DllImport("moon")]
 		internal extern static IntPtr dependency_object_get_value (IntPtr obj, IntPtr property);
 		
