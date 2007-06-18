@@ -15,6 +15,7 @@ System.Windows/ErrorType.cs
 System.Windows/EventTrigger.cs
 System.Windows/FontStretches.cs
 System.Windows/FontStyles.cs
+System.Windows/FontWeights.cs
 System.Windows/FrameworkElement.cs
 System.Windows/Inlines.cs
 System.Windows/Point.cs

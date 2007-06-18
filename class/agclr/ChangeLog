@@ -1,5 +1,9 @@
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* agclr.dll.sources: Update.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Internal.cs: Fix construction.
 
 2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
