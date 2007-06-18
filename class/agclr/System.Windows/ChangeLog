@@ -1,3 +1,11 @@
+2007-06-18  Atsushi Enomoto <atsushi@ximian.com>
+
+	* TextDecorations.cs
+	  FontStretches.cs
+	  TextWrapping.cs
+	  Inlines.cs
+	  FontStyles.cs : new.
+
 2007-06-17  Jackson Harper  <jackson@ximian.com>
 
 	* XamlReader.cs: Another moonlight sync, so we can create x:Class elements.

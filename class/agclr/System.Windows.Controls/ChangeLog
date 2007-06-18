@@ -1,3 +1,8 @@
+2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TextBlock.cs : actually it was not in the build and needed couple
+	  of fixes.
+
 2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TextBlock.cs : actually PInvokes are already in moon.

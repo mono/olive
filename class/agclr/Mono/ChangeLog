@@ -1,3 +1,7 @@
+2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NativeMethods.cs : glyphs_new().
+
 2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* NativeMethods.cs : actually PInvokes are already in moon.

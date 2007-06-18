@@ -1,3 +1,8 @@
+2007-06-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* agclr.dll.sources: added TextBlock.cs, System.Windows.Documents
+	  public types and related (missing) System.Windows enums.
+
 2007-06-15  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* agclr.dll.sources: Add System.Windows.Controls.Image and MediaBase

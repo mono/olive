@@ -136,6 +136,11 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static IntPtr text_block_new ();
 #endregion
+
+#region Documents
+		[DllImport ("moon")]
+		internal extern static IntPtr glyphs_new ();
+#endregion
 		
 #region Collections
 		[DllImport("moon")]

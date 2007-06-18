@@ -1,5 +1,5 @@
 //
-// System.Windows.Controls.TextBlock.cs
+// System.Windows.Documents.Inline.cs
 //
 // Authors:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -26,17 +26,13 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System.Windows;
-using System.Windows.Media;
 using Mono;
+using System.Windows.Media;
 
-namespace System.Windows.Controls {
+namespace System.Windows.Documents {
 
-	public class TextBlock : FrameworkElement {
+	public class Inline : DependencyObject {
 
-		public static readonly DependencyProperty ActualHeightProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "ActualHeight", typeof (double));
-		public static readonly DependencyProperty ActualWidthProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "ActualWidth", typeof (double));
 		public static readonly DependencyProperty FontFamilyProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontFamily", typeof (string));
 		public static readonly DependencyProperty FontSizeProperty =
@@ -49,32 +45,16 @@ namespace System.Windows.Controls {
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontWeight", typeof (double));
 		public static readonly DependencyProperty ForegroundProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "Foreground", typeof (Brush));
-		public static readonly DependencyProperty InlinesProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "Inlines", typeof (Inlines));
 		public static readonly DependencyProperty TextDecorationsProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "TextDecorations", typeof (TextDecorations));
-		public static readonly DependencyProperty TextProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "Text", typeof (string));
-		public static readonly DependencyProperty TextWrappingProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "TextWrapping", typeof (TextWrapping));
 
-		public TextBlock ()  : base (NativeMethods.text_block_new ())
+		public Inline ()  : base (NativeMethods.glyphs_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 
-		internal TextBlock (IntPtr raw) : base (raw)
+		internal Inline (IntPtr raw) : base (raw)
 		{
-		}
-
-		public double ActualHeight {
-			get { return (double) GetValue (ActualHeightProperty); }
-			set { SetValue (ActualHeightProperty, value); }
-		}
-
-		public double ActualWidth {
-			get { return (double) GetValue (ActualWidthProperty); }
-			set { SetValue (ActualWidthProperty, value); }
 		}
 
 		public string FontFamily {
@@ -107,39 +87,14 @@ namespace System.Windows.Controls {
 			set { SetValue (ForegroundProperty, value); }
 		}
 
-		public Inlines Inlines {
-			get { return (Inlines) GetValue (InlinesProperty); }
-			set { SetValue (InlinesProperty, value); }
-		}
-
 		public TextDecorations TextDecorations {
 			get { return (TextDecorations) GetValue (TextDecorationsProperty); }
 			set { SetValue (TextDecorationsProperty, value); }
 		}
 
-		public TextWrapping TextWrapping {
-			get { return (TextWrapping) GetValue (TextWrappingProperty); }
-			set { SetValue (TextWrappingProperty, value); }
-		}
-
-		public string Text {
-			get { return (string) GetValue (TextProperty); }
-			set { SetValue (TextProperty, value); }
-		}
-
-		public void SetFontSource (DependencyObject Downloader)
-		{
-			if (Downloader == null)
-				throw new ArgumentNullException ("Downloader");
-
-			Downloader dl = (Downloader as Downloader);
-			if (dl != null)
-				NativeMethods.text_block_set_font_source (native, dl.native);
-		}
-
 		protected internal override Kind GetKind ()
 		{
-			return Kind.TEXTBLOCK;
+			return Kind.INLINE;
 		}
 	}
 }
