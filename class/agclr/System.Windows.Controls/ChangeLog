@@ -1,5 +1,9 @@
 2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* TextBlock.cs : actually PInvokes are already in moon.
+
+2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TextBlock.cs : oops, extra field.
 
 2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>

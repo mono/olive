@@ -1,5 +1,9 @@
 2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* NativeMethods.cs : actually PInvokes are already in moon.
+
+2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* NativeMethods.cs : textblock_new() and textblock_set_source().
 	  They do not exist yet.
 

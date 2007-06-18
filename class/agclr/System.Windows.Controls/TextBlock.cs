@@ -57,7 +57,7 @@ namespace System.Windows.Controls {
 		public static readonly DependencyProperty TextWrappingProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "TextWrapping", typeof (TextWrapping));
 
-		public TextBlock ()  : base (NativeMethods.textblock_new ())
+		public TextBlock ()  : base (NativeMethods.text_block_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
@@ -126,24 +126,17 @@ namespace System.Windows.Controls {
 			set { SetValue (TextProperty, value); }
 		}
 
-		public void SetFontSource (DependencyObject Downloader, string PartName)
+		public void SetFontSource (DependencyObject Downloader)
 		{
 			if (Downloader == null)
 				throw new ArgumentNullException ("Downloader");
 
-			if (PartName == null) {
-				// FIXME: this means we must transfer data from Downloader object to this image
-				// hopefully using an API saner than returning a string
-			} else {
-				Downloader dl = (Downloader as Downloader);
-				if (dl != null) {
-					dl.Completed += delegate {
-						End ();
-					};
-
-					NativeMethods.textblock_set_source (native, dl.native, PartName);
-				}
-				// FIXME: else not sure how to (or if) handle non-Downloader objects
+			Downloader dl = (Downloader as Downloader);
+			if (dl != null) {
+				dl.Completed += delegate {
+					End ();
+				};
+				NativeMethods.textblock_set_font_source (native, dl.native);
 			}
 		}
 
