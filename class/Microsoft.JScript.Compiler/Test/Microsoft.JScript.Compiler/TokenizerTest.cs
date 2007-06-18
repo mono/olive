@@ -1,8 +1,8 @@
 using NUnit.Core;
 using NUnit.Framework;
-using Mono.JScript.Compiler;
+using Microsoft.JScript.Compiler;
 
-namespace MonoTests.JScript.Compiler
+namespace MonoTests.Microsoft.JScript.Compiler
 {
 	[TestFixture]
 	public class TokenizerTest

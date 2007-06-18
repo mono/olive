@@ -2,7 +2,7 @@ using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting.Shell;
 using Microsoft.Scripting;
 
-namespace Mono.JScript.Compiler.Hosting
+namespace Microsoft.JScript.Compiler.Hosting
 {
 	public sealed class LanguageProvider : Microsoft.Scripting.Hosting.LanguageProvider
 	{
@@ -12,22 +12,22 @@ namespace Mono.JScript.Compiler.Hosting
 
 		public override CommandLine GetCommandLine()
 		{
-			return new Mono.JScript.Compiler.Shell.CommandLine ();
+			return new Microsoft.JScript.Compiler.Shell.CommandLine ();
 		}
 
 		public override ScriptEngine GetEngine(Microsoft.Scripting.EngineOptions options)
 		{
-			 return new Engine (this, (Mono.JScript.Compiler.EngineOptions)options);
+			 return new Engine (this, (Microsoft.JScript.Compiler.EngineOptions)options);
 		}
 
 		public override Microsoft.Scripting.OptionsParser GetOptionsParser()
 		{
-			return new Mono.JScript.Compiler.OptionsParser ();
+			return new Microsoft.JScript.Compiler.OptionsParser ();
 		}
 
 		public override Microsoft.Scripting.Hosting.TokenCategorizer GetTokenCategorizer()
 		{
-			return new Mono.JScript.Compiler.TokenCategorizer ();
+			return new Microsoft.JScript.Compiler.TokenCategorizer ();
 		}
 
 		//TODO Test to get exact name maybe + version or "JScript"

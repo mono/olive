@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class IdentifierMappingTable
 	{

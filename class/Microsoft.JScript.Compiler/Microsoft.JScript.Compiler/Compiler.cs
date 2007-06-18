@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mono.JScript.Compiler.ParseTree;
+using Microsoft.JScript.Compiler.ParseTree;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class Compiler
 	{
@@ -43,7 +43,7 @@ namespace Mono.JScript.Compiler
 			return null;
 		}
 
-		public Mono.JScript.Compiler.ParseTree.Statement CompileStatement(char[] Input)
+		public Microsoft.JScript.Compiler.ParseTree.Statement CompileStatement(char[] Input)
 		{
 			Parser parser = new Parser (Input, new IdentifierTable ());
 			List<Comment> comments = null;

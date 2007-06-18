@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mono.JScript.Compiler.ParseTree
+namespace Microsoft.JScript.Compiler.ParseTree
 {
 	public class OctalLiteralExpression : Expression
 	{

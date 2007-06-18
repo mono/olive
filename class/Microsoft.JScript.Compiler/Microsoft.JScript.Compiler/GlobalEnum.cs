@@ -1,4 +1,4 @@
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public enum ComparisonResult
 	{

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Les informations générales relatives à un assembly dépendent de 
 // l'ensemble d'attributs suivant. Changez les valeurs de ces attributs pour modifier les informations
 // associées à un assembly.
-[assembly: AssemblyTitle("Mono.JScript.Compiler.Tests")]
+[assembly: AssemblyTitle("Microsoft.JScript.Compiler.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("PepsiCo France")]
-[assembly: AssemblyProduct("Mono.JScript.Compiler.Tests")]
+[assembly: AssemblyProduct("Microsoft.JScript.Compiler.Tests")]
 [assembly: AssemblyCopyright("Copyright © PepsiCo France 2007")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class Token
 	{

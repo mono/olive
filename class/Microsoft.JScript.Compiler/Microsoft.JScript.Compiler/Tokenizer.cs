@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using System.Globalization;
 using Microsoft.Scripting;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class Tokenizer
 	{

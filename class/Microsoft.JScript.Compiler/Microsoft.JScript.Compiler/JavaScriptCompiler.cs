@@ -5,7 +5,7 @@ using Microsoft.Scripting.Internal.Ast;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class JavaScriptCompiler : ScriptCompiler
 	{

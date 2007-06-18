@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Mono.JScript.Compiler.ParseTree;
+using Microsoft.JScript.Compiler.ParseTree;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class Parser
 	{
@@ -92,8 +92,9 @@ namespace Mono.JScript.Compiler
 			while (current.Kind == Token.Type.Comma) {
 				comma = new TextPoint (current.StartPosition);
 				Next ();
-				CheckSyntaxExpected (Token.Type.Identifier);
-				result.Add (new Parameter ((current as IdentifierToken).Spelling, new TextSpan (current, current), comma));
+				if (CheckSyntaxExpected (Token.Type.Identifier))
+					result.Add (new Parameter ((current as IdentifierToken).Spelling, new TextSpan (current, current), comma));
+
 				Next ();
 			}
 			return result;
@@ -169,7 +170,7 @@ namespace Mono.JScript.Compiler
 		{
 			Token start = current;
 			Expression expr = ParseExpression();
-			CheckSyntaxExpected (Token.Type.SemiColon);
+			InsertSemicolon ();
 			return new ExpressionStatement (expr, new TextSpan (start, current));
 		}
 
@@ -179,8 +180,10 @@ namespace Mono.JScript.Compiler
 			List<VariableDeclarationListElement> declarations = new List<VariableDeclarationListElement>();
 			do {
 				Next ();
-				CheckSyntaxExpected (Token.Type.Identifier);
-				Identifier name = (current as IdentifierToken).Spelling;
+				Identifier name = null;
+				if (CheckSyntaxExpected (Token.Type.Identifier))
+					name = (current as IdentifierToken).Spelling;
+
 				Next ();
 				VariableDeclaration declaration;
 				if (current.Kind == Token.Type.Equal) {
@@ -197,7 +200,7 @@ namespace Mono.JScript.Compiler
 				declarations.Add (vardeclarListElt);
 			} while (current.Kind == Token.Type.Comma);
 			VariableDeclarationStatement statement = new VariableDeclarationStatement (declarations, new TextSpan (start, current));
-			CheckSyntaxExpected (Token.Type.SemiColon);
+			InsertSemicolon ();
 			return statement;
 		}
 
@@ -244,11 +247,12 @@ namespace Mono.JScript.Compiler
 			Next ();
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
 			Token leftParen = current;
+			Next ();
 			Expression condition = ParseExpression ();
 			CheckSyntaxExpected (Token.Type.RightParenthesis);
 			Token rightParen = current;
 			Next ();
-			CheckSyntaxExpected (Token.Type.SemiColon);
+			InsertSemicolon ();
 			return new DoStatement (body, condition, new TextSpan (start, current), new TextSpan (start, start), new TextPoint (whileToken.StartPosition), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 		}
 
@@ -308,25 +312,6 @@ namespace Mono.JScript.Compiler
 						new TextPoint (secondSemiColon.StartPosition),
 						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				}
-
-				CheckSyntaxExpected (Token.Type.SemiColon);
-				firstSemiColon = current;
-				Next ();
-				condition = ParseExpression ();
-				CheckSyntaxExpected (Token.Type.SemiColon);
-				secondSemiColon = current;
-				Next ();
-				increment = ParseExpression ();
-				CheckSyntaxExpected (Token.Type.RightParenthesis);
-				rightParen = current;
-				Next ();
-				body = ParseStatement ();
-				return new DeclarationForStatement (varDecl.Declarations, condition, increment, body,
-					new TextSpan (start, current), new TextSpan (start, rightParen),
-					new TextPoint (firstSemiColon.StartPosition),
-					new TextPoint (secondSemiColon.StartPosition),
-					new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
-				
 			} else {
 				Expression initial = ParseExpression ();
 				
@@ -342,7 +327,6 @@ namespace Mono.JScript.Compiler
 						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
 						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				}
-
 				CheckSyntaxExpected (Token.Type.SemiColon);
 				firstSemiColon = current;
 				Next ();
@@ -369,8 +353,12 @@ namespace Mono.JScript.Compiler
 			if (current.Kind == Token.Type.Break)
 				opcode = Statement.Operation.Break;
 			Next();
-			CheckSyntaxExpected(Token.Type.Identifier);
-			Identifier label = (current as IdentifierToken).Spelling;
+			Identifier label = null;
+			if (current.Kind != Token.Type.SemiColon) {
+				if (CheckSyntaxExpected (Token.Type.Identifier))
+					label = (current as IdentifierToken).Spelling;
+			}
+			InsertSemicolon ();
 			return new BreakOrContinueStatement (opcode, label, new TextSpan (start, current), new TextPoint (current.StartPosition));
 		}
 
@@ -471,7 +459,7 @@ namespace Mono.JScript.Compiler
 			Expression expr = null;
 			if (current.Kind != Token.Type.SemiColon)
 				expr = ParseExpression();
-
+			InsertSemicolon ();
 			return new ReturnOrThrowStatement (Statement.Operation.Return, expr, new TextSpan (start, current));
 
 		}
@@ -481,6 +469,7 @@ namespace Mono.JScript.Compiler
 			Token start = current;
 			Next ();
 			Expression expr = ParseExpression ();
+			InsertSemicolon ();
 			return new ReturnOrThrowStatement (Statement.Operation.Throw, expr, new TextSpan (start, current));
 		}
 
@@ -501,9 +490,11 @@ namespace Mono.JScript.Compiler
 				CheckSyntaxExpected (Token.Type.LeftParenthesis);
 				Token left = current;
 				Next ();
-				CheckSyntaxExpected (Token.Type.Identifier);
 				Token id = current;
-				Identifier name = (current as IdentifierToken).Spelling;
+				Identifier name = null;
+				if (CheckSyntaxExpected (Token.Type.Identifier))
+					name = (current as IdentifierToken).Spelling;
+
 				Next();
 				CheckSyntaxExpected (Token.Type.RightParenthesis);
 				Token right = current;
@@ -613,8 +604,10 @@ namespace Mono.JScript.Compiler
 					return new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
 				case Token.Type.Dot:
 					Next ();
-					CheckSyntaxExpected (Token.Type.Identifier);
-					return new QualifiedExpression (expr, ((IdentifierToken)current).Spelling, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
+					Identifier id = null;
+					if (CheckSyntaxExpected (Token.Type.Identifier))
+						id = ((IdentifierToken)current).Spelling;
+					return new QualifiedExpression (expr, id, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
 			}
 			return expr;
 		}
@@ -1008,19 +1001,24 @@ namespace Mono.JScript.Compiler
 			Token start = current;
 
 			Next ();
-			CheckSyntaxExpected (Token.Type.Identifier);
-			Identifier id = ((IdentifierToken)current).Spelling;
-			TextPoint NameLocation = new TextPoint (this.current.StartPosition);
+			Identifier id = null;
+			if (CheckSyntaxExpected (Token.Type.Identifier))
+				id = ((IdentifierToken)current).Spelling;
+
+			TextPoint NameLocation = new TextPoint (current.StartPosition);
 
 			Next ();
+			TextPoint leftParenLocation = new TextPoint();
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
-			TextPoint leftParenLocation = new TextPoint (this.current.StartPosition);
+			leftParenLocation = new TextPoint (current.StartPosition);
 
 			Next ();
 			List<Parameter> parametters = ParseListParametter ();
+			TextPoint rightParenLocation = new TextPoint();
 			CheckSyntaxExpected (Token.Type.RightParenthesis);
-			TextPoint rightParenLocation = new TextPoint (this.current.StartPosition);
-			Token headerEnd = this.current;
+			rightParenLocation = new TextPoint (current.StartPosition);
+			
+			Token headerEnd = current;
 
 			Next ();
 			BlockStatement body = ParseBlock ();
@@ -1092,10 +1090,17 @@ namespace Mono.JScript.Compiler
 			current = lexer.GetNext ();
 		}
 
-		private void CheckSyntaxExpected (Token.Type type)
+		private void InsertSemicolon ()
+		{
+			if (current.Kind == Token.Type.SemiColon)
+				return;
+			current.InsertSemicolonBefore ();
+		}
+
+		private bool CheckSyntaxExpected (Token.Type type)
 		{
 			if (current.Kind == type)
-				return;
+				return true;
 
 			//default
 			DiagnosticCode code = DiagnosticCode.SyntaxError;
@@ -1115,10 +1120,11 @@ namespace Mono.JScript.Compiler
 					code = DiagnosticCode.LeftParenExpected;
 					break;
 				case Token.Type.SemiColon:
-					current.InsertSemicolonBefore ();
-					return;
+					code = DiagnosticCode.SemicolonExpected;
+					break;
 			}
 			Error (code, new TextSpan (current,current));
+			return false;
 		}
 
 		#endregion

@@ -1,3 +1,7 @@
+2007-06-18  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* allfile : change Mono.JScirpt to MIcrosoft.JScript
+	
 2007-06-04  Olivier Dufour  <olivier.duff@gmail.com>
 
 	* Finished all parsing of statement

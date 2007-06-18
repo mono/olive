@@ -1,5 +1,9 @@
 2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
 
+	* Parser.cs: fix insert semicolon bug and make checkTokenExpected bool to handle issue
+					   
+2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
+
 	* Parser.cs: finished expression handling!!!
 				TODO : - do unit test and test parser and lexer now!!
 					   - Label and goto

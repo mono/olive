@@ -6,7 +6,7 @@ using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using System.Reflection;
 
-namespace Mono.JScript.Compiler
+namespace Microsoft.JScript.Compiler
 {
 	public class Engine : ScriptEngine
 	{

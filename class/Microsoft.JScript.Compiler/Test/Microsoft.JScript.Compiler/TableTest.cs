@@ -1,6 +1,6 @@
 using NUnit.Core;
 using NUnit.Framework;
-using Mono.JScript.Compiler;
+using Microsoft.JScript.Compiler;
 
 namespace MonoTests.Microsoft.JScript.Compiler
 {
