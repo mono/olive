@@ -132,6 +132,9 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static IntPtr media_base_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr textblock_new ();
 #endregion
 		
 #region Collections
@@ -397,6 +400,9 @@ namespace Mono {
 
 		[DllImport ("moon")]
 		internal extern static void image_set_source (IntPtr image, IntPtr downloader, string PartName);
+
+		[DllImport ("moon")]
+		internal extern static void textblock_set_source (IntPtr image, IntPtr downloader, string PartName);
 
 		[DllImport ("moon")]
 		internal extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml, out Kind kind);

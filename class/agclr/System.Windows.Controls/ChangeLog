@@ -1,3 +1,7 @@
+2007-06-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TextBlock.cs : new.
+
 2007-06-16  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Control.cs: Use the Kind return from create to do the lookup.
