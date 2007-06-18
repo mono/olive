@@ -37,6 +37,7 @@ namespace MS.Internal {
 	public abstract class Collection<T> : DependencyObject {
 		public Collection () : base (NativeMethods.collection_new ())
 		{
+			NativeMethods.base_ref (native);
 			//
 			// We really need to revisit native collections, should
 			// they all be Collection *, instead of Collection fields?
