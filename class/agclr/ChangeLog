@@ -1,5 +1,10 @@
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* System.Windows.Media.Animation/Timeline.cs: Implement missing
+	  property.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* agclr.dll.sources: Update.
 
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 

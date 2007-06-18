@@ -65,12 +65,11 @@ namespace System.Windows.Media.Animation {
 		
 		public Nullable<TimeSpan> BeginTime {
 			get {
-				// Toshok: help
-				return null;
+				return (Nullable<TimeSpan>) GetValue (BeginTimeProperty);
 			}
 			
 			set {
-				// Toshok: help
+				SetValue (BeginTimeProperty, value);
 			}
 		}
 		public Duration Duration {
