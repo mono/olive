@@ -28,9 +28,9 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using Mono;
 using System.Xml;
 using System.IO;
-using Mono;
 using System.Reflection;
 using System.ComponentModel;
 
@@ -63,28 +63,38 @@ namespace System.Windows {
 		internal static IntPtr create_element (string xmlns, string name)
 		{
 			string ns;
-			string asm;
-			string fullname;
-			
-			ParseXmlns (xmlns, out ns, out asm);
+			string type_name;
+			string asm_path;
 
-			if (ns == null || asm == null)
+			ParseXmlns (xmlns, out type_name, out ns, out asm_path);
+
+			if (asm_path == null) {
+				Console.WriteLine ("unable to parse xmlns string: '{0}'", xmlns);
 				return IntPtr.Zero;
+			}
 
-			fullname = String.Concat (ns, ".", name);
-
-			// TODO: We need to use the downloader here
-			Assembly clientlib = Assembly.LoadFile (asm);
-
-			if (clientlib == null)
+			// TODO: Use a downloader here
+			Assembly clientlib = Assembly.LoadFile (asm_path);
+			if (clientlib == null) {
+				Console.WriteLine ("could not load client library: '{0}'", asm_path);
 				return IntPtr.Zero;
+			}
 
-			DependencyObject res = (DependencyObject) clientlib.CreateInstance (fullname);
+			if (type_name != null)
+				name = type_name;
 
-			if (res == null)
+			if (ns != null)
+				name = String.Concat (ns, ".", name);
+
+			DependencyObject res = (DependencyObject) clientlib.CreateInstance (name);
+
+			if (res == null) {
+				Console.WriteLine ("unable to create object instance:  '{0}'", name);
 				return IntPtr.Zero;
+			}
 
-			return res._native;
+			IntPtr p = Hosting.GetNativeObject (res);
+			return p;
 		}
 
 		
@@ -121,8 +131,9 @@ namespace System.Windows {
 			pd.SetValue (target, pd.Converter.ConvertFrom (value));
 		}
 
-		internal static void ParseXmlns (string xmlns, out string ns, out string asm)
+		internal static void ParseXmlns (string xmlns, out string type_name, out string ns, out string asm)
 		{
+			type_name = null;
 			ns = null;
 			asm = null;
 
@@ -130,10 +141,13 @@ namespace System.Windows {
 			foreach (string decl in decls) {
 				if (decl.StartsWith ("clr-namespace:")) {
 					ns = decl.Substring (14, decl.Length - 14);
+					continue;
 				}
 				if (decl.StartsWith ("assembly=")) {
 					asm = decl.Substring (9, decl.Length - 9);
+					continue;
 				}
+				type_name = decl;
 			}
 		}
 	}

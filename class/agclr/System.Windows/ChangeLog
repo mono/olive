@@ -1,3 +1,7 @@
+2007-06-17  Jackson Harper  <jackson@ximian.com>
+
+	* XamlReader.cs: Another moonlight sync, so we can create x:Class elements.
+
 2007-06-16  Jackson Harper  <jackson@ximian.com>
 
 	* XamlReader.cs: Update to set custom attributes (basically a sync
