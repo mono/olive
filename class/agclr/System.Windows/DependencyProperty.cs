@@ -34,6 +34,7 @@ namespace System.Windows {
 	public class DependencyProperty {
 		internal IntPtr native;
 		internal Type type;
+		private Kind declaring_type;
 		
 		static DependencyProperty ()
 		{
@@ -45,10 +46,11 @@ namespace System.Windows {
 			// useless constructor.
 		}
 
-		internal DependencyProperty (IntPtr handle, Type t)
+		internal DependencyProperty (IntPtr handle, Type t, Kind dtype)
 		{
 			native = handle;
 			type = t;
+			declaring_type = dtype;
 		}
 		internal static DependencyProperty Lookup (Kind type, string name, Type ownerType)
 		{
@@ -59,9 +61,29 @@ namespace System.Windows {
 					String.Format ("DependencyProperty.Lookup: {0} lacks {1}", type, name));
 
 			if (ownerType == null)
-				throw new ArgumentNullException ("ownerType");
+				throw new ArgumentNullException ("ownerType");	
 			
-			return new DependencyProperty (handle, ownerType);
+			return new DependencyProperty (handle, ownerType, type);
+		}
+		
+		internal string Name {
+			get { return NativeMethods.dependency_property_get_name (native); }
+		}
+		
+		internal bool IsNullable {
+			get { return (GetExactKind & Kind.VALUE_NULLTYPE) == Kind.VALUE_NULLTYPE; }
+		}
+		
+		internal Kind GetExactKind {
+			get { return NativeMethods.dependency_property_get_value_type (native); }
+		}
+		
+		internal Kind GetKind {
+			get { return GetExactKind & Kind.VALUE_TYPEMASK; }
+		}
+		
+		internal bool IsValueType {
+			get { return NativeMethods.type_get_value_type (GetExactKind); }
 		}
 	}
 }

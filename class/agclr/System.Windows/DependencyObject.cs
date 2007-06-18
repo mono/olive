@@ -284,8 +284,8 @@ namespace System.Windows {
 			
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
 			if (x == IntPtr.Zero){
-				if (!property.type.IsSubclassOf (typeof (Nullable)))
-					Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, "?");
+				if (property.IsValueType && !property.IsNullable)
+					Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, property.Name);
 				
 				return null;
 			}

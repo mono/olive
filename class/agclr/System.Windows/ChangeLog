@@ -1,5 +1,11 @@
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* DependencyProperty.cs: Store the declaring type and add a few
+	  informational properties.
+	* DependencyObject.cs: Fix debug message.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Duration.cs: Add an internal constructor and properties used by the
 	  marshaller.
 	* DependencyObject.cs: Fix Duration marshalling, the naive approach of
