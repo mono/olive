@@ -1,3 +1,7 @@
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* PointAnimation.cs: Fix property types.
+
 2007-06-15  Alan McGovern <amcgovern@novell.com> 
 
 	* ColorAnimation.cs: Fixed typos in the declaration

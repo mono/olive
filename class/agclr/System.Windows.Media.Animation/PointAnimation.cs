@@ -31,11 +31,11 @@ namespace System.Windows.Media.Animation
 	public class PointAnimation : System.Windows.Media.Animation.Animation
 	{
 		public static readonly DependencyProperty ByProperty = 
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "By", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "By", typeof (Point));
 		public static readonly DependencyProperty FromProperty =
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "From", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "From", typeof (Point));
 		public static readonly DependencyProperty ToProperty =
-			   DependencyProperty.Lookup (Kind.POINTANIMATION, "To", typeof (double));
+			   DependencyProperty.Lookup (Kind.POINTANIMATION, "To", typeof (Point));
 
 
 		public PointAnimation(): base (Mono.NativeMethods.point_animation_new ())
@@ -48,18 +48,18 @@ namespace System.Windows.Media.Animation
 		}
 
 
-		public Nullable<double> By {
-			get { return (double) GetValue(ByProperty); }
+		public Nullable<Point> By {
+			get { return (Point) GetValue(ByProperty); }
 			set { SetValue(ByProperty, value); }
 		}
 
-		public Nullable<double> From {
-			get { return (double) GetValue (FromProperty); }
+		public Nullable<Point> From {
+			get { return (Point) GetValue (FromProperty); }
 			set { SetValue (FromProperty, value); }
 		}
 
-		public Nullable<double> To {
-			get { return (double) GetValue (ToProperty); }
+		public Nullable<Point> To {
+			get { return (Point) GetValue (ToProperty); }
 			set { SetValue (ToProperty, value); }
 		}
 
