@@ -181,6 +181,9 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr timeline_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr inlines_new ();
 #endregion
 		
 #region Constructors
