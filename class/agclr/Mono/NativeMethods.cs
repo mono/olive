@@ -82,6 +82,9 @@ namespace Mono {
 
 		internal static string dependency_object_get_name (IntPtr obj)
 		{
+			if (obj == IntPtr.Zero)
+				return null;
+			
 			return Marshal.PtrToStringAnsi (obj);
 		}
 		
