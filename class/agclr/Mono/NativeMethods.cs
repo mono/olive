@@ -82,10 +82,11 @@ namespace Mono {
 
 		internal static string dependency_object_get_name (IntPtr obj)
 		{
-			if (obj == IntPtr.Zero)
+			IntPtr p = _dependency_object_get_name (obj);
+			if (p == IntPtr.Zero)
 				return null;
 			
-			return Marshal.PtrToStringAnsi (obj);
+			return Marshal.PtrToStringAnsi (p);
 		}
 		
 		[DllImport("moon")]
