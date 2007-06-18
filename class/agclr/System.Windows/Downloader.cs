@@ -68,6 +68,9 @@ namespace System.Windows {
 		
 		internal void NotifyWantUpdates ()
 		{
+			if (native == IntPtr.Zero)
+				return;
+			
 			updater = new NativeMethods.UpdateFunction (UpdateCallback);
 			NativeMethods.downloader_want_events (native, updater, IntPtr.Zero);
 		}

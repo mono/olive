@@ -1,8 +1,5 @@
-//
-// Inlines.cs
-//
 // Author:
-//   Atsushi Enomoto  <atsushi@ximian.com>
+//   Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -25,26 +22,32 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 using System;
-using System.Windows.Documents;
-using Mono;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Input;
 
 namespace System.Windows {
-
-	public class Inlines : MS.Internal.Collection<Inline>
+	[Serializable]
+	public enum FontWeights
 	{
-		public Inlines () : base (NativeMethods.inlines_new ())
-		{
-			NativeMethods.base_ref (native);
-		}
-		
-		internal Inlines (IntPtr raw) : base (raw)
-		{
-		}
-		
-		protected internal override Kind GetKind ()
-		{
-			return Kind.INLINES;
-		}
+		Thin = 100,
+		ExtraLight = 200,
+		UltraLight = 200,
+		Light = 300,
+		Regular = 400,
+		Normal = 400,
+		Medium = 500,
+		SemiBold = 600,
+		DemiBold = 600,
+		Bold = 700,
+		ExtraBold = 800,
+		UltraBold = 800,
+		Black = 900,
+		ExtraBlack = 950,
+		Heavy = 900,
+		UltraBlack = 950
 	}
 }
+

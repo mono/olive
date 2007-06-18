@@ -1,3 +1,11 @@
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Downloader.cs: Don't request events if we don't have a native object.
+	* Inlines.cs: Construction implemented.
+	* FontWeights.cs: Added.
+	* DependencyObject.cs: GetValue/SetValue: throw an exception if the
+	  object's native handle isn't set.
+
 2007-06-18  Atsushi Enomoto <atsushi@ximian.com>
 
 	* TextDecorations.cs

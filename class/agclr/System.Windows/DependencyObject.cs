@@ -280,6 +280,8 @@ namespace System.Windows {
 			if (property == null)
 				throw new ArgumentNullException ("property");
 			
+			CheckNative ();
+			
 			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
 			if (x == IntPtr.Zero){
 				if (!property.type.IsSubclassOf (typeof (Nullable)))
@@ -562,10 +564,7 @@ namespace System.Windows {
 			if (property == null)
 				throw new ArgumentNullException ("property");
 
-			if (native == IntPtr.Zero){
-				throw new Exception (
-					string.Format ("Uninitialized object: this object ({0}) has not set its native handle or overwritten SetValue", GetType ().FullName));
-			}
+			CheckNative ();
 			
 			if (obj == null){
 				NativeMethods.dependency_object_set_value (native, property.native, IntPtr.Zero);
@@ -595,6 +594,14 @@ namespace System.Windows {
 		protected internal virtual Kind GetKind ()
 		{
 			return Kind.DEPENDENCY_OBJECT;
+		}
+		
+		private void CheckNative ()
+		{
+			if (native == IntPtr.Zero){
+				throw new Exception (
+					string.Format ("Uninitialized object: this object ({0}) has not set its native handle or overwritten SetValue", GetType ().FullName));
+			}
 		}
 	}
 }
