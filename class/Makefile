@@ -18,6 +18,7 @@ SUBDIRS = \
 	System.IdentityModel.Selectors	\
 	System.ServiceModel 		\
 	System.ServiceModel.Web		\
+	System.Silverlight		\
 	agclr
 
 DIST_PROFILE_DIRS = net_3_0
