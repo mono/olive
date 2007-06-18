@@ -1,5 +1,11 @@
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* ColorAnimation.cs, PointAnimation.cs, DoubleAnimation.cs: Fix
+	  property lookup for nullable properties.
+	* Timline.cs: Deleted, dead file.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* PointAnimation.cs: Fix property types.
 
 2007-06-15  Alan McGovern <amcgovern@novell.com> 
