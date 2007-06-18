@@ -66,8 +66,6 @@ namespace System.Windows.Controls {
 		{
 		}
 
-		string text;
-
 		public double ActualHeight {
 			get { return (double) GetValue (ActualHeightProperty); }
 			set { SetValue (ActualHeightProperty, value); }
