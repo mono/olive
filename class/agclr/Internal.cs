@@ -71,6 +71,11 @@ namespace MS.Internal {
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
 
+		public void Clear ()
+		{
+			NativeMethods.collection_clear (native);
+		}
+
 		public void Insert (int index, T value)
 		{
 			DependencyObject dob = value as DependencyObject;
