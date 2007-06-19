@@ -115,7 +115,6 @@ System.Windows.Media.Animation/BeginStoryBoard.cs
 System.Windows.Media.Animation/ColorAnimation.cs
 System.Windows.Media.Animation/DoubleAnimation.cs
 System.Windows.Media.Animation/DoubleAnimationUsingKeyFrames.cs
-System.Windows.Media.Animation/DoubleKeyFrame.cs
 System.Windows.Media.Animation/FillBehavior.cs
 System.Windows.Media.Animation/KeySpline.cs
 System.Windows.Media.Animation/ParallelTimeline.cs
