@@ -1,3 +1,7 @@
+2007-06-19  Miguel de Icaza  <miguel@novell.com>
+
+	* Rect.cs: Add more stuff to rect.
+
 2007-06-19  Jackson Harper  <jackson@ximian.com>
 
 	* ResourceCollection.cs: These have a DependencyObject child type.

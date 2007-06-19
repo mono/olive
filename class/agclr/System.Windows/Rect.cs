@@ -44,5 +44,25 @@ namespace System.Windows {
 		{
 			return String.Format ("{0},{1},{2},{3}", x, y, w, h);
 		}
+
+		public double X {
+			get { return x; }
+			set { x = value; }
+		}
+
+		public double Y {
+			get { return y; }
+			set { y = value; } 
+		}
+
+		public double Width {
+			get { return w; }
+			set { w = value; } 
+		}
+
+		public double Height {
+			get { return h; }
+			set { h = value; }
+		}
 	}
 }
