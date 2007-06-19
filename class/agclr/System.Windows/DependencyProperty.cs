@@ -81,5 +81,9 @@ namespace System.Windows {
 		internal bool IsValueType {
 			get { return NativeMethods.type_get_value_type (GetKind); }
 		}
+		
+		internal Kind DeclaringType {
+			get { return declaring_type; }
+		}		
 	}
 }

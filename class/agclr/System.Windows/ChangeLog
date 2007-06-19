@@ -1,3 +1,7 @@
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Fix warning.
+
 2007-06-19  Miguel de Icaza  <miguel@novell.com>
 
 	* Rect.cs: Add more stuff to rect.
