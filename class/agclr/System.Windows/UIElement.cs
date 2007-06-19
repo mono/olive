@@ -29,6 +29,7 @@ using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
+using System.Runtime.InteropServices;
 using Mono;
 
 namespace System.Windows {
@@ -64,9 +65,32 @@ namespace System.Windows {
 		{
 			NativeMethods.base_ref (native);
 		}
-		
+
 		internal UIElement (IntPtr raw) : base (raw)
 		{
+			mouse_motion      = new UnmanagedEventHandler (mouse_motion_notify_callback);
+			mouse_button_down = new UnmanagedEventHandler (mouse_button_down_callback);
+			mouse_button_up   = new UnmanagedEventHandler (mouse_button_up_callback);
+			mouse_enter       = new UnmanagedEventHandler (mouse_enter_callback);
+
+			keydown = new UnmanagedEventHandler (key_down_callback);
+			keyup   = new UnmanagedEventHandler (key_up_callback);
+		
+			got_focus   = new UnmanagedEventHandler (got_focus_callback);
+			lost_focus  = new UnmanagedEventHandler (lost_focus_callback);
+			loaded      = new UnmanagedEventHandler (loaded_callback);
+			mouse_leave = new UnmanagedEventHandler (mouse_leave_callback);
+
+			Events.AddHandler (raw, "MouseMove", mouse_motion);
+			Events.AddHandler (raw, "MouseLeftButtonUp", mouse_button_up);
+			Events.AddHandler (raw, "MouseLeftButtonDown", mouse_button_down);
+			Events.AddHandler (raw, "MouseEnter", mouse_enter);
+			Events.AddHandler (raw, "KeyDown", keydown);
+			Events.AddHandler (raw, "KeyUp", keyup);
+			Events.AddHandler (raw, "GotFocus", got_focus);
+			Events.AddHandler (raw, "LostFocus", lost_focus);
+			Events.AddHandler (raw, "Loaded", loaded);
+			Events.AddHandler (raw, "MouseLeave", mouse_leave);
 		}
 		
 		public Geometry Clip {
@@ -183,46 +207,90 @@ namespace System.Windows {
 		public event MouseEventHandler MouseLeftButtonUp;
 		public event MouseEventHandler MouseMove;
 
-		internal void InvokeMouseMove (MouseEventArgs m)
-		{
-			MouseEventHandler h = MouseMove;
+		UnmanagedEventHandler mouse_motion;
+		UnmanagedEventHandler mouse_button_down;
+		UnmanagedEventHandler mouse_button_up;
+		UnmanagedEventHandler mouse_enter;
 
-			if (h != null)
-				h (this, m);
-		}
-
-		internal void InvokeMouseButtonDown (MouseEventArgs m)
-		{
-			MouseEventHandler h = MouseLeftButtonDown;
-
-			if (h != null)
-				h (this, m);
-		}
-
-		internal void InvokeMouseButtonUp (MouseEventArgs m)
-		{
-			MouseEventHandler h = MouseLeftButtonUp;
-
-			if (h != null)
-				h (this, m);
-		}
-
-		internal void InvokeMouseLeave ()
-		{
-			EventHandler h = MouseLeave;
-
-			if (h != null)
-				h (this, EventArgs.Empty);
-		}
-
-		internal void InvokeMouseEnter (MouseEventArgs m)
-		{
-			MouseEventHandler h = MouseEnter;
-
-			if (h != null)
-				h (this, m);
-		}
+		UnmanagedEventHandler keydown;
+		UnmanagedEventHandler keyup;
 		
+		UnmanagedEventHandler got_focus;
+		UnmanagedEventHandler lost_focus;
+		UnmanagedEventHandler loaded;
+		UnmanagedEventHandler mouse_leave;
+
+		void mouse_event (MouseEventHandler h, IntPtr event_data)
+		{
+			UnmanagedMouseEventArgs args = (UnmanagedMouseEventArgs)Marshal.PtrToStructure(event_data, typeof(UnmanagedMouseEventArgs));
+			h (this, new MouseEventArgs (args.state, args.x, args.y));
+		}
+
+		void mouse_motion_notify_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (MouseMove != null)
+				mouse_event (MouseMove, event_data);
+		}
+
+		void mouse_button_down_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (MouseLeftButtonDown != null)
+				mouse_event (MouseLeftButtonDown, event_data);
+		}
+
+		void mouse_button_up_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (MouseLeftButtonUp != null)
+				mouse_event (MouseLeftButtonUp, event_data);
+		}
+
+		void mouse_enter_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (MouseEnter != null)
+				mouse_event (MouseEnter, event_data);
+		}
+
+		void mouse_leave_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (MouseLeave != null)
+				MouseLeave (this, EventArgs.Empty);
+		}
+
+		void key_event (KeyboardEventHandler h, IntPtr event_data)
+		{
+			UnmanagedKeyboardEventArgs args = (UnmanagedKeyboardEventArgs)Marshal.PtrToStructure(event_data, typeof(UnmanagedKeyboardEventArgs));
+			h (this, new KeyboardEventArgs (/*args.state ...*/));
+		}
+
+		void key_up_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (KeyUp != null)
+				key_event (KeyUp, event_data);
+		}
+
+		void key_down_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (KeyDown != null)
+				key_event (KeyDown, event_data);
+		}
+
+		void loaded_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			if (Loaded != null)
+				Loaded (this, EventArgs.Empty);
+		}
+
+		void got_focus_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			// XXX
+		}
+
+		void lost_focus_callback (IntPtr sender, IntPtr event_data, IntPtr closure)
+		{
+			// XXX
+		}
+
+
 		protected internal override Kind GetKind ()
 		{
 			return Kind.UIELEMENT;
