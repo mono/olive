@@ -8,6 +8,9 @@ Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
 System.Windows.Input/TabletDeviceType.cs
+System.Windows.Media.Animation/KeyFrame.cs
+System.Windows.Media.Animation/KeyFrameCollection.cs
+System.Windows.Media.Animation/KeyTime.cs
 System.Windows.Media.Animation/KeyTimeType.cs
 System.Windows/Downloader.cs
 System.Windows/Duration.cs
