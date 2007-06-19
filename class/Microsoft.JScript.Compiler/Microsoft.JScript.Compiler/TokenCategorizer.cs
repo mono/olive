@@ -47,7 +47,7 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.LeftBracket:					
 				case Token.Type.RightBracket:					
 				case Token.Type.Dot:					
-				case Token.Type.SemiColon:					
+				case Token.Type.Semicolon:					
 				case Token.Type.Comma:					
 				case Token.Type.Less:					
 				case Token.Type.Greater:					
@@ -87,66 +87,66 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.BarEqual:					
 				case Token.Type.CircumflexEqual:					
 				case Token.Type.Divide:					
-				case Token.Type.DivideEqual:					
-				case Token.Type.Break:					
-				case Token.Type.Else:					
-				case Token.Type.New:					
-				case Token.Type.Var:					
-				case Token.Type.Case:					
-				case Token.Type.Finally:					
-				case Token.Type.Return:					
-				case Token.Type.Void:					
-				case Token.Type.Catch:					
-				case Token.Type.For:					
-				case Token.Type.Switch:					
-				case Token.Type.While:					
-				case Token.Type.Continue:					
-				case Token.Type.Function:					
-				case Token.Type.This:					
-				case Token.Type.With:					
-				case Token.Type.Default:					
-				case Token.Type.If:					
-				case Token.Type.Throw:					
-				case Token.Type.Delete:					
-				case Token.Type.In:					
-				case Token.Type.Try:					
-				case Token.Type.Do:					
-				case Token.Type.Instanceof:					
-				case Token.Type.Typeof:					
-				case Token.Type.Abstract:					
-				case Token.Type.Enum:					
-				case Token.Type.Int:					
-				case Token.Type.Short:					
-				case Token.Type.Boolean:					
-				case Token.Type.Export:					
-				case Token.Type.Interface:					
-				case Token.Type.Static:					
-				case Token.Type.Byte:					
-				case Token.Type.Extends:					
-				case Token.Type.Long:					
-				case Token.Type.Super:					
-				case Token.Type.Char:					
-				case Token.Type.Final:					
-				case Token.Type.Native:					
-				case Token.Type.Synchronized:					
-				case Token.Type.Class:					
-				case Token.Type.Float:					
-				case Token.Type.Package:					
-				case Token.Type.Throws:					
-				case Token.Type.Const:					
-				case Token.Type.Goto:					
-				case Token.Type.Private:					
-				case Token.Type.Transient:					
-				case Token.Type.Debugger:					
-				case Token.Type.Implements:					
-				case Token.Type.Protected:					
-				case Token.Type.Volatile:					
-				case Token.Type.Double:					
-				case Token.Type.Import:					
-				case Token.Type.Public:					
-				case Token.Type.Null:					
-				case Token.Type.True:					
-				case Token.Type.False:					
+				case Token.Type.DivideEqual:
+				case Token.Type.@break:
+				case Token.Type.@else:
+				case Token.Type.@new:					
+				case Token.Type.var:					
+				case Token.Type.@case:					
+				case Token.Type.@finally:					
+				case Token.Type.@return:					
+				case Token.Type.@void:					
+				case Token.Type.@catch:					
+				case Token.Type.@for:					
+				case Token.Type.@switch:					
+				case Token.Type.@while:					
+				case Token.Type.@continue:					
+				case Token.Type.function:					
+				case Token.Type.@this:					
+				case Token.Type.with:					
+				case Token.Type.@default:					
+				case Token.Type.@if:					
+				case Token.Type.@throw:					
+				case Token.Type.delete:					
+				case Token.Type.@in:					
+				case Token.Type.@try:					
+				case Token.Type.@do:					
+				case Token.Type.instanceof:					
+				case Token.Type.@typeof:					
+				case Token.Type.@abstract:					
+				case Token.Type.@enum:					
+				case Token.Type.@int:					
+				case Token.Type.@short:					
+				case Token.Type.boolean:					
+				case Token.Type.export:					
+				case Token.Type.@interface:					
+				case Token.Type.@static:					
+				case Token.Type.@byte:					
+				case Token.Type.extends:					
+				case Token.Type.@long:					
+				case Token.Type.super:					
+				case Token.Type.@char:					
+				case Token.Type.final:					
+				case Token.Type.native:					
+				case Token.Type.synchronized:					
+				case Token.Type.@class:					
+				case Token.Type.@float:					
+				case Token.Type.packate:					
+				case Token.Type.throws:					
+				case Token.Type.@const:					
+				case Token.Type.@goto:					
+				case Token.Type.@private:					
+				case Token.Type.transient:					
+				case Token.Type.debugger:					
+				case Token.Type.implements:					
+				case Token.Type.@protected:					
+				case Token.Type.@volatile:					
+				case Token.Type.@double:					
+				case Token.Type.import:					
+				case Token.Type.@public:					
+				case Token.Type.@null:					
+				case Token.Type.@true:					
+				case Token.Type.@false:					
 				case Token.Type.NumericLiteral:					
 				case Token.Type.HexIntegerLiteral:					
 				case Token.Type.OctalIntegerLiteral:					
@@ -164,7 +164,6 @@ namespace Microsoft.JScript.Compiler
 		private TokenTriggers GetTrigger(Token.Type type)
 		{
 			switch (type) {
-				case Token.Type.Abstract:
 				case Token.Type.None:
 				case Token.Type.EndOfInput:
 				case Token.Type.LeftBrace:
@@ -174,7 +173,7 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.LeftBracket:
 				case Token.Type.RightBracket:
 				case Token.Type.Dot:
-				case Token.Type.SemiColon:
+				case Token.Type.Semicolon:
 				case Token.Type.Comma:
 				case Token.Type.Less:
 				case Token.Type.Greater:
@@ -215,64 +214,65 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.CircumflexEqual:
 				case Token.Type.Divide:
 				case Token.Type.DivideEqual:
-				case Token.Type.Break:
-				case Token.Type.Else:
-				case Token.Type.New:
-				case Token.Type.Var:
-				case Token.Type.Case:
-				case Token.Type.Finally:
-				case Token.Type.Return:
-				case Token.Type.Void:
-				case Token.Type.Catch:
-				case Token.Type.For:
-				case Token.Type.Switch:
-				case Token.Type.While:
-				case Token.Type.Continue:
-				case Token.Type.Function:
-				case Token.Type.This:
-				case Token.Type.With:
-				case Token.Type.Default:
-				case Token.Type.If:
-				case Token.Type.Throw:
-				case Token.Type.Delete:
-				case Token.Type.In:
-				case Token.Type.Try:
-				case Token.Type.Do:
-				case Token.Type.Instanceof:
-				case Token.Type.Typeof:
-				case Token.Type.Enum:
-				case Token.Type.Int:
-				case Token.Type.Short:
-				case Token.Type.Boolean:
-				case Token.Type.Export:
-				case Token.Type.Interface:
-				case Token.Type.Static:
-				case Token.Type.Byte:
-				case Token.Type.Extends:
-				case Token.Type.Long:
-				case Token.Type.Super:
-				case Token.Type.Char:
-				case Token.Type.Final:
-				case Token.Type.Native:
-				case Token.Type.Synchronized:
-				case Token.Type.Class:
-				case Token.Type.Float:
-				case Token.Type.Package:
-				case Token.Type.Throws:
-				case Token.Type.Const:
-				case Token.Type.Goto:
-				case Token.Type.Private:
-				case Token.Type.Transient:
-				case Token.Type.Debugger:
-				case Token.Type.Implements:
-				case Token.Type.Protected:
-				case Token.Type.Volatile:
-				case Token.Type.Double:
-				case Token.Type.Import:
-				case Token.Type.Public:
-				case Token.Type.Null:
-				case Token.Type.True:
-				case Token.Type.False:
+				case Token.Type.@break:
+				case Token.Type.@else:
+				case Token.Type.@new:
+				case Token.Type.var:
+				case Token.Type.@case:
+				case Token.Type.@finally:
+				case Token.Type.@return:
+				case Token.Type.@void:
+				case Token.Type.@catch:
+				case Token.Type.@for:
+				case Token.Type.@switch:
+				case Token.Type.@while:
+				case Token.Type.@continue:
+				case Token.Type.function:
+				case Token.Type.@this:
+				case Token.Type.with:
+				case Token.Type.@default:
+				case Token.Type.@if:
+				case Token.Type.@throw:
+				case Token.Type.delete:
+				case Token.Type.@in:
+				case Token.Type.@try:
+				case Token.Type.@do:
+				case Token.Type.instanceof:
+				case Token.Type.@typeof:
+				case Token.Type.@abstract:
+				case Token.Type.@enum:
+				case Token.Type.@int:
+				case Token.Type.@short:
+				case Token.Type.boolean:
+				case Token.Type.export:
+				case Token.Type.@interface:
+				case Token.Type.@static:
+				case Token.Type.@byte:
+				case Token.Type.extends:
+				case Token.Type.@long:
+				case Token.Type.super:
+				case Token.Type.@char:
+				case Token.Type.final:
+				case Token.Type.native:
+				case Token.Type.synchronized:
+				case Token.Type.@class:
+				case Token.Type.@float:
+				case Token.Type.packate:
+				case Token.Type.throws:
+				case Token.Type.@const:
+				case Token.Type.@goto:
+				case Token.Type.@private:
+				case Token.Type.transient:
+				case Token.Type.debugger:
+				case Token.Type.implements:
+				case Token.Type.@protected:
+				case Token.Type.@volatile:
+				case Token.Type.@double:
+				case Token.Type.import:
+				case Token.Type.@public:
+				case Token.Type.@null:
+				case Token.Type.@true:
+				case Token.Type.@false:
 				case Token.Type.NumericLiteral:
 				case Token.Type.HexIntegerLiteral:
 				case Token.Type.OctalIntegerLiteral:

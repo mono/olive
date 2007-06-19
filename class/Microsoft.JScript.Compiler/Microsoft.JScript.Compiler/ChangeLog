@@ -1,5 +1,13 @@
 2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
 
+	* Parser.cs
+	* TokenCategorizer.cs
+	* Token.cs
+	* TokenCategorizer.cs
+	* Tokenizer.cs : fix typo of enum
+
+2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
+
 	* Parser.cs: fix insert semicolon bug and make checkTokenExpected bool to handle issue
 					   
 2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>

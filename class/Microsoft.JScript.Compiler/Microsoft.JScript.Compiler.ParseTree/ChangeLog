@@ -1,0 +1,4 @@
+2007-06-19  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* Expression.cs : fix typo of enum
+	

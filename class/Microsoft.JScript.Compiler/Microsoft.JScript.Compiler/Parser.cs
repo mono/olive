@@ -36,7 +36,7 @@ namespace Microsoft.JScript.Compiler
 			
 			while (current.Kind != Token.Type.EndOfInput) {
 				Next ();
-				if (current.Kind == Token.Type.Function)
+				if (current.Kind == Token.Type.function)
 					result.Append (ParseFunctionDeclaration ());
 				else
 					result.Append (ParseStatement ());
@@ -132,30 +132,30 @@ namespace Microsoft.JScript.Compiler
 			switch (current.Kind) {
 				case Token.Type.LeftBrace:
 					return ParseBlock ();
-				case Token.Type.Var:
+				case Token.Type.var:
 					return ParseVarDeclaration ();
-				case Token.Type.If:
+				case Token.Type.@if:
 					return ParseIfElse ();
-				case Token.Type.While:
+				case Token.Type.@while:
 					return ParseWhile ();
-				case Token.Type.Do:
+				case Token.Type.@do:
 					return ParseDo ();
-				case Token.Type.For:
+				case Token.Type.@for:
 					return ParseFor ();
-				case Token.Type.Continue:
-				case Token.Type.Break:
+				case Token.Type.@continue:
+				case Token.Type.@break:
 					return ParseBreakOrContinue ();
-				case Token.Type.With:
+				case Token.Type.with:
 					return ParseWith ();
-				case Token.Type.Switch:
+				case Token.Type.@switch:
 					return ParseSwitch ();
-				case Token.Type.Try:
+				case Token.Type.@try:
 					return ParseTry ();
-				case Token.Type.Throw:
+				case Token.Type.@throw:
 					return ParseThrow ();
-				case Token.Type.Return:
+				case Token.Type.@return:
 					return ParseReturn ();
-				case Token.Type.Function:
+				case Token.Type.function:
 					return ParseFunctionDeclaration ();
 				case Token.Type.Identifier:
 					return ParseExpressionStatement ();
@@ -216,7 +216,7 @@ namespace Microsoft.JScript.Compiler
 			Statement ifBody = ParseStatement ();
 			Statement elseBody = null;
 			TextPoint elsePoint = new TextPoint();
-			if (current.Kind == Token.Type.Else) {
+			if (current.Kind == Token.Type.@else) {
 				elsePoint = new TextPoint(current.StartPosition);
 				elseBody = ParseStatement ();
 			}
@@ -242,7 +242,7 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			Statement body = ParseStatement ();
 			Next ();
-			CheckSyntaxExpected (Token.Type.While);
+			CheckSyntaxExpected (Token.Type.@while);
 			Token whileToken = current;
 			Next ();
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
@@ -271,10 +271,10 @@ namespace Microsoft.JScript.Compiler
 			Token leftParen = current;
 			Next();
 
-			if (current.Kind == Token.Type.Var) {
+			if (current.Kind == Token.Type.var) {
 				VariableDeclarationStatement varDecl = ParseVarDeclaration ();
 
-				if (current.Kind == Token.Type.In) {
+				if (current.Kind == Token.Type.@in) {
 					//DeclarationForInStatement
 					Token inToken = current;
 					Next ();
@@ -294,11 +294,11 @@ namespace Microsoft.JScript.Compiler
 						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
 						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				} else {
-					CheckSyntaxExpected (Token.Type.SemiColon);
+					CheckSyntaxExpected (Token.Type.Semicolon);
 					firstSemiColon = current;
 					Next ();
 					condition = ParseExpression ();
-					CheckSyntaxExpected (Token.Type.SemiColon);
+					CheckSyntaxExpected (Token.Type.Semicolon);
 					secondSemiColon = current;
 					Next ();
 					increment = ParseExpression ();
@@ -314,8 +314,8 @@ namespace Microsoft.JScript.Compiler
 				}
 			} else {
 				Expression initial = ParseExpression ();
-				
-				if (current.Kind == Token.Type.In) {
+
+				if (current.Kind == Token.Type.@in) {
 					Token inToken = current;
 					Next ();
 					Expression collection = ParseExpression ();
@@ -327,11 +327,11 @@ namespace Microsoft.JScript.Compiler
 						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
 						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 				}
-				CheckSyntaxExpected (Token.Type.SemiColon);
+				CheckSyntaxExpected (Token.Type.Semicolon);
 				firstSemiColon = current;
 				Next ();
 				condition = ParseExpression ();
-				CheckSyntaxExpected (Token.Type.SemiColon);
+				CheckSyntaxExpected (Token.Type.Semicolon);
 				secondSemiColon = current;
 				Next ();
 				increment = ParseExpression ();
@@ -350,11 +350,11 @@ namespace Microsoft.JScript.Compiler
 		{
 			Token start = current;
 			Statement.Operation opcode = Statement.Operation.Continue;
-			if (current.Kind == Token.Type.Break)
+			if (current.Kind == Token.Type.@break)
 				opcode = Statement.Operation.Break;
 			Next();
 			Identifier label = null;
-			if (current.Kind != Token.Type.SemiColon) {
+			if (current.Kind != Token.Type.Semicolon) {
 				if (CheckSyntaxExpected (Token.Type.Identifier))
 					label = (current as IdentifierToken).Spelling;
 			}
@@ -392,8 +392,8 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			DList<CaseClause, SwitchStatement> cases = new DList<CaseClause, SwitchStatement> ();
 			bool defaultFlag = false;
-			while (current.Kind == Token.Type.Case || current.Kind == Token.Type.Default) {
-				if (current.Kind == Token.Type.Case)
+			while (current.Kind == Token.Type.@case || current.Kind == Token.Type.@default) {
+				if (current.Kind == Token.Type.@case)
 					cases.Append (ParseValueCaseClause ());
 				else {
 					if (defaultFlag)
@@ -418,8 +418,8 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			DList<Statement, CaseClause> children = new DList<Statement,CaseClause>();
 			do {
-				if (current.Kind == Token.Type.Case
-					|| current.Kind == Token.Type.Default
+				if (current.Kind == Token.Type.@case
+					|| current.Kind == Token.Type.@default
 					|| current.Kind == Token.Type.RightBrace
 					|| current.Kind == Token.Type.EndOfInput)
 					break;
@@ -440,8 +440,8 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			DList<Statement, CaseClause> children = new DList<Statement, CaseClause> ();
 			do {
-				if (current.Kind == Token.Type.Case
-					|| current.Kind == Token.Type.Default
+				if (current.Kind == Token.Type.@case
+					|| current.Kind == Token.Type.@default
 					|| current.Kind == Token.Type.RightBrace
 					|| current.Kind == Token.Type.EndOfInput)
 					break;
@@ -457,7 +457,7 @@ namespace Microsoft.JScript.Compiler
 			Token start = current;
 			Next ();
 			Expression expr = null;
-			if (current.Kind != Token.Type.SemiColon)
+			if (current.Kind != Token.Type.Semicolon)
 				expr = ParseExpression();
 			InsertSemicolon ();
 			return new ReturnOrThrowStatement (Statement.Operation.Return, expr, new TextSpan (start, current));
@@ -483,7 +483,7 @@ namespace Microsoft.JScript.Compiler
 			CatchClause catchClause = null;
 			FinallyClause finallyClause = null;
 
-			if (current.Kind == Token.Type.Catch) {
+			if (current.Kind == Token.Type.@catch) {
 				Token start2 = current;
 				flag = true;
 				Next ();
@@ -501,9 +501,9 @@ namespace Microsoft.JScript.Compiler
 				Next();
 				BlockStatement handler = ParseBlock();
 				catchClause = new CatchClause(name, handler,new TextSpan(start2,current), new TextSpan(id, id), new TextPoint(left.StartPosition),new TextPoint(right.StartPosition));
-			} 
+			}
 
-			if (current.Kind == Token.Type.Finally) {
+			if (current.Kind == Token.Type.@finally) {
 				Token start3 = current;
 				flag = true;
 				Next ();
@@ -527,20 +527,20 @@ namespace Microsoft.JScript.Compiler
 			Expression expr;
 			switch (current.Kind) {
 				//primary expression
-				case Token.Type.This:
-					expr = new Expression (Expression.Operation.This, new TextSpan (current, current));
+				case Token.Type.@this:
+					expr = new Expression (Expression.Operation.@this, new TextSpan (current, current));
 					break;
 				case Token.Type.Identifier:
 					expr = new IdentifierExpression ((current as IdentifierToken).Spelling, new TextSpan (current, current));
 					break;
-				case Token.Type.Null:
+				case Token.Type.@null:
 					expr = new NullExpression (new TextSpan (current, current));
 					break;
-				case Token.Type.True:
-					expr = new Expression (Expression.Operation.True, new TextSpan (current, current));
+				case Token.Type.@true:
+					expr = new Expression (Expression.Operation.@true, new TextSpan (current, current));
 					break;
-				case Token.Type.False:
-					expr = new Expression (Expression.Operation.False, new TextSpan (current, current));
+				case Token.Type.@false:
+					expr = new Expression (Expression.Operation.@false, new TextSpan (current, current));
 					break;
 				case Token.Type.NumericLiteral:
 					expr = new NumericLiteralExpression (((NumericLiteralToken)current).Spelling, new TextSpan (current, current));
@@ -564,10 +564,10 @@ namespace Microsoft.JScript.Compiler
 					Next ();
 					break;
 				//end primary
-				case Token.Type.Function:
+				case Token.Type.function:
 					expr = new FunctionExpression (ParseFunctionDefinition ());
 					break;
-				case Token.Type.New:
+				case Token.Type.@new:
 					Next ();
 					Expression target = ParseExpression ();
 					Next ();
@@ -577,7 +577,7 @@ namespace Microsoft.JScript.Compiler
 					} else {
 						arguments = new ArgumentList (new List<ExpressionListElement> (), new TextSpan (start, current));
 					}
-					expr = new InvocationExpression (target, arguments,Expression.Operation.New, new TextSpan(start,current));
+					expr = new InvocationExpression (target, arguments,Expression.Operation.@new, new TextSpan(start,current));
 					break;
 				default:
 					SyntaxError.Add ("expression start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
@@ -633,17 +633,17 @@ namespace Microsoft.JScript.Compiler
 			Expression expr;
 			// get by first token
 			switch (current.Kind) {
-				case Token.Type.Delete:
+				case Token.Type.delete:
 					Next ();
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Delete, new TextSpan (start, current));
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.delete, new TextSpan (start, current));
 					break;
-				case Token.Type.Void:
+				case Token.Type.@void:
 					Next ();
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Void, new TextSpan (start, current));
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@void, new TextSpan (start, current));
 					break;
-				case Token.Type.Typeof:
+				case Token.Type.@typeof:
 					Next ();
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Typeof, new TextSpan (start, current));
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@typeof, new TextSpan (start, current));
 					break;
 				case Token.Type.PlusPlus:
 					Next ();
@@ -773,8 +773,8 @@ namespace Microsoft.JScript.Compiler
 				|| current.Kind == Token.Type.Greater
 				|| current.Kind == Token.Type.GreaterEqual
 				|| current.Kind == Token.Type.LessEqual
-				|| current.Kind == Token.Type.Instanceof
-				|| current.Kind == Token.Type.In) {
+				|| current.Kind == Token.Type.instanceof
+				|| (current.Kind == Token.Type.@in && !noIn)) {
 				switch (current.Kind) {
 					case Token.Type.Less:
 						op = Expression.Operation.Less;
@@ -788,14 +788,14 @@ namespace Microsoft.JScript.Compiler
 					case Token.Type.LessEqual:
 						op = Expression.Operation.LessEqual;
 						break;
-					case Token.Type.Instanceof:
-						op = Expression.Operation.Instanceof;
+					case Token.Type.instanceof:
+						op = Expression.Operation.instanceof;
 						break;
-					case Token.Type.In:
+					case Token.Type.@in:
 						if (noIn)
 							return ParseShiftExpression (noIn);
 						else
-							op = Expression.Operation.In;
+							op = Expression.Operation.@in;
 						break;
 				}
 				Next ();
@@ -1092,7 +1092,7 @@ namespace Microsoft.JScript.Compiler
 
 		private void InsertSemicolon ()
 		{
-			if (current.Kind == Token.Type.SemiColon)
+			if (current.Kind == Token.Type.Semicolon)
 				return;
 			current.InsertSemicolonBefore ();
 		}
@@ -1106,8 +1106,8 @@ namespace Microsoft.JScript.Compiler
 			DiagnosticCode code = DiagnosticCode.SyntaxError;
 
 			switch (type) {
-				case Token.Type.Case:
-				case Token.Type.Default:
+				case Token.Type.@case:
+				case Token.Type.@default:
 					code = DiagnosticCode.CaseOrDefaultExpected;
 					break;
 				case Token.Type.Identifier:
@@ -1119,7 +1119,7 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.LeftParenthesis:
 					code = DiagnosticCode.LeftParenExpected;
 					break;
-				case Token.Type.SemiColon:
+				case Token.Type.Semicolon:
 					code = DiagnosticCode.SemicolonExpected;
 					break;
 			}

@@ -18,9 +18,9 @@ namespace Microsoft.JScript.Compiler.ParseTree
 		public enum Operation
 		{
 			SyntaxError,
-			This,
-			False,
-			True,
+			@this,
+			@false,
+			@true,
 			Identifier,
 			NumericLiteral,
 			HexLiteral,
@@ -33,11 +33,11 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			Invocation,
 			Subscript,
 			Qualified,
-			New,
+			@new,
 			Function,
-			Delete,
-			Void,
-			Typeof,
+			delete,
+			@void,
+			@typeof,
 			PrefixPlusPlus,
 			PrefixMinusMinus,
 			PrefixPlus,
@@ -72,8 +72,8 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			Greater,
 			LessEqual,
 			GreaterEqual,
-			Instanceof,
-			In,
+			instanceof,
+			@in,
 			LessLess,
 			GreaterGreater,
 			GreaterGreaterGreater,
@@ -83,7 +83,7 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			Divide,
 			Percent,
 			Question,
-			Null
+			@null
 		}
 	}
 }

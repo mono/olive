@@ -65,7 +65,7 @@ namespace Microsoft.JScript.Compiler
 				case '.':
 					return CreateToken (Token.Type.Dot);
 				case ';':
-					return CreateToken (Token.Type.SemiColon);
+					return CreateToken (Token.Type.Semicolon);
 				case ',':
 					return CreateToken (Token.Type.Comma);
 				case '<':
@@ -509,69 +509,69 @@ namespace Microsoft.JScript.Compiler
 		private void InitKeywords ()
 		{
 			keywords = new Dictionary<string, Token.Type> ();
-			keywords.Add ("break", Token.Type.Break);
-			keywords.Add ("else", Token.Type.Else);
-			keywords.Add ("new", Token.Type.New);
-			keywords.Add ("var", Token.Type.Var);
-			keywords.Add ("case", Token.Type.Case);
-			keywords.Add ("finally", Token.Type.Finally);
-			keywords.Add ("return", Token.Type.Return);
-			keywords.Add ("void", Token.Type.Void);
-			keywords.Add ("catch", Token.Type.Catch); 
-			keywords.Add ("for", Token.Type.For);
-			keywords.Add ("switch", Token.Type.Switch); 
-			keywords.Add ("while", Token.Type.While);
-			keywords.Add ("continue", Token.Type.Continue); 
-			keywords.Add ("function", Token.Type.Function); 
-			keywords.Add ("this", Token.Type.This); 
-			keywords.Add ("with", Token.Type.With);
-			keywords.Add ("default", Token.Type.Default); 
-			keywords.Add ("if", Token.Type.If); 
-			keywords.Add ("throw", Token.Type.Throw);
-			keywords.Add ("delete", Token.Type.Delete); 
-			keywords.Add ("in", Token.Type.In); 
-			keywords.Add ("try", Token.Type.Try);
-			keywords.Add ("do", Token.Type.Do); 
-			keywords.Add ("instanceof", Token.Type.Instanceof); 
-			keywords.Add ("typeof", Token.Type.Typeof);
+			keywords.Add ("break", Token.Type.@break);
+			keywords.Add ("else", Token.Type.@else);
+			keywords.Add ("new", Token.Type.@new);
+			keywords.Add ("var", Token.Type.var);
+			keywords.Add ("case", Token.Type.@case);
+			keywords.Add ("finally", Token.Type.@finally);
+			keywords.Add ("return", Token.Type.@return);
+			keywords.Add ("void", Token.Type.@void);
+			keywords.Add ("catch", Token.Type.@catch); 
+			keywords.Add ("for", Token.Type.@for);
+			keywords.Add ("switch", Token.Type.@switch); 
+			keywords.Add ("while", Token.Type.@while);
+			keywords.Add ("continue", Token.Type.@continue); 
+			keywords.Add ("function", Token.Type.function); 
+			keywords.Add ("this", Token.Type.@this); 
+			keywords.Add ("with", Token.Type.with);
+			keywords.Add ("default", Token.Type.@default); 
+			keywords.Add ("if", Token.Type.@if); 
+			keywords.Add ("throw", Token.Type.@throw);
+			keywords.Add ("delete", Token.Type.delete); 
+			keywords.Add ("in", Token.Type.@in); 
+			keywords.Add ("try", Token.Type.@try);
+			keywords.Add ("do", Token.Type.@do); 
+			keywords.Add ("instanceof", Token.Type.instanceof); 
+			keywords.Add ("typeof", Token.Type.@typeof);
 
 			//FuturekeyWord
-			keywords.Add ("abstract", Token.Type.Abstract);
-			keywords.Add ("enum", Token.Type.Enum);
-			keywords.Add ("int", Token.Type.Int);
-			keywords.Add ("short", Token.Type.Short);
-			keywords.Add ("boolean", Token.Type.Boolean);
-			keywords.Add ("Export", Token.Type.Export);
-			keywords.Add ("interface", Token.Type.Interface);
-			keywords.Add ("static", Token.Type.Static);
-			keywords.Add ("byte", Token.Type.Byte);
-			keywords.Add ("extends", Token.Type.Extends);
-			keywords.Add ("long", Token.Type.Long);
-			keywords.Add ("super", Token.Type.Super);
-			keywords.Add ("char", Token.Type.Char);
-			keywords.Add ("final", Token.Type.Final);
-			keywords.Add ("native", Token.Type.Native);
-			keywords.Add ("synchronized", Token.Type.Synchronized);
-			keywords.Add ("class", Token.Type.Class);
-			keywords.Add ("float", Token.Type.Float);
-			keywords.Add ("package", Token.Type.Package);
-			keywords.Add ("throws", Token.Type.Throws);
-			keywords.Add ("const", Token.Type.Const);
-			keywords.Add ("goto", Token.Type.Goto);
-			keywords.Add ("private", Token.Type.Private);
-			keywords.Add ("transient", Token.Type.Transient);
-			keywords.Add ("debugger", Token.Type.Debugger);
-			keywords.Add ("implements", Token.Type.Implements);
-			keywords.Add ("protected", Token.Type.Protected);
-			keywords.Add ("volatile", Token.Type.Volatile);
-			keywords.Add ("double", Token.Type.Double);
-			keywords.Add ("import", Token.Type.Import);
-			keywords.Add ("public", Token.Type.Public);
+			keywords.Add ("abstract", Token.Type.@abstract);
+			keywords.Add ("enum", Token.Type.@enum);
+			keywords.Add ("int", Token.Type.@int);
+			keywords.Add ("short", Token.Type.@short);
+			keywords.Add ("boolean", Token.Type.boolean);
+			keywords.Add ("Export", Token.Type.export);
+			keywords.Add ("interface", Token.Type.@interface);
+			keywords.Add ("static", Token.Type.@static);
+			keywords.Add ("byte", Token.Type.@byte);
+			keywords.Add ("extends", Token.Type.extends);
+			keywords.Add ("long", Token.Type.@long);
+			keywords.Add ("super", Token.Type.super);
+			keywords.Add ("char", Token.Type.@char);
+			keywords.Add ("final", Token.Type.final);
+			keywords.Add ("native", Token.Type.native);
+			keywords.Add ("synchronized", Token.Type.synchronized);
+			keywords.Add ("class", Token.Type.@class);
+			keywords.Add ("float", Token.Type.@float);
+			keywords.Add ("package", Token.Type.packate);
+			keywords.Add ("throws", Token.Type.throws);
+			keywords.Add ("const", Token.Type.@const);
+			keywords.Add ("goto", Token.Type.@goto);
+			keywords.Add ("private", Token.Type.@private);
+			keywords.Add ("transient", Token.Type.transient);
+			keywords.Add ("debugger", Token.Type.debugger);
+			keywords.Add ("implements", Token.Type.implements);
+			keywords.Add ("protected", Token.Type.@protected);
+			keywords.Add ("volatile", Token.Type.@volatile);
+			keywords.Add ("double", Token.Type.@double);
+			keywords.Add ("import", Token.Type.import);
+			keywords.Add ("public", Token.Type.@public);
 		
 			//literal
-			keywords.Add ("null", Token.Type.Null);
-			keywords.Add ("true", Token.Type.True);
-			keywords.Add ("false", Token.Type.False);
+			keywords.Add ("null", Token.Type.@null);
+			keywords.Add ("true", Token.Type.@true);
+			keywords.Add ("false", Token.Type.@false);
 
 			foreach (string key in keywords.Keys)
 				IDTable.InsertIdentifier (key);
