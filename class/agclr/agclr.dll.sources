@@ -47,6 +47,7 @@ System.Windows.Input/KeyboardEventArgs.cs
 System.Windows.Input/KeyboardEventHandler.cs
 System.Windows.Input/MouseEventArgs.cs
 System.Windows.Input/MouseEventHandler.cs
+System.Windows.Interop/BrowserHost.cs
 System.Windows.Markup/XamlParseException.cs
 System.Windows.Media/AlignmentX.cs
 System.Windows.Media/AlignmentY.cs
