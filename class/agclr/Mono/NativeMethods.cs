@@ -33,6 +33,7 @@ namespace Mono {
 
 	internal delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
 	internal delegate void SetCustomXamlAttributeCallback (IntPtr target, string name, string value);
+	internal delegate void UnmanagedEventHandler (IntPtr data);
 
 	internal static class NativeMethods {
 
@@ -40,6 +41,20 @@ namespace Mono {
 		[DllImport("moon")]
 		internal extern static void runtime_init ();
 
+		[DllImport("moon")]
+		internal extern static void surface_register_events (
+			IntPtr surface,
+			CallbackMouseEvent motion,
+			CallbackMouseEvent down,
+			CallbackMouseEvent up,
+			CallbackMouseEvent enter,
+			PlainEvent got_focus,
+			PlainEvent lost_focus,
+			PlainEvent loaded,
+			PlainEvent mouse_leave,
+			KeyboardEvent keydown,
+			KeyboardEvent keyup);
+	
 #region Base
 		[DllImport("moon")]
 		internal extern static void base_ref (IntPtr ptr);

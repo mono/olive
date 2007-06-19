@@ -83,7 +83,7 @@ namespace System.Windows.Media.Animation {
 
 
 		public event EventHandler Completed;
-		private void InvokeCompleted (IntPtr sender, IntPtr event_data, IntPtr data)
+		private void InvokeCompleted (IntPtr data)
 		{
 			if (Completed != null)
 				Completed (this, EventArgs.Empty);
