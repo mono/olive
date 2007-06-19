@@ -207,9 +207,15 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr inlines_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr key_frame_collection_new ();
 #endregion
 		
 #region Constructors
+		[DllImport("moon")]
+		internal extern static IntPtr key_frame_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr rectangle_new ();
 		

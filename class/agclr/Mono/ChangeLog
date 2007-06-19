@@ -1,5 +1,9 @@
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* NativeMethods.cs: More native methods.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Kind.cs: Update.
 	* NativeMethods.cs: Added dependency_property_is_nullable.
 
