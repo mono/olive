@@ -64,5 +64,22 @@ namespace System.Windows {
 			get { return h; }
 			set { h = value; }
 		}
+
+		public bool Contains (Point point)
+		{
+			double px = point.X;
+			if (px < x)
+				return false;
+			if (px > x+w)
+				return false;
+			
+			double py = point.Y;
+			if (py < y)
+				return false;
+			if (py > y + h)
+				return false;
+
+			return true;
+		}
 	}
 }
