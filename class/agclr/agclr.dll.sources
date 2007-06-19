@@ -8,13 +8,17 @@ Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
 System.Windows.Input/TabletDeviceType.cs
+System.Windows.Media.Animation/ColorAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/ColorKeyFrame.cs
 System.Windows.Media.Animation/DoubleKeyFrame.cs
 System.Windows.Media.Animation/KeyFrame.cs
 System.Windows.Media.Animation/KeyFrameCollection.cs
 System.Windows.Media.Animation/KeyTime.cs
 System.Windows.Media.Animation/KeyTimeType.cs
+System.Windows.Media.Animation/PointAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/PointKeyFrame.cs
+System.Windows.Media.Animation/TimelineMarker.cs
+System.Windows.Media.Animation/TimelineMarkerCollection.cs
 System.Windows/Downloader.cs
 System.Windows/Duration.cs
 System.Windows/ErrorEventArgs.cs
