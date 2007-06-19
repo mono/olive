@@ -33,7 +33,7 @@ using Mono;
 
 namespace System.Windows {
 
-	public class ResourceCollection : MS.Internal.Collection<int> {
+	public class ResourceCollection : MS.Internal.Collection<DependencyObject> {
 		public ResourceCollection ()  : base (NativeMethods.resource_collection_new ())
 		{
 			NativeMethods.base_ref (native);

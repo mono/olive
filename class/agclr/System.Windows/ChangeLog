@@ -1,3 +1,7 @@
+2007-06-19  Jackson Harper  <jackson@ximian.com>
+
+	* ResourceCollection.cs: These have a DependencyObject child type.
+
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* DependencyProperty.cs: Update to changed unmanaged nullable behavior.
