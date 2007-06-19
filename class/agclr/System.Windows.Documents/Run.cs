@@ -31,9 +31,12 @@ using Mono;
 namespace System.Windows.Documents {
 
 	public class Run : Inline {
-		// FIXME: do we need another PInvoke?
-		public Run ()
+		public static readonly DependencyProperty TextProperty =
+			DependencyProperty.Lookup (Kind.RUN, "Text", typeof (string));
+
+		public Run () : base (NativeMethods.run_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal Run (IntPtr raw) : base (raw)
@@ -44,5 +47,16 @@ namespace System.Windows.Documents {
 		{
 			return Kind.RUN;
 		}
+
+		public string Text {
+			get {
+				return (string) GetValue (TextProperty);
+			}
+			
+			set {
+				SetValue (TextProperty, value);
+			}
+		}
+		
 	}
 }
