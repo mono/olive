@@ -42,10 +42,13 @@ namespace System.Windows.Media.Animation {
 			TargetNameProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetName", typeof (string));
 		}			
 
+		private UnmanagedEventHandler completed_delegate;
+
 		internal Storyboard (IntPtr raw) : base (raw)
 		{
+			completed_delegate = new UnmanagedEventHandler (InvokeCompleted);
+			Events.AddHandler (raw, "Completed", completed_delegate);
 		}
-
 
 		public Storyboard ()
 			: base (Mono.NativeMethods.storyboard_new ())
@@ -77,7 +80,15 @@ namespace System.Windows.Media.Animation {
 		{
 			NativeMethods.storyboard_stop (native);
 		}
-		
+
+
+		public event EventHandler Completed;
+		private void InvokeCompleted (IntPtr data)
+		{
+			if (Completed != null)
+				Completed (this, EventArgs.Empty);
+		}
+
 		protected internal override Kind GetKind ()
 		{
 			return Kind.STORYBOARD;

@@ -151,6 +151,16 @@ namespace Mono {
 				got_focus, lost_focus, loaded, mouse_leave,
 				keydown, keyup);
 		}
+
+		internal static void AddHandler (IntPtr handle, string eventName, UnmanagedEventHandler handler)
+		{
+			NativeMethods.dependency_object_add_event_handler (handle, eventName, handler, IntPtr.Zero);
+		}
+
+		internal static void RemoveHandler (IntPtr handle, string eventName, UnmanagedEventHandler handler)
+		{
+			NativeMethods.dependency_object_remove_event_handler (handle, eventName, handler, IntPtr.Zero);
+		}
 	}
 	
 }

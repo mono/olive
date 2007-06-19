@@ -1,3 +1,11 @@
+2007-06-18  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: add two methods to deal with the EventObject stuff in
+	C++ (AddHandler, and RemoveHandler).
+
+	* NativeMethods.cs: two pinvokes needed for the above Add/Remove
+	methods.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Kind.cs: Updated.

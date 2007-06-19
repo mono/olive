@@ -1,3 +1,8 @@
+2007-06-18  Chris Toshok  <toshok@ximian.com>
+
+	* Storyboard.cs: hook up the Completed unmanaged Storyboard event,
+	and reflect it here.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ColorAnimation.cs, PointAnimation.cs, DoubleAnimation.cs: Fix

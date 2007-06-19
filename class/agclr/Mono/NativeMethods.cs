@@ -33,6 +33,7 @@ namespace Mono {
 
 	internal delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
 	internal delegate void SetCustomXamlAttributeCallback (IntPtr target, string name, string value);
+	internal delegate void UnmanagedEventHandler (IntPtr data);
 
 	internal static class NativeMethods {
 
@@ -432,6 +433,15 @@ namespace Mono {
 
 		[DllImport ("moon")]
 		internal extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml, out Kind kind);
+
+
+#region EventObject
+		[DllImport("moon")]
+		internal extern static void dependency_object_add_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, IntPtr closure);
+
+		[DllImport("moon")]
+		internal extern static void dependency_object_remove_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, IntPtr closure);
+#endregion
 
 	}
 }
