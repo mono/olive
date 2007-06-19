@@ -49,17 +49,17 @@ namespace System.Windows.Media.Animation
 
 
 		public Nullable<Point> By {
-			get { return (Point) GetValue(ByProperty); }
+			get { return (Nullable<Point>) GetValue(ByProperty); }
 			set { SetValue(ByProperty, value); }
 		}
 
 		public Nullable<Point> From {
-			get { return (Point) GetValue (FromProperty); }
+			get { return (Nullable<Point>) GetValue (FromProperty); }
 			set { SetValue (FromProperty, value); }
 		}
 
 		public Nullable<Point> To {
-			get { return (Point) GetValue (ToProperty); }
+			get { return (Nullable<Point>) GetValue (ToProperty); }
 			set { SetValue (ToProperty, value); }
 		}
 

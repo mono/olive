@@ -1,3 +1,10 @@
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows.Media.Animation/ColorAnimation.cs,
+	  System.Windows.Media.Animation/PointAnimation.cs,
+	  System.Windows.Media.Animation/DoubleAnimation.cs: Fix cast.
+	* System.Windows.Media.Animation/KeyTimeType.cs: Added.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* System.Windows.Media.Animation/Timeline.cs: Implement missing

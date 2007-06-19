@@ -49,17 +49,17 @@ namespace System.Windows.Media.Animation
 
 
 		public Nullable<Color> By {
-			get { return (Color) GetValue(ByProperty); }
+			get { return (Nullable<Color>) GetValue(ByProperty); }
 			set { SetValue(ByProperty, value); }
 		}
 
 		public Nullable<Color> From {
-			get { return (Color) GetValue (FromProperty); }
+			get { return (Nullable<Color>) GetValue (FromProperty); }
 			set { SetValue (FromProperty, value); }
 		}
 
 		public Nullable<Color> To {
-			get { return (Color) GetValue (ToProperty); }
+			get { return (Nullable<Color>) GetValue (ToProperty); }
 			set { SetValue (ToProperty, value); }
 		}
 
