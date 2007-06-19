@@ -123,17 +123,8 @@ namespace Mono {
 		VISUAL,
 		VISUAL_COLLECTION,
 
-
+	
 		LASTTYPE,
-
-/*
-	Our nullable support:
-	- Set the VALUE_ISNULL on Value.k to mark a value as null
-	- Register a property with type PropertyType | VALUE_NULLTYPE to mark a property type as nullable.
-*/
-		VALUE_NULLTYPE = 0x40000000,
-		VALUE_ISNULL   = 0x20000000,
-		VALUE_TYPEMASK = ~(VALUE_NULLTYPE | VALUE_ISNULL)
-
+	
 	}
 }
