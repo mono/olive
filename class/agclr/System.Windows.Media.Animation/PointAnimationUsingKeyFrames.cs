@@ -1,5 +1,5 @@
 // Author:
-//   Miguel de Icaza (miguel@novell.com)
+//   Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -23,42 +23,37 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Input;
-using System.Runtime.InteropServices;
 using Mono;
+using System;
 
-namespace System.Windows.Media.Animation
+namespace System.Windows.Media.Animation 
 {
-	public sealed class SplineDoubleKeyFrame : DoubleKeyFrame 
-	{
+	public class PointAnimationUsingKeyFrames : PointAnimation {
 		
-		public static readonly DependencyProperty KeySplineProperty =
-			DependencyProperty.Lookup (Kind.SPLINEDOUBLEKEYFRAME, "KeySpline", typeof (KeySpline));
+		public static readonly DependencyProperty KeyFramesProperty = 
+			DependencyProperty.Lookup (Kind.POINTANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (KeyFrameCollection)); 
 		
-		public SplineDoubleKeyFrame () : base (NativeMethods.spline_double_key_frame_new ())
+		public PointAnimationUsingKeyFrames() : base (NativeMethods.point_animation_using_key_frames_new ()) 
 		{
 			NativeMethods.base_ref (native);
 		}
-		
-		internal SplineDoubleKeyFrame (IntPtr raw) : base (raw)
+	
+		internal PointAnimationUsingKeyFrames (IntPtr raw) : base (raw) 
 		{
 		}
-
-		public KeySpline KeySpline { 
+		
+		public KeyFrameCollection KeyFrames { 
 			get {
-				return (KeySpline) GetValue (KeySplineProperty);
+				return (KeyFrameCollection) GetValue (KeyFramesProperty);
 			}
 			set {
-				SetValue (KeySplineProperty, value);
+				SetValue (KeyFramesProperty, value);
 			}
 		}
 
 		internal protected override Kind GetKind ()
 		{
-			return Kind.SPLINEDOUBLEKEYFRAME;
+			return Kind.POINTANIMATIONUSINGKEYFRAMES;
 		}
 	}
 }

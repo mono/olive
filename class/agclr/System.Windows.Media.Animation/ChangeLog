@@ -1,5 +1,12 @@
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* TimelineMarkerCollection.cs, ColorAnimationUsingKeyFrames.cs,
+	  PointAnimationUsingKeyFrames.cs, TimelineMarker.cs: Added.
+	* KeySpline.cs: Add GetKind.
+	* SplineDoubleKeyFrame.cs: Fix constructor.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* PointKeyFrame.cs, DoubleKeyFrame.cs, ColorKeyFrame.cs: Added.
 	* KeyFrameCollection.cs: Fix constructor.
 	* KeyFrame.cs: Fix constructor and property lookup.

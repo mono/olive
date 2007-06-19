@@ -43,5 +43,10 @@ namespace System.Windows.Media.Animation
 		internal KeySpline (IntPtr raw) : base (raw)
 		{
 		}
+		
+		internal protected override Kind GetKind ()
+		{
+			return Kind.KEYSPLINE;
+		}
 	}
 }

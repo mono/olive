@@ -1,5 +1,5 @@
 // Author:
-//   Miguel de Icaza (miguel@novell.com)
+//   Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -22,43 +22,64 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Runtime.InteropServices;
 using Mono;
+using MS.Internal;
 
 namespace System.Windows.Media.Animation
 {
-	public sealed class SplineDoubleKeyFrame : DoubleKeyFrame 
+	public class TimelineMarker : DependencyObject
 	{
+		public static readonly DependencyProperty TextProperty = 
+			DependencyProperty.Lookup (Kind.TIMELINEMARKER, "Text", typeof (string));
+		public static readonly DependencyProperty TimeProperty = 
+			DependencyProperty.Lookup (Kind.TIMELINEMARKER, "Time", typeof (TimeSpan));
+		public static readonly DependencyProperty TypeProperty = 
+			DependencyProperty.Lookup (Kind.TIMELINEMARKER, "Type", typeof (string));
 		
-		public static readonly DependencyProperty KeySplineProperty =
-			DependencyProperty.Lookup (Kind.SPLINEDOUBLEKEYFRAME, "KeySpline", typeof (KeySpline));
-		
-		public SplineDoubleKeyFrame () : base (NativeMethods.spline_double_key_frame_new ())
+		public TimelineMarker() : base (NativeMethods.timeline_marker_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 		
-		internal SplineDoubleKeyFrame (IntPtr raw) : base (raw)
+		internal TimelineMarker (IntPtr raw) : base (raw)
 		{
 		}
-
-		public KeySpline KeySpline { 
-			get {
-				return (KeySpline) GetValue (KeySplineProperty);
-			}
-			set {
-				SetValue (KeySplineProperty, value);
-			}
-		}
-
+		
 		internal protected override Kind GetKind ()
 		{
-			return Kind.SPLINEDOUBLEKEYFRAME;
+			return Kind.TIMELINEMARKER;
+		}
+
+		public string Text { 
+			get {
+				return (string) GetValue (TextProperty);
+			}
+			set {
+				SetValue (TextProperty, value);
+			}
+		}
+		
+		public TimeSpan Time { 
+			get {
+				return (TimeSpan) GetValue (TimeProperty);
+			}
+			set {
+				SetValue (TimeProperty, value); 
+			}
+		}
+		
+		public string Type { 
+			get {
+				return (string) GetValue (TypeProperty);
+			}
+			set {
+				SetValue (TypeProperty, value);
+			}
 		}
 	}
 }

@@ -1,5 +1,5 @@
 // Author:
-//   Miguel de Icaza (miguel@novell.com)
+//   Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -22,43 +22,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-
 using System;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Runtime.InteropServices;
 using Mono;
+using MS.Internal;
 
 namespace System.Windows.Media.Animation
 {
-	public sealed class SplineDoubleKeyFrame : DoubleKeyFrame 
+	public class TimelineMarkerCollection : Collection <TimelineMarker>
 	{
-		
-		public static readonly DependencyProperty KeySplineProperty =
-			DependencyProperty.Lookup (Kind.SPLINEDOUBLEKEYFRAME, "KeySpline", typeof (KeySpline));
-		
-		public SplineDoubleKeyFrame () : base (NativeMethods.spline_double_key_frame_new ())
+		public TimelineMarkerCollection() : base (NativeMethods.timeline_marker_collection_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 		
-		internal SplineDoubleKeyFrame (IntPtr raw) : base (raw)
+		internal TimelineMarkerCollection (IntPtr raw) : base (raw)
 		{
 		}
-
-		public KeySpline KeySpline { 
-			get {
-				return (KeySpline) GetValue (KeySplineProperty);
-			}
-			set {
-				SetValue (KeySplineProperty, value);
-			}
-		}
-
+		
 		internal protected override Kind GetKind ()
 		{
-			return Kind.SPLINEDOUBLEKEYFRAME;
+			return Kind.TIMELINEMARKER_COLLECTION;
 		}
 	}
 }
