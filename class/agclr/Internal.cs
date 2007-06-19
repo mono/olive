@@ -53,20 +53,29 @@ namespace MS.Internal {
 		{
 		}
 		
-		public void Add (T t)
+		public void Add (T value)
 		{
-			DependencyObject dob = t as DependencyObject;
+			DependencyObject dob = value as DependencyObject;
 			if (dob != null)
 				NativeMethods.collection_add (native, dob.native);
 			else
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
 
-		public void Remove (T t)
+		public void Remove (T value)
 		{
-			DependencyObject dob = t as DependencyObject;
+			DependencyObject dob = value as DependencyObject;
 			if (dob != null)
 				NativeMethods.collection_remove (native, dob.native);
+			else
+				throw new Exception ("The collection only supports DependencyObjects");
+		}
+
+		public void Insert (int index, T value)
+		{
+			DependencyObject dob = value as DependencyObject;
+			if (dob != null)
+				NativeMethods.collection_insert (native, index, dob.native);
 			else
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
