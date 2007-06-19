@@ -1,3 +1,7 @@
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* LineBreak.cs: Implement constructor.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* LineBreak.cs, Run.cs: Implement construction.

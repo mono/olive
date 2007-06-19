@@ -31,9 +31,9 @@ using Mono;
 namespace System.Windows.Documents {
 
 	public class LineBreak : Inline {
-		// FIXME: do we need another PInvoke?
-		public LineBreak ()
+		public LineBreak () : base (NativeMethods.line_break_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal LineBreak (IntPtr raw) : base (raw)
