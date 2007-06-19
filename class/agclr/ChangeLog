@@ -2,6 +2,10 @@
 
 	* System.Windows/PropertyMetadata.cs: Deleted, not present in SL.
 
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* System.Windows/PropertyMetadata.cs: Deleted, not present in SL.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* agclr.dll.sources: Update.

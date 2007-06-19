@@ -7,6 +7,8 @@ Mono/Hosting.cs
 Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
+System.Windows.Input/TabletDeviceType.cs
+System.Windows.Media.Animation/KeyTimeType.cs
 System.Windows/Downloader.cs
 System.Windows/Duration.cs
 System.Windows/ErrorEventArgs.cs
@@ -29,7 +31,6 @@ System.Windows/TriggerActionCollection.cs
 System.Windows/UIElement.cs
 System.Windows/Visibility.cs
 System.Windows/XamlReader.cs
-System.Windows/PropertyMetadata.cs
 System.Windows.Controls/Canvas.cs
 System.Windows.Controls/Control.cs
 System.Windows.Controls/Image.cs
