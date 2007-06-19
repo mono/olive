@@ -251,6 +251,12 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr key_frame_new ();
+
+		[DllImport("moon")]
+		internal extern static IntPtr spline_double_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr key_spline_new ();
 		
 		[DllImport("moon")]
 		internal extern static IntPtr rectangle_new ();
