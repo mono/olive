@@ -1,3 +1,7 @@
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* TabletDeviceType.cs: Added.
+
 2007-06-16  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* MouseEventArgs.cs: Accept null in GetPosition (fix NRE in samples)
