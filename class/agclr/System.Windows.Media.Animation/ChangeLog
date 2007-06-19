@@ -1,5 +1,9 @@
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* KeyFrameCollection.cs, KeyFrame.cs, KeyTime.cs: Added.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* ColorAnimation.cs,  PointAnimation.cs, DoubleAnimation.cs: Fix cast.
 	* KeyTimeType.cs: Added.
 
