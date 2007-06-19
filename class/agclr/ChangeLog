@@ -1,6 +1,6 @@
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
-	* System.Windows/PropertyMetadata.cs: Deleted, not present in SL.
+	* scripts: Added.
 
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
