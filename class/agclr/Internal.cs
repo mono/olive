@@ -28,6 +28,7 @@
 using Mono;
 using System;
 using System.Windows;
+using System.Collections;
 
 namespace MS.Internal {
 	//
@@ -73,6 +74,50 @@ namespace MS.Internal {
 		protected internal override Kind GetKind ()
 		{
 			return Kind.COLLECTION;
+		}
+
+		public class CollectionIterator : IEnumerator {
+			IntPtr native_iter;
+			Kind   kind;
+			
+			public CollectionIterator(IntPtr native_iter, Kind k)
+			{
+				this.native_iter = native_iter;
+				kind = k;
+			}
+			
+			public bool MoveNext ()
+			{
+				return NativeMethods.collection_iterator_move_next (native_iter);
+			}
+			
+			public void Reset ()
+			{
+				NativeMethods.collection_iterator_reset (native_iter);
+			}
+
+			public object Current {
+				get {
+					IntPtr o = NativeMethods.collection_iterator_get_current (native_iter);
+
+					if (o == IntPtr.Zero)
+						return null;
+
+					return DependencyObject.Lookup (kind, o);
+				}
+			}
+
+			~CollectionIterator ()
+			{
+				// This is safe, as it only does a "delete" in the C++ side
+				NativeMethods.collection_iterator_destroy (native_iter);
+			}
+		}
+		
+		public IEnumerator GetEnumerator ()
+		{
+			return new CollectionIterator (NativeMethods.collection_get_iterator (native),
+						       NativeMethods.collection_get_element_type (native));
 		}
 	}
 }

@@ -171,6 +171,24 @@ namespace Mono {
 
 		[DllImport("moon")]
 		internal extern static void collection_remove (IntPtr collection, IntPtr value);
+
+		[DllImport("moon")]
+		internal extern static IntPtr collection_get_iterator (IntPtr collection);
+
+		[DllImport("moon")]
+		internal extern static Kind collection_get_element_type (IntPtr collection);
+		
+		[DllImport("moon")]
+		internal extern static bool collection_iterator_move_next (IntPtr iterator);
+
+		[DllImport("moon")]
+		internal extern static void collection_iterator_reset (IntPtr iterator);
+
+		[DllImport("moon")]
+		internal extern static IntPtr collection_iterator_get_current (IntPtr iterator);
+
+		[DllImport("moon")]
+		internal extern static void collection_iterator_destroy (IntPtr iterator);
 		
 		[DllImport("moon")]
 		internal extern static IntPtr resource_collection_new ();

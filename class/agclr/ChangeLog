@@ -1,3 +1,8 @@
+2007-06-19  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Implement collection iterators, the object version
+	for now.
+
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* agclr.dll.sources: Updated.
