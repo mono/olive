@@ -1,3 +1,13 @@
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ColorAnimation.cs,  PointAnimation.cs, DoubleAnimation.cs: Fix cast.
+	* KeyTimeType.cs: Added.
+
+2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Timeline.cs: Implement missing
+	  property.
+
 2007-06-18  Chris Toshok  <toshok@ximian.com>
 
 	* Storyboard.cs: hook up the Completed unmanaged Storyboard event,
