@@ -32,32 +32,32 @@ using Mono;
 
 namespace System.Windows.Media.Animation
 {
-	public abstract class KeyFrame : DependencyObject
+	public abstract class ColorKeyFrame : KeyFrame
 	{
+		public static readonly DependencyProperty ValueProperty = 
+			DependencyProperty.Lookup (Kind.COLORKEYFRAME, "Value", typeof (Nullable<Color>));
 		
-		public static readonly DependencyProperty KeyTimeProperty = DependencyProperty.Lookup (Kind.KEYFRAME, "KeyTime", typeof (KeyTime));
-		
-		public KeyFrame() : base (NativeMethods.key_frame_new ())
+		public ColorKeyFrame() : base (NativeMethods.color_key_frame_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 		
-		internal KeyFrame (IntPtr raw) : base (raw)
+		internal ColorKeyFrame (IntPtr raw) : base (raw)
 		{
 		}
 
-		public KeyTime KeyTime { 
+		public Nullable<Color> Value { 
 			get {
-				return (KeyTime) GetValue (KeyTimeProperty);
+				return (Nullable<Color>) GetValue (ValueProperty);
 			}
 			set {
-				SetValue (KeyTimeProperty, value);
+				SetValue (ValueProperty, value);
 			}
 		}
 
 		internal protected override Kind GetKind ()
 		{
-			return Kind.KEYFRAME;
+			return Kind.COLORKEYFRAME;
 		}
 	}
 }

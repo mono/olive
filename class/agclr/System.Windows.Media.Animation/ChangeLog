@@ -1,5 +1,11 @@
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* PointKeyFrame.cs, DoubleKeyFrame.cs, ColorKeyFrame.cs: Added.
+	* KeyFrameCollection.cs: Fix constructor.
+	* KeyFrame.cs: Fix constructor and property lookup.
+
+2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* KeyFrameCollection.cs, KeyFrame.cs, KeyTime.cs: Added.
 
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 

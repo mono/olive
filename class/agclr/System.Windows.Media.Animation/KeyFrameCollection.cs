@@ -36,6 +36,7 @@ namespace System.Windows.Media.Animation
 	{
 		public KeyFrameCollection() : base (NativeMethods.key_frame_collection_new ())
 		{
+			NativeMethods.base_ref (native);
 		}
 		
 		internal KeyFrameCollection (IntPtr raw) : base (raw)

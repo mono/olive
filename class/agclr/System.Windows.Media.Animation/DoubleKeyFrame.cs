@@ -23,6 +23,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+
 using System;
 using System.Windows;
 using System.Windows.Media;
@@ -32,32 +33,32 @@ using Mono;
 
 namespace System.Windows.Media.Animation
 {
-	public abstract class KeyFrame : DependencyObject
+	public abstract class DoubleKeyFrame : KeyFrame
 	{
+		public static readonly DependencyProperty ValueProperty = 
+			DependencyProperty.Lookup (Kind.DOUBLEKEYFRAME, "Value", typeof (Nullable<double>));
 		
-		public static readonly DependencyProperty KeyTimeProperty = DependencyProperty.Lookup (Kind.KEYFRAME, "KeyTime", typeof (KeyTime));
-		
-		public KeyFrame() : base (NativeMethods.key_frame_new ())
+		public DoubleKeyFrame() : base (NativeMethods.double_key_frame_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 		
-		internal KeyFrame (IntPtr raw) : base (raw)
+		internal DoubleKeyFrame (IntPtr raw) : base (raw)
 		{
 		}
 
-		public KeyTime KeyTime { 
+		public Nullable<double> Value { 
 			get {
-				return (KeyTime) GetValue (KeyTimeProperty);
+				return (Nullable<double>) GetValue (ValueProperty);
 			}
 			set {
-				SetValue (KeyTimeProperty, value);
+				SetValue (ValueProperty, value);
 			}
 		}
 
 		internal protected override Kind GetKind ()
 		{
-			return Kind.KEYFRAME;
+			return Kind.DOUBLEKEYFRAME;
 		}
 	}
 }
