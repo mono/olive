@@ -27,6 +27,7 @@
 using System;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 
 namespace Mono {
 
@@ -47,6 +48,7 @@ namespace Mono {
 		static PlainEvent lost_focus  = new PlainEvent (lost_focus_callback);
 		static PlainEvent loaded      = new PlainEvent (loaded_callback);
 		static PlainEvent mouse_leave = new PlainEvent (mouse_leave_callback);
+		static PlainEvent surface_resized = new PlainEvent (surface_resized_callback);
 
 		static UIElement ElementFromPtr (IntPtr target)
 		{
@@ -83,6 +85,13 @@ namespace Mono {
 			e.InvokeMouseLeave ();
 		}
 
+		static void surface_resized_callback (IntPtr target)
+		{
+			// Parameter ignored
+
+			BrowserHost.InvokeResize ();
+		}
+		
 		static bool keyup_callback (IntPtr target, int state, int platformcode, int key)
 		{
 			UIElement e = ElementFromPtr (target);
@@ -148,7 +157,7 @@ namespace Mono {
 			NativeMethods.surface_register_events (
 				surface,
 				mouse_motion, mouse_button_down, mouse_button_up, mouse_enter,
-				got_focus, lost_focus, loaded, mouse_leave,
+				got_focus, lost_focus, loaded, mouse_leave, surface_resized,
 				keydown, keyup);
 		}
 

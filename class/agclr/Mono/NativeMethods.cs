@@ -52,6 +52,7 @@ namespace Mono {
 			PlainEvent lost_focus,
 			PlainEvent loaded,
 			PlainEvent mouse_leave,
+			PlainEvent surface_resized,
 			KeyboardEvent keydown,
 			KeyboardEvent keyup);
 	
@@ -446,5 +447,13 @@ namespace Mono {
 		internal extern static void dependency_object_remove_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, IntPtr closure);
 #endregion
 
+#region plugin
+		[DllImport("moonplugin")]
+		internal extern static int plugin_instance_get_actual_height (IntPtr plugin_handle);
+
+		[DllImport("moonplugin")]
+		internal extern static int plugin_instance_get_actual_width (IntPtr plugin_handle);
+		
+#endregion
 	}
 }

@@ -27,6 +27,7 @@
 //
 using System;
 using System.Runtime.InteropServices;
+using Mono;
 
 namespace System.Windows.Interop {
 
@@ -38,11 +39,14 @@ namespace System.Windows.Interop {
 			Console.WriteLine ("The Plugin Handle has been set to {0}", value);
 			plugin_handle = value;
 		}
-			
+
+		// Why are ActualHeight and ActualWidth uints?
+		
 		public static uint ActualHeight {
 			get {
 				if (plugin_handle != IntPtr.Zero){
-					return 768;
+					int n = NativeMethods.plugin_instance_get_actual_height (plugin_handle);
+					return n >= 0 ? (uint) n : 0;
 				} else
 					return 768;
 			}
@@ -51,7 +55,8 @@ namespace System.Windows.Interop {
 		public static uint ActualWidth {
 			get {
 				if (plugin_handle != IntPtr.Zero){
-					return 768;
+					int n = NativeMethods.plugin_instance_get_actual_width (plugin_handle);
+					return n >= 0 ? (uint) n : 0;
 				} else
 					return 1024;
 			}
@@ -72,6 +77,14 @@ namespace System.Windows.Interop {
 
 		public static event EventHandler FullScreenChange;
 
-		public static event System.EventHandler Resize;
+		internal static void InvokeResize ()
+		{
+			EventHandler h = Resize;
+
+			if (h != null)
+				h (null, EventArgs.Empty);
+		}
+		
+		public static event EventHandler Resize;
 	}
 }
