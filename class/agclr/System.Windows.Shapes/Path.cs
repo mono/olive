@@ -44,7 +44,7 @@ namespace System.Windows.Shapes {
 		{
 		}
 
-		public Geometry RadiusX {
+		public Geometry Data {
 			get { return (Geometry) GetValue (DataProperty); }
 			set { SetValue (DataProperty, value); }
 		}
