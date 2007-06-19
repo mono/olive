@@ -237,9 +237,45 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr key_frame_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr timeline_marker_collection_new ();
 #endregion
 		
 #region Constructors
+		[DllImport("moon")]
+		internal extern static IntPtr timeline_marker_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr line_break_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr spline_point_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr spline_color_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr linear_double_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr linear_point_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr linear_color_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr discrete_double_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr discrete_point_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr discrete_color_key_frame_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr color_animation_using_key_frames_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr point_key_frame_new ();
 		
