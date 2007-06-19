@@ -71,19 +71,15 @@ namespace System.Windows {
 		}
 		
 		internal bool IsNullable {
-			get { return (GetExactKind & Kind.VALUE_NULLTYPE) == Kind.VALUE_NULLTYPE; }
-		}
-		
-		internal Kind GetExactKind {
-			get { return NativeMethods.dependency_property_get_value_type (native); }
+			get { return NativeMethods.dependency_property_is_nullable (native); }
 		}
 		
 		internal Kind GetKind {
-			get { return GetExactKind & Kind.VALUE_TYPEMASK; }
+			get { return NativeMethods.dependency_property_get_value_type (native); }
 		}
 		
 		internal bool IsValueType {
-			get { return NativeMethods.type_get_value_type (GetExactKind); }
+			get { return NativeMethods.type_get_value_type (GetKind); }
 		}
 	}
 }
