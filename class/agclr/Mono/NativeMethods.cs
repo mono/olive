@@ -395,6 +395,9 @@ namespace Mono {
 		internal extern static IntPtr double_animation_new ();
 
 		[DllImport("moon")]
+		internal extern static IntPtr double_animation_using_key_frames_new ();
+
+		[DllImport("moon")]
 		internal extern static IntPtr color_animation_new ();
 
 		[DllImport("moon")]
