@@ -88,7 +88,7 @@ namespace System.Windows {
 			object reference = objects [ptr];
 			if (reference != null)
 				return (DependencyObject) reference;
-
+			
 			DependencyObject dop = (DependencyObject) CreateObject (k, ptr);
 			if (dop == null){
 				Console.WriteLine ("agclr: Returning a null object, did not know how to construct {0}", k);
@@ -266,6 +266,7 @@ namespace System.Windows {
 			case Kind.TRANSFORM:
 			case Kind.SHAPE:
 			case Kind.GEOMETRY:
+			case Kind.VISUAL:
 				throw new NotImplementedException (
 					String.Format ("Should never get an abstract class from unmanaged code {0}", k));
 			}

@@ -1,3 +1,8 @@
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* DependencyObject.cs: Add VISUAL to the "NotImplemented" abstract
+	types in the switch.
+
 2007-06-20  Jackson Harper  <jackson@ximian.com>
 
 	* DependencyObject.cs: Add ResourceCollection.
