@@ -50,7 +50,7 @@ namespace System.Windows.Controls {
 		}
 
 
-		public Uri Uri {
+		public Uri Source {
 			get {
 				// Uri is not a DependencyObject, we save it as a string
 				string uri = (string) GetValue (SourceProperty);

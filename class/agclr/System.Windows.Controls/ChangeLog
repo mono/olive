@@ -1,3 +1,7 @@
+2007-06-20  Chris Toshok  <toshok@ximian.com>
+
+	* MediaBase.cs: the property is named Source, not Uri.
+
 2007-06-18  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* TextBlock.cs: Fix FontWeight signature.
