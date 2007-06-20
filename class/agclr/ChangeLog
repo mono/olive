@@ -1,3 +1,11 @@
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Internal.cs (Current): We can't reuse the Collection-type Kind
+	as the kind of object we're looking for since if it fails to find
+	a pre-cached managed object for that IntPtr, it will try to
+	instantiate a new one. Instead, we need the /actual/ object type,
+	so request that from the NativeMethods.
+
 2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* agclr.dll.sources: Updated.

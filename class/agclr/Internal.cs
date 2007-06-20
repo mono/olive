@@ -113,11 +113,14 @@ namespace MS.Internal {
 			public object Current {
 				get {
 					IntPtr o = NativeMethods.collection_iterator_get_current (native_iter);
-
+					Kind k;
+					
 					if (o == IntPtr.Zero)
 						return null;
-
-					return DependencyObject.Lookup (kind, o);
+					
+					k = NativeMethods.dependency_object_get_kind (o);
+					
+					return DependencyObject.Lookup (k, o);
 				}
 			}
 
