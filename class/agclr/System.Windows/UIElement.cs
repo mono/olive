@@ -45,7 +45,9 @@ namespace System.Windows {
 	        public static readonly DependencyProperty VisibilityProperty;
 	        public static readonly DependencyProperty ResourcesProperty;
 	        public static readonly DependencyProperty ZIndexProperty;
-	
+
+		private UnmanagedEventHandler loaded_delegate;
+
 		static UIElement ()
 		{
 	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity", typeof (double));
@@ -67,6 +69,8 @@ namespace System.Windows {
 		
 		internal UIElement (IntPtr raw) : base (raw)
 		{
+			loaded_delegate = new UnmanagedEventHandler (InvokeLoaded);
+			Events.AddHandler (raw, "Loaded", loaded_delegate);
 		}
 		
 		public Geometry Clip {
@@ -222,7 +226,13 @@ namespace System.Windows {
 			if (h != null)
 				h (this, m);
 		}
-		
+
+		private void InvokeLoaded (IntPtr data)
+		{
+			if (Loaded != null)
+				Loaded (this, EventArgs.Empty);
+		}
+
 		protected internal override Kind GetKind ()
 		{
 			return Kind.UIELEMENT;
