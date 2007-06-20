@@ -114,6 +114,9 @@ namespace Mono {
 		}
 		
 		[DllImport("moon")]
+		internal extern static Kind dependency_object_get_kind (IntPtr obj);
+		
+		[DllImport("moon")]
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
 				Mono.CreateCustomXamlElementCallback ccecb,
 				Mono.SetCustomXamlAttributeCallback scacb,

@@ -1,3 +1,8 @@
+2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeMethods.cs: Bind to dependency_object_get_kind() (this
+	should perhaps be renamed to dependency_object_get_object_type?)
+
 2007-06-20  Jackson Harper  <jackson@ximian.com>
 
 	* NativeMethods.cs: Tie into events.
