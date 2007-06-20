@@ -256,7 +256,9 @@ namespace System.Windows {
 			case Kind.VISUAL_COLLECTION:
 				return new VisualCollection (raw);
 				
-			case Kind.RESOURCE_COLLECTION: return null;
+			case Kind.RESOURCE_COLLECTION:
+				return new ResourceCollection (raw);
+
 			case Kind.TRIGGERACTION_COLLECTION: 
 				return new TriggerActionCollection (raw);
 			case Kind.TRIGGER_COLLECTION: return null;

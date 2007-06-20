@@ -1,5 +1,9 @@
 2007-06-20  Jackson Harper  <jackson@ximian.com>
 
+	* DependencyObject.cs: Add ResourceCollection.
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
 	* XamlReader.cs: Tie into events.
 
 2007-06-20  Jackson Harper  <jackson@ximian.com>
