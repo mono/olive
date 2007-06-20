@@ -29,7 +29,7 @@ using System.Windows;
 using Mono;
 using System.Windows.Media;
 
-namespace System.Windows.Controls {
+namespace System.Windows.Documents{
 
 	public class Glyphs : FrameworkElement {
 

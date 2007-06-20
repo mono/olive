@@ -35,6 +35,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
+using System.Windows.Documents;
 
 namespace System.Windows {
 	public class DependencyObject {
@@ -225,7 +226,18 @@ namespace System.Windows {
 				
 			case Kind.QUADRATICBEZIERSEGMENT:
 				return new QuadraticBezierSegment (raw);
-				
+
+			case Kind.TEXTBLOCK:
+				return new TextBlock (raw);
+
+			case Kind.RUN:
+				return new Run (raw);
+
+			case Kind.GLYPHS:
+				return new Glyphs (raw);
+
+			case Kind.LINEBREAK:
+				return new LineBreak (raw);
 			case Kind.TRIGGERACTION: return null;
 			case Kind.BEGINSTORYBOARD: return null;
 			case Kind.EVENTTRIGGER: return null;
