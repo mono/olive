@@ -58,7 +58,7 @@ namespace System.Windows {
 
 			if (handle == IntPtr.Zero)
 				throw new Exception (
-					String.Format ("DependencyProperty.Lookup: {0} lacks {1}", type, name));
+					String.Format ("DependencyProperty.Lookup: {0} lacks {1}. This is normally because agclr.dll and libmoon is out of sync. Updating /moon/src and /olive/class/agclr, and do 'make install' in both will probably fix it.", type, name));
 
 			if (ownerType == null)
 				throw new ArgumentNullException ("ownerType");	
