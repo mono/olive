@@ -38,9 +38,9 @@ namespace System.Windows {
 	
 	public static class XamlReader {
 	
-		static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_element);
-		static SetCustomXamlAttributeCallback custom_at_cb = new SetCustomXamlAttributeCallback (set_attribute);
-		static XamlHookupEventCallback hookup_event_cb = new XamlHookupEventCallback (hookup_event);
+		internal static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_element);
+		internal static SetCustomXamlAttributeCallback custom_at_cb = new SetCustomXamlAttributeCallback (set_attribute);
+		internal static XamlHookupEventCallback hookup_event_cb = new XamlHookupEventCallback (hookup_event);
 
 		public static DependencyObject Load (string xaml)
 		{
@@ -75,6 +75,8 @@ namespace System.Windows {
 				return IntPtr.Zero;
 			}
 
+			Console.WriteLine ("Loading assembly from {0}", asm_path);
+
 			// TODO: Use a downloader here
 			Assembly clientlib = Assembly.LoadFile (asm_path);
 			if (clientlib == null) {
@@ -100,7 +102,7 @@ namespace System.Windows {
 		}
 
 		
-		private static void set_attribute (IntPtr target_ptr, string name, string value)
+		internal static void set_attribute (IntPtr target_ptr, string name, string value)
 		{
 			MethodInfo m = typeof (DependencyObject).GetMethod ("Lookup",
 					BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);

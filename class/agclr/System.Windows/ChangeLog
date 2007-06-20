@@ -1,3 +1,8 @@
+2007-06-20  Chris Toshok  <toshok@ximian.com>
+
+	* XamlReader.cs: make the callbacks internal so we can use the
+	from FrameworkElement.InitializeFromXaml.
+
 2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* DependencyObject.cs: Add VISUAL to the "NotImplemented" abstract

@@ -1,3 +1,8 @@
+2007-06-20  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add the callbacks to
+	control_initialize_from_xaml's signature.
+
 2007-06-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* NativeMethods.cs: Bind to dependency_object_get_kind() (this

@@ -528,7 +528,11 @@ namespace Mono {
 		internal extern static void text_block_set_font_source (IntPtr textblock, IntPtr downloader);
 
 		[DllImport ("moon")]
-		internal extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml, out Kind kind);
+		internal extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml,
+									    Mono.CreateCustomXamlElementCallback ccecb,
+									    Mono.SetCustomXamlAttributeCallback scacb,
+									    Mono.XamlHookupEventCallback hue,
+									    out Kind kind);
 
 
 #region EventObject
