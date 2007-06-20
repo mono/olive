@@ -1,3 +1,10 @@
+2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* SplineColorKeyFrame.cs, DiscreteColorKeyFrame.cs,
+	  SplinePointKeyFrame.cs, LinearDoubleKeyFrame.cs,
+	  DiscretePointKeyFrame.cs, DiscreteDoubleKeyFrame.cs,
+	  LinearColorKeyFrame.cs, LinearPointKeyFrame.cs: Implemented.
+
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* TimelineMarkerCollection.cs, ColorAnimationUsingKeyFrames.cs,
