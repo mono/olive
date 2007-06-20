@@ -152,6 +152,9 @@ namespace System.Windows {
 			case Kind.STORYBOARD:
 				return new Storyboard (raw);
 
+			case Kind.DOUBLEANIMATIONUSINGKEYFRAMES:
+				return new DoubleAnimationUsingKeyFrames (raw);
+				
 			case Kind.DOUBLEANIMATION: return null;
 			case Kind.COLORANIMATION: return null;
 			case Kind.POINTANIMATION: return null;
