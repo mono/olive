@@ -1,3 +1,7 @@
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Tie into events.
+
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Kind.cs, NativeMethods.cs: More updates.

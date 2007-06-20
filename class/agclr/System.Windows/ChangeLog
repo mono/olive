@@ -1,5 +1,9 @@
 2007-06-20  Jackson Harper  <jackson@ximian.com>
 
+	* XamlReader.cs: Tie into events.
+
+2007-06-20  Jackson Harper  <jackson@ximian.com>
+
 	* UIElement.cs: Invoke the loaded event.
 
 2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 

@@ -40,6 +40,7 @@ namespace System.Windows {
 	
 		static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_element);
 		static SetCustomXamlAttributeCallback custom_at_cb = new SetCustomXamlAttributeCallback (set_attribute);
+		static XamlHookupEventCallback hookup_event_cb = new XamlHookupEventCallback (hookup_event);
 
 		public static DependencyObject Load (string xaml)
 		{
@@ -52,7 +53,8 @@ namespace System.Windows {
 				throw new ArgumentNullException ("xaml");
 
 			Kind kind;
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb, custom_at_cb, out kind);
+			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb,
+					custom_at_cb, hookup_event_cb, out kind);
 
 			if (top == IntPtr.Zero)
 				return null;
@@ -129,6 +131,32 @@ namespace System.Windows {
 			}
 
 			pd.SetValue (target, pd.Converter.ConvertFrom (value));
+		}
+
+		internal static void hookup_event (IntPtr target_ptr, string name, string value)
+		{
+			MethodInfo m = typeof (DependencyObject).GetMethod ("Lookup",
+					BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
+			DependencyObject target = (DependencyObject) m.Invoke (null, new object [] { target_ptr });
+
+			if (target == null) {
+				Console.WriteLine ("hookup event unable to create target object from: 0x{0}", target_ptr);
+				return;
+			}
+
+			EventInfo src = target.GetType ().GetEvent (name);
+			if (src == null) {
+				Console.WriteLine ("hookup event unable to find event to hook to: '{0}'.", name);
+				return;
+			}
+
+			Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
+			if (d == null) {
+				Console.WriteLine ("hookup event unable to create delegate.");
+				return;
+			}
+
+			src.AddEventHandler (target, d);
 		}
 
 		internal static void ParseXmlns (string xmlns, out string type_name, out string ns, out string asm)

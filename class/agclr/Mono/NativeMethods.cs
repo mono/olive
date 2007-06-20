@@ -33,6 +33,7 @@ namespace Mono {
 
 	internal delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
 	internal delegate void SetCustomXamlAttributeCallback (IntPtr target, string name, string value);
+	internal delegate void XamlHookupEventCallback (IntPtr target, string name, string value);
 	internal delegate void UnmanagedEventHandler (IntPtr data);
 
 	internal static class NativeMethods {
@@ -116,6 +117,7 @@ namespace Mono {
 	    	internal extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
 				Mono.CreateCustomXamlElementCallback ccecb,
 				Mono.SetCustomXamlAttributeCallback scacb,
+				Mono.XamlHookupEventCallback hue,
 				out Kind kind);
 
 		[DllImport("moon")]
