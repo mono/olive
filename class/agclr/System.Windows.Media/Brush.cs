@@ -27,7 +27,7 @@
 //
 using Mono;
 namespace System.Windows.Media {
-	public class Brush : DependencyObject {
+	public abstract class Brush : DependencyObject {
 		
 		public static readonly DependencyProperty OpacityProperty;
 		public static readonly DependencyProperty TransformProperty;

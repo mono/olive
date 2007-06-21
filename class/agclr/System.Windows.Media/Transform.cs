@@ -27,7 +27,7 @@
 //
 using Mono;
 namespace System.Windows.Media {
-	public class Transform : DependencyObject {
+	public abstract class Transform : DependencyObject {
 		
 		public Transform () : base (NativeMethods.transform_new ())
 		{
