@@ -23,11 +23,27 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Windows.Media.Animation;
+using System;
+
 namespace System.Windows.Input {
 	
-	public enum TabletDeviceType {
-		Mouse,
-		Stylus,
-		Touch
+	public sealed class TimelineMarkerEventArgs : EventArgs {
+		private TimelineMarker marker;
+		
+		public TimelineMarkerEventArgs ()
+		{
+		}
+
+		internal TimelineMarkerEventArgs (TimelineMarker marker)
+		{
+			this.marker = marker;
+		}
+		
+		public TimelineMarker Marker {
+			get { return marker; }
+			set { marker = value; }
+		}
 	}
+	
 }

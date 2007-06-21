@@ -23,11 +23,53 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-namespace System.Windows.Input {
-	
-	public enum TabletDeviceType {
-		Mouse,
-		Stylus,
-		Touch
+using System;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Input;
+using System.Runtime.InteropServices;
+using Mono;
+
+namespace System.Windows.Input
+{
+	public sealed class StylusInfo : DependencyObject
+	{
+		public static readonly DependencyProperty DeviceTypeProperty = 
+			DependencyProperty.Lookup (Kind.STYLUSINFO, "DeviceType", typeof (TabletDeviceType));
+		
+		public static readonly DependencyProperty IsInvertedProperty = 
+			DependencyProperty.Lookup (Kind.STYLUSINFO, "IsInverted", typeof (bool));
+		
+		public StylusInfo() : base (NativeMethods.stylus_info_new ())
+		{
+			NativeMethods.base_ref (native);
+		}
+		
+		internal StylusInfo (IntPtr raw) : base (raw)
+		{
+		}
+
+		public TabletDeviceType DeviceType { 
+			get {
+				return (TabletDeviceType) GetValue (DeviceTypeProperty);
+			}
+			set {
+				SetValue (DeviceTypeProperty, value);
+			}
+		}
+		
+		public bool IsInverted {
+			get {
+				return (bool) GetValue (IsInvertedProperty);
+			}
+			set {
+				SetValue (IsInvertedProperty, value);
+			}
+		}
+
+		internal protected override Kind GetKind ()
+		{
+			return Kind.STYLUSINFO;
+		}
 	}
 }

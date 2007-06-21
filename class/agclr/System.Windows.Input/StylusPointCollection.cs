@@ -22,12 +22,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+using System;
+using System.Windows;
+using System.Windows.Media;
+using System.Windows.Input;
+using System.Runtime.InteropServices;
+using Mono;
+using MS.Internal;
 
-namespace System.Windows.Input {
-	
-	public enum TabletDeviceType {
-		Mouse,
-		Stylus,
-		Touch
+namespace System.Windows.Input
+{
+	public class StylusPointCollection : Collection <StylusPoint>
+	{
+		public StylusPointCollection() : base (NativeMethods.stylus_point_collection_new ())
+		{
+			NativeMethods.base_ref (native);
+		}
+		
+		internal StylusPointCollection (IntPtr raw) : base (raw)
+		{
+		}
+		
+		internal protected override Kind GetKind ()
+		{
+			return Kind.STYLUSPOINT_COLLECTION;
+		}
 	}
 }

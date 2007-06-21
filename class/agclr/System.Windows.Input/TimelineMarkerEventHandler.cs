@@ -1,3 +1,4 @@
+//
 // Author:
 //   Rolf Bjarne Kvinge  (RKvinge@novell.com)
 //
@@ -25,9 +26,7 @@
 
 namespace System.Windows.Input {
 	
-	public enum TabletDeviceType {
-		Mouse,
-		Stylus,
-		Touch
-	}
+	[Serializable]
+	public delegate void TimelineMarkerEventHandler (object sender, TimelineMarkerEventArgs e);
+
 }
