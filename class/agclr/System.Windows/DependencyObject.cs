@@ -370,14 +370,12 @@ namespace System.Windows {
 					return *((ulong *) px);
 					
 				case Kind.INT64:
-					long v = *((long *) px); 
-					if (property.type == typeof (TimeSpan)) {
-						return new TimeSpan (v);
-					} else if (property.type == typeof (Nullable <TimeSpan>)) {
-						return  new Nullable <TimeSpan> (new TimeSpan (v));
-					} else {
-						return v;					
-					}	
+					return *((long *) px);
+					
+				case Kind.TIMESPAN:
+					long v = *((long *) px);
+					return new TimeSpan (v);
+						
 				case Kind.INT32:
 					return *((int *) px);
 
@@ -526,7 +524,7 @@ namespace System.Windows {
 					*((long *) p) = (long) v;
 				} else if (v is TimeSpan) {
 					TimeSpan ts = (TimeSpan) v;
-					value.k = Kind.INT64;
+					value.k = Kind.TIMESPAN;
 					*((long *) p) = ts.Ticks;
 				} else if (v is ulong){
 					value.k = Kind.UINT64;
