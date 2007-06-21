@@ -245,9 +245,18 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr timeline_marker_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr stylus_point_collection_new ();
 #endregion
 		
 #region Constructors
+		[DllImport("moon")]
+		internal extern static IntPtr stylus_info_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr stylus_point_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr timeline_marker_new ();
 		
