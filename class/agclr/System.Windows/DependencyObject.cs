@@ -441,6 +441,7 @@ namespace System.Windows {
 					return new Matrix (dp [0], dp [1], dp [2], dp [3], dp [4], dp [5]);					
 					
 				}
+					
 				case Kind.DURATION: 
 				{
 					IntPtr vptr = *((IntPtr *) px);
@@ -452,6 +453,22 @@ namespace System.Windows {
 
 					return new Duration (kind, new TimeSpan (ticks));					
 				}
+					
+				case Kind.KEYTIME:
+				{
+					IntPtr vptr = *((IntPtr *) px);
+					byte* bptr = (byte*) vptr;
+					
+					if (vptr == IntPtr.Zero)
+						return KeyTime.Uniform;
+					
+					int kind = * (int*) (bptr);
+					double percent = * (double*) (bptr + 4);
+					long ticks = * (long*) (bptr + 12);
+					                                                                    
+					return new KeyTime ((KeyTimeType) kind, percent, new TimeSpan (ticks));
+				}
+					
 				case Kind.REPEATBEHAVIOR:
 				{
 					IntPtr vptr = *((IntPtr *) px);
@@ -460,10 +477,7 @@ namespace System.Windows {
 					
 					return (RepeatBehavior) Marshal.PtrToStructure (vptr, typeof (RepeatBehavior));					
 				}
-					
-				// These have no managed representation yet.
-				case Kind.KEYTIME:
-					break;
+
 				}
 
 				//
@@ -597,6 +611,12 @@ namespace System.Windows {
 					Marshal.WriteInt32 (result, d.KindInternal);
 					Marshal.WriteInt64 ((IntPtr) ((byte*) result + 4), d.TimeSpanInternal.Ticks);
 					*((IntPtr *) p) = result;
+				} else if (v is KeyTime) {
+					KeyTime k = (KeyTime) v;
+					value.k = Kind.KEYTIME;
+					IntPtr result = Marshal.AllocHGlobal (sizeof (KeyTime));
+					Marshal.StructureToPtr (k, result, false);
+					*((IntPtr *) p) = result;					
 				} else if (v is RepeatBehavior) {
 					RepeatBehavior d = (RepeatBehavior) v;
 					value.k = Kind.REPEATBEHAVIOR;

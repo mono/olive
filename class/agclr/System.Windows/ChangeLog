@@ -1,5 +1,9 @@
 2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* DependencyObject.cs: Implement KeyTime marshalling.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Rect.cs: Add missing members.
 
 2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
