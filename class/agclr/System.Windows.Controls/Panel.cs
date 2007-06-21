@@ -31,7 +31,7 @@ using MS.Internal;
 using Mono;
 
 namespace System.Windows.Controls {
-	public class Panel : FrameworkElement {
+	public abstract class Panel : FrameworkElement {
 		public static readonly DependencyProperty ChildrenProperty;
 		public static readonly DependencyProperty BackgroundProperty;
 
