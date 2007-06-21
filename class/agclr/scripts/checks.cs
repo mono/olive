@@ -168,7 +168,13 @@ using System.Windows.Ink;
 				} else if (ftp == typeof (Nullable<Point>)) {
 					nullvar = "null";
 					var = "new Nullable<Point> (new Point (25, 75))";
-					vartp = "Nullable<Point>";	
+					vartp = "Nullable<Point>";
+				} else if (ftp == typeof (Brush)) {
+					var = "new SolidColorBrush (Color.FromRgb (25, 50, 75))";
+				} else if (ftp == typeof (KeyTime)) {
+					var = "KeyTime.FromPercent (0.5)";
+				} else if (ftp == typeof (TimeSpan)) {
+					var = "new TimeSpan (123456)";
 				} else {
 					Console.WriteLine ("//Don't know how to test a '" + ftp.FullName + "'.");
 				}
