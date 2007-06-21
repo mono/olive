@@ -1,3 +1,7 @@
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Implement creation of more classes.
+
 2007-06-20  Chris Toshok  <toshok@ximian.com>
 
 	* XamlReader.cs: make the callbacks internal so we can use the

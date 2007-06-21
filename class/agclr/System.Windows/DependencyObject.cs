@@ -31,6 +31,8 @@ using System.Collections;
 using Mono;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
@@ -123,21 +125,12 @@ namespace System.Windows {
 			
 			NativeMethods.base_ref (raw);
 			switch (k){
-			case Kind.UIELEMENT:
-				return null;
-
-			case Kind.PANEL:
-				return null;
-
 			case Kind.CANVAS:
 				return new Canvas (raw);
 
 			case Kind.IMAGE:
 				return new Image (raw);
 
-			case Kind.TIMELINE:
-				return null;
-				
 			case Kind.ROTATETRANSFORM:
 				return new RotateTransform (raw);
 				
@@ -156,9 +149,14 @@ namespace System.Windows {
 			case Kind.DOUBLEANIMATIONUSINGKEYFRAMES:
 				return new DoubleAnimationUsingKeyFrames (raw);
 				
-			case Kind.DOUBLEANIMATION: return null;
-			case Kind.COLORANIMATION: return null;
-			case Kind.POINTANIMATION: return null;
+			case Kind.DOUBLEANIMATION: 
+				return new DoubleAnimation (raw);
+				
+			case Kind.COLORANIMATION: 
+				return new ColorAnimation (raw);
+				
+			case Kind.POINTANIMATION: 
+				return new PointAnimation (raw);
 				
 			case Kind.ELLIPSE:
 				return new Ellipse (raw);
@@ -193,12 +191,6 @@ namespace System.Windows {
 			case Kind.RECTANGLEGEOMETRY:
 				return new RectangleGeometry (raw);
 				
-			case Kind.FRAMEWORKELEMENT: return null;
-			case Kind.NAMESCOPE: return null;
-			case Kind.CLOCK: return null;
-			case Kind.ANIMATIONCLOCK: return null;
-			case Kind.CLOCKGROUP: return null;
-			case Kind.BRUSH: return null;
 			case Kind.SOLIDCOLORBRUSH:
 				return new SolidColorBrush (raw);
 				
@@ -214,7 +206,9 @@ namespace System.Windows {
 			case Kind.LINESEGMENT:
 				return new LineSegment (raw);
 				
-			case Kind.INLINES: return null;
+			case Kind.INLINES: 
+				return new Inlines (raw);
+				
 			case Kind.POLYBEZIERSEGMENT:
 				return new PolyBezierSegment (raw);
 				
@@ -235,24 +229,55 @@ namespace System.Windows {
 
 			case Kind.GLYPHS:
 				return new Glyphs (raw);
+				
+			case Kind.STYLUSPOINT:
+				return new StylusPoint (raw);
+			
+			case Kind.STYLUSINFO:
+				return new StylusInfo (raw);
 
 			case Kind.LINEBREAK:
 				return new LineBreak (raw);
-			case Kind.TRIGGERACTION: return null;
-			case Kind.BEGINSTORYBOARD: return null;
-			case Kind.EVENTTRIGGER: return null;
-			case Kind.STROKE_COLLECTION: return null;
-			case Kind.STYLUSPOINT_COLLECTION: return null;
-			case Kind.KEYFRAME_COLLECTION: return null;
-			case Kind.TIMELINEMARKER_COLLECTION: return null;
-			case Kind.GEOMETRY_COLLECTION: return null;
-			case Kind.GRADIENTSTOP_COLLECTION: return new GradientStopCollection (raw);
-			case Kind.MEDIAATTRIBUTE_COLLECTION: return null;
-			case Kind.PATHFIGURE_COLLECTION: return null;
-			case Kind.PATHSEGMENT_COLLECTION: return null;
+				
+			case Kind.BEGINSTORYBOARD: 
+				return new BeginStoryboard (raw);
+				
+			case Kind.EVENTTRIGGER: 
+				return new EventTrigger (raw);
+
+			case Kind.STROKE_COLLECTION: 
+				return new StrokeCollection (raw);
+				
+			case Kind.STYLUSPOINT_COLLECTION: 
+				return new StylusPointCollection (raw);
+			
+			case Kind.KEYFRAME_COLLECTION: 
+				return new KeyFrameCollection (raw);
+				
+			case Kind.TIMELINEMARKER_COLLECTION: 
+				return new TimelineMarkerCollection (raw);
+				
+			case Kind.GEOMETRY_COLLECTION: 
+				return new GeometryCollection (raw);
+					
+			case Kind.GRADIENTSTOP_COLLECTION: 
+				return new GradientStopCollection (raw);
+				
+			case Kind.MEDIAATTRIBUTE_COLLECTION: 
+				return new MediaAttributeCollection (raw);
+				
+			case Kind.PATHFIGURE_COLLECTION: 
+				return new PathFigureCollection (raw);
+				
+			case Kind.PATHSEGMENT_COLLECTION: 
+				return new PathSegmentCollection (raw);
+				
 			case Kind.TIMELINE_COLLECTION: 
 				return new TimelineCollection (raw);
-			case Kind.TRANSFORM_COLLECTION: return null;
+				
+			case Kind.TRANSFORM_COLLECTION: 
+				return new TransformCollection (raw);
+				
 			case Kind.VISUAL_COLLECTION:
 				return new VisualCollection (raw);
 				
@@ -261,8 +286,22 @@ namespace System.Windows {
 
 			case Kind.TRIGGERACTION_COLLECTION: 
 				return new TriggerActionCollection (raw);
-			case Kind.TRIGGER_COLLECTION: return null;
 				
+			case Kind.TRIGGER_COLLECTION: 
+				return new TriggerCollection (raw);
+				
+			case Kind.CLOCKGROUP:
+			case Kind.ANIMATIONCLOCK:
+			case Kind.CLOCK: 
+			case Kind.NAMESCOPE: 
+			case Kind.TRIGGERACTION:
+				throw new Exception (
+					string.Format ("There is no managed equivalent of a {0} class.", k));
+			case Kind.UIELEMENT:
+			case Kind.PANEL:
+			case Kind.TIMELINE: 
+			case Kind.FRAMEWORKELEMENT:
+			case Kind.BRUSH:
 			case Kind.TRANSFORM:
 			case Kind.SHAPE:
 			case Kind.GEOMETRY:
