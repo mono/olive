@@ -248,9 +248,18 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr stylus_point_collection_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr stroke_collection_new ();
 #endregion
 		
 #region Constructors
+		[DllImport("moon")]
+		internal extern static IntPtr stroke_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr drawing_attributes_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr stylus_info_new ();
 		
