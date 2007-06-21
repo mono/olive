@@ -160,7 +160,7 @@ namespace System.Windows {
 
 		public event ErrorEventHandler DownloadFailed;
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.DOWNLOADER;
 		}

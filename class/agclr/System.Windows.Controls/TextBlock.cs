@@ -137,7 +137,7 @@ namespace System.Windows.Controls {
 				NativeMethods.text_block_set_font_source (native, dl.native);
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.TEXTBLOCK;
 		}

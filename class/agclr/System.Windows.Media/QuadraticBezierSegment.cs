@@ -54,7 +54,7 @@ namespace System.Windows.Media {
 			set { SetValue (Point2Property, value); }
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.QUADRATICBEZIERSEGMENT;
 		}

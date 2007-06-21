@@ -43,7 +43,7 @@ namespace System.Windows.Ink
 		{
 		}
 		
-		internal protected override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.STROKE_COLLECTION;
 		}

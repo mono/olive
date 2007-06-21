@@ -233,7 +233,7 @@ namespace System.Windows {
 				Loaded (this, EventArgs.Empty);
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.UIELEMENT;
 		}

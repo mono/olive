@@ -38,7 +38,7 @@ namespace System.Windows.Media {
 		{
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.TRANSFORM;
 		}

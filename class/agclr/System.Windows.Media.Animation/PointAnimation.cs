@@ -63,7 +63,7 @@ namespace System.Windows.Media.Animation
 			set { SetValue (ToProperty, value); }
 		}
 
-		protected internal override Kind GetKind()
+		internal override Kind GetKind()
 		{
 			return Kind.POINTANIMATION;
 		}

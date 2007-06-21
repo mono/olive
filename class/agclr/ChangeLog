@@ -1,5 +1,9 @@
 2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Everywhere: Remove protected from GetKind.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* agclr.dll.sources: Updated.
 	* System.Windows.Ink: Added.
 

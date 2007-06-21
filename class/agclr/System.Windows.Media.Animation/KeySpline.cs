@@ -44,7 +44,7 @@ namespace System.Windows.Media.Animation
 		{
 		}
 		
-		internal protected override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.KEYSPLINE;
 		}

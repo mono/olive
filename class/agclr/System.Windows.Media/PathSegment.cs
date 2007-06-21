@@ -39,7 +39,7 @@ namespace System.Windows.Media {
 			NativeMethods.base_ref (native);
 		}
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.PATHSEGMENT;
 		}

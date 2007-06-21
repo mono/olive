@@ -85,7 +85,7 @@ namespace MS.Internal {
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.COLLECTION;
 		}

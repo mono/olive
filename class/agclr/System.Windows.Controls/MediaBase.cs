@@ -72,7 +72,7 @@ namespace System.Windows.Controls {
 		public event ErrorEventHandler MediaFailed;
 
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.MEDIABASE;
 		}

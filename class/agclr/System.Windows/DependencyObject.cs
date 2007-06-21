@@ -660,7 +660,7 @@ namespace System.Windows {
 			return Lookup (k, o);
 		}
 
-		protected internal virtual Kind GetKind ()
+		internal virtual Kind GetKind ()
 		{
 			return Kind.DEPENDENCY_OBJECT;
 		}

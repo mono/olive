@@ -44,7 +44,7 @@ namespace System.Windows.Media.Animation {
 			NativeMethods.base_ref (native);
 		}
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.PARALLELTIMELINE; 
 		}

@@ -43,7 +43,7 @@ namespace System.Windows.Input
 		{
 		}
 		
-		internal protected override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.STYLUSPOINT_COLLECTION;
 		}

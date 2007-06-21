@@ -65,7 +65,7 @@ namespace System.Windows.Media.Animation {
 
 		public static readonly DependencyProperty ChildrenProperty;
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.TIMELINEGROUP;
 		}

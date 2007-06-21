@@ -47,7 +47,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.MEDIAATTRIBUTE_COLLECTION;
 		}

@@ -51,7 +51,7 @@ namespace System.Windows.Media.Animation
 		}
 
 
-		protected internal override Kind GetKind()
+		internal override Kind GetKind()
 		{
 			return Kind.BEGINSTORYBOARD;
 		}

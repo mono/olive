@@ -53,7 +53,7 @@ namespace System.Windows.Media {
 			set { SetValue (ColorProperty, value); }
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.SOLIDCOLORBRUSH;
 		}

@@ -117,7 +117,7 @@ namespace System.Windows.Media.Animation {
 		public static readonly DependencyProperty FillBehaviorProperty;
 		public static readonly DependencyProperty RepeatBehaviorProperty;
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.TIMELINE;
 		}

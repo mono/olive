@@ -56,7 +56,7 @@ namespace System.Windows.Media {
 			set { SetValue (EndPointProperty, value); }
 		}
 		
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.LINEARGRADIENTBRUSH;
 		}

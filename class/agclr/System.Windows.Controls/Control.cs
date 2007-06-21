@@ -54,7 +54,7 @@ namespace System.Windows.Controls {
 			return (FrameworkElement) o;
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.CONTROL;
 		}

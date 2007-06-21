@@ -42,7 +42,7 @@ namespace System.Windows.Media {
 		{
 		}
 		
-		internal protected override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.TIMELINE_COLLECTION;
 		}

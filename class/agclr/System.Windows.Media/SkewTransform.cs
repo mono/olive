@@ -67,7 +67,7 @@ namespace System.Windows.Media {
 			set { SetValue (CenterYProperty, value); }
 		}
 
-		protected internal override Kind GetKind ()
+		internal override Kind GetKind ()
 		{
 			return Kind.SKEWTRANSFORM;
 		}

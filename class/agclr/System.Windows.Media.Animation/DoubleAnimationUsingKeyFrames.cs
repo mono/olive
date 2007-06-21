@@ -48,7 +48,7 @@ namespace System.Windows.Media.Animation
 			set { SetValue (KeyFramesProperty, value); }
 		}
 
-		protected internal override Kind GetKind()
+		internal override Kind GetKind()
 		{
 			return Kind.DOUBLEANIMATIONUSINGKEYFRAMES;
 		}
