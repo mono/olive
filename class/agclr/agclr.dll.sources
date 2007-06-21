@@ -7,7 +7,12 @@ Mono/Hosting.cs
 Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
+System.Windows.Input/StylusInfo.cs
+System.Windows.Input/StylusPoint.cs
+System.Windows.Input/StylusPointCollection.cs
 System.Windows.Input/TabletDeviceType.cs
+System.Windows.Input/TimelineMarkerEventArgs.cs
+System.Windows.Input/TimelineMarkerEventHandler.cs
 System.Windows.Media.Animation/ColorAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/ColorKeyFrame.cs
 System.Windows.Media.Animation/DiscreteColorKeyFrame.cs
