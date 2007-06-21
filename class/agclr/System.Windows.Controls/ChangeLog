@@ -1,5 +1,9 @@
 2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* InkPresenter.cs, MediaElement.cs: Added.
+
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Panel.cs: Make this class abstract.
 
 2007-06-20  Chris Toshok  <toshok@ximian.com>
