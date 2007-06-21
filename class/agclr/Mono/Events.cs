@@ -54,8 +54,10 @@ namespace Mono {
 		{
 			object o = DependencyObject.Lookup (target);
 			if (o == null){
-				//Console.WriteLine ("Motion event for {0} that was never registered", target);
-				return null;
+				Kind k = NativeMethods.dependency_object_get_kind (target);
+				o = DependencyObject.Lookup (k, target);
+				if (o == null)
+					return null;
 			}
 			UIElement e = o as UIElement;
 			if (e == null)
