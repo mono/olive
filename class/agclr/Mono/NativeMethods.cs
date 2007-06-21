@@ -253,7 +253,27 @@ namespace Mono {
 		internal extern static IntPtr stroke_collection_new ();
 #endregion
 		
+#region MediaElement
+		[DllImport("moon")]
+		internal extern static IntPtr media_element_stop (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_element_play (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_element_pause (IntPtr native);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_element_setsource (IntPtr native, IntPtr downloader, string PartName);		
+#endregion
+		
 #region Constructors
+		[DllImport("moon")]
+		internal extern static IntPtr ink_presenter_new ();
+		
+		[DllImport("moon")]
+		internal extern static IntPtr media_element_new ();
+		
 		[DllImport("moon")]
 		internal extern static IntPtr stroke_new ();
 		
