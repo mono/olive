@@ -1,0 +1,4 @@
+2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* checks.cs: Add a namespace.
+

@@ -97,6 +97,7 @@ using System.Windows.Shapes;
 using System.Windows.Media.Animation;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Ink;
 ");
 		result.AppendLine ("class tester {");
 		result.AppendLine ("static void Main () {");
