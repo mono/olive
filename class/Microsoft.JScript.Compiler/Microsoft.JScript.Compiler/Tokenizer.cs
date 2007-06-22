@@ -29,7 +29,7 @@ namespace Microsoft.JScript.Compiler
 			// move that to static ctor?
 			InitKeywords();
 		}
-		//TODO : unicode \u
+
 		public Token GetNext()
 		{
 			//Must use CreateToken everytime we create a Token to avoid issue of location
@@ -281,7 +281,12 @@ namespace Microsoft.JScript.Compiler
 				case '_':
 					return this.CreateIdentOrKeyword (c);
 			}
-			return CreateToken (Token.Type.Bad);
+			return CreateBadToken (((char)c).ToString(),DiagnosticCode.ExtraneousCharacter);
+		}
+
+		private Token CreateBadToken (string spelling, DiagnosticCode code)
+		{
+			return new BadToken (spelling, code, position, Line, Column, FirstOnLine);
 		}
 
 		public RegularExpressionLiteralToken ScanRegularExpression (Token Divide)
@@ -322,6 +327,7 @@ namespace Microsoft.JScript.Compiler
 
 		#region token
 
+		
 		private Token CreateToken (Token.Type tokenType)
 		{
 			current = new Token (tokenType, position, Line, Column, FirstOnLine);
@@ -347,7 +353,7 @@ namespace Microsoft.JScript.Compiler
 				if (c == quote)
 					break;
 				if (c == -1 || c == '\n') {
-					return new BadToken ("string is never closed!", DiagnosticCode.SyntaxError, startPosition, startLine, startColumn, FirstOnLine);
+					return CreateBadToken (builder.ToString(), DiagnosticCode.SyntaxError);
 				}
 				if (c == '\\') {
 					ReadChar ();
@@ -393,7 +399,7 @@ namespace Microsoft.JScript.Compiler
 								else if (d >= 'a' && d <= 'f')
 									d = d - 'a' + 10;
 								else
-									return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+									return CreateBadToken (builder.ToString(), DiagnosticCode.HexLiteralNoDigits);
 								r2 = (r2 << 4) | d;
 							}
 							c = r2;
@@ -411,14 +417,14 @@ namespace Microsoft.JScript.Compiler
 								else if (d >= 'a' && d <= 'f')
 									d = d - 'a' + 10;
 								else
-									return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+									return CreateBadToken (builder.ToString(), DiagnosticCode.HexLiteralNoDigits);
 								r4 = (r4 << 4) | d;
 							}
 							c = r4;
 							break;
 						default:
 							//TODO 0 [lookahead ?DecimalDigit] or NonEscapeCharacter
-							return new BadToken ("", DiagnosticCode.HexLiteralNoDigits, startPosition, startLine, startColumn, FirstOnLine);
+							return CreateBadToken (builder.ToString(), DiagnosticCode.HexLiteralNoDigits);
 					}
 				}
 				builder.Append ((char)c);
@@ -465,12 +471,33 @@ namespace Microsoft.JScript.Compiler
 
 		private Token CreateNumericLiteralToken (int first)
 		{
+			
+			int next = PeekChar ();
+
+			if (first == '0') {
+				if (next == 'x' || next == 'X')
+					return CreateHexIntegerLiteralToken (first);
+				else {
+					switch (next) {
+						case '0':
+						case '1':
+						case '2':
+						case '3':
+						case '4':
+						case '5':
+						case '6':
+						case '7':							
+							return CreateOctalIntegerLiteralToken (first);
+					}//else continue to make a numerical literal token
+				}
+			}
+
 			StringBuilder builder = new StringBuilder ();
 			builder.Append ((char) first);
 			int dot = 0;
 
 			while (Advance ()) {
-				int next = PeekChar ();
+				next = PeekChar ();
 				switch (next) {
 					case '0':
 					case '1':
@@ -489,11 +516,11 @@ namespace Microsoft.JScript.Compiler
 					case '.': {
 							ReadChar ();
 							dot++;
+							builder.Append ((char)next);
 							if (dot > 1) {
-								current = new Token (Token.Type.Bad, position, Line, Column, FirstOnLine);
+								current = CreateBadToken (builder.ToString(), DiagnosticCode.MalformedNumericLiteral);
 								return current;
-							}
-							builder.Append ((char) next);
+							}							
 							continue;
 						}
 				}
@@ -501,6 +528,91 @@ namespace Microsoft.JScript.Compiler
 			}
 			string result = builder.ToString ();
 			current = new NumericLiteralToken (result, position, Line, Column, FirstOnLine);
+			return current;
+		}
+
+		private Token CreateOctalIntegerLiteralToken (int first)
+		{
+			StringBuilder builder = new StringBuilder ();
+			builder.Append ((char)first);
+			double val = 0;
+
+			while (Advance ()) {
+				int next = PeekChar ();
+				switch (next) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7': {
+							builder.Append ((char)next);
+							val = val * 8 + next - '0';
+							ReadChar ();
+							continue;
+						}
+				}
+				break;
+			}
+			string result = builder.ToString ();
+			
+			current = new OctalIntegerLiteralToken (result, val ,position, Line, Column, FirstOnLine);
+			return current;
+		}
+
+		private Token CreateHexIntegerLiteralToken (int first)
+		{
+			StringBuilder builder = new StringBuilder ();
+			builder.Append ((char)first);
+			double val = 0;
+			while (Advance ()) {
+				int next = PeekChar ();
+				switch (next) {
+					case '0':
+					case '1':
+					case '2':
+					case '3':
+					case '4':
+					case '5':
+					case '6':
+					case '7':
+					case '8':
+					case '9': {
+							builder.Append ((char)next);
+							val = val * 16 + next - '0';
+							ReadChar ();
+							continue;
+						}
+					case 'a':
+					case 'b':
+					case 'c':
+					case 'd':
+					case 'e':
+					case 'f': {
+							builder.Append ((char)next);
+							val = val * 16 + next - 'a' + 10;
+							ReadChar ();
+							continue;
+						}
+					case 'A':
+					case 'B':
+					case 'C':
+					case 'D':
+					case 'E':
+					case 'F': {
+							builder.Append ((char)next);
+							val = val * 16 + next - 'A' + 10;
+							ReadChar ();
+							continue;
+						}
+				}
+				break;
+			}
+			string result = builder.ToString ();
+
+			current = new HexIntegerLiteralToken (result, val, position, Line, Column, FirstOnLine);
 			return current;
 		}
 

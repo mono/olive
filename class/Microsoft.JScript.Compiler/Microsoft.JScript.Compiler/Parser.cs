@@ -157,13 +157,32 @@ namespace Microsoft.JScript.Compiler
 					return ParseReturn ();
 				case Token.Type.function:
 					return ParseFunctionDeclaration ();
+				case Token.Type.Semicolon:
+					return new Statement (Statement.Operation.Empty, new TextSpan (current, current));
 				case Token.Type.Identifier:
-					return ParseExpressionStatement ();
+					return ParseLabelStatement();
 				default:
-					SyntaxError.Add("Statement start with a strange token :" + Enum.GetName(typeof(Token.Type), current.Kind));
+					if ( current.Kind != Token.Type.LeftBrace
+						&& current.Kind != Token.Type.Comma
+						&& current.Kind != Token.Type.function)
+						return ParseExpressionStatement ();
 					break;
 			}
-			return new Statement(Statement.Operation.Block, new TextSpan(start,current));
+			SyntaxError.Add ("Statement start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+			return new Statement (Statement.Operation.SyntaxError, new TextSpan (current, current));
+		}
+
+		private LabelStatement ParseLabelStatement ()
+		{
+			Token start = current;
+			CheckSyntaxExpected (Token.Type.Identifier);
+			Identifier label = ((IdentifierToken)current).Spelling;
+			Next ();
+			CheckSyntaxExpected (Token.Type.Colon);
+			TextPoint colon = new TextPoint (current.StartPosition);
+			Next ();
+			Statement labeled = ParseStatement();
+			return new LabelStatement (label, labeled, new TextSpan (start, current), colon);
 		}
 
 		private ExpressionStatement ParseExpressionStatement ()
@@ -549,6 +568,9 @@ namespace Microsoft.JScript.Compiler
 					break;
 				case Token.Type.NumericLiteral:
 					expr = new NumericLiteralExpression (((NumericLiteralToken)current).Spelling, new TextSpan (current, current));
+					break;
+				case Token.Type.OctalIntegerLiteral:
+					expr = new OctalLiteralExpression (((OctalIntegerLiteralToken)current).Value, new TextSpan (current, current));
 					break;
 				case Token.Type.HexIntegerLiteral:
 					expr = new HexLiteralExpression (((HexIntegerLiteralToken)current).Value, new TextSpan (current, current));
@@ -1000,12 +1022,6 @@ namespace Microsoft.JScript.Compiler
 			return ParseAssignmentExpression (noIn);
 		}
 
-		/*
-		LabelStatement.cs
-		OctalLiteralExpression.cs
-		RegularExpressionLiteralExpression.cs
-		 */
-
 		private FunctionDefinition ParseFunctionDefinition ()
 		{
 			Token start = current;
@@ -1147,10 +1163,15 @@ namespace Microsoft.JScript.Compiler
 			get { return diagnostics; }
 		}
 
-		private void Error(DiagnosticCode code , TextSpan loc)
+		private void Error (DiagnosticCode code , TextSpan loc)
 		{
+			if (current.Kind == Token.Type.Bad)
+				code = ((BadToken)current).Diagnostic;
 			diagnostics.Add (new Diagnostic (code, loc));
 		}
+		//TODO label management (break, continue,...)
+		//TODO finished bad token and syntax error management
+		//TODO 
 		/* TODO 
 			BadDivideOrRegularExpressionLiteral,
 			EnclosingLabelShadowed,
@@ -1159,8 +1180,6 @@ namespace Microsoft.JScript.Compiler
 			ContinueContextInvalid,
 			ContinueLabelInvalid,
 			MalformedEscapeSequence,
-			HexLiteralNoDigits,
-			MalformedNumericLiteral,
 			NumericLiteralThenIdentifier,
 			UnterminatedStringLiteral,
 			UnterminatedComment,

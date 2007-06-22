@@ -1,6 +1,12 @@
 2007-06-22  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* Parser.cs : fix all unit tested thing
+	* Parser.cs : badToken, labelStatement and octalStatement management
+	* Tokenizer.cs: bad token, hex/octal integer token management
+	
+2007-06-22  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Parser.cs : fix all unit tested thing ==> all my test is green now ;)
+	
 	
 2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
 
