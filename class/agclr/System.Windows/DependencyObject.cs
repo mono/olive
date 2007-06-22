@@ -339,159 +339,119 @@ namespace System.Windows {
 			
 			CheckNative ();
 			
-			IntPtr x = NativeMethods.dependency_object_get_value (native, property.native);
-			if (x == IntPtr.Zero){
-				if (property.IsValueType && !property.IsNullable)
-					Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, property.Name);
-				
-				return null;
-			}
-
-			Kind k;
 			unsafe {
-				byte *px = (byte *) x;
-				k = (Kind) (*((int *)px));
-
-				px += 8;
+				Value* val = (Value*)NativeMethods.dependency_object_get_value (native, property.native);
+				if (val == null) {
+					if (property.IsValueType && !property.IsNullable)
+						Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, property.Name);
 				
-				switch (k) {
+					return null;
+				}
+
+				switch (val->k) {
 				case Kind.INVALID:
 					return null;
 					
 				case Kind.BOOL:
-					if ((*((int *) px)) == 0)
-						return false;
-					return true;
+					return (val->u.i32 == 0) ? false : true;
 					
 				case Kind.DOUBLE:
-					return *((double *) px);
+					return val->u.d;
 					
 				case Kind.UINT64:
-					return *((ulong *) px);
+					return val->u.ui64;
 					
 				case Kind.INT64:
-					return *((long *) px);
+					return val->u.i64;
 					
 				case Kind.TIMESPAN:
-					long v = *((long *) px);
-					return new TimeSpan (v);
+					return new TimeSpan (val->u.i64);
 						
 				case Kind.INT32:
-					return *((int *) px);
+					return val->u.i32;
 
 				case Kind.STRING:
-					IntPtr ptr = Marshal.ReadIntPtr((IntPtr) px);
-					string str = Marshal.PtrToStringAuto (ptr);
-					return str;
+					return Marshal.PtrToStringAuto (val->u.p);
 
 				case Kind.POINT: {
-					IntPtr vptr = *((IntPtr *) px);
-					double *dp = (double *) vptr;
-					
-					return new Point (dp [0], dp [1]);
+					UnmanagedPoint *point = (UnmanagedPoint*)val->u.p;
+					return new Point (point->x, point->y);
 				}
 					
 				case Kind.RECT: {
-					IntPtr vptr = *((IntPtr *) px);
-					double *dp = (double *) vptr;
-					
-					return new Rect (dp [0], dp [1], dp [2], dp [3]);				
+					UnmanagedRect *rect = (UnmanagedRect*)val->u.p;
+					return new Rect (rect->left, rect->top, rect->width, rect->height);
 				}
 				
 				case Kind.DOUBLE_ARRAY: {
-					IntPtr vptr = *((IntPtr *) px);
-					int count = *(int*) vptr;
-					double * data = (double*) ((byte*)vptr + 8);
-					double [] values = new double [count];
-					for (int i = 0; i < count; i++) {
+					UnmanagedArray *array = (UnmanagedArray*)val->u.p;
+					double * data = (double*)array->values;
+					double [] values = new double [array->count];
+					for (int i = 0; i < array->count; i++) {
 						values [i] = data [i];
 					}
 					return values;
 				}
 					
 				case Kind.POINT_ARRAY: {
-					IntPtr vptr = *((IntPtr *) px);
-					int count = *(int*) vptr;
-					Point * data = (Point*) ((byte*)vptr + 8);
-					Point [] values = new Point [count];
-					for (int i = 0; i < count; i++) {
-						values [i] = data [i];
+					UnmanagedArray *array = (UnmanagedArray*)val->u.p;
+					UnmanagedPoint * data = (UnmanagedPoint*)array->values;
+					Point [] values = new Point [array->count];
+					for (int i = 0; i < array->count; i++) {
+						values [i] = new Point (data [i].x, data[i].y);
 					}
 					return values;
 				}
 					
 				case Kind.COLOR: {
-					IntPtr vptr = *((IntPtr *) px);
-					if (vptr == IntPtr.Zero)
+					UnmanagedColor *color = (UnmanagedColor*)val->u.p;
+					if (color == null)
 						return new Color ();
-					
-					double *dp = (double *) vptr;
-					
-					return Color.FromScRgb ((float) dp [3], (float) dp [0], (float) dp [1], (float)dp [2]);
+					return Color.FromScRgb ((float)color->a, (float)color->r, (float)color->g, (float)color->b);
 				}
 					
-				case Kind.MATRIX:
-				{
-					IntPtr vptr = *((IntPtr *) px);
-					if (vptr == IntPtr.Zero)
-						return new Matrix ();
-					
-					double *dp = (double *) vptr;
+				case Kind.MATRIX: {
+					double *dp = (double*)val->u.p;
 					
 					return new Matrix (dp [0], dp [1], dp [2], dp [3], dp [4], dp [5]);					
-					
 				}
 					
-				case Kind.DURATION: 
-				{
-					IntPtr vptr = *((IntPtr *) px);
-					if (vptr == IntPtr.Zero)
+				case Kind.DURATION: {
+					UnmanagedDuration* duration = (UnmanagedDuration*)val->u.p;
+					if (duration == null)
 						return Duration.Automatic;
-					
-					int kind = Marshal.ReadInt32 (vptr);
-					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + 8));
 
-					return new Duration (kind, new TimeSpan (ticks));					
+					return new Duration (duration->kind, new TimeSpan (duration->timespan));
 				}
 					
-				case Kind.KEYTIME:
-				{
-					IntPtr vptr = *((IntPtr *) px);
-					byte* bptr = (byte*) vptr;
-					
-					if (vptr == IntPtr.Zero)
+				case Kind.KEYTIME: {
+					UnmanagedKeyTime* keytime = (UnmanagedKeyTime*)val->u.p;
+					if (keytime == null)
 						return KeyTime.Uniform;
-					
-					int kind = * (int*) (bptr);
-					double percent = * (double*) (bptr + 8);
-					long ticks = * (long*) (bptr + 8 + sizeof(double));
-					                                                                    
-					return new KeyTime ((KeyTimeType) kind, percent, new TimeSpan (ticks));
+					return new KeyTime ((KeyTimeType) keytime->kind, keytime->percent, new TimeSpan (keytime->timespan));
 				}
 					
-				case Kind.REPEATBEHAVIOR:
-				{
-					IntPtr vptr = *((IntPtr *) px);
-					if (vptr == IntPtr.Zero)
+				case Kind.REPEATBEHAVIOR: {
+					UnmanagedRepeatBehavior *repeat = (UnmanagedRepeatBehavior*)val->u.p;
+					if (repeat == null)
 						return new RepeatBehavior ();
-					
-					return (RepeatBehavior) Marshal.PtrToStructure (vptr, typeof (RepeatBehavior));					
+
+					return new RepeatBehavior (repeat->kind, repeat->count, new TimeSpan (repeat->timespan));
 				}
 
 				}
 
 				//
 				// If it is a dependency object
-				if (k > Kind.DEPENDENCY_OBJECT){
-					IntPtr vptr = *((IntPtr *) px);
-					if (vptr == IntPtr.Zero)
-						return null;
+				if (val->k > Kind.DEPENDENCY_OBJECT){
+ 					if (val->u.p == IntPtr.Zero)
+ 						return null;
 					
-					return DependencyObject.Lookup (k, vptr);
+ 					return DependencyObject.Lookup (val->k, val->u.p);
 				}
-			}
 
-			throw new NotImplementedException (String.Format ("Do not know how to convert {0}", k));
+				throw new NotImplementedException (String.Format ("Do not know how to convert {0}", val->k));
+			}
 		}
 
 		//

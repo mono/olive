@@ -31,22 +31,68 @@ using System.Runtime.InteropServices;
 
 namespace Mono {
 
+	public struct UnmanagedRepeatBehavior {
+		public int kind;
+		int padding;
+		public double count;
+		public long timespan;
+	}
+
+	public struct UnmanagedKeyTime {
+		public int kind;
+		int padding;
+		public double percent;
+		public long timespan;
+	}
+
+	public struct UnmanagedDuration {
+		public int kind;
+		int padding;
+		public long timespan;
+	}
+
+	public struct UnmanagedColor {
+		public double r;
+		public double g;
+		public double b;
+		public double a;
+	}
+
+	public struct UnmanagedArray {
+		public int count;
+		public IntPtr values;
+	}
+
+	public struct UnmanagedPoint {
+		public double x;
+		public double y;
+	}
+
+	public struct UnmanagedRect {
+		public double left;
+		public double top;
+		public double width;
+		public double height;
+	}
+
+	[StructLayout(LayoutKind.Explicit)]
+	public struct ValUnion {
+		[FieldOffset(0)] public double d;
+		[FieldOffset(0)] public long i64;
+		[FieldOffset(0)] public ulong ui64;
+		[FieldOffset(0)] public int i32;
+		[FieldOffset(0)] public IntPtr p;
+	}
+
 	[StructLayout(LayoutKind.Explicit)]
 	public struct Value {
-
 		[FieldOffset (0)]
 		public Kind k;
 
-		// this needs to be 8 (so don't change it) so that the
-		// overall structure is large enough on 64 bit
-		// systems.  alternatively we could have just used
-		// another int field here to pad it
-		// correctly.. regardless, since we never use this
-		// field in the C# code, and we advance by IntPtr.Size
-		// to give us the proper padding, this should work,
-		// even for 32 bit systems.
+		[FieldOffset (4)]
+		int padding;
 
 		[FieldOffset (8)]
-		public long vlong; // The biggest size
+		public ValUnion u;
 	}
 }

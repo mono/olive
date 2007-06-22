@@ -34,7 +34,14 @@ namespace System.Windows.Media.Animation {
 		int kind;
 		double count;
 		TimeSpan duration;
-		
+
+		internal RepeatBehavior (int kind, double count, TimeSpan duration)
+		{
+			this.kind = kind;
+			this.count = count;
+			this.duration = duration;
+		}
+
 		public RepeatBehavior (double count)
 		{
 			kind = DOUBLE;

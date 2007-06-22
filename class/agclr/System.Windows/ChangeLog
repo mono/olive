@@ -1,3 +1,9 @@
+2007-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (GetValue): make this *gobs* cleaner by just
+	using the fields in the value structure as opposed to using byte
+	pointers and constant offsets.
+
 2007-06-21  Chris Toshok  <toshok@ximian.com>
 
 	* DependencyObject.cs: 64 bit work with grendel.
