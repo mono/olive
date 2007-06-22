@@ -1,3 +1,11 @@
+2007-06-22  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (SetValue<T>): call FreeValue after
+	dependency_object_set_value.
+	(FreeValue): free's the memory we allocated in GetAsValue since
+	the unmanaged SetValue method will have copied it (by virtue of
+	Value's copy ctor).
+
 2007-06-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* DependencyObject.cs: Changed implementation of GetAsValue to match

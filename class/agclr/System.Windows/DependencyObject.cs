@@ -576,6 +576,26 @@ namespace System.Windows {
 			return value;
 		}
 
+		static void FreeValue (Value val)
+		{
+			switch (val.k) {
+			case Kind.STRING:
+			case Kind.COLOR:
+			case Kind.POINT:
+			case Kind.RECT:
+			case Kind.REPEATBEHAVIOR:
+			case Kind.DURATION:
+			case Kind.INT64:
+			case Kind.TIMESPAN:
+			case Kind.DOUBLE_ARRAY:
+			case Kind.POINT_ARRAY:
+			case Kind.KEYTIME:
+			case Kind.MATRIX:
+				Marshal.FreeHGlobal (val.u.p);
+				break;
+			}
+		}
+
 
 		//
 		// This signature seems incredibly painful, why make
@@ -613,6 +633,8 @@ namespace System.Windows {
 				v = GetAsValue (Convert.ChangeType (obj, property.type));
 			
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
+
+			FreeValue (v);
 		}
 
 		public DependencyObject FindName (string name)
