@@ -14,7 +14,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			this.Initial = Initial;
 		}
 	}
-
- 
-
 }

@@ -1,3 +1,8 @@
+2007-06-22  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* ParserTest.cs : Add a test and fix typo
+	* TokenizerTest.cs : fix typo
+	
 2007-06-19  Olivier Dufour <olivier.duff@gmail.com>
 
 	* TokenizerTest.cs

@@ -18,7 +18,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			this.operatorLocation = OperatorLocation;
 		}
 	}
-
- 
-
 }

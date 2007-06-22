@@ -27,6 +27,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			this.RightParenLocation = RightParenLocation;
 		}
 	}
-
-
 }

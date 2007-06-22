@@ -13,6 +13,5 @@ namespace Microsoft.JScript.Compiler.ParseTree
 		{
 			this.Children = Children;
 		}
-
 	}
 }

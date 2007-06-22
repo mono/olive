@@ -28,8 +28,6 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			DList<Statement, BlockStatement > list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement,BlockStatement>.Iterator(list);
 			Assert.IsInstanceOfType (typeof(VariableDeclarationStatement), it.Element, "#1.1");
-			//VariableDeclarationStatement var = ((VariableDeclarationStatement)it.Element);
-			//TODO check value 10
 			Assert.IsTrue (parser.SyntaxOK ());
 		}
 
@@ -93,7 +91,16 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			Assert.IsInstanceOfType (typeof (DoStatement), it.Element, "#6.1");
 			DoStatement dost = ((DoStatement)it.Element);
 			Assert.AreEqual (Expression.Operation.@true, dost.Condition.Opcode, "#6.2");
-			Assert.IsTrue (parser.SyntaxOK ());
+			Assert.IsTrue (parser.SyntaxOK (), PrintSyntax ("#6", parser));
+		}
+
+		private string PrintSyntax (string id, Parser parser)
+		{
+			string result = string.Empty;
+			foreach (Diagnostic d in parser.Diagnostics) {
+				result += (id + Enum.GetName (typeof (DiagnosticCode), d.Code));
+			}
+			return result;
 		}
 
 		[Test]
@@ -105,10 +112,24 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
 			Assert.IsInstanceOfType (typeof (DeclarationForStatement), it.Element, "#7.1");
 			DeclarationForStatement forst = ((DeclarationForStatement)it.Element);
-			//Assert.AreEqual (Expression.Operation.@true, forst.Initial.i.Condition.Opcode, "#7.2");
-			//TODO
 			Assert.IsTrue (parser.SyntaxOK ());
 		}
 
+		[Test]
+		public void AddTest ()
+		{
+			Parser parser = new Parser ("var i = 5 + 1;".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (VariableDeclarationStatement), it.Element, "#8.1");
+			VariableDeclarationStatement varst = ((VariableDeclarationStatement)it.Element);
+			Assert.AreEqual ("i", varst.Declarations[0].Declaration.Name.Spelling, "#8.2");
+			Assert.IsInstanceOfType (typeof (InitializerVariableDeclaration), varst.Declarations[0].Declaration, "#8.3");
+			InitializerVariableDeclaration ini = (InitializerVariableDeclaration)varst.Declarations[0].Declaration;
+			Assert.IsInstanceOfType (typeof (BinaryOperatorExpression), ini.Initializer, "#8.4");
+			Assert.AreEqual (Expression.Operation.Plus, ini.Initializer.Opcode, "#8.5");			 
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
 	}
 }

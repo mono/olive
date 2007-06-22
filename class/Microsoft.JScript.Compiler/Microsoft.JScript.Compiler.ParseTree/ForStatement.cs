@@ -22,7 +22,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			this.SecondSemicolon = SecondSemicolon;
 		}
 	}
-
- 
-
 }

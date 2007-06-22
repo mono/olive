@@ -11,7 +11,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 		{
 		}
 	}
-
- 
-
 }

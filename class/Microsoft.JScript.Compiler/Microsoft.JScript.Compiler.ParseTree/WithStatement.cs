@@ -18,6 +18,9 @@ namespace Microsoft.JScript.Compiler.ParseTree
 		{
 			this.LeftParen = LeftParen;
 			this.RightParen = RightParen;
+			this.Body = Body;
+			this.HeaderLocation = HeaderLocation;
+			this.Scope = Scope;
 		}
 	}
 }

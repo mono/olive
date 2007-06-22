@@ -12,7 +12,6 @@ namespace Microsoft.JScript.Compiler.ParseTree
 		public readonly TextSpan HeaderLocation;
 
 		public CaseClause(DList<Statement, CaseClause> Children, TextSpan Location, TextSpan HeaderLocation, TextPoint Colon)
-
 		{
 			this.colon = Colon;
 			this.location = Location;

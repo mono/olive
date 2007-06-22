@@ -14,6 +14,4 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			this.Expression = Expression;
 		}
 	}
-
-
 }

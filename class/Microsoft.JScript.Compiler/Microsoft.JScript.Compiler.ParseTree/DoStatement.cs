@@ -14,8 +14,8 @@ namespace Microsoft.JScript.Compiler.ParseTree
 			:base(Operation.Do, Body, Location, LeftParen, RightParen)
 		{
 			this.While = While;
+			this.Condition = Condition;
+			this.HeaderLocation = HeaderLocation;
 		}
 	}
-
-
 }

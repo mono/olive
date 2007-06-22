@@ -35,11 +35,11 @@ namespace Microsoft.JScript.Compiler
 			DList<Statement, BlockStatement> result = new DList<Statement, BlockStatement> ();
 			
 			while (current.Kind != Token.Type.EndOfInput) {
-				Next ();
 				if (current.Kind == Token.Type.function)
 					result.Append (ParseFunctionDeclaration ());
 				else
 					result.Append (ParseStatement ());
+				Next ();
 			}
 			Comments = lexer.Comments;
 			return result;
@@ -191,7 +191,7 @@ namespace Microsoft.JScript.Compiler
 					Next ();
 					Expression initializer = ParseExpression ();
 					declaration = new InitializerVariableDeclaration (name, initializer, new TextSpan (start2, current), new TextPoint (start2.StartPosition));
-					Next ();
+					//Next ();
 				}
 				else
 					declaration = new VariableDeclaration (name, new TextSpan (current, current));
@@ -210,10 +210,13 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
 			Token leftParen = current;
+			Next ();
 			Expression condition = ParseExpression ();
 			CheckSyntaxExpected (Token.Type.RightParenthesis);
 			Token rightParen = current;
+			Next ();
 			Statement ifBody = ParseStatement ();
+			Next ();
 			Statement elseBody = null;
 			TextPoint elsePoint = new TextPoint();
 			if (current.Kind == Token.Type.@else) {
@@ -229,6 +232,7 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			CheckSyntaxExpected (Token.Type.LeftParenthesis);
 			Token leftParen = current;
+			Next ();
 			Expression condition = ParseExpression ();
 			CheckSyntaxExpected (Token.Type.RightParenthesis);
 			Token rightParen = current;
@@ -273,7 +277,7 @@ namespace Microsoft.JScript.Compiler
 
 			if (current.Kind == Token.Type.var) {
 				VariableDeclarationStatement varDecl = ParseVarDeclaration ();
-
+				
 				if (current.Kind == Token.Type.@in) {
 					//DeclarationForInStatement
 					Token inToken = current;
@@ -298,6 +302,7 @@ namespace Microsoft.JScript.Compiler
 					firstSemiColon = current;
 					Next ();
 					condition = ParseExpression ();
+					
 					CheckSyntaxExpected (Token.Type.Semicolon);
 					secondSemiColon = current;
 					Next ();
@@ -561,7 +566,6 @@ namespace Microsoft.JScript.Compiler
 					Next ();
 					expr = ParseExpression ();
 					CheckSyntaxExpected (Token.Type.RightParenthesis);
-					Next ();
 					break;
 				//end primary
 				case Token.Type.function:
@@ -570,7 +574,6 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.@new:
 					Next ();
 					Expression target = ParseExpression ();
-					Next ();
 					ArgumentList arguments;
 					if (current.Kind == Token.Type.LeftParenthesis) {
 						arguments = this.ParseArgumentList ();
@@ -583,6 +586,7 @@ namespace Microsoft.JScript.Compiler
 					SyntaxError.Add ("expression start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
 					return new Expression (Expression.Operation.SyntaxError, new TextSpan (start, current));
 			}
+			Next (); // to go ahead for other part
 			return ParseRightExpression (expr);
 		}
 
@@ -591,23 +595,28 @@ namespace Microsoft.JScript.Compiler
 		private Expression ParseRightExpression (Expression expr)
 		{
 			Token start = current;
-
+			
 			switch (current.Kind) {
 				case Token.Type.LeftParenthesis:
 					ArgumentList argumentList = ParseArgumentList ();
-					return new InvocationExpression (expr, argumentList, Expression.Operation.Invocation, new TextSpan (start, current));
+					expr = new InvocationExpression (expr, argumentList, Expression.Operation.Invocation, new TextSpan (start, current));
+					Next ();
+					break;
 				case Token.Type.LeftBracket:
 					Next ();
 					Expression subscript = ParseExpression ();
-					Next ();
 					CheckSyntaxExpected (Token.Type.RightBracket);
-					return new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
+					expr = new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
+					Next ();
+					break;
 				case Token.Type.Dot:
 					Next ();
 					Identifier id = null;
 					if (CheckSyntaxExpected (Token.Type.Identifier))
 						id = ((IdentifierToken)current).Spelling;
-					return new QualifiedExpression (expr, id, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
+					expr = new QualifiedExpression (expr, id, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
+					Next ();
+					break;
 			}
 			return expr;
 		}
@@ -615,13 +624,15 @@ namespace Microsoft.JScript.Compiler
 		private Expression ParsePostfixExpression ()
 		{
 			Expression expr = ParseLeftHandSideExpression ();
-			Next();
+			
 			switch (current.Kind) {
 				case Token.Type.PlusPlus :
 					expr = new UnaryOperatorExpression (expr, Expression.Operation.PostfixPlusPlus, new TextSpan (expr.Location.StartLine, expr.Location.StartColumn, current.StartLine, current.StartColumn + current.Width, expr.Location.StartPosition, current.StartPosition+current.Width));
+					Next ();
 					break;
 				case Token.Type.MinusMinus:
 					expr = new UnaryOperatorExpression (expr, Expression.Operation.PostfixMinusMinus, new TextSpan (expr.Location.StartLine, expr.Location.StartColumn, current.StartLine, current.StartColumn + current.Width, expr.Location.StartPosition, current.StartPosition + current.Width));
+					Next ();
 					break;
 			}
 			return expr;
@@ -634,40 +645,40 @@ namespace Microsoft.JScript.Compiler
 			// get by first token
 			switch (current.Kind) {
 				case Token.Type.delete:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.delete, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.@void:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@void, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.@typeof:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@typeof, new TextSpan (start, current));
+					Next (); 
 					break;
 				case Token.Type.PlusPlus:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlusPlus, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.MinusMinus:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinusMinus, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.Plus:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlus, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.Minus:
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinus, new TextSpan (start, current)); 
 					Next ();
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinus, new TextSpan (start, current));
 					break;
 				case Token.Type.Tilda:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Tilda, new TextSpan (start, current));
+					Next ();
 					break;
 				case Token.Type.Bang:
-					Next ();
 					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Bang, new TextSpan (start, current));
+					Next ();
 					break;
 				default:
 					expr = ParsePostfixExpression ();
@@ -904,7 +915,6 @@ namespace Microsoft.JScript.Compiler
 		{
 			Token start = current;
 			Expression expr = ParselogicalORExpression (noIn);
-			Expression.Operation op;
 			if (current.Kind == Token.Type.Question) {
 				Next ();
 				Expression second = ParseAssignmentExpression (noIn);
@@ -960,7 +970,7 @@ namespace Microsoft.JScript.Compiler
 					op = Expression.Operation.BarEqual;
 					break;
 				default:
-					return ParseConditionalExpression (noIn);
+					return expr;
 			}
 			//only left hand side expression
 			if (expr is TernaryOperatorExpression
