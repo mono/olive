@@ -353,7 +353,7 @@ namespace System.Windows {
 					return null;
 					
 				case Kind.BOOL:
-					return (val->u.i32 == 0) ? false : true;
+					return val->u.i32 != 0;
 					
 				case Kind.DOUBLE:
 					return val->u.d;
@@ -385,20 +385,17 @@ namespace System.Windows {
 				
 				case Kind.DOUBLE_ARRAY: {
 					UnmanagedArray *array = (UnmanagedArray*)val->u.p;
-					double * data = (double*)array->values;
 					double [] values = new double [array->count];
-					for (int i = 0; i < array->count; i++) {
-						values [i] = data [i];
-					}
+					Marshal.Copy ((IntPtr) (&array->first_d), values, 0, array->count);
 					return values;
 				}
 					
 				case Kind.POINT_ARRAY: {
 					UnmanagedArray *array = (UnmanagedArray*)val->u.p;
-					UnmanagedPoint * data = (UnmanagedPoint*)array->values;
 					Point [] values = new Point [array->count];
+					Point* first = (Point*) &array->first_pnt;
 					for (int i = 0; i < array->count; i++) {
-						values [i] = new Point (data [i].x, data[i].y);
+						values [i] = first [i];
 					}
 					return values;
 				}
@@ -459,12 +456,8 @@ namespace System.Windows {
 		//
 		internal static Value GetAsValue (object v)
 		{
-			Value value;
+			Value value = new Value ();
 			unsafe {
-				void *vp = &value;
-				byte *p = (byte *) vp;
-				p += 8;
-
 				if (v is DependencyObject){
 					DependencyObject dov = (DependencyObject) v;
 
@@ -478,31 +471,26 @@ namespace System.Windows {
 					//
 					objects [dov.native] = dov;
 					value.k = dov.GetKind ();
-					if (value.k == Kind.DEPENDENCY_OBJECT){
-						throw new NotImplementedException (
-                                                  String.Format ("Class {0} does not implement GetKind", dov));
-					}
-
-					*((IntPtr *) p) = dov.native;
+					value.u.p = dov.native;
 				} else if (v is int || (v.GetType ().IsEnum && v.GetType ().GetElementType () == typeof (int))){
 					value.k = Kind.INT32;
-					*((int *) p) = (int) v;
+					value.u.i32 = (int) v;
 				} else if (v is bool){
 					value.k = Kind.BOOL;
-					*((int *) p) = ((bool)v) ? 1 : 0;
+					value.u.i32 = ((bool) v) ? 1 : 0;
 				} else if (v is double){
 					value.k = Kind.DOUBLE;
-					*((double *) p) = (double) v;
+					value.u.d = (double) v;
 				} else if (v is long){
 					value.k = Kind.INT64;
-					*((long *) p) = (long) v;
+					value.u.i64 = (long) v;
 				} else if (v is TimeSpan) {
 					TimeSpan ts = (TimeSpan) v;
 					value.k = Kind.TIMESPAN;
-					*((long *) p) = ts.Ticks;
+					value.u.i64 = ts.Ticks;
 				} else if (v is ulong){
 					value.k = Kind.UINT64;
-					*((ulong *) p) = (ulong) v;
+					value.u.ui64 = (ulong) v;
 				} else if (v is string){
 					value.k = Kind.STRING;
 
@@ -511,85 +499,75 @@ namespace System.Windows {
 					Marshal.Copy (bytes, 0, result, bytes.Length);
 					Marshal.WriteByte (result, bytes.Length, 0);
 
-					*((IntPtr *) p) = result;
+					value.u.p = result;
 				} else if (v is double []){
 					double [] dv = (double []) v;
 
 					value.k = Kind.DOUBLE_ARRAY;
-					IntPtr result = Marshal.AllocHGlobal (8 + sizeof (double) * dv.Length);
-					int *ip = (int *) result;
-					ip [0] = dv.Length;
-					ip [1] = 1;  // refcount;
-					double *dp = (double *) ip;
-					dp++;
-					foreach (double d in dv)
-						*dp++ = d;
-					
-					*((IntPtr *) p) = result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (double) * dv.Length);
+					UnmanagedArray* array = (UnmanagedArray*) value.u.p;
+					array->count = dv.Length;
+					array->refcount = 1;
+					Marshal.Copy (dv, 0, (IntPtr) (&array->first_d), array->count);
 				} else if (v is Point []){
 					Point [] dv = (Point []) v;
 
 					value.k = Kind.POINT_ARRAY;
-					IntPtr result = Marshal.AllocHGlobal (8 + sizeof (Point) * dv.Length);
-					int *ip = (int *) result;
-					ip [0] = dv.Length;
-					ip [1] = 1;  // refcount;
-					Point * dp = (Point *) ((byte*) ip + 8);
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (Point) * dv.Length);
+					UnmanagedArray* array = (UnmanagedArray*) value.u.p;
+					array->count = dv.Length;
+					array->refcount = 1;
+					Point * dp = (Point*) &array->first_pnt;
 					for (int i = 0; i < dv.Length; i++)
 						dp [i] = dv [i];
 					
-					*((IntPtr *) p) = result;
 				} else if (v is Rect) {
 					Rect rect = (Rect) v;
 					value.k = Kind.RECT;
-					IntPtr result = Marshal.AllocHGlobal (sizeof (Rect));
-					Marshal.StructureToPtr (rect, result, false);
-					*((IntPtr *) p) = result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (Rect));
+					Marshal.StructureToPtr (rect, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Point) {
 					Point pnt = (Point) v;
 					value.k = Kind.POINT;
-					IntPtr result = Marshal.AllocHGlobal (sizeof (Point));
-					Marshal.StructureToPtr (pnt, result, false);
-					*((IntPtr *) p) = result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (Point));
+					Marshal.StructureToPtr (pnt, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Color){
 					Color c = (Color) v;
 					value.k = Kind.COLOR;
-					double * result = (double*) Marshal.AllocHGlobal (sizeof (double) * 4);
-					result [0] = c.ScR;
-					result [1] = c.ScG;
-					result [2] = c.ScB;
-					result [3] = c.ScA;
-					*((IntPtr *) p) = (IntPtr)result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedColor));
+					UnmanagedColor* color = (UnmanagedColor*) value.u.p;
+					color->r = c.ScR;
+					color->g = c.ScG;
+					color->b = c.ScB;
+					color->a = c.ScA;
 				} else if (v is Matrix) {
 					Matrix mat = (Matrix) v;
 					value.k = Kind.MATRIX;
-					double * result = (double*) Marshal.AllocHGlobal (sizeof (double) * 6);
-					result [0] = mat.M11;
-					result [1] = mat.M12;
-					result [2] = mat.M21;
-					result [3] = mat.M22;
-					result [4] = mat.OffsetX;
-					result [5] = mat.OffsetY;
-					*((IntPtr *) p) = (IntPtr)result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (double) * 6);
+					Marshal.StructureToPtr (mat, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Duration) {
 					Duration d = (Duration) v;
 					value.k = Kind.DURATION;
-					IntPtr result = Marshal.AllocHGlobal (sizeof (Duration));
-					Marshal.WriteInt32 (result, d.KindInternal);
-					Marshal.WriteInt64 ((IntPtr) ((byte*) result + 8), d.TimeSpanInternal.Ticks);
-					*((IntPtr *) p) = result;
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedDuration));
+					UnmanagedDuration* duration = (UnmanagedDuration*) value.u.p;
+					duration->kind = d.KindInternal;
+					duration->timespan = d.TimeSpanInternal.Ticks;
 				} else if (v is KeyTime) {
 					KeyTime k = (KeyTime) v;
 					value.k = Kind.KEYTIME;
-					IntPtr result = Marshal.AllocHGlobal (sizeof (KeyTime));
-					Marshal.StructureToPtr (k, result, false);
-					*((IntPtr *) p) = result;					
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedKeyTime));
+					UnmanagedKeyTime* keytime = (UnmanagedKeyTime*) value.u.p;
+					keytime->kind = (int) k.type;
+					keytime->percent = k.percent;
+					keytime->timespan = k.time_span.Ticks;
 				} else if (v is RepeatBehavior) {
 					RepeatBehavior d = (RepeatBehavior) v;
 					value.k = Kind.REPEATBEHAVIOR;
-					IntPtr result = Marshal.AllocHGlobal (sizeof (RepeatBehavior));
-					Marshal.StructureToPtr (d, result, false);
-					*((IntPtr *) p) = result;					
+					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedRepeatBehavior));
+					UnmanagedRepeatBehavior* rep = (UnmanagedRepeatBehavior*) value.u.p;
+					rep->kind = d.kind;
+					rep->count = d.count;
+					rep->timespan = d.duration.Ticks;
 				} else {
 					throw new NotImplementedException (
 						String.Format ("Do not know how to encode {0} yet", v.GetType ()));

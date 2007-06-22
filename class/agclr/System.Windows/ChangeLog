@@ -1,3 +1,8 @@
+2007-06-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Changed implementation of GetAsValue to match
+	  toshok's implementation of GetValue.
+
 2007-06-22  Chris Toshok  <toshok@ximian.com>
 
 	* DependencyObject.cs (GetValue): make this *gobs* cleaner by just
