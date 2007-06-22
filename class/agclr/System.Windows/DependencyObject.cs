@@ -352,7 +352,7 @@ namespace System.Windows {
 				byte *px = (byte *) x;
 				k = (Kind) (*((int *)px));
 
-				px += IntPtr.Size;
+				px += 8;
 				
 				switch (k) {
 				case Kind.INVALID:
@@ -449,7 +449,7 @@ namespace System.Windows {
 						return Duration.Automatic;
 					
 					int kind = Marshal.ReadInt32 (vptr);
-					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + IntPtr.Size));
+					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + 8));
 
 					return new Duration (kind, new TimeSpan (ticks));					
 				}
@@ -463,8 +463,8 @@ namespace System.Windows {
 						return KeyTime.Uniform;
 					
 					int kind = * (int*) (bptr);
-					double percent = * (double*) (bptr + IntPtr.Size);
-					long ticks = * (long*) (bptr + IntPtr.Size + 8);
+					double percent = * (double*) (bptr + 8);
+					long ticks = * (long*) (bptr + 8 + sizeof(double));
 					                                                                    
 					return new KeyTime ((KeyTimeType) kind, percent, new TimeSpan (ticks));
 				}
@@ -503,7 +503,7 @@ namespace System.Windows {
 			unsafe {
 				void *vp = &value;
 				byte *p = (byte *) vp;
-				p += IntPtr.Size;
+				p += 8;
 
 				if (v is DependencyObject){
 					DependencyObject dov = (DependencyObject) v;
@@ -616,7 +616,7 @@ namespace System.Windows {
 					value.k = Kind.DURATION;
 					IntPtr result = Marshal.AllocHGlobal (sizeof (Duration));
 					Marshal.WriteInt32 (result, d.KindInternal);
-					Marshal.WriteInt64 ((IntPtr) ((byte*) result + IntPtr.Size), d.TimeSpanInternal.Ticks);
+					Marshal.WriteInt64 ((IntPtr) ((byte*) result + 8), d.TimeSpanInternal.Ticks);
 					*((IntPtr *) p) = result;
 				} else if (v is KeyTime) {
 					KeyTime k = (KeyTime) v;
