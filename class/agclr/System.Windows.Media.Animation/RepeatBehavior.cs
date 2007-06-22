@@ -31,9 +31,9 @@ namespace System.Windows.Media.Animation {
 		const int DOUBLE = 1;
 		const int TIMESPAN = 2;
 
-		int kind;
-		double count;
-		TimeSpan duration;
+		internal int kind;
+		internal double count;
+		internal TimeSpan duration;
 
 		internal RepeatBehavior (int kind, double count, TimeSpan duration)
 		{

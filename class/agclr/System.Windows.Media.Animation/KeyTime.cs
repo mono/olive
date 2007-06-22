@@ -34,9 +34,9 @@ namespace System.Windows.Media.Animation {
 	
 	public struct KeyTime
 	{
-		private KeyTimeType type;
-		private double percent;
-		private TimeSpan time_span;
+		internal KeyTimeType type;
+		internal double percent;
+		internal TimeSpan time_span;
 	
 		internal KeyTime (KeyTimeType type, double percent, TimeSpan time_span)
 		{

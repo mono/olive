@@ -1,3 +1,8 @@
+2007-06-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* RepeatBehavior.cs, KeyTime.cs: Make fields internal so the DO
+	  marshaller can get them.
+
 2007-06-20  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* SplineColorKeyFrame.cs, DiscreteColorKeyFrame.cs,
