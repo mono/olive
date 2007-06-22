@@ -37,7 +37,16 @@ namespace Mono {
 		[FieldOffset (0)]
 		public Kind k;
 
-		[FieldOffset (4)]
+		// this needs to be 8 (so don't change it) so that the
+		// overall structure is large enough on 64 bit
+		// systems.  alternatively we could have just used
+		// another int field here to pad it
+		// correctly.. regardless, since we never use this
+		// field in the C# code, and we advance by IntPtr.Size
+		// to give us the proper padding, this should work,
+		// even for 32 bit systems.
+
+		[FieldOffset (8)]
 		public long vlong; // The biggest size
 	}
 }

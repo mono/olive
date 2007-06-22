@@ -352,7 +352,7 @@ namespace System.Windows {
 				byte *px = (byte *) x;
 				k = (Kind) (*((int *)px));
 
-				px += 4;
+				px += IntPtr.Size;
 				
 				switch (k) {
 				case Kind.INVALID:
@@ -449,7 +449,7 @@ namespace System.Windows {
 						return Duration.Automatic;
 					
 					int kind = Marshal.ReadInt32 (vptr);
-					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + 4));
+					long ticks = Marshal.ReadInt64 ((IntPtr) ((byte*) vptr + IntPtr.Size));
 
 					return new Duration (kind, new TimeSpan (ticks));					
 				}
@@ -463,8 +463,8 @@ namespace System.Windows {
 						return KeyTime.Uniform;
 					
 					int kind = * (int*) (bptr);
-					double percent = * (double*) (bptr + 4);
-					long ticks = * (long*) (bptr + 12);
+					double percent = * (double*) (bptr + IntPtr.Size);
+					long ticks = * (long*) (bptr + IntPtr.Size + 8);
 					                                                                    
 					return new KeyTime ((KeyTimeType) kind, percent, new TimeSpan (ticks));
 				}
@@ -503,7 +503,7 @@ namespace System.Windows {
 			unsafe {
 				void *vp = &value;
 				byte *p = (byte *) vp;
-				p += 4;
+				p += IntPtr.Size;
 
 				if (v is DependencyObject){
 					DependencyObject dov = (DependencyObject) v;
@@ -592,7 +592,14 @@ namespace System.Windows {
 					Marshal.StructureToPtr (pnt, result, false);
 					*((IntPtr *) p) = result;
 				} else if (v is Color){
-					value = NativeMethods.value_color_from_argb (((Color) v).argb);
+					Color c = (Color) v;
+					value.k = Kind.COLOR;
+					double * result = (double*) Marshal.AllocHGlobal (sizeof (double) * 4);
+					result [0] = c.ScR;
+					result [1] = c.ScG;
+					result [2] = c.ScB;
+					result [3] = c.ScA;
+					*((IntPtr *) p) = (IntPtr)result;
 				} else if (v is Matrix) {
 					Matrix mat = (Matrix) v;
 					value.k = Kind.MATRIX;
@@ -609,7 +616,7 @@ namespace System.Windows {
 					value.k = Kind.DURATION;
 					IntPtr result = Marshal.AllocHGlobal (sizeof (Duration));
 					Marshal.WriteInt32 (result, d.KindInternal);
-					Marshal.WriteInt64 ((IntPtr) ((byte*) result + 4), d.TimeSpanInternal.Ticks);
+					Marshal.WriteInt64 ((IntPtr) ((byte*) result + IntPtr.Size), d.TimeSpanInternal.Ticks);
 					*((IntPtr *) p) = result;
 				} else if (v is KeyTime) {
 					KeyTime k = (KeyTime) v;
