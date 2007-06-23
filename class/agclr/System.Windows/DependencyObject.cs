@@ -659,5 +659,11 @@ namespace System.Windows {
 					string.Format ("Uninitialized object: this object ({0}) has not set its native handle or overwritten SetValue", GetType ().FullName));
 			}
 		}
+
+		internal static void Ping ()
+		{
+			// Here just to ensure that the static ctor is executed and
+			// runtime init is initialized from some entry points
+		}
 	}
 }

@@ -44,6 +44,7 @@ namespace System.Windows {
 
 		public static DependencyObject Load (string xaml)
 		{
+			DependencyObject.Ping ();
 			return Load (xaml, true);
 		}
 		
@@ -52,6 +53,7 @@ namespace System.Windows {
 			if (xaml == null)
 				throw new ArgumentNullException ("xaml");
 
+			DependencyObject.Ping ();
 			Kind kind;
 			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, custom_el_cb,
 					custom_at_cb, hookup_event_cb, out kind);
