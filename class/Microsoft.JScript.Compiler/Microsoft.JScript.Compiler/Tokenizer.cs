@@ -705,7 +705,7 @@ namespace Microsoft.JScript.Compiler
 			int startPosition = position;
 			int startLine = Line;
 			int startColumn = Column;
-			StringBuilder sb = new StringBuilder ();
+			StringBuilder sb = new StringBuilder ("/*");
 
 			int c = ReadChar ();
 
@@ -713,7 +713,7 @@ namespace Microsoft.JScript.Compiler
 				sb.Append ((char) c);
 				c = ReadChar ();
 			}
-
+			sb.Append ("*/");
 			if (PeekChar () == '/')
 				ReadChar ();
 
@@ -722,7 +722,7 @@ namespace Microsoft.JScript.Compiler
 
 		private void CreateLineComment ()
 		{
-			StringBuilder sb = new StringBuilder ();
+			StringBuilder sb = new StringBuilder ("//");
 			int startPosition = position;
 
 			int c = PeekChar ();

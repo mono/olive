@@ -1,3 +1,9 @@
+2007-06-23  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* ParserTest.cs : Add all statement test and temporary comment 
+					some test to make test work. It seems that we enter in an unending loop
+	* TokenizerTest.cs : fix test of block comment
+					
 2007-06-22  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* ParserTest.cs : Add a test and fix typo

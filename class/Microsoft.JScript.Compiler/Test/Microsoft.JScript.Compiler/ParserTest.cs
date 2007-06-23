@@ -11,19 +11,24 @@ namespace MonoTests.Microsoft.JScript.Compiler
 	[TestFixture]
 	public class ParserTest
 	{
+		Parser parser;
+
 		[Test]
 		public void SyntaxOKTest ()
 		{
-			Parser parser = new Parser ("var } function + i 'Hello',".ToCharArray());
+			/*parser = new Parser ("var } function + i 'Hello',".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			parser.ParseProgram (ref comments);
-			Assert.IsFalse (parser.SyntaxOK ());
+			Assert.IsFalse (parser.SyntaxOK ());*/
+			Assert.Fail ();
 		}
+
+		# region statements
 
 		[Test]
 		public void VarTest ()
 		{
-			Parser parser = new Parser ("var a = 10;".ToCharArray ());
+			parser = new Parser ("var a = 10;".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement > list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement,BlockStatement>.Iterator(list);
@@ -34,7 +39,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void FunctionTest ()
 		{
-			Parser parser = new Parser ("function foo() {}".ToCharArray ());
+			parser = new Parser ("function foo() {}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -47,7 +52,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void BlockTest ()
 		{
-			Parser parser = new Parser ("{}".ToCharArray ());
+			parser = new Parser ("{}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -58,7 +63,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void IfTest ()
 		{
-			Parser parser = new Parser ("if (true) { } else  ;".ToCharArray ());
+			parser = new Parser ("if (true) { } else  ;".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -71,7 +76,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void WhileTest ()
 		{
-			Parser parser = new Parser ("while (true) { }".ToCharArray ());
+			parser = new Parser ("while (true) { }".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -84,7 +89,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void DoWhileTest ()
 		{
-			Parser parser = new Parser ("do { }while (true);".ToCharArray ());
+			parser = new Parser ("do { }while (true);".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -106,14 +111,102 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void ForTest ()
 		{
-			Parser parser = new Parser ("for (var i = 0 ; i < 5 ; i++ ) { }".ToCharArray ());
+			/*parser = new Parser ("for (var i = 0 ; i < 5 ; i++ ) { break; }".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
 			Assert.IsInstanceOfType (typeof (DeclarationForStatement), it.Element, "#7.1");
 			DeclarationForStatement forst = ((DeclarationForStatement)it.Element);
+			Assert.IsInstanceOfType (typeof (BlockStatement), forst.Body, "#7.2");
+			it = new DList<Statement, BlockStatement>.Iterator (((BlockStatement)forst.Body).Children);
+			Assert.IsInstanceOfType (typeof (BreakOrContinueStatement), it.Element, "#7.3");
+			Assert.IsTrue (parser.SyntaxOK ());*/
+			Assert.Fail ();
+		}
+
+		[Test]
+		public void WithTest ()
+		{
+			//todo fix syntax error
+			parser = new Parser ("with (test) {}".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (WithStatement), it.Element, "#8.1");
 			Assert.IsTrue (parser.SyntaxOK ());
 		}
+
+		[Test]
+		public void switchTest ()
+		{
+			//todo fix syntax error
+			parser = new Parser ("switch (test) { case a: break; default: break;}".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (SwitchStatement), it.Element, "#9.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void TryTest ()
+		{
+			//todo fix syntax error
+			parser = new Parser ("try {} finally {}".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (TryStatement), it.Element, "#10.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void ThrowTest ()
+		{
+			parser = new Parser ("throw a;".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (ReturnOrThrowStatement), it.Element, "#11.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void ReturnTest ()
+		{
+			parser = new Parser ("return a;".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (ReturnOrThrowStatement), it.Element, "#12.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void EmptyTest ()
+		{
+			parser = new Parser (";".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.AreEqual (Statement.Operation.Empty, it.Element.Opcode, "#12.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void labelTest ()
+		{
+			parser = new Parser ("a : {}".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (LabelStatement), it.Element, "#12.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		#endregion
+
+		#region Expressions
 
 		[Test]
 		public void AddTest ()
@@ -131,5 +224,8 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			Assert.AreEqual (Expression.Operation.Plus, ini.Initializer.Opcode, "#8.5");			 
 			Assert.IsTrue (parser.SyntaxOK ());
 		}
+
+		#endregion
+
 	}
 }

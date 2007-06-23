@@ -58,7 +58,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		{
 			Tokenizer t = new Tokenizer ("// \n ;".ToCharArray (), new IdentifierTable ());
 			Assert.AreEqual (Token.Type.Semicolon, t.GetNext ().Kind, "#5.1");
-			Assert.AreEqual (" ",t.Comments[0].Spelling, "#5.1");
+			Assert.AreEqual ("// ",t.Comments[0].Spelling, "#5.1");
 		}
 
 		[Test]
@@ -66,7 +66,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		{
 			Tokenizer t = new Tokenizer ("/*abcdef*/ ;".ToCharArray (), new IdentifierTable ());
 			Assert.AreEqual (Token.Type.Semicolon, t.GetNext ().Kind, "#6.1");
-			Assert.AreEqual ("abcdef", t.Comments[0].Spelling, "#6.2");
+			Assert.AreEqual ("/*abcdef*/", t.Comments[0].Spelling, "#6.2");
 		}
 	}
 }

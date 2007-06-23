@@ -1,3 +1,8 @@
+2007-06-23  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Tokenizer.cs : fix block comment
+	* Parser.cs : add label and continue break test of syntax error
+	
 2007-06-22  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Parser.cs : badToken, labelStatement and octalStatement management

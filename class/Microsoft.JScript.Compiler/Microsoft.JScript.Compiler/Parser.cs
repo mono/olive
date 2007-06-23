@@ -25,6 +25,9 @@ namespace Microsoft.JScript.Compiler
 		private Token current;
 		private List<String> SyntaxError = new List<string>();
 		private bool syntaxIncomplete = false;
+		private int withinIteration;
+		private int withinSwitch;
+		private List<string> LabelSet = new List<string> ();
 
 		#endregion
 
@@ -32,8 +35,8 @@ namespace Microsoft.JScript.Compiler
 
 		public DList<Statement, BlockStatement> ParseProgram (ref List<Comment> Comments)
 		{
+			Init ();
 			DList<Statement, BlockStatement> result = new DList<Statement, BlockStatement> ();
-			
 			while (current.Kind != Token.Type.EndOfInput) {
 				if (current.Kind == Token.Type.function)
 					result.Append (ParseFunctionDeclaration ());
@@ -47,6 +50,7 @@ namespace Microsoft.JScript.Compiler
 				
 		public Expression ParseExpression (ref List<Comment> Comments)
 		{
+			Init ();
 			Expression ex = ParseExpression();
 			Comments = lexer.Comments;
 			return ex;
@@ -54,6 +58,7 @@ namespace Microsoft.JScript.Compiler
 
 		public Statement ParseStatement (ref List<Comment> Comments)
 		{
+			Init ();
 			Statement sta = ParseStatement ();
 			Comments = lexer.Comments;
 			return sta;
@@ -143,8 +148,9 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.@for:
 					return ParseFor ();
 				case Token.Type.@continue:
+					return ParseContinue ();
 				case Token.Type.@break:
-					return ParseBreakOrContinue ();
+					return ParseBreak ();
 				case Token.Type.with:
 					return ParseWith ();
 				case Token.Type.@switch:
@@ -160,7 +166,7 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.Semicolon:
 					return new Statement (Statement.Operation.Empty, new TextSpan (current, current));
 				case Token.Type.Identifier:
-					return ParseLabelStatement();
+					return ParseLabelStatement(); //TODO if 2 not colon => expression statement
 				default:
 					if ( current.Kind != Token.Type.LeftBrace
 						&& current.Kind != Token.Type.Comma
@@ -181,7 +187,11 @@ namespace Microsoft.JScript.Compiler
 			CheckSyntaxExpected (Token.Type.Colon);
 			TextPoint colon = new TextPoint (current.StartPosition);
 			Next ();
+			if (LabelSet.Contains (label.Spelling))
+				Error (DiagnosticCode.EnclosingLabelShadowed, new TextSpan (start, current));
+			LabelSet.Add (label.Spelling);
 			Statement labeled = ParseStatement();
+			LabelSet.Remove (label.Spelling);
 			return new LabelStatement (label, labeled, new TextSpan (start, current), colon);
 		}
 
@@ -255,7 +265,9 @@ namespace Microsoft.JScript.Compiler
 			Expression condition = ParseExpression ();
 			CheckSyntaxExpected (Token.Type.RightParenthesis);
 			Token rightParen = current;
+			withinIteration++;
 			Statement body = ParseStatement ();
+			withinIteration--;
 			return new WhileStatement (condition, body, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
 		}
 
@@ -263,7 +275,9 @@ namespace Microsoft.JScript.Compiler
 		{
 			Token start = current;
 			Next ();
+			withinIteration++;
 			Statement body = ParseStatement ();
+			withinIteration--;
 			Next ();
 			CheckSyntaxExpected (Token.Type.@while);
 			Token whileToken = current;
@@ -305,7 +319,9 @@ namespace Microsoft.JScript.Compiler
 					CheckSyntaxExpected (Token.Type.RightParenthesis);
 					rightParen = current;
 					Next ();
+					withinIteration++;
 					body = ParseStatement ();
+					withinIteration--;
 					VariableDeclaration item;
 					if (varDecl.Declarations.Count == 1) {
 						item = varDecl.Declarations[0].Declaration;
@@ -329,7 +345,9 @@ namespace Microsoft.JScript.Compiler
 					CheckSyntaxExpected (Token.Type.RightParenthesis);
 					rightParen = current;
 					Next ();
+					withinIteration++;
 					body = ParseStatement ();
+					withinIteration--;
 					return new DeclarationForStatement (varDecl.Declarations, condition, increment, body,
 						new TextSpan (start, current), new TextSpan (start, rightParen),
 						new TextPoint (firstSemiColon.StartPosition),
@@ -346,7 +364,9 @@ namespace Microsoft.JScript.Compiler
 					CheckSyntaxExpected (Token.Type.RightParenthesis);
 					rightParen = current;
 					Next ();
+					withinIteration++;
 					body = ParseStatement ();
+					withinIteration--;
 					return new ExpressionForInStatement (initial, collection, body, new TextSpan (start, current),
 						new TextSpan (start, rightParen), new TextPoint (inToken.StartPosition),
 						new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition));
@@ -362,7 +382,9 @@ namespace Microsoft.JScript.Compiler
 				CheckSyntaxExpected (Token.Type.RightParenthesis);
 				rightParen = current;
 				Next ();
+				withinIteration++;
 				body = ParseStatement ();
+				withinIteration--;
 				return new ExpressionForStatement (initial, condition, increment, body,
 					new TextSpan (start, current), new TextSpan (start, rightParen),
 					new TextPoint (firstSemiColon.StartPosition), new TextPoint (secondSemiColon.StartPosition),
@@ -370,20 +392,40 @@ namespace Microsoft.JScript.Compiler
 			}
 		}
 
-		private BreakOrContinueStatement ParseBreakOrContinue ()
+		private BreakOrContinueStatement ParseContinue ()
 		{
 			Token start = current;
-			Statement.Operation opcode = Statement.Operation.Continue;
-			if (current.Kind == Token.Type.@break)
-				opcode = Statement.Operation.Break;
+			Next ();
+			Identifier label = null;
+			if (current.Kind != Token.Type.Semicolon) {
+				if (CheckSyntaxExpected (Token.Type.Identifier))
+					label = (current as IdentifierToken).Spelling;
+				if (!LabelSet.Contains (label.Spelling))
+					Error (DiagnosticCode.ContinueLabelInvalid, new TextSpan (start, current));
+			} else if (withinIteration == 0)
+				Error (DiagnosticCode.ContinueContextInvalid, new TextSpan (start, current));
+
+			InsertSemicolon ();
+			return new BreakOrContinueStatement (Statement.Operation.Continue, label, new TextSpan (start, current), new TextPoint (current.StartPosition));
+		}
+
+		private BreakOrContinueStatement ParseBreak ()
+		{
+			//todo test within vars
+			Token start = current;
 			Next();
 			Identifier label = null;
 			if (current.Kind != Token.Type.Semicolon) {
 				if (CheckSyntaxExpected (Token.Type.Identifier))
 					label = (current as IdentifierToken).Spelling;
-			}
+				if ( !LabelSet.Contains(label.Spelling))
+					Error (DiagnosticCode.NoEnclosingLabel, new TextSpan (start, current));
+			} else if (withinIteration == 0 
+					&& withinSwitch == 0)
+				Error (DiagnosticCode.BreakContextInvalid, new TextSpan (start, current));
+ 
 			InsertSemicolon ();
-			return new BreakOrContinueStatement (opcode, label, new TextSpan (start, current), new TextPoint (current.StartPosition));
+			return new BreakOrContinueStatement (Statement.Operation.Break, label, new TextSpan (start, current), new TextPoint (current.StartPosition));
 		}
 
 		private WithStatement ParseWith ()
@@ -414,6 +456,7 @@ namespace Microsoft.JScript.Compiler
 			CheckSyntaxExpected (Token.Type.LeftBrace);
 			Token leftBrace = current;
 			Next ();
+			withinSwitch++;
 			DList<CaseClause, SwitchStatement> cases = new DList<CaseClause, SwitchStatement> ();
 			bool defaultFlag = false;
 			while (current.Kind == Token.Type.@case || current.Kind == Token.Type.@default) {
@@ -427,6 +470,7 @@ namespace Microsoft.JScript.Compiler
 				}
 				Next ();			
 			}
+			withinSwitch--;
 			CheckSyntaxExpected (Token.Type.RightBrace);
 			SwitchStatement switchStatement = new SwitchStatement (Value, cases, new TextSpan (start, current), new TextSpan (start, rightParen), new TextPoint (leftParen.StartPosition), new TextPoint (rightParen.StartPosition), new TextPoint (leftBrace.StartPosition));
 			cases.Parent = switchStatement;
@@ -1111,6 +1155,15 @@ namespace Microsoft.JScript.Compiler
 
 		#region helpers
 
+		private void Init ()
+		{
+			withinIteration = 0;
+			withinSwitch = 0;
+			LabelSet.Clear();
+			SyntaxError.Clear();
+			syntaxIncomplete = false;
+		}
+
 		private void Next ()
 		{
 			current = lexer.GetNext ();
@@ -1149,6 +1202,10 @@ namespace Microsoft.JScript.Compiler
 					code = DiagnosticCode.SemicolonExpected;
 					break;
 			}
+
+			if (current.Kind == Token.Type.EndOfInput)
+				syntaxIncomplete = true;
+
 			Error (code, new TextSpan (current,current));
 			return false;
 		}
@@ -1169,16 +1226,11 @@ namespace Microsoft.JScript.Compiler
 				code = ((BadToken)current).Diagnostic;
 			diagnostics.Add (new Diagnostic (code, loc));
 		}
-		//TODO label management (break, continue,...)
+
 		//TODO finished bad token and syntax error management
-		//TODO 
+		//TODO when no line terminator test is line have change...
 		/* TODO 
 			BadDivideOrRegularExpressionLiteral,
-			EnclosingLabelShadowed,
-			NoEnclosingLabel,
-			BreakContextInvalid,
-			ContinueContextInvalid,
-			ContinueLabelInvalid,
 			MalformedEscapeSequence,
 			NumericLiteralThenIdentifier,
 			UnterminatedStringLiteral,
