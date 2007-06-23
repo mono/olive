@@ -3,7 +3,10 @@ using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
 namespace Microsoft.JScript.Runtime {
+
+	[Serializable]
 	public class WrapperException : Exception, _Exception, ISerializable {
+
 		public WrapperException ()
 		{
 		}
@@ -14,11 +17,6 @@ namespace Microsoft.JScript.Runtime {
 
 		public WrapperException (string message, Exception innerException)
 		{
-		}
-
-		public override string ToString ()
-		{
-			return base.ToString ();
 		}
 
 		public override string Message {

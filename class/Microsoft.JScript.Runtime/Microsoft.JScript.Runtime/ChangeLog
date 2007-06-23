@@ -1,3 +1,15 @@
+2007-06-23  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* JSNumberObject.cs
+	* UnDefinedOps.cs
+	* JSPropertyAttributes.cs
+	* JSArrayObject.cs
+	* JSObjectConstructor.cs
+	* JSBooleanObject.cs: Added.
+
+	* JSError.cs, URIErrorException.cs, WrapperException.cs, JSObject.cs,
+	Null.cs: corcompare fixes.
+
 2007-06-14  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSError.cs

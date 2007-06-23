@@ -1,10 +1,15 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
+using IronPython.Runtime;
 
 namespace Microsoft.JScript.Runtime {
-	public class JSObject {
+
+	[Serializable]
+	public class JSObject : IAttributesCollection, ICustomMembers, IEnumerable, IEnumerable<KeyValuePair<object,object>>,
+		IMapping, IPythonContainer {
 
 		JSObject prototype;
 
@@ -23,7 +28,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public IDictionary<object, object> AsObjectKeyedDictionary ()
+		public virtual IDictionary<object, object> AsObjectKeyedDictionary ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -63,17 +68,22 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 		
-		public IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
+		public virtual IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public IList<object> GetCustomMemberNames (CodeContext context)
+		public virtual IList<object> GetCustomMemberNames (CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}
 
 		public virtual IEnumerator<KeyValuePair<object, object>> GetEnumerator ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			throw new NotImplementedException ();
 		}

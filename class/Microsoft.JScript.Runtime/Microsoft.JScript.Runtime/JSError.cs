@@ -1,7 +1,7 @@
 using System;
 
 namespace Microsoft.JScript.Runtime {
-	[Serializable]
+
 	public enum JSError {
 		NoError,
 		InvalidCall,
