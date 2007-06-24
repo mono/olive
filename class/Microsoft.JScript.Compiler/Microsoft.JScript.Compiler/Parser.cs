@@ -127,6 +127,7 @@ namespace Microsoft.JScript.Compiler
 			List<Statement> result = new List<Statement>();
 			while (current.Kind != Token.Type.RightBrace && current.Kind != Token.Type.EndOfInput) {
 				result.Add(ParseStatement ());
+				Next ();
 			}
 			return result;
 		}
