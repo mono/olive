@@ -111,7 +111,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void ForTest ()
 		{
-			/*parser = new Parser ("for (var i = 0 ; i < 5 ; i++ ) { break; }".ToCharArray ());
+			parser = new Parser ("for (var i = 0 ; i < 5 ; i++ ) { break; }".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
@@ -120,8 +120,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			Assert.IsInstanceOfType (typeof (BlockStatement), forst.Body, "#7.2");
 			it = new DList<Statement, BlockStatement>.Iterator (((BlockStatement)forst.Body).Children);
 			Assert.IsInstanceOfType (typeof (BreakOrContinueStatement), it.Element, "#7.3");
-			Assert.IsTrue (parser.SyntaxOK ());*/
-			Assert.Fail ();
+			Assert.IsTrue (parser.SyntaxOK ());
 		}
 
 		[Test]
