@@ -60,8 +60,8 @@ namespace System.Windows {
 			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible", typeof (bool));
 			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility", typeof (Visibility));
 			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceCollection));
-			ZIndexProperty = DependencyProperty.Lookup(Kind.UIELEMENT, "ZIndex", typeof(int));
-        }
+			ZIndexProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "ZIndex", typeof (int));
+		}
 			
 		public UIElement () : base (NativeMethods.uielement_new ())
 		{
@@ -171,6 +171,16 @@ namespace System.Windows {
 				
 			set {
 				SetValue (VisibilityProperty, value);
+			}
+		}
+
+		public int ZIndex {
+			get {
+				return (int) GetValue (ZIndexProperty);
+			}
+				
+			set {
+				SetValue (ZIndexProperty, value);
 			}
 		}
 
