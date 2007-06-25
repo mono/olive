@@ -45,7 +45,6 @@ System.Windows.Media.Animation/TimeSeekOrigin.cs
 System.Windows.Media.Animation/DoubleAnimation.cs
 System.Windows.Media/Transform.cs
 System.Windows.Media/Visual.cs
-System.Windows.Media/Matrix.cs
 System.Windows.Media/GeneralTransform.cs
 System.Windows.Media/RotateTransform.cs
 

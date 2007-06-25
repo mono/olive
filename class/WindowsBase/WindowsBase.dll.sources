@@ -7,8 +7,11 @@ System.Windows/DependencyPropertyChangedEventHandler.cs
 System.Windows/DependencyPropertyKey.cs
 System.Windows/LocalValueEntry.cs
 System.Windows/LocalValueEnumerator.cs
+System.Windows/Point.cs
 System.Windows/PropertyMetadata.cs
 System.Windows/Size.cs
+System.Windows/Vector.cs
+System.Windows.Media/Matrix.cs
 System.Windows.Threading/Dispatcher.cs
 System.Windows.Threading/DispatcherFrame.cs
 System.Windows.Threading/DispatcherObject.cs
