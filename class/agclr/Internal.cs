@@ -33,9 +33,10 @@ using System.Collections;
 namespace MS.Internal {
 	//
 	// It seems that this only works for DependencyObjects, but its not in 
-	// the public contract
+	// the public contract, I added the `where' so I can cast DependencyObjects
+	// into T's but it might just be that I do not know how to do this.
 	//
-	public abstract class Collection<T> : DependencyObject {
+	public abstract class Collection<T> : DependencyObject, ICollection where T : DependencyObject {
 		public Collection () : base (NativeMethods.collection_new ())
 		{
 			NativeMethods.base_ref (native);
@@ -83,6 +84,51 @@ namespace MS.Internal {
 				NativeMethods.collection_insert (native, index, dob.native);
 			else
 				throw new Exception ("The collection only supports DependencyObjects");
+		}
+
+		//
+		// ICollection members
+		//
+		public int Count {
+			get {
+				return NativeMethods.collection_count (native);
+			}
+		}
+
+		public void CopyTo (Array array, int index)
+		{
+			if (array == null)
+				throw new ArgumentNullException ("array");
+
+			int l = Count;
+			T [] target = (T []) array;
+			
+			for (int i = 0; i < l; i++)
+				target [index+i] = this [i];
+		}
+
+		public T this [int index] {
+			get {
+				IntPtr o = NativeMethods.collection_get_value_at (native, index);
+
+				if (o == IntPtr.Zero)
+					throw new ArgumentOutOfRangeException ("index");
+
+				Kind k = NativeMethods.dependency_object_get_kind (o);
+				return DependencyObject.Lookup (k, o) as T;
+			}
+		}
+		
+		public object SyncRoot {
+			get {
+				return this;
+			}
+		}
+
+		public bool IsSynchronized {
+			get {
+				return false;
+			}
 		}
 		
 		internal override Kind GetKind ()

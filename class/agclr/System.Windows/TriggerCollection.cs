@@ -33,7 +33,7 @@ using Mono;
 
 namespace System.Windows {
 
-	public class TriggerCollection : MS.Internal.Collection<int> {
+	public class TriggerCollection : MS.Internal.Collection<EventTrigger> {
 		public TriggerCollection () : base (NativeMethods.trigger_collection_new ())
 		{
 			NativeMethods.base_ref (native);
