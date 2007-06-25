@@ -1,3 +1,7 @@
+2007-06-25  Alan McGovern  <amcgovern@novell.com>
+
+	* UIElement.cs: Added ZIndex property
+
 2007-06-22  Chris Toshok  <toshok@ximian.com>
 
 	* DependencyObject.cs (SetValue<T>): call FreeValue after
