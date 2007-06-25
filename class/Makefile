@@ -12,6 +12,7 @@ SUBDIRS = \
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
 	WindowsBase			\
+	PresentationCore		\
 	PresentationFramework		\
 	System.Runtime.Serialization	\
 	System.IdentityModel		\
