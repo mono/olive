@@ -1,3 +1,7 @@
+2007-06-25  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Parser.cs : fix UnaryExpression to avoid infinite loop
+	
 2007-06-24  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Parser.cs : fix for statement

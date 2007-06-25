@@ -712,45 +712,46 @@ namespace Microsoft.JScript.Compiler
 			// get by first token
 			switch (current.Kind) {
 				case Token.Type.delete:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.delete, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.delete, new TextSpan (start, current));
 					break;
 				case Token.Type.@void:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@void, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@void, new TextSpan (start, current));
 					break;
 				case Token.Type.@typeof:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@typeof, new TextSpan (start, current));
 					Next (); 
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.@typeof, new TextSpan (start, current));
 					break;
 				case Token.Type.PlusPlus:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlusPlus, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlusPlus, new TextSpan (start, current));
 					break;
 				case Token.Type.MinusMinus:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinusMinus, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinusMinus, new TextSpan (start, current));
 					break;
 				case Token.Type.Plus:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlus, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixPlus, new TextSpan (start, current));
 					break;
 				case Token.Type.Minus:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinus, new TextSpan (start, current)); 
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.PrefixMinus, new TextSpan (start, current)); 
 					break;
 				case Token.Type.Tilda:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Tilda, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Tilda, new TextSpan (start, current));
 					break;
 				case Token.Type.Bang:
-					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Bang, new TextSpan (start, current));
 					Next ();
+					expr = new UnaryOperatorExpression (this.ParseExpression (noIn), Expression.Operation.Bang, new TextSpan (start, current));
 					break;
 				default:
 					expr = ParsePostfixExpression ();
 					break;
 			}
+			//Next (); //go ahead
 			return expr;
 		}
 
