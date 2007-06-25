@@ -3,7 +3,7 @@ include ../../build/rules.make
 
 LIBRARY = PresentationFramework.dll
 
-LIB_MCS_FLAGS = -r:System.Xml.dll -r:WindowsBase.dll -r:System.dll
+LIB_MCS_FLAGS = -r:System.Xml.dll -r:PresentationCore.dll -r:WindowsBase.dll -r:System.dll
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) -r:TestVocab.dll -r:System.dll
 TEST_MONO_PATH = .
 
