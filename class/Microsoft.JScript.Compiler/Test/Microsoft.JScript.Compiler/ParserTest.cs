@@ -16,11 +16,10 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void SyntaxOKTest ()
 		{
-			/*parser = new Parser ("var } function + i 'Hello',".ToCharArray ());
+			parser = new Parser ("var } function + i 'Hello',".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			parser.ParseProgram (ref comments);
-			Assert.IsFalse (parser.SyntaxOK ());*/
-			Assert.Fail ();
+			Assert.IsFalse (parser.SyntaxOK ());
 		}
 
 		# region statements

@@ -1,3 +1,7 @@
+2007-06-25  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* ParserTest.cs : uncomment syntaxok test
+	
 2007-06-24  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* ParserTest.cs : uncomment for statement test
