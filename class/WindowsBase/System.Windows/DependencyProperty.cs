@@ -37,6 +37,8 @@ namespace System.Windows {
 		private bool isAttached;
 		internal bool IsAttached { get { return isAttached; } }
 
+		public static readonly object UnsetValue = new object ();
+
 		private DependencyProperty (bool isAttached, string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata, ValidateValueCallback validateValueCallback)
 		{
 			this.isAttached = isAttached;

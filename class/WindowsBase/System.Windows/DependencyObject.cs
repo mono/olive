@@ -3,8 +3,10 @@
 //
 // Author:
 //   Iain McCoy (iain@mccoy.id.au)
+//   Chris Toshok (toshok@ximian.com)
 //
 // (C) 2005 Iain McCoy
+// (C) 2007 Novell, Inc.
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -33,25 +35,42 @@ namespace System.Windows {
 	public class DependencyObject : DispatcherObject {
 		private static Hashtable propertyDeclarations = new Hashtable();
 		private Hashtable properties = new Hashtable();
-		
 		private DependencyObjectType dependencyObjectType;
+
+		[MonoTODO]
+		public bool IsSealed {
+			get { throw new NotImplementedException (); }
+		}
+
 		public DependencyObjectType DependencyObjectType { 
 			get { return dependencyObjectType; }
 		}
 
-		[MonoTODO()]		
 		public void ClearValue(DependencyProperty dp)
 		{
-			throw new NotImplementedException("ClearValue(DependencyProperty dp)");
+			if (IsSealed)
+				throw new InvalidOperationException ("Cannot manipulate property values on a sealed DependencyObject");
+
+			properties[dp] = null;
 		}
 		
-		[MonoTODO()]		
+		[MonoTODO]
 		public void ClearValue(DependencyPropertyKey key)
 		{
-			throw new NotImplementedException("ClearValue(DependencyPropertyKey key)");
+			ClearValue (key.DependencyProperty);
 		}
-		
-		[MonoTODO()]		
+
+		public sealed override bool Equals (object obj)
+		{
+			throw new NotImplementedException("Equals");
+		}
+
+		public sealed override int GetHashCode ()
+		{
+			throw new NotImplementedException("GetHashCode");
+		}
+
+		[MonoTODO]
 		public LocalValueEnumerator GetLocalValueEnumerator()
 		{
 			return new LocalValueEnumerator(properties);
@@ -60,43 +79,34 @@ namespace System.Windows {
 		public object GetValue(DependencyProperty dp)
 		{
 			object val = properties[dp];
-			if (val == null)
-				val = dp.DefaultMetadata.DefaultValue;
-			return val;
+			return val == null ? dp.DefaultMetadata.DefaultValue : val;
 		}
 		
-		[MonoTODO()]		
-		public object GetValueBase(DependencyProperty dp)
-		{
-			throw new NotImplementedException("GetValueBase(DependencyProperty dp)");
-		}
-		
-		[MonoTODO()]		
-		protected virtual object GetValueCore(DependencyProperty dp, object baseValue, PropertyMetadata metadata)
-		{
-			throw new NotImplementedException("GetValueCore(DependencyProperty dp, object baseValue, PropertyMetadata metadata)");
-		}
-		
-		[MonoTODO()]		
+		[MonoTODO]
 		public void InvalidateProperty(DependencyProperty dp)
 		{
 			throw new NotImplementedException("InvalidateProperty(DependencyProperty dp)");
 		}
 		
-		[MonoTODO()]		
-		protected virtual void OnPropertyInvalidated(DependencyProperty dp, PropertyMetadata metadata)
+		[MonoTODO]
+		protected virtual void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 		{
-			throw new NotImplementedException("OnPropertyInvalidated(DependencyProperty dp, PropertyMetadata metadata)");
+			throw new NotImplementedException();
 		}
 		
-		[MonoTODO()]		
 		public object ReadLocalValue(DependencyProperty dp)
 		{
-			throw new NotImplementedException("ReadLocalValue(DependencyProperty dp)");
+			object val = properties[dp];
+			return val == null ? DependencyProperty.UnsetValue : val;
 		}
 		
 		public void SetValue(DependencyProperty dp, object value)
 		{
+			if (IsSealed)
+				throw new InvalidOperationException ("Cannot manipulate property values on a sealed DependencyObject");
+
+			if (!dp.IsValidType (value))
+				throw new ArgumentException ("value not of the correct type for this DependencyProperty");
 
 			ValidateValueCallback validate = dp.ValidateValueCallback;
 			if (validate != null && !validate(value))
@@ -105,23 +115,12 @@ namespace System.Windows {
 				properties[dp] = value;
 		}
 		
-		[MonoTODO()]		
+		[MonoTODO]
 		public void SetValue(DependencyPropertyKey key, object value)
 		{
-			throw new NotImplementedException("SetValue(DependencyPropertyKey key, object value)");
+			SetValue (key.DependencyProperty, value);
 		}
 		
-		[MonoTODO()]		
-		public void SetValueBase(DependencyProperty dp, object value)
-		{
-			throw new NotImplementedException("SetValueBase(DependencyProperty dp, object value)");
-		}
-		
-		[MonoTODO()]		
-		public void SetValueBase(DependencyPropertyKey key, object value)
-		{
-			throw new NotImplementedException("SetValueBase(DependencyPropertyKey key, object value)");
-		}
 
 		internal static DependencyProperty lookup(Type t, string name)
 		{
