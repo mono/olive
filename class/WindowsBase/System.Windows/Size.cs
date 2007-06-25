@@ -24,11 +24,10 @@
 //
 
 using System;
-using System.Windows.Markup;
 
 namespace System.Windows {
 
-	[TypeConverter (typeof (SizeConverter))]
+	// [TypeConverter (typeof (SizeConverter))]
 	// [ValueSerializer (...)]
 	[Serializable]
 	public struct Size : IFormattable
@@ -39,6 +38,10 @@ namespace System.Windows {
 
 		public static Size Empty {
 			get { return new Size (0, 0); }
+		}
+
+		string IFormattable.ToString(string format, IFormatProvider formatProvider) {
+			throw new NotImplementedException ();
 		}
 	}
 }
