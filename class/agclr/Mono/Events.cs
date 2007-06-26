@@ -54,7 +54,7 @@ namespace Mono {
 		{
 			object o = DependencyObject.Lookup (target);
 			if (o == null){
-				Kind k = NativeMethods.dependency_object_get_kind (target);
+				Kind k = NativeMethods.dependency_object_get_object_type (target);
 				o = DependencyObject.Lookup (k, target);
 				if (o == null)
 					return null;
