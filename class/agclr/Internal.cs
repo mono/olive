@@ -28,7 +28,7 @@
 using Mono;
 using System;
 using System.Windows;
-using System.Collections;
+using System.Collections.Generic;
 
 namespace MS.Internal {
 	//
@@ -36,7 +36,10 @@ namespace MS.Internal {
 	// the public contract, I added the `where' so I can cast DependencyObjects
 	// into T's but it might just be that I do not know how to do this.
 	//
-	public abstract class Collection<T> : DependencyObject, ICollection where T : DependencyObject {
+	public abstract class Collection<T> : DependencyObject,
+		System.Collections.IEnumerable,
+		IList<T>, ICollection<T>
+		where T : DependencyObject {
 		public Collection () : base (NativeMethods.collection_new ())
 		{
 			NativeMethods.base_ref (native);
@@ -63,11 +66,11 @@ namespace MS.Internal {
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
 
-		public void Remove (T value)
+		public bool Remove (T value)
 		{
 			DependencyObject dob = value as DependencyObject;
 			if (dob != null)
-				NativeMethods.collection_remove (native, dob.native);
+				return NativeMethods.collection_remove (native, dob.native);
 			else
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
@@ -86,6 +89,12 @@ namespace MS.Internal {
 				throw new Exception ("The collection only supports DependencyObjects");
 		}
 
+		public void RemoveAt (int index)
+		{
+			throw new NotImplementedException ();
+			
+		}
+		
 		//
 		// ICollection members
 		//
@@ -95,16 +104,15 @@ namespace MS.Internal {
 			}
 		}
 
-		public void CopyTo (Array array, int index)
+		public void CopyTo (T [] array, int index)
 		{
 			if (array == null)
 				throw new ArgumentNullException ("array");
 
 			int l = Count;
-			T [] target = (T []) array;
-			
+
 			for (int i = 0; i < l; i++)
-				target [index+i] = this [i];
+				array [index+i] = this [i];
 		}
 
 		public T this [int index] {
@@ -116,6 +124,15 @@ namespace MS.Internal {
 				
 				Kind k = NativeMethods.dependency_object_get_object_type (o);
 				return DependencyObject.Lookup (k, o) as T;
+			}
+
+			set {
+				DependencyObject dob = value as DependencyObject;
+
+				if (dob == null)
+					throw new Exception ("The collection only supports DependencyObjects");
+
+				NativeMethods.collection_set_value_at (native, index, dob.native);
 			}
 		}
 		
@@ -136,14 +153,12 @@ namespace MS.Internal {
 			return Kind.COLLECTION;
 		}
 
-		public class CollectionIterator : IEnumerator {
+		public class CollectionIterator : System.Collections.IEnumerator {
 			IntPtr native_iter;
-			Kind   kind;
 			
-			public CollectionIterator(IntPtr native_iter, Kind k)
+			public CollectionIterator(IntPtr native_iter)
 			{
 				this.native_iter = native_iter;
-				kind = k;
 			}
 			
 			public bool MoveNext ()
@@ -177,10 +192,105 @@ namespace MS.Internal {
 			}
 		}
 		
-		public IEnumerator GetEnumerator ()
-		{
-			return new CollectionIterator (NativeMethods.collection_get_iterator (native),
-						       NativeMethods.collection_get_element_type (native));
+		public class GenericCollectionIterator : IEnumerator<T> {
+			IntPtr native_iter;
+			
+			public GenericCollectionIterator(IntPtr native_iter)
+			{
+				this.native_iter = native_iter;
+			}
+			
+			public bool MoveNext ()
+			{
+				return NativeMethods.collection_iterator_move_next (native_iter);
+			}
+			
+			public void Reset ()
+			{
+				NativeMethods.collection_iterator_reset (native_iter);
+			}
+
+			T GetCurrent ()
+			{
+				IntPtr o = NativeMethods.collection_iterator_get_current (native_iter);
+				Kind k;
+				
+				if (o == IntPtr.Zero)
+					return null;
+				
+				k = NativeMethods.dependency_object_get_object_type (o);
+				
+				return (T) DependencyObject.Lookup (k, o);
+			}
+			
+			public T Current {
+				get {
+					return GetCurrent ();
+				}
+			}
+
+			object System.Collections.IEnumerator.Current {
+				get {
+					return GetCurrent ();
+				}
+			}
+
+			public void Dispose ()
+			{
+				if (native_iter != IntPtr.Zero){
+					// This is safe, as it only does a "delete" in the C++ side
+					NativeMethods.collection_iterator_destroy (native_iter);
+					native_iter = IntPtr.Zero;
+				}
+			}
+			
+			~GenericCollectionIterator ()
+			{
+				if (native_iter != IntPtr.Zero){
+					// This is safe, as it only does a "delete" in the C++ side
+					NativeMethods.collection_iterator_destroy (native_iter);
+					native_iter = IntPtr.Zero;
+				}
+			}
 		}
+
+		public IEnumerator<T> GetEnumerator ()
+		{
+			return new GenericCollectionIterator (NativeMethods.collection_get_iterator (native));
+		}
+
+		System.Collections.IEnumerator  System.Collections.IEnumerable.GetEnumerator ()
+		{
+			return new CollectionIterator (NativeMethods.collection_get_iterator (native));
+		}
+		
+		public bool Contains (T value)
+		{
+			return IndexOf (value) != -1;
+		}
+		
+		public int IndexOf (T value)
+		{
+			if (value == null)
+				throw new ArgumentNullException ("value");
+			DependencyObject dob = value as DependencyObject;
+			if (dob == null)
+				throw new Exception ("The collection only supports DependencyObjects");
+
+			return NativeMethods.collection_get_index_of (native, dob.native);
+		}
+
+		public bool IsFixedSize {
+			get {
+				return false;
+			}
+		}
+
+		public bool IsReadOnly {
+			get {
+				return false;
+			}
+		}
+
 	}
 }

@@ -181,7 +181,7 @@ namespace Mono {
 		internal extern static void collection_add (IntPtr collection, IntPtr value);
 
 		[DllImport("moon")]
-		internal extern static void collection_remove (IntPtr collection, IntPtr value);
+		internal extern static bool collection_remove (IntPtr collection, IntPtr value);
 
 		[DllImport("moon")]
 		internal extern static void collection_insert (IntPtr collection, int index, IntPtr value);
@@ -194,6 +194,12 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		internal extern static IntPtr collection_get_value_at (IntPtr collection, int index);
+		
+		[DllImport("moon")]
+		internal extern static IntPtr collection_set_value_at (IntPtr collection, int index, IntPtr value);
+
+		[DllImport("moon")]
+		internal extern static int collection_get_index_of (IntPtr collection, IntPtr obj);
 		
 		[DllImport("moon")]
 		internal extern static IntPtr collection_get_iterator (IntPtr collection);

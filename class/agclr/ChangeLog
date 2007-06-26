@@ -1,3 +1,8 @@
+2007-06-26  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs: Implement most of the public interface for
+	MS.Internal.Collection. 
+
 2007-06-26  Jeffrey Stedfast  <fejj@novell.com>
 
 	* Internal.cs: Updated to use dependency_object_get_object_type()
