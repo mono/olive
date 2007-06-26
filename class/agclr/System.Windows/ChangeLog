@@ -1,3 +1,8 @@
+2007-06-26  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs: Add checks to ensure that we are only
+	called from the proper thread.
+
 2007-06-25  Alan McGovern  <amcgovern@novell.com>
 
 	* UIElement.cs: Added ZIndex property

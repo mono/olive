@@ -38,11 +38,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Runtime.InteropServices;
 using System.Windows.Documents;
+using System.Threading;
 
 namespace System.Windows {
 	public class DependencyObject {
 		static ArrayList PendingDestroys = new ArrayList ();
 		static volatile bool pending = false;
+		static Thread moonlight_thread;
 		static Hashtable objects = new Hashtable ();
 		internal IntPtr _native;
 
@@ -65,9 +67,11 @@ namespace System.Windows {
 		public string Name {
 			get { return (string) GetValue(NameProperty); }
 		}
+
 		static DependencyObject ()
 		{
 			NativeMethods.runtime_init ();
+			moonlight_thread = Thread.CurrentThread;
 		}
 
 		internal DependencyObject (IntPtr raw)
@@ -337,7 +341,7 @@ namespace System.Windows {
 			if (property == null)
 				throw new ArgumentNullException ("property");
 			
-			CheckNative ();
+			CheckNativeAndThread ();
 			
 			unsafe {
 				Value* val = (Value*)NativeMethods.dependency_object_get_value (native, property.native);
@@ -618,7 +622,7 @@ namespace System.Windows {
 			if (property == null)
 				throw new ArgumentNullException ("property");
 
-			CheckNative ();
+			CheckNativeAndThread ();
 			
 			if (obj == null){
 				NativeMethods.dependency_object_set_value (native, property.native, IntPtr.Zero);
@@ -652,12 +656,15 @@ namespace System.Windows {
 			return Kind.DEPENDENCY_OBJECT;
 		}
 		
-		private void CheckNative ()
+		private void CheckNativeAndThread ()
 		{
 			if (native == IntPtr.Zero){
 				throw new Exception (
 					string.Format ("Uninitialized object: this object ({0}) has not set its native handle or overwritten SetValue", GetType ().FullName));
 			}
+
+			if (Thread.CurrentThread != moonlight_thread)
+				throw new UnauthorizedAccessException ("Invalid access of Moonlight from an external thread");
 		}
 
 		internal static void Ping ()
