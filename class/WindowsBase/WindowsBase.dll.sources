@@ -15,6 +15,8 @@ System.Windows/Rect.cs
 System.Windows/Size.cs
 System.Windows/ValidateValueCallback.cs
 System.Windows/Vector.cs
+System.Windows.Input/Key.cs
+System.Windows.Input/ModifierKeys.cs
 System.Windows.Media/Matrix.cs
 System.Windows.Threading/Dispatcher.cs
 System.Windows.Threading/DispatcherFrame.cs
