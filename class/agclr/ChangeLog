@@ -1,3 +1,8 @@
+2007-06-26  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Internal.cs: Updated to use dependency_object_get_object_type()
+	(which is the new name for dependency_object_get_kind).
+
 2007-06-25  Miguel de Icaza  <miguel@novell.com>
 
 	* Internal.cs: Make this beast implement ICollection, still a few

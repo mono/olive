@@ -113,8 +113,8 @@ namespace MS.Internal {
 
 				if (o == IntPtr.Zero)
 					throw new ArgumentOutOfRangeException ("index");
-
-				Kind k = NativeMethods.dependency_object_get_kind (o);
+				
+				Kind k = NativeMethods.dependency_object_get_object_type (o);
 				return DependencyObject.Lookup (k, o) as T;
 			}
 		}
@@ -164,7 +164,7 @@ namespace MS.Internal {
 					if (o == IntPtr.Zero)
 						return null;
 					
-					k = NativeMethods.dependency_object_get_kind (o);
+					k = NativeMethods.dependency_object_get_object_type (o);
 					
 					return DependencyObject.Lookup (k, o);
 				}
