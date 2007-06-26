@@ -86,7 +86,7 @@ namespace System.Windows {
 				height == rect.Height);
 		}
 
-		public bool Equals (object o)
+		public override bool Equals (object o)
 		{
 			if (!(o is Rect))
 				return false;

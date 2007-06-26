@@ -1,4 +1,4 @@
-System.Windows/Callbacks.cs
+System.Windows/CoerceValueCallback.cs
 System.Windows/DependencyObject.cs
 System.Windows/DependencyObjectType.cs
 System.Windows/DependencyProperty.cs
@@ -8,9 +8,11 @@ System.Windows/DependencyPropertyKey.cs
 System.Windows/LocalValueEntry.cs
 System.Windows/LocalValueEnumerator.cs
 System.Windows/Point.cs
+System.Windows/PropertyChangedCallback.cs
 System.Windows/PropertyMetadata.cs
 System.Windows/Rect.cs
 System.Windows/Size.cs
+System.Windows/ValidateValueCallback.cs
 System.Windows/Vector.cs
 System.Windows.Media/Matrix.cs
 System.Windows.Threading/Dispatcher.cs

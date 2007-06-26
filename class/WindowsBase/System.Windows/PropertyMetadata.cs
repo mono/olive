@@ -29,102 +29,58 @@
 namespace System.Windows {
 	public class PropertyMetadata {
 		private object defaultValue;
-		private GetValueOverride getValueOverride;
-		private SetValueOverride setValueOverride;
 		private bool isSealed;
-		private PropertyInvalidatedCallback propertyInvalidatedCallback;
-		private ReadLocalValueOverride readLocalValueOverride;
+		private PropertyChangedCallback propertyChangedCallback;
+		private CoerceValueCallback coerceValueCallback;
 		private bool readOnly;
-		private WriteLocalValueOverride writeLocalValueOverride;
 		
 		public object DefaultValue {
 			get { return defaultValue; }
 			set { defaultValue = value; }
 		}
-		public GetValueOverride GetValueOverride {
-			get { return getValueOverride; }
-			set { getValueOverride = value;}
-		}
+
 		protected bool IsSealed {
 			get { return isSealed; }
 		}
-		public PropertyInvalidatedCallback PropertyInvalidatedCallback {
-			get { return propertyInvalidatedCallback; }
-			set { propertyInvalidatedCallback = value; }
+
+		public PropertyChangedCallback PropertyChangedCallback {
+			get { return propertyChangedCallback; }
+			set { propertyChangedCallback = value; }
 		}
-		public ReadLocalValueOverride ReadLocalValueOverride {
-			get { return readLocalValueOverride; }
-			set { readLocalValueOverride = value; }
+
+		public CoerceValueCallback CoerceValueCallback {
+			get { return coerceValueCallback; }
+			set { coerceValueCallback = value; }
 		}
+
 		public bool ReadOnly {
 			get { return readOnly; }
-		}
-		public WriteLocalValueOverride WriteLocalValueOverride {
-			get { return writeLocalValueOverride; }
-			set { writeLocalValueOverride = value; }
 		}
 
 		public PropertyMetadata()
 		{
 		}
-		public PropertyMetadata(GetValueOverride getValueOverride)
-		{
-			this.getValueOverride = getValueOverride;
-		}
-		public PropertyMetadata(GetValueOverride getValueOverride, SetValueOverride setValueOverride)
-		{
-			this.getValueOverride = getValueOverride;
-			this.setValueOverride = setValueOverride;
-		}
+
 		public PropertyMetadata(object defaultValue)
 		{
 			this.defaultValue = defaultValue;
 		}
-		public PropertyMetadata(object defaultValue, PropertyInvalidatedCallback propertyInvalidatedCallback)
+
+		public PropertyMetadata(PropertyChangedCallback propertyChangedCallback)
 		{
-			this.defaultValue = defaultValue;
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-		}
-		
-		public PropertyMetadata(object defaultValue, PropertyInvalidatedCallback propertyInvalidatedCallback, GetValueOverride getValueOverride)
-		{
-			this.defaultValue = defaultValue;
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-			this.getValueOverride = getValueOverride;
-		}
-		public PropertyMetadata(object defaultValue, PropertyInvalidatedCallback propertyInvalidatedCallback, GetValueOverride getValueOverride, SetValueOverride setValueOverride)
-		{
-			this.defaultValue = defaultValue;
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-			this.getValueOverride = getValueOverride;
-			this.setValueOverride = setValueOverride;
-		}
-		public PropertyMetadata(PropertyInvalidatedCallback propertyInvalidatedCallback)
-		{
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-		}
-		public PropertyMetadata(PropertyInvalidatedCallback propertyInvalidatedCallback, GetValueOverride getValueOverride)
-		{
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-			this.getValueOverride = getValueOverride;
-		}
-		public PropertyMetadata(PropertyInvalidatedCallback propertyInvalidatedCallback, GetValueOverride getValueOverride, SetValueOverride setValueOverride)
-		{
-			this.propertyInvalidatedCallback = propertyInvalidatedCallback;
-			this.getValueOverride = getValueOverride;
-			this.setValueOverride = setValueOverride;
+			this.propertyChangedCallback = propertyChangedCallback;
 		}
 
-		[MonoTODO()]		
-		protected void ClearCachedDefaultValue (DependencyObject owner)
+		public PropertyMetadata(object defaultValue, PropertyChangedCallback propertyChangedCallback)
 		{
-			throw new NotImplementedException("ClearCachedDefaultValue(DependencyObject owner)");
+			this.defaultValue = defaultValue;
+			this.propertyChangedCallback = propertyChangedCallback;
 		}
-		
-		[MonoTODO()]		
-		protected virtual object CreateDefaultValue (DependencyObject owner, DependencyProperty property)
+
+		public PropertyMetadata (object defaultValue, PropertyChangedCallback propertyChangedCallback, CoerceValueCallback coerceValueCallback)
 		{
-			throw new NotImplementedException("CreateDefaultValue(DependencyObject owner, DependencyProperty property)");
+			this.defaultValue = defaultValue;
+			this.coerceValueCallback = coerceValueCallback;
 		}
 		
 		[MonoTODO()]		
