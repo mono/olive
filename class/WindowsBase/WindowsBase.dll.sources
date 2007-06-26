@@ -9,6 +9,7 @@ System.Windows/LocalValueEntry.cs
 System.Windows/LocalValueEnumerator.cs
 System.Windows/Point.cs
 System.Windows/PropertyMetadata.cs
+System.Windows/Rect.cs
 System.Windows/Size.cs
 System.Windows/Vector.cs
 System.Windows.Media/Matrix.cs

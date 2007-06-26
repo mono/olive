@@ -25,6 +25,7 @@
 
 using System;
 using System.ComponentModel;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace System.Windows.Media {
@@ -48,7 +49,6 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting
 		public override Rect TransformBounds (Rect rect)
 		{
 			throw new NotImplementedException ();
@@ -59,7 +59,6 @@ namespace System.Windows.Media {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		public static Transform Identity {
 			get {

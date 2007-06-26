@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace System.Windows.Media {
@@ -56,24 +57,16 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting_on_Point
 		public Point Transform (Point point)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public abstract Rect TransformBounds (Rect rect)
-		{
-			throw new NotImplementedException ();
-		}
+		public abstract Rect TransformBounds (Rect rect);
 
 		public abstract bool TryTransform (Point inPoint,
-						   out Point result)
-		{
-			throw new NotImplementedException ();
-		}
-#endif
+						   out Point result);
 
 		public abstract GeneralTransform Inverse { get; }
 	}
