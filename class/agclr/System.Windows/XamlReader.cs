@@ -106,9 +106,7 @@ namespace System.Windows {
 		
 		internal static void set_attribute (IntPtr target_ptr, string name, string value)
 		{
-			MethodInfo m = typeof (DependencyObject).GetMethod ("Lookup",
-					BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
-			DependencyObject target = (DependencyObject) m.Invoke (null, new object [] { target_ptr });
+			DependencyObject target = DependencyObject.Lookup (target_ptr);
 
 			if (target == null) {
 				Console.WriteLine ("unable to create target object from: 0x{0}", target_ptr);
@@ -139,9 +137,7 @@ namespace System.Windows {
 
 		internal static void hookup_event (IntPtr target_ptr, string name, string value)
 		{
-			MethodInfo m = typeof (DependencyObject).GetMethod ("Lookup",
-					BindingFlags.Static | BindingFlags.NonPublic, null, new Type [] { typeof (IntPtr) }, null);
-			DependencyObject target = (DependencyObject) m.Invoke (null, new object [] { target_ptr });
+			DependencyObject target = DependencyObject.Lookup (target_ptr);
 
 			if (target == null) {
 				Console.WriteLine ("hookup event unable to create target object from: 0x{0}", target_ptr);
