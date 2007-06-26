@@ -23,6 +23,9 @@
 //	Chris Toshok (toshok@novell.com)
 //
 
+using System;
+using System.Windows.Input;
+
 namespace System.Windows {
 
 	public interface IInputElement
@@ -62,7 +65,7 @@ namespace System.Windows {
 		event MouseEventHandler MouseMove;
 		event MouseButtonEventHandler MouseRightButtonDown;
 		event MouseButtonEventHandler MouseRightButtonUp;
-		event MouseWheelEventHandler MouseWheel;
+// 		event MouseWheelEventHandler MouseWheel;
 		event KeyboardFocusChangedEventHandler PreviewGotKeyboardFocus;
 		event KeyEventHandler PreviewKeyDown;
 		event KeyEventHandler PreviewKeyUp;
@@ -72,29 +75,29 @@ namespace System.Windows {
 		event MouseEventHandler PreviewMouseMove;
 		event MouseButtonEventHandler PreviewMouseRightButtonDown;
 		event MouseButtonEventHandler PreviewMouseRightButtonUp;
-		event MouseWheelEventHandler PreviewMouseWheel;
-		event StylusButtonEventHandler PreviewStylusButtonDown;
-		event StylusButtonEventHandler PreviewStylusButtonUp;
-		event StylusDownEventHandler PreviewStylusDown;
+// 		event MouseWheelEventHandler PreviewMouseWheel;
+// 		event StylusButtonEventHandler PreviewStylusButtonDown;
+// 		event StylusButtonEventHandler PreviewStylusButtonUp;
+// 		event StylusDownEventHandler PreviewStylusDown;
 		event StylusEventHandler PreviewStylusInAirMove;
 		event StylusEventHandler PreviewStylusInRange;
 		event StylusEventHandler PreviewStylusMove;
 		event StylusEventHandler PreviewStylusOutOfRange;
-		event StylusSystemGestureEventHandler PreviewStylusSystemGesture;
+// 		event StylusSystemGestureEventHandler PreviewStylusSystemGesture;
 		event StylusEventHandler PreviewStylusUp;
-		event TextCompositionEventHandler PreviewTextInput;
-		event StylusButtonEventHandler StylusButtonDown;
-		event StylusButtonEventHandler StylusButtonUp;
-		event StylusDownEventHandler StylusDown;
+//		event TextCompositionEventHandler PreviewTextInput;
+// 		event StylusButtonEventHandler StylusButtonDown;
+// 		event StylusButtonEventHandler StylusButtonUp;
+// 		event StylusDownEventHandler StylusDown;
 		event StylusEventHandler StylusEnter;
 		event StylusEventHandler StylusInAirMove;
 		event StylusEventHandler StylusInRange;
 		event StylusEventHandler StylusLeave;
 		event StylusEventHandler StylusMove;
 		event StylusEventHandler StylusOutOfRange;
-		event StylusSystemGestureEventHandler StylusSystemGesture;
+// 		event StylusSystemGestureEventHandler StylusSystemGesture;
 		event StylusEventHandler StylusUp;
-		event TextCompositionEventHandler TextInput;
+// 		event TextCompositionEventHandler TextInput;
 	}
 
 }
