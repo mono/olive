@@ -34,9 +34,9 @@ using System;
 
 namespace System.Windows {
 	public struct Duration  {
-		const int TIMESPAN = 1;
-		const int AUTOMATIC = 2;
-		const int FOREVER = 3;
+		const int TIMESPAN = 0;
+		const int AUTOMATIC = 1;
+		const int FOREVER = 2;
 		int kind;
 		TimeSpan time_span;
 
