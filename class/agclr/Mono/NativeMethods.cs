@@ -126,30 +126,13 @@ namespace Mono {
 				Mono.XamlHookupEventCallback hue,
 				out Kind kind);
 
-		[DllImport("moon")]
-		internal extern static Value value_color_from_argb (uint c);
-
-#region Items
-		[DllImport("moon")]
-		internal extern static IntPtr item_get_surface (IntPtr item);
-		
-		[DllImport("moon")]
-		internal extern static void item_invalidate (IntPtr item);
-
-		[DllImport("moon")]
-		internal extern static void item_set_transform (IntPtr item, double [] transform);
-
-		[DllImport("moon")]
-		internal extern static void item_set_transform_origin (IntPtr item, Point p);
-
+#region UIElements
 		[DllImport("moon")]
 		internal extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);
 #endregion
 
+
 #region Panel
-		[DllImport("moon")]
-		internal extern static IntPtr panel_get_children_collection (IntPtr panel);
-		
 		[DllImport("moon")]
 		internal extern static IntPtr panel_new ();
 #endregion
