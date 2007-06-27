@@ -1,3 +1,11 @@
+2007-06-27  Miguel de Icaza  <miguel@novell.com>
+
+	* DependencyObject.cs (SetValue): use the native value_free_value
+	to release the value as some fields in the structure are actually
+	refcounted. 
+	
+	(GetAsValue): When wrapping a dependency object, take a ref here.
+
 2007-06-27  Jackson Harper  <jackson@ximian.com>
 
 	* XamlReader.cs: Don't need to use invoke (this was there because

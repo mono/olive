@@ -126,6 +126,9 @@ namespace Mono {
 				Mono.XamlHookupEventCallback hue,
 				out Kind kind);
 
+		[DllImport("moon")]
+		internal extern static void value_free_value (ref Value val);
+		
 #region UIElements
 		[DllImport("moon")]
 		internal extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);

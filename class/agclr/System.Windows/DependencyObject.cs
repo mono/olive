@@ -476,9 +476,11 @@ namespace System.Windows {
 					// Keep track of this object, so we know how to map it
 					// if it comes back. 
 					//
-					objects [dov.native] = dov;
+					IntPtr dov_native = dov.native;
+					objects [dov_native] = dov;
 					value.k = dov.GetKind ();
-					value.u.p = dov.native;
+					value.u.p = dov_native;
+					NativeMethods.base_ref (dov_native);
 				} else if (v is int || (v.GetType ().IsEnum && v.GetType ().GetElementType () == typeof (int))){
 					value.k = Kind.INT32;
 					value.u.i32 = (int) v;
@@ -583,27 +585,6 @@ namespace System.Windows {
 			return value;
 		}
 
-		static void FreeValue (Value val)
-		{
-			switch (val.k) {
-			case Kind.STRING:
-			case Kind.COLOR:
-			case Kind.POINT:
-			case Kind.RECT:
-			case Kind.REPEATBEHAVIOR:
-			case Kind.DURATION:
-			case Kind.INT64:
-			case Kind.TIMESPAN:
-			case Kind.DOUBLE_ARRAY:
-			case Kind.POINT_ARRAY:
-			case Kind.KEYTIME:
-			case Kind.MATRIX:
-				Marshal.FreeHGlobal (val.u.p);
-				break;
-			}
-		}
-
-
 		//
 		// This signature seems incredibly painful, why make
 		// it generic if we still have to dig into its
@@ -641,7 +622,7 @@ namespace System.Windows {
 			
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 
-			FreeValue (v);
+			NativeMethods.value_free_value (ref v);
 		}
 
 		public DependencyObject FindName (string name)
