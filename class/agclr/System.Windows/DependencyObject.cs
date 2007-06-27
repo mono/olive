@@ -194,6 +194,9 @@ namespace System.Windows {
 				
 			case Kind.RECTANGLEGEOMETRY:
 				return new RectangleGeometry (raw);
+
+			case Kind.IMAGEBRUSH:
+				return new ImageBrush (raw);
 				
 			case Kind.SOLIDCOLORBRUSH:
 				return new SolidColorBrush (raw);
