@@ -17,8 +17,8 @@ DISTFILES =			\
 mono_interp = mono
 
 ifeq ($(PLATFORM), win32)
-	plat_bindir = `cygpath -m $(libdir)`
-	mono_instdir = `cygpath -m $(libdir))/mono`
+	plat_bindir = `cygpath -m $(prefix)/bin`
+	mono_instdir = `cygpath -m $(prefix)/lib/mono`
 else
 	plat_bindir = $(bindir)
 	mono_instdir = $(prefix)/lib/mono
