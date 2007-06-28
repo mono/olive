@@ -1,5 +1,9 @@
 2007-06-28  Olivier Dufour  <olivier.Duff@gmail.com>
 
+	* OptionsParser.cs: parse argument...
+	
+2007-06-28  Olivier Dufour  <olivier.Duff@gmail.com>
+
 	* Parser.cs : with, switch, try statement fixed!
 	* OptionsParser.cs : fill all methode test in unit test (todo : parse arg)
 	TODO : numerical exponent

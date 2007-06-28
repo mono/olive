@@ -12,7 +12,7 @@ namespace Microsoft.JScript.Compiler
 		{
 			ConsoleOptions = GetDefaultConsoleOptions ();
 			EngineOptions = GetDefaultEngineOptions ();
-			//this.GlobalOptions = 
+			GlobalOptions = GetDefaultGlobalOptions ();
 		}
 
 		private ConsoleOptions consoleOptions;
@@ -26,6 +26,11 @@ namespace Microsoft.JScript.Compiler
 		public override Microsoft.Scripting.EngineOptions GetDefaultEngineOptions()
 		{
 			return new EngineOptions ();
+		}
+
+		private Microsoft.Scripting.Hosting.ScriptDomainOptions GetDefaultGlobalOptions ()
+		{
+			return new Microsoft.Scripting.Hosting.ScriptDomainOptions ();
 		}
 
 		public override void GetHelp(out string commandLine, out string[,] options, out string[,] environmentVariables, out string comments)
@@ -73,8 +78,104 @@ namespace Microsoft.JScript.Compiler
 
 		protected override void ParseArgument(string arg)
 		{
-			//TODO usage parsing
-			throw new NotImplementedException();
+			switch (arg) {
+				case "-c" :
+					this.consoleOptions.Command = PopNextArg ();
+					break;
+				case "-h":
+					this.ConsoleOptions.PrintUsageAndExit = true;
+					break;
+				case "-V":
+					this.ConsoleOptions.PrintVersionAndExit = true;
+					break;
+				case "-O":
+					this.GlobalOptions.OptimizeEnvironments = true;
+					break;
+				case "-i":
+					this.ConsoleOptions.Introspection = true;
+					break;
+				case "-v":
+					this.GlobalOptions.Verbose = true;
+					break;
+				case "-D":
+					this.GlobalOptions.EngineDebug = true; // not sure for this one be cause lot of debug bool
+					break;
+				case "-u":
+					this.GlobalOptions.BufferedStandardOutAndError = false;
+					break;
+				case "-OO":
+					this.GlobalOptions.StripDocStrings = true;
+					break;
+				case "-X:AutoIndent" :
+					this.ConsoleOptions.AutoIndent = true;
+					break;
+				case "-X:AssembliesDir":
+					this.GlobalOptions.BinariesDirectory = PopNextArg ();
+					break;
+				case "-X:ColorfulConsole":
+					this.ConsoleOptions.ColorfulConsole = true;
+					break;
+				case "-X:ExceptionDetail":
+					this.EngineOptions.ExceptionDetail = true;
+					break;
+				case "-X:FastEval":
+					this.EngineOptions.FastEvaluation = true;
+					break;
+				case "-X:Frames":
+					this.GlobalOptions.Frames = true;
+					break;
+				case "-X:GenerateAsSnippets":
+					this.GlobalOptions.GenerateModulesAsSnippets = true;
+					break;
+				case "-X:ILDebug":
+					// not sure here
+					this.EngineOptions.ClrDebuggingEnabled = true;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.ILDebug;
+					break;
+				case "-X:MaxRecursion":
+					int result =0;
+					if (Int32.TryParse(PopNextArg (), out result))
+						((Microsoft.JScript.Compiler.EngineOptions)EngineOptions).MaximumRecursion = result;
+					break;
+				case "-X:MTA":
+					//TODO here not found!
+					break;
+				case "-X:NoOptimize":
+					// not sure here
+					this.GlobalOptions.OptimizeEnvironments = false;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.DisableOptimizations;
+					break;
+				case "-X:NoTraceback":
+					this.GlobalOptions.DynamicStackTraceSupport = false;
+					break;
+				case "-X:PassExceptions" :
+					this.ConsoleOptions.HandleExceptions = false;
+					break;
+				case "-X:PrivateBinding":
+					this.GlobalOptions.PrivateBinding = true;
+					break;
+				case "-X:SaveAssemblies":
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.SaveAndReloadAssemblies;
+					break;
+				case "-X:ShowClrExceptions":
+					this.engineOptions.ShowClrExceptions = true;
+					break;
+				case "-X:SlowOps":
+					this.GlobalOptions.FastOps = true; // not sure for this one but no other talking about ops
+					break;
+				case "-X:StaticMethods":
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.GenerateStaticMethods;
+					break;
+				case "-X:TabCompletion":
+					this.ConsoleOptions.TabCompletion = true;
+					break;
+				case "-X:TrackPerformance":
+					this.GlobalOptions.TrackPerformance = true;
+					break;
+				default:
+					consoleOptions.FileName = arg;
+					break;
+			}
 		}
 		
 		public override ConsoleOptions ConsoleOptions {
