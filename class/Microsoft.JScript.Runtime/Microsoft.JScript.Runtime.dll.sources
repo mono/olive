@@ -19,3 +19,4 @@ Microsoft.JScript.Runtime/UnDefinedOps.cs
 Microsoft.JScript.Runtime/UndefinedCompilerConstant.cs
 Microsoft.JScript.Runtime/URIErrorException.cs
 Microsoft.JScript.Runtime/WrapperException.cs
+Microsoft.JScript.Runtime.Operations/JSOperators.cs
