@@ -1,3 +1,12 @@
+2007-06-28  Miguel de Icaza  <miguel@novell.com>
+
+	* Move Kind.cs, Value.cs and NativeMethods to the agmono assembly
+	as well as some events from Events.cs that are now public and part
+	of the NativeMethods APIS.
+
+	This is only the initial move, we will later move some more stuff
+	that we need.
+
 2007-06-26  Miguel de Icaza  <miguel@novell.com>
 
 	* Internal.cs: Implement most of the public interface for

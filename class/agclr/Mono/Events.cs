@@ -31,10 +31,6 @@ using System.Windows.Interop;
 
 namespace Mono {
 
-	delegate void CallbackMouseEvent (IntPtr target, int state, double x, double y);
-	delegate void PlainEvent (IntPtr target);
-	delegate bool KeyboardEvent (IntPtr target, int state, int platformcode, int key);
-	
 	internal class Events {
 		static CallbackMouseEvent mouse_motion      = new CallbackMouseEvent (mouse_motion_notify_callback);
 		static CallbackMouseEvent mouse_button_down = new CallbackMouseEvent (mouse_button_down_callback);
