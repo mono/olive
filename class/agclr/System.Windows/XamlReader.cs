@@ -80,7 +80,7 @@ namespace System.Windows {
 			Console.WriteLine ("Loading assembly from {0}", asm_path);
 
 			// TODO: Use a downloader here
-			Assembly clientlib = Assembly.LoadFile (asm_path);
+			Assembly clientlib = Moonlight.LoadFile (asm_path);
 			if (clientlib == null) {
 				Console.WriteLine ("could not load client library: '{0}'", asm_path);
 				return IntPtr.Zero;
