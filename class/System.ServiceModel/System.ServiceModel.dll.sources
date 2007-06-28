@@ -605,6 +605,16 @@ System.ServiceModel.Dispatcher/XPathMessageFilterTable.cs
 System.ServiceModel.Dispatcher/XPathNavigatorException.cs
 System.ServiceModel.PeerResolvers/CustomPeerResolverService.cs
 System.ServiceModel.PeerResolvers/IPeerResolverContract.cs
+System.ServiceModel.PeerResolvers/RefreshInfo.cs
+System.ServiceModel.PeerResolvers/RefreshResponseInfo.cs
+System.ServiceModel.PeerResolvers/RefreshResult.cs
+System.ServiceModel.PeerResolvers/RegisterInfo.cs
+System.ServiceModel.PeerResolvers/RegisterResponseInfo.cs
+System.ServiceModel.PeerResolvers/ResolveInfo.cs
+System.ServiceModel.PeerResolvers/ResolveResponseInfo.cs
+System.ServiceModel.PeerResolvers/ServiceSettingsResponseInfo.cs
+System.ServiceModel.PeerResolvers/UnregisterInfo.cs
+System.ServiceModel.PeerResolvers/UpdateInfo.cs
 System.ServiceModel.Security.Tokens/AuthenticatorCommunicationObject.cs
 System.ServiceModel.Security.Tokens/BinarySecretSecurityToken.cs
 System.ServiceModel.Security.Tokens/ClaimTypeRequirement.cs

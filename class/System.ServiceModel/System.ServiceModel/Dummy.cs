@@ -50,13 +50,4 @@ namespace System.ServiceModel.PeerResolvers
         //public class CustomPeerResolverService {}
 	public class PeerCustomResolverSettings {}
 	public class PeerResolverSettings {}
-	public class RefreshInfo {}
-	public class RefreshResponseInfo {}
-	public class RegisterInfo {}
-	public class RegisterResponseInfo {}
-	public class ResolveInfo {}
-	public class ResolveResponseInfo {}
-	public class ServiceSettingsResponseInfo {}
-	public class UnregisterInfo {}
-	public class UpdateInfo {}
 }
