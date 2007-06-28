@@ -125,7 +125,6 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void WithTest ()
 		{
-			//todo fix syntax error
 			parser = new Parser ("with (test) {}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
@@ -137,7 +136,6 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void switchTest ()
 		{
-			//todo fix syntax error
 			parser = new Parser ("switch (test) { case a: break; default: break;}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
@@ -149,7 +147,6 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		[Test]
 		public void TryTest ()
 		{
-			//todo fix syntax error
 			parser = new Parser ("try {} finally {}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
@@ -192,13 +189,24 @@ namespace MonoTests.Microsoft.JScript.Compiler
 		}
 
 		[Test]
-		public void labelTest ()
+		public void LabelTest ()
 		{
 			parser = new Parser ("a : {}".ToCharArray ());
 			List<Comment> comments = new List<Comment> ();
 			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
 			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
 			Assert.IsInstanceOfType (typeof (LabelStatement), it.Element, "#12.1");
+			Assert.IsTrue (parser.SyntaxOK ());
+		}
+
+		[Test]
+		public void ReturnTest2 ()
+		{
+			parser = new Parser ("return ;".ToCharArray ());
+			List<Comment> comments = new List<Comment> ();
+			DList<Statement, BlockStatement> list = parser.ParseProgram (ref comments);
+			DList<Statement, BlockStatement>.Iterator it = new DList<Statement, BlockStatement>.Iterator (list);
+			Assert.IsInstanceOfType (typeof (ReturnOrThrowStatement), it.Element, "#14.1");
 			Assert.IsTrue (parser.SyntaxOK ());
 		}
 

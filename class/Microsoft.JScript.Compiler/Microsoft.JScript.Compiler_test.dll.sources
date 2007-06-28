@@ -2,3 +2,4 @@ Microsoft.JScript.Compiler/TokenizerTest.cs
 Microsoft.JScript.Compiler/ParserTest.cs
 Microsoft.JScript.Compiler/SplayTreeTest.cs
 Microsoft.JScript.Compiler/TableTest.cs
+Microsoft.JScript.Compiler/OptionsParserTest.cs

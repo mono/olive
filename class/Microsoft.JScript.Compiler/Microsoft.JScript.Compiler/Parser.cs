@@ -435,6 +435,7 @@ namespace Microsoft.JScript.Compiler
 			Next();
 			CheckSyntaxExpected(Token.Type.LeftParenthesis);
 			Token leftParen = current;
+			Next ();
 			Expression scope = ParseExpression();
 			CheckSyntaxExpected(Token.Type.RightParenthesis);
 			Token rightParen = current;
@@ -450,6 +451,7 @@ namespace Microsoft.JScript.Compiler
 			Next();
 			CheckSyntaxExpected(Token.Type.LeftParenthesis);
 			Token leftParen = current;
+			Next ();
 			Expression Value = ParseExpression();
 			CheckSyntaxExpected(Token.Type.RightParenthesis);
 			Token rightParen = current;
@@ -469,7 +471,6 @@ namespace Microsoft.JScript.Compiler
 					cases.Append (ParseDefaultCaseClause ());
 					defaultFlag = true;
 				}
-				Next ();			
 			}
 			withinSwitch--;
 			CheckSyntaxExpected (Token.Type.RightBrace);
@@ -493,6 +494,7 @@ namespace Microsoft.JScript.Compiler
 					|| current.Kind == Token.Type.EndOfInput)
 					break;
 				children.Append (ParseStatement ());
+				Next ();
 			} while (true);
 			DefaultCaseClause result = new DefaultCaseClause (children, new TextSpan (start, current), new TextSpan (start, colon), new TextPoint (colon.StartPosition));
 			children.Parent = result;
@@ -515,6 +517,7 @@ namespace Microsoft.JScript.Compiler
 					|| current.Kind == Token.Type.EndOfInput)
 					break;
 				children.Append (ParseStatement ());
+				Next ();
 			} while (true);
 			ValueCaseClause result = new ValueCaseClause (expression, children, new TextSpan (start, current), new TextSpan (start, colon), new TextPoint (colon.StartPosition));
 			children.Parent = result;
@@ -548,13 +551,13 @@ namespace Microsoft.JScript.Compiler
 			Next ();
 			BlockStatement block = ParseBlock ();
 			Next();
-			bool flag = false;
+			bool flag = true;
 			CatchClause catchClause = null;
 			FinallyClause finallyClause = null;
 
 			if (current.Kind == Token.Type.@catch) {
 				Token start2 = current;
-				flag = true;
+				flag = false;
 				Next ();
 				CheckSyntaxExpected (Token.Type.LeftParenthesis);
 				Token left = current;
@@ -574,7 +577,7 @@ namespace Microsoft.JScript.Compiler
 
 			if (current.Kind == Token.Type.@finally) {
 				Token start3 = current;
-				flag = true;
+				flag = false;
 				Next ();
 				BlockStatement handler2 = ParseBlock();
 				finallyClause = new FinallyClause(handler2,new TextSpan(start3,current));

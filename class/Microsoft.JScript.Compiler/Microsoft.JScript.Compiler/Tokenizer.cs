@@ -495,7 +495,7 @@ namespace Microsoft.JScript.Compiler
 			StringBuilder builder = new StringBuilder ();
 			builder.Append ((char) first);
 			int dot = 0;
-
+			//TODO eE +- . 
 			while (Advance ()) {
 				next = PeekChar ();
 				switch (next) {
