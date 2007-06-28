@@ -8,9 +8,9 @@ else
 	olivedir = $(prefix)/lib/mono/3.0
 endif
 
-all-local: olive.pc silver.pc
+all-local: olive.pc silver.pc silverdesktop.pc
 
-DISTFILES = olive.pc.in silver.pc.in
+DISTFILES = olive.pc.in silver.pc.in silverdesktop.pc.in
 
 REWRITE=
 olive.pc: olive.pc.in Makefile
@@ -21,9 +21,13 @@ silver.pc: silver.pc.in Makefile
 	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
 	mv $@.tmp $@
 
-install-local: olive.pc silver.pc
+silverdesktop.pc: silverdesktop.pc.in Makefile
+	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silverdesktop.pc.in > $@.tmp
+	mv $@.tmp $@
+
+install-local: olive.pc silver.pc silverdesktop.pc
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
-	$(INSTALL_DATA) olive.pc silver.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(INSTALL_DATA) olive.pc silver.pc silverdesktop.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
 clean-local:
 	rm -rf olive.pc silver.pc
