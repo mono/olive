@@ -1,7 +1,12 @@
+2007-06-28 Marcos Cobena (marcoscobena@gmail.com)
+
+	* CustomPeerResolverService.cs : Minor fixes for working against tests.
+	* New classes initial implementations.
+
 2007-05-18 Marcos Cobena (marcoscobena@gmail.com)
 
 	* IPeerResolverContract.cs
-	  CustomPeerResolverService.cs :  Minor fixes. IPeerResolverContract 
+	  CustomPeerResolverService.cs : Minor fixes. IPeerResolverContract 
 	  works fine now with attributes.
 
 2007-05-13  Atsushi Enomoto  <atsushi@ximian.com>
