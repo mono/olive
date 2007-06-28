@@ -5,7 +5,9 @@ using Microsoft.Scripting.Internal.Ast;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSFunctionObjectWithContext : JSFunctionObject {
+
 		public JSFunctionObjectWithContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor)
 			: base (context, name, length, argNames, isStandardConstructor)

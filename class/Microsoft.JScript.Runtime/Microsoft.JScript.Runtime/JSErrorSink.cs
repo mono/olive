@@ -22,7 +22,7 @@ namespace Microsoft.JScript.Runtime {
 			base.Add (sourceUnit, message, span, errorCode, severity);
 		}
 
-		public bool ThrowExceptionOnErrror
+		public bool ThrowExceptionOnError
 		{
 			get { return throw_exception_on_error; }
 			set { throw_exception_on_error = value; }

@@ -3,6 +3,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSRegExpConstructor : JSFunctionObject {
 
 		public JSRegExpConstructor (CodeContext context)
@@ -56,7 +57,6 @@ namespace Microsoft.JScript.Runtime {
 
 		public object lastIndex {
 			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
 		}
 
 		public object lastMatch {

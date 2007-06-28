@@ -85,7 +85,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static void PrintExpression (object o)
+		public static void PrintExpressionValue (object o)
 		{
 			throw new NotImplementedException ();
 		}

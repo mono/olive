@@ -3,7 +3,9 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public static class JSBooleanPrototype {
+
 		public static string toString (object thisob)
 		{
 			throw new NotImplementedException ();

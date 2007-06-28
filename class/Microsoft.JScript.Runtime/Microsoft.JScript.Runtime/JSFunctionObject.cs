@@ -5,7 +5,8 @@ using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime {
 
-	public class JSFunctionObject : JSObject {
+	[Serializable]
+	public class JSFunctionObject : JSObject, IActionable, ICallableWithCodeContext, ICallableWithThis, IConstructorWithCodeContext {
 		
 		public JSFunctionObject (CodeContext context, string name, int length, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
@@ -22,6 +23,11 @@ namespace Microsoft.JScript.Runtime {
 		}
 
 		public virtual object Call (CodeContext context, object instance, object [] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		object ICallableWithCodeContext.Call (CodeContext context, object [] args)
 		{
 			throw new NotImplementedException ();
 		}

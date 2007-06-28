@@ -6,7 +6,10 @@ using Microsoft.Scripting;
 using IronPython.Runtime;
 
 namespace Microsoft.JScript.Runtime {
+
+	[Serializable]
 	public class JSArrayPrototype {
+
 		public JSArrayPrototype ()
 		{
 			throw new NotImplementedException ();
@@ -87,7 +90,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object sort (CodeContext context, object [] arguments)
+		public static object sort (CodeContext context, params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}

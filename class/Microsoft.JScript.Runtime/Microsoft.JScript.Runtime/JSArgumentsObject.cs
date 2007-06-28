@@ -3,7 +3,9 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSArgumentsObject : JSObject {
+
 		JSArgumentsObject ()
 			: base (null)
 		{

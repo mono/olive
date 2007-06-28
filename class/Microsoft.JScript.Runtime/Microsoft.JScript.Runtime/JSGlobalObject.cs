@@ -12,12 +12,12 @@ namespace Microsoft.JScript.Runtime {
 
 		#region Global members
 
-		public static object addRerefence (CodeContext context, params object [] arguments)
+		public static object addReference (CodeContext context, params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object addRerefenceToFile (CodeContext context, params object [] arguments)
+		public static object addReferenceToFile (CodeContext context, params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}

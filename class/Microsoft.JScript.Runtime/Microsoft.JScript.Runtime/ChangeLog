@@ -1,6 +1,22 @@
 2007-06-28  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSErrorSink.cs
+	* JSCompilerHelpers.cs
+	* JSRegExpConstructor.cs
+	* JSArrayPrototype.cs
+	* JSFunctionObjectWithContext.cs
+	* JSArrayWrapper.cs
+	* JSErrorObject.cs
+	* JSRegExpObject.cs
+	* JSGlobalObject.cs
+	* JSPropertyAttributes.cs
+	* JSArgumentsObject.cs
+	* JSBooleanPrototype.cs
+	* JSFunctionObject.cs: corcompare fixes.
+
+2007-06-28  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* JSErrorSink.cs
 	* JSBooleanConstructor.cs
 	* ReferenceErrorException.cs
 	* JSErrorConvertor.cs
