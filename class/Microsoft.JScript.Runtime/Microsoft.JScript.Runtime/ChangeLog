@@ -1,3 +1,39 @@
+2007-06-28  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* JSErrorSink.cs
+	* JSBooleanConstructor.cs
+	* ReferenceErrorException.cs
+	* JSErrorConvertor.cs
+	* JSFunctionConstructor.cs
+	* JSCompilerHelpers.cs
+	* JSRegExpConstructor.cs
+	* JSArrayPrototype.cs
+	* JSFunctionObjectWithContext.cs
+	* JSErrorPrototype.cs
+	* JSArrayWrapper.cs
+	* JSErrorObject.cs
+	* JSRegExpObject.cs
+	* EvalErrorException.cs
+	* JSContext.cs
+	* JSArrayConstructor.cs
+	* JSGlobalObject.cs
+	* JSBooleanObjectOps.cs
+	* JSArgumentsObject.cs
+	* JSErrorConstructor.cs
+	* JSBooleanPrototype.cs
+	* JSFunctionPrototype.cs
+	* JSAttributedProperty.cs
+	* JSFunctionObject.cs
+	* TypeErrorException.cs: Added more stubs.
+
+	* WrapperException.cs
+	* URIException.cs: Removed _Exception and ISerializable from
+	interfaces.
+
+	* JSArrayObject.cs
+	* UnDefined.cs
+	* UnDefinedOps.cs: Removed [CLSCompliant (false)].
+
 2007-06-23  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSNumberObject.cs

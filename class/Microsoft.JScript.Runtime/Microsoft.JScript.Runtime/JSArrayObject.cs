@@ -11,7 +11,7 @@ namespace Microsoft.JScript.Runtime {
 	public class JSArrayObject : JSObject, IAttributesCollection, ICustomMembers, IEnumerable,
 		IEnumerable<KeyValuePair<object, object>>, IMapping, IPythonContainer {
 
-		JSArrayObject ()
+		internal JSArrayObject ()
 			: base (null)
 		{
 		}
@@ -76,7 +76,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		protected void SpliceSlowly (CodeContext context, uint start, uint deleteCount, object [] args,
 					     JSArrayObject outArray, uint oldLength, uint newLength)
 		{

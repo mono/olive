@@ -28,7 +28,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static double Add (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -134,7 +133,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool Equal (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -190,7 +188,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool GreaterThan (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -221,7 +218,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool GreaterThanOrEqual (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -277,7 +273,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool LessThan (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -308,7 +303,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool LessThanOrEqual (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -389,7 +383,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static bool NotEqual (UnDefined x, IronPython.Runtime.Types.None y)
 		{
 			throw new NotImplementedException ();
@@ -430,31 +423,26 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static uint RightShiftUnsigned (UnDefined x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static uint RightShiftUnsigned (UnDefined x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static uint RightShiftUnsigned (UnDefined x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static uint RightShiftUnsigned (UnDefined x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public static uint RightShiftUnsigned (UnDefined x, UnDefined y)
 		{
 			throw new NotImplementedException ();

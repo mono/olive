@@ -13,7 +13,6 @@ using System.Runtime.InteropServices;
 
 [assembly: AssemblyTitle ("Microsoft.JScript.Runtime")]
 [assembly: AssemblyDescription ("")]
-[assembly: CLSCompliant (true)]
 [assembly: AssemblyFileVersion ("3.0.0.0")]
 [assembly: ComVisible (false)]
 

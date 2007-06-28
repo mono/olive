@@ -61,7 +61,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public sbyte ToSByte (IFormatProvider provider)
 		{
 			throw new NotImplementedException ();
@@ -82,19 +81,16 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public ushort ToUInt16 (IFormatProvider provider)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		[CLSCompliant (false)]
 		public uint ToUInt32 (IFormatProvider provider)
 		{
 			throw new NotImplementedException ();
 		}
 
-		[CLSCompliant (false)]
 		public ulong ToUInt64 (IFormatProvider provider)
 		{
 			throw new NotImplementedException ();

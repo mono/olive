@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class WrapperException : Exception, _Exception, ISerializable {
+	public class WrapperException : Exception {
 
 		public WrapperException ()
 		{
