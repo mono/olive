@@ -20,6 +20,7 @@ SUBDIRS = \
 	System.ServiceModel 		\
 	System.ServiceModel.Web		\
 	System.Silverlight		\
+	agmono				\
 	agclr
 
 DIST_PROFILE_DIRS = net_3_0
