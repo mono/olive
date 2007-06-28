@@ -1,0 +1,7 @@
+2007-06-28  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* GetMemberBinderHelper.cs
+	* JSBinder.cs
+	* JSDefaultContext.cs
+	* SetMemberBinderHelper.cs
+	* DoOperationBinderHelper.cs: Added stubs.

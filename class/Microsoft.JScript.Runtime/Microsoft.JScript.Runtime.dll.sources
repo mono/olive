@@ -20,3 +20,8 @@ Microsoft.JScript.Runtime/UndefinedCompilerConstant.cs
 Microsoft.JScript.Runtime/URIErrorException.cs
 Microsoft.JScript.Runtime/WrapperException.cs
 Microsoft.JScript.Runtime.Operations/JSOperators.cs
+Microsoft.JScript.Runtime.Calls/GetMemberBinderHelper.cs
+Microsoft.JScript.Runtime.Calls/JSBinder.cs
+Microsoft.JScript.Runtime.Calls/JSDefaultContext.cs
+Microsoft.JScript.Runtime.Calls/SetMemberBinderHelper.cs
+Microsoft.JScript.Runtime.Calls/DoOperationBinderHelper.cs
