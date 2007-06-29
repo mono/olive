@@ -1,0 +1,17 @@
+../../build/common/Consts.cs
+../../build/common/Locale.cs
+../../build/common/MonoTODOAttribute.cs
+Assembly/AssemblyInfo.cs
+Mono.Xml/XmlNodeWriter.cs
+Mono.XsltDebugger/XsltCompileEventArgs.cs
+Mono.XsltDebugger/XsltCompileEventHandler.cs
+Mono.XsltDebugger/XsltCompleteEventArgs.cs
+Mono.XsltDebugger/XsltCompleteEventHandler.cs
+Mono.XsltDebugger/XsltDebugger.cs
+Mono.XsltDebugger/XsltDebuggerBreakpoint.cs
+Mono.XsltDebugger/XsltDebuggerContext.cs
+Mono.XsltDebugger/XsltDebuggerException.cs
+Mono.XsltDebugger/XsltDebuggerSession.cs
+Mono.XsltDebugger/XsltExecuteEventArgs.cs
+Mono.XsltDebugger/XsltExecuteEventHandler.cs
+Mono.XsltDebugger/XsltInjector.cs

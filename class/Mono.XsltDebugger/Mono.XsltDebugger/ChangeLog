@@ -1,0 +1,8 @@
+2007-06-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XsltExecuteEventArgs.cs XsltExecuteEventHandler.cs
+	  XsltDebuggerBreakpoint.cs XsltDebuggerException.cs
+	  XsltDebugger.cs XsltCompileEventArgs.cs XsltCompleteEventArgs.cs
+	  XsltCompileEventHandler.cs XsltCompleteEventHandler.cs
+	  XsltDebuggerSession.cs XsltDebuggerContext.cs XsltInjector.cs :
+	  initial checkin. (It does not support any debugging yet.)
