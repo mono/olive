@@ -1,3 +1,7 @@
+2007-06-29  Rodrigo Kumpera  <rkumpera@novell.com>
+
+	*DependencyObject.cs: Added MediaElement to CreateObject switch.
+
 2007-06-28  Miguel de Icaza  <miguel@novell.com>
 
 	* Move Kind.cs, Value.cs and NativeMethods to the agmono assembly

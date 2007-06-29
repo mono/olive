@@ -296,7 +296,10 @@ namespace System.Windows {
 				
 			case Kind.TRIGGER_COLLECTION: 
 				return new TriggerCollection (raw);
-				
+
+			case Kind.MEDIAELEMENT:
+				return new MediaElement (raw);
+
 			case Kind.CLOCKGROUP:
 			case Kind.ANIMATIONCLOCK:
 			case Kind.CLOCK: 
