@@ -1,0 +1,5 @@
+2007-06-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile
+	  xslt-debugger.exe.sources
+	  xslt-debugger.cs: initial checkin.
