@@ -3,3 +3,4 @@ Microsoft.JScript.Compiler/ParserTest.cs
 Microsoft.JScript.Compiler/SplayTreeTest.cs
 Microsoft.JScript.Compiler/TableTest.cs
 Microsoft.JScript.Compiler/OptionsParserTest.cs
+Microsoft.JScript.Compiler.Hosting/LanguageProviderTest.cs
