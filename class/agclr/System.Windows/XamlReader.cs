@@ -92,10 +92,15 @@ namespace System.Windows {
 			if (ns != null)
 				name = String.Concat (ns, ".", name);
 
-			DependencyObject res = (DependencyObject) clientlib.CreateInstance (name);
-
-			if (res == null) {
+			Console.WriteLine ("create");
+			object r = clientlib.CreateInstance (name);
+			if (r == null){
 				Console.WriteLine ("unable to create object instance:  '{0}'", name);
+				return IntPtr.Zero;
+			}
+			DependencyObject res = r as DependencyObject;
+			if (res == null){
+				Console.WriteLine ("Object is not a dependency object:  '{0}'", r.GetType ());
 				return IntPtr.Zero;
 			}
 
