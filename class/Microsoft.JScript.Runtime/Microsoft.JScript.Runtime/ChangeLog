@@ -1,3 +1,35 @@
+2007-06-30  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* JSNumberPrototype.cs
+	* JSMathObject.cs
+	* JSTypeErrorObject.cs
+	* JSEnumOps.cs
+	* JSNumberConstructor.cs
+	* JSBooleanOps.cs
+	* JSDateObject.cs
+	* JSDateConstructor.cs
+	* JSEvalErrorObject.cs
+	* JSRangeErrorObject.cs
+	* JSOps.cs
+	* JSNumberObjectOps.cs
+	* JSRegExpPrototype.cs
+	* JSStringOps.cs
+	* JSObjectOps.cs
+	* JSStringObject.cs
+	* JSReferenceErrorObject.cs
+	* JSScopeObject.cs
+	* JSDatePrototype.cs
+	* JSNumberOps.cs
+	* JSNoneTypeOps.cs
+	* JSSyntaxErrorObject.cs
+	* JSObjectPrototype.cs
+	* JSStringPrototype.cs
+	* JSURIErrorObject.cs
+	* JSRegExpMatch.cs
+	* JSStringConstructor.cs: Added more stubs.
+
+	* JSErrorObject.cs: Made ctor internal.
+
 2007-06-28  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSErrorSink.cs

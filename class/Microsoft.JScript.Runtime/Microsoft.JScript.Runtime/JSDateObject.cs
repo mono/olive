@@ -1,13 +1,12 @@
 using System;
 using Microsoft.Scripting;
+using IronPython.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime {
 
-	[Serializable]
-	public class JSErrorObject : JSObject {
-
-		internal JSErrorObject ()
-			: base (null)
+	public class JSDateObject : JSObject {
+		public JSDateObject (JSObject prototype, double val)
+			: base (prototype)
 		{
 		}
 
