@@ -14,8 +14,8 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: AssemblyVersion ("0.0.0.0")]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../msfinal3.pub")]
+[assembly: AssemblyKeyFile ("../msfinal.pub")]
 
