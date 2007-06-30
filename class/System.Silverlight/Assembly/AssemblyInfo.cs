@@ -56,4 +56,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../msfinal3.pub")]
+[assembly: AssemblyKeyFile ("../msfinal.pub")]
