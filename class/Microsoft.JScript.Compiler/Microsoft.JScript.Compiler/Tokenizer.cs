@@ -498,9 +498,7 @@ namespace Microsoft.JScript.Compiler
 
 		private Token CreateNumericLiteralToken (int first)
 		{
-			
 			int next = PeekChar ();
-
 			if (first == '0') {
 				if (next == 'x' || next == 'X')
 					return CreateHexIntegerLiteralToken (first);
@@ -522,7 +520,7 @@ namespace Microsoft.JScript.Compiler
 			StringBuilder builder = new StringBuilder ();
 			builder.Append ((char) first);
 			int dot = 0;
-			//TODO eE +- . 
+			int exp = 0;
 			while (Advance ()) {
 				next = PeekChar ();
 				switch (next) {
@@ -550,6 +548,22 @@ namespace Microsoft.JScript.Compiler
 							}							
 							continue;
 						}
+					case 'e':
+					case 'E': {
+							builder.Append ((char)next);
+							ReadChar ();
+							exp++;
+							if (exp > 1) {
+								current = CreateBadToken (builder.ToString (), DiagnosticCode.MalformedNumericLiteral);
+								return current;
+							}
+							next = PeekChar ();
+							if (next == '+' || next == '-') {
+								builder.Append ((char)next);
+								ReadChar ();
+							}
+							continue;
+						}
 				}
 				break;
 			}
@@ -561,7 +575,7 @@ namespace Microsoft.JScript.Compiler
 		private Token CreateOctalIntegerLiteralToken (int first)
 		{
 			StringBuilder builder = new StringBuilder ();
-			builder.Append ((char)first);
+			builder.Append ((char)first);//0
 			double val = 0;
 
 			while (Advance ()) {
@@ -592,7 +606,8 @@ namespace Microsoft.JScript.Compiler
 		private Token CreateHexIntegerLiteralToken (int first)
 		{
 			StringBuilder builder = new StringBuilder ();
-			builder.Append ((char)first);
+			builder.Append ((char)first);//0
+			builder.Append ((char)ReadChar ()); //x or X (ever tested before)
 			double val = 0;
 			while (Advance ()) {
 				int next = PeekChar ();

@@ -1,3 +1,7 @@
+2007-07-02  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Tokenizer.cs: fix hex number token and add support for exponent number
+	
 2007-06-28  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* OptionsParser.cs: parse argument...
