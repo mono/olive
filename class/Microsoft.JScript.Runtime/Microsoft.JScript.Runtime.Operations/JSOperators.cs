@@ -5,9 +5,9 @@ using Microsoft.Scripting;
 namespace Microsoft.JScript.Runtime.Operations {
 	public class JSOperators {
 
-		public readonly SymbolId OperatorInPlaceRightShiftUnsigned;
-		public readonly SymbolId OperatorReverseRightShiftUnsigned;
-		public readonly SymbolId OperatorRightShiftUnsigned;
+		public static readonly SymbolId OperatorInPlaceRightShiftUnsigned;
+		public static readonly SymbolId OperatorReverseRightShiftUnsigned;
+		public static readonly SymbolId OperatorRightShiftUnsigned;
 
 		static Dictionary<string, OperatorMapping> operator_table;
 		static Dictionary<OperatorMapping, SymbolId> reverse_operator_table;
