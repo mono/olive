@@ -5,7 +5,7 @@ Assembly/AssemblyInfo.cs
 Microsoft.JScript.Compiler/BadToken.cs
 Microsoft.JScript.Compiler/Comment.cs
 Microsoft.JScript.Compiler/Compiler.cs
-Microsoft.JScript.Compiler/CompilerOption.cs
+Microsoft.JScript.Compiler/CompilerOptions.cs
 Microsoft.JScript.Compiler/DList.cs
 Microsoft.JScript.Compiler/Diagnostic.cs
 Microsoft.JScript.Compiler/Engine.cs
