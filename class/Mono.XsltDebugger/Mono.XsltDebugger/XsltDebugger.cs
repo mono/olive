@@ -2,13 +2,14 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Security.Policy;
+using System.Threading;
 using System.Xml;
 using System.Xml.XPath;
 using System.Xml.Xsl;
 
 namespace Mono.XsltDebugger
 {
-	public class XsltDebugger
+	public class XsltDebuggerService
 	{
 		XPathDocument style;
 		XPathDocument input;
@@ -17,10 +18,15 @@ namespace Mono.XsltDebugger
 		ArrayList breakpoints = new ArrayList ();
 		XsltDebuggerSession current_run;
 		XmlNamespaceManager nsmgr = new XmlNamespaceManager (new NameTable ());
+		ThreadManager thread_manager;
 
-		public XsltDebugger ()
+		public XsltDebuggerService ()
 		{
 		}
+
+		public event EventHandler BreakpointMatched;
+
+		public event EventHandler TransformCompleted;
 
 		public XmlNamespaceManager NamespaceManager {
 			get { return nsmgr; }
@@ -90,21 +96,26 @@ namespace Mono.XsltDebugger
 				Abort ();
 			}
 			current_run = new XsltDebuggerSession (this);
+			thread_manager = new ThreadManager (current_run);
 
 			// set breakpoints
 			current_run.Executed += OnExecute;
 
-			current_run.Run ();
+			thread_manager.StartTransform ();
 		}
 
 		public virtual void Interrupt ()
 		{
-			throw new NotImplementedException ();
+			if (thread_manager == null)
+				throw new XsltDebuggerException ("No active transformation to interrupt");
+			thread_manager.InterruptTransform ();
 		}
 
 		public virtual void Resume ()
 		{
-			throw new NotImplementedException ();
+			if (thread_manager == null)
+				throw new XsltDebuggerException ("No active transformation to interrupt");
+			thread_manager.ResumeTransform ();
 		}
 
 		public virtual void Abort ()
@@ -140,13 +151,30 @@ namespace Mono.XsltDebugger
 			if (input == null)
 				throw new XsltDebuggerException ("Input document is not specified");
 			transform.Transform (input, null, writer, xml_resolver);
+
+			OnTransformCompleted ();
 		}
 
+		// invoked inside transformation thread.
 		void OnExecute (object o, XsltExecuteEventArgs args)
 		{
 			if (!Break (args.Context))
 				return;
-Console.WriteLine ("Match");
+			thread_manager.DispatchBreakpointMatch (o, args);
+		}
+
+		// invoked from ThreadManager notification thread
+		void OnBreakpointMatch (object o, XsltExecuteEventArgs args)
+		{
+			if (BreakpointMatched != null)
+				BreakpointMatched (o, args);
+		}
+
+		void OnTransformCompleted ()
+		{
+			if (TransformCompleted != null)
+				TransformCompleted (null, null);
+			thread_manager.Dispose ();
 		}
 
 		bool Break (XsltDebuggerContext ctx)
@@ -157,6 +185,81 @@ Console.WriteLine ("Match");
 				if (bp.Match (ctx))
 					return true;
 			return false;
+		}
+
+		class ThreadManager : IDisposable
+		{
+			XsltDebuggerSession session;
+			Thread run_thread, notify_thread;
+			ManualResetEvent notify_handle, trans_handle;
+
+			// used between notification thread and transformation thread
+			object event_sender;
+			XsltExecuteEventArgs event_args;
+
+			public ThreadManager (XsltDebuggerSession session)
+			{
+				this.session = session;
+			}
+
+			public void Dispose ()
+			{
+				if (notify_thread != null) {
+					notify_thread.Abort ();
+					notify_thread = null;
+				}
+				if (run_thread != null) {
+					run_thread.Abort ();
+					run_thread = null;
+				}
+			}
+
+			// It kicks the transform thread and returns.
+			public void StartTransform ()
+			{
+				notify_handle = new ManualResetEvent (false);
+				trans_handle = new ManualResetEvent (false);
+
+				run_thread = new Thread (delegate () {
+					try {
+						session.Run ();
+					} catch (ThreadAbortException) {
+						Thread.ResetAbort ();
+					}
+				});
+				notify_thread = new Thread (delegate () {
+					try {
+						while (true) {
+							notify_handle.Reset ();
+							notify_handle.WaitOne ();
+							session.Debugger.OnBreakpointMatch (event_sender, event_args);
+						}
+					} catch (ThreadAbortException) {
+						Thread.ResetAbort ();
+					}
+				});
+
+				notify_thread.Start ();
+				run_thread.Start ();
+			}
+
+			public void InterruptTransform ()
+			{
+				trans_handle.WaitOne ();
+			}
+
+			public void ResumeTransform ()
+			{
+				trans_handle.Set ();
+			}
+
+			public void DispatchBreakpointMatch (object o, XsltExecuteEventArgs args)
+			{
+				this.event_sender = o;
+				this.event_args = args;
+				notify_handle.Set ();
+				trans_handle.WaitOne ();
+			}
 		}
 	}
 }

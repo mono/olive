@@ -1,13 +1,15 @@
 using System;
 using System.Collections;
+using System.Globalization;
 using System.IO;
 using System.Text;
+using System.Threading;
 using System.Xml;
 using System.Xml.XPath;
 
 namespace Mono.XsltDebugger
 {
-	public class XsltDebuggerConsole
+	public class XsltDebuggerConsole : XsltDebuggerService
 	{
 		static readonly char [] wsChars = new char [] {' ', '\n', '\r', '\t'};
 
@@ -16,24 +18,39 @@ namespace Mono.XsltDebugger
 			new XsltDebuggerConsole ().Run (args);
 		}
 
+		protected override bool WarnAndQueryExistingRun ()
+		{
+			Console.WriteLine ("There already is a running debug session. Do you want to stop it? [Y/n]");
+			string s = Console.ReadLine ();
+			return (s.Length == 0 || String.Compare (s, "yes", true) == 0);
+		}
+
 		int verbose; // 1: report exception details
-		XsltDebugger debugger = new XsltDebugger ();
+		XsltDebuggerService debugger = new XsltDebuggerService ();
 		bool completed, debugger_exit;
 		ArrayList commands = new ArrayList ();
+		ManualResetEvent wait_handle;
 
 		public XsltDebuggerConsole ()
 		{
 			commands.Add (new HelpCommand ());
 			commands.Add (new QuitCommand ());
 			commands.Add (new RunCommand ());
+			commands.Add (new ContinueCommand ());
 			commands.Add (new AddXPathBreakCommand ());
 			commands.Add (new AddStylesheetBreakCommand ());
 			commands.Add (new ListBreakpointCommand ());
+			commands.Add (new RemoveBreakpointCommand ());
+			commands.Add (new ClearBreakpointCommand ());
 			commands.Add (new AddXmlnsCommand ());
 			commands.Add (new RemoveXmlnsCommand ());
 			commands.Add (new ListXmlnsCommand ());
 			commands.Add (new ShowOutputCommand ());
 			commands.Add (new BatchProcessCommand ());
+			commands.Add (new LoadStylesheetCommand ());
+			commands.Add (new LoadInputCommand ());
+
+			wait_handle = new ManualResetEvent (false);
 		}
 
 		void ShowUsage ()
@@ -43,20 +60,13 @@ namespace Mono.XsltDebugger
 
 		public void SignalQuitDebugger ()
 		{
+			debugger.Abort ();
 			debugger_exit = true;
 		}
 
 		public void Run (string [] args)
 		{
 			try {
-/*
-				// FIXME: CurrentRun does not exist yet
-				debugger.CurrentRun.Completed += delegate (object o, XsltCompleteEventArgs e) {
-					Console.WriteLine ("XSL Transformation completed.");
-					completed = true;
-				};
-*/
-
 				foreach (string arg in args) {
 					if (arg == "--verbose" || arg == "-v")
 						verbose++;
@@ -65,6 +75,14 @@ namespace Mono.XsltDebugger
 					else
 						debugger.Input = new XPathDocument (arg);
 				}
+				debugger.BreakpointMatched += delegate (object o, EventArgs e) {
+					Console.WriteLine ("Breakpoint matched");
+					wait_handle.Set ();
+				};
+				debugger.TransformCompleted += delegate (object o, EventArgs e) {
+					wait_handle.Set ();
+					Console.WriteLine ("Transform finished");
+				};
 
 				ProcessUserInteraction ();
 
@@ -203,6 +221,30 @@ namespace Mono.XsltDebugger
 			public override void Process (XsltDebuggerConsole owner, string [] args)
 			{
 				owner.debugger.Run ();
+				owner.wait_handle.Reset ();
+				owner.wait_handle.WaitOne ();
+			}
+		}
+
+		public class ContinueCommand : XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				return cmd == "continue" || cmd == "cont";
+			}
+
+			public override string UsageSummary {
+				get { return "continue (cont)"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Continues an interrupted transform."; }
+			}
+
+			public override void Process (XsltDebuggerConsole owner, string [] args)
+			{
+				owner.debugger.Resume ();
+				owner.wait_handle.WaitOne ();
 			}
 		}
 
@@ -220,8 +262,8 @@ namespace Mono.XsltDebugger
 		{
 			public override bool Match (string cmd, string [] args)
 			{
-				// FIXME: remove this extra "list" check hack.
-				return cmd == "break" && args.Length == 2 && args [1] != "list";
+				// FIXME: remove this extra check hack for "list" and "clear".
+				return cmd == "break" && args.Length == 2 && args [1] != "list" && args [1] != "clear";
 			}
 
 			public override string UsageSummary {
@@ -242,7 +284,8 @@ namespace Mono.XsltDebugger
 		{
 			public override bool Match (string cmd, string [] args)
 			{
-				return cmd == "break" && (args.Length == 3 || args.Length == 4);
+				int dummy;
+				return cmd == "break" && (args.Length == 3 || args.Length == 4) && !int.TryParse (args [2], out dummy);
 			}
 
 			public override string UsageSummary {
@@ -282,6 +325,52 @@ at (<line>,<column>) ([uri] is the primary stylesheet by default)."; }
 					Console.WriteLine ("{0} {1}", i, bp.ToSummaryString ());
 					i++;
 				}
+			}
+		}
+
+		public class RemoveBreakpointCommand : XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				int dummy;
+				return cmd == "break" && args.Length == 3 && args [1] == "remove" && int.TryParse (args [2], out dummy);
+			}
+
+			public override string UsageSummary {
+				get { return "break remove <index>"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Removes specified breakpoints."; }
+			}
+
+			public override void Process (XsltDebuggerConsole run, string [] args)
+			{
+				int n = int.Parse (args [2]);
+				if (run.debugger.Breakpoints.Count <= n)
+					throw new XsltDebuggerException (String.Format ("No breakpoint was found at index {0}", n));
+				run.debugger.Breakpoints.RemoveAt (n);
+			}
+		}
+
+		public class ClearBreakpointCommand : XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				return cmd == "break" && args.Length > 1 && args [1] == "clear";
+			}
+
+			public override string UsageSummary {
+				get { return "break clear"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Removes all of the registered breakpoints."; }
+			}
+
+			public override void Process (XsltDebuggerConsole run, string [] args)
+			{
+				run.debugger.Breakpoints.Clear ();
 			}
 		}
 
@@ -363,6 +452,29 @@ resolve prefixes in XPath."; }
 			}
 		}
 
+		/*
+		public class PrintVariableCommand : XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				return cmd == "print" && args.Length == 3 && args [1] == "variable";
+			}
+
+			public override string UsageSummary {
+				get { return "print variable <name>"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Shows specified variable."; }
+			}
+
+			public override void Process (XsltDebuggerConsole run, string [] args)
+			{
+				IXsltContextVariable v = run.debugger.
+			}
+		}
+		*/
+
 		public class ShowOutputCommand : XsltDebuggerConsoleCommand
 		{
 			public override bool Match (string cmd, string [] args)
@@ -391,6 +503,10 @@ resolve prefixes in XPath."; }
 
 			void PrintLastLines (string s, int lines)
 			{
+				if (s.Length == 0) {
+					Console.WriteLine ("No output yet");
+					return;
+				}
 				ArrayList al = new ArrayList ();
 				int start = s.Length - 1, pos;
 				while ((pos = s.LastIndexOf ('\n', start)) >= 0) {
@@ -438,6 +554,54 @@ resolve prefixes in XPath."; }
 					if (s.Length > 0)
 						run.ProcessCommand (s);
 				}
+			}
+		}
+
+		public class LoadStylesheetCommand : XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				return cmd == "load" && args.Length == 3 && args [1] == "stylesheet";
+			}
+
+			public override string UsageSummary {
+				get { return "load stylesheet <filename>"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Loads a stylesheet <filename>."; }
+			}
+
+			public override void Process (XsltDebuggerConsole run, string [] args)
+			{
+				if (!File.Exists (args [1]))
+					throw new XsltDebuggerException (String.Format ("File {0} does not exist", args [1]));
+				run.debugger.Stylesheet = new XPathDocument (args [1]);
+				Console.WriteLine ("Loaded stylesheet {0}", args [1]);
+			}
+		}
+
+		public class LoadInputCommand: XsltDebuggerConsoleCommand
+		{
+			public override bool Match (string cmd, string [] args)
+			{
+				return cmd == "load" && args.Length == 3 && args [1] == "input";
+			}
+
+			public override string UsageSummary {
+				get { return "load input <filename>"; }
+			}
+
+			public override string UsageDetails {
+				get { return "Loads an input document <filename>."; }
+			}
+
+			public override void Process (XsltDebuggerConsole run, string [] args)
+			{
+				if (!File.Exists (args [1]))
+					throw new XsltDebuggerException (String.Format ("File {0} does not exist", args [1]));
+				run.debugger.Input = new XPathDocument (args [1]);
+				Console.WriteLine ("Loaded input document {0}", args [1]);
 			}
 		}
 	}

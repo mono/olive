@@ -11,19 +11,19 @@ namespace Mono.XsltDebugger
 {
 	public class XsltDebuggerSession : IDisposable
 	{
-		XsltDebugger debugger;
+		XsltDebuggerService debugger;
 		XsltInjector injector;
 		XslTransform transform;
 		XmlNodeWriter output;
 		Hashtable custom_cache;
 
-		public XsltDebuggerSession (XsltDebugger debugger)
+		public XsltDebuggerSession (XsltDebuggerService debugger)
 		{
 			this.debugger = debugger;
 			Init ();
 		}
 
-		public XsltDebugger Debugger {
+		public XsltDebuggerService Debugger {
 			get { return debugger; }
 		}
 
@@ -46,6 +46,7 @@ namespace Mono.XsltDebugger
 			output = null;
 		}
 
+		// It is indicated by ThreadManager.StartDebug().
 		internal void Run ()
 		{
 			custom_cache = new Hashtable ();

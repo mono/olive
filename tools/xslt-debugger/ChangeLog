@@ -1,3 +1,7 @@
+2007-07-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* xslt-debugger.cs : added couple of commands.
+
 2007-06-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile
