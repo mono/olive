@@ -32,7 +32,6 @@ Microsoft.JScript.Runtime/JSErrorConstructor.cs
 Microsoft.JScript.Runtime/JSErrorConvertor.cs
 Microsoft.JScript.Runtime/JSError.cs
 Microsoft.JScript.Runtime/JSErrorObject.cs
-Microsoft.JScript.Runtime/JSErrorObject.cs
 Microsoft.JScript.Runtime/JSErrorPrototype.cs
 Microsoft.JScript.Runtime/JSErrorSink.cs
 Microsoft.JScript.Runtime/JSEvalErrorObject.cs
