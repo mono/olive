@@ -3,7 +3,9 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public sealed class JSRangeErrorObject : JSErrorObject {
+
 		JSRangeErrorObject ()
 		{
 		}

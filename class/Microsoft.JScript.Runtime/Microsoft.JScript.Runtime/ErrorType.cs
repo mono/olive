@@ -2,7 +2,6 @@ using System;
 
 namespace Microsoft.JScript.Runtime {
 
-	[Serializable]
 	public enum ErrorType {
 		OtherError,
 		Error,

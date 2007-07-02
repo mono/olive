@@ -1,3 +1,34 @@
+2007-07-02  Marek Sieradzki  <marek.sieradzki@gmail.com>
+
+	* JSNumberPrototype.cs
+	* JSMathObject.cs
+	* JSTypeErrorObject.cs
+	* Convert.cs
+	* JSEnumOps.cs
+	* JSNumberConstructor.cs
+	* JSBooleanOps.cs
+	* JSDateObject.cs
+	* JSEvalErrorObject.cs
+	* JSBooleanObjectOps.cs
+	* JSPropertyAttributes.cs
+	* JSRangeErrorObject.cs
+	* JSNumberObjectOps.cs
+	* JSRegExpPrototype.cs
+	* JSObjectOps.cs
+	* JSStringOps.cs
+	* JSStringObject.cs
+	* JSReferenceErrorObject.cs
+	* JSScopeObject.cs
+	* JSDatePrototype.cs
+	* JSNumberOps.cs
+	* JSNoneTypeOps.cs
+	* UnDefinedOps.cs
+	* JSSyntaxErrorObject.cs
+	* JSStringPrototype.cs
+	* ErrorType.cs
+	* JSURIErrorObject.cs
+	* JSRegExpMatch.cs: corcompare fixes.
+
 2007-06-30  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSNumberPrototype.cs

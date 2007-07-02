@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
@@ -27,11 +28,15 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		[DebuggerHidden]	
+		[DebuggerStepThrough]
 		public static bool ToBoolean (object value)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[DebuggerHidden]
+		[DebuggerStepThrough]
 		public static bool ToBoolean (object value, bool explicitConversion)
 		{
 			throw new NotImplementedException ();
@@ -72,6 +77,8 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		[DebuggerHidden]
+		[DebuggerStepThrough]
 		public static string ToString (object value, bool explicitOk)
 		{
 			throw new NotImplementedException ();

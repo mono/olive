@@ -3,6 +3,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSRegExpPrototype {
 
 		public JSRegExpPrototype ()

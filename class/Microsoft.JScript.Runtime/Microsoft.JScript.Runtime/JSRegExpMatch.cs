@@ -3,6 +3,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public sealed class JSRegExpMatch : JSArrayObject {
 
 		internal JSRegExpMatch ()

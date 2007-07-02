@@ -5,7 +5,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public class JSScopeObject {
+	public class JSScopeObject : IEnumerable<KeyValuePair<object, object>>, IEnumerable, IAttributesCollection {
 
 		public JSScopeObject (object instance)
 		{
@@ -37,6 +37,11 @@ namespace Microsoft.JScript.Runtime {
 		}
 
 		public IEnumerator<KeyValuePair<object, object>> GetEnumerator ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
 		{
 			throw new NotImplementedException ();
 		}

@@ -4,7 +4,9 @@ using IronPython.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSStringObject : JSObject {
+
 		public JSStringObject (JSObject prototype, string val)
 			: base (prototype)
 		{

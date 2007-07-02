@@ -3,6 +3,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public static class JSNumberPrototype {
 
 		public static JSNumberObject Add (JSNumberObject x, JSNumberObject y)

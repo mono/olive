@@ -4,6 +4,7 @@ using IronPython.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public static class JSDatePrototype {
 
 		public static double getDate (object thisob)
@@ -11,7 +12,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getDate (params object [] arguments)
+		public static object getDate (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -21,7 +22,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getDay (params object [] arguments)
+		public static object getDay (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -46,12 +47,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getMiliseconds (object thisob)
+		public static double getMilliseconds (object thisob)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object getMiliseconds (params object [] arguments)
+		public static object getMilliseconds (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -96,12 +97,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getTimezoneOffest (object thisob)
+		public static double getTimezoneOffset (object thisob)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object getTimezoneOffest (params object [] arguments)
+		public static object getTimezoneOffset (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -111,7 +112,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getUTCDate (params object [] arguments)
+		public static object getUTCDate (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -121,7 +122,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getUTCDay (params object [] arguments)
+		public static object getUTCDay (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -146,12 +147,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double getUTCMiliseconds (object thisob)
+		public static double getUTCMilliseconds (object thisob)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object getUTCMiliseconds (params object [] arguments)
+		public static object getUTCMilliseconds (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -236,12 +237,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double setMiliseconds (object thisob, double dmsec)
+		public static double setMilliseconds (object thisob, double dmsec)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object setMiliseconds (params object [] arguments)
+		public static object setMilliseconds (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -316,12 +317,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static double setUTCMiliseconds (object thisob, double dmsec)
+		public static double setUTCMilliseconds (object thisob, double dmsec)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object setUTCMiliseconds (params object [] arguments)
+		public static object setUTCMilliseconds (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -352,16 +353,6 @@ namespace Microsoft.JScript.Runtime {
 		}
 
 		public static object setUTCSeconds (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static double setUTCTime (object thisob, double time)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object setUTCTime (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}

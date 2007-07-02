@@ -7,7 +7,7 @@ namespace Microsoft.JScript.Runtime {
 		None,
 		ReadOnly,
 		DontEnum,
-		DontDelete,
-		Internal
+		Internal,
+		DontDelete
 	}
 }

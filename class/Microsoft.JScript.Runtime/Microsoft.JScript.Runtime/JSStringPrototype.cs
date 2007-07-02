@@ -3,6 +3,7 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public static class JSStringPrototype {
 		public static string anchor (object thisob, object anchorName)
 		{

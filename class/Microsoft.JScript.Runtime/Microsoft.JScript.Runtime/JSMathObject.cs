@@ -4,16 +4,17 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
+	[Serializable]
 	public class JSMathObject : JSObject {
 
-		public const double E = Math.E;
-		public const double LN10 = 2.30259;
-		public const double LN2 = 0.693147;
-		public const double LOG10E = 0.434294;
-		public const double LOG2E = 1.4427;
-		public const double PI = Math.PI;
-		public const double SQRT1_2 = 0.707107;
-		public const double SQRT_2 = 1.41421;
+		public const double E = 2.71828182845905;
+		public const double LN10 = 2.30258509299405;
+		public const double LN2 = 0.693147180559945;
+		public const double LOG10E = 0.434294481903252;
+		public const double LOG2E = 1.44269504088896;
+		public const double PI = 3.14159265358979;
+		public const double SQRT1_2 = 0.707106781186548;
+		public const double SQRT2 = 1.4142135623731;
 
 		internal JSMathObject ()
 			: base (null)
