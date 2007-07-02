@@ -8,7 +8,7 @@ namespace Microsoft.JScript.Runtime.Calls {
 
 	public class JSBinder : ActionBinder {
 
-		public readonly ActionBinder Default;
+		public static readonly ActionBinder Default;
 
 		public JSBinder (CodeContext context)
 			: base (context)
