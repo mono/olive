@@ -135,6 +135,9 @@ namespace System.Windows {
 			case Kind.IMAGE:
 				return new Image (raw);
 
+			case Kind.GRADIENTSTOP:
+				return new GradientStop (raw);
+
 			case Kind.ROTATETRANSFORM:
 				return new RotateTransform (raw);
 				
