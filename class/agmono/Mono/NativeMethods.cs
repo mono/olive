@@ -135,6 +135,9 @@ namespace Mono {
 #region UIElements
 		[DllImport("moon")]
 		public extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);
+
+		[DllImport("moon")]
+		public extern static IntPtr uielement_get_parent (IntPtr item);
 #endregion
 
 

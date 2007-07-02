@@ -29,7 +29,6 @@ using Mono;
 
 namespace System.Windows {
 	public abstract class FrameworkElement : UIElement {
-		object parent;
 		
 		static FrameworkElement ()
 		{
@@ -57,7 +56,14 @@ namespace System.Windows {
 		}
 
 		public object Parent {
-			get { return parent; }
+			get {
+				IntPtr parent_handle = NativeMethods.uielement_get_parent (native);
+				if (parent_handle == IntPtr.Zero)
+					return null;
+
+				Kind k = NativeMethods.dependency_object_get_object_type (parent_handle);
+				return DependencyObject.Lookup (k, parent_handle);
+			}
 		}
 
 		public double Width {

@@ -1,0 +1,4 @@
+2007-07-02  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs: Add a new call
+

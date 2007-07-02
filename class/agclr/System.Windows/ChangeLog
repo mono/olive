@@ -1,3 +1,8 @@
+2007-07-02  Miguel de Icaza  <miguel@novell.com>
+
+	* FrameworkElement.cs (Parent): implement this using a native
+	method call. 
+
 2007-06-27  Miguel de Icaza  <miguel@novell.com>
 
 	* DependencyObject.cs (SetValue): use the native value_free_value
