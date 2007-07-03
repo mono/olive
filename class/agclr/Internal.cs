@@ -153,6 +153,11 @@ namespace MS.Internal {
 			return Kind.COLLECTION;
 		}
 
+		static internal Exception GetInvalid ()
+		{
+			return new InvalidOperationException ("The underlying collection has mutated");
+		}
+		
 		public class CollectionIterator : System.Collections.IEnumerator {
 			IntPtr native_iter;
 			
@@ -163,18 +168,30 @@ namespace MS.Internal {
 			
 			public bool MoveNext ()
 			{
-				return NativeMethods.collection_iterator_move_next (native_iter);
+				int r = NativeMethods.collection_iterator_move_next (native_iter);
+
+				if (r == -1)
+					throw GetInvalid ();
+				
+				return r == 1;
 			}
 			
 			public void Reset ()
 			{
-				NativeMethods.collection_iterator_reset (native_iter);
+				if (NativeMethods.collection_iterator_reset (native_iter))
+					return;
+
+				throw GetInvalid ();
 			}
 
 			public object Current {
 				get {
-					IntPtr o = NativeMethods.collection_iterator_get_current (native_iter);
+					int error;
+					IntPtr o = NativeMethods.collection_iterator_get_current (native_iter, out error);
 					Kind k;
+
+					if (error == 1)
+						throw GetInvalid ();
 					
 					if (o == IntPtr.Zero)
 						return null;
@@ -202,18 +219,30 @@ namespace MS.Internal {
 			
 			public bool MoveNext ()
 			{
-				return NativeMethods.collection_iterator_move_next (native_iter);
+				int r = NativeMethods.collection_iterator_move_next (native_iter);
+
+				if (r == -1)
+					throw GetInvalid ();
+				
+				return r == 1;
 			}
 			
 			public void Reset ()
 			{
-				NativeMethods.collection_iterator_reset (native_iter);
+				if (NativeMethods.collection_iterator_reset (native_iter))
+					return;
+
+				throw GetInvalid ();
 			}
 
 			T GetCurrent ()
 			{
-				IntPtr o = NativeMethods.collection_iterator_get_current (native_iter);
+				int error;
+				IntPtr o = NativeMethods.collection_iterator_get_current (native_iter, out error);
 				Kind k;
+
+				if (error == 1)
+					throw GetInvalid ();
 				
 				if (o == IntPtr.Zero)
 					return null;

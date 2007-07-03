@@ -200,13 +200,13 @@ namespace Mono {
 		public extern static Kind collection_get_element_type (IntPtr collection);
 		
 		[DllImport("moon")]
-		public extern static bool collection_iterator_move_next (IntPtr iterator);
+		public extern static int collection_iterator_move_next (IntPtr iterator);
 
 		[DllImport("moon")]
-		public extern static void collection_iterator_reset (IntPtr iterator);
+		public extern static bool collection_iterator_reset (IntPtr iterator);
 
 		[DllImport("moon")]
-		public extern static IntPtr collection_iterator_get_current (IntPtr iterator);
+		public extern static IntPtr collection_iterator_get_current (IntPtr iterator, out int error);
 
 		[DllImport("moon")]
 		public extern static void collection_iterator_destroy (IntPtr iterator);
@@ -558,7 +558,8 @@ namespace Mono {
 		[DllImport("moon")]
 		public extern static void downloader_send (IntPtr handle);
 
-		public delegate void UpdateFunction (int kind);
+		public delegate void UpdateFunction (int kind, IntPtr data, IntPtr extra);
+		
 		[DllImport("moon")]
 		public extern static void downloader_want_events (IntPtr handle, UpdateFunction func, IntPtr closure);
 #endregion

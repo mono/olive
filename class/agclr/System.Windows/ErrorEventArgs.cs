@@ -34,12 +34,17 @@ namespace System.Windows {
 		private string error_message;
 		private ErrorType error_type;
 
-
 		public ErrorEventArgs ()
 		{
 		}
 
-
+		internal ErrorEventArgs (int code, string message, ErrorType type)
+		{
+			this.error_code = code;
+			this.error_message = message;
+			this.error_type = type;
+		}
+		
 		public int ErrorCode {
 			get { return error_code; }
 			set { error_code = value; }

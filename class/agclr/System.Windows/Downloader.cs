@@ -30,20 +30,28 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using Mono;
+using System.Runtime.InteropServices;
 
 namespace System.Windows {
 
 	public sealed class Downloader : DependencyObject {
 
-		public static readonly DependencyProperty DownloadProgressProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "DownloadProgress", typeof (double));
-		public static readonly DependencyProperty ResponseTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "ResponseText", typeof (string));
-		public static readonly DependencyProperty StatusProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Status", typeof (int));
-		public static readonly DependencyProperty StatusTextProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
-		public static readonly DependencyProperty UriProperty = DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
+		public static readonly DependencyProperty DownloadProgressProperty =
+			DependencyProperty.Lookup (Kind.DOWNLOADER, "DownloadProgress", typeof (double));
+		public static readonly DependencyProperty ResponseTextProperty =
+			DependencyProperty.Lookup (Kind.DOWNLOADER, "ResponseText", typeof (string));
+		public static readonly DependencyProperty StatusProperty =
+			DependencyProperty.Lookup (Kind.DOWNLOADER, "Status", typeof (int));
+		public static readonly DependencyProperty StatusTextProperty =
+			DependencyProperty.Lookup (Kind.DOWNLOADER, "StatusText", typeof (string));
+		public static readonly DependencyProperty UriProperty =
+			DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
 		NativeMethods.UpdateFunction updater;
 
-		void UpdateCallback (int kind)
+		string filename;
+		
+		void UpdateCallback (int kind, IntPtr cb_data, IntPtr extra)
 		{
 			EventHandler h = null;
 			
@@ -55,10 +63,11 @@ namespace System.Windows {
 				h = DownloadProgressChanged;
 				break;
 			case 2:
-				if (DownloadFailed != null) {
-					// FIXME - supply some details
-					ErrorEventArgs eea = new ErrorEventArgs ();
-					DownloadFailed (this, eea);
+				ErrorEventHandler df = DownloadFailed;
+				if (df != null) {
+					filename = Marshal.PtrToStringAuto (extra);
+					ErrorEventArgs eea = new ErrorEventArgs (4001, filename, ErrorType.DownloadError);
+					df (this, eea);
 				}
 				return;
 			}
@@ -79,14 +88,14 @@ namespace System.Windows {
 		{
 			NativeMethods.base_ref (native);
 
-			// FIXME: We should do this only if an event is hooked up,
+			// OPTIMIZEME: We should do this only if an event is hooked up,
 			// currently we do it always.
 			NotifyWantUpdates ();
 		}
 		
 		internal Downloader (IntPtr raw) : base (raw)
 		{
-			// FIXME: We should do this only if an event is hooked up,
+			// OPTIMIZME: We should do this only if an event is hooked up,
 			// currently we do it always.
 			NotifyWantUpdates ();
 		}
