@@ -1,5 +1,9 @@
 2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Dummy.cs : more stub removal.
+
+2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* NetMsmqSecurity.cs PoisonMessageException.cs
 	  MsmqException.cs MsmqPoisonMessageException.cs
 	  MsmqBindingBase.cs MessageSecurityOverMsmq.cs

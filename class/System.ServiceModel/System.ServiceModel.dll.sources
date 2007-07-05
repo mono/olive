@@ -607,6 +607,11 @@ System.ServiceModel.Dispatcher/XPathMessageContext.cs
 System.ServiceModel.Dispatcher/XPathMessageFilter.cs
 System.ServiceModel.Dispatcher/XPathMessageFilterTable.cs
 System.ServiceModel.Dispatcher/XPathNavigatorException.cs
+System.ServiceModel.MsmqIntegration/MsmqIntegrationBinding.cs
+System.ServiceModel.MsmqIntegration/MsmqIntegrationBindingElement.cs
+System.ServiceModel.MsmqIntegration/MsmqIntegrationMessageProperty.cs
+System.ServiceModel.MsmqIntegration/MsmqIntegrationSecurity.cs
+System.ServiceModel.MsmqIntegration/MsmqMessage.cs
 System.ServiceModel.PeerResolvers/CustomPeerResolverService.cs
 System.ServiceModel.PeerResolvers/IPeerResolverContract.cs
 System.ServiceModel.PeerResolvers/RefreshInfo.cs

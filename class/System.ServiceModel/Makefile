@@ -18,6 +18,7 @@ LIB_MCS_FLAGS = \
 	        /r:../lib/net_3_0/System.IdentityModel.dll \
 		/r:../lib/net_3_0/System.IdentityModel.Selectors.dll \
 	        /r:System.Transactions.dll \
+		/r:System.Messaging.dll \
 	        /r:System.Web.dll \
 		/r:System.Web.Services.dll \
 		/r:Mono.Security.dll \

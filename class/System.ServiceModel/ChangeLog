@@ -1,3 +1,7 @@
+2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	Makefile : added -r:System.Messaging.dll
+
 2007-06-28 Marcos Cobena (marcoscobena@gmail.com)
 
 	* System.ServiceModel.dll.sources, System.ServiceModel\Dummy.cs : 

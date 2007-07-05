@@ -29,13 +29,6 @@ namespace System.ServiceModel.Channels
 	public class XmlSerializerImportOptions { }
 }
 
-namespace System.ServiceModel.MsmqIntegration
-{
-	public class MsmqIntegrationBinding : MsmqBindingBase { public override BindingElementCollection CreateBindingElements () { throw new NotImplementedException ();} public override string Scheme { get { return "msmq.formatname"; } } }
-	public class MsmqIntegrationBindingElement { }
-	public class MsmqIntegrationSecurity { }
-}
-
 namespace System.ServiceModel.PeerResolvers
 {
         //public interface IPeerResolverContract {}
