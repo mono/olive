@@ -197,6 +197,7 @@ System.ServiceModel.Channels/IRequestSessionChannel.cs
 System.ServiceModel.Channels/ISecurityCapabilities.cs
 System.ServiceModel.Channels/ISession.cs
 System.ServiceModel.Channels/ISessionChannel.cs
+System.ServiceModel.Channels/ITransactedBindingElement.cs
 System.ServiceModel.Channels/ITransportTokenAssertionProvider.cs
 System.ServiceModel.Channels/InvalidChannelBindingException.cs
 System.ServiceModel.Channels/LayeredCommunicationObject.cs
@@ -220,6 +221,9 @@ System.ServiceModel.Channels/MessageImpl.cs
 System.ServiceModel.Channels/MessageProperties.cs
 System.ServiceModel.Channels/MessageSecurityBindingSupport.cs
 System.ServiceModel.Channels/MessageVersion.cs
+System.ServiceModel.Channels/MsmqBindingElementBase.cs
+System.ServiceModel.Channels/MsmqMessageProperty.cs
+System.ServiceModel.Channels/MsmqTransportBindingElement.cs
 System.ServiceModel.Channels/MtomMessageEncoder.cs
 System.ServiceModel.Channels/MtomMessageEncoderFactory.cs
 System.ServiceModel.Channels/MtomMessageEncodingBindingElement.cs
@@ -768,8 +772,15 @@ System.ServiceModel/MessageHeader_1.cs
 System.ServiceModel/MessageParameterAttribute.cs
 System.ServiceModel/MessagePropertyAttribute.cs
 System.ServiceModel/MessageSecurityOverHttp.cs
+System.ServiceModel/MessageSecurityOverMsmq.cs
 System.ServiceModel/MessageSecurityOverTcp.cs
 System.ServiceModel/MessageSecurityVersion.cs
+System.ServiceModel/MsmqBindingBase.cs
+System.ServiceModel/MsmqException.cs
+System.ServiceModel/MsmqPoisonMessageException.cs
+System.ServiceModel/MsmqTransportSecurity.cs
+System.ServiceModel/NetMsmqBinding.cs
+System.ServiceModel/NetMsmqSecurity.cs
 System.ServiceModel/NetPeerTcpBinding.cs
 System.ServiceModel/NetTcpBinding.cs
 System.ServiceModel/NetTcpSecurity.cs
@@ -784,6 +795,7 @@ System.ServiceModel/PeerNode.cs
 System.ServiceModel/PeerNodeAddress.cs
 System.ServiceModel/PeerResolver.cs
 System.ServiceModel/PeerResolverImpl.cs
+System.ServiceModel/PoisonMessageException.cs
 System.ServiceModel/ProtocolException.cs
 System.ServiceModel/QuotaExceededException.cs
 System.ServiceModel/ReliableSession.cs

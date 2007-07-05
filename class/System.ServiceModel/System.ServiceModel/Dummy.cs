@@ -7,12 +7,7 @@ namespace System.IO
 
 namespace System.ServiceModel
 {
-	public class MessageSecurityOverMsmq { }
-	public abstract class MsmqBindingBase : Binding { public override string Scheme { get { return null; } } }
-	public class MsmqTransportSecurity { }
 	public class NamedPipeTransportSecurity { }
-	public class NetMsmqBinding : Binding { public override BindingElementCollection CreateBindingElements () { throw new NotImplementedException (); }  public override string Scheme { get { return null; } } }
-	public class NetMsmqSecurity { }
 	public class NetNamedPipeBinding : Binding { public override BindingElementCollection CreateBindingElements () { throw new NotImplementedException (); }  public override string Scheme { get { return null; } } }
 	public class NetNamedPipeSecurity { }
 	public class PeerHopCountAttribute { }
@@ -26,9 +21,6 @@ namespace System.ServiceModel.Activation.Configuration
 
 namespace System.ServiceModel.Channels
 {
-	public class MsmqBindingElementBase { }
-	public class MsmqMessageProperty { }
-	public class MsmqTransportBindingElement { }
 	public class PeerCustomResolverBindingElement { }
 	public class PrivacyNoticeBindingElement { }
 	public class PrivacyNoticeBindingElementImporter { }
@@ -39,7 +31,7 @@ namespace System.ServiceModel.Channels
 
 namespace System.ServiceModel.MsmqIntegration
 {
-	public class MsmqIntegrationBinding : MsmqBindingBase { public override BindingElementCollection CreateBindingElements () { throw new NotImplementedException ();} }
+	public class MsmqIntegrationBinding : MsmqBindingBase { public override BindingElementCollection CreateBindingElements () { throw new NotImplementedException ();} public override string Scheme { get { return "msmq.formatname"; } } }
 	public class MsmqIntegrationBindingElement { }
 	public class MsmqIntegrationSecurity { }
 }

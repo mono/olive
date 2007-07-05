@@ -1,3 +1,12 @@
+2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* NetMsmqSecurity.cs PoisonMessageException.cs
+	  MsmqException.cs MsmqPoisonMessageException.cs
+	  MsmqBindingBase.cs MessageSecurityOverMsmq.cs
+	  NetMsmqBinding.cs MsmqTransportSecurity.cs :
+	  couple of msmq stubs.
+	* Dummy.cs : removed newly stubbed ones.
+
 2007-04-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointAddress.cs, EndpointAddress10.cs :
