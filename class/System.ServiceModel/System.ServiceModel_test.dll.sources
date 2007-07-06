@@ -25,6 +25,7 @@ System.ServiceModel.Channels/MessageHeaderTest.cs
 System.ServiceModel.Channels/MessageHeadersTest.cs
 System.ServiceModel.Channels/MessageTest.cs
 System.ServiceModel.Channels/MessageVersionTest.cs
+System.ServiceModel.Channels/MsmqTransportBindingElementTest.cs
 System.ServiceModel.Channels/OneWayBindingElementTest.cs
 System.ServiceModel.Channels/OutputChannelBase.cs
 System.ServiceModel.Channels/ReplyChannelBase.cs
@@ -90,6 +91,7 @@ System.ServiceModel/FaultCodeTest.cs
 System.ServiceModel/FaultReasonTest.cs
 System.ServiceModel/IntegratedConnectionTest.cs
 System.ServiceModel/MessageSecurityVersionTest.cs
+System.ServiceModel/NetMsmqBindingTest.cs
 System.ServiceModel/ServiceAssert.cs
 System.ServiceModel/ServiceEndpointCollectionTest.cs
 System.ServiceModel/ServiceEndpointTest.cs

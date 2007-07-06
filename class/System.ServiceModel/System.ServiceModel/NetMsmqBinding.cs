@@ -36,9 +36,9 @@ namespace System.ServiceModel
 	{
 		NetMsmqSecurity security;
 		bool use_ad;
-		long max_buffer_pool_size;
+		long max_buffer_pool_size = 0x80000;
 		QueueTransferProtocol queue_tr_protocol;
-		XmlDictionaryReaderQuotas quotas;
+		XmlDictionaryReaderQuotas quotas = new XmlDictionaryReaderQuotas ();
 		EnvelopeVersion envelope_version = EnvelopeVersion.Soap12;
 
 		public NetMsmqBinding ()
@@ -85,10 +85,34 @@ namespace System.ServiceModel
 			set { use_ad = value; }
 		}
 
-		[MonoTODO]
 		public override BindingElementCollection CreateBindingElements ()
 		{
-			throw new NotImplementedException ();
+			BinaryMessageEncodingBindingElement be =
+				new BinaryMessageEncodingBindingElement ();
+			quotas.CopyTo (be.ReaderQuotas);
+			MsmqTransportBindingElement te =
+				new MsmqTransportBindingElement ();
+			te.MaxPoolSize = (int) MaxBufferPoolSize;
+			te.QueueTransferProtocol = QueueTransferProtocol;
+			te.UseActiveDirectory = UseActiveDirectory;
+			te.CustomDeadLetterQueue = CustomDeadLetterQueue;
+			te.DeadLetterQueue = DeadLetterQueue;
+			te.Durable = Durable;
+			te.ExactlyOnce = ExactlyOnce;
+			te.MaxReceivedMessageSize = MaxReceivedMessageSize;
+			te.MaxRetryCycles = MaxRetryCycles;
+			te.MsmqTransportSecurity.MsmqAuthenticationMode = Security.Transport.MsmqAuthenticationMode;
+			te.MsmqTransportSecurity.MsmqEncryptionAlgorithm = Security.Transport.MsmqEncryptionAlgorithm;
+			te.MsmqTransportSecurity.MsmqProtectionLevel = Security.Transport.MsmqProtectionLevel;
+			te.MsmqTransportSecurity.MsmqSecureHashAlgorithm = Security.Transport.MsmqSecureHashAlgorithm;
+			te.ReceiveErrorHandling = ReceiveErrorHandling;
+			te.ReceiveRetryCount = ReceiveRetryCount;
+			te.RetryCycleDelay = RetryCycleDelay;
+			te.TimeToLive = TimeToLive;
+			te.UseMsmqTracing = UseMsmqTracing;
+			te.UseSourceJournal = UseSourceJournal;
+
+			return new BindingElementCollection (be, te);
 		}
 	}
 }

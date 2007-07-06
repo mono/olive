@@ -1,3 +1,7 @@
+2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MsmqTransportBindingElementTest.cs : new test.
+
 2007-04-03  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SecurityBindingElementTest.cs,

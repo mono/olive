@@ -34,12 +34,12 @@ namespace System.ServiceModel
 	public abstract class MsmqBindingBase : Binding, IBindingRuntimePreferences
 	{
 		Uri custom_dead_letter_queue;
-		DeadLetterQueue dead_letter_queue;
-		bool durable, exactly_once, use_msmq_trace, use_source_journal;
-		int max_retry_cycles, receive_retry_count;
-		long max_recv_msg_size;
+		DeadLetterQueue dead_letter_queue = DeadLetterQueue.System;
+		bool durable = true, exactly_once = true, use_msmq_trace, use_source_journal;
+		int max_retry_cycles = 2, receive_retry_count = 5;
+		long max_recv_msg_size = 0x10000;
 		ReceiveErrorHandling receive_error_handling;
-		TimeSpan retry_cycle_delay, ttl;
+		TimeSpan retry_cycle_delay = TimeSpan.FromMinutes (30), ttl = TimeSpan.FromDays (1);
 
 		public Uri CustomDeadLetterQueue {
 			get { return custom_dead_letter_queue; }

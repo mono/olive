@@ -1,3 +1,8 @@
+2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MsmqBindingBase.cs NetMsmqBinding.cs : initialize some fields.
+	  implemented NetMsmqBinding.CreateBindingElements().
+
 2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Dummy.cs : more stub removal.

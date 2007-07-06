@@ -32,7 +32,7 @@ namespace System.ServiceModel.Channels
 {
 	public sealed class MsmqTransportBindingElement : MsmqBindingElementBase
 	{
-		int max_pool_size;
+		int max_pool_size = 8;
 		QueueTransferProtocol queue_tr_protocol;
 		bool use_ad;
 
