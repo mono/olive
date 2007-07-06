@@ -148,9 +148,13 @@ namespace System.Windows {
 			//
 			// This returns the contents as string, but the data is a binary blob
 			//
+			string s;
 			unsafe {
-				return new String ((sbyte *) n, 0, (int) size, System.Text.Encoding.UTF8);
+				s = new String ((sbyte *) n, 0, (int) size, System.Text.Encoding.UTF8);
 			}
+			Marshal.FreeHGlobal (n);
+			
+			return s;
 		}
 
 		public void Open (string verb, Uri URI, bool Async)
