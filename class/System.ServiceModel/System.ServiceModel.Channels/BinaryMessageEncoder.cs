@@ -35,6 +35,10 @@ namespace System.ServiceModel.Channels
 {
 	internal class BinaryMessageEncoder : MessageEncoder
 	{
+		public BinaryMessageEncoder ()
+		{
+		}
+
 		public BinaryMessageEncoder (BinaryMessageEncoderFactory owner)
 		{
 		}

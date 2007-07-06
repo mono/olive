@@ -65,22 +65,32 @@ namespace System.ServiceModel.Channels
 			return (MsmqTransportBindingElement) MemberwiseClone ();
 		}
 
-		[MonoTODO]
 		public override bool CanBuildChannelFactory<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			return  typeof (TChannel) == typeof (IOutputChannel) ||
+				typeof (TChannel) == typeof (IOutputSessionChannel);
 		}
 
 		[MonoTODO]
 		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			if (typeof (TChannel) == typeof (IOutputChannel))
+				return (IChannelFactory<TChannel>) new MsmqChannelFactory<IOutputChannel> (this, context);
+			if (typeof (TChannel) == typeof (IOutputSessionChannel))
+				return (IChannelFactory<TChannel>) new MsmqChannelFactory<IOutputChannel> (this, context);
+			return base.BuildChannelFactory<TChannel> (context);
 		}
 
-		[MonoTODO]
 		public override bool CanBuildChannelListener<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			return  typeof (TChannel) == typeof (IInputChannel) ||
+				typeof (TChannel) == typeof (IInputSessionChannel);
 		}
 
 		[MonoTODO]

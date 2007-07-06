@@ -1,5 +1,10 @@
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MsmqTransportBindingElementTest.cs : modified or removed copied-and-
+	  commented lines to fit with msmq binding element.
+
+2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MsmqTransportBindingElementTest.cs : new test.
 
 2007-04-03  Atsushi Enomoto  <atsushi@ximian.com>

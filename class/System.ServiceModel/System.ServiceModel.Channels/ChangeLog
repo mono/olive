@@ -1,5 +1,13 @@
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* MsmqChannelFactory.cs MsmqOutputChannel.cs OutputChannelBase.cs :
+	  new files. internal stuff for msmq channel.
+	* BinaryMessageEncoder.cs : added another .ctor().
+	* MsmqTransportBindingElement.cs :
+	  implemented [Can]BuildChannelFactory().
+
+2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MsmqBindingElementBase.cs MsmqTransportBindingElement.cs :
 	  initialize some fields.
 
