@@ -141,7 +141,7 @@ namespace System.Windows {
 		public string GetResponseText (string PartName)
 		{
 			IntPtr n;
-			uint size;
+			long size;
 			
 			n = NativeMethods.downloader_get_response_text (native, PartName, out size);
 
