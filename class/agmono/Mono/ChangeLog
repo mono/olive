@@ -1,5 +1,10 @@
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
+	* NativeMethods.cs: change
+	dependency_object_add/remove_event_handler to take a GCHandle.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
 	* NativeMethods.cs: remove CallbackMouseEvent and KeyboardEvent.
 	add the extra parameters to UnmanagedEventHandler to match that of
 	the unmanaged code.  Remove most of the arguments to
