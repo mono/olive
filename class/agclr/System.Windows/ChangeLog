@@ -1,3 +1,13 @@
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: be consistent about our treatment of all events
+	(be they mouse/key events or others, like Loaded).  Also, use the
+	winforms/asp.net optimization of bloating the event add/remove
+	code in exchange for lessening memory usage per object by using
+	EventHandlerList.  Having code for add/remove also lets us
+	register (and unregister) with the unmanaged events when we need
+	to, further reducing unmanaged -> managed transitions.
+
 2007-07-03  Miguel de Icaza  <miguel@novell.com>
 
 	* Downloader.cs: UPdate to the new API.

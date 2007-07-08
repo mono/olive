@@ -29,6 +29,7 @@
 //
 using System.Collections;
 using Mono;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -47,6 +48,8 @@ namespace System.Windows {
 		static Thread moonlight_thread;
 		static Hashtable objects = new Hashtable ();
 		internal IntPtr _native;
+
+		internal EventHandlerList events;
 
 		internal IntPtr native {
 			get {
@@ -77,6 +80,7 @@ namespace System.Windows {
 		internal DependencyObject (IntPtr raw)
 		{
 			native = raw;
+			events = new EventHandlerList ();
 		}
 		
 		//

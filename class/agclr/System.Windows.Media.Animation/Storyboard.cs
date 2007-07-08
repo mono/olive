@@ -40,13 +40,12 @@ namespace System.Windows.Media.Animation {
 		{
 			TargetPropertyProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetProperty", typeof (string));
 			TargetNameProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetName", typeof (string));
-		}			
 
-		private UnmanagedEventHandler completed_delegate;
+			completed_delegate = new UnmanagedEventHandler (UnmanagedCompleted);
+		}			
 
 		internal Storyboard (IntPtr raw) : base (raw)
 		{
-			completed_delegate = new UnmanagedEventHandler (InvokeCompleted);
 			Events.AddHandler (raw, "Completed", completed_delegate);
 		}
 
@@ -82,11 +81,38 @@ namespace System.Windows.Media.Animation {
 		}
 
 
-		public event EventHandler Completed;
-		private void InvokeCompleted (IntPtr data)
+		static object CompletedEvent = new object ();
+		public event EventHandler Completed {
+			add {
+				if (events[CompletedEvent] == null)
+					Events.AddHandler (native, "Completed", completed_delegate);
+				events.AddHandler (CompletedEvent, value);
+			}
+			remove {
+				events.RemoveHandler (CompletedEvent, value);
+				if (events[CompletedEvent] == null)
+					Events.RemoveHandler (native, "Completed", completed_delegate);
+			}
+		}
+
+		private static UnmanagedEventHandler completed_delegate;
+
+		private static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			if (Completed != null)
-				Completed (this, EventArgs.Empty);
+			DependencyObject o = Events.ObjectFromPtr (target);
+
+			Storyboard sb = o as Storyboard;
+			if (sb == null)
+				throw new Exception (String.Format ("The object registered for {0} was not an Storyboard", target));
+
+			sb.InvokeCompleted ();
+		}
+
+		private void InvokeCompleted ()
+		{
+			EventHandler h = (EventHandler)events[CompletedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
 		}
 
 		internal override Kind GetKind ()

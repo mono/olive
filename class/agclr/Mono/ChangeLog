@@ -1,3 +1,14 @@
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: use UnmanagedEventHandlers for all the delegates
+	here, and mark the UIElement delegates internal so it can get at
+	them.  Probably all the UIElement event stuff should move to
+	UIElement.cs.  Some little fixes (we don't need to check for null
+	in any of the delegates since ElementFromPtr will throw an
+	exception if null would have been returned) and add marshalling
+	from the unmanaged MouseEventArgs struct to the Managed one (since
+	the Managed one lacks a StructLayout attribute.)
+
 2007-06-26  Jeffrey Stedfast  <fejj@novell.com>
 
 	* Events.cs: Updated here too.

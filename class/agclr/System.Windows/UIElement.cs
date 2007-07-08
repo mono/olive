@@ -46,8 +46,6 @@ namespace System.Windows {
 	        public static readonly DependencyProperty ResourcesProperty;
 	        public static readonly DependencyProperty ZIndexProperty;
 
-		private UnmanagedEventHandler loaded_delegate;
-
 		static UIElement ()
 		{
 	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity", typeof (double));
@@ -70,8 +68,6 @@ namespace System.Windows {
 		
 		internal UIElement (IntPtr raw) : base (raw)
 		{
-			loaded_delegate = new UnmanagedEventHandler (InvokeLoaded);
-			Events.AddHandler (raw, "Loaded", loaded_delegate);
 		}
 		
 		public Geometry Clip {
@@ -184,64 +180,202 @@ namespace System.Windows {
 			}
 		}
 
-		public event EventHandler GotFocus;
-		public event EventHandler LostFocus;
-		public event EventHandler Loaded;
-			
-		public event KeyboardEventHandler KeyDown;
-		public event KeyboardEventHandler KeyUp;
+		static object GotFocusEvent = new object ();
+		static object LostFocusEvent = new object ();
+		static object LoadedEvent = new object ();
+		static object KeyDownEvent = new object ();
+		static object KeyUpEvent = new object ();
+		static object MouseEnterEvent = new object ();
+		static object MouseLeaveEvent = new object ();
+		static object MouseLeftButtonDownEvent = new object ();
+		static object MouseLeftButtonUpEvent = new object ();
+		static object MouseMoveEvent = new object ();
 
-		public event MouseEventHandler MouseEnter;
-		public event EventHandler MouseLeave;
-		
-		public event MouseEventHandler MouseLeftButtonDown;
-		public event MouseEventHandler MouseLeftButtonUp;
-		public event MouseEventHandler MouseMove;
+		public event EventHandler GotFocus {
+			add {
+				if (events[GotFocusEvent] == null)
+					Events.AddHandler (native, "GotFocus", Events.got_focus);
+				events.AddHandler (GotFocusEvent, value);
+			}
+			remove {
+				events.RemoveHandler (GotFocusEvent, value);
+				if (events[GotFocusEvent] == null)
+					Events.RemoveHandler (native, "GotFocus", Events.got_focus);
+			}
+		}
+
+		public event EventHandler LostFocus {
+			add {
+				if (events[LostFocusEvent] == null)
+					Events.AddHandler (native, "LostFocus", Events.lost_focus);
+				events.AddHandler (LostFocusEvent, value);
+			}
+			remove {
+				events.RemoveHandler (LostFocusEvent, value);
+				if (events[LostFocusEvent] == null)
+					Events.RemoveHandler (native, "LostFocus", Events.lost_focus);
+			}
+		}
+
+		public event EventHandler Loaded {
+			add {
+				if (events[LoadedEvent] == null)
+					Events.AddHandler (native, "Loaded", Events.loaded);
+				events.AddHandler (LoadedEvent, value);
+			}
+			remove {
+				events.RemoveHandler (LoadedEvent, value);
+				if (events[LoadedEvent] == null)
+					Events.RemoveHandler (native, "Loaded", Events.loaded);
+			}
+		}
+			
+		public event KeyboardEventHandler KeyDown {
+			add {
+				if (events[KeyDownEvent] == null)
+					Events.AddHandler (native, "KeyDown", Events.key_down);
+				events.AddHandler (KeyDownEvent, value);
+			}
+			remove {
+				events.RemoveHandler (KeyDownEvent, value);
+				if (events[KeyDownEvent] == null)
+					Events.RemoveHandler (native, "KeyDown", Events.key_down);
+			}
+		}
+
+		public event KeyboardEventHandler KeyUp {
+			add {
+				if (events[KeyUpEvent] == null)
+					Events.AddHandler (native, "KeyUp", Events.key_up);
+				events.AddHandler (KeyUpEvent, value);
+			}
+			remove {
+				events.RemoveHandler (KeyUpEvent, value);
+				if (events[KeyUpEvent] == null)
+					Events.RemoveHandler (native, "KeyUp", Events.key_up);
+			}
+		}
+
+		public event MouseEventHandler MouseEnter {
+			add {
+				if (events[MouseEnterEvent] == null)
+					Events.AddHandler (native, "Enter", Events.mouse_enter);
+				events.AddHandler (MouseEnterEvent, value);
+			}
+			remove {
+				events.RemoveHandler (MouseEnterEvent, value);
+				if (events[MouseEnterEvent] == null)
+					Events.RemoveHandler (native, "Enter", Events.mouse_enter);
+			}
+		}
+
+		public event EventHandler MouseLeave {
+			add {
+				if (events[MouseLeaveEvent] == null)
+					Events.AddHandler (native, "Leave", Events.mouse_leave);
+				events.AddHandler (MouseLeaveEvent, value);
+			}
+			remove {
+				events.RemoveHandler (MouseLeaveEvent, value);
+				if (events[MouseLeaveEvent] == null)
+					Events.RemoveHandler (native, "Leave", Events.mouse_leave);
+			}
+		}
+
+		public event MouseEventHandler MouseLeftButtonDown {
+			add {
+				if (events[MouseLeftButtonDownEvent] == null)
+					Events.AddHandler (native, "ButtonPress", Events.mouse_button_down);
+				events.AddHandler (MouseLeftButtonDownEvent, value);
+			}
+			remove {
+				events.RemoveHandler (MouseLeftButtonDownEvent, value);
+				if (events[MouseLeftButtonDownEvent] == null)
+					Events.RemoveHandler (native, "ButtonPress", Events.mouse_button_down);
+			}
+		}
+
+		public event MouseEventHandler MouseLeftButtonUp {
+			add {
+				if (events[MouseLeftButtonUpEvent] == null)
+					Events.AddHandler (native, "ButtonRelease", Events.mouse_button_up);
+				events.AddHandler (MouseLeftButtonUpEvent, value);
+			}
+			remove {
+				events.RemoveHandler (MouseLeftButtonUpEvent, value);
+				if (events[MouseLeftButtonUpEvent] == null)
+					Events.RemoveHandler (native, "ButtonRelease", Events.mouse_button_up);
+			}
+		}
+
+		public event MouseEventHandler MouseMove {
+			add {
+				if (events[MouseMoveEvent] == null)
+					Events.AddHandler (native, "Motion", Events.mouse_motion);
+				events.AddHandler (MouseMoveEvent, value);
+			}
+			remove {
+				events.RemoveHandler (MouseMoveEvent, value);
+				if (events[MouseMoveEvent] == null)
+					Events.RemoveHandler (native, "Motion", Events.mouse_motion);
+			}
+		}
+
+
+		internal void InvokeGotFocus ()
+		{
+			EventHandler h = (EventHandler)events[GotFocusEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
+		}
+
+		internal void InvokeLostFocus ()
+		{
+			EventHandler h = (EventHandler)events[LostFocusEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
+		}
 
 		internal void InvokeMouseMove (MouseEventArgs m)
 		{
-			MouseEventHandler h = MouseMove;
-
+			MouseEventHandler h = (MouseEventHandler)events[MouseMoveEvent];
 			if (h != null)
 				h (this, m);
 		}
 
 		internal void InvokeMouseButtonDown (MouseEventArgs m)
 		{
-			MouseEventHandler h = MouseLeftButtonDown;
-
+			MouseEventHandler h = (MouseEventHandler)events[MouseLeftButtonDownEvent];
 			if (h != null)
 				h (this, m);
 		}
 
 		internal void InvokeMouseButtonUp (MouseEventArgs m)
 		{
-			MouseEventHandler h = MouseLeftButtonUp;
-
+			MouseEventHandler h = (MouseEventHandler)events[MouseLeftButtonUpEvent];
 			if (h != null)
 				h (this, m);
 		}
 
 		internal void InvokeMouseLeave ()
 		{
-			EventHandler h = MouseLeave;
-
+			EventHandler h = (EventHandler)events[MouseLeaveEvent];
 			if (h != null)
 				h (this, EventArgs.Empty);
 		}
 
 		internal void InvokeMouseEnter (MouseEventArgs m)
 		{
-			MouseEventHandler h = MouseEnter;
-
+			MouseEventHandler h = (MouseEventHandler)events[MouseEnterEvent];
 			if (h != null)
 				h (this, m);
 		}
 
-		private void InvokeLoaded (IntPtr data)
+		internal void InvokeLoaded ()
 		{
-			if (Loaded != null)
-				Loaded (this, EventArgs.Empty);
+			EventHandler h = (EventHandler)events[LoadedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
 		}
 
 		internal override Kind GetKind ()

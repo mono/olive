@@ -1,3 +1,11 @@
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: remove CallbackMouseEvent and KeyboardEvent.
+	add the extra parameters to UnmanagedEventHandler to match that of
+	the unmanaged code.  Remove most of the arguments to
+	surface_register_events (everything but the actual events on the
+	surface itself).
+
 2007-07-02  Miguel de Icaza  <miguel@novell.com>
 
 	* NativeMethods.cs: Add a new call

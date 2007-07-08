@@ -24,37 +24,53 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
 using System;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Runtime.InteropServices;
 
 namespace Mono {
 
-	internal class Events {
-		static CallbackMouseEvent mouse_motion      = new CallbackMouseEvent (mouse_motion_notify_callback);
-		static CallbackMouseEvent mouse_button_down = new CallbackMouseEvent (mouse_button_down_callback);
-		static CallbackMouseEvent mouse_button_up   = new CallbackMouseEvent (mouse_button_up_callback);
-		static CallbackMouseEvent mouse_enter       = new CallbackMouseEvent (mouse_enter_callback);
+	[StructLayout(LayoutKind.Sequential)]
+	struct UnmanagedMouseEventArgs {
+		public int state;
+		public double x;
+		public double y;
+	}
 
-		static KeyboardEvent keydown = new KeyboardEvent (keydown_callback);
-		static KeyboardEvent keyup   = new KeyboardEvent (keyup_callback);
+	internal class Events {
+		internal static UnmanagedEventHandler mouse_motion      = new UnmanagedEventHandler (mouse_motion_notify_callback);
+		internal static UnmanagedEventHandler mouse_button_down = new UnmanagedEventHandler (mouse_button_down_callback);
+		internal static UnmanagedEventHandler mouse_button_up   = new UnmanagedEventHandler (mouse_button_up_callback);
+		internal static UnmanagedEventHandler mouse_enter       = new UnmanagedEventHandler (mouse_enter_callback);
+
+		internal static UnmanagedEventHandler key_down = new UnmanagedEventHandler (key_down_callback);
+		internal static UnmanagedEventHandler key_up   = new UnmanagedEventHandler (key_up_callback);
 		
-		static PlainEvent got_focus   = new PlainEvent (got_focus_callback);
-		static PlainEvent lost_focus  = new PlainEvent (lost_focus_callback);
-		static PlainEvent loaded      = new PlainEvent (loaded_callback);
-		static PlainEvent mouse_leave = new PlainEvent (mouse_leave_callback);
+		internal static UnmanagedEventHandler got_focus   = new UnmanagedEventHandler (got_focus_callback);
+		internal static UnmanagedEventHandler lost_focus  = new UnmanagedEventHandler (lost_focus_callback);
+		internal static UnmanagedEventHandler loaded      = new UnmanagedEventHandler (loaded_callback);
+		internal static UnmanagedEventHandler mouse_leave = new UnmanagedEventHandler (mouse_leave_callback);
+
 		static PlainEvent surface_resized = new PlainEvent (surface_resized_callback);
 
-		static UIElement ElementFromPtr (IntPtr target)
+		internal static DependencyObject ObjectFromPtr (IntPtr target)
 		{
 			object o = DependencyObject.Lookup (target);
 			if (o == null){
 				Kind k = NativeMethods.dependency_object_get_object_type (target);
 				o = DependencyObject.Lookup (k, target);
-				if (o == null)
-					return null;
 			}
+
+			return o as DependencyObject;
+		}
+
+		internal static UIElement ElementFromPtr (IntPtr target)
+		{
+			object o = ObjectFromPtr (target);
+
 			UIElement e = o as UIElement;
 			if (e == null)
 				throw new Exception (String.Format ("The object registered for {0} was not an UIElement", target));
@@ -62,25 +78,71 @@ namespace Mono {
 			return e;
 		}
 					    
-		static void got_focus_callback (IntPtr target)
-		{
-		}
-
-		static void lost_focus_callback (IntPtr target)
-		{
-		}
-
-		static void loaded_callback (IntPtr target)
-		{
-		}
-
-		static void mouse_leave_callback (IntPtr target)
+		static void got_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return;
+			e.InvokeGotFocus ();
+		}
 
+		static void lost_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeLostFocus ();
+		}
+
+		static void loaded_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeLoaded ();
+		}
+
+		static void mouse_leave_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
 			e.InvokeMouseLeave ();
+		}
+
+		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			// TODO: map the key
+		}
+
+		static void key_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			// TODO: map the key
+		}
+
+		static MouseEventArgs MarshalMouseEventArgs (IntPtr calldata)
+		{
+			UnmanagedMouseEventArgs args =
+				(UnmanagedMouseEventArgs)Marshal.PtrToStructure (calldata, typeof (UnmanagedMouseEventArgs));
+			return new MouseEventArgs (args.state, args.x, args.y)
+		}
+		
+		static void mouse_motion_notify_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
+		}
+		
+		static void mouse_button_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
+		}
+		
+		static void mouse_button_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
+		}
+		
+		static void mouse_enter_callback (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			UIElement e = ElementFromPtr (target);
+			e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
 		}
 
 		static void surface_resized_callback (IntPtr target)
@@ -89,74 +151,10 @@ namespace Mono {
 
 			BrowserHost.InvokeResize ();
 		}
-		
-		static bool keyup_callback (IntPtr target, int state, int platformcode, int key)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return false;
 
-			// TODO: map the key
-			return false;
-		}
-
-		static bool keydown_callback (IntPtr target, int state, int platformcode, int key)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return false;
-			
-			// TODO: map the key
-			return false;
-		}
-		
-		static void mouse_motion_notify_callback (IntPtr target, int state, double x, double y)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return;
-			
-
-			e.InvokeMouseMove (new MouseEventArgs (state, x, y));
-		}
-		
-		static void mouse_button_down_callback (IntPtr target, int state, double x, double y)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return;
-			
-
-			e.InvokeMouseButtonDown (new MouseEventArgs (state, x, y));
-		}
-		
-		static void mouse_button_up_callback (IntPtr target, int state, double x, double y)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return;
-			
-
-			e.InvokeMouseButtonUp (new MouseEventArgs (state, x, y));
-		}
-		
-		static void mouse_enter_callback (IntPtr target, int state, double x, double y)
-		{
-			UIElement e = ElementFromPtr (target);
-			if (e == null)
-				return;
-			
-
-			e.InvokeMouseEnter (new MouseEventArgs (state, x, y));
-		}
-		
 		internal static void InitSurface (IntPtr surface)
 		{
-			NativeMethods.surface_register_events (
-				surface,
-				mouse_motion, mouse_button_down, mouse_button_up, mouse_enter,
-				got_focus, lost_focus, loaded, mouse_leave, surface_resized,
-				keydown, keyup);
+			NativeMethods.surface_register_events (surface, surface_resized);
 		}
 
 		internal static void AddHandler (IntPtr handle, string eventName, UnmanagedEventHandler handler)

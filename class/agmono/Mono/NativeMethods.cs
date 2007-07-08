@@ -33,11 +33,9 @@ namespace Mono {
 	public delegate IntPtr CreateCustomXamlElementCallback (string xmlns, string name);
 	public delegate void SetCustomXamlAttributeCallback (IntPtr target, string name, string value);
 	public delegate void XamlHookupEventCallback (IntPtr target, string name, string value);
-	public delegate void UnmanagedEventHandler (IntPtr data);
+	public delegate void UnmanagedEventHandler (IntPtr sender, IntPtr calldata, IntPtr closure);
 
-	public delegate void CallbackMouseEvent (IntPtr target, int state, double x, double y);
 	public delegate void PlainEvent (IntPtr target);
-	public delegate bool KeyboardEvent (IntPtr target, int state, int platformcode, int key);
 	
 	public static class NativeMethods {
 
@@ -48,17 +46,7 @@ namespace Mono {
 		[DllImport("moon")]
 		public extern static void surface_register_events (
 			IntPtr surface,
-			CallbackMouseEvent motion,
-			CallbackMouseEvent down,
-			CallbackMouseEvent up,
-			CallbackMouseEvent enter,
-			PlainEvent got_focus,
-			PlainEvent lost_focus,
-			PlainEvent loaded,
-			PlainEvent mouse_leave,
-			PlainEvent surface_resized,
-			KeyboardEvent keydown,
-			KeyboardEvent keyup);
+			PlainEvent surface_resized);
 	
 #region Base
 		[DllImport("moon")]
