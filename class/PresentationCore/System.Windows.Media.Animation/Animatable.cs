@@ -68,7 +68,7 @@ namespace System.Windows.Media.Animation {
 			throw new NotImplementedException ();
 		}
 
-		public Object GetAnimationBaseValue (DependencyProperty dp)
+		public object GetAnimationBaseValue (DependencyProperty dp)
 		{
 			throw new NotImplementedException ();
 		}

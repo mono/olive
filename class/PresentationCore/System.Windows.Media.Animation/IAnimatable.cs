@@ -41,7 +41,7 @@ namespace System.Windows.Media.Animation {
 				     AnimationTimeline animation,
 				     HandoffBehavior handoffBehavior);
 
-		Object GetAnimationBaseValue (DependencyProperty dp);
+		object GetAnimationBaseValue (DependencyProperty dp);
 
 		bool HasAnimatedProperties { get; }
 	}

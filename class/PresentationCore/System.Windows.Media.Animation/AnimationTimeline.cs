@@ -46,7 +46,7 @@ namespace System.Windows.Media.Animation {
 			throw new NotImplementedException ();
 		}
 
-		public virtual Object GetCurrentValue (object defaultOriginValue,
+		public virtual object GetCurrentValue (object defaultOriginValue,
 						       object defaultDestinationValue,
 						       AnimationClock animationClock)
 		{
