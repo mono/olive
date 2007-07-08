@@ -9,6 +9,8 @@
 
 using System;
 using System.ServiceModel;
+using System.ServiceModel.Channels;
+using System.ServiceModel.Description;
 using System.ServiceModel.PeerResolvers;
 
 namespace ChatServer
@@ -17,25 +19,34 @@ namespace ChatServer
 	{
 		public static void Main ()
 		{
+			NetTcpBinding binding;
 			CustomPeerResolverService cprs;
+			ServiceEndpoint se;
 			ServiceHost sh;
 
 			try {
 				cprs = new CustomPeerResolverService ();
 
-				cprs.RefreshInterval = TimeSpan.FromSeconds(5);
+				cprs.RefreshInterval = TimeSpan.FromSeconds (5);
 
-				sh = new ServiceHost(cprs);
+				sh = new ServiceHost (cprs);
+				
+				binding = new NetTcpBinding ();
+				binding.Security.Mode = SecurityMode.None;
+				
+				se = sh.AddServiceEndpoint (typeof (IPeerResolverContract), 
+				                               binding, 
+				                               new Uri ("net.tcp://localhost/ChatServer"));
 				
 				cprs.ControlShape = true;
-				cprs.Open();
-				sh.Open(TimeSpan.FromDays(1000000));
+				cprs.Open ();
+				sh.Open (TimeSpan.FromDays (1000000));
 				
-				Console.WriteLine("Server started successfully.");
-				Console.ReadLine();
+				Console.WriteLine ("Server started successfully.");
+				Console.ReadLine ();
 				
-				cprs.Close();
-				sh.Close();
+				cprs.Close ();
+				sh.Close ();
 			} catch (Exception e) {
 				Console.WriteLine ("[!] {0}", e.Message);
 			}
