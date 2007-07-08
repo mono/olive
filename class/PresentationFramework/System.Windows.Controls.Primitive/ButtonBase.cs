@@ -25,9 +25,12 @@
 
 using System;
 
+using System.ComponentModel;
+using System.Windows.Input;
+
 namespace System.Windows.Controls.Primitive {
 
-	[LocalizabilityAttribute(LocalizationCategory.Button)] 
+	//[LocalizabilityAttribute(LocalizationCategory.Button)] 
 	public abstract class ButtonBase : ContentControl, ICommandSource {
 		public static readonly RoutedEvent ClickEvent;
 		public static readonly DependencyProperty ClickModeProperty;
@@ -40,75 +43,110 @@ namespace System.Windows.Controls.Primitive {
 		{
 		}
 
+#if notyet
 		protected override void OnAccessKey (AccessKeyEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
+#endif
 
 		protected virtual void OnClick ()
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected virtual void OnIsPressedChanged (DependencyPropertyChangedEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
+#if notyet
 		protected override void OnKeyDown (KeyEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnKeyUp (KeyEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnLostKeyboardFocus (KeyboardFocusChangedEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnLostMouseCapture (MouseEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnMouseEnter (MouseEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnMouseLeave (MouseEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnMouseLeftButtonDown (MouseButtonEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnMouseLeftButtonUp (MouseButtonEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected override void OnMouseMove (MouseEventArgs e)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected internal override void OnRenderSizeChanged (SizeChangedInfo sizeInfo)
 		{
+			throw new NotImplementedException ();
+		}
+#endif
+
+		[Bindable (true)] 
+		public ClickMode ClickMode {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
-		[BindableAttribute(true)] 
-		public ClickMode ClickMode { get; set; }
+		[Bindable (true)] 
+		//[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
+		public ICommand Command {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 
-		[BindableAttribute(true)] 
-		[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
-		public ICommand Command { get; set; }
+		[Bindable (true)] 
+		//[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
+		public object CommandParameter {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 
-		[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
-		[BindableAttribute(true)] 
-		public Object CommandParameter { get; set; }
+		[Bindable (true)] 
+		public IInputElement CommandTarget {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 
-		[BindableAttribute(true)] 
-		public IInputElement CommandTarget { get; set; }
+#if notyet
+		protected override bool IsEnabledCore {
+			get { throw new NotImplementedException (); }
+		}
+#endif
 
-		protected override bool IsEnabledCore { get; }
-
-		public bool IsPressed { get; }
+		public bool IsPressed {
+			get { throw new NotImplementedException (); }
+		}
 
 		public event RoutedEventHandler Click;
 	}

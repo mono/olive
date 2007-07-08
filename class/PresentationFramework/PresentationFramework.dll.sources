@@ -1,3 +1,9 @@
+System.Windows/FrameworkElement.cs
+System.Windows.Controls/ClickMode.cs
+System.Windows.Controls/Control.cs
+System.Windows.Controls/ContentControl.cs
+System.Windows.Controls.Primitive/ButtonBase.cs
+
 System.Windows.Serialization/Exceptions.cs
 System.Windows.Serialization/IAddChild.cs
 System.Windows.Serialization/Mapper.cs

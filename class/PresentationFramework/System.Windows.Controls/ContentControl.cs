@@ -25,10 +25,14 @@
 
 using System;
 
+using System.Collections;
+using System.ComponentModel;
+using System.Windows.Markup;
+
 namespace System.Windows.Controls {
 
-	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	[ContentPropertyAttribute("Content")] 
+// 	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
+// 	[ContentPropertyAttribute("Content")] 
 	public class ContentControl : Control, IAddChild {
 
 		public static readonly DependencyProperty ContentProperty;
@@ -36,54 +40,81 @@ namespace System.Windows.Controls {
 		public static readonly DependencyProperty ContentTemplateSelectorProperty;
 		public static readonly DependencyProperty HasContentProperty;
 
-		protected virtual void AddChild (Object value)
+		protected virtual void AddChild (object value)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected virtual void AddText (string text)
 		{
+			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnContentChanged (Object oldContent,
-							 Object newContent)
+		protected virtual void OnContentChanged (object oldContent,
+							 object newContent)
 		{
+			throw new NotImplementedException ();
 		}
 
+#if notyet
 		protected virtual void OnContentTemplateChanged (DataTemplate oldContentTemplate,
 								 DataTemplate newContentTemplate)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected virtual void OnContentTemplateSelectorChanged (DataTemplateSelector oldContentTemplateSelector,
 									 DataTemplateSelector newContentTemplateSelector)
 		{
+			throw new NotImplementedException ();
 		}
+#endif
 
 		public virtual bool ShouldSerializeContent ()
 		{
+			throw new NotImplementedException ();
 		}
 
-		void IAddChild.AddChild (Object value)
+		void IAddChild.AddChild (object value)
 		{
+			throw new NotImplementedException ();
 		}
 
 		void IAddChild.AddText (string text)
 		{
+			throw new NotImplementedException ();
 		}
 
-		[BindableAttribute(true)] 
-		public Object Content { get; set; }
+		[Bindable (true)] 
+		public object Content {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 
 
-		[BindableAttribute(true)] 
-		public DataTemplate ContentTemplate { get; set; }
+#if notyet
+		[Bindable (true)] 
+		public DataTemplate ContentTemplate {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 
-		[BindableAttribute(true)] 
-		public DataTemplateSelector ContentTemplateSelector { get; set; }
+		[Bindable (true)] 
+		public DataTemplateSelector ContentTemplateSelector {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+#endif
 
-		public bool HasContent { get; }
+		public bool HasContent {
+			get { throw new NotImplementedException (); }
+		}
 
-		protected internal override IEnumerator LogicalChildren { get; }
+#if notyet
+		protected internal override IEnumerator LogicalChildren {
+			get { throw new NotImplementedException (); }
+		}
+#endif
 	}
 
 }
