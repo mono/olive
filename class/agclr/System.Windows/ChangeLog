@@ -1,5 +1,13 @@
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
+	* UIElement.cs: track change to Events.Add/RemoveHandler args.
+	they're much cleaner now.
+
+	* DependencyObject.cs: add a GCHandle field which we lazily
+	allocate (and free in our dtor) that we can pass to events.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
 	* UIElement.cs: be consistent about our treatment of all events
 	(be they mouse/key events or others, like Loaded).  Also, use the
 	winforms/asp.net optimization of bloating the event add/remove

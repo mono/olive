@@ -51,6 +51,15 @@ namespace System.Windows {
 
 		internal EventHandlerList events;
 
+		private GCHandle _handle;
+		internal GCHandle GCHandle {
+			get {
+				if (!_handle.IsAllocated)
+					_handle = GCHandle.Alloc (this);
+				return _handle;
+			}
+		}
+
 		internal IntPtr native {
 			get {
 				return _native;
@@ -335,6 +344,9 @@ namespace System.Windows {
 			lock (PendingDestroys){
 				PendingDestroys.Add (this.native);
 				pending = true;
+			}
+			if (_handle.IsAllocated) {
+				_handle.Free();
 			}
 		}
 

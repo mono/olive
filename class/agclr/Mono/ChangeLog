@@ -1,5 +1,12 @@
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
+	* Events.cs: phase 2: use GCHandles as the closures we pass to
+	dependency_object_add/remove_event_handler.  this allows us to
+	remove the hash lookup methods (ElementFromPtr, ObjectFromPtr) and
+	just use GCHandle.Target.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
 	* Events.cs: use UnmanagedEventHandlers for all the delegates
 	here, and mark the UIElement delegates internal so it can get at
 	them.  Probably all the UIElement event stuff should move to

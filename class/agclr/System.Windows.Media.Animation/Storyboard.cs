@@ -28,6 +28,7 @@
 using System;
 using System.Windows;
 using System.Windows.Media;
+using System.Runtime.InteropServices;
 using Mono;
 
 namespace System.Windows.Media.Animation {
@@ -46,7 +47,6 @@ namespace System.Windows.Media.Animation {
 
 		internal Storyboard (IntPtr raw) : base (raw)
 		{
-			Events.AddHandler (raw, "Completed", completed_delegate);
 		}
 
 		public Storyboard ()
@@ -85,13 +85,13 @@ namespace System.Windows.Media.Animation {
 		public event EventHandler Completed {
 			add {
 				if (events[CompletedEvent] == null)
-					Events.AddHandler (native, "Completed", completed_delegate);
+					Events.AddHandler (this, "Completed", completed_delegate);
 				events.AddHandler (CompletedEvent, value);
 			}
 			remove {
 				events.RemoveHandler (CompletedEvent, value);
 				if (events[CompletedEvent] == null)
-					Events.RemoveHandler (native, "Completed", completed_delegate);
+					Events.RemoveHandler (this, "Completed", completed_delegate);
 			}
 		}
 
@@ -99,12 +99,7 @@ namespace System.Windows.Media.Animation {
 
 		private static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			DependencyObject o = Events.ObjectFromPtr (target);
-
-			Storyboard sb = o as Storyboard;
-			if (sb == null)
-				throw new Exception (String.Format ("The object registered for {0} was not an Storyboard", target));
-
+			Storyboard sb = (Storyboard)GCHandle.FromIntPtr (closure).Target;
 			sb.InvokeCompleted ();
 		}
 

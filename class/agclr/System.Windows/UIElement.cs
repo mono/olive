@@ -194,130 +194,130 @@ namespace System.Windows {
 		public event EventHandler GotFocus {
 			add {
 				if (events[GotFocusEvent] == null)
-					Events.AddHandler (native, "GotFocus", Events.got_focus);
+					Events.AddHandler (this, "GotFocus", Events.got_focus);
 				events.AddHandler (GotFocusEvent, value);
 			}
 			remove {
 				events.RemoveHandler (GotFocusEvent, value);
 				if (events[GotFocusEvent] == null)
-					Events.RemoveHandler (native, "GotFocus", Events.got_focus);
+					Events.RemoveHandler (this, "GotFocus", Events.got_focus);
 			}
 		}
 
 		public event EventHandler LostFocus {
 			add {
 				if (events[LostFocusEvent] == null)
-					Events.AddHandler (native, "LostFocus", Events.lost_focus);
+					Events.AddHandler (this, "LostFocus", Events.lost_focus);
 				events.AddHandler (LostFocusEvent, value);
 			}
 			remove {
 				events.RemoveHandler (LostFocusEvent, value);
 				if (events[LostFocusEvent] == null)
-					Events.RemoveHandler (native, "LostFocus", Events.lost_focus);
+					Events.RemoveHandler (this, "LostFocus", Events.lost_focus);
 			}
 		}
 
 		public event EventHandler Loaded {
 			add {
 				if (events[LoadedEvent] == null)
-					Events.AddHandler (native, "Loaded", Events.loaded);
+					Events.AddHandler (this, "Loaded", Events.loaded);
 				events.AddHandler (LoadedEvent, value);
 			}
 			remove {
 				events.RemoveHandler (LoadedEvent, value);
 				if (events[LoadedEvent] == null)
-					Events.RemoveHandler (native, "Loaded", Events.loaded);
+					Events.RemoveHandler (this, "Loaded", Events.loaded);
 			}
 		}
 			
 		public event KeyboardEventHandler KeyDown {
 			add {
 				if (events[KeyDownEvent] == null)
-					Events.AddHandler (native, "KeyDown", Events.key_down);
+					Events.AddHandler (this, "KeyDown", Events.key_down);
 				events.AddHandler (KeyDownEvent, value);
 			}
 			remove {
 				events.RemoveHandler (KeyDownEvent, value);
 				if (events[KeyDownEvent] == null)
-					Events.RemoveHandler (native, "KeyDown", Events.key_down);
+					Events.RemoveHandler (this, "KeyDown", Events.key_down);
 			}
 		}
 
 		public event KeyboardEventHandler KeyUp {
 			add {
 				if (events[KeyUpEvent] == null)
-					Events.AddHandler (native, "KeyUp", Events.key_up);
+					Events.AddHandler (this, "KeyUp", Events.key_up);
 				events.AddHandler (KeyUpEvent, value);
 			}
 			remove {
 				events.RemoveHandler (KeyUpEvent, value);
 				if (events[KeyUpEvent] == null)
-					Events.RemoveHandler (native, "KeyUp", Events.key_up);
+					Events.RemoveHandler (this, "KeyUp", Events.key_up);
 			}
 		}
 
 		public event MouseEventHandler MouseEnter {
 			add {
 				if (events[MouseEnterEvent] == null)
-					Events.AddHandler (native, "Enter", Events.mouse_enter);
+					Events.AddHandler (this, "Enter", Events.mouse_enter);
 				events.AddHandler (MouseEnterEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseEnterEvent, value);
 				if (events[MouseEnterEvent] == null)
-					Events.RemoveHandler (native, "Enter", Events.mouse_enter);
+					Events.RemoveHandler (this, "Enter", Events.mouse_enter);
 			}
 		}
 
 		public event EventHandler MouseLeave {
 			add {
 				if (events[MouseLeaveEvent] == null)
-					Events.AddHandler (native, "Leave", Events.mouse_leave);
+					Events.AddHandler (this, "Leave", Events.mouse_leave);
 				events.AddHandler (MouseLeaveEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeaveEvent, value);
 				if (events[MouseLeaveEvent] == null)
-					Events.RemoveHandler (native, "Leave", Events.mouse_leave);
+					Events.RemoveHandler (this, "Leave", Events.mouse_leave);
 			}
 		}
 
 		public event MouseEventHandler MouseLeftButtonDown {
 			add {
 				if (events[MouseLeftButtonDownEvent] == null)
-					Events.AddHandler (native, "ButtonPress", Events.mouse_button_down);
+					Events.AddHandler (this, "ButtonPress", Events.mouse_button_down);
 				events.AddHandler (MouseLeftButtonDownEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeftButtonDownEvent, value);
 				if (events[MouseLeftButtonDownEvent] == null)
-					Events.RemoveHandler (native, "ButtonPress", Events.mouse_button_down);
+					Events.RemoveHandler (this, "ButtonPress", Events.mouse_button_down);
 			}
 		}
 
 		public event MouseEventHandler MouseLeftButtonUp {
 			add {
 				if (events[MouseLeftButtonUpEvent] == null)
-					Events.AddHandler (native, "ButtonRelease", Events.mouse_button_up);
+					Events.AddHandler (this, "ButtonRelease", Events.mouse_button_up);
 				events.AddHandler (MouseLeftButtonUpEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeftButtonUpEvent, value);
 				if (events[MouseLeftButtonUpEvent] == null)
-					Events.RemoveHandler (native, "ButtonRelease", Events.mouse_button_up);
+					Events.RemoveHandler (this, "ButtonRelease", Events.mouse_button_up);
 			}
 		}
 
 		public event MouseEventHandler MouseMove {
 			add {
 				if (events[MouseMoveEvent] == null)
-					Events.AddHandler (native, "Motion", Events.mouse_motion);
+					Events.AddHandler (this, "Motion", Events.mouse_motion);
 				events.AddHandler (MouseMoveEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseMoveEvent, value);
 				if (events[MouseMoveEvent] == null)
-					Events.RemoveHandler (native, "Motion", Events.mouse_motion);
+					Events.RemoveHandler (this, "Motion", Events.mouse_motion);
 			}
 		}
 

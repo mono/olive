@@ -1,5 +1,11 @@
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
+	* Storyboard.cs: track change to Events.Add/RemoveHandler args.
+	they're much cleaner now.  Also, don't register completed_delegate
+	twice.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
 	* Storyboard.cs: make a similar change as I made to UIElement.cs.
 	use the EventHandlerList, and register/unregister our interest in
 	events with the unmanaged code.

@@ -56,61 +56,39 @@ namespace Mono {
 
 		static PlainEvent surface_resized = new PlainEvent (surface_resized_callback);
 
-		internal static DependencyObject ObjectFromPtr (IntPtr target)
-		{
-			object o = DependencyObject.Lookup (target);
-			if (o == null){
-				Kind k = NativeMethods.dependency_object_get_object_type (target);
-				o = DependencyObject.Lookup (k, target);
-			}
-
-			return o as DependencyObject;
-		}
-
-		internal static UIElement ElementFromPtr (IntPtr target)
-		{
-			object o = ObjectFromPtr (target);
-
-			UIElement e = o as UIElement;
-			if (e == null)
-				throw new Exception (String.Format ("The object registered for {0} was not an UIElement", target));
-
-			return e;
-		}
-					    
 		static void got_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeGotFocus ();
 		}
 
 		static void lost_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeLostFocus ();
 		}
 
 		static void loaded_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeLoaded ();
 		}
 
 		static void mouse_leave_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeMouseLeave ();
 		}
 
 		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			// TODO: map the key
 		}
 
 		static void key_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			// TODO: map the key
 		}
 
@@ -118,30 +96,30 @@ namespace Mono {
 		{
 			UnmanagedMouseEventArgs args =
 				(UnmanagedMouseEventArgs)Marshal.PtrToStructure (calldata, typeof (UnmanagedMouseEventArgs));
-			return new MouseEventArgs (args.state, args.x, args.y)
+			return new MouseEventArgs (args.state, args.x, args.y);
 		}
 		
 		static void mouse_motion_notify_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_button_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_button_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_enter_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = ElementFromPtr (target);
+			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
 			e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
 		}
 
@@ -157,14 +135,14 @@ namespace Mono {
 			NativeMethods.surface_register_events (surface, surface_resized);
 		}
 
-		internal static void AddHandler (IntPtr handle, string eventName, UnmanagedEventHandler handler)
+		internal static void AddHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_add_event_handler (handle, eventName, handler, IntPtr.Zero);
+			NativeMethods.dependency_object_add_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 
-		internal static void RemoveHandler (IntPtr handle, string eventName, UnmanagedEventHandler handler)
+		internal static void RemoveHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_remove_event_handler (handle, eventName, handler, IntPtr.Zero);
+			NativeMethods.dependency_object_remove_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 	}
 	
