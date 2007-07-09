@@ -1,3 +1,9 @@
+2007-07-09  Miguel de Icaza  <miguel@novell.com>
+
+	* XamlReader.cs: Do not use the Lookup version that only finds
+	existing objects, use the Lookup version that creates the managed
+	instance if required (by passing the Kind type to it).
+
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
 	* XamlReader.cs (set_attribute): unfortunately we can't use

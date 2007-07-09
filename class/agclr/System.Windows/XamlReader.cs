@@ -73,16 +73,16 @@ namespace System.Windows {
 			ParseXmlns (xmlns, out type_name, out ns, out asm_path);
 
 			if (asm_path == null) {
-				Console.WriteLine ("unable to parse xmlns string: '{0}'", xmlns);
+				Console.Error.WriteLine ("XamlReader, create_element: unable to parse xmlns string: '{0}'", xmlns);
 				return IntPtr.Zero;
 			}
 
-			Console.WriteLine ("Loading assembly from {0}", asm_path);
+			Console.Error.WriteLine ("XamlReader: Loading assembly from {0}", asm_path);
 
 			// TODO: Use a downloader here
 			Assembly clientlib = Moonlight.LoadFile (asm_path);
 			if (clientlib == null) {
-				Console.WriteLine ("could not load client library: '{0}'", asm_path);
+				Console.Error.WriteLine ("XamlReader, create_element: could not load client library: '{0}'", asm_path);
 				return IntPtr.Zero;
 			}
 
@@ -92,10 +92,10 @@ namespace System.Windows {
 			if (ns != null)
 				name = String.Concat (ns, ".", name);
 
-			Console.WriteLine ("create");
 			object r = clientlib.CreateInstance (name);
 			if (r == null){
-				Console.WriteLine ("unable to create object instance:  '{0}'", name);
+				Console.Error.WriteLine ("XamlReader, create_element: unable to create object instance:  '{0}'",
+							 name);
 				return IntPtr.Zero;
 			}
 			DependencyObject res = r as DependencyObject;
@@ -144,14 +144,16 @@ namespace System.Windows {
 			DependencyObject target = DependencyObject.Lookup (target_ptr);
 
 			if (target == null) {
-				Console.WriteLine ("unable to create target object from: 0x{0}", target_ptr);
+				Console.Error.WriteLine ("XamlReader, set_attribute: unable to create target object from: 0x{0:x}",
+							 target_ptr);
 				return;
 			}
 
 			PropertyInfo pi = target.GetType().GetProperty (name);
 
 			if (pi == null) {
-				Console.WriteLine ("unable to set property ({0}) no property descriptor found", name);
+				Console.Error.WriteLine (
+				    "XamlReader, set_attribute: unable to set property ({0}) no property descriptor found", name);
 				return;
 			}
 
@@ -164,7 +166,7 @@ namespace System.Windows {
 				// allow you to stick things like Colors and KeySplines on your object and still have
 				// custom setters
 				//
-				Console.WriteLine ("unable to convert property '{0}' from a string", name);
+				Console.Error.WriteLine ("XamlReader, set_attribute: unable to convert property '{0}' from a string", name);
 				return;
 			}
 
@@ -173,22 +175,24 @@ namespace System.Windows {
 
 		internal static void hookup_event (IntPtr target_ptr, string name, string value)
 		{
-			DependencyObject target = DependencyObject.Lookup (target_ptr);
+			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr);
+			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
 
 			if (target == null) {
-				Console.WriteLine ("hookup event unable to create target object from: 0x{0}", target_ptr);
+				Console.Error.WriteLine ("XamlReader, hookup_event: unable to create target object from: 0x{0:x}",
+							 target_ptr);
 				return;
 			}
 
 			EventInfo src = target.GetType ().GetEvent (name);
 			if (src == null) {
-				Console.WriteLine ("hookup event unable to find event to hook to: '{0}'.", name);
+				Console.Error.WriteLine ("Xamlreader, hookup_event: unable to find event to hook to: '{0}'.", name);
 				return;
 			}
 
 			Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
 			if (d == null) {
-				Console.WriteLine ("hookup event unable to create delegate.");
+				Console.Error.WriteLine ("XamlReader, hookup_event: unable to create delegate.");
 				return;
 			}
 
