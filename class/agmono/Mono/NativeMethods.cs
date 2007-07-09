@@ -112,10 +112,7 @@ namespace Mono {
 		
 		[DllImport("moon")]
 	    	public extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
-				Mono.CreateCustomXamlElementCallback ccecb,
-				Mono.SetCustomXamlAttributeCallback scacb,
-				Mono.XamlHookupEventCallback hue,
-				out Kind kind);
+								  out Kind kind);
 
 		[DllImport("moon")]
 		public extern static void value_free_value (ref Value val);
@@ -563,12 +560,13 @@ namespace Mono {
 
 		[DllImport ("moon")]
 		public extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml,
-									    Mono.CreateCustomXamlElementCallback ccecb,
-									    Mono.SetCustomXamlAttributeCallback scacb,
-									    Mono.XamlHookupEventCallback hue,
-									    out Kind kind);
+									  out Kind kind);
 
 
+		[DllImport ("moon")]
+		public extern static void xaml_set_parser_callbacks (Mono.CreateCustomXamlElementCallback ccecb,
+								     Mono.SetCustomXamlAttributeCallback scacb,
+								     Mono.XamlHookupEventCallback hue);
 #region EventObject
 		[DllImport("moon")]
 		public extern static void dependency_object_add_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);

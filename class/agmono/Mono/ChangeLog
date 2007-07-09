@@ -1,3 +1,8 @@
+2007-07-09  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: remove the parser callbacks from the xaml_*
+	apis, and add the xaml_set_parser_callbacks entrypoint.
+
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
 	* NativeMethods.cs: change
