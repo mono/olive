@@ -67,7 +67,20 @@ namespace System.Windows {
 			return DependencyObject.Lookup (kind, top);
 		}
 
+		//
+		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
+		// genreating an exception and unwinding the stack.
+		//
 		internal static IntPtr create_element (string xmlns, string name)
+		{
+			try {
+				return create_element (xmlns, name);
+			} catch {
+				return IntPtr.Zero;
+			}
+		}
+		
+		internal static IntPtr real_create_element (string xmlns, string name)
 		{
 			string ns;
 			string type_name;
@@ -142,7 +155,18 @@ namespace System.Windows {
 			return converter;
 		}
 		
+		//
+		// Proxy to prevent exceptions from being returned to unmanaged code.
+		//
 		internal static void set_attribute (IntPtr target_ptr, string name, string value)
+		{
+			try {
+				real_set_attribute (target_ptr, name, value);
+			} catch {
+			}
+		}
+		
+		internal static void real_set_attribute (IntPtr target_ptr, string name, string value)
 		{
 			DependencyObject target = DependencyObject.Lookup (target_ptr);
 
@@ -176,7 +200,18 @@ namespace System.Windows {
 			pi.SetValue (target, converter.ConvertFrom (value), null);
 		}
 
+		//
+		// Proxy to prevent exceptions from being returned to unmanaged code.
+		//
 		internal static void hookup_event (IntPtr target_ptr, string name, string value)
+		{
+			try {
+				real_hookup_event (target_ptr, name, value);
+			} catch {
+			}
+		}
+			
+		internal static void real_hookup_event (IntPtr target_ptr, string name, string value)
 		{
 			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr);
 			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
