@@ -1,5 +1,14 @@
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
+	* XamlReader.cs (set_attribute): unfortunately we can't use
+	TypeDescriptor.GetProperty here, since it can't be used with
+	write-only properties (which Dr. Popper uses).  c&p the
+	PropertyDescriptor.Converter code here and rename it
+	GetConverterFor(), and use System.Reflection for setting the
+	property value.  Ah well.
+
+2007-07-08  Chris Toshok  <toshok@ximian.com>
+
 	* UIElement.cs: track change to Events.Add/RemoveHandler args.
 	they're much cleaner now.
 

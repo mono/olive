@@ -108,6 +108,36 @@ namespace System.Windows {
 			return p;
 		}
 
+		private static TypeConverter GetConverterFor (PropertyInfo info)
+		{
+			Attribute[] attrs = (Attribute[])info.GetCustomAttributes (true);
+			TypeConverterAttribute at = null;
+			TypeConverter converter = null;
+
+			foreach (Attribute attr in attrs) {
+				if (attr is TypeConverterAttribute) {
+					at = (TypeConverterAttribute)attr;
+					break;
+				}
+			}
+
+			if (at == null || at == TypeConverterAttribute.Default)
+				converter = TypeDescriptor.GetConverter (info.PropertyType);
+			else {
+				Type t = Type.GetType (at.ConverterTypeName);
+				if (t == null) {
+					converter = TypeDescriptor.GetConverter (info.PropertyType);
+				}
+				else {
+					ConstructorInfo ci = t.GetConstructor (new Type[] { typeof(Type) });
+					if (ci != null)
+						converter = (TypeConverter) ci.Invoke (new object[] { info.PropertyType });
+					else
+						converter = (TypeConverter) Activator.CreateInstance (t);
+				}
+			}
+			return converter;
+		}
 		
 		internal static void set_attribute (IntPtr target_ptr, string name, string value)
 		{
@@ -118,14 +148,15 @@ namespace System.Windows {
 				return;
 			}
 
-			PropertyDescriptor pd = TypeDescriptor.GetProperties (target).Find (name, true);
+			PropertyInfo pi = target.GetType().GetProperty (name);
 
-			if (pd == null) {
+			if (pi == null) {
 				Console.WriteLine ("unable to set property ({0}) no property descriptor found", name);
 				return;
 			}
 
-			if (!pd.Converter.CanConvertFrom (typeof (string))) {
+			TypeConverter converter = GetConverterFor (pi);
+			if (!converter.CanConvertFrom (typeof (string))) {
 				//
 				// MS does not seem to handle this yet either, but I think a logical improvement
 				// here is to call back into unmanaged code something like xaml_create_object_from_str
@@ -137,7 +168,7 @@ namespace System.Windows {
 				return;
 			}
 
-			pd.SetValue (target, pd.Converter.ConvertFrom (value));
+			pi.SetValue (target, converter.ConvertFrom (value), null);
 		}
 
 		internal static void hookup_event (IntPtr target_ptr, string name, string value)
