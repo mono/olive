@@ -74,10 +74,13 @@ namespace System.Windows {
 		internal static IntPtr create_element (string xmlns, string name)
 		{
 			try {
-				return create_element (xmlns, name);
+				return real_create_element (xmlns, name);
 			} catch {
 				return IntPtr.Zero;
+			} finally {
+				Console.WriteLine ("create_element: returning");
 			}
+			
 		}
 		
 		internal static IntPtr real_create_element (string xmlns, string name)
