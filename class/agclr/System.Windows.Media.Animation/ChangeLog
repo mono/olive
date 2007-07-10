@@ -1,3 +1,8 @@
+2007-07-09  Chris Toshok  <toshok@ximian.com>
+
+	* Storyboard.cs: analogous change to Event.cs for
+	CrossDomainProxy.
+
 2007-07-08  Chris Toshok  <toshok@ximian.com>
 
 	* Storyboard.cs: track change to Events.Add/RemoveHandler args.
