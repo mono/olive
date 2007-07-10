@@ -10,14 +10,15 @@ namespace System.Windows.Browser
 
 		[MonoTODO]
 		public bool Enabled {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			set { /* nothing yet*/ }
+			get { return false; }
 		}
 
+		int interval;
 		[MonoTODO]
 		public int Interval {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			set { interval = value; }
+			get { return interval; }
 		}
 
 		[MonoTODO]
@@ -37,6 +38,15 @@ namespace System.Windows.Browser
 		{
 			return base.ToString ();
 		}
+
+		protected virtual void OnTick (EventArgs e)
+		{
+			if (Tick != null)
+				Tick (this, e);
+		}
+
+		[MonoTODO]
+		public event EventHandler Tick;
 	}
 }
 

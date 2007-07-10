@@ -1,3 +1,10 @@
+2007-07-10  Chris Toshok  <toshok@ximian.com>
+
+	* HtmlTimer.cs: add the Tick event, the OnTick method, and remove
+	the NIE from the properties.  the "Digger" silverlight demo uses
+	this class, and this change keeps it from at least bringing down
+	the browser.
+
 2007-06-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* BrowserInformation.cs BrowserRuntimeSettings.cs HtmlDocument.cs
