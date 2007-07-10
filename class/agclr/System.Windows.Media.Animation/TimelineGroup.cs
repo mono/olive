@@ -53,13 +53,15 @@ namespace System.Windows.Media.Animation {
 			ChildrenProperty = DependencyProperty.Lookup (Kind.TIMELINEGROUP, "Children", typeof (TimelineCollection));
 		}
 	
-		public TimelineCollection Children {
+		public Timeline Children {
 			get {
-				return (TimelineCollection) GetValue (ChildrenProperty);
+				return ((TimelineCollection) GetValue (ChildrenProperty))[0];
 			}
 		
 			set {
-				SetValue (ChildrenProperty, value);
+				TimelineCollection col = (TimelineCollection)GetValue (ChildrenProperty);
+				col.Clear ();
+				col.Add (value);
 			}
 		}
 
