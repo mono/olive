@@ -1,10 +1,8 @@
 thisdir = class
 
-include ../build/rules.make
-
 # For now, Mono.Security.Win32 is built on Linux too.
 # However, it isn't tested on Linux, since it depends on a Win32 dll.
-SUBDIRS = \
+net_3_0_dirs = \
 	System.Xml.Linq			\
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
@@ -22,6 +20,18 @@ SUBDIRS = \
 	System.Silverlight		\
 	agmono				\
 	agclr
+
+net_2_1_dirs = \
+	System.Silverlight	\
+	agmono		\
+	agclr		\
+
+net_3_0_SUBDIRS := $(net_3_0_dirs)
+net_2_1_SUBDIRS := $(net_2_1_dirs)
+
+SUBDIRS = $(net_3_0_dirs) $(net_2_1_dirs)
+
+include ../build/rules.make
 
 DIST_PROFILE_DIRS = net_3_0
 

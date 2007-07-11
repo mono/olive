@@ -1,3 +1,10 @@
+2007-07-11  Jb Evain  <jbevain@novell.com>
+
+	* class/Makefile,
+	  class/lib/net_2_1,
+	  build/profiles/net_2_1.make:
+		Start the 2.1 profile.
+
 2007-04-06  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile : use bzip2 instead of gzip for 'make dist'
