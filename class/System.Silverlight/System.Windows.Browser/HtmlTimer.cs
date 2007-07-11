@@ -24,13 +24,11 @@ namespace System.Windows.Browser
 		[MonoTODO]
 		public void Start ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
 		public void Stop ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]

@@ -45,7 +45,7 @@ namespace System.Windows.Browser
 			return new HtmlElement (InvokeMethod<IntPtr> ("createElement", tagName));
 		}
 
-		public HtmlElement GetElementById (string id)
+		public HtmlElement GetElementByID (string id)
 		{
 			return new HtmlElement (InvokeMethod<IntPtr> ("getElementById", id));
 		}
