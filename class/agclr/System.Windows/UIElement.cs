@@ -285,7 +285,7 @@ namespace System.Windows {
 		public event MouseEventHandler MouseLeftButtonDown {
 			add {
 				if (events[MouseLeftButtonDownEvent] == null)
-					Events.AddHandler (this, "MouesLeftButtonDown", Events.mouse_button_down);
+					Events.AddHandler (this, "MouseLeftButtonDown", Events.mouse_button_down);
 				events.AddHandler (MouseLeftButtonDownEvent, value);
 			}
 			remove {
