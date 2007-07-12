@@ -162,6 +162,7 @@ System.ServiceModel.Channels/CustomBinding.cs
 System.ServiceModel.Channels/DeliveryFailure.cs
 System.ServiceModel.Channels/DeliveryStatus.cs
 System.ServiceModel.Channels/DirectionalAction.cs
+System.ServiceModel.Channels/DuplexSessionChannelBase.cs
 System.ServiceModel.Channels/FaultConverter.cs
 System.ServiceModel.Channels/HostedTransportConfiguration.cs
 System.ServiceModel.Channels/HtmlizedException.cs
@@ -263,6 +264,9 @@ System.ServiceModel.Channels/StreamUpgradeProvider.cs
 System.ServiceModel.Channels/SvcHttpHandler.cs
 System.ServiceModel.Channels/SvcHttpHandlerFactory.cs
 System.ServiceModel.Channels/SymmetricSecurityBindingElement.cs
+System.ServiceModel.Channels/TcpChannelFactory.cs
+System.ServiceModel.Channels/TcpChannelListener.cs
+System.ServiceModel.Channels/TcpDuplexSessionChannel.cs
 System.ServiceModel.Channels/TcpTransportBindingElement.cs
 System.ServiceModel.Channels/TextMessageEncoder.cs
 System.ServiceModel.Channels/TextMessageEncoderFactory.cs

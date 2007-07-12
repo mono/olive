@@ -1,7 +1,17 @@
+<<<<<<< .mine
+2007-07-12 Marcos Cobena (marcoscobena@gmail.com)
+
+	* DuplexSessionChannelBase.cs, TcpChannelFactory.cs, TcpChannelListener.cs, 
+		TcpDuplexSessionChannel.cs: Added new implementations.
+	* NetTcpBinding.cs, TcpTransportBindingElement.cs: Modified to match new TCP implementations.
+	* System.ServiceModel.dll.sources: Updated to last classes set.
+
+=======
 2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	Makefile : added -r:System.Messaging.dll
 
+>>>>>>> .r81848
 2007-06-28 Marcos Cobena (marcoscobena@gmail.com)
 
 	* System.ServiceModel.dll.sources, System.ServiceModel\Dummy.cs : 

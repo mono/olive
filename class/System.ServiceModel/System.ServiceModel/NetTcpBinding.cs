@@ -140,7 +140,7 @@ namespace System.ServiceModel
 		// overrides
 
 		public override string Scheme {
-			get { throw new NotImplementedException (); }
+			get { return "net.tcp"; }
 		}
 
 		public override BindingElementCollection CreateBindingElements ()

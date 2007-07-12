@@ -1,8 +1,9 @@
 //
 // TcpTransportBindingElement.cs
 //
-// Author:
+// Authors:
 //	Atsushi Enomoto <atsushi@ximian.com>
+//      Marcos Cobena (marcoscobena@gmail.com)
 //
 // Copyright (C) 2005 Novell, Inc.  http://www.novell.com
 //
@@ -25,6 +26,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -37,6 +39,10 @@ namespace System.ServiceModel.Channels
 	public class TcpTransportBindingElement
 		: ConnectionOrientedTransportBindingElement
 	{
+		int listen_backlog = 10;
+		bool port_sharing_enabled = false;
+		bool teredo_enabled = false;
+		
 		public TcpTransportBindingElement ()
 		{
 		}
@@ -45,19 +51,11 @@ namespace System.ServiceModel.Channels
 			TcpTransportBindingElement other)
 			: base (other)
 		{
-			lease_timeout = other.lease_timeout;
 			listen_backlog = other.listen_backlog;
 			port_sharing_enabled = other.port_sharing_enabled;
 		}
-
-		TimeSpan lease_timeout;
-		int listen_backlog;
-		bool port_sharing_enabled;
-
-		public TimeSpan ConnectionLeaseTimeout {
-			get { return lease_timeout; }
-			set { lease_timeout = value; }
-		}
+		
+		//public TcpConnectionPoolSettings ConnectionPoolSettings { get; }
 
 		public int ListenBacklog {
 			get { return listen_backlog; }
@@ -72,18 +70,40 @@ namespace System.ServiceModel.Channels
 		public override string Scheme {
 			get { return "net.tcp"; }
 		}
+		
+		// As MSDN exposes, this' only available on Windows XP SP2 and Windows Server 2003
+		public bool TeredoEnabled {
+			get { return teredo_enabled; }
+			set { teredo_enabled = value; }
+		}
 
+		[MonoTODO]
 		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (
 			BindingContext context)
 		{
-			throw new NotImplementedException ();
+			return new TcpChannelFactory<TChannel> (this, context);
 		}
 
+		[MonoTODO]
 		public override IChannelListener<TChannel>
 			BuildChannelListener<TChannel> (
 			BindingContext context)
 		{
-			throw new NotImplementedException ();
+			return new TcpChannelListener<TChannel> (this, context);
+		}
+		
+		[MonoTODO]
+		public override bool CanBuildChannelFactory<TChannel> (
+			BindingContext context)
+		{
+			return typeof (TChannel) == typeof (IDuplexSessionChannel);
+		}
+
+		[MonoTODO]
+		public override bool CanBuildChannelListener<TChannel> (
+			BindingContext context)
+		{
+			return typeof (TChannel) == typeof (IDuplexSessionChannel);
 		}
 
 		public override BindingElement Clone ()
@@ -92,11 +112,12 @@ namespace System.ServiceModel.Channels
 		}
 
 		// FIXME: it should not be required but gmcs borks here.
+		/*
 		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
 			throw new NotImplementedException ();
 		}
-
+		*/
 	}
 }
