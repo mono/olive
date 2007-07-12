@@ -1,3 +1,8 @@
+2007-07-12  Chris Toshok  <toshok@ximian.com>
+
+	* Downloader.cs: move to using UnmanagedEventHandlers to proxy
+	events.
+
 2007-07-11  Chris Toshok  <toshok@ximian.com>
 
 	* UIElement.cs: use the MS event names for the strings we pass to

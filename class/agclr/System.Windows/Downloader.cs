@@ -47,57 +47,13 @@ namespace System.Windows {
 		public static readonly DependencyProperty UriProperty =
 			DependencyProperty.Lookup (Kind.DOWNLOADER, "Uri", typeof (string));
 
-		NativeMethods.UpdateFunction updater;
-
-		string filename;
-		
-		void UpdateCallback (int kind, IntPtr cb_data, IntPtr extra)
-		{
-			EventHandler h = null;
-			
-			switch (kind){
-			case 0:
-				h = Completed;
-				break;
-			case 1:
-				h = DownloadProgressChanged;
-				break;
-			case 2:
-				ErrorEventHandler df = DownloadFailed;
-				if (df != null) {
-					filename = Marshal.PtrToStringAuto (extra);
-					ErrorEventArgs eea = new ErrorEventArgs (4001, filename, ErrorType.DownloadError);
-					df (this, eea);
-				}
-				return;
-			}
-			if (h != null)
-				h (this, EventArgs.Empty);
-		}
-		
-		internal void NotifyWantUpdates ()
-		{
-			if (native == IntPtr.Zero)
-				return;
-			
-			updater = new NativeMethods.UpdateFunction (UpdateCallback);
-			NativeMethods.downloader_want_events (native, updater, IntPtr.Zero);
-		}
-		
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
 			NativeMethods.base_ref (native);
-
-			// OPTIMIZEME: We should do this only if an event is hooked up,
-			// currently we do it always.
-			NotifyWantUpdates ();
 		}
 		
 		internal Downloader (IntPtr raw) : base (raw)
 		{
-			// OPTIMIZME: We should do this only if an event is hooked up,
-			// currently we do it always.
-			NotifyWantUpdates ();
 		}
 
 
@@ -167,11 +123,88 @@ namespace System.Windows {
 			NativeMethods.downloader_send (native);
 		}
 
-		public event EventHandler Completed;
+		static object CompletedEvent = new object();
+		static object DownloadProgressChangedEvent = new object ();
+		static object DownloadFailedEvent = new object ();
 
-		public event EventHandler DownloadProgressChanged;
+		public event EventHandler Completed {
+			add {
+				if (events[CompletedEvent] == null)
+					Events.AddHandler (this, "Completed", completed_proxy);
+				events.AddHandler (CompletedEvent, value);
+			}
+			remove {
+				events.RemoveHandler (CompletedEvent, value);
+				if (events[CompletedEvent] == null)
+					Events.RemoveHandler (this, "Completed", completed_proxy);
+			}
+		}
 
-		public event ErrorEventHandler DownloadFailed;
+		public event EventHandler DownloadProgressChanged {
+			add {
+				if (events[DownloadProgressChangedEvent] == null)
+					Events.AddHandler (this, "DownloadProgressChanged", progress_changed_proxy);
+				events.AddHandler (DownloadProgressChangedEvent, value);
+			}
+			remove {
+				events.RemoveHandler (DownloadProgressChangedEvent, value);
+				if (events[DownloadProgressChangedEvent] == null)
+					Events.RemoveHandler (this, "DownloadProgressChanged", progress_changed_proxy);
+			}
+		}
+
+		public event ErrorEventHandler DownloadFailed {
+			add {
+				if (events[DownloadFailedEvent] == null)
+					Events.AddHandler (this, "DownloadFailed", failed_proxy);
+				events.AddHandler (DownloadFailedEvent, value);
+			}
+			remove {
+				events.RemoveHandler (DownloadFailedEvent, value);
+				if (events[DownloadFailedEvent] == null)
+					Events.RemoveHandler (this, "DownloadFailed", failed_proxy);
+			}
+		}
+
+
+		static UnmanagedEventHandler completed_proxy = new UnmanagedEventHandler (UnmanagedCompleted);
+		static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+			dl.InvokeEmptyEvent (CompletedEvent);
+		}
+
+		static UnmanagedEventHandler progress_changed_proxy = new UnmanagedEventHandler (UnmanagedDownloadProgressChanged);
+		static void UnmanagedDownloadProgressChanged (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+			dl.InvokeEmptyEvent (DownloadProgressChangedEvent);
+		}
+
+		void InvokeEmptyEvent (object eventkey)
+		{
+			EventHandler h = (EventHandler)events[eventkey];
+			if (h != null)
+				h (this, EventArgs.Empty);
+		}
+
+		static UnmanagedEventHandler failed_proxy = new UnmanagedEventHandler (UnmanagedDownloadFailed);
+		static void UnmanagedDownloadFailed (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
+			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+
+			string filename = Marshal.PtrToStringAuto (calldata);
+			ErrorEventArgs eea = new ErrorEventArgs (4001, filename, ErrorType.DownloadError);
+
+			dl.InvokeDownloadFailed (eea);
+		}
+
+		void InvokeDownloadFailed (ErrorEventArgs eea)
+		{
+			ErrorEventHandler h = (ErrorEventHandler)events[DownloadFailedEvent];
+			if (h != null)
+				h (this, eea);
+		}
 		
 		internal override Kind GetKind ()
 		{
