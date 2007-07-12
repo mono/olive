@@ -31,7 +31,7 @@ namespace ProgrammingChannels
 //			{
 				IChannelListener<IDuplexSessionChannel> listener =
 					binding.BuildChannelListener<IDuplexSessionChannel> (
-						new Uri ("net.tcp://localhost/channelapp"), bpcol);
+						new Uri ("net.tcp://localhost/"), bpcol);
 				
 				listener.Open ();
 				

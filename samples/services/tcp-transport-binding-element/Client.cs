@@ -41,9 +41,11 @@ namespace ProgrammingChannels
 				factory.Open();
 				
 				IDuplexSessionChannel channel = factory.CreateChannel(
-					new EndpointAddress("net.tcp://localhost/channelapp"));
+					new EndpointAddress("net.tcp://localhost/"));
 				
 				channel.Open();
+				
+				Console.ReadLine();
 				
 				Message message = Message.CreateMessage(
 					//channel.Manager.MessageVersion, 
