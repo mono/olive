@@ -259,65 +259,65 @@ namespace System.Windows {
 		public event MouseEventHandler MouseEnter {
 			add {
 				if (events[MouseEnterEvent] == null)
-					Events.AddHandler (this, "Enter", Events.mouse_enter);
+					Events.AddHandler (this, "MouseEnter", Events.mouse_enter);
 				events.AddHandler (MouseEnterEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseEnterEvent, value);
 				if (events[MouseEnterEvent] == null)
-					Events.RemoveHandler (this, "Enter", Events.mouse_enter);
+					Events.RemoveHandler (this, "MouseEnter", Events.mouse_enter);
 			}
 		}
 
 		public event EventHandler MouseLeave {
 			add {
 				if (events[MouseLeaveEvent] == null)
-					Events.AddHandler (this, "Leave", Events.mouse_leave);
+					Events.AddHandler (this, "MouseLeave", Events.mouse_leave);
 				events.AddHandler (MouseLeaveEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeaveEvent, value);
 				if (events[MouseLeaveEvent] == null)
-					Events.RemoveHandler (this, "Leave", Events.mouse_leave);
+					Events.RemoveHandler (this, "MouseLeave", Events.mouse_leave);
 			}
 		}
 
 		public event MouseEventHandler MouseLeftButtonDown {
 			add {
 				if (events[MouseLeftButtonDownEvent] == null)
-					Events.AddHandler (this, "ButtonPress", Events.mouse_button_down);
+					Events.AddHandler (this, "MouesLeftButtonDown", Events.mouse_button_down);
 				events.AddHandler (MouseLeftButtonDownEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeftButtonDownEvent, value);
 				if (events[MouseLeftButtonDownEvent] == null)
-					Events.RemoveHandler (this, "ButtonPress", Events.mouse_button_down);
+					Events.RemoveHandler (this, "MouseLeftButtonDown", Events.mouse_button_down);
 			}
 		}
 
 		public event MouseEventHandler MouseLeftButtonUp {
 			add {
 				if (events[MouseLeftButtonUpEvent] == null)
-					Events.AddHandler (this, "ButtonRelease", Events.mouse_button_up);
+					Events.AddHandler (this, "MouesLeftButtonUp", Events.mouse_button_up);
 				events.AddHandler (MouseLeftButtonUpEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseLeftButtonUpEvent, value);
 				if (events[MouseLeftButtonUpEvent] == null)
-					Events.RemoveHandler (this, "ButtonRelease", Events.mouse_button_up);
+					Events.RemoveHandler (this, "MouseLeftButtonUp", Events.mouse_button_up);
 			}
 		}
 
 		public event MouseEventHandler MouseMove {
 			add {
 				if (events[MouseMoveEvent] == null)
-					Events.AddHandler (this, "Motion", Events.mouse_motion);
+					Events.AddHandler (this, "MouseMove", Events.mouse_motion);
 				events.AddHandler (MouseMoveEvent, value);
 			}
 			remove {
 				events.RemoveHandler (MouseMoveEvent, value);
 				if (events[MouseMoveEvent] == null)
-					Events.RemoveHandler (this, "Motion", Events.mouse_motion);
+					Events.RemoveHandler (this, "MouseMove", Events.mouse_motion);
 			}
 		}
 

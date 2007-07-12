@@ -1,3 +1,8 @@
+2007-07-11  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: use the MS event names for the strings we pass to
+	events.AddHandler.  tracks the uielement.cpp change.
+
 2007-07-09  Miguel de Icaza  <miguel@novell.com>
 
 	* XamlReader.cs: Add try/catch events to the code to prevent it
