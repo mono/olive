@@ -1,3 +1,7 @@
+2007-07-12  Chris Toshok  <toshok@ximian.com>
+
+	* Visual.cs: implement the mouse capturing calls.
+
 2007-06-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Brush.cs, Transform.cs: Make this class abstract.

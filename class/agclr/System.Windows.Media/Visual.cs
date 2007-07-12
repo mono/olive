@@ -41,12 +41,12 @@ namespace System.Windows.Media {
 
 		public bool CaptureMouse ()
 		{
-			throw new NotImplementedException ();
+			return NativeMethods.uielement_capture_mouse (native);
 		}
 
 		public bool ReleaseMouseCapture ()
 		{
-			throw new NotImplementedException ();
+			return NativeMethods.uielement_release_mouse_capture (native);
 		}
 		
 		internal override Kind GetKind ()

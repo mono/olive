@@ -1,3 +1,8 @@
+2007-07-12  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add dllimports for uielement_capture_mouse and
+	uielement_release_mouse_capture.
+
 2007-07-09  Chris Toshok  <toshok@ximian.com>
 
 	* NativeMethods.cs: remove the parser callbacks from the xaml_*
