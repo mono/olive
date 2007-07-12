@@ -41,8 +41,6 @@ namespace System.Windows.Media.Animation {
 		{
 			TargetPropertyProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetProperty", typeof (string));
 			TargetNameProperty = DependencyProperty.Lookup (Kind.STORYBOARD, "TargetName", typeof (string));
-
-			completed_proxy = new CrossDomainProxy (AppDomain.CurrentDomain, new UnmanagedEventHandler (UnmanagedCompleted));
 		}
 
 		internal Storyboard (IntPtr raw) : base (raw)
@@ -95,7 +93,7 @@ namespace System.Windows.Media.Animation {
 			}
 		}
 
-		static CrossDomainProxy completed_proxy;
+		static UnmanagedEventHandler completed_proxy = new UnmanagedEventHandler (UnmanagedCompleted);
 
 		private static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{

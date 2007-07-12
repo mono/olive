@@ -40,75 +40,17 @@ namespace Mono {
 		public double y;
 	}
 
-	[Serializable]
-	class CrossDomainProxy {
-		public CrossDomainProxy (AppDomain domain, UnmanagedEventHandler handler)
-		{
-			//Console.WriteLine ("Created proxy in domain {0}", domain.FriendlyName);
-			this.domain = domain;
-			this.handler = handler;
-			_wrapper = new UnmanagedEventHandler (wrapper);
-		}
-
-		
-		public UnmanagedEventHandler Wrapper {
-			get { return _wrapper; }
-		}
-
-		public void wrapper (IntPtr target, IntPtr calldata, IntPtr closure) {
-			//Console.WriteLine ("wrapper called in domain {0}", AppDomain.CurrentDomain.FriendlyName);
-			//Console.WriteLine (" +  domain = {0}", domain.FriendlyName);
-			this.target = target;
-			this.calldata = calldata;
-			this.closure = closure;
-			domain.DoCallBack (new CrossAppDomainDelegate (call_in_target_domain));
-		}
-
-		public void call_in_target_domain ()
-		{
-			//Console.WriteLine ("call_in_target_domain called in domain {0}", AppDomain.CurrentDomain.FriendlyName);
-			if (AppDomain.CurrentDomain != domain)
-				throw new Exception ("Cross domain call failed");
-			handler (target, calldata, closure);
-		}
-
-		public AppDomain domain;
-		public UnmanagedEventHandler handler;
-		public UnmanagedEventHandler _wrapper;
-
-		public IntPtr target;
-		public IntPtr calldata;
-		public IntPtr closure;
-	}
-
-
 	internal class Events {
-		static Events() {
-			AppDomain d = AppDomain.CurrentDomain;
-			mouse_motion = new CrossDomainProxy (d, new UnmanagedEventHandler (mouse_motion_notify_callback));
-			mouse_button_down = new CrossDomainProxy (d, new UnmanagedEventHandler (mouse_button_down_callback));
-			mouse_button_up = new CrossDomainProxy (d, new UnmanagedEventHandler (mouse_button_up_callback));
-			mouse_enter = new CrossDomainProxy (d, new UnmanagedEventHandler (mouse_enter_callback));
-			key_down = new CrossDomainProxy (d, new UnmanagedEventHandler (key_down_callback));
-			key_up = new CrossDomainProxy (d, new UnmanagedEventHandler (key_up_callback));
-			got_focus = new CrossDomainProxy (d, new UnmanagedEventHandler (got_focus_callback));
-			lost_focus = new CrossDomainProxy (d, new UnmanagedEventHandler (lost_focus_callback));
-			loaded = new CrossDomainProxy (d, new UnmanagedEventHandler (loaded_callback));
-			mouse_leave = new CrossDomainProxy (d, new UnmanagedEventHandler (mouse_leave_callback));
-		}
-
-		internal static AppDomain domain = AppDomain.CurrentDomain;
-
-		internal static CrossDomainProxy mouse_motion;
-		internal static CrossDomainProxy mouse_button_down;
-		internal static CrossDomainProxy mouse_button_up;
-		internal static CrossDomainProxy mouse_enter;
-		internal static CrossDomainProxy key_down;
-		internal static CrossDomainProxy key_up;
-		internal static CrossDomainProxy got_focus;
-		internal static CrossDomainProxy lost_focus;
-		internal static CrossDomainProxy loaded;
-		internal static CrossDomainProxy mouse_leave;
+		internal static UnmanagedEventHandler mouse_motion = new UnmanagedEventHandler (mouse_motion_notify_callback);
+		internal static UnmanagedEventHandler mouse_button_down = new UnmanagedEventHandler (mouse_button_down_callback);
+		internal static UnmanagedEventHandler mouse_button_up = new UnmanagedEventHandler (mouse_button_up_callback);
+		internal static UnmanagedEventHandler mouse_enter = new UnmanagedEventHandler (mouse_enter_callback);
+		internal static UnmanagedEventHandler key_down = new UnmanagedEventHandler (key_down_callback);
+		internal static UnmanagedEventHandler key_up = new UnmanagedEventHandler (key_up_callback);
+		internal static UnmanagedEventHandler got_focus = new UnmanagedEventHandler (got_focus_callback);
+		internal static UnmanagedEventHandler lost_focus = new UnmanagedEventHandler (lost_focus_callback);
+		internal static UnmanagedEventHandler loaded = new UnmanagedEventHandler (loaded_callback);
+		internal static UnmanagedEventHandler mouse_leave = new UnmanagedEventHandler (mouse_leave_callback);
 
 		static PlainEvent surface_resized = new PlainEvent (surface_resized_callback);
 
@@ -191,14 +133,14 @@ namespace Mono {
 			NativeMethods.surface_register_events (surface, surface_resized);
 		}
 
-		internal static void AddHandler (DependencyObject obj, string eventName, CrossDomainProxy handler)
+		internal static void AddHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_add_event_handler (obj.native, eventName, handler.Wrapper, obj.GCHandle);
+			NativeMethods.dependency_object_add_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 
-		internal static void RemoveHandler (DependencyObject obj, string eventName, CrossDomainProxy handler)
+		internal static void RemoveHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_remove_event_handler (obj.native, eventName, handler.Wrapper, obj.GCHandle);
+			NativeMethods.dependency_object_remove_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 	}
 }
