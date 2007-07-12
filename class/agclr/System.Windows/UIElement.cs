@@ -298,7 +298,7 @@ namespace System.Windows {
 		public event MouseEventHandler MouseLeftButtonUp {
 			add {
 				if (events[MouseLeftButtonUpEvent] == null)
-					Events.AddHandler (this, "MouesLeftButtonUp", Events.mouse_button_up);
+					Events.AddHandler (this, "MouseLeftButtonUp", Events.mouse_button_up);
 				events.AddHandler (MouseLeftButtonUpEvent, value);
 			}
 			remove {
