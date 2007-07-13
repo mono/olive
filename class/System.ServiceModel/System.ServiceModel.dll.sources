@@ -200,6 +200,7 @@ System.ServiceModel.Channels/ISession.cs
 System.ServiceModel.Channels/ISessionChannel.cs
 System.ServiceModel.Channels/ITransactedBindingElement.cs
 System.ServiceModel.Channels/ITransportTokenAssertionProvider.cs
+System.ServiceModel.Channels/InputChannelBase.cs
 System.ServiceModel.Channels/InvalidChannelBindingException.cs
 System.ServiceModel.Channels/LayeredCommunicationObject.cs
 System.ServiceModel.Channels/LayeredOutputChannel.cs
@@ -224,6 +225,8 @@ System.ServiceModel.Channels/MessageSecurityBindingSupport.cs
 System.ServiceModel.Channels/MessageVersion.cs
 System.ServiceModel.Channels/MsmqBindingElementBase.cs
 System.ServiceModel.Channels/MsmqChannelFactory.cs
+System.ServiceModel.Channels/MsmqChannelListener.cs
+System.ServiceModel.Channels/MsmqInputChannel.cs
 System.ServiceModel.Channels/MsmqMessageProperty.cs
 System.ServiceModel.Channels/MsmqOutputChannel.cs
 System.ServiceModel.Channels/MsmqTransportBindingElement.cs

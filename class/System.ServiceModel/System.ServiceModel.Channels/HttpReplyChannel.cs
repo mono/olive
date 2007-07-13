@@ -54,6 +54,7 @@ namespace System.ServiceModel.Channels
 			get { return source.MessageEncoder; }
 		}
 
+		// FIXME: where is it set?
 		public override EndpointAddress LocalAddress {
 			get { return local_address; }
 		}

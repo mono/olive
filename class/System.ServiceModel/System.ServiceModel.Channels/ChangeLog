@@ -1,3 +1,11 @@
+2007-07-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* InputChannelBase.cs, MsmqChannelListener.cs, MsmqInputChannel.cs :
+	  new files. Msmq transport listener Implementation.
+	* MsmqOutputChannel.cs : implemented Send(). Not sure if it works
+	  (wait for System.Messaging impl.)
+	* HttpReplyChannel.cs : added comment
+
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MsmqChannelFactory.cs MsmqOutputChannel.cs OutputChannelBase.cs :

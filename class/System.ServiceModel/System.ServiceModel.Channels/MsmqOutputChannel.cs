@@ -25,6 +25,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.IO;
 using System.Messaging;
 using System.ServiceModel;
 using System.Threading;
@@ -79,7 +80,12 @@ namespace System.ServiceModel.Channels
 		{
 			ThrowIfDisposedOrNotOpen ();
 
-			throw new NotImplementedException ();
+			MemoryStream ms = new MemoryStream ();
+			source.MessageEncoder.WriteMessage (message, ms);
+
+			queue.Send (ms);
+
+			//throw new NotImplementedException ();
 		}
 
 		// Abort
