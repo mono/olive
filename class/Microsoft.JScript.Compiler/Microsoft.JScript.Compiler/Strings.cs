@@ -35,19 +35,17 @@ namespace Microsoft.JScript.Compiler
 	{
 		public static int Asc(char s)
 		{
-			throw new NotImplementedException();
+			return Convert.ToInt16 (s);
 		}
 
 		public static int AscW(char s)
 		{
-			throw new NotImplementedException();
+			return Convert.ToInt16 (s);
 		}
 
 		public static char ChrW(int CharCode)
 		{
-			throw new NotImplementedException();
+			return Convert.ToChar (CharCode);
 		}
-
 	}
-
 }

@@ -1,0 +1,5 @@
+- TODO class : Engine, RowanGenerator, TokenCategorizer
+- unit test Strings
+- unit test expression in parser
+- unit test Engine, rowan generator, LanguageProvider.cs, IdentifierTable.cs, TokenCategorizer.cs
+- done a sample to test compiler fully

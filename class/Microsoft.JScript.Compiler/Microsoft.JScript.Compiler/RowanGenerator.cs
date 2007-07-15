@@ -36,13 +36,25 @@ namespace Microsoft.JScript.Compiler
 	{
 		public RowanGenerator(IdentifierMappingTable IDMappingTable, Identifier This, Identifier Underscore, Identifier Arguments, Identifier Eval)
 		{
-			throw new NotImplementedException();
+			idMappingTable = IDMappingTable;
+			thisIdent = This;
+			underscore = Underscore;
+			arguments = Arguments;
+			eval = Eval;
 		}
+
+		private IdentifierMappingTable idMappingTable;
+		private	Identifier thisIdent;
+		private	Identifier underscore;
+		private	Identifier arguments;
+		private	Identifier eval;
 
 		public void Bind()
 		{
 			throw new NotImplementedException();
 		}
+
+		# region AST Converter
 
 		public Microsoft.Scripting.Internal.Ast.Expression ConvertToObject(Microsoft.Scripting.Internal.Ast.Expression Value)
 		{
@@ -61,7 +73,29 @@ namespace Microsoft.JScript.Compiler
 
 		public Microsoft.Scripting.Internal.Ast.Statement Generate(ParseTree.Statement Input)
 		{
-			throw new NotImplementedException();
+			/*switch (Input.GetType ()) {
+				case typeof (ParseTree.BlockStatement):
+				case typeof (ParseTree.VariableDeclarationStatement):
+				case typeof (ParseTree.IfStatement):
+				case typeof (ParseTree.WhileStatement):
+				case typeof (ParseTree.DoStatement):
+				case typeof (ParseTree.DeclarationForStatement):
+				case typeof (ParseTree.DeclarationForInStatement):
+				case typeof (ParseTree.ExpressionForInStatement):
+				case typeof (ParseTree.ExpressionForStatement):
+				case typeof (ParseTree.BreakOrContinueStatement)://cut it
+				case typeof (ParseTree.WithStatement):
+				case typeof (ParseTree.SwitchStatement):
+				case typeof (ParseTree.TryStatement):
+				case typeof (ParseTree.ReturnOrThrowStatement): //cut it
+				case typeof (ParseTree.FunctionStatement):
+				case typeof (ParseTree.LabelStatement):
+				case typeof (ParseTree.Statement)://empty or syntaxerror
+					break;
+				default: //expression statement or syntax error
+					break;
+			}*/
+			throw new NotImplementedException ();
 		}
 
 		public Microsoft.Scripting.Internal.Ast.BlockStatement Generate(DList<ParseTree.Statement, ParseTree.BlockStatement> Input, bool PrintExpressions)
@@ -74,25 +108,31 @@ namespace Microsoft.JScript.Compiler
 			throw new NotImplementedException();
 		}
 
+		#endregion
+
+		#region Location Converter
+
 		public static SourceLocation GetRowanEndLocation(TextSpan Location)
 		{
-			throw new NotImplementedException();
+			return new SourceLocation (Location.EndPosition, Location.EndLine, Location.EndColumn);
 		}
 
 		public static SourceLocation GetRowanStartLocation(TextSpan Location)
 		{
-			throw new NotImplementedException();
+			return new SourceLocation (Location.StartPosition, Location.StartLine, Location.StartColumn);
 		}
 
 		public static SourceSpan GetRowanTextSpan(TextSpan Location)
 		{
-			throw new NotImplementedException();
+			return GetRowanTextSpan (Location, Location);
 		}
 
 		public static SourceSpan GetRowanTextSpan(TextSpan StartLocation, TextSpan EndLocation)
 		{
-			throw new NotImplementedException();
+			return new SourceSpan (GetRowanStartLocation (StartLocation), GetRowanEndLocation (EndLocation));
 		}
+
+		#endregion
 
 		public void SetGlobals(Microsoft.Scripting.Internal.Ast.CodeBlock Globals)
 		{

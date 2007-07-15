@@ -32,6 +32,8 @@ using Microsoft.Scripting.Actions;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using System.Reflection;
+using Microsoft.JScript.Runtime;
+using Microsoft.JScript.Runtime.Calls;
 
 namespace Microsoft.JScript.Compiler
 {
@@ -40,6 +42,8 @@ namespace Microsoft.JScript.Compiler
 		public Engine(LanguageProvider provider, EngineOptions engineOptions)
 			: base(provider, engineOptions)
 		{
+			context = new JSContext (this);
+			compiler = new JavaScriptCompiler (this);
 		}
 
 		public override void AddAssembly(Assembly assembly)
@@ -59,7 +63,7 @@ namespace Microsoft.JScript.Compiler
 
 		public override string FormatException(Exception exception)
 		{
-			throw new NotImplementedException();
+			return JSErrorConvertor.FormatException (exception, Options); 
 		}
 
 		protected override string[] FormatObjectMemberNames(IList<object> names)
@@ -69,12 +73,12 @@ namespace Microsoft.JScript.Compiler
 
 		public override Microsoft.Scripting.CompilerOptions GetDefaultCompilerOptions()
 		{
-			throw new NotImplementedException();
+			return new CompilerOptions ();
 		}
 
 		public override ErrorSink GetDefaultErrorSink()
 		{
-			throw new NotImplementedException();
+			return new JSErrorSink ();
 		}
 
 		public override IAttributesCollection GetGlobalsDictionary(IDictionary<string, object> globals)
@@ -84,17 +88,17 @@ namespace Microsoft.JScript.Compiler
 
 		protected override LanguageContext GetLanguageContext(Microsoft.Scripting.CompilerOptions compilerOptions)
 		{
-			throw new NotImplementedException();
+			return context;
 		}
 
 		protected override LanguageContext GetLanguageContext(ScriptModule module)
 		{
-			throw new NotImplementedException();
+			return context.GetLanguageContextForModule (module);
 		}
 
 		public override Microsoft.Scripting.CompilerOptions GetModuleCompilerOptions(ScriptModule scriptModule)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		public override string[] GetObjectCallSignatures(object obj)
@@ -119,17 +123,17 @@ namespace Microsoft.JScript.Compiler
 
 		protected override object Ops_Call(CodeContext context, object obj, object[] args)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		protected override IList<object> Ops_GetAttrNames(CodeContext context, object obj)
 		{
-			throw new NotImplementedException();
+			return JSOps.GetAttrNames (context, obj);
 		}
 
 		protected override bool Ops_IsCallable(CodeContext context, object obj)
 		{
-			throw new NotImplementedException();
+			throw new NotImplementedException ();
 		}
 
 		protected override bool Ops_TryGetAttr(CodeContext context, object obj, SymbolId id, out object value)
@@ -138,27 +142,20 @@ namespace Microsoft.JScript.Compiler
 		}
 
 		public override ScriptCompiler Compiler {
-			get {
-				throw new NotImplementedException();
-			}
+			get { return compiler; }
 		}
+
+		private JSContext context;
+		private JavaScriptCompiler compiler;
 
 		public static Engine CurrentEngine
 		{
-			get
-			{
-				throw new NotImplementedException();
-			}
+			get { throw new NotImplementedException (); }
 		}
 
-		public override ActionBinder DefaultBinder
-		{
-			get
-			{
-				throw new NotImplementedException();
-			}
+		public override ActionBinder DefaultBinder {
+			get { return JSBinder.Default; }
 		}
-
 	}
 
 

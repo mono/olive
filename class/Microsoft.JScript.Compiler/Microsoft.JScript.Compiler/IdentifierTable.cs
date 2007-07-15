@@ -54,6 +54,8 @@ namespace Microsoft.JScript.Compiler
 		{
 			return InsertIdentifier (Text.ToString ());
 			//TODO : must have to do something to do with count and StartIndex
+			// maybe for exception text so maybe throw exception when ever in list
+			// ==> TODO Unit test
 		}
 				
 		public int NextIdentifierID {

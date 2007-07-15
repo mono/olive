@@ -61,10 +61,11 @@ namespace Microsoft.JScript.Compiler
 			return new TokenInfo (span, category, trigger);
 		}
 
-		//TODO
+		[MonoTODO]
 		private TokenCategory GetCategory(Token.Type type)
 		{
-			switch (type) {				
+			throw new NotImplementedException ();
+			/*switch (type) {				
 				case Token.Type.None:					
 				case Token.Type.EndOfInput:					
 				case Token.Type.LeftBrace:					
@@ -184,13 +185,14 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.Comment:
 					return TokenCategory.Comment;
 			}
-			return TokenCategory.Comment;
+			return TokenCategory.Comment;*/
 		}
 
-		//TODO
+		[MonoTODO]
 		private TokenTriggers GetTrigger(Token.Type type)
 		{
-			switch (type) {
+			throw new NotImplementedException ();
+			/*switch (type) {
 				case Token.Type.None:
 				case Token.Type.EndOfInput:
 				case Token.Type.LeftBrace:
@@ -310,7 +312,7 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.Comment:
 					return TokenTriggers.MatchBraces;
 			}
-			return TokenTriggers.MatchBraces;
+			return TokenTriggers.MatchBraces;*/
 		}
 
 		public override IEnumerable<TokenInfo> ReadTokens(int countOfChars)
@@ -331,7 +333,6 @@ namespace Microsoft.JScript.Compiler
 			get { return tokenizer.Position; }
 		}
 
-		//TO check with test
 		public override object CurrentState {
 			get { return state; }
 		}

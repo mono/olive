@@ -1,3 +1,9 @@
+2007-07-15  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Engine.cs: Fill some methods
+	* RowanGenerator.cs: Fill some methods
+	* Strings.cs : convertion done! 	
+ 	
 2007-07-02  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Tokenizer.cs: fix hex number token and add support for exponent number
@@ -10,7 +16,6 @@
 
 	* Parser.cs : with, switch, try statement fixed!
 	* OptionsParser.cs : fill all methode test in unit test (todo : parse arg)
-	TODO : numerical exponent
 	
 2007-06-25  Olivier Dufour  <olivier.Duff@gmail.com>
 
@@ -50,10 +55,6 @@
 2007-06-17  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Parser.cs: finished expression handling!!!
-				TODO : - do unit test and test parser and lexer now!!
-					   - Label and goto
-					   - OctalLiteral
-					   - RegExp
 					   
 2007-06-14  Olivier Dufour  <olivier.Duff@gmail.com>
 

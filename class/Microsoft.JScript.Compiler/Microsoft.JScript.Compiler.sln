@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 9.00
 # Visual C# Express 2005
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.JScript.Compiler.Tests", "test\Microsoft.JScript.Compiler.Tests.csproj", "{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.JScript.Compiler.Tests", "Test\Microsoft.JScript.Compiler.Tests.csproj", "{AEABAFEC-B30F-429D-B6D5-7E70AE6D6BD9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.JScript.Compiler", "Microsoft.JScript.Compiler.csproj", "{03952B85-C1DB-4253-B822-AF37BD6B1C66}"
 EndProject

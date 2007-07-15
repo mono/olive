@@ -62,7 +62,11 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			string[,] optionsParsertext = new string[30, 2];
 			string[,] environlentVariables = new string[10, 10];
 			string comments = string.Empty;
+#if !SILVERLIGHT 
 			options.GetHelp (out usage, out optionsParsertext, out environlentVariables, out comments);
+#else
+			options.GetHelp (ref usage, ref optionsParsertext, ref environlentVariables, ref comments);
+#endif
 			Assert.AreEqual ("[options] [file|- [arguments]]", usage, "#2.1");
 
 			Assert.AreEqual (58, optionsParsertext.Length, "#2.2.0");

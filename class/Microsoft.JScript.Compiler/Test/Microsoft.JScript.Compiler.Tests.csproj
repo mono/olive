@@ -15,7 +15,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;MOONLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -23,12 +23,13 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
+    <DefineConstants>TRACE;MOONLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Microsoft.JScript.Compiler.Hosting\LanguageProviderTest.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Shell\CommandLineTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\OptionsParserTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\ParserTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\SplayTreeTest.cs" />

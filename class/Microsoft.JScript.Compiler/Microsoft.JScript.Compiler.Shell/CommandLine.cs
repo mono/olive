@@ -39,17 +39,24 @@ namespace Microsoft.JScript.Compiler.Shell
 
 		protected override int RunCommand (string command)
 		{
-			throw new NotImplementedException();
+			try {
+				Engine.ExecuteCommand (command);
+			} catch (Exception e) {
+				Console.Write (Engine.FormatException (e), Microsoft.Scripting.Shell.Style.Error);
+				return -1;
+			}
+			Console.WriteLine ("commande succeed!", Microsoft.Scripting.Shell.Style.Out);
+			return 0;
 		}
 
 		protected override string Logo {
-			get { throw new NotImplementedException(); } 
+			get { return "Mono Java Script Compiler for Moonlight"; } 
 		}
 		protected override string Prompt {
-			get { throw new NotImplementedException(); }
+			get { return ">"; }
 		}
 		protected override string PromptContinuation {
-			get { throw new NotImplementedException(); }
+			get { return " "; }
 		}
 
 #if !SILVERLIGHT
