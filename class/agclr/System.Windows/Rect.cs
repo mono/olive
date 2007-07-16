@@ -50,10 +50,10 @@ namespace System.Windows {
 		
 		public Rect(Point point1, Point point2)
 		{
-			this.x = point1.X;
-			this.y = point1.Y;
-			this.w = point2.X - point1.X;
-			this.h = point2.Y - point1.Y;
+			this.x = Math.Min (point1.X, point2.X);
+			this.y = Math.Min (point1.Y, point2.Y);
+			this.w = Math.Abs (point2.X - point1.X);
+			this.h = Math.Abs (point2.Y - point1.Y);
 		}
 		
 		public Rect(Size size)
