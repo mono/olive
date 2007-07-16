@@ -20,18 +20,19 @@ namespace System.Windows
 			}
 		}
 
-		readonly IntPtr instance;
+		readonly IntPtr plugin_handle;
 		IDictionary<string, string> startup_args;
 
 		private WebApplication ()
 		{
-			object o = AppDomain.CurrentDomain.GetData ("PluginRootClass");
+			object o = AppDomain.CurrentDomain.GetData ("PluginInstance");
 			if (o is IntPtr)
-				instance = (IntPtr) o;
+				plugin_handle = (IntPtr) o;
+
 		}
 
-		internal IntPtr Instance {
-			get { return instance; }
+		internal IntPtr PluginHandle {
+			get { return plugin_handle; }
 		}
 
 		[MonoTODO]
@@ -50,13 +51,7 @@ namespace System.Windows
 			if (atts.Length == 0)
 				throw new NotSupportedException ("The argument object type does not have a ScriptableAttribute");
 
-			string js = ScriptableObjectGenerator.GenerateJavaScript (scriptKey, instance);
-			// FIXME: probably we need to hook script access to the
-			// contents of this script object.
-
-			// ... so, can we just eval this generated JS?
-			Console.WriteLine (js);
-			//HtmlPage.Document.InvokeMethod ("eval", js);
+			ScriptableObjectGenerator.Generate (plugin_handle, scriptKey, instance);
 		}
 
 		// it is non-null on silverlight apps, and null on console apps
@@ -69,22 +64,22 @@ namespace System.Windows
 
 		internal static T GetProperty<T> (IntPtr obj, string name)
 		{
-			return (T) GetPropertyInternal (Current.instance, obj, name);
+			return (T) GetPropertyInternal (Current.plugin_handle, obj, name);
 		}
 
 		internal static void SetProperty (IntPtr obj, string name, object value)
 		{
-			SetPropertyInternal (Current.instance, obj, name, value);
+			SetPropertyInternal (Current.plugin_handle, obj, name, value);
 		}
 
 		internal static void InvokeMethod (IntPtr obj, string name, params object [] args)
 		{
-			InvokeMethodInternal (Current.instance, obj, name, args);
+			InvokeMethodInternal (Current.plugin_handle, obj, name, args);
 		}
 
 		internal static T InvokeMethod<T> (IntPtr obj, string name, params object [] args)
 		{
-			return (T) InvokeMethodInternal (Current.instance, obj, name, args);
+			return (T) InvokeMethodInternal (Current.plugin_handle, obj, name, args);
 		}
 
 		// note that those functions do not exist

@@ -1,3 +1,12 @@
+2007-07-16  Chris Toshok  <toshok@ximian.com>
+
+	* ScriptableObjectGenerator.cs: implement this in terms of the
+	plugin p/invokes for scriptable object wrappers.
+
+	* WebApplication.cs: rename "instance" to "plugin_handle", and
+	ScriptableObjectGenerator doesn't return a string now - it
+	actually creates the wrapper class in the plugin.
+
 2007-06-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebApplication.cs : more impl. based on assumed PInvokes.

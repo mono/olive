@@ -1,3 +1,7 @@
+2007-07-16  Chris Toshok  <toshok@ximian.com>
+
+	* Makefile (LIB_MCS_FLAGS): add agmono.dll
+
 2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.Silverlight_test.dll.sources : now we have some tests.

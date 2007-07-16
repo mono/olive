@@ -1,3 +1,10 @@
+2007-07-16  Chris Toshok  <toshok@ximian.com>
+
+	* HtmlObject.cs: track WebApplication's Instance -> PluginHandle
+	switch.
+
+	* HtmlPage.cs: same.
+
 2007-07-10  Chris Toshok  <toshok@ximian.com>
 
 	* HtmlTimer.cs: add the Tick event, the OnTick method, and remove

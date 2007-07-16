@@ -1,47 +1,151 @@
 using System;
-using System.Reflection;
 using System.Text;
 using System.Windows.Browser;
 using System.Windows.Browser.Serialization;
+using System.Runtime.InteropServices;
+using System.Reflection;
+using Mono;
 
 namespace System.Windows
 {
 	internal class ScriptableObjectGenerator
 	{
-		public static string GenerateJavaScript (string nameOnJS, object obj)
+		public static void Generate (IntPtr plugin_handle, string nameOnJS, object obj)
 		{
-			return new ScriptableObjectGenerator (nameOnJS, obj).Generate ();
+			new ScriptableObjectGenerator (plugin_handle, nameOnJS, obj).Generate ();
 		}
 
 		string name;
 		object obj;
 		Type type;
-		JavaScriptSerializer ser;
-		StringBuilder sb;
+		IntPtr plugin_handle;
+		IntPtr scriptable_wrapper;
 
-		ScriptableObjectGenerator (string name, object obj)
+		ScriptableObjectGenerator (IntPtr plugin_handle, string name, object obj)
 		{
+			this.plugin_handle = plugin_handle;
 			this.name = name;
 			this.obj = obj;
-			sb = new StringBuilder ();
 			type = obj.GetType ();
-			ser = new JavaScriptSerializer ();
 		}
 
-		static readonly object [] empty_args = new object [0];
+		delegate void InvokeDelegate (IntPtr obj_handle, IntPtr method_handle,
+					      [In, MarshalAs(UnmanagedType.LPArray,
+							     ArraySubType=UnmanagedType.Struct, SizeParamIndex=3)] Value[] args,
+					      int arg_count,
+					      ref Value return_value);
 
-		public string Generate ()
+		delegate void SetPropertyDelegate (IntPtr obj_handle, IntPtr property_handle, Value value);
+		delegate void GetPropertyDelegate (IntPtr obj_handle, IntPtr property_handle, ref Value value);
+
+		static object ObjectFromValue (Value v)
 		{
-			sb.Append ("document.getElementById('SilverlightControl').Contents.").Append (name).Append (" = {\n");
+			switch (v.k) {
+			case Kind.BOOL:
+				return v.u.i32 != 0;
+			case Kind.UINT64:
+				return v.u.ui64;
+			case Kind.INT32:
+				return v.u.i32;
+			case Kind.INT64:
+				return v.u.i64;
+			case Kind.DOUBLE:
+				return v.u.d;
+			case Kind.STRING:
+				return Marshal.PtrToStringAuto (v.u.p);
+			default:
+				throw new NotSupportedException ();
+			}
+		}
 
+		static void ValueFromObject (ref Value v, object o)
+		{
+			switch (Type.GetTypeCode (o.GetType())) {
+			case TypeCode.Boolean:
+				v.k = Kind.BOOL;
+				v.u.i32 = ((bool) o) ? 1 : 0;
+				break;
+			case TypeCode.Double:
+				v.k = Kind.DOUBLE;
+				v.u.d = (double)o;
+				break;
+			case TypeCode.Int64:
+				v.k = Kind.INT64;
+				v.u.d = (long)o;
+				break;
+			case TypeCode.UInt64:
+				v.k = Kind.UINT64;
+				v.u.d = (ulong)o;
+				break;
+			case TypeCode.String:
+				v.k = Kind.STRING;
+				byte[] bytes = System.Text.Encoding.UTF8.GetBytes (o as string);
+				IntPtr result = Marshal.AllocHGlobal (bytes.Length + 1);
+				Marshal.Copy (bytes, 0, result, bytes.Length);
+				Marshal.WriteByte (result, bytes.Length, 0);
+				v.u.p = result;
+				break;
+			default:
+				throw new NotSupportedException ();
+			}
+		}
+
+		static void InvokeFromUnmanaged (IntPtr obj_handle, IntPtr method_handle, Value[] args, int arg_count, ref Value return_value)
+		{
+			object obj = GCHandle.FromIntPtr (obj_handle).Target;
+			MethodInfo mi = (MethodInfo)GCHandle.FromIntPtr (method_handle).Target;
+
+			object[] margs = new object[args.Length];
+			for (int i = 0; i < args.Length; i ++) {
+				margs[i] = ObjectFromValue (args[i]);
+			}
+
+			object rv = mi.Invoke (obj, margs);
+
+			if (mi.ReturnType != typeof (void))
+				ValueFromObject (ref return_value, rv);
+		}
+
+		static void SetPropertyFromUnmanaged (IntPtr obj_handle, IntPtr property_handle, Value value)
+		{
+			object obj = GCHandle.FromIntPtr (obj_handle).Target;
+			PropertyInfo pi = (PropertyInfo)GCHandle.FromIntPtr (property_handle).Target;
+
+			object v = ObjectFromValue (value);
+
+			pi.SetValue (obj, v, null);
+
+		}
+
+		static void GetPropertyFromUnmanaged (IntPtr obj_handle, IntPtr property_handle, ref Value value)
+		{
+			object obj = GCHandle.FromIntPtr (obj_handle).Target;
+			PropertyInfo pi = (PropertyInfo)GCHandle.FromIntPtr (property_handle).Target;
+
+			object v = pi.GetValue (obj, null);
+
+			ValueFromObject (ref value, v);
+		}
+
+		static InvokeDelegate invoke = new InvokeDelegate (InvokeFromUnmanaged);
+		static SetPropertyDelegate set_prop = new SetPropertyDelegate (SetPropertyFromUnmanaged);
+		static GetPropertyDelegate get_prop = new GetPropertyDelegate (GetPropertyFromUnmanaged);
+
+		void Generate ()
+		{
 			bool hasItem = false;
+
+			GCHandle obj_handle = GCHandle.Alloc (obj); // XXX leak
+
+			scriptable_wrapper = moonlight_scriptable_object_wrapper_create (plugin_handle, (IntPtr)obj_handle,
+											 invoke, set_prop, get_prop);
 
 			// add properties
 
 			foreach (PropertyInfo pi in type.GetProperties ()) {
 				if (pi.GetCustomAttributes (typeof (ScriptableAttribute), false).Length == 0)
 					continue;
-				GenerateProperty (pi, hasItem);
+				GenerateProperty (pi);
 				hasItem = true;
 			}
 
@@ -49,7 +153,7 @@ namespace System.Windows
 			foreach (EventInfo ei in type.GetEvents ()) {
 				if (ei.GetCustomAttributes (typeof (ScriptableAttribute), false).Length == 0)
 					continue;
-				GenerateEvent (ei, hasItem);
+				GenerateEvent (ei);
 				hasItem = true;
 			}
 
@@ -57,64 +161,70 @@ namespace System.Windows
 			foreach (MethodInfo mi in type.GetMethods ()) {
 				if (mi.GetCustomAttributes (typeof (ScriptableAttribute), false).Length == 0)
 					continue;
-				GenerateMethod (mi, hasItem);
+				GenerateMethod (mi);
 				hasItem = true;
 			}
-
-			sb.Append ("};\n");
 
 			if (!hasItem)
 				throw new ArgumentException (String.Format ("The scriptable type {0} does not have scriptable members", type));
 
-			return sb.ToString ();
+			moonlight_scriptable_object_register (plugin_handle, name, scriptable_wrapper);
 		}
 
-		void GenerateProperty (PropertyInfo pi, bool hasItem)
+		void GenerateProperty (PropertyInfo pi)
 		{
-			if (!IsSupportedType (pi.PropertyType))
+			TypeCode tc = Type.GetTypeCode (pi.PropertyType);
+			if (!IsSupportedType (tc))
 				throw new NotSupportedException (String.Format ("The scriptable object type {0} has a property {1} whose type {2} is not supported", type, pi, pi.PropertyType));
-			if (hasItem)
-				sb.Append (",\n");
 
-			// FIXME: probably we will have to hook them at NPP side?
-			sb.Append (pi.Name).Append (" : ").Append (pi.CanRead ? ser.Serialize (pi.GetValue (obj, empty_args)) : "null").Append ('\n');
+			GCHandle prop_handle = GCHandle.Alloc (pi); // XXX leak
+
+			moonlight_scriptable_object_add_property (plugin_handle,
+								  scriptable_wrapper,
+								  (IntPtr)prop_handle,
+								  pi.Name,
+								  tc,
+								  pi.CanRead,
+								  pi.CanWrite);
 		}
 
-		void GenerateEvent (EventInfo ei, bool hasItem)
+		void GenerateEvent (EventInfo ei)
 		{
-			// types in event delegate (return type or parameters)
-			// are not validated.
-			sb.Append (ei.Name).Append (" : null // FIXME: how to bind an event?");
-			// FIXME: do we have to bind something here, or can
-			// we just hook them at NPP side?
+			Console.WriteLine ("TODO - events aren't hooked up yet for scriptable objects");
 		}
 
-		void GenerateMethod (MethodInfo mi, bool hasItem)
+		void GenerateMethod (MethodInfo mi)
 		{
-			if (mi.ReturnType != typeof (void) && !IsSupportedType (mi.ReturnType))
+			TypeCode rc = Type.GetTypeCode (mi.ReturnType);
+			
+			if (mi.ReturnType != typeof (void) && !IsSupportedType (rc))
 				throw new NotSupportedException (String.Format ("The scriptable object type {0} has a method {1} whose return type {2} is not supported", type, mi, mi.ReturnType));
-			if (hasItem)
-				sb.Append (",\n");
 
-			sb.Append (mi.Name).Append (" : function(");
-			bool hasParam = false;
-			foreach (ParameterInfo para in mi.GetParameters ()) {
-				if (para.IsOut || !IsSupportedType (para.ParameterType))
-					throw new NotSupportedException (String.Format ("The scriptable object type {0} has an event {1} whose parameter {2} is of not supported type", type, mi, para));
-				if (hasParam)
-					sb.Append (", ");
-				sb.Append (para.Name);
-				hasParam = true;
-			}
-			sb.Append (") {\n");
-			// FIXME: do we have to bind something here, or can
-			// we just hook them at NPP side?
-			sb.Append ("}\n");
+			ParameterInfo[] ps = mi.GetParameters();
+			TypeCode[] tcs = new TypeCode [ps.Length];
+
+				foreach (ParameterInfo p in ps) {
+					TypeCode pc = Type.GetTypeCode (p.ParameterType);
+					if (p.IsOut || !IsSupportedType (pc))
+						throw new NotSupportedException (String.Format ("The scriptable object type {0} has an event {1} whose parameter {2} is of not supported type", type, mi, p));
+
+					tcs[p.Position] = pc;
+				}
+
+				GCHandle method_handle = GCHandle.Alloc (mi); // XXX leak
+
+				moonlight_scriptable_object_add_method (plugin_handle,
+									scriptable_wrapper,
+									(IntPtr)method_handle,
+									mi.Name,
+									Type.GetTypeCode (mi.ReturnType),
+									tcs,
+									tcs.Length);
 		}
 
-		bool IsSupportedType (Type type)
+		bool IsSupportedType (TypeCode tc)
 		{
-			switch (Type.GetTypeCode (type)) {
+			switch (tc) {
 			// string
 			case TypeCode.Char:
 			case TypeCode.String:
@@ -136,5 +246,33 @@ namespace System.Windows
 			}
 			return false;
 		}
+
+		[DllImport ("moonplugin")]
+		static extern IntPtr moonlight_scriptable_object_wrapper_create (IntPtr plugin_handle, IntPtr obj_handle,
+										 InvokeDelegate invoke,
+										 SetPropertyDelegate set_prop,
+										 GetPropertyDelegate get_prop);
+
+		[DllImport ("moonplugin")]
+		static extern void moonlight_scriptable_object_add_property (IntPtr plugin_handle,
+									     IntPtr wrapper,
+									     IntPtr property_handle,
+									     string property_name,
+									     TypeCode property_type,
+									     bool readable,
+									     bool writable);
+		[DllImport ("moonplugin")]
+		static extern void moonlight_scriptable_object_add_method (IntPtr plugin_handle,
+									   IntPtr wrapper,
+									   IntPtr method_handle,
+									   string method_name,
+									   TypeCode method_return_type,
+									   TypeCode[] method_parameter_types,
+									   int parameter_count);
+
+		[DllImport ("moonplugin")]
+		static extern void moonlight_scriptable_object_register (IntPtr plugin_handle,
+									 string name,
+									 IntPtr wrapper);
 	}
 }

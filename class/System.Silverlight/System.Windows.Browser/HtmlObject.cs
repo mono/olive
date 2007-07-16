@@ -50,22 +50,22 @@ namespace System.Windows.Browser {
 
 		public bool AttachEvent (string eventName, EventHandler handler)
 		{
-			return AttachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
+			return AttachEvent (WebApplication.Current.PluginHandle, Handle, eventName, handler);
 		}
 
 		public bool AttachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
-			return AttachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
+			return AttachEvent (WebApplication.Current.PluginHandle, Handle, eventName, handler);
 		}
 
 		public void DetachEvent (string eventName, EventHandler handler)
 		{
-			DetachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
+			DetachEvent (WebApplication.Current.PluginHandle, Handle, eventName, handler);
 		}
 
 		public void DetachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
-			DetachEvent (WebApplication.Current.Instance, Handle, eventName, handler);
+			DetachEvent (WebApplication.Current.PluginHandle, Handle, eventName, handler);
 		}
 
 		[DllImport ("moonplugin")]

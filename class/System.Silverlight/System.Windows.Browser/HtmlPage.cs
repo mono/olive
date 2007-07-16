@@ -58,7 +58,10 @@ namespace System.Windows.Browser {
 		}
 
 		public static HtmlDocument Document {
-			get { return null; }
+			get {
+				Console.WriteLine ("YO!");
+				return null;
+			}
 		}
 
 		public static Uri DocumentUri {
@@ -75,34 +78,34 @@ namespace System.Windows.Browser {
 
 		public static void Navigate (string navigateToUri)
 		{
-			Navigate (WebApplication.Current.Instance, navigateToUri);
+			Navigate (WebApplication.Current.PluginHandle, navigateToUri);
 		}
 
 		public static ScriptableObject Navigate (string navigateToUri, string target)
 		{
-			IntPtr handle = Navigate (WebApplication.Current.Instance, navigateToUri, target, null);
+			IntPtr handle = Navigate (WebApplication.Current.PluginHandle, navigateToUri, target, null);
 			return new ScriptableObject (handle);
 		}
 
 		public static ScriptableObject Navigate (string navigateToUri, string target, string targetFeatures)
 		{
-			IntPtr handle = Navigate (WebApplication.Current.Instance, navigateToUri, target, targetFeatures);
+			IntPtr handle = Navigate (WebApplication.Current.PluginHandle, navigateToUri, target, targetFeatures);
 			return new ScriptableObject (handle);
 		}
 
 		public static void NavigateToBookmark (string bookmark)
 		{
-			NavigateToBookmark (WebApplication.Current.Instance, bookmark);
+			NavigateToBookmark (WebApplication.Current.PluginHandle, bookmark);
 		}
 
 		public static void Submit ()
 		{
-			Submit (WebApplication.Current.Instance, null);
+			Submit (WebApplication.Current.PluginHandle, null);
 		}
 
 		public static void Submit (string formId)
 		{
-			Submit (WebApplication.Current.Instance, formId);
+			Submit (WebApplication.Current.PluginHandle, formId);
 		}
 
 		[DllImport ("moonplugin")]
