@@ -46,7 +46,7 @@ namespace System.Windows.Media {
 
 		public void ReleaseMouseCapture ()
 		{
-			return NativeMethods.uielement_release_mouse_capture (native);
+			NativeMethods.uielement_release_mouse_capture (native);
 		}
 		
 		internal override Kind GetKind ()
