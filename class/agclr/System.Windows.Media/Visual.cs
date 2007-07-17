@@ -44,7 +44,7 @@ namespace System.Windows.Media {
 			return NativeMethods.uielement_capture_mouse (native);
 		}
 
-		public bool ReleaseMouseCapture ()
+		public void ReleaseMouseCapture ()
 		{
 			return NativeMethods.uielement_release_mouse_capture (native);
 		}

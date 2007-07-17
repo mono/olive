@@ -128,7 +128,7 @@ namespace Mono {
 		public extern static bool uielement_capture_mouse (IntPtr item);
 
 		[DllImport("moon")]
-		public extern static bool uielement_release_mouse_capture (IntPtr item);
+		public extern static void uielement_release_mouse_capture (IntPtr item);
 #endregion
 
 
