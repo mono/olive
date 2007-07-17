@@ -17,8 +17,8 @@ net_3_0_dirs = \
 	System.IdentityModel.Selectors	\
 	System.ServiceModel 		\
 	System.ServiceModel.Web		\
-	System.Silverlight		\
 	agmono				\
+	System.Silverlight		\
 	agclr
 
 net_2_1_dirs = \
