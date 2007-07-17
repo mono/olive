@@ -15,6 +15,7 @@ namespace System.ServiceModel.Channels
 	internal abstract class DuplexSessionChannelBase : ChannelBase, IDuplexSessionChannel
 	{
 		ChannelFactoryBase channel_factory_base;
+		ChannelListenerBase channel_listener_base;
 		EndpointAddress local_address;
 		EndpointAddress remote_address;
 		IDuplexSession session;
@@ -23,6 +24,11 @@ namespace System.ServiceModel.Channels
 		public DuplexSessionChannelBase (ChannelFactoryBase factory) : base (factory)
 		{
 			channel_factory_base = factory;
+		}
+		
+		public DuplexSessionChannelBase (ChannelListenerBase listener) : base (listener)
+		{
+			channel_listener_base = listener;
 		}
 
 		public abstract EndpointAddress LocalAddress { get; }

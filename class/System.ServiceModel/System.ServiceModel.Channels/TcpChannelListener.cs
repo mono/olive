@@ -8,37 +8,87 @@
 // 
 
 using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Net.Sockets;
+using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Channels
 {
 	internal class TcpChannelListener<TChannel> : ChannelListenerBase<TChannel> 
 		where TChannel : class, IChannel
 	{
+		List<IChannel> channels = new List<IChannel> ();
+		BindingContext context;
 		MessageEncoder encoder;
-		EndpointAddress local_address;
-		EndpointAddress remote_address;
+		Stream s;
 		IDuplexSession session;		
 		TcpTransportBindingElement source;
-		Uri via;
+		Uri listen_uri;
+		TcpListener tcp_listener;
 		
 		[MonoTODO]
 		public TcpChannelListener (TcpTransportBindingElement source, 
 		                           BindingContext context) : base (context.Binding)
 		{
-			throw new NotImplementedException ();
+			this.source = source;
+			
+			if (context.ListenUriMode == ListenUriMode.Explicit)
+				listen_uri =
+					context.ListenUriRelativeAddress != null ?
+					new Uri (context.ListenUriBaseAddress, context.ListenUriRelativeAddress) :
+					context.ListenUriBaseAddress;
+			else
+				throw new NotImplementedException ();
 		}
 		
-		public MessageEncoder Encoder {
+		public MessageEncoder MessageEncoder {
 			get { return encoder; }
 		}
 		
+		public Stream ClientStream {
+			get { return s; }
+		}
+
 		public override Uri Uri {
-			get { return via; }
+			get { return listen_uri; }
 		}
 		
 		[MonoTODO]
 		protected override TChannel OnAcceptChannel (TimeSpan timeout)
 		{
+			TcpClient cli = tcp_listener.AcceptTcpClient ();
+			s = cli.GetStream ();
+
+			//while (s.CanRead)
+			//	Console.Write ("{0:X02} ", s.ReadByte ());
+			
+			for (int i = 0; i < 6; i++)
+				s.ReadByte ();
+			
+			int size = s.ReadByte ();
+			
+			for (int i = 0; i < size; i++)
+				s.ReadByte (); // URI
+			
+			s.ReadByte ();
+			s.ReadByte ();
+			s.ReadByte ();
+			s.WriteByte (0x0B);
+			TChannel channel = PopulateChannel (timeout);			
+			channels.Add (channel);
+			
+			return channel;
+		}
+		
+		TChannel PopulateChannel (TimeSpan timeout)
+		{
+			if (typeof (TChannel) == typeof (IDuplexSessionChannel))
+				return (TChannel) (object) new TcpDuplexSessionChannel (
+					(TcpChannelListener<IDuplexSessionChannel>) (object) this, timeout);
+
+			// FIXME: To implement more.
 			throw new NotImplementedException ();
 		}
 
@@ -99,7 +149,8 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override void OnClose (TimeSpan timeout)
 		{
-			throw new NotImplementedException ();
+			tcp_listener.Stop ();
+			tcp_listener = null;
 		}
 		
 		[MonoTODO]
@@ -117,7 +168,14 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override void OnOpen (TimeSpan timeout)
 		{
-			throw new NotImplementedException ();
+			IPHostEntry entry = Dns.GetHostEntry (listen_uri.Host);
+			
+			if (entry.AddressList.Length ==0)
+				throw new ArgumentException (String.Format ("Invalid listen URI: {0}", listen_uri));
+			
+			int explicitPort = listen_uri.Port;
+			tcp_listener = new TcpListener (entry.AddressList [0], explicitPort <= 0 ? TcpTransportBindingElement.DefaultPort : explicitPort);
+			tcp_listener.Start ();
 		}
 	}
 }

@@ -1,3 +1,8 @@
+2007-07-17 Marcos Cobena (marcoscobena@gmail.com)
+
+	* DuplexSessionChannelBase.cs, TcpChannelListener.cs, TcpDuplexSessionChannel.cs, 
+		TcpTransportBindingElement.cs: Thanks to Atsushi Eno, it starts messaging.
+
 2007-07-12 Marcos Cobena (marcoscobena@gmail.com)
 
 	* DuplexSessionChannelBase.cs, TcpChannelFactory.cs, TcpChannelListener.cs, 

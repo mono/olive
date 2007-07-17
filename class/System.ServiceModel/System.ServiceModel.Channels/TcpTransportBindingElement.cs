@@ -39,6 +39,8 @@ namespace System.ServiceModel.Channels
 	public class TcpTransportBindingElement
 		: ConnectionOrientedTransportBindingElement
 	{
+		internal const int DefaultPort = 808;
+
 		int listen_backlog = 10;
 		bool port_sharing_enabled = false;
 		bool teredo_enabled = false;
