@@ -30,8 +30,7 @@ namespace System.Windows
 		}
 
 		delegate void InvokeDelegate (IntPtr obj_handle, IntPtr method_handle,
-					      [In, MarshalAs(UnmanagedType.LPArray,
-							     ArraySubType=UnmanagedType.Struct, SizeParamIndex=3)] Value[] args,
+					      [In, MarshalAs(UnmanagedType.LPArray, SizeParamIndex=3)] IntPtr[] args,
 					      int arg_count,
 					      ref Value return_value);
 
@@ -90,14 +89,15 @@ namespace System.Windows
 			}
 		}
 
-		static void InvokeFromUnmanaged (IntPtr obj_handle, IntPtr method_handle, Value[] args, int arg_count, ref Value return_value)
+		static void InvokeFromUnmanaged (IntPtr obj_handle, IntPtr method_handle, IntPtr[] uargs, int arg_count, ref Value return_value)
 		{
 			object obj = GCHandle.FromIntPtr (obj_handle).Target;
 			MethodInfo mi = (MethodInfo)GCHandle.FromIntPtr (method_handle).Target;
 
-			object[] margs = new object[args.Length];
-			for (int i = 0; i < args.Length; i ++) {
-				margs[i] = ObjectFromValue (args[i]);
+			object[] margs = new object[arg_count];
+			for (int i = 0; i < arg_count; i ++) {
+				Value v = (Value)Marshal.PtrToStructure (uargs[i], typeof (Value));
+				margs[i] = ObjectFromValue (v);
 			}
 
 			object rv = mi.Invoke (obj, margs);

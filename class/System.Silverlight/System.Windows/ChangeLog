@@ -1,5 +1,12 @@
 2007-07-16  Chris Toshok  <toshok@ximian.com>
 
+	* ScriptableObjectGenerator.cs: change InvokeFromUnmanaged to take
+	an IntPtr[] for its args, instead of Value[], and do the
+	marshalling manually.  this gets the bubblemark start/stop links
+	working.
+
+2007-07-16  Chris Toshok  <toshok@ximian.com>
+
 	* ScriptableObjectGenerator.cs: implement this in terms of the
 	plugin p/invokes for scriptable object wrappers.
 
