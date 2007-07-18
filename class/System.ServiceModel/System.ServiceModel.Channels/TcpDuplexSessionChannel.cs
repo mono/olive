@@ -14,6 +14,7 @@ using System.Net.Sockets;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.ServiceModel.Channels;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {
@@ -22,8 +23,10 @@ namespace System.ServiceModel.Channels
 		TcpChannelFactory<IDuplexSessionChannel> channel_factory;
 		TcpChannelListener<IDuplexSessionChannel> channel_listener;
 		TcpClient client;
+		bool is_service_side;
 		EndpointAddress local_address;
 		EndpointAddress remote_address;
+		Stream s;
 		IDuplexSession session;
 		TcpListener tcp_listener;
 		TimeSpan timeout;
@@ -32,6 +35,7 @@ namespace System.ServiceModel.Channels
 		public TcpDuplexSessionChannel (TcpChannelFactory<IDuplexSessionChannel> factory, 
 		                                EndpointAddress address, Uri via) : base (factory)
 		{
+			is_service_side = false;
 			channel_factory = factory;
 			remote_address = address;
 			this.via = via;
@@ -40,16 +44,15 @@ namespace System.ServiceModel.Channels
 		public TcpDuplexSessionChannel (TcpChannelListener<IDuplexSessionChannel> listener, 
 		                                TimeSpan timeout) : base (listener)
 		{
+			is_service_side = true;
 			channel_listener = listener;
 			this.timeout = timeout;
 		}
 		
 		public MessageEncoder Encoder {
 			get {
-				// Client side.
-				if (channel_factory != null)
+				if (! is_service_side)
 					return channel_factory.MessageEncoder;
-				// Service side.
 				else
 					return channel_listener.MessageEncoder;
 			}
@@ -166,26 +169,29 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override Message Receive ()
 		{
-			Stream s = channel_listener.ClientStream;
-			
+			s = channel_listener.ClientStream;
 			s.ReadByte (); // 6
-			BinaryReader br = new BinaryReader (s);
-			string msg = br.ReadString ();
+			MyBinaryReader br = new MyBinaryReader (s);
+//			string msg = br.ReadString ();
+//			br.Read7BitEncodedInt ();
+			byte [] buffer = new byte [65536];
+			buffer = br.ReadBytes ();
+			MemoryStream ms = new MemoryStream ();
+			ms.Write (buffer, 0, buffer.Length);
+			ms.Seek (0, SeekOrigin.Begin);
 			
-//			Message msg = null;
+//			while (s.CanRead)
+//				Console.Write ("{0:X02} ", s.ReadByte ());
 			
+			Message msg = null;
 			// FIXME: To supply maxSizeOfHeaders.
-//			msg = Encoder.ReadMessage (s, 0x10000);
-			
+			msg = Encoder.ReadMessage (ms, 0x10000);
 			s.ReadByte (); // 7
-
-			Console.WriteLine (msg);
-
+//			Console.WriteLine (msg);
 			s.WriteByte (7);
+			ms.Close ();
 			
-			s.Close ();
-			
-			throw new NotImplementedException ();
+			return msg;
 		}
 		
 		[MonoTODO]
@@ -231,7 +237,10 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override void OnClose (TimeSpan timeout)
 		{
-			client.Close ();
+			if (! is_service_side)
+				client.Close ();
+			else
+				s.Close ();
 		}
 		
 		[MonoTODO]
@@ -249,8 +258,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override void OnOpen (TimeSpan timeout)
 		{
-			// Client side.
-			if (RemoteAddress != null) {
+			if (! is_service_side) {
 				int explicitPort = RemoteAddress.Uri.Port;
 				client = new TcpClient (RemoteAddress.Uri.Host, explicitPort <= 0 ? TcpTransportBindingElement.DefaultPort : explicitPort);
 				                        //RemoteAddress.Uri.Port);
@@ -279,12 +287,35 @@ namespace System.ServiceModel.Channels
 			*/
 		}
 		
+		// FIXME: To look for other way to do this.
+		class MyBinaryReader : BinaryReader
+		{
+			public MyBinaryReader (Stream s)
+				: base (s)
+			{
+			}
+			
+			public byte [] ReadBytes ()
+			{
+				byte [] buffer = new byte [65536];
+				int length = Read7BitEncodedInt ();
+				
+				if (length > 65536)
+					throw new InvalidOperationException ("The message is too large.");
+				
+				Read (buffer, 0, length);
+				
+				return buffer;
+			}
+		}
+		
 		class MyBinaryWriter : BinaryWriter
 		{
 			public MyBinaryWriter (Stream s)
 				: base (s)
 			{
 			}
+			
 			public void WriteBytes (byte [] bytes)
 			{
 				Write7BitEncodedInt (bytes.Length);

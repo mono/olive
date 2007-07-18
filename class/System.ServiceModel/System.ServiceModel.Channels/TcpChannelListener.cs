@@ -13,6 +13,7 @@ using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.ServiceModel.Description;
+using System.Text;
 
 namespace System.ServiceModel.Channels
 {
@@ -41,6 +42,12 @@ namespace System.ServiceModel.Channels
 					context.ListenUriBaseAddress;
 			else
 				throw new NotImplementedException ();
+			
+			encoder = context.MessageEncoder;
+			
+			// FIXME: Instead of text one, by default .NET uses binary.
+			if (encoder == null)
+				encoder = new TextMessageEncoder (MessageVersion.Default, Encoding.UTF8);
 		}
 		
 		public MessageEncoder MessageEncoder {
