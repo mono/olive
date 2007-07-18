@@ -45,9 +45,8 @@ namespace System.ServiceModel.Channels
 			
 			encoder = context.MessageEncoder;
 			
-			// FIXME: Instead of text one, by default .NET uses binary.
 			if (encoder == null)
-				encoder = new TextMessageEncoder (MessageVersion.Default, Encoding.UTF8);
+				encoder = new BinaryMessageEncoder ();
 		}
 		
 		public MessageEncoder MessageEncoder {

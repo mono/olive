@@ -2,6 +2,7 @@
 
 	* TcpChannelListener.cs, TcpDuplexSessionChannel.cs: Text messaging now works 
 		(both Send() and Receive()), even mixing .NET version with Mono one.
+	* TcpChannelListener.cs: By default, it uses BinaryMessageEncoder.		
 
 2007-07-17 Marcos Cobena (marcoscobena@gmail.com)
 
