@@ -20,6 +20,7 @@ namespace ProgrammingChannels
 		{
 			CustomBinding binding = new CustomBinding ();
 			
+			binding.Elements.Add (new TextMessageEncodingBindingElement ());
 			binding.Elements.Add (new TcpTransportBindingElement ());
 			
 			BindingParameterCollection bpcol =
@@ -45,10 +46,11 @@ namespace ProgrammingChannels
 				Message message = channel.Receive ();
 				
 				Console.WriteLine ("Message received.");
-				Console.WriteLine ("Message action: {0}.", 
+				Console.WriteLine ("Message action: {0}", 
 					message.Headers.Action);
-				Console.WriteLine ("Message content: {0}", 
-					message.GetBody<string> ());
+				// It crashes under Mono.
+//				Console.WriteLine ("Message content: {0}", 
+//					message.GetBody<string> ());
 				
 				message.Close ();
 				channel.Close ();

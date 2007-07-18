@@ -16,46 +16,47 @@ namespace ProgrammingChannels
 {
 	class Client
 	{
-		public static void Main()
+		public static void Main ()
 		{
-			RunClient();
+			RunClient ();
 		}
 		
-		static void RunClient()
+		static void RunClient ()
 		{
-			Console.WriteLine("Press ENTER when service is ready.");
-			Console.ReadLine();
+			Console.WriteLine ("Press ENTER when service is ready.");
+			Console.ReadLine ();
 			
-			CustomBinding binding = new CustomBinding();
-			binding.Elements.Add(new TcpTransportBindingElement());
+			CustomBinding binding = new CustomBinding ();
+			binding.Elements.Add (new TextMessageEncodingBindingElement ());
+			binding.Elements.Add (new TcpTransportBindingElement ());
 			
 			BindingParameterCollection bpcol = 
-				new BindingParameterCollection();
+				new BindingParameterCollection ();
 			
 //			using (IChannelFactory<IDuplexSessionChannel> factory =
 //			binding.BuildChannelFactory<IDuplexSessionChannel>(bpcol))
 //			{
 				IChannelFactory<IDuplexSessionChannel> factory =
-					binding.BuildChannelFactory<IDuplexSessionChannel>(bpcol);
+					binding.BuildChannelFactory<IDuplexSessionChannel> (bpcol);
 				
-				factory.Open();
+				factory.Open ();
 				
-				IDuplexSessionChannel channel = factory.CreateChannel(
-					new EndpointAddress("net.tcp://localhost/"));
+				IDuplexSessionChannel channel = factory.CreateChannel (
+					new EndpointAddress ("net.tcp://localhost/"));
 				
-				channel.Open();
+				channel.Open ();
 				
-				Console.ReadLine();
+				Console.ReadLine ();
 				
-				Message message = Message.CreateMessage(
+				Message message = Message.CreateMessage (
 					//channel.Manager.MessageVersion, 
 					MessageVersion.Default,
-					"some action", "This is the body data");
+					"Action", "Hello, World");
 				
-				channel.Send(message);
+				channel.Send (message);
 				
-				channel.Close();
-				factory.Close();
+				channel.Close ();
+				factory.Close ();
 //			}
 		}
 	}
