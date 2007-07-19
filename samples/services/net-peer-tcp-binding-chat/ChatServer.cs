@@ -15,6 +15,7 @@ using System.ServiceModel.PeerResolvers;
 
 namespace ChatServer
 {
+	// It works as .NET service, don' touch.
 	public class ChatServer
 	{
 		public static void Main ()
@@ -26,21 +27,15 @@ namespace ChatServer
 
 			try {
 				cprs = new CustomPeerResolverService ();
-
-				cprs.RefreshInterval = TimeSpan.FromSeconds (5);
-
 				sh = new ServiceHost (cprs);
-				
 				binding = new NetTcpBinding ();
 				binding.Security.Mode = SecurityMode.None;
-				
 				se = sh.AddServiceEndpoint (typeof (IPeerResolverContract), 
 				                               binding, 
 				                               new Uri ("net.tcp://localhost/ChatServer"));
-				
-				cprs.ControlShape = true;
+				cprs.ControlShape = false;
 				cprs.Open ();
-				sh.Open (TimeSpan.FromDays (1000000));
+				sh.Open ();
 				
 				Console.WriteLine ("Server started successfully.");
 				Console.ReadLine ();

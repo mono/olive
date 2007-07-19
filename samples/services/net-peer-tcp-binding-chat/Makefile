@@ -1,7 +1,10 @@
-all: ChatServer.exe
+all: ChatClient.exe ChatServer.exe
+
+ChatClient.exe : ChatClient.cs
+	gmcs -debug -pkg:olive ChatClient.cs
 
 ChatServer.exe : ChatServer.cs
 	gmcs -debug -pkg:olive ChatServer.cs
 
 clean:
-	rm ChatServer.exe ChatServer.exe.mdb
+	rm *.exe *.exe.mdb
