@@ -624,6 +624,9 @@ System.ServiceModel.MsmqIntegration/MsmqIntegrationSecurity.cs
 System.ServiceModel.MsmqIntegration/MsmqMessage.cs
 System.ServiceModel.PeerResolvers/CustomPeerResolverService.cs
 System.ServiceModel.PeerResolvers/IPeerResolverContract.cs
+System.ServiceModel.PeerResolvers/PeerCustomResolverSettings.cs
+System.ServiceModel.PeerResolvers/PeerResolverMode.cs
+System.ServiceModel.PeerResolvers/PeerResolverSettings.cs
 System.ServiceModel.PeerResolvers/RefreshInfo.cs
 System.ServiceModel.PeerResolvers/RefreshResponseInfo.cs
 System.ServiceModel.PeerResolvers/RefreshResult.cs
@@ -810,6 +813,7 @@ System.ServiceModel/PeerNode.cs
 System.ServiceModel/PeerNodeAddress.cs
 System.ServiceModel/PeerResolver.cs
 System.ServiceModel/PeerResolverImpl.cs
+System.ServiceModel/PeerSecuritySettings.cs
 System.ServiceModel/PoisonMessageException.cs
 System.ServiceModel/ProtocolException.cs
 System.ServiceModel/QuotaExceededException.cs

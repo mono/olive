@@ -3,8 +3,10 @@
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
+//	Marcos Cobena (marcoscobena@gmail.com)
 //
 // Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright 2007 Marcos Cobena (http://www.youcannoteatbits.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,6 +32,7 @@ using System.Collections.Generic;
 using System.Net.Security;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.PeerResolvers;
 using System.Text;
 using System.Xml;
 
@@ -45,7 +48,9 @@ namespace System.ServiceModel
 		bool msg_auth;
 		int port;
 		XmlDictionaryReaderQuotas reader_quotas;
-		PeerResolver resolver = new PeerResolverImpl ();
+//		PeerResolver resolver = new PeerResolverImpl ();
+		PeerResolverSettings resolver = new PeerResolverSettings ();
+		PeerSecuritySettings security = new PeerSecuritySettings ();
 
 		public NetPeerTcpBinding ()
 		{
@@ -84,7 +89,7 @@ namespace System.ServiceModel
 		}
 
 		[MonoTODO]
-		public PeerResolver Resolver {
+		public PeerResolverSettings Resolver {
 			get { return resolver; }
 			set { resolver = value; }
 		}
@@ -96,6 +101,10 @@ namespace System.ServiceModel
 
 		public override string Scheme {
 			get { return "net.p2p"; }
+		}
+		
+		public PeerSecuritySettings Security {
+			get { return security; }
 		}
 
 		public EnvelopeVersion SoapVersion {

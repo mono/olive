@@ -378,13 +378,6 @@ namespace System.ServiceModel.MsmqIntegration
 
 namespace System.ServiceModel.PeerResolvers
 {
-	public enum PeerResolverMode
-	{
-		Auto,
-		Pnrp,
-		Custom,
-	}
-
 	public enum PeerReferralPolicy
 	{
 		DontShare,

@@ -28,11 +28,3 @@ namespace System.ServiceModel.Channels
 	public class UseManagedPresentationBindingElementImporter { }
 	public class XmlSerializerImportOptions { }
 }
-
-namespace System.ServiceModel.PeerResolvers
-{
-        //public interface IPeerResolverContract {}
-        //public class CustomPeerResolverService {}
-	public class PeerCustomResolverSettings {}
-	public class PeerResolverSettings {}
-}

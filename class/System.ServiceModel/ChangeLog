@@ -1,3 +1,10 @@
+2007-07-19 Marcos Cobena (marcoscobena@gmail.com)
+
+	* PeerCustomResolverSettings.cs, PeerResolverMode.cs, PeerResolverSettings.cs, 
+		PeerSecuritySettings.cs: New implementations.
+	* System.ServiceModel.dll.sources, AllEnums.cs, Dummy.cs: Updated to added sources.
+	* NetPeerTcpBinding.cs: Added support to new above implementations.
+
 2007-07-18 Marcos Cobena (marcoscobena@gmail.com)
 
 	* TcpChannelListener.cs, TcpDuplexSessionChannel.cs: Text messaging now works 
