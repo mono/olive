@@ -1,3 +1,7 @@
+2007-07-20  Miguel de Icaza  <miguel@novell.com>
+
+	* HtmlTimer.cs: Implement.
+
 2007-07-16  Chris Toshok  <toshok@ximian.com>
 
 	* HtmlObject.cs: track WebApplication's Instance -> PluginHandle
