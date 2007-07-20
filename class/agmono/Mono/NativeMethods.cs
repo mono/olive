@@ -167,6 +167,9 @@ namespace Mono {
 		public extern static bool collection_remove (IntPtr collection, IntPtr value);
 
 		[DllImport("moon")]
+		public extern static bool collection_remove_at (IntPtr collection, int index);
+
+		[DllImport("moon")]
 		public extern static void collection_insert (IntPtr collection, int index, IntPtr value);
 
 		[DllImport("moon")]

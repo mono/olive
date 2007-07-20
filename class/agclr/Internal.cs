@@ -91,8 +91,7 @@ namespace MS.Internal {
 
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
-			
+			NativeMethods.collection_remove_at (native, index);
 		}
 		
 		//

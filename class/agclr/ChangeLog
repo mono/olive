@@ -1,3 +1,7 @@
+2007-07-20  Miguel de Icaza  <miguel@novell.com>
+
+	* Internal.cs (RemoveAt): implement.
+
 2007-07-03  Miguel de Icaza  <miguel@novell.com>
 
 	* Internal.cs: Propagate errors from mutated collections on

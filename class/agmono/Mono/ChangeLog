@@ -1,3 +1,7 @@
+2007-07-20  Miguel de Icaza  <miguel@novell.com>
+
+	* NativeMethods.cs (collection_remove_at): Add new method. 
+
 2007-07-12  Chris Toshok  <toshok@ximian.com>
 
 	* NativeMethods.cs: add dllimports for uielement_capture_mouse and
