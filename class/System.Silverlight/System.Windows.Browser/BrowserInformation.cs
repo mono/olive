@@ -39,11 +39,16 @@ namespace System.Windows.Browser {
 		private bool cookie_enabled;
 
 		[DllImport ("moonplugin")]
-		static extern void LoadBrowserInformation (BrowserInformation instance);
+		static extern void plugin_instance_get_browser_information (IntPtr plugin_handle,
+									    out string name, out string version,
+									    out string platform, out string userAgent,
+									    out bool cookieEnabled);
 
 		internal BrowserInformation ()
 		{
-			LoadBrowserInformation (this);
+			plugin_instance_get_browser_information (WebApplication.Current.PluginHandle,
+								 out name, out version, out platform, out user_agent,
+								 out cookie_enabled);
 		}
 
 		public BrowserInformation (string name, string version, string platform, string userAgent, bool cookieEnabled)
