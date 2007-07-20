@@ -573,6 +573,16 @@ namespace Mono {
 		public extern static void xaml_set_parser_callbacks (Mono.CreateCustomXamlElementCallback ccecb,
 								     Mono.SetCustomXamlAttributeCallback scacb,
 								     Mono.XamlHookupEventCallback hue);
+#region HtmlTimer
+		public delegate bool GSourceFunc  (IntPtr data);
+		
+		[DllImport("moon")]
+		public extern static uint html_timer_timeout_add (int interval, GSourceFunc callback, IntPtr data);
+		
+		[DllImport("moon")]
+		public extern static void html_timer_timeout_stop (uint source_id);
+#endregion
+		
 #region EventObject
 		[DllImport("moon")]
 		public extern static void dependency_object_add_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
@@ -589,5 +599,6 @@ namespace Mono {
 		public extern static int plugin_instance_get_actual_width (IntPtr plugin_handle);
 		
 #endregion
+		
 	}
 }
