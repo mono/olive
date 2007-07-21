@@ -1,3 +1,16 @@
+2007-07-21  Chris Toshok  <toshok@ximian.com>
+
+	* WebApplication.cs, ScriptableObjectGenerator.cs: rework the
+	scriptable object stuff pretty substantially.  separate type
+	validation from the generation of the wrapper object.  This is so
+	that eventually with events we won't need to validate the type
+	whenever we wrap event args (since we'll already have validated it
+	during the course of validating the class containing the
+	scriptable event.)  Also, fix property sets, gets, and invocation.
+	everything except events should be working.  Also, leave a comment
+	about the Binder implementation (and how it's not necessaryin the
+	long term.)
+
 2007-07-17  Chris Toshok  <toshok@ximian.com>
 
 	* ScriptableObjectGenerator.cs (InvokeFromUnmanaged): marshal the

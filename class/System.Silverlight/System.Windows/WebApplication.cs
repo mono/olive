@@ -46,12 +46,11 @@ namespace System.Windows
 			if (scriptKey.Length == 0)
 				throw new ArgumentException ("scriptKey");
 
-			object [] atts = instance.GetType ().GetCustomAttributes (typeof (ScriptableAttribute), false);
-			// It neither supports ScriptableObject nor its derived types such as HtmlElement.
-			if (atts.Length == 0)
-				throw new NotSupportedException ("The argument object type does not have a ScriptableAttribute");
+			ScriptableObjectGenerator gen = new ScriptableObjectGenerator (instance);
 
-			ScriptableObjectGenerator.Generate (plugin_handle, scriptKey, instance);
+			ScriptableObjectWrapper wrapper = gen.Generate (true);
+
+			ScriptableNativeMethods.register (plugin_handle, scriptKey, wrapper.UnmanagedWrapper);
 		}
 
 		// it is non-null on silverlight apps, and null on console apps
