@@ -29,7 +29,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Microsoft.JScript.Compiler.Hosting\LanguageProviderTest.cs" />
-    <Compile Include="Microsoft.JScript.Compiler.Shell\CommandLineTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\OptionsParserTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\ParserTest.cs" />
     <Compile Include="Microsoft.JScript.Compiler\SplayTreeTest.cs" />
