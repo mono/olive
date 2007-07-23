@@ -1,4 +1,4 @@
-namespace System.Windows.Hosting
+namespace System.Windows.Controls
 {
 	public enum DialogResult
 	{

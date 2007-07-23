@@ -21,9 +21,9 @@ System.Windows.Browser/HtmlTimer.cs
 System.Windows.Browser/HttpUtility.cs
 System.Windows.Browser/ScriptableAttribute.cs
 System.Windows.Browser/ScriptableObject.cs
-System.Windows.Control/DialogResult.cs
-System.Windows.Control/FileDialogFileInfo.cs
-System.Windows.Control/OpenFileDialog.cs
+System.Windows.Controls/DialogResult.cs
+System.Windows.Controls/FileDialogFileInfo.cs
+System.Windows.Controls/OpenFileDialog.cs
 System.Windows.Hosting/Callback.cs
 System.Windows/ApplicationUnhandledExceptionEventArgs.cs
 System.Windows/ScriptableObjectGenerator.cs
