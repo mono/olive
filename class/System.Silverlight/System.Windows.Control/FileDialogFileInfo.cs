@@ -1,7 +1,7 @@
 using System;
 using System.IO;
 
-namespace System.Windows.Hosting
+namespace System.Windows.Controls
 {
 	public class FileDialogFileInfo
 	{

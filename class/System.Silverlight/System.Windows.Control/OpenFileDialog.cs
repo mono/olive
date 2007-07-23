@@ -30,7 +30,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
-namespace System.Windows.Hosting
+namespace System.Windows.Controls
 {
 	// It simply opens a native file dialog
 	//
