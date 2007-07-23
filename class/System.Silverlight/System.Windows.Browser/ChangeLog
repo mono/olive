@@ -1,3 +1,7 @@
+2007-07-23  Miguel de Icaza  <miguel@novell.com>
+
+	* HtmlTimer.cs: Use the plugin functions, pass the plugin handle 
+
 2007-07-20  Miguel de Icaza  <miguel@novell.com>
 
 	* HtmlTimer.cs: Implement.

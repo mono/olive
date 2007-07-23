@@ -579,11 +579,11 @@ namespace Mono {
 #region HtmlTimer
 		public delegate bool GSourceFunc  (IntPtr data);
 		
-		[DllImport("moon")]
-		public extern static uint html_timer_timeout_add (int interval, GSourceFunc callback, IntPtr data);
+		[DllImport("moonplugin")]
+		public extern static uint plugin_html_timer_timeout_add (IntPtr plugin_handle, int interval, GSourceFunc callback, IntPtr data);
 		
-		[DllImport("moon")]
-		public extern static void html_timer_timeout_stop (uint source_id);
+		[DllImport("moonplugin")]
+		public extern static void plugin_html_timer_timeout_stop (IntPtr plugin_handle, uint source_id);
 #endregion
 		
 #region EventObject

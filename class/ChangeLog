@@ -1,3 +1,8 @@
+2007-07-23  Miguel de Icaza  <miguel@novell.com>
+
+	* Add System.Windows.Interop/PluginHost.cs to expose the plugin
+	handle to other assemblies (System.Silverlight).
+
 2007-06-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : we can add agclr here. It's mostly stable.

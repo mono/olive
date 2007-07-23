@@ -27,6 +27,7 @@
 //
 using System;
 using Mono;
+using System.Windows.Interop;
 
 namespace System.Windows.Browser
 {
@@ -40,7 +41,6 @@ namespace System.Windows.Browser
 		{
 		}
 
-		[MonoTODO]
 		public bool Enabled {
 			set {
 				if (value)
@@ -86,7 +86,7 @@ namespace System.Windows.Browser
 				return;
 
 			callback = new NativeMethods.GSourceFunc (timer_callback);
-			source_id = NativeMethods.html_timer_timeout_add (interval, callback, IntPtr.Zero);
+			source_id = NativeMethods.plugin_html_timer_timeout_add (PluginHost.Handle, interval, callback, IntPtr.Zero);
 		}
 
 		public void Stop ()
@@ -94,7 +94,7 @@ namespace System.Windows.Browser
 			if (source_id == 0)
 				return;
 
-			NativeMethods.html_timer_timeout_stop (source_id);
+			NativeMethods.plugin_html_timer_timeout_stop (PluginHost.Handle, source_id);
 			source_id = 0;
 			callback = null;
 		}
