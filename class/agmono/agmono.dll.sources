@@ -5,4 +5,4 @@ Mono/Kind.cs
 Mono/NativeMethods.cs
 Mono/Value.cs
 Mono/Moonlight.cs
-System.Windows.Interop/Plugin.cs
+System.Windows.Interop/PluginHost.cs

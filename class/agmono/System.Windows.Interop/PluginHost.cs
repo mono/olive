@@ -36,7 +36,7 @@ namespace System.Windows.Interop {
 			plugin_handle = value;
 		}
 
-		public IntPtr Handle {
+		public static IntPtr Handle {
 			get {
 				return plugin_handle;
 			}
