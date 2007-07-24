@@ -83,6 +83,8 @@ namespace System.ServiceModel.Dispatcher
 			= new Dictionary<MessageDescription,MessageDescriptionMapping> ();
 		Dictionary<MessageDescription,XmlObjectSerializer> serializers
 			= new Dictionary<MessageDescription,XmlObjectSerializer> ();
+		Dictionary<MessageDescription,TypedMessageConverter> converters
+			= new Dictionary<MessageDescription,TypedMessageConverter> ();
 		OperationDescription operation;
 
 		public Message SerializeRequest (
@@ -94,6 +96,8 @@ namespace System.ServiceModel.Dispatcher
 					md = mdi;
 
 			// FIXME: consider ref/out parameters.
+			if (md.MessageType != null)
+				return GetConverter (md).ToMessage (parameters [0], version);
 			return Message.CreateMessage (version, md.Action,
 				new DefaultResponseBodyWriter (md.Body, GetSerializer (md), null, parameters));
 		}
@@ -108,10 +112,22 @@ namespace System.ServiceModel.Dispatcher
 				if (mdi.Direction == MessageDirection.Output)
 					md = mdi;
 
+			if (md.MessageType != null)
+				return GetConverter (md).ToMessage (parameters [0], version);
 			// FIXME: handle (ref/out) parameters.
 			string replyAction = version.Addressing == AddressingVersion.None ? null : md.Action;
 			return Message.CreateMessage (version, replyAction,
 				new DefaultResponseBodyWriter (md.Body, GetSerializer (md), result, parameters));
+		}
+
+		TypedMessageConverter GetConverter (MessageDescription md)
+		{
+			if (converters.ContainsKey (md))
+				return converters [md];
+			// FIXME: support DataContractFormatAttribute and XmlSerializerFormatAttribute.
+			TypedMessageConverter c = TypedMessageConverter.Create (md.MessageType, md.Action);
+			converters [md] = c;
+			return c;
 		}
 
 		XmlObjectSerializer GetSerializer (MessageDescription md)
