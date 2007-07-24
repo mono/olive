@@ -584,6 +584,16 @@ namespace Mono {
 		
 		[DllImport("moonplugin")]
 		public extern static void plugin_html_timer_timeout_stop (IntPtr plugin_handle, uint source_id);
+
+		//
+		// The version to use outside the plugin
+		//
+		[DllImport("moon")]
+		public extern static uint runtime_html_timer_timeout_add (int interval, GSourceFunc callback, IntPtr data);
+
+		[DllImport("moon")]
+		public extern static void runtime_html_timer_timeout_stop (uint source_id);
+
 #endregion
 		
 #region EventObject

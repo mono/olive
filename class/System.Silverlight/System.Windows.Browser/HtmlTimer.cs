@@ -86,7 +86,14 @@ namespace System.Windows.Browser
 				return;
 
 			callback = new NativeMethods.GSourceFunc (timer_callback);
-			source_id = NativeMethods.plugin_html_timer_timeout_add (PluginHost.Handle, interval, callback, IntPtr.Zero);
+			IntPtr handle = PluginHost.Handle;
+
+			if (handle != IntPtr.Zero)
+				source_id = NativeMethods.plugin_html_timer_timeout_add (
+					handle, interval, callback, IntPtr.Zero);
+			else
+				source_id = NativeMethods.runtime_html_timer_timeout_add (
+					interval, callback, IntPtr.Zero);
 		}
 
 		public void Stop ()
@@ -94,7 +101,11 @@ namespace System.Windows.Browser
 			if (source_id == 0)
 				return;
 
-			NativeMethods.plugin_html_timer_timeout_stop (PluginHost.Handle, source_id);
+			IntPtr handle = PluginHost.Handle;
+			if (handle != IntPtr.Zero)
+				NativeMethods.plugin_html_timer_timeout_stop (PluginHost.Handle, source_id);
+			else
+				NativeMethods.runtime_html_timer_timeout_stop (source_id);
 			source_id = 0;
 			callback = null;
 		}
