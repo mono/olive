@@ -20,6 +20,7 @@ namespace Mono {
 		POINT_ARRAY,
 		KEYTIME,
 		MATRIX,
+		NPOBJ,
 
 		DEPENDENCY_OBJECT,
 		ANIMATION,
