@@ -15,24 +15,30 @@ using System.ServiceModel.PeerResolvers;
 
 namespace ChatServer
 {
-	// It works as .NET service, don' touch.
+	// It works as .NET service, don't touch.
 	public class ChatServer
 	{
 		public static void Main ()
 		{
-			NetTcpBinding binding;
+//			NetTcpBinding binding;
+//			CustomBinding binding;
+			BasicHttpBinding binding;
 			CustomPeerResolverService cprs;
-			ServiceEndpoint se;
+//			ServiceEndpoint se;
 			ServiceHost sh;
 
 			try {
 				cprs = new CustomPeerResolverService ();
 				sh = new ServiceHost (cprs);
-				binding = new NetTcpBinding ();
-				binding.Security.Mode = SecurityMode.None;
-				se = sh.AddServiceEndpoint (typeof (IPeerResolverContract), 
+//				binding = new NetTcpBinding ();
+//				binding = new CustomBinding ();
+//				binding.Elements.Add (new TextMessageEncodingBindingElement ());
+//				binding.Elements.Add (new TcpTransportBindingElement ());
+				binding = new BasicHttpBinding ();
+//				binding.Security.Mode = SecurityMode.None;
+				sh.AddServiceEndpoint (typeof (IPeerResolverContract), 
 				                               binding, 
-				                               new Uri ("net.tcp://localhost/ChatServer"));
+				                               new Uri ("http://localhost:8080/ChatServer"));
 				cprs.ControlShape = false;
 				cprs.Open ();
 				sh.Open ();

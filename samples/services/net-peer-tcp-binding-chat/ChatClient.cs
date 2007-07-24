@@ -27,26 +27,33 @@ namespace ChatClient
 		{
 			InstanceContext ic = new InstanceContext (new ChatClient ("Marcos"));
 			NetPeerTcpBinding nptb = new NetPeerTcpBinding ();
-			NetTcpBinding ntb = new NetTcpBinding ();
-			ntb.Security.Mode = SecurityMode.None;
-			nptb.Resolver.Custom.Address = new EndpointAddress ("net.tcp://localhost/ChatServer");
+//			NetTcpBinding ntb = new NetTcpBinding ();
+//			CustomBinding ntb = new CustomBinding ();
+//			ntb.Elements.Add (new TextMessageEncodingBindingElement ());
+//			ntb.Elements.Add (new TcpTransportBindingElement ());
+			BasicHttpBinding ntb = new BasicHttpBinding ();
+//			ntb.Security.Mode = SecurityMode.None;
+			nptb.Resolver.Custom.Address = new EndpointAddress ("http://localhost:8080/ChatServer");
 			nptb.Resolver.Custom.Binding = ntb;
 			nptb.Resolver.Mode = PeerResolverMode.Auto;
 //			nptb.Resolver.ReferralPolicy = PeerReferralPolicy.Service;
 			nptb.Security.Mode = SecurityMode.None;
-			DuplexChannelFactory<IChatChannel> factory = 
-				new DuplexChannelFactory<IChatChannel> (ic, 
-				                                        nptb, 
-				                                        new EndpointAddress ("net.p2p://chatMesh/ChatServer"));
+//			DuplexChannelFactory<IChatService> factory = 
+//				new DuplexChannelFactory<IChatService> (ic, 
+//				                                        nptb, 
+//				                                        new EndpointAddress ("net.p2p://chatMesh/ChatServer"));
+			IChatService channel = 
+				DuplexChannelFactory<IChatService>.CreateChannel (ic, 
+				                                                  nptb, 
+				                                                  new EndpointAddress ("net.p2p://chatMesh/ChatServer"));
+//			channel.Open ();
 			Console.WriteLine ("Here!");
-			IChatChannel channel = factory.CreateChannel ();
-			channel.Open ();
 			channel.Join ("Marcos");
 			// Right here, run the same process separately.
 			Console.ReadLine ();
 			channel.Leave ("Marcos");
-			channel.Close ();
-			factory.Close ();
+//			channel.Close ();
+//			factory.Close ();
 		}
 		
 		public void Join (string username)
@@ -78,7 +85,8 @@ namespace ChatClient
 		void SendMessage (string username, string message);
 	}
 	
-	public interface IChatChannel : IChatService, IClientChannel
-	{
-	}
+	// FIXME: Channel inheritance crashes under Mono.
+//	public interface IChatChannel : IChatService, IClientChannel
+//	{
+//	}
 }
