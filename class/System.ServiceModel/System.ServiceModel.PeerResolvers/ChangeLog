@@ -1,3 +1,8 @@
+2007-07-24 Marcos Cobena (marcoscobena@gmail.com)
+
+	* CustomPeerResolverService.cs, IPeerResolverContract.cs, RegisterInfo.cs, ResolveInfo.cs: Minor changes.
+	* RegisterResponseInfo.cs: Implemented.
+
 2007-06-28 Marcos Cobena (marcoscobena@gmail.com)
 
 	* CustomPeerResolverService.cs : Minor fixes for working against tests.

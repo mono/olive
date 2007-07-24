@@ -9,7 +9,8 @@
 
 namespace System.ServiceModel.PeerResolvers
 {
-	[ServiceBehavior]
+	[ServiceBehavior (UseSynchronizationContext = false, InstanceContextMode = InstanceContextMode.Single, 
+	                  ConcurrencyMode = ConcurrencyMode.Multiple)]
 	public class CustomPeerResolverService : IPeerResolverContract
 	{
 		private TimeSpan cleanup_interval;
@@ -67,7 +68,8 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 		
-			return new ServiceSettingsResponseInfo ();
+//			return new ServiceSettingsResponseInfo ();
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
@@ -91,10 +93,10 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-			return new RefreshResponseInfo ();
+//			return new RefreshResponseInfo ();
+			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public virtual RegisterResponseInfo Register (RegisterInfo registerInfo)
 		{
 			if (registerInfo == null)
@@ -103,7 +105,7 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-			return new RegisterResponseInfo ();
+			return Register (registerInfo.ClientId, registerInfo.MeshId, registerInfo.NodeAddress);
 		}
 
 		[MonoTODO]
@@ -111,7 +113,13 @@ namespace System.ServiceModel.PeerResolvers
 			string meshId, 
 			PeerNodeAddress address)
 		{
-			throw new NotImplementedException ();
+			RegisterResponseInfo rri = new RegisterResponseInfo ();
+			
+			if (ControlShape) {
+				// FIXME: To update mesh node here.
+			}
+			
+			return rri;
 		}
 
 		[MonoTODO]
@@ -123,7 +131,8 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-			return new ResolveResponseInfo ();
+//			return new ResolveResponseInfo ();
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
@@ -134,6 +143,8 @@ namespace System.ServiceModel.PeerResolvers
 			
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
+			
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
@@ -145,16 +156,7 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-			return new RegisterResponseInfo ();
-		}
-
-		~CustomPeerResolverService ()
-		{
-		}
-
-		[MonoTODO]
-		protected Object MemberwiseClone ()
-		{
+//			return new RegisterResponseInfo ();
 			throw new NotImplementedException ();
 		}
 	}

@@ -9,6 +9,7 @@
 
 namespace System.ServiceModel.PeerResolvers
 {
+	[MessageContract (IsWrapped = false)]
 	public class RegisterInfo
 	{
 		private Guid client_id;
@@ -30,6 +31,7 @@ namespace System.ServiceModel.PeerResolvers
 			get { return client_id; }
 		}
 		
+		[MessageBodyMember]
 		public string MeshId {
 			get { return mesh_id; }
 		}
