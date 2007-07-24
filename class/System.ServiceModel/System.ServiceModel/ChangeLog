@@ -1,11 +1,15 @@
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DuplexChannelFactory.cs: New static method.
+
+2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* MsmqBindingBase.cs NetMsmqBinding.cs : initialize some fields.
 	  implemented NetMsmqBinding.CreateBindingElements().
 
-2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
+2007-07-24 Marcos Cobena (marcoscobena@gmail.com)
 
-	* Dummy.cs : more stub removal.
+	* DuplexChannelFactory.cs: New static method.
 
 2007-07-05  Atsushi Enomoto  <atsushi@ximian.com>
 

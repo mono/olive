@@ -3,8 +3,10 @@
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
+//	Marcos Cobena (marcoscobena@gmail.com)
 //
 // Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright 2007 Marcos Cobena (http://www.youcannoteatbits.org/)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -24,7 +26,8 @@
 // LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-//
+// 
+
 using System;
 using System.Collections.ObjectModel;
 using System.ServiceModel.Channels;
@@ -35,20 +38,22 @@ namespace System.ServiceModel
 {
 	public class DuplexChannelFactory<TChannel> : ChannelFactory<TChannel>
 	{
+		InstanceContext callback_instance;
+		
 		[MonoTODO]
-		public DuplexChannelFactory (object instance)
+		public DuplexChannelFactory (object callbackInstance)
 		{
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (object instance,
+		public DuplexChannelFactory (object callbackInstance,
 			string endpointConfigurationName)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (object instance,
+		public DuplexChannelFactory (object callbackInstance,
 			string endpointConfigurationName,
 			EndpointAddress remoteAddress)
 		{
@@ -56,21 +61,21 @@ namespace System.ServiceModel
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (object instance,
+		public DuplexChannelFactory (object callbackInstance,
 			ServiceEndpoint endpoint)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (object instance,
+		public DuplexChannelFactory (object callbackInstance,
 			Binding binding)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (object instance,
+		public DuplexChannelFactory (object callbackInstance,
 			Binding binding,
 			EndpointAddress remoteAddress)
 		{
@@ -78,22 +83,22 @@ namespace System.ServiceModel
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (InstanceContext instance,
+		public DuplexChannelFactory (InstanceContext callbackInstance,
 			Binding binding)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (InstanceContext instance,
+		public DuplexChannelFactory (InstanceContext callbackInstance,
 			Binding binding,
-			EndpointAddress remoteAddress)
+			EndpointAddress remoteAddress) : base (binding, remoteAddress)
 		{
-			throw new NotImplementedException ();
+			callback_instance = callbackInstance;
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (InstanceContext instance,
+		public DuplexChannelFactory (InstanceContext callbackInstance,
 			string endpointConfigurationName,
 			EndpointAddress remoteAddress)
 		{
@@ -101,8 +106,22 @@ namespace System.ServiceModel
 		}
 
 		[MonoTODO]
-		public DuplexChannelFactory (InstanceContext instance,
+		public DuplexChannelFactory (InstanceContext callbackInstance,
 			ServiceEndpoint endpoint)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		[MonoTODO]
+		public TChannel CreateChannel ()
+		{
+			throw new NotImplementedException ();
+		}
+		
+		[MonoTODO]
+		public static TChannel CreateChannel (InstanceContext callbackInstance, 
+		                                      Binding binding, 
+		                                      EndpointAddress endpointAddress)
 		{
 			throw new NotImplementedException ();
 		}
