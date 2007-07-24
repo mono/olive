@@ -265,7 +265,7 @@ namespace Mono {
 		public extern static IntPtr media_element_pause (IntPtr native);
 		
 		[DllImport("moon")]
-		public extern static IntPtr media_element_setsource (IntPtr native, IntPtr downloader, string PartName);		
+		public extern static IntPtr media_element_set_source (IntPtr native, IntPtr downloader, string PartName);		
 #endregion
 		
 #region Constructors

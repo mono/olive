@@ -102,7 +102,7 @@ namespace System.Windows.Controls
 		
 		public void SetSource(DependencyObject Downloader, string PartName)
 		{
-			NativeMethods.media_element_setsource (native, Downloader.native, PartName);
+			NativeMethods.media_element_set_source (native, Downloader.native, PartName);
 		}
 		
 		public void Stop()
