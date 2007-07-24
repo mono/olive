@@ -1,5 +1,10 @@
 2007-03-24  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DefaultMessageOperationFormatter.cs :
+	  use it for deserialization as well.
+
+2007-03-24  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DefaultMessageOperationFormatter.cs : consider message contracts
 	  during message serialization/deserialization.
 

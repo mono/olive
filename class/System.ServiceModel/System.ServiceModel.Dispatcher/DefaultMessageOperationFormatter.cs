@@ -160,6 +160,11 @@ namespace System.ServiceModel.Dispatcher
 			if (md == null)
 				throw new ActionNotSupportedException (String.Format ("Action '{0}' is not supported by this operation.", action));
 
+			if (md.MessageType != null) {
+				parameters [0] = GetConverter (md).FromMessage (message);
+				return;
+			}
+
 			MessageDescriptionMapping map = GetMapping (md);
 
 			if (!message.IsEmpty) {
@@ -178,6 +183,9 @@ namespace System.ServiceModel.Dispatcher
 			foreach (MessageDescription mdi in operation.Messages)
 				if (mdi.Direction == MessageDirection.Output)
 					md = mdi;
+
+			if (md.MessageType != null)
+				return GetConverter (md).FromMessage (message);
 
 			MessageDescriptionMapping map = GetMapping (md);
 
