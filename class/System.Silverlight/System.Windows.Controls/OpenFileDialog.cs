@@ -3,6 +3,7 @@
 //
 // Authors:
 //	Atsushi Enomoto  <atsushi@ximian.com>
+//	Miguel de Icaza  <miguel@ximian.com>
 //
 // Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
@@ -37,184 +38,81 @@ namespace System.Windows.Controls
 	// Note that those unmanaged icalls are not in the runtime yet.
 	public class OpenFileDialog
 	{
-		OpenFileDialogOptions opt;
+		FileDialogFileInfo file_info;
+		FileDialogFileInfo [] files;
+		
 		IntPtr handle;
-
-		[MonoTODO]
+		bool allow_multiple_selection = false;
+		string filter = "";
+		int filter_index = 0;
+		string title = null;
+		
 		public OpenFileDialog ()
 		{
-			handle = CreateOpenFileDialog ();
-			opt = new OpenFileDialogOptions ();
 		}
 
-		[MonoTODO]
 		public void Dispose ()
 		{
-			DestroyOpenFileDialog (handle);
 		}
 
-		[MonoTODO]
 		public DialogResult ShowDialog ()
 		{
-			return (DialogResult) ShowDialog (handle, opt);
+			string path = open_file_dialog_show (
+				handle, title == null ? "" : title,
+				allow_multiple_selection,
+				filter == null ? "" : filter,
+				filter_index);
+
+			if (path != null){
+				file_info = new FileDialogFileInfo (path);
+				if (allow_multiple_selection){
+					//
+					// TODO
+					//
+				}
+				
+				return DialogResult.OK;
+			} else {
+				file_info = null;
+				return DialogResult.Cancel;
+			}
 		}
 
 		// selection results
 
-		[MonoTODO]
 		public FileDialogFileInfo SelectedFile {
-			get { return GetSelectedFile (handle); }
+			get {
+				return file_info;
+			}
 		}
 
-		[MonoTODO]
 		public IEnumerable<FileDialogFileInfo> SelectedFiles {
-			get { return new FileDialogFileInfoCollection (handle, GetSelectedFiles (handle)); }
+			get { yield return file_info; }
 		}
 
 		// dialog options
 
 		public bool EnableMultiSelection {
-			get { return opt.EnableMultiSelection; }
-			set { opt.EnableMultiSelection = value; }
+			get { return allow_multiple_selection; }
+			set { allow_multiple_selection = value; }
 		}
 
 		public string Filter {
-			get { return opt.Filter; }
-			set { opt.Filter = value; }
+			get { return filter; }
+			set { filter = value; }
 		}
 
 		public int FilterIndex {
-			get { return opt.FilterIndex; }
-			set { opt.FilterIndex = value; }
+			get { return filter_index; }
+			set { filter_index = value; }
 		}
 
 		public string Title {
-			get { return opt.Title; }
-			set { opt.Title = value; }
-		}
-
-		class OpenFileDialogOptions
-		{
-			public bool EnableMultiSelection;
-			public string Filter;
-			public int FilterIndex;
-			public string Title;
-
-			public OpenFileDialogOptions ()
-			{
-			}
+			get { return title; }
+			set { title = value; }
 		}
 
 		[DllImport ("moon")]
-		static extern IntPtr CreateOpenFileDialog ();
-
-		[DllImport ("moon")]
-		static extern void DestroyOpenFileDialog (IntPtr handle);
-
-		[DllImport ("moon")]
-		static extern int ShowDialog (IntPtr handle, OpenFileDialogOptions options);
-
-		[DllImport ("moon")]
-		static extern FileDialogFileInfo GetSelectedFile (IntPtr handle);
-
-		[DllImport ("moon")]
-		static extern IntPtr GetSelectedFiles (IntPtr handle);
-	}
-
-	class FileDialogFileInfoCollection : IEnumerable<FileDialogFileInfo>
-	{
-		IntPtr dialog_handle; // handle for GtkFileChooser
-		IntPtr list_handle; // handle for GList
-
-		public FileDialogFileInfoCollection (IntPtr dialog, IntPtr list)
-		{
-			dialog_handle = dialog;
-			list_handle = list;
-		}
-
-		public IntPtr Dialog {
-			get { return dialog_handle; }
-		}
-
-		public IntPtr List {
-			get { return list_handle; }
-		}
-
-		public IEnumerator<FileDialogFileInfo> GetEnumerator ()
-		{
-			return new FileDialogFileInfoEnumerator (this);
-		}
-
-		IEnumerator IEnumerable.GetEnumerator ()
-		{
-			return GetEnumerator ();
-		}
-	}
-
-	class FileDialogFileInfoEnumerator : IEnumerator<FileDialogFileInfo>
-	{
-		FileDialogFileInfoCollection files;
-		FileDialogFileInfo current;
-
-		public FileDialogFileInfoEnumerator (FileDialogFileInfoCollection files)
-		{
-			this.files = files;
-		}
-
-		public void Dispose ()
-		{
-			if (files != null)
-				DestroyIterator (files.List);
-			files = null;
-		}
-
-		public bool MoveNext ()
-		{
-			if (files == null)
-				throw Disposed ();
-			if (!SelectNextFile (files.List))
-				return false;
-			current = null;
-			return true;
-		}
-
-		public void Reset ()
-		{
-			if (files == null)
-				throw Disposed ();
-			ResetFileIterator (files.List);
-			current = null;
-		}
-
-		public FileDialogFileInfo Current {
-			get {
-				if (files == null)
-					throw Disposed ();
-				if (current == null)
-					current = GetSelectedFileFromList (files.Dialog, files.List);
-				return current;
-			}
-		}
-
-		Exception Disposed ()
-		{
-			return new ObjectDisposedException ("FileDialogFileInfoEnumerator");
-		}
-
-		object IEnumerator.Current {
-			get { return Current; }
-		}
-
-		[DllImport ("moon")]
-		static extern void DestroyIterator (IntPtr list);
-
-		[DllImport ("moon")]
-		static extern void ResetFileIterator (IntPtr list);
-
-		[DllImport ("moon")]
-		static extern bool SelectNextFile (IntPtr list);
-
-		[DllImport ("moon")]
-		static extern FileDialogFileInfo GetSelectedFileFromList (IntPtr dialog, IntPtr list);
+		static extern string open_file_dialog_show (IntPtr handle, string title, bool multsel, string filter, int idx);
 	}
 }

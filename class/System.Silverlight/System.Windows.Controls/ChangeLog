@@ -1,3 +1,7 @@
+2007-07-24  Miguel de Icaza  <miguel@novell.com>
+
+	* OpenFileDialog.cs: Implement.
+
 2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* FileDialogFileInfo.cs,
