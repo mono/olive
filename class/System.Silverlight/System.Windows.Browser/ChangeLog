@@ -1,3 +1,8 @@
+2007-07-25  Miguel de Icaza  <miguel@novell.com>
+
+	* HttpUtility.cs: Bring an implementation of the methods needed
+	from System.Web.dll
+
 2007-07-23  Miguel de Icaza  <miguel@novell.com>
 
 	* HtmlTimer.cs: Use the plugin functions, pass the plugin handle 
