@@ -2,7 +2,7 @@
 Assembly/AssemblyInfo.cs
 System.Data.Linq/AssociationAttribute.cs
 System.Data.Linq/AttributeMappingSource.cs
-System.Data.Linq/AutoSyn.cs
+System.Data.Linq/AutoSync.cs
 System.Data.Linq/Binary.cs
 System.Data.Linq/ChangeConflictCollection.cs
 System.Data.Linq/ChangeConflictException.cs
@@ -14,7 +14,7 @@ System.Data.Linq/DataContext.cs
 System.Data.Linq/DataShape.cs
 System.Data.Linq/DuplicateKeyException.cs
 System.Data.Linq/EntityRef.cs
-Systen.Data.Linq/ForeignKeyReferenceAlreadyHasValueException.cs
+System.Data.Linq/ForeignKeyReferenceAlreadyHasValueException.cs
 System.Data.Linq/FunctionAttribute.cs
 System.Data.Linq/ITable.cs
 System.Data.Linq/Link_T.cs
@@ -47,7 +47,6 @@ System.Data.Linq.Provider/IQueryResults_T.cs
 System.Data.Linq.Provider/IProvider.cs
 System.Data.Linq.Provider/MetaAccessor.cs
 System.Data.Linq.Provider/MetaAssociation.cs
-System.Data.Linq.Provider/MetaDataProvider.cs
 System.Data.Linq.Provider/MetaFunction.cs
 System.Data.Linq.Provider/MetaModel.cs
 System.Data.Linq.Provider/MetaTable.cs
