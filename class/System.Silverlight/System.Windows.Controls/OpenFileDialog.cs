@@ -38,10 +38,8 @@ namespace System.Windows.Controls
 	// Note that those unmanaged icalls are not in the runtime yet.
 	public class OpenFileDialog
 	{
-		FileDialogFileInfo file_info;
 		FileDialogFileInfo [] files;
 		
-		IntPtr handle;
 		bool allow_multiple_selection = false;
 		string filter = "";
 		int filter_index = 0;
@@ -57,37 +55,46 @@ namespace System.Windows.Controls
 
 		public DialogResult ShowDialog ()
 		{
-			string path = open_file_dialog_show (
-				handle, title == null ? "" : title,
+			IntPtr result = open_file_dialog_show (
+				title == null ? "" : title,
 				allow_multiple_selection,
 				filter == null ? "" : filter,
 				filter_index);
 
-			if (path != null){
-				file_info = new FileDialogFileInfo (path);
-				if (allow_multiple_selection){
-					//
-					// TODO
-					//
-				}
-				
-				return DialogResult.OK;
-			} else {
-				file_info = null;
+			if (result == IntPtr.Zero){
+				files = null;
 				return DialogResult.Cancel;
 			}
+
+			int inc = Marshal.SizeOf (typeof (IntPtr));
+			IntPtr p;
+			int n = 0;
+
+			for (int ofs = 0; (p = Marshal.ReadIntPtr (result, ofs)) != IntPtr.Zero; ofs += inc)
+				n++;
+
+			files = new FileDialogFileInfo [n];
+			for (int i = 0, ofs = 0; (p = Marshal.ReadIntPtr (result, ofs)) != IntPtr.Zero; ofs += inc)
+				files [i++] = new FileDialogFileInfo (Marshal.PtrToStringAnsi (p));
+			
+			return DialogResult.OK;
 		}
 
 		// selection results
 
 		public FileDialogFileInfo SelectedFile {
 			get {
-				return file_info;
+				return files == null ? null : files [0];
 			}
 		}
 
 		public IEnumerable<FileDialogFileInfo> SelectedFiles {
-			get { yield return file_info; }
+			get {
+				if (files == null)
+					yield break;
+				foreach (FileDialogFileInfo f in files)
+					yield return f;
+			}
 		}
 
 		// dialog options
@@ -113,6 +120,6 @@ namespace System.Windows.Controls
 		}
 
 		[DllImport ("moon")]
-		static extern string open_file_dialog_show (IntPtr handle, string title, bool multsel, string filter, int idx);
+		static extern IntPtr open_file_dialog_show (string title, bool multsel, string filter, int idx);
 	}
 }
