@@ -22,6 +22,10 @@ while test x$1 != x; do
 	shift
 done
 
+# ensure pc files are regenerated with make 
+# since the prefix may have changed
+touch data/*.in
+
 echo "prefix=$prefix" > build/config.make
 echo "exec_prefix=\${prefix}" >> build/config.make
 echo "mono_libdir=\${exec_prefix}/lib" >> build/config.make

@@ -1,5 +1,10 @@
 2007-07-26  Aaron Bockover  <abockover@novell.com>
 
+	* configure: touch data/*.in to ensure the .pc files are regenerated
+	by make in case the prefix changed
+
+2007-07-26  Aaron Bockover  <abockover@novell.com>
+
 	* configure: Source in CONFIG_SITE if it exists, from which the prefix
 	can be set automatically; perfect for parallel installs
 
