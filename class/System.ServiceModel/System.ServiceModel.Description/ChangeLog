@@ -1,5 +1,12 @@
 2007-07-26  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ContractDescriptionGenerator.cs : reverted previous change. It is
+	  conceptually wrong. RegisterInfo serialization is still possible
+	  because it could contain private DataContract member which works
+	  as a proxy to get or set properties on the RegisterInfo itself.
+
+2007-07-26  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ContractDescriptionGenerator.cs : added hack to support
 	  [MessageContract] type which has no [MessageBody] member.
 

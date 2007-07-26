@@ -327,6 +327,15 @@ namespace MonoTests.System.ServiceModel
 			ContractDescription.GetContract (typeof (IAsyncNameDoesNotStartWithBeginButExplicitName));
 		}
 
+		[Test]
+		public void MessageBodyMemberIsNotInferred ()
+		{
+			ContractDescription cd = ContractDescription.GetContract (typeof (MessageBodyMemberIsNotInferredService));
+			OperationDescription od = cd.Operations [0];
+			MessageDescription md = od.Messages [0];
+			Assert.AreEqual (0, md.Body.Parts.Count);
+		}
+
 		// It is for testing attribute search in interfaces.
 		public class Foo : IFoo
 		{
@@ -490,6 +499,25 @@ namespace MonoTests.System.ServiceModel
 
 			[OperationContract]
 			string Echo (string s1, string s2);
+		}
+
+		[ServiceContract]
+		public class MessageBodyMemberIsNotInferredService
+		{
+			[OperationContract]
+			public void Echo (MessageBodyMemberIsNotInferredContract msg)
+			{
+			}
+		}
+
+		[MessageContract]
+		public class MessageBodyMemberIsNotInferredContract
+		{
+			string foo = "foo";
+			public string Foo {
+				get { return foo; }
+				set { foo = value; }
+			}
 		}
 	}
 }
