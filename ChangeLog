@@ -1,3 +1,8 @@
+2007-07-26  Aaron Bockover  <abockover@novell.com>
+
+	* configure: Source in CONFIG_SITE if it exists, from which the prefix
+	can be set automatically; perfect for parallel installs
+
 2007-07-11  Jb Evain  <jbevain@novell.com>
 
 	* class/Makefile,
