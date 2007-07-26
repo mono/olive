@@ -1,3 +1,8 @@
+2007-07-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* PeerNodeAddress.cs : with private members it is always possible
+	  to hack around non-datacontract types.
+
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DuplexChannelFactory.cs: New static method.

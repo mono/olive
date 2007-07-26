@@ -33,7 +33,8 @@ using System.Net;
 
 namespace System.ServiceModel
 {
-	[DataContract]
+	[DataContract (Name = "PeerNodeAddress", Namespace = "http://schemas.microsoft.com/net/2006/05/peer")]
+	[KnownType (typeof (IPAddress []))]
 	public sealed class PeerNodeAddress
 	{
 		EndpointAddress endpoint;
@@ -42,6 +43,12 @@ namespace System.ServiceModel
 		public PeerNodeAddress (EndpointAddress endpointAddress,
 			ReadOnlyCollection<IPAddress> ipAddresses)
 		{
+			if (endpointAddress == null)
+				throw new ArgumentNullException ("endpointAddress");
+			if (ipAddresses == null)
+				throw new ArgumentNullException ("ipAddresses");
+			this.endpoint = endpointAddress;
+			peer_addresses = ipAddresses;
 		}
 
 		public EndpointAddress EndpointAddress {
@@ -50,6 +57,24 @@ namespace System.ServiceModel
 
 		public ReadOnlyCollection<IPAddress> IPAddresses {
 			get { return peer_addresses; }
+		}
+
+		[DataMember (Name = "EndpointAddress")]
+		EndpointAddress10 SerializedEndpoint {
+			get { return EndpointAddress10.FromEndpointAddress (endpoint); }
+			set { endpoint = value.ToEndpointAddress (); }
+		}
+
+		[DataMember (Name = "IPAddresses")]
+		IPAddress [] SerializedIPAddresses {
+			get {
+				IPAddress [] arr = new IPAddress [peer_addresses.Count];
+				peer_addresses.CopyTo (arr, 0);
+				return arr;
+			}
+			set {
+				peer_addresses = new ReadOnlyCollection<IPAddress> (value);
+			}
 		}
 	}
 }
