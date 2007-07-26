@@ -1,3 +1,8 @@
+2007-07-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionGenerator.cs : added hack to support
+	  [MessageContract] type which has no [MessageBody] member.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSTrustSTSContract.cs : write prefixes.

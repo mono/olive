@@ -327,6 +327,58 @@ namespace System.ServiceModel.Description
 				pd.MemberInfo = bmi;
 				mb.Parts.Add (pd);
 			}
+
+#if false // FIXME: implement
+			// If there is [MessageContract] but no [MessageBody],
+			// then create such a proxy type that contains every
+			// public field and property from this message contract 
+			// as a message body member, and create another type
+			// that contains a data member property whose name is
+			// "body" and whose type is the proxy type i.e.
+			//
+			//	FooProxyType body;
+			//	[DataContract]
+			//	class FooProxyType {
+			//		... members from message contract...
+			//	}
+			if (index == 0) {
+				Type proxyType = ServiceModelInternalConverter.MessageBodyToDataContractType (mb).ProxyType;
+
+				MessagePartDescription pd = CreatePartCore (null, "body", mb.WrapperNamespace);
+				pd.Type = generated_proxy_wrapper_type;
+				pd.MemberInfo = generated_body_fieldInfo;
+				mb.Parts.Add (pd);
+			}
+#else
+			// Compromised solution. Treat every public member as
+			// MessageBody.
+			if (index == 0) {
+				foreach (MemberInfo bmi in messageType.GetMembers (BindingFlags.Public | BindingFlags.Instance)) {
+					Type mtype = null;
+					string mname = null;
+					if (bmi is FieldInfo) {
+						FieldInfo fi = (FieldInfo) bmi;
+						mtype = fi.FieldType;
+						mname = fi.Name;
+					}
+					else if (bmi is PropertyInfo) {
+						PropertyInfo pi = (PropertyInfo) bmi;
+						mtype = pi.PropertyType;
+						mname = pi.Name;
+					}
+					else
+						continue;
+
+					MessagePartDescription pd =
+						CreatePartCore (null, mname,
+							mb.WrapperNamespace);
+					pd.Index = index++;
+					pd.Type = MessageFilterOutByRef (mtype);
+					pd.MemberInfo = bmi;
+					mb.Parts.Add (pd);
+				}
+			}
+#endif
 		}
 
 		static MessagePartDescription CreatePartCore (
