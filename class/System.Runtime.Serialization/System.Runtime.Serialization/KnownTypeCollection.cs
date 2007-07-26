@@ -113,6 +113,7 @@ namespace System.Runtime.Serialization
 			uint_type = new QName ("unsignedInt", s);
 			ulong_type = new QName ("unsignedLong", s);
 			string_type = new QName ("string", s);
+			guid_type = new QName ("guid", s);
 
 			dbnull_type = new QName ("DBNull", MSSimpleNamespace + "System");
 		}
@@ -144,6 +145,8 @@ namespace System.Runtime.Serialization
 
 			if (type == typeof (object))
 				return any_type;
+			if (type == typeof (Guid))
+				return guid_type;
 			switch (Type.GetTypeCode (type)) {
 			case TypeCode.Object: // other than System.Object
 			case TypeCode.DBNull: // it is natively mapped, but not in ms serialization namespace.
@@ -188,6 +191,8 @@ namespace System.Runtime.Serialization
 			Type type = obj.GetType ();
 			if (type == typeof (object))
 				return String.Empty;
+			if (type == typeof (Guid))
+				return XmlConvert.ToString ((Guid) obj);
 			switch (Type.GetTypeCode (type)) {
 			case TypeCode.Object: // other than System.Object
 			case TypeCode.Empty:
@@ -251,6 +256,7 @@ namespace System.Runtime.Serialization
 			case "unsignedLong":
 			case "string":
 			case "anyType":
+			case "guid":
 				return true;
 			default:
 				return false;
@@ -302,6 +308,8 @@ namespace System.Runtime.Serialization
 				return XmlConvert.ToUInt64 (s);
 			case "string":
 				return s;
+			case "guid":
+				return XmlConvert.ToGuid (s);
 			case "anyType":
 			default:
 				return s;
@@ -467,7 +475,7 @@ namespace System.Runtime.Serialization
 		internal bool IsPrimitiveNotEnum (Type type)
 		{
 			return (!type.IsEnum && 
-				(Type.GetTypeCode (type) != TypeCode.Object || type == typeof (object)));
+				(Type.GetTypeCode (type) != TypeCode.Object || type == typeof (Guid) || type == typeof (object)));
 		}
 
 		internal bool TryRegister (Type type)

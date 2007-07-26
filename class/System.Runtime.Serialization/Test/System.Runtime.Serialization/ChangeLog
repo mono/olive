@@ -1,3 +1,7 @@
+2007-07-26  Atsushi Enomoto  <atushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added Guid serialization test.
+
 2006-09-05  Ankit Jain  <jankit@novell.com>
 
 	* XsdDataContractImporterTest.cs (PrimitiveType): Add a check for number

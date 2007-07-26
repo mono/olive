@@ -460,6 +460,19 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		public void SerializeGuid ()
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (Guid));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				ser.WriteObject (w, Guid.Empty);
+			}
+			Assert.AreEqual (
+				"<guid xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">00000000-0000-0000-0000-000000000000</guid>",
+				sw.ToString ());
+		}
+
+		[Test]
 		public void SerializeEnum ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (Colors));
