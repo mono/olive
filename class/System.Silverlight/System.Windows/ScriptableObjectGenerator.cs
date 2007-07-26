@@ -18,7 +18,7 @@ namespace System.Windows
 
 	delegate void SetPropertyDelegate (IntPtr obj_handle, IntPtr property_handle, ref Value value);
 	delegate void GetPropertyDelegate (IntPtr obj_handle, IntPtr property_handle, ref Value value);
-	delegate void EventHandlerDelegate (IntPtr obj_handle, IntPtr event_handle);
+	delegate void EventHandlerDelegate (IntPtr obj_handle, IntPtr event_handle, IntPtr scriptable_obj, IntPtr closure);
 
 
 	// XXX This class shouldn't be needed.  MS just calls
@@ -132,10 +132,18 @@ namespace System.Windows
 						      TypeCode[] method_parameter_types,
 						      int parameter_count);
 
+		[DllImport ("moonplugin", EntryPoint = "moonlight_scriptable_emit_event")]
+		public static extern void emit_event (IntPtr plugin_handle,
+						      IntPtr scriptable_obj,
+						      IntPtr event_wrapper,
+						      IntPtr closure);
+
 		[DllImport ("moonplugin", EntryPoint = "moonlight_scriptable_object_register")]
 		public static extern void register (IntPtr plugin_handle,
 						    string name,
 						    IntPtr wrapper);
+
+		
 	}
 
 	internal class ScriptableObjectWrapper {
@@ -218,6 +226,43 @@ namespace System.Windows
 							    tcs,
 							    tcs.Length);
 		}
+
+		class EventDelegate {
+			public EventDelegate (Type event_handler_type, IntPtr scriptable_handle, IntPtr closure)
+			{
+				this.event_handler_type = event_handler_type;
+				this.scriptable_handle = scriptable_handle;
+				this.closure = closure;
+			}
+
+			Type event_handler_type;
+			IntPtr scriptable_handle;
+			IntPtr closure;
+
+			public Delegate Delegate {
+				get {
+					return Delegate.CreateDelegate (event_handler_type, this, GetType().GetMethod ("del"));
+				}
+			}
+
+			public void del (object sender, object args)
+			{
+				ScriptableObjectGenerator event_gen = new ScriptableObjectGenerator (args);
+
+				// don't need to validate the type
+				// again, this was done when the class
+				// containing the event was validated.
+				ScriptableObjectWrapper event_wrapper = event_gen.Generate (false);
+
+				Console.WriteLine ("emitting scriptable event!");
+
+				ScriptableNativeMethods.emit_event (WebApplication.Current.PluginHandle,
+								    scriptable_handle,
+								    event_wrapper.UnmanagedWrapper,
+								    closure);
+			}
+		}
+
 
 		static InvokeDelegate invoke = new InvokeDelegate (InvokeFromUnmanaged);
 		static SetPropertyDelegate set_prop = new SetPropertyDelegate (SetPropertyFromUnmanaged);
@@ -331,17 +376,15 @@ namespace System.Windows
 			ValueFromObject (ref value, v);
 		}
 
-		static void AddEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle)
+		static void AddEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle, IntPtr scriptable_obj, IntPtr closure)
 		{
+			object obj = GCHandle.FromIntPtr (obj_handle).Target;
 			EventInfo ei = (EventInfo)GCHandle.FromIntPtr (event_handle).Target;
 
-			Console.WriteLine ("TODO - AddEventFromUnmanaged");
-			Console.WriteLine (" + {0}", ei.Name);
-			Console.WriteLine (" + {0}", ei.DeclaringType.FullName);
-			Console.WriteLine (" + {0}", ei.EventHandlerType);
+			ei.AddEventHandler (obj, new EventDelegate (ei.EventHandlerType, scriptable_obj, closure).Delegate);
 		}
 
-		static void RemoveEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle)
+		static void RemoveEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle, IntPtr scriptable_obj, IntPtr closure)
 		{
 			EventInfo ei = (EventInfo)GCHandle.FromIntPtr (event_handle).Target;
 
