@@ -34,8 +34,15 @@ namespace System.Xml
 {
 	public abstract partial class XmlDictionaryWriter : XmlWriter
 	{
+		int depth;
+
 		protected XmlDictionaryWriter ()
 		{
+		}
+
+		internal int Depth {
+			get { return depth; }
+			set { depth = value; }
 		}
 
 		public virtual bool CanCanonicalize {
@@ -261,6 +268,15 @@ namespace System.Xml
 			//	xw.WriteXmlnsAttribute ("foo", "urn:bar");
 			//
 			// causes an XmlException. We need fix in sys.xml.dll
+
+			// When the prefix is null, this writer must mock
+			// a dummy namespace up. It is then up to the actual
+			// writer how it is determined in the output. (When
+			// there is a duplicate, then it will be further 
+			// modified.)
+			if (prefix == null)
+				prefix = "d" + Depth + "p1";
+
 			if (prefix == String.Empty)
 				WriteAttributeString ("xmlns", namespaceUri);
 			else

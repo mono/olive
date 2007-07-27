@@ -50,12 +50,11 @@ namespace MonoTests.System.Xml
 	public class XmlSimpleDictionaryWriterTest
 	{
 		[Test]
-		public void WriteXmlXmlnsAttribute ()
+		public void WriteXmlnsAttribute ()
 		{
 			xw.WriteStartElement ("l1");
 			xw.WriteXmlAttribute ("lang", "ja");
 			xw.WriteXmlnsAttribute ("f", "urn:foo");
-			//xw.WriteXmlnsAttribute (null, "urn:bar"); // random prefix?
 			xw.WriteStartElement ("l2");
 			xw.WriteXmlnsAttribute ("", "");
 			xw.WriteEndElement ();
@@ -65,6 +64,16 @@ namespace MonoTests.System.Xml
 			xw.WriteEndElement ();
 			xw.Flush ();
 			Assert.AreEqual ("<l1 xml:lang='ja' xmlns:f='urn:foo'><l2 xmlns='' /><l2 xmlns='urn:bar' /></l1>", Output);
+		}
+
+		[Test]
+		public void WriteXmlnsAttributeNullPrefix ()
+		{
+			xw.WriteStartElement ("root", "urn:x");
+			xw.WriteXmlnsAttribute (null, "urn:foo");
+			xw.WriteEndElement ();
+			xw.Close ();
+			Assert.AreEqual ("<root xmlns:d1p1='urn:foo' xmlns='urn:x' />", Output);
 		}
 
 		#region Copied from XmlTextWriterTests.cs

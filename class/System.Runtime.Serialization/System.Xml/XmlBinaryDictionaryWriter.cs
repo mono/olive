@@ -390,6 +390,8 @@ namespace System.Xml
 			xml_lang = xml_lang_stack.Pop ();
 			xml_space = xml_space_stack.Pop ();
 			open_start_element = false;
+
+			Depth--;
 		}
 
 		public override void WriteEntityRef (string name)
@@ -536,6 +538,8 @@ namespace System.Xml
 			ProcessPendingBuffer (true, false);
 			CheckState ();
 			CloseStartElement ();
+
+			Depth++;
 
 			element_ns_stack.Push (element_ns);
 			xml_lang_stack.Push (xml_lang);
