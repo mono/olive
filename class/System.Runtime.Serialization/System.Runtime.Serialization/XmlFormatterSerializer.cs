@@ -40,7 +40,7 @@ namespace System.Runtime.Serialization
 {
 	internal class XmlFormatterSerializer
 	{
-		XmlWriter writer;
+		XmlDictionaryWriter writer;
 		object graph;
 		KnownTypeCollection types;
 		
@@ -50,27 +50,29 @@ namespace System.Runtime.Serialization
 		int max_items;
 
 		ArrayList objects = new ArrayList ();
+		Stack ns_stack = new Stack ();
 
-		public static void Serialize (XmlWriter writer, object graph,
+		public static void Serialize (XmlDictionaryWriter writer, object graph,
 			KnownTypeCollection types,
-			bool ignoreUnknown, int maxItems)
+			bool ignoreUnknown, int maxItems, string root_ns)
 		{
 			new XmlFormatterSerializer (
-				writer, types, ignoreUnknown, maxItems)
+				writer, types, ignoreUnknown, maxItems, root_ns)
 				.Serialize (graph != null ? graph.GetType () : null, graph);
 		}
 
-		public XmlFormatterSerializer (XmlWriter writer,
+		public XmlFormatterSerializer (XmlDictionaryWriter writer,
 			KnownTypeCollection types,
-			bool ignoreUnknown, int maxItems)
+			bool ignoreUnknown, int maxItems, string root_ns)
 		{
 			this.writer = writer;
 			this.types = types;
 			ignore_unknown = ignoreUnknown;
 			max_items = maxItems;
+			ns_stack.Push (root_ns);
 		}
 
-		public XmlWriter Writer {
+		public XmlDictionaryWriter Writer {
 			get { return writer; }
 		}
 
@@ -94,6 +96,23 @@ namespace System.Runtime.Serialization
 //			writer.WriteQualifiedName (qname.Name, qname.Namespace);
 //			writer.WriteEndAttribute ();
 			writer.WriteString (KnownTypeCollection.PredefinedTypeObjectToString (graph));
+		}
+
+		public void WriteStartElement (string name)
+		{
+			WriteStartElement (name, ns_stack.Peek () as string);
+		}
+
+		public void WriteStartElement (string name, string ns)
+		{
+			ns_stack.Push (ns);
+			writer.WriteStartElement (name, ns);
+		}
+
+		public void WriteEndElement ()
+		{
+			ns_stack.Pop ();
+			writer.WriteEndElement ();
 		}
 
 		private void Write_i_type (QName qname)

@@ -286,9 +286,10 @@ namespace System.Runtime.Serialization
 					fi.GetValue (graph) :
 					pi.GetValue (graph, null);
 
-				serializer.Writer.WriteStartElement (dmi.XmlName, dmi.XmlNamespace);
+				serializer.WriteStartElement (dmi.XmlName);
+
 				serializer.Serialize (type, value);
-				serializer.Writer.WriteEndElement ();
+				serializer.WriteEndElement ();
 			}
 		}
 		
@@ -539,8 +540,7 @@ namespace System.Runtime.Serialization
 				if (!pi.CanRead || !pi.CanWrite)
 					throw new InvalidDataContractException (String.Format (
 							"DataMember property {0} must have both getter and setter.", pi));
-				data_members.Add (new DataMemberInfo (pi, dma, qname.Namespace));
-				KnownTypes.Add (pi.PropertyType);
+				data_members.Add (CreateDataMemberInfo (dma, pi, pi.PropertyType));
 			}
 
 			foreach (FieldInfo fi in type.GetFields (flags)) {
@@ -551,13 +551,19 @@ namespace System.Runtime.Serialization
 				if (fi.IsInitOnly)
 					throw new InvalidDataContractException (String.Format (
 							"DataMember field {0} must not be read-only.", fi));
-				data_members.Add (new DataMemberInfo (fi, dma, qname.Namespace));
-				KnownTypes.Add (fi.FieldType);
+				data_members.Add (CreateDataMemberInfo (dma, fi, fi.FieldType));
 			}
 
 			data_members.Sort (DataMemberInfo.DataMemberInfoComparer.Instance);
 
 			return data_members;
+		}
+
+		private DataMemberInfo CreateDataMemberInfo (DataMemberAttribute dma, MemberInfo mi, Type type)
+		{
+			KnownTypes.Add (type);
+			QName qname = KnownTypes.GetQName (type);
+			return new DataMemberInfo (mi, dma, qname.Namespace);
 		}
 
 		public override List<DataMemberInfo> GetMembers ()
@@ -569,6 +575,7 @@ namespace System.Runtime.Serialization
 	internal class CollectionTypeMap : SerializationMap
 	{
 		Type element_type;
+		QName element_qname;
 
 		public CollectionTypeMap (
 			Type type, Type elementType,
@@ -576,13 +583,23 @@ namespace System.Runtime.Serialization
 			: base (type, qname, knownTypes)
 		{
 			element_type = elementType;
+			element_qname = KnownTypes.GetQName (element_type);
 		}
 
 		public override void Serialize (object graph,
 			XmlFormatterSerializer serializer)
 		{
-			foreach (object o in (IEnumerable) graph)
+			string ns = element_qname.Namespace;
+			if (ns == KnownTypeCollection.MSSimpleNamespace)
+				ns = KnownTypeCollection.MSArraysNamespace;
+
+			serializer.Writer.WriteXmlnsAttribute (null, ns);
+
+			foreach (object o in (IEnumerable) graph) {
+				serializer.WriteStartElement (element_qname.Name, ns);
 				serializer.Serialize (element_type, o);
+				serializer.WriteEndElement ();
+			}
 		}
 
 		public override List<DataMemberInfo> GetMembers ()

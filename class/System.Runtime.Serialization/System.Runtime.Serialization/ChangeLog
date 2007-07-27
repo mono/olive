@@ -1,3 +1,15 @@
+2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SerializationMap.cs
+	  XmlFormatterSerializer.cs
+	  DataContractSerializer.cs :
+	  now it needs some mess to handle serialization namespaces.
+	  Collection items are serialized in its own xml namespace. Others,
+	  (including the collection member itself) is serialized in its
+	  parent xml namespace. Collection items are serialized with its
+	  wrapping element.
+	* XsdDataContractImporter.cs : use constant.
+
 2007-03-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* KnownTypeCollection.cs : added support for Guid serialization.

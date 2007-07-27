@@ -1,3 +1,8 @@
+2007-07-27  Atsushi Enomoto  <atushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : added test for serializing IPAddress
+	  (will be required for RegisterInfo).
+
 2007-07-26  Atsushi Enomoto  <atushi@ximian.com>
 
 	* XmlObjectSerializerTest.cs : added Guid serialization test.

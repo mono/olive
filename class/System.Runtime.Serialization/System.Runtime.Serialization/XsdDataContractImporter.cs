@@ -159,7 +159,7 @@ namespace System.Runtime.Serialization
 
 		private QName ImportInternal (XmlSchemaSet schemas, QName qname)
 		{
-			if (qname.Namespace == "http://schemas.microsoft.com/2003/10/Serialization/")
+			if (qname.Namespace == KnownTypeCollection.MSSimpleNamespace)
 				//Primitive type
 				return qname;
 
