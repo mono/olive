@@ -38,15 +38,17 @@ namespace System.Windows.Browser
 			this.node_list = nodeList;
 		}
 
-		[MonoTODO]
 		public int Count {
-			get { return WebApplication.GetProperty<int> (node_list, "length"); }
+			get {
+				return HtmlObject.GetPropertyInternal<int> (node_list, "length");
+			}
 		}
 
-		[MonoTODO]
 		public HtmlElement this [int i] {
 			// is this approach (creating HtmlElement every time) bogus?
-			get { return new HtmlElement (WebApplication.InvokeMethod<IntPtr> (node_list, "item", i)); }
+			get {
+				return new HtmlElement (HtmlObject.InvokeInternal<IntPtr> (node_list, "item", i));
+			}
 		}
 	}
 }

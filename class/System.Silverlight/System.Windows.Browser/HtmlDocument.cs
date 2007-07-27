@@ -42,17 +42,17 @@ namespace System.Windows.Browser
 
 		public HtmlElement CreateElement (string tagName)
 		{
-			return new HtmlElement (InvokeMethod<IntPtr> ("createElement", tagName));
+			return new HtmlElement (InvokeInternal<IntPtr> (Handle, "createElement", tagName));
 		}
 
 		public HtmlElement GetElementByID (string id)
 		{
-			return new HtmlElement (InvokeMethod<IntPtr> ("getElementById", id));
+			return new HtmlElement (InvokeInternal<IntPtr> (Handle, "getElementById", id));
 		}
 
 		public HtmlElementCollection GetElementsByTagName (string tagName)
 		{
-			return new HtmlElementCollection (InvokeMethod<IntPtr> ("getElementsByTagName", tagName));
+			return new HtmlElementCollection (InvokeInternal<IntPtr> (Handle, "getElementsByTagName", tagName));
 		}
 	}
 }

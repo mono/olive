@@ -35,6 +35,15 @@ namespace System.Windows.Browser {
 
 		private static BrowserInformation browser_info;
 
+		
+		internal class HtmlWindow : HtmlObject
+		{
+			internal HtmlWindow (IntPtr handle)
+				: base (handle)
+			{
+			}
+		}
+
 		public HtmlPage ()
 		{
 		}
@@ -48,10 +57,15 @@ namespace System.Windows.Browser {
 		}
 
 		public static string Cookies {
-			get { return null; }
-			set { ; }
+			get {
+				return GetPropertyInternal<string> (Document.Handle, "cookie");
+			}
+			set {
+				SetPropertyInternal (Document.Handle, "cookie", value);
+			}
 		}
 
+		[MonoTODO]
 		public static string CurrentBookmark {
 			get { return null; }
 			set { ; }
@@ -59,65 +73,90 @@ namespace System.Windows.Browser {
 
 		public static HtmlDocument Document {
 			get {
-				Console.WriteLine ("YO!");
-				return null;
+				return new HtmlDocument (GetPropertyInternal<IntPtr> (IntPtr.Zero, "document"));
 			}
 		}
 
 		public static Uri DocumentUri {
-			get { return null; }
+			get {
+
+				return new Uri (GetPropertyInternal<string> (Document.Handle, "URL"));
+			}
 		}
 
 		public static IDictionary<string,string> QueryString {
-			get { return null; }
+			get {
+				// document.location.search
+				IntPtr loc = GetPropertyInternal<IntPtr> (Document.Handle, "location");
+				string search = GetPropertyInternal<string> (loc, "search");
+
+				Dictionary<string, string> res = new Dictionary<string, string> ();
+
+				int li = 1;
+				string name = null;
+				bool in_name = true;
+				for (int i = 1; i < search.Length; i++) {
+					if (in_name) {
+						if (search [i] == '=') {
+							name = search.Substring (li, i - li);
+							in_name = false;
+							li = i + 1;
+						}
+					} else {
+						if (search [i] == '&') {
+							res.Add (name, search.Substring (li, i - li));
+							in_name = true;
+							li = i + 1;
+						}
+					}
+				}
+
+				if (name != null && li < search.Length)
+					res.Add (name, search.Substring (li, search.Length - li));
+
+				return res;
+			}
 		}
 
 		public static HtmlObject Window {
-			get { return null; }
+			get {
+				return new HtmlWindow (GetPropertyInternal<IntPtr> (IntPtr.Zero, "window"));
+			}
 		}
 
 		public static void Navigate (string navigateToUri)
 		{
-			Navigate (WebApplication.Current.PluginHandle, navigateToUri);
+			SetPropertyInternal (Window.Handle, "location", navigateToUri);
 		}
 
 		public static ScriptableObject Navigate (string navigateToUri, string target)
 		{
-			IntPtr handle = Navigate (WebApplication.Current.PluginHandle, navigateToUri, target, null);
-			return new ScriptableObject (handle);
+			return new HtmlWindow (InvokeInternal<IntPtr> (Window.Handle, "open", navigateToUri, target));
 		}
 
 		public static ScriptableObject Navigate (string navigateToUri, string target, string targetFeatures)
 		{
-			IntPtr handle = Navigate (WebApplication.Current.PluginHandle, navigateToUri, target, targetFeatures);
-			return new ScriptableObject (handle);
+			return new HtmlWindow (InvokeInternal<IntPtr> (Window.Handle, "open", navigateToUri, target, targetFeatures));
 		}
 
+		[MonoTODO ("Not sure this can be done from JS. I think I will need to add a plugin function for this.")]
 		public static void NavigateToBookmark (string bookmark)
 		{
-			NavigateToBookmark (WebApplication.Current.PluginHandle, bookmark);
+			
 		}
 
+		[MonoTODO ("How do i get the default form")]
 		public static void Submit ()
 		{
-			Submit (WebApplication.Current.PluginHandle, null);
+			// Submit (WebApplication.Current.PluginHandle, null);
 		}
 
 		public static void Submit (string formId)
 		{
-			Submit (WebApplication.Current.PluginHandle, formId);
+			HtmlElement form = Document.GetElementByID (formId);
+			if (form == null)
+				return;
+			InvokeInternal<object> (form.Handle, "submit");
 		}
-
-		[DllImport ("moonplugin")]
-		static extern void Navigate (IntPtr npp, string uri);
-
-		[DllImport ("moonplugin")]
-		static extern IntPtr Navigate (IntPtr npp, string uri, string target, string features);
-
-		[DllImport ("moonplugin")]
-		static extern void NavigateToBookmark (IntPtr xpp, string bookmark);
-
-		[DllImport ("moonplugin")]
-		static extern void Submit (IntPtr xpp, string formId);
 	}
 }

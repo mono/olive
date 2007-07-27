@@ -41,28 +41,24 @@ namespace System.Windows.Browser
 		{
 		}
 
-		[MonoTODO]
 		public void AppendChild (HtmlElement element)
 		{
-			InvokeMethod ("appendChild", element.Handle);
+			InvokeInternal<object> (Handle, "appendChild", element);
 		}
 
-		[MonoTODO]
 		public void AppendChild (HtmlElement element, HtmlElement referenceElement)
 		{
-			InvokeMethod ("insertAfter", element.Handle, referenceElement.Handle);
+			InvokeInternal<object> (Handle, "insertBefore", element, referenceElement);
 		}
 
-		[MonoTODO]
 		public void Focus ()
 		{
-			InvokeMethod ("focus");
+			InvokeInternal<object> (Handle, "focus");
 		}
 
-		[MonoTODO]
 		public string GetAttribute (string name)
 		{
-			return InvokeMethod<string> ("getAttribute", name);
+			return InvokeInternal<string> (Handle, "getAttribute", name);
 		}
 
 		[MonoTODO]
@@ -71,16 +67,14 @@ namespace System.Windows.Browser
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public void RemoveAttribute (string name)
 		{
-			InvokeMethod ("removeAttribute", name);
+			InvokeInternal<object> (Handle, "removeAttribute", name);
 		}
 
-		[MonoTODO]
 		public void RemoveChild (HtmlElement element)
 		{
-			InvokeMethod ("removeChild", element.Handle);
+			InvokeInternal<object> (Handle, "removeChild", element);
 		}
 
 		[MonoTODO]
@@ -89,22 +83,21 @@ namespace System.Windows.Browser
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public void SetAttribute (string name, string value)
 		{
-			InvokeMethod ("setAttribute", name, value);
+			InvokeInternal<object> (Handle, "setAttribute", name, value);
 		}
 
-		[MonoTODO]
 		public override void SetProperty (string name, object value)
 		{
-			base.SetProperty (name, value);
+			SetPropertyInternal (Handle, name, value);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("This doesn't seem to work.")]
 		public void SetStyleAttribute (string name, string value)
 		{
-			throw new NotImplementedException ();
+			IntPtr style = GetPropertyInternal<IntPtr> (Handle, "style");
+			SetPropertyInternal (style, name, value);
 		}
 
 		public HtmlElementCollection Children {
@@ -112,21 +105,21 @@ namespace System.Windows.Browser
 		}
 
 		public string CssClass {
-			get { return GetProperty<string> ("class"); }
-			set { SetProperty ("class", value); }
+			get { return GetPropertyInternal<string> (Handle, "class"); }
+			set { SetPropertyInternal (Handle, "class", value); }
 		}
 
 		public string ID {
-			get { return GetProperty<string> ("id"); }
-			set { SetProperty ("id", value); }
+			get { return GetPropertyInternal<string> (Handle, "id"); }
+			set { SetPropertyInternal (Handle, "id", value); }
 		}
 
 		public HtmlElement Parent {
-			get { return GetProperty<HtmlElement> ("parentNode"); }
+			get { return new HtmlElement (GetPropertyInternal<IntPtr> (Handle, "parentNode")); }
 		}
 
 		public string TagName {
-			get { return GetProperty<string> ("tagName"); }
+			get { return GetPropertyInternal<string> (Handle, "tagName"); }
 		}
 	}
 }
