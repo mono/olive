@@ -270,7 +270,7 @@ namespace System.Windows
 		static EventHandlerDelegate add_event = new EventHandlerDelegate (AddEventFromUnmanaged);
 		static EventHandlerDelegate remove_event = new EventHandlerDelegate (RemoveEventFromUnmanaged);
 
-		static object ObjectFromValue (Value v)
+		internal static object ObjectFromValue (Value v)
 		{
 			switch (v.k) {
 			case Kind.BOOL:
@@ -285,13 +285,15 @@ namespace System.Windows
 				return v.u.d;
 			case Kind.STRING:
 				return Marshal.PtrToStringAuto (v.u.p);
+			case Kind.NPOBJ:
+				return v.u.p;
 			default:
 				Console.WriteLine ("unsupported Kind.{0}", v.k);
 				throw new NotSupportedException ();
 			}
 		}
 
-		static void ValueFromObject (ref Value v, object o)
+		internal static void ValueFromObject (ref Value v, object o)
 		{
 			switch (Type.GetTypeCode (o.GetType())) {
 			case TypeCode.Boolean:
@@ -323,6 +325,11 @@ namespace System.Windows
 				v.u.p = result;
 				break;
 			default:
+				if (o is ScriptableObject) {
+					v.k = Kind.NPOBJ;
+					v.u.p = ((ScriptableObject) o).Handle;
+					return;
+				}
 				Console.WriteLine ("unsupported TypeCode.{0}", Type.GetTypeCode(o.GetType()));
 				throw new NotSupportedException ();
 			}

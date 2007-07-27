@@ -1,3 +1,9 @@
+2007-07-27  Jackson Harper  <jackson@ximian.com>
+
+	* ScriptableObjectGenerator.cs: Expose some of these methods
+	(maybe we should move them to agmono?).
+	- Add value<->npobj support
+
 2007-07-25  Chris Toshok  <toshok@ximian.com>
 
 	* ScriptableObjectGenerator.cs: more gross stuff.  add event
