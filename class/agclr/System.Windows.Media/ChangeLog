@@ -1,3 +1,7 @@
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* Brush.cs: RC1 breaking change - TransformGroup -> Transform.
+
 2007-07-12  Chris Toshok  <toshok@ximian.com>
 
 	* Visual.cs: implement the mouse capturing calls.

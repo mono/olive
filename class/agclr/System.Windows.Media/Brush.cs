@@ -36,8 +36,8 @@ namespace System.Windows.Media {
 		static Brush ()
 		{
 			OpacityProperty = DependencyProperty.Lookup (Kind.BRUSH, "Opacity", typeof (double));
-			TransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "Transform", typeof (TransformGroup));
-			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform", typeof (TransformGroup));
+			TransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "Transform", typeof (Transform));
+			RelativeTransformProperty = DependencyProperty.Lookup (Kind.BRUSH, "RelativeTransform", typeof (Transform));
 		}
 		
 		public Brush () : base (NativeMethods.brush_new ())
@@ -59,9 +59,9 @@ namespace System.Windows.Media {
 			}
 		}
 		
-		public TransformGroup RelativeTransform {
+		public Transform RelativeTransform {
 			get {
-				return (TransformGroup) GetValue (RelativeTransformProperty);
+				return (Transform) GetValue (RelativeTransformProperty);
 			}
 
 			set {
@@ -69,9 +69,9 @@ namespace System.Windows.Media {
 			}
 		}
 		
-		public TransformGroup Transform {
+		public Transform Transform {
 			get {
-				return (TransformGroup) GetValue (TransformProperty);
+				return (Transform) GetValue (TransformProperty);
 			}
 
 			set {
