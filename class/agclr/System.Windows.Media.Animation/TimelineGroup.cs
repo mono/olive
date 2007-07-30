@@ -46,22 +46,16 @@ namespace System.Windows.Media.Animation {
 
 		static TimelineGroup ()
 		{
-			// Documentation says Children's type is TimeLineCollection, while 
-			// MS' bits says it's a Timeline. This looks too weird for it to be
-			// true, so we're assuming the bits are wrong and the docs right
-			// for a change.
 			ChildrenProperty = DependencyProperty.Lookup (Kind.TIMELINEGROUP, "Children", typeof (TimelineCollection));
 		}
 	
-		public Timeline Children {
+		public TimelineCollection Children {
 			get {
-				return ((TimelineCollection) GetValue (ChildrenProperty))[0];
+				return ((TimelineCollection) GetValue (ChildrenProperty));
 			}
 		
 			set {
-				TimelineCollection col = (TimelineCollection)GetValue (ChildrenProperty);
-				col.Clear ();
-				col.Add (value);
+				SetValue (ChildrenProperty, value);
 			}
 		}
 
