@@ -1,3 +1,7 @@
+2007-07-29  Chris Toshok  <toshok@ximian.com>
+
+	* Kind.cs: RESOURCE_COLLECTION -> RESOURCE_DICTIONARY.
+
 2007-07-20  Miguel de Icaza  <miguel@novell.com>
 
 	* NativeMethods.cs (collection_remove_at): Add new method. 
