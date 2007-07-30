@@ -32,8 +32,6 @@ namespace System.Windows.Media {
 
 		public static readonly DependencyProperty IsClosedProperty =
 			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsClosed", typeof (bool));
-		public static readonly DependencyProperty IsFilledProperty = 
-			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsFilled", typeof (bool));
 		public static readonly DependencyProperty SegmentsProperty = 
 			DependencyProperty.Lookup (Kind.PATHFIGURE, "Segments", typeof (PathSegmentCollection));
 		public static readonly DependencyProperty StartPointProperty = 
@@ -53,11 +51,6 @@ namespace System.Windows.Media {
 			set { SetValue (IsClosedProperty, value); }
 		}
 			
-		public bool IsFilled {
-			get { return (bool) GetValue (IsFilledProperty); }
-			set { SetValue (IsFilledProperty, value); }
-		}
-
 		public PathSegmentCollection Segments {
 			get { return (PathSegmentCollection) GetValue (SegmentsProperty); }
 			set { SetValue (SegmentsProperty, value); }

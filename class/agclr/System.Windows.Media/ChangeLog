@@ -1,5 +1,9 @@
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
+	* PathFigure.cs: IsFilled is gone in RC1.
+	
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
 	* Brush.cs: RC1 breaking change - TransformGroup -> Transform.
 
 2007-07-12  Chris Toshok  <toshok@ximian.com>
