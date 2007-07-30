@@ -113,9 +113,9 @@ namespace System.Windows {
 			return s;
 		}
 
-		public void Open (string verb, Uri URI, bool Async)
+		public void Open (string verb, Uri URI)
 		{
-			NativeMethods.downloader_open (native, verb, URI.ToString (), Async);
+			NativeMethods.downloader_open (native, verb, URI.ToString ());
 		}
 
 		public void Send ()
