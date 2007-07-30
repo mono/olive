@@ -1,5 +1,5 @@
 //
-// ResourceCollection.cs
+// ResourceDictionary.cs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
@@ -33,19 +33,19 @@ using Mono;
 
 namespace System.Windows {
 
-	public class ResourceCollection : MS.Internal.Collection<DependencyObject> {
-		public ResourceCollection ()  : base (NativeMethods.resource_collection_new ())
+	public class ResourceDictionary : MS.Internal.Collection<DependencyObject> {
+		public ResourceDictionary ()  : base (NativeMethods.resource_collection_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 		
-		internal ResourceCollection (IntPtr raw) : base (raw)
+		internal ResourceDictionary (IntPtr raw) : base (raw)
 		{
 		}
 		
 		internal override Kind GetKind ()
 		{
-			return Kind.RESOURCE_COLLECTION;
+			return Kind.RESOURCE_DICTIONARY;
 		}
 	}
 }

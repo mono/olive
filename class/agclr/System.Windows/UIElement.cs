@@ -57,7 +57,7 @@ namespace System.Windows {
 			CursorProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Cursor", typeof (Cursors));
 			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible", typeof (bool));
 			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility", typeof (Visibility));
-			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceCollection));
+			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceDictionary));
 			ZIndexProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "ZIndex", typeof (int));
 		}
 			
@@ -140,9 +140,9 @@ namespace System.Windows {
 			}
 		}
 		
-		public ResourceCollection Resources {
+		public ResourceDictionary Resources {
 			get {
-				return (ResourceCollection) GetValue (ResourcesProperty);
+				return (ResourceDictionary) GetValue (ResourcesProperty);
 			}
 				
 			set {

@@ -304,8 +304,8 @@ namespace System.Windows {
 			case Kind.VISUAL_COLLECTION:
 				return new VisualCollection (raw);
 				
-			case Kind.RESOURCE_COLLECTION:
-				return new ResourceCollection (raw);
+			case Kind.RESOURCE_DICTIONARY:
+				return new ResourceDictionary (raw);
 
 			case Kind.TRIGGERACTION_COLLECTION: 
 				return new TriggerActionCollection (raw);

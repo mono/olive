@@ -46,7 +46,7 @@ System.Windows/FontWeights.cs
 System.Windows/FrameworkElement.cs
 System.Windows/Inlines.cs
 System.Windows/Point.cs
-System.Windows/ResourceCollection.cs
+System.Windows/ResourceDictionary.cs
 System.Windows/Rect.cs
 System.Windows/Size.cs
 System.Windows/TextDecorations.cs

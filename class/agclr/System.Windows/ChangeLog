@@ -1,3 +1,13 @@
+2007-07-29  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: track RESOURCE_COLLECTION ->
+	RESOURCE_DICTIONARY change.
+
+	* UIElement.cs: same.
+
+	* ResourceDictionary.cs: move ResourceCollection.cs here, and
+	rename it.
+
 2007-07-16  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Rect.cs: Fix constructor as reported by Robert Jordan.
