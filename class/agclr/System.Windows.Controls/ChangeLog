@@ -1,3 +1,10 @@
+2007-07-31  Chris Toshok  <toshok@ximian.com>
+
+	* MediaBase.cs: remove the events.
+
+	* MediaElement.cs: and add them here.  also, hook them up to their
+	unmanaged counterparts.
+
 2007-07-09  Chris Toshok  <toshok@ximian.com>
 
 	* Control.cs: don't pass the parser callbacks to

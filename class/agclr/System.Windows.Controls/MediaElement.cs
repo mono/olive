@@ -30,6 +30,7 @@ using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Runtime.InteropServices;
 
 namespace System.Windows.Controls
 {
@@ -243,11 +244,176 @@ namespace System.Windows.Controls
 		{
 			return Kind.MEDIAELEMENT;
 		}
+
+		static object BufferingProgressChangedEvent = new object ();
+		static object CurrentStateChangedEvent = new object ();
+		static object DownloadProgressChangedEvent = new object ();
+		static object MarkerReachedEvent = new object ();
+		static object MediaOpenedEvent = new object ();
+		static object MediaEndedEvent = new object ();
+		static object MediaFailedEvent = new object ();
 		
-		
-		public event EventHandler BufferingProgressChanged;
-		public event EventHandler CurrentStateChanged;
-		public event EventHandler DownloadProgressChanged;
-		public event TimelineMarkerEventHandler MarkerReached;
+		public event EventHandler BufferingProgressChanged {
+			add {
+				if (events[BufferingProgressChangedEvent] == null)
+					Events.AddHandler (this, "BufferingProgressChanged", buffering_progress_changed);
+				events.AddHandler (BufferingProgressChangedEvent, value);
+			}
+			remove {
+				if (events[BufferingProgressChangedEvent] == null)
+					Events.AddHandler (this, "BufferingProgressChanged", buffering_progress_changed);
+				events.AddHandler (BufferingProgressChangedEvent, value);
+			}
+		}
+
+		public event EventHandler CurrentStateChanged {
+			add {
+				if (events[CurrentStateChangedEvent] == null)
+					Events.AddHandler (this, "CurrentStateChanged", current_state_changed);
+				events.AddHandler (CurrentStateChangedEvent, value);
+			}
+			remove {
+				if (events[CurrentStateChangedEvent] == null)
+					Events.AddHandler (this, "CurrentStateChanged", current_state_changed);
+				events.AddHandler (CurrentStateChangedEvent, value);
+			}
+		}
+		public event EventHandler DownloadProgressChanged {
+			add {
+				if (events[DownloadProgressChangedEvent] == null)
+					Events.AddHandler (this, "DownloadProgressChanged", download_progress_changed);
+				events.AddHandler (DownloadProgressChangedEvent, value);
+			}
+			remove {
+				if (events[DownloadProgressChangedEvent] == null)
+					Events.AddHandler (this, "DownloadProgressChanged", download_progress_changed);
+				events.AddHandler (DownloadProgressChangedEvent, value);
+			}
+		}
+		public event TimelineMarkerEventHandler MarkerReached {
+			add {
+				if (events[MarkerReachedEvent] == null)
+					Events.AddHandler (this, "MarkerReached", marker_reached);
+				events.AddHandler (MarkerReachedEvent, value);
+			}
+			remove {
+				if (events[MarkerReachedEvent] == null)
+					Events.AddHandler (this, "MarkerReached", marker_reached);
+				events.AddHandler (MarkerReachedEvent, value);
+			}
+		}
+
+		public event EventHandler MediaOpened {
+			add {
+				if (events[MediaOpenedEvent] == null)
+					Events.AddHandler (this, "MediaOpened", media_opened);
+				events.AddHandler (MediaOpenedEvent, value);
+			}
+			remove {
+				if (events[MediaOpenedEvent] == null)
+					Events.AddHandler (this, "MediaOpened", media_opened);
+				events.AddHandler (MediaOpenedEvent, value);
+			}
+		}
+
+		public event EventHandler MediaEnded {
+			add {
+				if (events[MediaEndedEvent] == null)
+					Events.AddHandler (this, "MediaEnded", media_ended);
+				events.AddHandler (MediaEndedEvent, value);
+			}
+			remove {
+				if (events[MediaEndedEvent] == null)
+					Events.AddHandler (this, "MediaEnded", media_ended);
+				events.AddHandler (MediaEndedEvent, value);
+			}
+		}
+
+		public event ErrorEventHandler MediaFailed {
+			add {
+				if (events[MediaFailedEvent] == null)
+					Events.AddHandler (this, "MediaFailed", media_failed);
+				events.AddHandler (MediaFailedEvent, value);
+			}
+			remove {
+				if (events[MediaFailedEvent] == null)
+					Events.AddHandler (this, "MediaFailed", media_failed);
+				events.AddHandler (MediaFailedEvent, value);
+			}
+		}
+
+
+		// the nasty event hookup stuff
+
+		static UnmanagedEventHandler buffering_progress_changed = new UnmanagedEventHandler (buffering_progress_changed_cb);
+		static UnmanagedEventHandler current_state_changed = new UnmanagedEventHandler (current_state_changed_cb);
+		static UnmanagedEventHandler download_progress_changed = new UnmanagedEventHandler (download_progress_changed_cb);
+		static UnmanagedEventHandler marker_reached = new UnmanagedEventHandler (marker_reached_cb);
+		static UnmanagedEventHandler media_opened = new UnmanagedEventHandler (media_opened_cb);
+		static UnmanagedEventHandler media_ended = new UnmanagedEventHandler (media_ended_cb);
+		static UnmanagedEventHandler media_failed = new UnmanagedEventHandler (media_failed_cb);
+
+		private static void buffering_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeBufferingProgressChanged ();
+		}
+		private void InvokeBufferingProgressChanged ()
+		{
+			EventHandler h = (EventHandler)events[BufferingProgressChangedEvent];
+			if (h != null) h (this, EventArgs.Empty);
+		}
+
+		private static void current_state_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeCurrentStateChanged ();
+		}
+		private void InvokeCurrentStateChanged ()
+		{
+			EventHandler h = (EventHandler)events[CurrentStateChangedEvent];
+			if (h != null) h (this, EventArgs.Empty);
+		}
+
+		private static void download_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeDownloadProgressChanged ();
+		}
+		private void InvokeDownloadProgressChanged ()
+		{
+			EventHandler h = (EventHandler)events[DownloadProgressChangedEvent];
+			if (h != null) h (this, EventArgs.Empty);
+		}
+
+		private static void marker_reached_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeMarkerReached ();
+		}
+		private void InvokeMarkerReached ()
+		{
+			TimelineMarkerEventHandler h = (TimelineMarkerEventHandler)events[MarkerReachedEvent];
+			if (h != null) h (this, null); // XXX
+		}
+
+		private static void media_opened_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeMediaOpened ();
+		}
+		private void InvokeMediaOpened ()
+		{
+			EventHandler h = (EventHandler)events[MediaOpenedEvent];
+			if (h != null) h (this, EventArgs.Empty); // XXX
+		}
+
+		private static void media_ended_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeMediaEnded ();
+		}
+		private void InvokeMediaEnded ()
+		{
+			EventHandler h = (EventHandler)events[MediaEndedEvent];
+			if (h != null) h (this, EventArgs.Empty); // XXX
+		}
+
+		private static void media_failed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			((MediaElement)GCHandle.FromIntPtr (closure).Target).InvokeMediaFailed ();
+		}
+		private void InvokeMediaFailed ()
+		{
+			EventHandler h = (EventHandler)events[MediaFailedEvent];
+			if (h != null) h (this, EventArgs.Empty); // XXX
+		}
 	}
 }

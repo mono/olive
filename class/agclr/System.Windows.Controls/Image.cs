@@ -61,7 +61,6 @@ namespace System.Windows.Controls {
 			
 			if (dl.Status != 200){
 				dl.Completed += delegate {
-					End ();
 					NativeMethods.image_set_source (native, dl.native, PartName);
 				};
 				dl.Send ();

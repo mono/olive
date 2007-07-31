@@ -67,21 +67,9 @@ namespace System.Windows.Controls {
 			set { SetValue (StretchProperty, value); }
 		}
 
-		public event EventHandler MediaOpened;
-		public event EventHandler MediaEnded;
-		public event ErrorEventHandler MediaFailed;
-
-
 		internal override Kind GetKind ()
 		{
 			return Kind.MEDIABASE;
-		}
-
-		internal void End ()
-		{
-			if (MediaEnded != null) {
-				MediaEnded (this, EventArgs.Empty);
-			}
 		}
 	}
 }
