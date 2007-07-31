@@ -1,5 +1,9 @@
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
+	* UIElement.cs: add the Tag property.
+
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
 	* DependencyObject.cs: add support for the new KeyFrameCollection
 	classes.
 

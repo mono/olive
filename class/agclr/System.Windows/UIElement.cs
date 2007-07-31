@@ -34,30 +34,32 @@ using Mono;
 namespace System.Windows {
 	
 	public abstract class UIElement : Visual {
-	        public static readonly DependencyProperty OpacityProperty;
 	        public static readonly DependencyProperty ClipProperty;
-	        public static readonly DependencyProperty RenderTransformProperty;
-	        public static readonly DependencyProperty TriggersProperty;
-	        public static readonly DependencyProperty OpacityMaskProperty;
-	        public static readonly DependencyProperty RenderTransformOriginProperty;
 	        public static readonly DependencyProperty CursorProperty;
 	        public static readonly DependencyProperty IsHitTestVisibleProperty;
-	        public static readonly DependencyProperty VisibilityProperty;
+	        public static readonly DependencyProperty OpacityMaskProperty;
+	        public static readonly DependencyProperty OpacityProperty;
+	        public static readonly DependencyProperty RenderTransformOriginProperty;
+	        public static readonly DependencyProperty RenderTransformProperty;
 	        public static readonly DependencyProperty ResourcesProperty;
+	        public static readonly DependencyProperty TagProperty;
+	        public static readonly DependencyProperty TriggersProperty;
+	        public static readonly DependencyProperty VisibilityProperty;
 	        public static readonly DependencyProperty ZIndexProperty;
 
 		static UIElement ()
 		{
-	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity", typeof (double));
 	        	ClipProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Clip", typeof (Geometry));
-	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform", typeof (Transform));
-	        	TriggersProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Triggers", typeof (TriggerCollection));
-			OpacityMaskProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "OpacityMask", typeof (Brush));
-			RenderTransformOriginProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransformOrigin", typeof (Point));
 			CursorProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Cursor", typeof (Cursors));
 			IsHitTestVisibleProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "IsHitTestVisible", typeof (bool));
-			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility", typeof (Visibility));
+			OpacityMaskProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "OpacityMask", typeof (Brush));
+	        	OpacityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Opacity", typeof (double));
+			RenderTransformOriginProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransformOrigin", typeof (Point));
+	        	RenderTransformProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "RenderTransform", typeof (Transform));
 			ResourcesProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Resources", typeof (ResourceDictionary));
+			TagProperty = DependencyProperty.Lookup (Kind.UIElement, "Tag", typeof (string));
+	        	TriggersProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Triggers", typeof (TriggerCollection));
+			VisibilityProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "Visibility", typeof (Visibility));
 			ZIndexProperty = DependencyProperty.Lookup (Kind.UIELEMENT, "ZIndex", typeof (int));
 		}
 			
@@ -149,7 +151,17 @@ namespace System.Windows {
 				SetValue (ResourcesProperty, value);
 			}
 		}
-		
+
+		public string Tag {
+			get {
+				return (string) GetValue (TagProperty);
+			}
+
+			set {
+				SetValue (TagProperty, value);
+			}
+		}
+
 		public TriggerCollection Triggers {
 			get {
 				return (TriggerCollection) GetValue (TriggersProperty);
