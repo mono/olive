@@ -1,3 +1,8 @@
+2007-07-31  Chris Toshok  <toshok@ximian.com>
+
+	* Glyphs.cs: StyleSimulations has switched types from string to
+	StyleSimulations.
+
 2007-06-19  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* LineBreak.cs: Implement constructor.

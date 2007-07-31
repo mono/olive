@@ -46,7 +46,7 @@ namespace System.Windows.Documents{
 		public static readonly DependencyProperty OriginYProperty =
 			DependencyProperty.Lookup (Kind.GLYPHS, "OriginY", typeof (double));
 		public static readonly DependencyProperty StyleSimulationsProperty =
-			DependencyProperty.Lookup (Kind.GLYPHS, "StyleSimulations", typeof (string));
+			DependencyProperty.Lookup (Kind.GLYPHS, "StyleSimulations", typeof (StyleSimulations));
 		public static readonly DependencyProperty UnicodeStringProperty =
 			DependencyProperty.Lookup (Kind.GLYPHS, "UnicodeString", typeof (string));
 
@@ -91,8 +91,8 @@ namespace System.Windows.Documents{
 			set { SetValue (OriginYProperty, value); }
 		}
 
-		public string StyleSimulations {
-			get { return (string) GetValue (StyleSimulationsProperty); }
+		public StyleSimulations StyleSimulations {
+			get { return (StyleSimulations) GetValue (StyleSimulationsProperty); }
 			set { SetValue (StyleSimulationsProperty, value); }
 		}
 
