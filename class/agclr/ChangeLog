@@ -1,3 +1,7 @@
+2007-07-31  Jeffrey Stedfast  <fejj@novell.com>
+
+	* agclr.dll.sources: Add StyleSimulations to the build.
+
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
 	* agclr.dll.sources: add the 3 KeyFrameCollection classes, and

@@ -51,6 +51,7 @@ System.Windows/Point.cs
 System.Windows/ResourceDictionary.cs
 System.Windows/Rect.cs
 System.Windows/Size.cs
+System.Windows/StyleSimulations.cs
 System.Windows/TextDecorations.cs
 System.Windows/TextWrapping.cs
 System.Windows/TriggerCollection.cs
