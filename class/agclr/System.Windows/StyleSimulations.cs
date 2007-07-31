@@ -30,6 +30,9 @@ namespace System.Windows {
 
 	[Serializable]
 	public enum StyleSimulations {
+		BoldItalicSimulation,
+		BoldSimulation,
+		ItalicSimulation,
 		None
 	}
 
