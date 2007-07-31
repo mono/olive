@@ -31,7 +31,7 @@ namespace System.Windows.Media.Animation
 	public class ColorAnimationUsingKeyFrames : ColorAnimation {
 		
 		public static readonly DependencyProperty KeyFramesProperty = 
-			DependencyProperty.Lookup (Kind.COLORANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (KeyFrameCollection)); 
+			DependencyProperty.Lookup (Kind.COLORANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (ColorKeyFrameCollection)); 
 		
 		public ColorAnimationUsingKeyFrames() : base (NativeMethods.color_animation_using_key_frames_new ()) 
 		{
@@ -42,9 +42,9 @@ namespace System.Windows.Media.Animation
 		{
 		}
 		
-		public KeyFrameCollection KeyFrames { 
+		public ColorKeyFrameCollection KeyFrames { 
 			get {
-				return (KeyFrameCollection) GetValue (KeyFramesProperty);
+				return (ColorKeyFrameCollection) GetValue (KeyFramesProperty);
 			}
 			set {
 				SetValue (KeyFramesProperty, value);

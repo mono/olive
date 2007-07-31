@@ -31,7 +31,7 @@ namespace System.Windows.Media.Animation
 	public class PointAnimationUsingKeyFrames : PointAnimation {
 		
 		public static readonly DependencyProperty KeyFramesProperty = 
-			DependencyProperty.Lookup (Kind.POINTANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (KeyFrameCollection)); 
+			DependencyProperty.Lookup (Kind.POINTANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (PointKeyFrameCollection)); 
 		
 		public PointAnimationUsingKeyFrames() : base (NativeMethods.point_animation_using_key_frames_new ()) 
 		{
@@ -42,9 +42,9 @@ namespace System.Windows.Media.Animation
 		{
 		}
 		
-		public KeyFrameCollection KeyFrames { 
+		public PointKeyFrameCollection KeyFrames { 
 			get {
-				return (KeyFrameCollection) GetValue (KeyFramesProperty);
+				return (PointKeyFrameCollection) GetValue (KeyFramesProperty);
 			}
 			set {
 				SetValue (KeyFramesProperty, value);

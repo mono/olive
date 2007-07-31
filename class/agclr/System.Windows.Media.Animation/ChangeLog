@@ -1,3 +1,19 @@
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* ColorAnimationUsingKeyFrames.cs: update to use
+	ColorKeyFrameCollection
+
+	* DoubleAnimationUsingKeyFrames.cs: update to use
+	DoubleKeyFrameCollection
+
+	* PointAnimationUsingKeyFrames.cs: update to use
+	PointKeyFrameCollection
+
+	* ColorKeyFrameCollection.cs, DoubleKeyFrameCollection.cs,
+	PointKeyFrameCollection: new.
+
+	* KeyFrameCollection.cs: nuke.
+
 2007-07-29  Chris Toshok  <toshok@ximian.com>
 
 	* TimelineGroup.cs: in the 1.1 update, TimelineGroup.Children has

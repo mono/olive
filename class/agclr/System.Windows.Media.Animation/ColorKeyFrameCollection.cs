@@ -1,8 +1,5 @@
-//
-// DoubleAnimation.cs
-//
 // Author:
-//   Miguel de Icaza (miguel@novell.com)
+//   Chris Toshok  (toshok@ximian.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -25,32 +22,24 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using Mono;
-namespace System.Windows.Media.Animation 
-{
-	public class DoubleAnimationUsingKeyFrames : DoubleAnimation 
-	{
-		public static readonly DependencyProperty KeyFramesProperty = 
-			   DependencyProperty.Lookup (Kind.DOUBLEANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (DoubleKeyFrameCollection));
 
-		public DoubleAnimationUsingKeyFrames (): base (Mono.NativeMethods.double_animation_using_key_frames_new ())
+using Mono;
+
+namespace System.Windows.Media.Animation
+{
+	public sealed class ColorKeyFrameCollection : MS.Internal.Collection<ColorKeyFrame> {
+		public ColorKeyFrameCollection () : base (NativeMethods.color_key_frame_collection_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
 
-		internal DoubleAnimationUsingKeyFrames (IntPtr raw) : base (raw)
+		internal ColorKeyFrameCollection (IntPtr raw) : base (raw)
 		{
 		}
 
-
-		public DoubleKeyFrameCollection KeyFrames {
-			get { return (DoubleKeyFrameCollection) GetValue (KeyFramesProperty); }
-			set { SetValue (KeyFramesProperty, value); }
-		}
-
-		internal override Kind GetKind()
+		internal override Kind GetKind ()
 		{
-			return Kind.DOUBLEANIMATIONUSINGKEYFRAMES;
+			return Kind.COLORKEYFRAME_COLLECTION;
 		}
 	}
 }

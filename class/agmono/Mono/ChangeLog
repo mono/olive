@@ -1,3 +1,10 @@
+2007-07-30  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add {color, double,
+	point}_key_frame_collection_new.
+
+	* Kind.cs: resync.
+
 2007-07-29  Chris Toshok  <toshok@ximian.com>
 
 	* Kind.cs: RESOURCE_COLLECTION -> RESOURCE_DICTIONARY.

@@ -274,9 +274,15 @@ namespace System.Windows {
 			case Kind.STYLUSPOINT_COLLECTION: 
 				return new StylusPointCollection (raw);
 			
-			case Kind.KEYFRAME_COLLECTION: 
-				return new KeyFrameCollection (raw);
+			case Kind.COLORKEYFRAME_COLLECTION: 
+				return new ColorKeyFrameCollection (raw);
+
+			case Kind.DOUBLEKEYFRAME_COLLECTION: 
+				return new DoubleKeyFrameCollection (raw);
 				
+			case Kind.POINTKEYFRAME_COLLECTION: 
+				return new PointKeyFrameCollection (raw);
+
 			case Kind.TIMELINEMARKER_COLLECTION: 
 				return new TimelineMarkerCollection (raw);
 				
@@ -321,6 +327,7 @@ namespace System.Windows {
 			case Kind.CLOCK: 
 			case Kind.NAMESCOPE: 
 			case Kind.TRIGGERACTION:
+			case Kind.KEYFRAME_COLLECTION:
 				throw new Exception (
 					string.Format ("There is no managed equivalent of a {0} class.", k));
 			case Kind.UIELEMENT:

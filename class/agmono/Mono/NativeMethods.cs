@@ -242,7 +242,13 @@ namespace Mono {
 		public extern static IntPtr inlines_new ();
 		
 		[DllImport("moon")]
-		public extern static IntPtr key_frame_collection_new ();
+		public extern static IntPtr color_key_frame_collection_new ();
+
+		[DllImport("moon")]
+		public extern static IntPtr double_key_frame_collection_new ();
+
+		[DllImport("moon")]
+		public extern static IntPtr point_key_frame_collection_new ();
 		
 		[DllImport("moon")]
 		public extern static IntPtr timeline_marker_collection_new ();

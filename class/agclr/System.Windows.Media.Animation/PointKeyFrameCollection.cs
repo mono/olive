@@ -1,5 +1,5 @@
 // Author:
-//   Rolf Bjarne Kvinge  (RKvinge@novell.com)
+//   Chris Toshok  (toshok@ximian.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -22,30 +22,25 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-using System;
-using System.Windows;
-using System.Windows.Media;
-using System.Windows.Input;
-using System.Runtime.InteropServices;
+
+
 using Mono;
-using MS.Internal;
 
 namespace System.Windows.Media.Animation
 {
-	public class KeyFrameCollection : Collection <KeyFrame>
-	{
-		public KeyFrameCollection() : base (NativeMethods.key_frame_collection_new ())
+	public sealed class PointKeyFrameCollection : MS.Internal.Collection<PointKeyFrame> {
+		public PointKeyFrameCollection () : base (NativeMethods.point_key_frame_collection_new ())
 		{
 			NativeMethods.base_ref (native);
 		}
-		
-		internal KeyFrameCollection (IntPtr raw) : base (raw)
+
+		internal PointKeyFrameCollection (IntPtr raw) : base (raw)
 		{
 		}
-		
+
 		internal override Kind GetKind ()
 		{
-			return Kind.KEYFRAME_COLLECTION;
+			return Kind.POINTKEYFRAME_COLLECTION;
 		}
 	}
 }
