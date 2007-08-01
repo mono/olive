@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows.Shapes {
 
-	public class Polyline : Shape {
+	public sealed class Polyline : Shape {
 
 		public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Lookup (Kind.POLYLINE, "FillRule", typeof (FillRule));
 		public static readonly DependencyProperty PointsProperty = DependencyProperty.Lookup (Kind.POLYLINE, "Points", typeof (Point []));
@@ -51,7 +51,8 @@ namespace System.Windows.Shapes {
 		}
 
 		public Point[] Points {
-			get { return (Point[]) GetValue (PointsProperty); }
+			// MS doesn't have a getter here
+			//get { return (Point[]) GetValue (PointsProperty); }
 			set { SetValue (PointsProperty, value); }
 		}
 		

@@ -32,7 +32,7 @@ using MS.Internal;
 
 namespace System.Windows.Ink
 {
-	public class StrokeCollection : Collection <Stroke>
+	public sealed class StrokeCollection : Collection <Stroke>
 	{
 		public StrokeCollection() : base (NativeMethods.stroke_collection_new ())
 		{

@@ -31,7 +31,7 @@ namespace System.Windows.Media.Animation
 {
 	public sealed class BeginStoryboard : DependencyObject 
 	{
-		public static readonly DependencyProperty StoryBoardProperty = 
+		public static readonly DependencyProperty StoryboardProperty = 
 			   DependencyProperty.Lookup (Kind.BEGINSTORYBOARD, "Storyboard", typeof (Storyboard));
 
 
@@ -46,8 +46,8 @@ namespace System.Windows.Media.Animation
 
 
 		public Storyboard Storyboard {
-			get { return (Storyboard) GetValue(StoryBoardProperty); }
-			set { SetValue(StoryBoardProperty, value); }
+			get { return (Storyboard) GetValue(StoryboardProperty); }
+			set { SetValue(StoryboardProperty, value); }
 		}
 
 

@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Shapes {
 
-	public class Ellipse : Shape {
+	public sealed class Ellipse : Shape {
 
 		public Ellipse () : base (Mono.NativeMethods.ellipse_new ())
 		{

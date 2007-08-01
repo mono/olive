@@ -28,7 +28,6 @@
 
 namespace System.Windows.Input {
 	
-	[Serializable]
 	public delegate void MouseEventHandler (object sender, MouseEventArgs e);
 
 }

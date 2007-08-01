@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows.Shapes {
 
-	public class Path : Shape {
+	public sealed class Path : Shape {
 
 		public static readonly DependencyProperty DataProperty = DependencyProperty.Lookup (Kind.PATH, "Data", typeof (Geometry));
 		

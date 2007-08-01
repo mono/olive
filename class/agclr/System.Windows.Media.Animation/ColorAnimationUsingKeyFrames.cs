@@ -28,7 +28,7 @@ using System;
 
 namespace System.Windows.Media.Animation 
 {
-	public class ColorAnimationUsingKeyFrames : ColorAnimation {
+	public sealed class ColorAnimationUsingKeyFrames : ColorAnimation {
 		
 		public static readonly DependencyProperty KeyFramesProperty = 
 			DependencyProperty.Lookup (Kind.COLORANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (ColorKeyFrameCollection)); 

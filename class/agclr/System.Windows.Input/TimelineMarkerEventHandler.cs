@@ -26,7 +26,6 @@
 
 namespace System.Windows.Input {
 	
-	[Serializable]
 	public delegate void TimelineMarkerEventHandler (object sender, TimelineMarkerEventArgs e);
 
 }

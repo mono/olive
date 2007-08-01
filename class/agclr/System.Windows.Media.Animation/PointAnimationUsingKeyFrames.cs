@@ -28,7 +28,7 @@ using System;
 
 namespace System.Windows.Media.Animation 
 {
-	public class PointAnimationUsingKeyFrames : PointAnimation {
+	public sealed class PointAnimationUsingKeyFrames : PointAnimation {
 		
 		public static readonly DependencyProperty KeyFramesProperty = 
 			DependencyProperty.Lookup (Kind.POINTANIMATIONUSINGKEYFRAMES, "KeyFrames", typeof (PointKeyFrameCollection)); 

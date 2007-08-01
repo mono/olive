@@ -29,7 +29,7 @@
 namespace System.Windows.Media {
 
 	public enum ColorInterpolationMode {
-		SbRgbLinearInterpolation,
+		ScRgbLinearInterpolation,
 		SRgbLinearInterpolation
 	}
 }

@@ -150,7 +150,7 @@ namespace System.Windows.Media {
 			return color * coefficient;
 		}
 
-		public static Color Substract (Color color1, Color color2)
+		public static Color Subtract (Color color1, Color color2)
 		{
 			return color1 - color2;
 		}

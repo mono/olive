@@ -32,7 +32,7 @@ using MS.Internal;
 
 namespace System.Windows.Media.Animation
 {
-	public class TimelineMarker : DependencyObject
+	public sealed class TimelineMarker : DependencyObject
 	{
 		public static readonly DependencyProperty TextProperty = 
 			DependencyProperty.Lookup (Kind.TIMELINEMARKER, "Text", typeof (string));

@@ -28,7 +28,6 @@
 
 namespace System.Windows.Input {
 	
-	[Serializable]
 	public delegate void KeyboardEventHandler (object sender, KeyboardEventArgs e);
 
 }

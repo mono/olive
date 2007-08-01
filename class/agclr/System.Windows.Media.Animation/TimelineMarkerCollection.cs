@@ -32,7 +32,7 @@ using MS.Internal;
 
 namespace System.Windows.Media.Animation
 {
-	public class TimelineMarkerCollection : Collection <TimelineMarker>
+	public sealed class TimelineMarkerCollection : Collection <TimelineMarker>
 	{
 		public TimelineMarkerCollection() : base (NativeMethods.timeline_marker_collection_new ())
 		{

@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Shapes {
 
-	public class Line : Shape {
+	public sealed class Line : Shape {
 
 		public static readonly DependencyProperty X1Property =
 			DependencyProperty.Lookup (Kind.LINE, "X1", typeof (double));

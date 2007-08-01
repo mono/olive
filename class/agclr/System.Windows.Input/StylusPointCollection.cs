@@ -32,7 +32,7 @@ using MS.Internal;
 
 namespace System.Windows.Input
 {
-	public class StylusPointCollection : Collection <StylusPoint>
+	public sealed class StylusPointCollection : Collection <StylusPoint>
 	{
 		public StylusPointCollection() : base (NativeMethods.stylus_point_collection_new ())
 		{

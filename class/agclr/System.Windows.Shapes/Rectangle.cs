@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Shapes {
 
-	public class Rectangle : Shape {
+	public sealed class Rectangle : Shape {
 
 		public static readonly DependencyProperty RadiusXProperty =
 			DependencyProperty.Lookup (Kind.RECTANGLE, "RadiusX", typeof (double));

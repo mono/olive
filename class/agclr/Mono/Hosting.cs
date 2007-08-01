@@ -31,7 +31,7 @@ using System.Windows;
 using System.Windows.Controls;
 
 namespace Mono {
-	public class Hosting {
+	internal class Hosting {
 
 		internal static IntPtr GetNativeObject (DependencyObject obj)
 		{
