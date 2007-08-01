@@ -1,3 +1,10 @@
+2007-08-01  Miguel de Icaza  <miguel@novell.com>
+
+	* Makefile (thisdir): Do not link with System.Xml, not needed.
+	In preparation to use smcs
+
+	* Internal.cs: Fix visibility.
+
 2007-07-31  Jeffrey Stedfast  <fejj@novell.com>
 
 	* agclr.dll.sources: Add StyleSimulations to the build.

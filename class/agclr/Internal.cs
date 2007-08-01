@@ -40,7 +40,11 @@ namespace MS.Internal {
 		System.Collections.IEnumerable,
 		IList<T>, ICollection<T>
 		where T : DependencyObject {
-		public Collection () : base (NativeMethods.collection_new ())
+
+		public static readonly System.Windows.DependencyProperty CountProperty =
+			DependencyProperty.Lookup (Kind.COLLECTION, "Count", typeof (int));
+		
+		internal Collection () : base (NativeMethods.collection_new ())
 		{
 			NativeMethods.base_ref (native);
 			//
