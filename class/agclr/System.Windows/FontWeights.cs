@@ -32,22 +32,15 @@ namespace System.Windows {
 	[Serializable]
 	public enum FontWeights
 	{
-		Thin = 100,
+		Thin       = 100,
 		ExtraLight = 200,
-		UltraLight = 200,
-		Light = 300,
-		Regular = 400,
-		Normal = 400,
-		Medium = 500,
-		SemiBold = 600,
-		DemiBold = 600,
-		Bold = 700,
-		ExtraBold = 800,
-		UltraBold = 800,
-		Black = 900,
+		Light      = 300,
+		Normal     = 400,
+		Medium     = 500,
+		SemiBold   = 600,
+		Bold       = 700,
+		ExtraBold  = 800,
+		Black      = 900,
 		ExtraBlack = 950,
-		Heavy = 900,
-		UltraBlack = 950
 	}
 }
-

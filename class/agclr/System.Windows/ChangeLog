@@ -1,3 +1,7 @@
+2007-08-01  Jeffrey Stedfast  <fejj@novell.com>
+
+	* FontWeights.cs: Updated for the July 2007 Refresh release.
+
 2007-07-31  Jeffrey Stedfast  <fejj@novell.com>
 
 	* StyleSimulations.cs: Added values.
