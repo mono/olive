@@ -30,7 +30,7 @@ using Mono;
 
 namespace System.Windows.Controls {
 
-	public class Image : MediaBase {
+	public sealed class Image : MediaBase {
 
 		public static readonly DependencyProperty DownloadProgressProperty =
 			DependencyProperty.Lookup (Kind.IMAGE, "DownloadProgress", typeof (double));

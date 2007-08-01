@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows {
 
-	public class Inlines : MS.Internal.Collection<Inline>
+	public sealed class Inlines : MS.Internal.Collection<Inline>
 	{
 		public Inlines () : base (NativeMethods.inlines_new ())
 		{

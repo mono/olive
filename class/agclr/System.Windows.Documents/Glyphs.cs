@@ -32,7 +32,7 @@ using System.Windows.Media;
 
 namespace System.Windows.Documents {
 
-	public class Glyphs : FrameworkElement {
+	public sealed class Glyphs : FrameworkElement {
 
 		public static readonly DependencyProperty FillProperty =
 			DependencyProperty.Lookup (Kind.GLYPHS, "Fill", typeof (Brush));

@@ -182,7 +182,8 @@ namespace System.Windows {
 			}
 		}
 
-		public int ZIndex {
+		/* MS has removed this from the public API as of 1.0 RC1 / 1.1 refresh... not sure why */
+		internal int ZIndex {
 			get {
 				return (int) GetValue (ZIndexProperty);
 			}

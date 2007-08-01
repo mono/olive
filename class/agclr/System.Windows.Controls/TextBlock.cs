@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows.Controls {
 
-	public class TextBlock : FrameworkElement {
+	public sealed class TextBlock : FrameworkElement {
 
 		public static readonly DependencyProperty ActualHeightProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "ActualHeight", typeof (double));
@@ -69,12 +69,10 @@ namespace System.Windows.Controls {
 
 		public double ActualHeight {
 			get { return (double) GetValue (ActualHeightProperty); }
-			set { SetValue (ActualHeightProperty, value); }
 		}
 
 		public double ActualWidth {
 			get { return (double) GetValue (ActualWidthProperty); }
-			set { SetValue (ActualWidthProperty, value); }
 		}
 
 		public string FontFamily {

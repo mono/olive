@@ -31,7 +31,7 @@ using System.Windows.Media;
 
 namespace System.Windows.Documents {
 
-	public class Inline : DependencyObject {
+	public abstract class Inline : DependencyObject {
 
 		public static readonly DependencyProperty FontFamilyProperty =
 			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontFamily", typeof (string));

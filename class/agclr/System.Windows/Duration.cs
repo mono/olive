@@ -112,7 +112,7 @@ namespace System.Windows {
 			return this;
 		}
 
-		public Duration Substract (Duration duration)
+		public Duration Subtract (Duration duration)
 		{
 			if (kind == duration.kind && kind == TIMESPAN)
 				return new Duration (time_span.Add (duration.time_span));
@@ -136,7 +136,7 @@ namespace System.Windows {
 		
 		public static Duration operator - (Duration t1, Duration t2)
 		{
-			return t1.Substract (t2);
+			return t1.Subtract (t2);
 		}
 		
 		public static bool operator == (Duration t1, Duration t2)

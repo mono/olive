@@ -34,7 +34,7 @@ using System.Runtime.InteropServices;
 
 namespace System.Windows.Controls
 {
-	public class MediaElement : MediaBase {
+	public sealed class MediaElement : MediaBase {
 		
 		public static readonly DependencyProperty AttributesProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "Attributes", typeof (MediaAttributeCollection));
