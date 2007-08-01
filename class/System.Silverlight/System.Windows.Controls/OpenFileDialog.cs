@@ -36,7 +36,7 @@ namespace System.Windows.Controls
 	// It simply opens a native file dialog
 	//
 	// Note that those unmanaged icalls are not in the runtime yet.
-	public class OpenFileDialog
+	public sealed class OpenFileDialog
 	{
 		FileDialogFileInfo [] files;
 		
@@ -99,7 +99,7 @@ namespace System.Windows.Controls
 
 		// dialog options
 
-		public bool EnableMultiSelection {
+		public bool EnableMultipleSelection {
 			get { return allow_multiple_selection; }
 			set { allow_multiple_selection = value; }
 		}

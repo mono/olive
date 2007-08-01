@@ -32,7 +32,7 @@ using System.IO;
 
 namespace System.Windows.Controls
 {
-	public class FileDialogFileInfo
+	public sealed class FileDialogFileInfo
 	{
 		string path;
 
@@ -46,7 +46,7 @@ namespace System.Windows.Controls
 			return File.OpenRead (path);
 		}
 
-		public TextReader OpenText ()
+		public StreamReader OpenText ()
 		{
 			return File.OpenText (path);
 		}
