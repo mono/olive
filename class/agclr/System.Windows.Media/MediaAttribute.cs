@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class MediaAttribute : DependencyObject {
+	public abstract class MediaAttribute : DependencyObject {
 
 		public static readonly DependencyProperty ValueProperty = DependencyProperty.Lookup (Kind.MEDIAATTRIBUTE, "Value", typeof (string));
 

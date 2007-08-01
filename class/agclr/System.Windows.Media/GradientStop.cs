@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Media {
 
-	public class GradientStop : DependencyObject {
+	public sealed class GradientStop : DependencyObject {
 
 		public static readonly DependencyProperty ColorProperty =
 			DependencyProperty.Lookup (Kind.GRADIENTSTOP, "Color", typeof (Color));

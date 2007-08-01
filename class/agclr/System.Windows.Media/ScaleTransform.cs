@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Media {
 
-	public class ScaleTransform : Transform {
+	public sealed class ScaleTransform : Transform {
 
 		public static readonly DependencyProperty CenterXProperty =
 			DependencyProperty.Lookup (Kind.SCALETRANSFORM, "CenterX", typeof (double));

@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class TranslateTransform : Transform {
+	public sealed class TranslateTransform : Transform {
 
 		public static readonly DependencyProperty XProperty =
 			DependencyProperty.Lookup (Kind.TRANSLATETRANSFORM, "X", typeof (double));

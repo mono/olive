@@ -30,6 +30,8 @@ namespace System.Windows.Media {
 
 	public sealed class Colors {
 
+		internal Colors () { }
+
 		public static Color Black {
 			get { return Color.FromArgb (0xFF, 0x00, 0x00, 0x00); }
 		}

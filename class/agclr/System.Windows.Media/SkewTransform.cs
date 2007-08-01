@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class SkewTransform : Transform {
+	public sealed class SkewTransform : Transform {
 
 		public static readonly DependencyProperty AngleXProperty = DependencyProperty.Lookup (Kind.SKEWTRANSFORM, "AngleX", typeof (double));
 		public static readonly DependencyProperty AngleYProperty = DependencyProperty.Lookup (Kind.SKEWTRANSFORM, "AngleY", typeof (double));

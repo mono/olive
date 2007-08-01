@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class GeometryCollection : Collection<Geometry> {
+	public sealed class GeometryCollection : Collection<Geometry> {
 		internal GeometryCollection (IntPtr native) : base (native)
 		{
 		}

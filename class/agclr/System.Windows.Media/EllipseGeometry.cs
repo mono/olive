@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class EllipseGeometry : Geometry {
+	public sealed class EllipseGeometry : Geometry {
 
 		public static readonly DependencyProperty CenterProperty =
 			DependencyProperty.Lookup (Kind.ELLIPSEGEOMETRY, "Center", typeof (Point));

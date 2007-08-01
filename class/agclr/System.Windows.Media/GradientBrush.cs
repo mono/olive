@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class GradientBrush : Brush {
+	public abstract class GradientBrush : Brush {
 
 		public static readonly DependencyProperty ColorInterpolationModeProperty =
 			DependencyProperty.Lookup (Kind.GRADIENTBRUSH, "ColorInterpolationMode", typeof (ColorInterpolationMode));

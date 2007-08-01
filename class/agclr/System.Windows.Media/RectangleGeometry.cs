@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class RectangleGeometry : Geometry {
+	public sealed class RectangleGeometry : Geometry {
 
 		public static readonly DependencyProperty RadiusXProperty = DependencyProperty.Lookup (Kind.RECTANGLEGEOMETRY, "RadiusX", typeof (double));
 		public static readonly DependencyProperty RadiusYProperty = DependencyProperty.Lookup (Kind.RECTANGLEGEOMETRY, "RadiusY", typeof (double));

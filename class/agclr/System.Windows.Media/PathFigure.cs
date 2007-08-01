@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Media {
 
-	public class PathFigure : DependencyObject {
+	public sealed class PathFigure : DependencyObject {
 
 		public static readonly DependencyProperty IsClosedProperty =
 			DependencyProperty.Lookup (Kind.PATHFIGURE, "IsClosed", typeof (bool));

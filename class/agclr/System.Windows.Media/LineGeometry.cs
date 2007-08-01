@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class LineGeometry : Geometry {
+	public sealed class LineGeometry : Geometry {
 
 		public static readonly DependencyProperty EndPointProperty =
 			DependencyProperty.Lookup (Kind.LINEGEOMETRY, "EndPoint", typeof (Point));

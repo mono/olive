@@ -28,7 +28,7 @@
 using Mono;
 namespace System.Windows.Media {
 
-	public class PathGeometry : Geometry {
+	public sealed class PathGeometry : Geometry {
 
 		public static readonly DependencyProperty FiguresProperty =
 			DependencyProperty.Lookup (Kind.PATHGEOMETRY, "Figures", typeof (PathFigureCollection));

@@ -31,7 +31,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class PathFigureCollection : Collection<PathFigure> {
+	public sealed class PathFigureCollection : Collection<PathFigure> {
 		public PathFigureCollection () : base (NativeMethods.path_figure_collection_new ())
 		{
 			NativeMethods.base_ref (native);

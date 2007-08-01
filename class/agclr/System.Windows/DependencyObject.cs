@@ -292,9 +292,6 @@ namespace System.Windows {
 			case Kind.GRADIENTSTOP_COLLECTION: 
 				return new GradientStopCollection (raw);
 				
-			case Kind.MEDIAATTRIBUTE_COLLECTION: 
-				return new MediaAttributeCollection (raw);
-				
 			case Kind.PATHFIGURE_COLLECTION: 
 				return new PathFigureCollection (raw);
 				
@@ -335,10 +332,12 @@ namespace System.Windows {
 			case Kind.TIMELINE: 
 			case Kind.FRAMEWORKELEMENT:
 			case Kind.BRUSH:
+			case Kind.TILEBRUSH:
 			case Kind.TRANSFORM:
 			case Kind.SHAPE:
 			case Kind.GEOMETRY:
 			case Kind.VISUAL:
+			case Kind.MEDIAATTRIBUTE_COLLECTION: 
 				throw new NotImplementedException (
 					String.Format ("Should never get an abstract class from unmanaged code {0}", k));
 			}

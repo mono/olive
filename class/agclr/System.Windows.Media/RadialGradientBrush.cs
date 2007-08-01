@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class RadialGradientBrush : GradientBrush {
+	public sealed class RadialGradientBrush : GradientBrush {
 
 		public static readonly DependencyProperty CenterProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "Center", typeof (Point));
 		public static readonly DependencyProperty GradientOriginProperty = DependencyProperty.Lookup (Kind.RADIALGRADIENTBRUSH, "GradientOrigin", typeof (Point));

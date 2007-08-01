@@ -29,7 +29,7 @@ using Mono;
 
 namespace System.Windows.Media {
 
-	public class RotateTransform : Transform {
+	public sealed class RotateTransform : Transform {
 
 		public static readonly DependencyProperty AngleProperty =
 			DependencyProperty.Lookup (Kind.ROTATETRANSFORM, "Angle", typeof (double));

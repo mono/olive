@@ -30,7 +30,7 @@ using MS.Internal;
 using Mono;
 
 namespace System.Windows.Media {
-	public class VisualCollection : Collection<Visual> {
+	public sealed class VisualCollection : Collection<Visual> {
 		
 		internal VisualCollection (IntPtr native) : base (native)
 		{
