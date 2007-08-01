@@ -33,8 +33,8 @@ using System.Windows.Media.Animation;
 
 namespace System.Windows.Controls
 {
-	public class InkPresenter : Canvas {
-		
+	public abstract class InkPresenter : Canvas {
+
 		public static readonly DependencyProperty StrokesProperty = 
 			DependencyProperty.Lookup (Kind.INKPRESENTER, "Strokes", typeof (StrokeCollection)); 
 		

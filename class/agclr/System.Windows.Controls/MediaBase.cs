@@ -32,7 +32,7 @@ using Mono;
 
 namespace System.Windows.Controls {
 
-	public class MediaBase : FrameworkElement {
+	public abstract class MediaBase : FrameworkElement {
 
 		public static readonly DependencyProperty SourceProperty =
 			DependencyProperty.Lookup (Kind.MEDIABASE, "Source", typeof (string));

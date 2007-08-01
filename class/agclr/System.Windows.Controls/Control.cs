@@ -30,7 +30,7 @@ using Mono;
 
 namespace System.Windows.Controls {
 
-	public class Control : FrameworkElement {
+	public abstract class Control : FrameworkElement {
 
 		public Control ()  : base (NativeMethods.control_new ())
 		{

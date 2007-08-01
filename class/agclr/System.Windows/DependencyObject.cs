@@ -42,7 +42,7 @@ using System.Windows.Documents;
 using System.Threading;
 
 namespace System.Windows {
-	public class DependencyObject {
+	public abstract class DependencyObject {
 		static ArrayList PendingDestroys = new ArrayList ();
 		static volatile bool pending = false;
 		static Thread moonlight_thread;
