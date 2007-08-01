@@ -27,7 +27,7 @@
 //
 
 // Temporary namespace, need to fix olive/class/PresentationFramework namespaces
-namespace System.Windows.Serialization {
+namespace System.Windows.Markup {
 	public class XamlParseException : SystemException {
 		uint line, col;
 		
