@@ -34,7 +34,7 @@ namespace System.Windows.Media {
 		static Geometry ()
 		{
 			FillRuleProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "FillRule", typeof (FillRule));
-			TransformProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "Transform", typeof (TransformGroup));
+			TransformProperty = DependencyProperty.Lookup (Kind.GEOMETRY, "Transform", typeof (Transform));
 		}
 
 		public Geometry () : base (NativeMethods.geometry_new ())
@@ -56,9 +56,9 @@ namespace System.Windows.Media {
 			}
 		}
 
-		public TransformGroup Transform {
+		public Transform Transform {
 			get {
-				return (TransformGroup) GetValue (TransformProperty);
+				return (Transform) GetValue (TransformProperty);
 			}
 			
 			set {

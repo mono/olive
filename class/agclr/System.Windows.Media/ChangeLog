@@ -1,3 +1,8 @@
+2007-08-01  Chris Toshok  <toshok@ximian.com>
+
+	* Geometry.cs: Geometry.Transform is a Transform, not a
+	TransformGroup.
+
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
 	* PathFigure.cs: IsFilled is gone in RC1.
