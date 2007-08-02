@@ -1,3 +1,8 @@
+2007-08-02  Jeffrey Stedfast  <fejj@novell.com>
+
+	* MediaElement.cs: Add the new properties from the July 2007
+	release and fixed NaturalDuration to be of type TimeSpan.
+
 2007-07-31  Chris Toshok  <toshok@ximian.com>
 
 	* MediaBase.cs: remove the events.

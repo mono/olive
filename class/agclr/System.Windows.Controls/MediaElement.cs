@@ -39,6 +39,12 @@ namespace System.Windows.Controls
 		public static readonly DependencyProperty AttributesProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "Attributes", typeof (MediaAttributeCollection));
 		
+		public static readonly DependencyProperty AudioStreamCountProperty = 
+			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "AudioStreamCount", typeof (int));
+		
+		public static readonly DependencyProperty AudioStreamIndexProperty = 
+			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "AudioStreamIndex", typeof (int));
+		
 		public static readonly DependencyProperty AutoPlayProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "AutoPlay", typeof (bool));
 		
@@ -50,6 +56,9 @@ namespace System.Windows.Controls
 		
 		public static readonly DependencyProperty BufferingTimeProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "BufferingTime", typeof (TimeSpan));
+		
+		public static readonly DependencyProperty CanPauseProperty = 
+			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "CanPause", typeof (bool));
 		
 		public static readonly DependencyProperty CanSeekProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "CanSeek", typeof (bool));
@@ -67,7 +76,7 @@ namespace System.Windows.Controls
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "Markers", typeof (TimelineMarkerCollection));
 		
 		public static readonly DependencyProperty NaturalDurationProperty = 
-			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalDuration", typeof (Duration));
+			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalDuration", typeof (TimeSpan));
 		
 		public static readonly DependencyProperty NaturalVideoHeightProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalVideoHeight", typeof (double));
@@ -82,7 +91,7 @@ namespace System.Windows.Controls
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "Volume", typeof (double));
 		
 		
-		public MediaElement() : base (NativeMethods.media_element_new ()) 
+		public MediaElement () : base (NativeMethods.media_element_new ()) 
 		{
 			NativeMethods.base_ref (native);
 		}
@@ -91,32 +100,47 @@ namespace System.Windows.Controls
 		{
 		}
 		
-		public void Pause()
+		public void Pause ()
 		{
 			NativeMethods.media_element_pause (native);
 		}
 		
-		public void Play()
+		public void Play ()
 		{
 			NativeMethods.media_element_play (native);
 		}
 		
-		public void SetSource(DependencyObject Downloader, string PartName)
+		public void SetSource (DependencyObject Downloader, string PartName)
 		{
 			NativeMethods.media_element_set_source (native, Downloader.native, PartName);
 		}
 		
-		public void Stop()
+		public void Stop ()
 		{
 			NativeMethods.media_element_stop (native);
 		}
-
+		
 		public MediaAttributeCollection Attributes { 
 			get {
 				return (MediaAttributeCollection) GetValue (AttributesProperty);
 			}
 			set {
 				SetValue (AttributesProperty, value);
+			}
+		}
+		
+		public int AudioStreamCount {
+			get {
+				return (int) GetValue (AudioStreamCountProperty);
+			}
+		}
+		
+		public int AudioStreamIndex {
+			get {
+				return (int) GetValue (AudioStreamIndexProperty);
+			}
+			set {
+				SetValue (AudioStreamIndexProperty, value);
 			}
 		}
 		
@@ -153,6 +177,12 @@ namespace System.Windows.Controls
 			}
 			set {
 				SetValue (BufferingTimeProperty, value);
+			}
+		}
+		
+		public bool CanPause { 
+			get {
+				return (bool) GetValue (CanPauseProperty);
 			}
 		}
 		
@@ -195,9 +225,9 @@ namespace System.Windows.Controls
 			}
 		}
 		
-		public Duration NaturalDuration { 
+		public TimeSpan NaturalDuration { 
 			get {
-				return (Duration) GetValue (NaturalDurationProperty);
+				return (TimeSpan) GetValue (NaturalDurationProperty);
 			}
 			set {
 				SetValue (NaturalDurationProperty, value);
