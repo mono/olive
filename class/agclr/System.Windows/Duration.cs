@@ -128,7 +128,7 @@ namespace System.Windows {
 		{
 			return new Duration (timeSpan);
 		}
-		
+
 		public static Duration operator + (Duration t1, Duration t2)
 		{
 			return t1.Add (t2);
