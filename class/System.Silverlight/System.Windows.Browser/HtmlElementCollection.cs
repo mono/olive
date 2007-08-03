@@ -25,13 +25,17 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 using System;
+using System.Collections;
+using System.Collections.Generic;
+
 
 namespace System.Windows.Browser
 {
-	public class HtmlElementCollection
+	public class HtmlElementCollection : IEnumerable, IEnumerable<HtmlElement>
 	{
-		IntPtr node_list;
+		private IntPtr node_list;
 
 		internal HtmlElementCollection (IntPtr nodeList)
 		{
@@ -49,6 +53,18 @@ namespace System.Windows.Browser
 			get {
 				return new HtmlElement (HtmlObject.InvokeInternal<IntPtr> (node_list, "item", i));
 			}
+		}
+
+		IEnumerator<HtmlElement> IEnumerable<HtmlElement>.GetEnumerator ()
+		{
+			for (int i = 0; i < Count; i++)
+				yield return this [i];
+		}
+
+		IEnumerator IEnumerable.GetEnumerator ()
+		{
+			for (int i = 0; i < Count; i++)
+				yield return this [i];
 		}
 	}
 }

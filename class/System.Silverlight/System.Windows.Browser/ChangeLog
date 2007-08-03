@@ -1,5 +1,9 @@
 2007-08-03  Jackson Harper  <jackson@ximian.com>
 
+	* HtmlElementCollection.cs: Add enumerators.
+
+2007-08-03  Jackson Harper  <jackson@ximian.com>
+
 	* HtmlDocument.cs: Add element accessor.
 
 2007-08-03  Jackson Harper  <jackson@ximian.com>
