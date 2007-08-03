@@ -71,7 +71,7 @@ namespace System.Windows.Browser {
 				handler (this, EventArgs.Empty);
 			};
 
-			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, eventName, pe);
+			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, FixEventName (eventName), pe);
 			if (res == IntPtr.Zero)
 				return false;
 
@@ -89,7 +89,7 @@ namespace System.Windows.Browser {
 							 ctrl_key, shift_key, mouse_button, 0, 0, name));
 			};
 
-			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, eventName, pe);
+			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, FixEventName (eventName), pe);
 
 			if (res == IntPtr.Zero)
 				return false;
@@ -113,6 +113,13 @@ namespace System.Windows.Browser {
 
 			EventInfo info = new EventInfo (handler, callback, wrapper);
 			info_list.Add (info);
+		}
+
+		private string FixEventName (string name)
+		{
+			if (name.StartsWith ("on"))
+				return name.Substring (2, name.Length - 2);
+			return name;
 		}
 
 		public void DetachEvent (string eventName, EventHandler handler)

@@ -1,6 +1,8 @@
 2007-08-03  Jackson Harper  <jackson@ximian.com>
 
 	* HtmlElementCollection.cs: Add enumerators.
+	* HtmlObject.cs: Remove the 'on' part of event names.  Mozilla
+	wants the actual event name, not the method. 
 
 2007-08-03  Jackson Harper  <jackson@ximian.com>
 
