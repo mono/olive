@@ -1,5 +1,9 @@
 2007-08-03  Jackson Harper  <jackson@ximian.com>
 
+	* HtmlDocument.cs: Add element accessor.
+
+2007-08-03  Jackson Harper  <jackson@ximian.com>
+
 	* HtmlObject.cs: Implement event attaching.  Track the events in a
 	dictionary so that we don't lose refs to the callback delegates,
 	also this will be used for detaching events.

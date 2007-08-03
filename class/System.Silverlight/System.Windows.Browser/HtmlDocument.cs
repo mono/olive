@@ -31,6 +31,8 @@ namespace System.Windows.Browser
 {
 	public class HtmlDocument : HtmlObject
 	{
+		private HtmlElement document_element;
+
 		public HtmlDocument ()
 		{
 		}
@@ -38,6 +40,14 @@ namespace System.Windows.Browser
 		internal HtmlDocument (IntPtr handle)
 			: base (handle)
 		{
+		}
+
+		public HtmlElement DocumentElement {
+			get {
+				if (document_element == null)
+					document_element = new HtmlElement (Handle);
+				return document_element;
+			}
 		}
 
 		public HtmlElement CreateElement (string tagName)
