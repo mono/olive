@@ -1,7 +1,7 @@
 thisdir = class/System.Silverlight
 include ../../build/rules.make
 
-LIBRARY = System.Silverlight.dll
+LIBRARY = System.SilverLight.dll
 
 LIB_MCS_FLAGS = -r:System -r:agmono.dll
 
