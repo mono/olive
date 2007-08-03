@@ -171,14 +171,23 @@ namespace System.Windows {
 		static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
-			dl.InvokeEmptyEvent (CompletedEvent);
+
+			try {
+				dl.InvokeEmptyEvent (CompletedEvent);
+			} catch (Exception e){
+				Console.Error.WriteLine (e);
+			}
 		}
 
 		static UnmanagedEventHandler progress_changed_proxy = new UnmanagedEventHandler (UnmanagedDownloadProgressChanged);
 		static void UnmanagedDownloadProgressChanged (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
-			dl.InvokeEmptyEvent (DownloadProgressChangedEvent);
+			try {
+				dl.InvokeEmptyEvent (DownloadProgressChangedEvent);
+			} catch (Exception e){
+				Console.Error.WriteLine (e);
+			}
 		}
 
 		void InvokeEmptyEvent (object eventkey)
@@ -196,7 +205,11 @@ namespace System.Windows {
 			string filename = Marshal.PtrToStringAuto (calldata);
 			ErrorEventArgs eea = new ErrorEventArgs (4001, filename, ErrorType.DownloadError);
 
-			dl.InvokeDownloadFailed (eea);
+			try {
+				dl.InvokeDownloadFailed (eea);
+			} catch (Exception e){
+				Console.Error.WriteLine (e);
+			}
 		}
 
 		void InvokeDownloadFailed (ErrorEventArgs eea)
