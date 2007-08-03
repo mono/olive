@@ -25,12 +25,34 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+using System;
+using System.Collections.Generic;
 using System.Runtime.InteropServices;
 
 namespace System.Windows.Browser {
 
 	public abstract class HtmlObject : ScriptableObject {
 
+		internal delegate void DomEventCallback (string name, int client_x, int client_y, int offset_x, int offset_y,
+				bool alt_key, bool ctrl_key, bool shift_key, int mouse_button);
+
+		private class EventInfo {
+			public Delegate handler;
+			public IntPtr wrapper;
+			public DomEventCallback callback;
+
+			public EventInfo (Delegate handler, DomEventCallback callback, IntPtr wrapper)
+			{
+				this.handler = handler;
+				this.wrapper = wrapper;
+				this.callback = callback;
+			}
+		}
+
+		private Dictionary<string, List<EventInfo>> events;
+
+		
 		protected HtmlObject ()
 		{
 		}
@@ -42,12 +64,55 @@ namespace System.Windows.Browser {
 
 		public bool AttachEvent (string eventName, EventHandler handler)
 		{
+			DomEventCallback pe = delegate (string name, int client_x, int client_y,
+					int offset_x, int offset_y, bool alt_key,
+					bool ctrl_key, bool shift_key, int mouse_button)
+			{
+				handler (this, EventArgs.Empty);
+			};
+
+			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, eventName, pe);
+			if (res == IntPtr.Zero)
+				return false;
+
+			TrackEvent (eventName, handler, pe, res);
 			return true;
 		}
 
 		public bool AttachEvent (string eventName, EventHandler<HtmlEventArgs> handler)
 		{
-			return AttachEvent (WebApplication.Current.PluginHandle, Handle, eventName, handler);
+			DomEventCallback pe = delegate (string name, int client_x, int client_y,
+					int offset_x, int offset_y, bool alt_key,
+					bool ctrl_key, bool shift_key, int mouse_button)
+			{
+				handler (this, new HtmlEventArgs ((HtmlElement) this, client_x, client_y, offset_x, offset_y, alt_key,
+							 ctrl_key, shift_key, mouse_button, 0, 0, name));
+			};
+
+			IntPtr res = html_object_attach_event (WebApplication.Current.PluginHandle, Handle, eventName, pe);
+
+			if (res == IntPtr.Zero)
+				return false;
+
+			TrackEvent (eventName, handler, pe, res);
+			return true;
+		}
+
+		private void TrackEvent (string name, Delegate handler, DomEventCallback callback, IntPtr wrapper)
+		{
+			if (events ==  null)
+				events = new Dictionary<string, List<EventInfo>> ();
+
+			List<EventInfo> info_list = null;
+			if (events.ContainsKey (name))
+				info_list = events [name];
+			else {
+				info_list = new List<EventInfo> ();
+				events [name] = info_list;
+			}
+
+			EventInfo info = new EventInfo (handler, callback, wrapper);
+			info_list.Add (info);
 		}
 
 		public void DetachEvent (string eventName, EventHandler handler)
@@ -121,7 +186,6 @@ namespace System.Windows.Browser {
 				Mono.Value [] args, int arg_count, out Mono.Value result);
 
 		[DllImport ("moonplugin")]
-		internal static extern IntPtr html_object_attach_event (IntPtr plugin, IntPtr obj, string name, Mono.PlainEvent cb);
-
+		internal static extern IntPtr html_object_attach_event (IntPtr plugin, IntPtr obj, string name, DomEventCallback cb);
 	}
 }

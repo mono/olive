@@ -44,6 +44,22 @@ namespace System.Windows.Browser
 				      int mouseButton, int keyCode, int charCode,
 				      string eventType)
 		{
+			source_element = sourceElement;
+			client_x = clientX;
+			client_y = clientY;
+			offset_x = offsetX;
+			offset_y = offsetY;
+
+			alt = altKey;
+			ctrl = ctrlKey;
+			shift = shiftKey;
+
+			mouse_button = mouseButton;
+
+			key_code = keyCode;
+			char_code = charCode;
+
+			event_type = eventType;
 		}
 
 		public HtmlElement SourceElement {

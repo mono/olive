@@ -1,3 +1,10 @@
+2007-08-03  Jackson Harper  <jackson@ximian.com>
+
+	* HtmlObject.cs: Implement event attaching.  Track the events in a
+	dictionary so that we don't lose refs to the callback delegates,
+	also this will be used for detaching events.
+	* HtmlEventArgs.cs: set values
+
 2007-07-27  Jackson Harper  <jackson@ximian.com>
 
 	* Html*.cs: Implement property getting/setting and method
