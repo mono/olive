@@ -4,6 +4,7 @@ Assembly/AssemblyInfo.cs
 ../../build/common/MonoTODOAttribute.cs
 Mono/Events.cs
 Mono/Hosting.cs
+System.IO/SimpleUnmanagedMemoryStream.cs
 System.Windows.Controls/InkPresenter.cs
 System.Windows.Controls/MediaElement.cs
 System.Windows.Ink/DrawingAttributes.cs

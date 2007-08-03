@@ -30,6 +30,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using Mono;
+using System.IO;
 using System.Runtime.InteropServices;
 
 namespace System.Windows {
@@ -106,7 +107,11 @@ namespace System.Windows {
 			//
 			string s;
 			unsafe {
-				s = new String ((sbyte *) n, 0, (int) size, System.Text.Encoding.UTF8);
+				using (Stream u = new SimpleUnmanagedMemoryStream ((byte *) n, (int) size)){
+					using (StreamReader sr = new StreamReader (u)){
+						s = sr.ReadToEnd ();
+					}
+				}
 			}
 			Marshal.FreeHGlobal (n);
 			

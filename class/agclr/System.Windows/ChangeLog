@@ -1,3 +1,10 @@
+2007-08-03  Miguel de Icaza  <miguel@novell.com>
+
+	* Downloader.cs: We need a bit more logic here than just creating
+	strings, we need to use something that knows about bytemarks.
+
+	Introduce a simplified version of System.IO/UnmanagedMemoryStream
+
 2007-08-01  Jeffrey Stedfast  <fejj@novell.com>
 
 	* FontWeights.cs: Updated for the July 2007 Refresh release.
