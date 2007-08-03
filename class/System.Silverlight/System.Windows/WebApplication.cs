@@ -26,8 +26,21 @@ namespace System.Windows
 		private WebApplication ()
 		{
 			object o = AppDomain.CurrentDomain.GetData ("PluginInstance");
-			if (o is IntPtr)
+			if (o is IntPtr) {
 				plugin_handle = (IntPtr) o;
+
+				string initParams = plugin_instance_get_init_params (plugin_handle);
+				if (initParams != null) {
+					startup_args = new Dictionary<string,string> ();
+
+					string[] kvs = initParams.Split (',');
+
+					foreach (string kv in kvs) {
+						string[] stuff = kv.Split ('=');
+						startup_args[stuff[0]] = stuff[1];
+					}
+				}
+			}
 
 		}
 
@@ -53,7 +66,6 @@ namespace System.Windows
 			ScriptableNativeMethods.register (plugin_handle, scriptKey, wrapper.UnmanagedWrapper);
 		}
 
-		// it is non-null on silverlight apps, and null on console apps
 		[MonoTODO]
 		public IDictionary<string, string> StartupArguments {
 			get { return startup_args; }
@@ -81,8 +93,10 @@ namespace System.Windows
 			return (T) InvokeMethodInternal (Current.plugin_handle, obj, name, args);
 		}
 
-		// note that those functions do not exist
+		[DllImport ("moonplugin")]
+		static extern string plugin_instance_get_init_params (IntPtr plugin_instance);
 
+		// note that those functions do not exist
 		[DllImport ("moonplugin")]
 		static extern object GetPropertyInternal (IntPtr xpp, IntPtr obj, string name);
 
