@@ -76,7 +76,7 @@ namespace System.Windows.Controls
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "Markers", typeof (TimelineMarkerCollection));
 		
 		public static readonly DependencyProperty NaturalDurationProperty = 
-			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalDuration", typeof (TimeSpan));
+			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalDuration", typeof (Duration));
 		
 		public static readonly DependencyProperty NaturalVideoHeightProperty = 
 			DependencyProperty.Lookup (Kind.MEDIAELEMENT, "NaturalVideoHeight", typeof (double));
@@ -225,9 +225,9 @@ namespace System.Windows.Controls
 			}
 		}
 		
-		public TimeSpan NaturalDuration { 
+		public Duration NaturalDuration { 
 			get {
-				return (TimeSpan) GetValue (NaturalDurationProperty);
+				return (Duration) GetValue (NaturalDurationProperty);
 			}
 			set {
 				SetValue (NaturalDurationProperty, value);

@@ -1,3 +1,7 @@
+2007-08-03  Chris Toshok  <toshok@ximian.com>
+
+	* MediaElement.cs: switch NaturalDuration back to Duration.
+
 2007-08-02  Jeffrey Stedfast  <fejj@novell.com>
 
 	* MediaElement.cs: Add the new properties from the July 2007
