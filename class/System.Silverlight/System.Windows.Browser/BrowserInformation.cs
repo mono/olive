@@ -64,7 +64,7 @@ namespace System.Windows.Browser {
 			get { return version; }
 		}
 
-		public bool CookieEnabled {
+		public bool CookiesEnabled {
 			get { return cookie_enabled; }
 		}
 
