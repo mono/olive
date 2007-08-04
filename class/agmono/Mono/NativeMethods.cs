@@ -409,6 +409,9 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		public extern static IntPtr video_brush_new ();
+
+		[DllImport("moon")]
+		public extern static IntPtr visual_brush_new ();
 		
 		[DllImport("moon")]
 		public extern static IntPtr canvas_new ();

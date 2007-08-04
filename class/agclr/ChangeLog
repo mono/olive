@@ -1,3 +1,7 @@
+2007-08-04  Chris Toshok  <toshok@ximian.com>
+
+	* agclr.dll.sources: add System.Windows.Media/VisualBrush.cpp
+
 2007-08-01  Miguel de Icaza  <miguel@novell.com>
 
 	* Makefile (thisdir): Do not link with System.Xml, not needed.

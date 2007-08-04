@@ -1,3 +1,7 @@
+2007-08-04  Chris Toshok  <toshok@ximian.com>
+
+	* VisualBrush.cs: new class.  yay for embrace/extend.
+
 2007-08-01  Chris Toshok  <toshok@ximian.com>
 
 	* Geometry.cs: Geometry.Transform is a Transform, not a

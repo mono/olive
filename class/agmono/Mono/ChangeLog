@@ -1,3 +1,9 @@
+2007-08-04  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add visual_brush_new.
+
+	* Kind.cs: add VISUALBRUSH.
+
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
 	* NativeMethods.cs: add {color, double,
