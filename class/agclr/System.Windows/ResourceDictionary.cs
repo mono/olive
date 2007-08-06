@@ -34,7 +34,7 @@ using Mono;
 namespace System.Windows {
 
 	public sealed class ResourceDictionary : MS.Internal.Collection<DependencyObject> {
-		public ResourceDictionary ()  : base (NativeMethods.resource_collection_new ())
+		public ResourceDictionary ()  : base (NativeMethods.resource_dictionary_new ())
 		{
 			NativeMethods.base_ref (native);
 		}

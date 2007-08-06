@@ -206,7 +206,7 @@ namespace Mono {
 		public extern static void collection_iterator_destroy (IntPtr iterator);
 		
 		[DllImport("moon")]
-		public extern static IntPtr resource_collection_new ();
+		public extern static IntPtr resource_dictionary_new ();
 		
 		[DllImport("moon")]
 		public extern static IntPtr trigger_collection_new ();

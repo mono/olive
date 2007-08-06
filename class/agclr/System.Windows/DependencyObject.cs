@@ -318,6 +318,9 @@ namespace System.Windows {
 
 			case Kind.MEDIAELEMENT:
 				return new MediaElement (raw);
+				
+			case Kind.KEYSPLINE:
+				return new KeySpline(raw);
 
 			case Kind.CLOCKGROUP:
 			case Kind.ANIMATIONCLOCK:
