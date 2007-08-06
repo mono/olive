@@ -1,3 +1,10 @@
+2007-08-06  Jackson Harper  <jackson@ximian.com>
+
+	* WebApplication.cs: initParams doesn't require a key=value string
+	according to the docs
+	(http://msdn2.microsoft.com/en-us/library/bb417075.aspx). In the
+	"param1, param2" case just add the keys.
+
 2007-08-02  Chris Toshok  <toshok@ximian.com>
 
 	* WebApplication.cs: populate the StartupArgs dictionary based on

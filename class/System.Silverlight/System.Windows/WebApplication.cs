@@ -37,7 +37,10 @@ namespace System.Windows
 
 					foreach (string kv in kvs) {
 						string[] stuff = kv.Split ('=');
-						startup_args[stuff[0]] = stuff[1];
+						if (stuff.Length > 1)
+							startup_args[stuff[0]] = stuff[1];
+						else
+							startup_args[stuff[0]] = String.Empty;
 					}
 				}
 			}
