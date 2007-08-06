@@ -1,5 +1,9 @@
 2007-08-06  Jackson Harper  <jackson@ximian.com>
 
+	* ScriptableObjectGenerator.cs: Fix function name.
+
+2007-08-06  Jackson Harper  <jackson@ximian.com>
+
 	* WebApplication.cs: initParams doesn't require a key=value string
 	according to the docs
 	(http://msdn2.microsoft.com/en-us/library/bb417075.aspx). In the

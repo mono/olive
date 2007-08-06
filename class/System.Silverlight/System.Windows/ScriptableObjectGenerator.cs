@@ -132,7 +132,7 @@ namespace System.Windows
 						      TypeCode[] method_parameter_types,
 						      int parameter_count);
 
-		[DllImport ("moonplugin", EntryPoint = "moonlight_scriptable_emit_event")]
+		[DllImport ("moonplugin", EntryPoint = "moonlight_scriptable_object_emit_event")]
 		public static extern void emit_event (IntPtr plugin_handle,
 						      IntPtr scriptable_obj,
 						      IntPtr event_wrapper,
