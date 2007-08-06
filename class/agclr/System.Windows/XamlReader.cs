@@ -48,7 +48,7 @@ namespace System.Windows {
 		public static DependencyObject Load (string xaml)
 		{
 			DependencyObject.Ping ();
-			return Load (xaml, true);
+			return Load (xaml, false);
 		}
 		
 		public static DependencyObject Load (string xaml, bool createNamescope)
