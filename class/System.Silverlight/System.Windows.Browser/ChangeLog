@@ -1,3 +1,8 @@
+2007-08-07  Jb Evain  <jbevain@novell.com>
+
+	* BrowserRuntimeSettings.cs: NonSerialized on fields
+	are not necessary.
+
 2007-08-03  Jackson Harper  <jackson@ximian.com>
 
 	* HtmlElementCollection.cs: Add enumerators.

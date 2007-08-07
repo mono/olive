@@ -34,14 +34,7 @@ namespace System.Windows.Browser
 {
 	public sealed class BrowserRuntimeSettings
 	{
-#if !NET_2_1
-		[NonSerialized]
-#endif
 		CultureInfo culture;
-
-#if !NET_2_1
-		[NonSerialized]
-#endif
 		CultureInfo ui_culture;
 
 		bool debug, html, httpnet, script;
