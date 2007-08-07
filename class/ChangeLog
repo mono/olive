@@ -1,3 +1,7 @@
+2007-08-07  Jb Evain  <jbevain@novell.com>
+
+	* Makefile, 2.1 profile: System.Silverlight depends on agmono.
+
 2007-07-23  Miguel de Icaza  <miguel@novell.com>
 
 	* Add System.Windows.Interop/PluginHost.cs to expose the plugin
