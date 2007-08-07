@@ -1,5 +1,4 @@
 using System;
-using System.Web;
 using System.Security.Permissions;
 
 namespace System.Windows.Browser.Serialization

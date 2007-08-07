@@ -36,7 +36,7 @@ namespace System.Windows.Controls
 	// It simply opens a native file dialog
 	//
 	// Note that those unmanaged icalls are not in the runtime yet.
-	public sealed class OpenFileDialog
+	public sealed class OpenFileDialog : IDisposable 
 	{
 		FileDialogFileInfo [] files;
 		
@@ -49,7 +49,7 @@ namespace System.Windows.Controls
 		{
 		}
 
-		public void Dispose ()
+		void IDisposable.Dispose ()
 		{
 		}
 
