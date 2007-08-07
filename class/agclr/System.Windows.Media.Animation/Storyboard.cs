@@ -70,7 +70,7 @@ namespace System.Windows.Media.Animation {
 
 		public void Seek (TimeSpan time_span)
 		{
-			NativeMethods.storyboard_seek (native, time_span.Ticks / 10);
+			NativeMethods.storyboard_seek (native, time_span.Ticks);
 		}
 
 		public void Stop ()
