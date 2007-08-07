@@ -1,0 +1,3 @@
+2007-08-07  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: agmono doesn't require System.Xml.

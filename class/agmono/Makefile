@@ -3,7 +3,7 @@ include ../../build/rules.make
 
 LIBRARY = agmono.dll
 
-LIB_MCS_FLAGS = -r:System -r:System.Xml -d:AGCLR -unsafe
+LIB_MCS_FLAGS = -r:System -d:AGCLR -unsafe
 
 include ../../build/library.make
 
