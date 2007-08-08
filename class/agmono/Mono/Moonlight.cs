@@ -45,7 +45,7 @@ namespace Mono {
 			if (loader_callback != null)
 				return loader_callback (asm_path);
 
-			return Assembly.LoadFile (asm_path);
+			return Assembly.LoadFrom (asm_path);
 		}
 	}
 }
