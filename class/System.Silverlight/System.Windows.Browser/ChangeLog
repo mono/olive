@@ -1,3 +1,8 @@
+2007-08-08  Jackson Harper  <jackson@ximian.com>
+
+	* HtmlPage.cs: implement CurrentBookmark NavigateToBookmark and
+	submit the pages 'default' form.
+
 2007-08-07  Jb Evain  <jbevain@novell.com>
 
 	* BrowserRuntimeSettings.cs: NonSerialized on fields

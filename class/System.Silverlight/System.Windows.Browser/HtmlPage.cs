@@ -65,10 +65,19 @@ namespace System.Windows.Browser {
 			}
 		}
 
-		[MonoTODO]
 		public static string CurrentBookmark {
-			get { return null; }
-			set { ; }
+			get {
+				IntPtr loc = GetPropertyInternal<IntPtr> (Document.Handle, "location");
+				string hash = GetPropertyInternal<string> (loc, "hash");
+
+				if (hash == null || hash [0] != '#')
+					return null;
+				return hash.Substring (1, hash.Length - 1);
+			}
+			set {
+				IntPtr loc = GetPropertyInternal<IntPtr> (Document.Handle, "location");
+				SetPropertyInternal (loc, "hash", String.Concat ("#", value));
+			}
 		}
 
 		public static HtmlDocument Document {
@@ -139,16 +148,17 @@ namespace System.Windows.Browser {
 			return new HtmlWindow (InvokeInternal<IntPtr> (Window.Handle, "open", navigateToUri, target, targetFeatures));
 		}
 
-		[MonoTODO ("Not sure this can be done from JS. I think I will need to add a plugin function for this.")]
 		public static void NavigateToBookmark (string bookmark)
 		{
-			
+			CurrentBookmark = bookmark;
 		}
 
-		[MonoTODO ("How do i get the default form")]
 		public static void Submit ()
 		{
-			// Submit (WebApplication.Current.PluginHandle, null);
+			HtmlElementCollection forms = Document.GetElementsByTagName ("form");
+			if (forms.Count < 1)
+				return;
+			InvokeInternal<object> (forms [0].Handle, "submit");
 		}
 
 		public static void Submit (string formId)
