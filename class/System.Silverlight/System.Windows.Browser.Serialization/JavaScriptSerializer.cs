@@ -321,8 +321,12 @@ namespace System.Windows.Browser.Serialization
 					break;
 				case 'u':
 					ushort cp;
-					if (!ushort.TryParse (input.Substring (i + 1, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out cp))
-						throw new ArgumentException (String.Format ("Invalid JSON string literal; \\u format expects four digits, at {0}", i));
+					try {
+						cp = ushort.Parse (input.Substring (i + 1, 4), NumberStyles.HexNumber, CultureInfo.InvariantCulture);
+					} catch (Exception e) {
+						throw new ArgumentException (String.Format ("Invalid JSON string literal; \\u format expects four digits, at {0}", i), e);
+					}
+
 					i += 4; // another 1 is added later.
 Console.WriteLine ("[{0}]", sb);
 					sb.Append ((char) cp);
