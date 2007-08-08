@@ -7,8 +7,11 @@ namespace System.Windows.Browser.Net
 	{
 		[MonoTODO]
 		public BrowserHttpWebRequest (Uri uri)
-//			: base (uri)
+#if NET_2_1
+			: base (uri)
+#else
 			: base (null, default (System.Runtime.Serialization.StreamingContext)) // FIXME: 2.0 != SL
+#endif
 		{
 			throw new NotImplementedException ();
 		}
