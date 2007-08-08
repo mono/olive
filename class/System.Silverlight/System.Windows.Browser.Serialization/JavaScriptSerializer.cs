@@ -39,7 +39,7 @@ namespace System.Windows.Browser.Serialization
 				// I'm not sure if System.Convert is used here.
 				// (unlike ASP.NET Ajax; since there is no
 				//  TypeDescriptor in silverlight System.dll)
-				return (T) Convert.ChangeType (obj, typeof (T));
+				return (T) Convert.ChangeType (obj, typeof (T), CultureInfo.InvariantCulture);
 			} catch (InvalidCastException ex) {
 				throw new InvalidOperationException (String.Format ("Cannot convert object of type {0} to {1}", obj != null ? obj.GetType ().FullName : "(null)", typeof (T)), ex);
 			}
@@ -186,7 +186,7 @@ namespace System.Windows.Browser.Serialization
 				PropertyInfo prop = type.GetProperty (p.Key);
 				if (prop != null)
 					// ChangeType() is needed for example setting double value to int property.
-					prop.SetValue (o, Convert.ChangeType (p.Value, prop.PropertyType), empty_args);
+					prop.SetValue (o, Convert.ChangeType (p.Value, prop.PropertyType, CultureInfo.InvariantCulture), empty_args);
 			}
 			return o;
 		}

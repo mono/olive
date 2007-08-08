@@ -1,3 +1,8 @@
+2007-08-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JavaScriptSerializer.cs : use Convert.ChangeType() which exists
+	  in 2.1 profile.
+
 2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JavaScriptSerializer.cs :
