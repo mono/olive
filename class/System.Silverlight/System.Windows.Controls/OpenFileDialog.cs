@@ -66,15 +66,15 @@ namespace System.Windows.Controls
 				return DialogResult.Cancel;
 			}
 
-			int inc = Marshal.SizeOf (typeof (IntPtr));
+			uint inc = (uint) Marshal.SizeOf (typeof (IntPtr));
 			IntPtr p;
 			int n = 0;
 
-			for (int ofs = 0; (p = Marshal.ReadIntPtr (result, ofs)) != IntPtr.Zero; ofs += inc)
+			for (uint ofs = 0; (p = Marshal.ReadIntPtr ((IntPtr)((ulong)result + ofs))) != IntPtr.Zero; ofs += inc)
 				n++;
 
 			files = new FileDialogFileInfo [n];
-			for (int i = 0, ofs = 0; (p = Marshal.ReadIntPtr (result, ofs)) != IntPtr.Zero; ofs += inc)
+			for (uint i = 0, ofs = 0; (p = Marshal.ReadIntPtr ((IntPtr)((ulong)result + ofs))) != IntPtr.Zero; ofs += inc)
 				files [i++] = new FileDialogFileInfo (Marshal.PtrToStringAnsi (p));
 			
 			return DialogResult.OK;

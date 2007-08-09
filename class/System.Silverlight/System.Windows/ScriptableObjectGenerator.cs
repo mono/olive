@@ -284,7 +284,7 @@ namespace System.Windows
 			case Kind.DOUBLE:
 				return v.u.d;
 			case Kind.STRING:
-				return Marshal.PtrToStringAuto (v.u.p);
+				return Marshal.PtrToStringAnsi (v.u.p);
 			case Kind.NPOBJ:
 				return v.u.p;
 			default:
@@ -337,8 +337,8 @@ namespace System.Windows
 
 		static void InvokeFromUnmanaged (IntPtr obj_handle, IntPtr method_handle, IntPtr[] uargs, int arg_count, ref Value return_value)
 		{
-			object obj = GCHandle.FromIntPtr (obj_handle).Target;
-			MethodInfo mi = (MethodInfo)GCHandle.FromIntPtr (method_handle).Target;
+			object obj = ((GCHandle)obj_handle).Target;
+			MethodInfo mi = (MethodInfo)((GCHandle)method_handle).Target;
 
 			object[] margs = new object[arg_count];
 			ParameterInfo[] pis = mi.GetParameters ();
@@ -364,8 +364,8 @@ namespace System.Windows
 
 		static void SetPropertyFromUnmanaged (IntPtr obj_handle, IntPtr property_handle, ref Value value)
 		{
-			object obj = GCHandle.FromIntPtr (obj_handle).Target;
-			PropertyInfo pi = (PropertyInfo)GCHandle.FromIntPtr (property_handle).Target;
+			object obj = ((GCHandle)obj_handle).Target;
+			PropertyInfo pi = (PropertyInfo)((GCHandle)property_handle).Target;
 
 			object v = ObjectFromValue (value);
 
@@ -375,8 +375,8 @@ namespace System.Windows
 
 		static void GetPropertyFromUnmanaged (IntPtr obj_handle, IntPtr property_handle, ref Value value)
 		{
-			object obj = GCHandle.FromIntPtr (obj_handle).Target;
-			PropertyInfo pi = (PropertyInfo)GCHandle.FromIntPtr (property_handle).Target;
+			object obj = ((GCHandle)obj_handle).Target;
+			PropertyInfo pi = (PropertyInfo)((GCHandle)property_handle).Target;
 
 			object v = pi.GetValue (obj, null);
 
@@ -385,15 +385,15 @@ namespace System.Windows
 
 		static void AddEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle, IntPtr scriptable_obj, IntPtr closure)
 		{
-			object obj = GCHandle.FromIntPtr (obj_handle).Target;
-			EventInfo ei = (EventInfo)GCHandle.FromIntPtr (event_handle).Target;
+			object obj = ((GCHandle)obj_handle).Target;
+			EventInfo ei = (EventInfo)((GCHandle)event_handle).Target;
 
 			ei.AddEventHandler (obj, new EventDelegate (ei.EventHandlerType, scriptable_obj, closure).Delegate);
 		}
 
 		static void RemoveEventFromUnmanaged (IntPtr obj_handle, IntPtr event_handle, IntPtr scriptable_obj, IntPtr closure)
 		{
-			EventInfo ei = (EventInfo)GCHandle.FromIntPtr (event_handle).Target;
+			EventInfo ei = (EventInfo)((GCHandle)event_handle).Target;
 
 			Console.WriteLine ("TODO - RemoveEventFromUnmanaged");
 			Console.WriteLine (" + {0}", ei.Name);

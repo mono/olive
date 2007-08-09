@@ -1,3 +1,9 @@
+2007-08-09  Miguel de Icaza  <miguel@novell.com>
+
+	* ScriptableObjectGenerator.cs: Some changes to compile with the
+	2.1 mscorlib, it does not build completely yet, and am afraid we
+	will have to resort to using friend assemblies. 
+
 2007-08-06  Jackson Harper  <jackson@ximian.com>
 
 	* ScriptableObjectGenerator.cs: Fix function name.
