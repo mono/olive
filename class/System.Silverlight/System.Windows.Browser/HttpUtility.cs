@@ -746,7 +746,12 @@ namespace System.Windows.Browser
 				return "";
 
 			byte [] bytes = Encoding.UTF8.GetBytes (str);
-			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, 0, bytes.Length));
+			bytes = UrlEncodeToBytes (bytes, 0, bytes.Length);
+			char [] copy = new char [bytes.Length];
+			for (int i = 0; i < bytes.Length; i++)
+				copy [i] = (char) bytes [i];
+			
+			return new string (copy);
 		}
 	  
 		public static byte [] UrlEncodeToBytes (string str, Encoding e)
