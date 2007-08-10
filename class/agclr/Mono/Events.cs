@@ -40,6 +40,13 @@ namespace Mono {
 		public double y;
 	}
 
+	[StructLayout(LayoutKind.Sequential)]
+	struct UnmanagedKeyboardEventArgs {
+		public int state;
+		public int platformcode;
+		public int key;
+	}
+
 	internal class Events {
 		internal static UnmanagedEventHandler mouse_motion = new UnmanagedEventHandler (mouse_motion_notify_callback);
 		internal static UnmanagedEventHandler mouse_button_down = new UnmanagedEventHandler (mouse_button_down_callback);
@@ -78,16 +85,25 @@ namespace Mono {
 			e.InvokeMouseLeave ();
 		}
 
+		static KeyboardEventArgs MarshalKeyboardEventArgs (IntPtr calldata)
+		{
+			UnmanagedKeyboardEventArgs args =
+				(UnmanagedKeyboardEventArgs)Marshal.PtrToStructure (calldata,
+										    typeof (UnmanagedKeyboardEventArgs));
+
+			return new KeyboardEventArgs (false/*XXX*/, false/*XXX*/, args.key, args.platformcode);
+		}
+
 		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
-			// TODO: map the key
+			e.InvokeKeyUp (MarshalKeyboardEventArgs (calldata));
 		}
 
 		static void key_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
-			// TODO: map the key
+			e.InvokeKeyDown (MarshalKeyboardEventArgs (calldata));
 		}
 
 		static MouseEventArgs MarshalMouseEventArgs (IntPtr calldata)

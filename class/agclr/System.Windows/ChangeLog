@@ -1,3 +1,7 @@
+2007-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* UIElement.cs: add InvokeKeyUp and InvokeKeyDown.
+
 2007-08-09  Chris Toshok  <toshok@ximian.com>
 
 	* Duration.cs: implement the NotImplemented methods.

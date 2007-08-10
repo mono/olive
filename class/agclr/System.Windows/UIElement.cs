@@ -370,6 +370,20 @@ namespace System.Windows {
 				h (this, m);
 		}
 
+		internal void InvokeKeyDown (KeyboardEventArgs k)
+		{
+			KeyboardEventHandler h = (KeyboardEventHandler)events[KeyDownEvent];
+			if (h != null)
+				h (this, k);
+		}
+
+		internal void InvokeKeyUp (KeyboardEventArgs k)
+		{
+			KeyboardEventHandler h = (KeyboardEventHandler)events[KeyUpEvent];
+			if (h != null)
+				h (this, k);
+		}
+
 		internal void InvokeMouseLeave ()
 		{
 			EventHandler h = (EventHandler)events[MouseLeaveEvent];

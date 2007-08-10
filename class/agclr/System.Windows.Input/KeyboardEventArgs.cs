@@ -36,7 +36,7 @@ namespace System.Windows.Input {
 		{
 		}
 
-		internal KeyboardEventArgs (bool ctrl, int key, int platform_key_code, bool shift)
+		internal KeyboardEventArgs (bool ctrl, bool shift, int key, int platform_key_code)
 		{
 			this.ctrl = ctrl;
 			this.key = key;

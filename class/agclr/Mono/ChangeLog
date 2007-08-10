@@ -1,3 +1,9 @@
+2007-08-10  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: fill in the key_up_callback/key_down_callback to call
+	UIElement.InvokeKey{Up,Down}, and marshal the unmanaged keyboard
+	event args.
+
 2007-07-09  Chris Toshok  <toshok@ximian.com>
 
 	* Events.cs: commit the CrossDomainProxy code for handling events
