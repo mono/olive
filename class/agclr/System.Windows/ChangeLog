@@ -1,3 +1,7 @@
+2007-08-09  Chris Toshok  <toshok@ximian.com>
+
+	* Duration.cs: implement the NotImplemented methods.
+
 2007-08-06  Jackson Harper  <jackson@ximian.com>
 
 	* XamlReader.cs: Default createnamescope is false to match

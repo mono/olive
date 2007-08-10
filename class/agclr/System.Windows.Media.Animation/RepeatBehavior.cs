@@ -28,8 +28,9 @@
 namespace System.Windows.Media.Animation {
 
 	public struct RepeatBehavior {
-		const int DOUBLE = 1;
+		const int COUNT = 1;
 		const int TIMESPAN = 2;
+		const int FOREVER = 3;
 
 		internal int kind;
 		internal double count;
@@ -44,7 +45,7 @@ namespace System.Windows.Media.Animation {
 
 		public RepeatBehavior (double count)
 		{
-			kind = DOUBLE;
+			kind = COUNT;
 			this.count = count;
 			duration = new TimeSpan (0);
 		}
@@ -58,7 +59,7 @@ namespace System.Windows.Media.Animation {
 
 		public double Count {
 			get {
-				if (kind == DOUBLE)
+				if (kind == COUNT)
 					return count;
 				throw new Exception ("This RepeatBehavior does not contain a Count");
 			}
@@ -72,9 +73,14 @@ namespace System.Windows.Media.Animation {
 			}
 		}
 
+		public static RepeatBehavior Forever {
+			get { return new RepeatBehavior (FOREVER, 0, TimeSpan.Zero); }
+		}
+
+
 		public bool HasCount {
 			get {
-				return kind == DOUBLE;
+				return kind == COUNT;
 			}
 		}
 

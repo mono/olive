@@ -119,6 +119,14 @@ namespace System.Windows {
 			return this;
 		}
 
+		public static Duration Plus (Duration duration)
+		{
+			if (duration.kind == TIMESPAN && duration.time_span < TimeSpan.Zero)
+				return new Duration (-duration.time_span);
+			else
+				return duration;
+		}
+
 		public override string ToString ()
 		{
 			return kind == TIMESPAN ? time_span.ToString () : (kind == AUTOMATIC ? "automatic" : "forever");
@@ -158,27 +166,27 @@ namespace System.Windows {
 		
 		public static bool operator > (Duration t1, Duration t2)
 		{
-			throw new NotImplementedException ();
+			return Compare (t1, t2) > 0;
 		}
 		
 		public static bool operator >= (Duration t1, Duration t2)
 		{
-			throw new NotImplementedException ();
+			return Compare (t1, t2) >= 0;
 		}
 		
 		public static bool operator < (Duration t1, Duration t2)
 		{
-			throw new NotImplementedException ();
+			return Compare (t1, t2) < 0;
 		}
 		
 		public static bool operator <= (Duration t1, Duration t2)
 		{
-			throw new NotImplementedException ();
+			return Compare (t1, t2) <= 0;
 		}
 		
 		public static Duration operator + (Duration duration)
 		{
-			throw new NotImplementedException ();
+			return Plus (duration);
 		}
 
 		public static Duration Automatic {

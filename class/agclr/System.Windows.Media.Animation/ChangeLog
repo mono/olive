@@ -1,3 +1,8 @@
+2007-08-09  Chris Toshok  <toshok@ximian.com>
+
+	* RepeatBehavior.cs: implement RepeatBehavior.Forever, and rename
+	DOUBLE to COUNT.
+
 2007-07-30  Chris Toshok  <toshok@ximian.com>
 
 	* ColorAnimationUsingKeyFrames.cs: update to use
