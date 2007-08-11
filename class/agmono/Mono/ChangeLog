@@ -1,6 +1,12 @@
 2007-08-11  Miguel de Icaza  <miguel@novell.com>
 
-	* Helper.cs: Move some code here that was duplicated in
+	* Helper.cs: Add two helper methods that access the mscorlib
+	internal methods to manage AppDomains.   This is necessary because
+	we do not want to become friends with moonlight.exe (it is not
+	installed in the GAC or anything like that).   So instead we
+	become friends with agmono.
+
+	Move some code here that was duplicated in
 	XamlReader.cs and in moonlight.cs.    We are doing this to friend
 	agmono.dll to our 2.1 System assembly.   
 

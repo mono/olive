@@ -94,5 +94,15 @@ namespace Mono {
 				error = e.ToString ();
 			}
 		}
+
+		public static AppDomain CreateDomain (IntPtr key)
+		{
+			return AppDomain.CreateDomain ("moonlight-" + key);
+		}
+
+		public static object CreateInstanceAndUnwrap (AppDomain target, string assemblyName, string typeName)
+		{
+			return target.CreateInstanceAndUnwrap (assemblyName, typeName);
+		}
 	}
 }
