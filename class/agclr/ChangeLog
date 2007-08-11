@@ -1,3 +1,10 @@
+2007-08-11  Jb Evain  <jbevain@novell.com>
+
+	* Mono/EventHanderList.cs: copied from System.dll, as it doesn't
+		exists in 2.1.
+	  agclr.dll.sources: add Mono/EventHandlerList
+	  System.Windows/DependencyObject.cs: use the new EventHandlerList.
+
 2007-08-04  Chris Toshok  <toshok@ximian.com>
 
 	* agclr.dll.sources: add System.Windows.Media/VisualBrush.cpp
