@@ -1,3 +1,7 @@
+2007-08-11  Jb Evain  <jbevain@novell.com>
+
+	* profiles/net_2_1.make: allow 2.1 assemblies in the GAC.
+
 2007-03-16  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: use local copy of install-sh, as some platforms 
