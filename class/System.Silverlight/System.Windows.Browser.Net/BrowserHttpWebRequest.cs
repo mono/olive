@@ -37,7 +37,7 @@ namespace System.Windows.Browser.Net
 		}
 
 		[MonoTODO]
-		public override void AddRange (int from, int to)
+		public override void AddRange (int @from, int to)
 		{
 			throw new NotImplementedException ();
 		}
@@ -49,7 +49,7 @@ namespace System.Windows.Browser.Net
 		}
 
 		[MonoTODO]
-		public override void AddRange (string rangeSpecifier, int from, int to)
+		public override void AddRange (string rangeSpecifier, int @from, int to)
 		{
 			throw new NotImplementedException ();
 		}
