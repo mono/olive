@@ -1,6 +1,6 @@
 # -*- makefile -*-
 
-MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" smcs
+MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" smcs -langversion:default
 
 # nuttzing!
 
