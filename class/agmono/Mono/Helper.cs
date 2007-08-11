@@ -104,5 +104,15 @@ namespace Mono {
 		{
 			return target.CreateInstanceAndUnwrap (assemblyName, typeName);
 		}
+
+		public static Assembly LoadFile (string path)
+		{
+			return Assembly.LoadFile (path);
+		}
+
+		public static AssemblyName [] GetReferencedAssemblies (Assembly ass)
+		{
+			return ass.GetReferencedAssemblies ();
+		}
 	}
 }
