@@ -3,6 +3,7 @@ thisdir := .
 SUBDIRS := build class tools data scripts
 
 net_3_0_SUBDIRS := build class tools data scripts
+net_2_1_SUBDIRS := build class
 
 include build/rules.make
 
@@ -16,7 +17,7 @@ DISTFILES = README configure mkinstalldirs nunit.key install-sh
 
 # fun specialty targets
 
-PROFILES = default net_2_0
+PROFILES = net_3_0 net_2_1
 
 .PHONY: all-profiles $(STD_TARGETS:=-profiles)
 all-profiles $(STD_TARGETS:=-profiles): %-profiles: profiles-do--%
