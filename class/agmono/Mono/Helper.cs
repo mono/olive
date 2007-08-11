@@ -1,5 +1,8 @@
 //
-// Helper.cs
+// Helper.cs: Exposes some methods that require access to mscorlib or
+// System but are not exposed in the 2.1 profile.   This is necessary
+// to avoid making moonlight.exe a friend of the System and mscorlib
+// assemblies.
 //
 // Authors:
 //   Miguel de Icaza (miguel@novell.com)
