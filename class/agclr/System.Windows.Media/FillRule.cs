@@ -29,7 +29,6 @@ using System;
 
 namespace System.Windows.Media {
 
-	[Serializable]
 	public enum FillRule {
 		EvenOdd,
 		Nonzero

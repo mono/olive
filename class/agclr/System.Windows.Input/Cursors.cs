@@ -28,7 +28,6 @@
 
 namespace System.Windows.Input {
 
-	[Serializable]
 	public enum Cursors {
 	        Default,
 	        Arrow,

@@ -28,7 +28,6 @@
 
 namespace System.Windows.Media {
 	
-	[Serializable]
 	public enum SweepDirection {
 		Counterclockwise,
 		Clockwise

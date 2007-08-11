@@ -29,7 +29,7 @@ using System.Windows.Media;
 using System.Windows.Input;
 
 namespace System.Windows {
-	[Serializable]
+
 	public enum FontWeights
 	{
 		Thin       = 100,

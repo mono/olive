@@ -28,7 +28,6 @@
 
 namespace System.Windows {
 
-	[Serializable]
 	public enum TextWrapping {
 		WrapWithOverflow = 0,
 		NoWrap,

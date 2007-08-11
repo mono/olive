@@ -32,7 +32,6 @@ using System.Windows.Input;
 
 namespace System.Windows {
 
-	[Serializable]
 	public enum Visibility {
 		Visible,
 		Collapsed,

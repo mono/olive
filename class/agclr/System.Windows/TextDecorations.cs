@@ -28,7 +28,6 @@
 
 namespace System.Windows {
 
-	[Serializable]
 	public enum TextDecorations {
 		None = 0,
 		Underline = 1
