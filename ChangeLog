@@ -1,3 +1,8 @@
+2007-08-11  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: if no profile is specified, build the net_3_0 and
+	net_2_1 profiles in a raw.
+
 2007-07-26  Aaron Bockover  <abockover@novell.com>
 
 	* configure: touch data/*.in to ensure the .pc files are regenerated

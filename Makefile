@@ -5,6 +5,14 @@ SUBDIRS := build class tools data scripts
 net_3_0_SUBDIRS := build class tools data scripts
 net_2_1_SUBDIRS := build class
 
+PROFILES = net_3_0 net_2_1
+
+ifndef PROFILE
+OVERRIDE_TARGET_ALL = yes
+all.override:
+	$(MAKE) PROFILES='$(PROFILES)' all-profiles
+endif
+
 include build/rules.make
 
 all-recursive $(STD_TARGETS:=-recursive): platform-check profile-check
@@ -16,8 +24,6 @@ all-local $(STD_TARGETS:=-local):
 DISTFILES = README configure mkinstalldirs nunit.key install-sh
 
 # fun specialty targets
-
-PROFILES = net_3_0 net_2_1
 
 .PHONY: all-profiles $(STD_TARGETS:=-profiles)
 all-profiles $(STD_TARGETS:=-profiles): %-profiles: profiles-do--%
