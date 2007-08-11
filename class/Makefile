@@ -24,7 +24,7 @@ net_3_0_dirs = \
 net_2_1_dirs = \
 	agmono		\
 	System.Silverlight	\
-#	agclr		\
+	agclr		\
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
 net_2_1_SUBDIRS := $(net_2_1_dirs)
