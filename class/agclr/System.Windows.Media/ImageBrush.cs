@@ -67,7 +67,6 @@ namespace System.Windows.Media {
 		}
 
 
-		[MonoTODO]
 		public void SetSource (DependencyObject Downloader, string PartName)
 		{
 			throw new NotImplementedException ();

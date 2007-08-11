@@ -41,7 +41,6 @@ namespace System.Windows.Media {
 		{
 		}
 		
-		[MonoTODO]
 		public DependencyObject GetItemByName (string AttributeName)
 		{
 			throw new NotImplementedException ();
