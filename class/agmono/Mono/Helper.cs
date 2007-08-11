@@ -65,7 +65,7 @@ namespace Mono {
 			return converter;
 		}
 		
-		public void SetPropertyFromString (object target, string name, string value, out string error)
+		public static void SetPropertyFromString (object target, string name, string value, out string error)
 		{
 			PropertyInfo pi = target.GetType ().GetProperty (name);
 			if (pi == null){
