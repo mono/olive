@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Net;
 
 namespace System.Windows.Browser.Net
@@ -22,14 +23,82 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-/*
-		They are commented out since they are overridable only
-		in Silverlight.
+#if NET_2_1
+		[MonoTODO]
+		public override void Abort ()
+		{
+			throw new NotImplementedException ();
+		}
 
+		[MonoTODO]
+		public override void AddRange (int range)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override void AddRange (int from, int to)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override void AddRange (string rangeSpecifier, int range)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override void AddRange (string rangeSpecifier, int from, int to)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override IAsyncResult BeginGetRequestStream (AsyncCallback callback, object state)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override IAsyncResult BeginGetResponse (AsyncCallback callback, object state)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override Stream EndGetRequestStream (IAsyncResult asyncResult)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override HttpWebResponse EndGetResponse (IAsyncResult asyncResult)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override Stream GetRequestStream ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override HttpWebResponse GetResponse ()
+		{
+			throw new NotImplementedException ();
+		}
+		
 		[MonoTODO]
 		public override string Accept {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public override Uri Address {
+			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
@@ -45,7 +114,7 @@ namespace System.Windows.Browser.Net
 		}
 
 		[MonoTODO]
-		public override DecompressionMethod AutomaticDecompression {
+		public override DecompressionMethods AutomaticDecompression {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
@@ -87,7 +156,7 @@ namespace System.Windows.Browser.Net
 		}
 
 		[MonoTODO]
-		public override string Except {
+		public override string Expect {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
@@ -99,12 +168,6 @@ namespace System.Windows.Browser.Net
 
 		[MonoTODO]
 		public override WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public override string IfModifiedSince {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
@@ -179,6 +242,6 @@ namespace System.Windows.Browser.Net
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
-*/
+#endif
 	}
 }
