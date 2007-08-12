@@ -199,7 +199,7 @@ namespace System.Data.Linq
 
             IEnumerator en = provider.Translate(typeof(T), reader);
             while (en.MoveNext())
-                yield return en.Current;
+                yield return (T)en.Current;
         }
         #endregion
     }
