@@ -17,10 +17,5 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyVersion (Consts.FxVersion)]
 
 [assembly: AssemblyDelaySign (true)]
-#if NET_2_1
 [assembly: AssemblyKeyFile ("../msfinal3.pub")]
-#else
-// For our desktop use, use the mono.pub key.
-[assembly: AssemblyKeyFile ("../mono.pub")]
-#endif
 
