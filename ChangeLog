@@ -1,3 +1,8 @@
+2007-08-13  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: revert temporarly to old behavior: only build net_3_0
+	on make.
+
 2007-08-11  Jb Evain  <jbevain@novell.com>
 
 	* Makefile: if no profile is specified, build the net_3_0 and
