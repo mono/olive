@@ -13,3 +13,18 @@ To install:
 
 It defaults to the Mono installation prefix
 
+* Silverlight Assemblies
+
+	Since Moonlight exposes both a 2.1 profile and a profile that
+	can be used on our desktop applications you will find two sets
+	of .pc files to use with pkgconfig.
+
+	silver.pc:
+		This one references the 2.1 APIs, and this is what
+	 	the smcs compiler should use.
+
+	silverdesktop.pc:
+		These one is for use with the desktop and Gtk# applications.
+
+		The only difference between silver.pc and silver
+
