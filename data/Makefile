@@ -6,6 +6,7 @@ ifeq ($(PLATFORM), win32)
 	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/3.0')
 else
 	olivedir = $(prefix)/lib/mono/3.0
+	silverdir = $(prefix)/lib/mono/2.1
 endif
 
 all-local: olive.pc silver.pc silverdesktop.pc agmono.pc
@@ -18,7 +19,7 @@ olive.pc: olive.pc.in Makefile
 	mv $@.tmp $@
 
 silver.pc: silver.pc.in Makefile
-	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
+	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
 	mv $@.tmp $@
 
 silverdesktop.pc: silverdesktop.pc.in Makefile
