@@ -6,7 +6,7 @@ ifeq ($(PLATFORM), win32)
 	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/3.0')
 else
 	olivedir = $(prefix)/lib/mono/3.0
-	silverdir = $(prefix)/lib/mono/2.1
+	silverdir = $(prefix)/lib/mono/3.0
 endif
 
 all-local: olive.pc silver.pc silverdesktop.pc agmono.pc
