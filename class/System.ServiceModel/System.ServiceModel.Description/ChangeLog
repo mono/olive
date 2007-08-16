@@ -1,5 +1,10 @@
 2007-08-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ServiceModelInternalConverter.cs : use MessagePartDescription.Name
+	  instead of MemberInfo.Name.
+
+2007-08-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TypedMessageConverter.cs ServiceModelInternalConverter.cs
 	  ContractDescriptionGenerator.cs :
 	  support MessageContractAttribute wrapper name specification and

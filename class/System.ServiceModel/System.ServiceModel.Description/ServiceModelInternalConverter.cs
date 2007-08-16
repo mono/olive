@@ -119,7 +119,8 @@ namespace System.ServiceModel.Description
 				else
 					b.Return (new CodeFieldReference (
 						fref, (FieldInfo) part.MemberInfo));
-				prop.CreateCustomAttribute (typeof (DataMemberAttribute), Type.EmptyTypes, new object [0], new string [] {"Name"}, new object [] {part.MemberInfo.Name});
+
+				prop.CreateCustomAttribute (typeof (DataMemberAttribute), Type.EmptyTypes, new object [0], new string [] {"Name"}, new object [] {part.Name});
 				props.Add (part.MemberInfo.Name);
 			}
 
