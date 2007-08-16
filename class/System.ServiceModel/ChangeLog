@@ -1,3 +1,12 @@
+2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
+
+	* System.ServiceModel.dll.sources: Updated with System.ServiceModel.PeerResolvers/PeerReferralPolicy.cs.
+	* PeerReferralPolicy.cs: Moved and updated here from AllEnums.cs.
+	* PeerResolverMode.cs: Updated API.
+	* RefreshResult.cs: Updated API.
+	* RegisterInfo.cs: Almost finished, minus HasBody().
+	* AllEnums.cs: PeerReferralPolicy lives now inside System.ServiceModel.PeerResolvers.
+
 2007-07-19 Marcos Cobena (marcoscobena@gmail.com)
 
 	* PeerCustomResolverSettings.cs, PeerResolverMode.cs, PeerResolverSettings.cs, 

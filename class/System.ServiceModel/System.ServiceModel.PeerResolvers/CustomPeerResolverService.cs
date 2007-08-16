@@ -7,16 +7,25 @@
 // Copyright 2007 Marcos Cobena (http://www.youcannoteatbits.org/)
 // 
 
+using System.Collections.Generic;
+using System.Transactions;
+
 namespace System.ServiceModel.PeerResolvers
 {
-	[ServiceBehavior (UseSynchronizationContext = false, InstanceContextMode = InstanceContextMode.Single, 
-	                  ConcurrencyMode = ConcurrencyMode.Multiple)]
+	// FIXME: TransactionTimeout must be null by-default.
+	[ServiceBehavior (AutomaticSessionShutdown = true, ConcurrencyMode = ConcurrencyMode.Multiple, 
+	                  InstanceContextMode = InstanceContextMode.Single, ReleaseServiceInstanceOnTransactionComplete = true, 
+	                  TransactionIsolationLevel = IsolationLevel.Unspecified, /*TransactionTimeout = null, */
+	                  UseSynchronizationContext = false, ValidateMustUnderstand = true)]
 	public class CustomPeerResolverService : IPeerResolverContract
 	{
-		private TimeSpan cleanup_interval;
-		private bool control_shape;
-		private bool opened;
-		private TimeSpan refresh_interval;
+		TimeSpan cleanup_interval;
+		bool control_shape;
+		bool opened;
+		// Maybe it's worth to change List<T> for a better distributed and faster collection.
+		List<Node> mesh = new List<Node> ();
+		object mesh_lock = new object ();
+		TimeSpan refresh_interval;
 
 		public CustomPeerResolverService ()
 		{
@@ -113,10 +122,16 @@ namespace System.ServiceModel.PeerResolvers
 			string meshId, 
 			PeerNodeAddress address)
 		{
+			Node n = new Node ();
 			RegisterResponseInfo rri = new RegisterResponseInfo ();
 			
 			if (ControlShape) {
 				// FIXME: To update mesh node here.
+				lock (mesh_lock)
+				{
+					mesh.Add (n);
+//					Console.WriteLine ("{0}, {1}, {2}", clientId, meshId, address);
+				}
 			}
 			
 			return rri;
@@ -159,5 +174,10 @@ namespace System.ServiceModel.PeerResolvers
 //			return new RegisterResponseInfo ();
 			throw new NotImplementedException ();
 		}
+	}
+	
+	internal class Node
+	{
+		
 	}
 }

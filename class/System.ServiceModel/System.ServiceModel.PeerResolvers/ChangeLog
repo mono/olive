@@ -1,3 +1,10 @@
+2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
+
+	* PeerReferralPolicy.cs: Moved and updated here from AllEnums.cs.
+	* PeerResolverMode.cs: Updated API.
+	* RefreshResult.cs: Updated API.
+	* RegisterInfo.cs: Almost finished, minus HasBody().
+
 2007-07-24 Marcos Cobena (marcoscobena@gmail.com)
 
 	* CustomPeerResolverService.cs, IPeerResolverContract.cs, RegisterInfo.cs, ResolveInfo.cs: Minor changes.

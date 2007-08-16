@@ -1,3 +1,7 @@
+2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
+
+	* AllEnums.cs: PeerReferralPolicy lives now inside System.ServiceModel.PeerResolvers.
+
 2007-08-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageContractAttribute.cs : IsWrapped = true by default.

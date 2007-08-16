@@ -376,16 +376,6 @@ namespace System.ServiceModel.MsmqIntegration
 	}
 }
 
-namespace System.ServiceModel.PeerResolvers
-{
-	public enum PeerReferralPolicy
-	{
-		DontShare,
-		Share,
-		Service,
-	}
-}
-
 namespace System.ServiceModel.Security
 {
 	public enum UserNamePasswordValidationMode
