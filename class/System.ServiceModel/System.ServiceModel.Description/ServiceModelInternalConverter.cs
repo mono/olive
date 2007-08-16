@@ -91,6 +91,7 @@ namespace System.ServiceModel.Description
 		static TypedMessageMapping ToDataContractType (Type src, MessageBodyDescription desc, string defaultNS)
 		{
 			TypedMessageMapping map = new TypedMessageMapping ();
+			map.IsWrapped = desc.WrapperName != null;
 			List<string> props = new List<string> ();
 
 			string modname = "dummy";
@@ -160,8 +161,10 @@ namespace System.ServiceModel.Description
 				throw new ArgumentException (String.Format ("Type {0} and its ancestor types do not have MessageContract attribute.", src));
 
 			MessageBodyDescription mb = new MessageBodyDescription ();
-			//mb.WrapperName = elementName;
-			//mb.WrapperNamespace = defaultNamespace;
+			if (mca.IsWrapped) {
+				mb.WrapperName = mca.WrapperName ?? src.Name;
+				mb.WrapperNamespace = mca.WrapperNamespace ?? TypedMessageConverter.TempUri;
+			}
 
 			ContractDescriptionGenerator.FillMessageBodyDescriptionByContract (src, mb);
 

@@ -239,9 +239,15 @@ namespace System.ServiceModel.Description
 				md.ProtectionLevel = mca.ProtectionLevel;
 
 			MessageBodyDescription mb = md.Body;
-			// FIXME: for some cases they seem to become empty or null...
-			mb.WrapperName = mi.Name + (isRequest ? String.Empty : "Response");
-			mb.WrapperNamespace = cd.Namespace;
+			bool isWrapped = mca == null || mca.IsWrapped;
+			if (isWrapped) {
+				mb.WrapperName =
+					mca != null && mca.WrapperName != null ? mca.WrapperName :
+					mi.Name + (isRequest ? String.Empty : "Response");
+				mb.WrapperNamespace =
+					mca != null && mca.WrapperNamespace != null ? mca.WrapperNamespace :
+					cd.Namespace;
+			}
 
 			// FIXME: anything to do for ProtectionLevel?
 

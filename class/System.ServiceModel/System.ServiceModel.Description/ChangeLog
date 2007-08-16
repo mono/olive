@@ -1,3 +1,10 @@
+2007-08-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypedMessageConverter.cs ServiceModelInternalConverter.cs
+	  ContractDescriptionGenerator.cs :
+	  support MessageContractAttribute wrapper name specification and
+	  non-wrapping outputs.
+
 2007-07-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ContractDescriptionGenerator.cs : reverted previous change. It is

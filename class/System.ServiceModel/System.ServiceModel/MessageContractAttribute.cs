@@ -33,7 +33,7 @@ namespace System.ServiceModel
 	[AttributeUsage (AttributeTargets.Class | AttributeTargets.Struct)]
 	public sealed class MessageContractAttribute : Attribute
 	{
-		bool has_protection_level, is_wrapped;
+		bool has_protection_level, is_wrapped = true;
 		string name, ns;
 		ProtectionLevel protection_level;
 

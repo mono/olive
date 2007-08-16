@@ -63,12 +63,16 @@ namespace System.ServiceModel.Description
 		protected override void OnWriteBodyContents (
 			XmlDictionaryWriter writer)
 		{
-			formatter.WriteObject (writer, body);
+			if (map.IsWrapped)
+				formatter.WriteObject (writer, body);
+			else
+				formatter.WriteObjectContent (writer, body);
 		}
 	}
 
 	internal class TypedMessageMapping
 	{
+		public bool IsWrapped;
 		public Type ProxyType;
 		public List<PropertyInfo> Properties = new List<PropertyInfo> ();
 	}
@@ -77,7 +81,6 @@ namespace System.ServiceModel.Description
 	{
 		DataContractFormatAttribute attr;
 		XmlObjectSerializer serializer;
-		MessageBodyDescription desc;
 		TypedMessageMapping map;
 
 		public TypedMessageConverterDC (Type type, string action,
@@ -158,7 +161,7 @@ namespace System.ServiceModel.Description
 
 	public abstract class TypedMessageConverter
 	{
-		const string TempUri = "http://tempuri.org/";
+		internal const string TempUri = "http://tempuri.org/";
 
 		Type contract_type;
 		string action, default_ns;
