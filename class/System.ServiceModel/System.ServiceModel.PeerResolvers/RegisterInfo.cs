@@ -73,10 +73,9 @@ namespace System.ServiceModel.PeerResolvers
 	[DataContract]
 	internal class RegisterInfoDC
 	{
-		public Guid client_id;
-		private static RegisterInfoDC instance = null;
-		public string mesh_id;
-		public PeerNodeAddress node_address;
+		Guid client_id;
+		string mesh_id;
+		PeerNodeAddress node_address;
 
 		public RegisterInfoDC ()
 		{

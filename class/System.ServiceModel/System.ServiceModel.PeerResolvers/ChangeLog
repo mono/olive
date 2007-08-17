@@ -1,3 +1,9 @@
+2007-08-17 Marcos Cobena (marcoscobena@gmail.com)
+
+	* CustomPeerResolverService.cs: Updated to dependency types.
+	* RegisterInfo.cs, RegisterResponseInfo.cs, ResolveInfo.cs, 
+	ResolveResponseInfo.cs, UnregisterInfo.cs: Updated to produce same messages as .NET does.
+
 2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* RegisterInfo.cs : rewritten. Fixed broken approach to static

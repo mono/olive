@@ -140,14 +140,20 @@ namespace System.ServiceModel.PeerResolvers
 		[MonoTODO]
 		public virtual ResolveResponseInfo Resolve (ResolveInfo resolveInfo)
 		{
+			ResolveResponseInfo rri = new ResolveResponseInfo ();
+			
 			if (resolveInfo == null)
 				throw new ArgumentException ("Resolve info cannot be null.");
 			
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-//			return new ResolveResponseInfo ();
-			throw new NotImplementedException ();
+			if (ControlShape)
+			{
+				// FIXME: To resolve address here.
+			}
+			
+			return rri;
 		}
 
 		[MonoTODO]
@@ -159,7 +165,10 @@ namespace System.ServiceModel.PeerResolvers
 			if (! opened)
 				throw new InvalidOperationException ("The service has never been opened or it was closed previously.");
 			
-			throw new NotImplementedException ();
+			if (ControlShape)
+			{
+				// FIXME: To remove node from mesh here.
+			}
 		}
 
 		[MonoTODO]
