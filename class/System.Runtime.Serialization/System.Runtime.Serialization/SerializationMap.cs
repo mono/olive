@@ -300,7 +300,7 @@ namespace System.Runtime.Serialization
 			if (reader.GetAttribute ("nil", XmlSchema.InstanceNamespace) != "true")
 				/* No nil!=true, so uninitialized instance of type is returned */
 				/* FIXME: CreateInstance requires a default .ctor, .net doesn't need it */
-				return Activator.CreateInstance (type, true);
+				return type == typeof (void) ? null : Activator.CreateInstance (type, true);
 
 			/* i:nil = true */
 			for (int i = 0; i < Members.Count; i++)
