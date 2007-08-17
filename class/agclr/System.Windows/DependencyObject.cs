@@ -341,7 +341,7 @@ namespace System.Windows {
 			case Kind.GEOMETRY:
 			case Kind.VISUAL:
 			case Kind.MEDIAATTRIBUTE_COLLECTION: 
-				throw new NotImplementedException (
+				throw new Exception (
 					String.Format ("Should never get an abstract class from unmanaged code {0}", k));
 			}
 
@@ -485,7 +485,7 @@ namespace System.Windows {
  					return DependencyObject.Lookup (val->k, val->u.p);
 				}
 
-				throw new NotImplementedException (String.Format ("Do not know how to convert {0}", val->k));
+				throw new Exception (String.Format ("Do not know how to convert {0}", val->k));
 			}
 		}
 
@@ -609,7 +609,7 @@ namespace System.Windows {
 					rep->count = d.count;
 					rep->timespan = d.duration.Ticks;
 				} else {
-					throw new NotImplementedException (
+					throw new Exception (
 						String.Format ("Do not know how to encode {0} yet", v.GetType ()));
 				}
 			}

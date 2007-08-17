@@ -34,7 +34,6 @@ namespace System.Windows {
 
 	public enum Visibility {
 		Visible,
-		Collapsed,
-		Hidden
+		Collapsed
 	}
 }

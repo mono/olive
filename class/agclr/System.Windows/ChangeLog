@@ -1,3 +1,11 @@
+2007-08-17  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: change some NotImplementedExceptions to
+	just Exceptions.
+
+	* Visibility.cs: remove Visibility.Hidden.  it's gone in the
+	refresh.
+
 2007-08-11  Miguel de Icaza  <miguel@novell.com>
 
 	* XamlReader.cs: Do some sharing of code, by using the agmono stuff.
