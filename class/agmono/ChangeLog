@@ -1,3 +1,8 @@
+2007-08-17  Jb Evain  <jbevain@novell.com>
+
+	* Assembly/AssemblyInfos.cs: re-enable patch from Miguel.
+	For non-plugin usage, use mono public key to sign the assembly.
+
 2007-08-07  Jb Evain  <jbevain@novell.com>
 
 	* Makefile: agmono doesn't require System.Xml.
