@@ -40,6 +40,11 @@ namespace System.ServiceModel
 		EndpointAddress endpoint;
 		ReadOnlyCollection<IPAddress> peer_addresses;
 
+		private PeerNodeAddress ()
+		{
+			// It is for DataContract deserialization.
+		}
+
 		public PeerNodeAddress (EndpointAddress endpointAddress,
 			ReadOnlyCollection<IPAddress> ipAddresses)
 		{

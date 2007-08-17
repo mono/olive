@@ -1,3 +1,7 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* PeerNodeAddress.cs : add private .ctor() for deserialization.
+
 2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
 
 	* AllEnums.cs: PeerReferralPolicy lives now inside System.ServiceModel.PeerResolvers.
