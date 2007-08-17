@@ -1,3 +1,12 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TypedMessageConverter.cs, ServiceModelInternalConverter.cs,
+	  ContractDescriptionGenerator.cs : significant rewrite for
+	  message serialization and deserialization. Proxy types are not
+	  created anymore. Instead, serializers are created for every
+	  message member. (Deserialization had been broken due to missing
+	  default constructor of the proxy type.)
+
 2007-08-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceModelInternalConverter.cs : use MessagePartDescription.Name

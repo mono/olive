@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -32,56 +32,66 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace System.ServiceModel.Description
 {
-	[MonoTODO ("Check how isBuffered works.")]
-	internal class TypedMessageConverterBodyWriter : BodyWriter
+	internal class MessageContractBodyWriter : BodyWriter
 	{
-		static object [] emptyArgs = new object [0];
-
+		MessageDescriptionMapping map;
+		MessageBodyDescription mb;
 		object body;
-		XmlObjectSerializer formatter;
-		TypedMessageMapping map;
 
-		public TypedMessageConverterBodyWriter (
-			object body, TypedMessageMapping map, XmlObjectSerializer formatter)
+		public MessageContractBodyWriter (MessageDescriptionMapping map, MessageBodyDescription mb, object body)
 			: base (true)
 		{
-			this.body = body;
 			this.map = map;
-			this.formatter = formatter;
+			this.mb = mb;
+			this.body = body;
 		}
 
 		protected override BodyWriter OnCreateBufferedCopy (
 			int maxBufferSize)
 		{
-			return new XmlObjectSerializerBodyWriter (body, formatter);
+			return new MessageContractBodyWriter (map, mb, body);
 		}
 
 		protected override void OnWriteBodyContents (
 			XmlDictionaryWriter writer)
 		{
-			if (map.IsWrapped)
-				formatter.WriteObject (writer, body);
-			else
-				formatter.WriteObjectContent (writer, body);
-		}
-	}
+			if (mb.WrapperName != null)
+				writer.WriteStartElement (mb.WrapperName, mb.WrapperNamespace);
+			writer.WriteXmlnsAttribute ("i", XmlSchema.InstanceNamespace);
 
-	internal class TypedMessageMapping
-	{
-		public bool IsWrapped;
-		public Type ProxyType;
-		public List<PropertyInfo> Properties = new List<PropertyInfo> ();
+			if (mb.ReturnValue != null)
+				WriteMessagePart (writer, mb.ReturnValue);
+			foreach (MessagePartDescription part in mb.Parts)
+				WriteMessagePart (writer, part);
+
+			if (mb.WrapperName != null)
+				writer.WriteEndElement ();
+		}
+
+		void WriteMessagePart (XmlDictionaryWriter writer, MessagePartDescription part)
+		{
+			object value;
+			if (part.MemberInfo is FieldInfo)
+				value = ((FieldInfo) part.MemberInfo).GetValue (body);
+			else
+				value = ((PropertyInfo) part.MemberInfo).GetValue (body, null);
+			writer.WriteStartElement (part.Name, part.Namespace);
+			map.Serializers [part.Type].WriteObjectContent (writer, value);
+			writer.WriteEndElement ();
+		}
 	}
 
 	internal class TypedMessageConverterDC : TypedMessageConverter
 	{
 		DataContractFormatAttribute attr;
-		XmlObjectSerializer serializer;
-		TypedMessageMapping map;
+		MessageBodyDescription msg_body;
+		MessageDescriptionMapping map;
+		Type type;
 
 		public TypedMessageConverterDC (Type type, string action,
 			string defaultNamespace,
@@ -92,16 +102,31 @@ namespace System.ServiceModel.Description
 
 			// FIXME: handle format style (Document|RPC)
 
-			map = ServiceModelInternalConverter.MessageContractToDataContractMap (type, defaultNamespace);
-			Collection<Type> types = new Collection<Type> ();
-			foreach (PropertyInfo pi in map.Properties)
-				types.Add (pi.PropertyType);
-			serializer = new DataContractSerializer (map.ProxyType);
+			this.type = type;
+			msg_body = ServiceModelInternalConverter.MessageContractToMessageBody (type);
+			map = ServiceModelInternalConverter.MessageBodyToDataContractType (msg_body);
 		}
 
 		public override object FromMessage (Message message)
 		{
-			return serializer.ReadObject (message.GetReaderAtBodyContents ());;
+			object ret = Activator.CreateInstance (type);
+
+			if (!message.IsEmpty) {
+				XmlDictionaryReader r = message.GetReaderAtBodyContents ();
+				if (msg_body.WrapperName != null)
+					r.ReadStartElement (msg_body.WrapperName, msg_body.WrapperNamespace);
+				for (r.MoveToContent (); r.NodeType == XmlNodeType.Element; r.MoveToContent ()) {
+					MessagePartDescription p = msg_body.Parts [new XmlQualifiedName (r.LocalName, r.NamespaceURI)];
+					object mv = map.Serializers [p.Type].ReadObject (r);
+					if (p.MemberInfo is FieldInfo)
+						((FieldInfo) p.MemberInfo).SetValue (ret, mv);
+					else
+						((PropertyInfo) p.MemberInfo).SetValue (ret, mv, null);
+				}
+				if (msg_body.WrapperName != null)
+					r.ReadEndElement ();
+			}
+			return ret;
 		}
 
 		public override Message ToMessage (object typedMessage)
@@ -112,9 +137,7 @@ namespace System.ServiceModel.Description
 		public override Message ToMessage (
 			object typedMessage, MessageVersion version)
 		{
-			object proxy = Activator.CreateInstance (map.ProxyType, typedMessage);
-			BodyWriter writer =
-				new TypedMessageConverterBodyWriter (proxy, map,  serializer);
+			BodyWriter writer = new MessageContractBodyWriter (map, msg_body, typedMessage);
 			return Message.CreateMessage (version, Action, writer);
 		}
 	}

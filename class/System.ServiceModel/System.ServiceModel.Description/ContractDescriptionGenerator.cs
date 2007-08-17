@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -270,7 +270,7 @@ namespace System.ServiceModel.Description
 						GetMessageBodyMemberAttribute (mi);
 					MessagePartDescription pd =
 						CreatePartCore (mba, pi.Name,
-							mb.WrapperNamespace);
+							"http://tempuri.org/");
 					if (mba != null && mba.HasProtectionLevel)
 						pd.ProtectionLevel = mba.ProtectionLevel;
 					pd.Index = index++;
@@ -327,7 +327,7 @@ namespace System.ServiceModel.Description
 
 				MessagePartDescription pd =
 					CreatePartCore (mba, mname,
-						mb.WrapperNamespace);
+						"http://tempuri.org/");
 				pd.Index = index++;
 				pd.Type = MessageFilterOutByRef (mtype);
 				pd.MemberInfo = bmi;

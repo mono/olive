@@ -1,3 +1,8 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DefaultMessageOperationFormatter.cs : dependent changes on
+	  message serializer and deserializer.
+
 2007-03-24  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DefaultMessageOperationFormatter.cs :

@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -42,31 +42,33 @@ namespace System.ServiceModel.Dispatcher
 		MessageBodyDescription desc;
 		object obj;
 		object [] parameters;
-		XmlObjectSerializer serializer;
+		MessageDescriptionMapping map;
 
-		public DefaultResponseBodyWriter (MessageBodyDescription desc, XmlObjectSerializer serializer, object obj, object [] parameters)
+		public DefaultResponseBodyWriter (MessageBodyDescription desc, MessageDescriptionMapping map, object obj, object [] parameters)
 			: base (false)
 		{
 			this.desc = desc;
-			this.serializer = serializer;
+			this.map = map;
 			this.obj = obj;
 			this.parameters = parameters;
 		}
 
 		protected override void OnWriteBodyContents (XmlDictionaryWriter writer)
 		{
-			writer.WriteStartElement (desc.WrapperName, desc.WrapperNamespace);
+			if (desc.WrapperName != null)
+				writer.WriteStartElement (desc.WrapperName, desc.WrapperNamespace);
 			if (desc.ReturnValue != null)
 				WriteMessagePart (writer, desc.ReturnValue, obj);
 			foreach (MessagePartDescription part in desc.Parts)
 				WriteMessagePart (writer, part, parameters [part.Index]);
-			writer.WriteEndElement ();
+			if (desc.WrapperName != null)
+				writer.WriteEndElement ();
 		}
 
 		void WriteMessagePart (XmlDictionaryWriter writer, MessagePartDescription part, object obj)
 		{
 			writer.WriteStartElement (part.Name, part.Namespace);
-			serializer.WriteObjectContent (writer, obj);
+			map.Serializers [part.Type].WriteObjectContent (writer, obj);
 			writer.WriteEndElement ();
 		}
 	}
@@ -95,11 +97,10 @@ namespace System.ServiceModel.Dispatcher
 				if (mdi.Direction == MessageDirection.Input)
 					md = mdi;
 
-			// FIXME: consider ref/out parameters.
 			if (md.MessageType != null)
 				return GetConverter (md).ToMessage (parameters [0], version);
 			return Message.CreateMessage (version, md.Action,
-				new DefaultResponseBodyWriter (md.Body, GetSerializer (md), null, parameters));
+				new DefaultResponseBodyWriter (md.Body, GetMapping (md), null, parameters));
 		}
 
 		public Message SerializeReply (
@@ -114,10 +115,9 @@ namespace System.ServiceModel.Dispatcher
 
 			if (md.MessageType != null)
 				return GetConverter (md).ToMessage (parameters [0], version);
-			// FIXME: handle (ref/out) parameters.
 			string replyAction = version.Addressing == AddressingVersion.None ? null : md.Action;
 			return Message.CreateMessage (version, replyAction,
-				new DefaultResponseBodyWriter (md.Body, GetSerializer (md), result, parameters));
+				new DefaultResponseBodyWriter (md.Body, GetMapping (md), result, parameters));
 		}
 
 		TypedMessageConverter GetConverter (MessageDescription md)
@@ -128,18 +128,6 @@ namespace System.ServiceModel.Dispatcher
 			TypedMessageConverter c = TypedMessageConverter.Create (md.MessageType, md.Action);
 			converters [md] = c;
 			return c;
-		}
-
-		XmlObjectSerializer GetSerializer (MessageDescription md)
-		{
-			if (serializers.ContainsKey (md))
-				return serializers [md];
-			MessageDescriptionMapping map = GetMapping (md);
-			// since MessageDescription.MessageType could be null,
-			// we cannot use it.
-			XmlObjectSerializer ret = new DataContractSerializer (map.ProxyType);
-			serializers [md] = ret;
-			return ret;
 		}
 
 		MessageDescriptionMapping GetMapping (MessageDescription md)
@@ -169,10 +157,14 @@ namespace System.ServiceModel.Dispatcher
 
 			if (!message.IsEmpty) {
 				XmlDictionaryReader r = message.GetReaderAtBodyContents ();
-
-				object obj = GetSerializer (md).ReadObject (r);
-				foreach (MessagePartDescription p in md.Body.Parts)
-					parameters [p.Index] = map.Fields [p.Index].GetValue (obj);
+				if (md.Body.WrapperName != null)
+					r.ReadStartElement (md.Body.WrapperName, md.Body.WrapperNamespace);
+				for (r.MoveToContent (); r.NodeType == XmlNodeType.Element; r.MoveToContent ()) {
+					MessagePartDescription p = md.Body.Parts [new XmlQualifiedName (r.LocalName, r.NamespaceURI)];
+					parameters [p.Index] = map.Serializers [p.Type].ReadObject (r);
+				}
+				if (md.Body.WrapperName != null)
+					r.ReadEndElement ();
 			}
 		}
 
@@ -189,14 +181,24 @@ namespace System.ServiceModel.Dispatcher
 
 			MessageDescriptionMapping map = GetMapping (md);
 
-			XmlDictionaryReader r = message.GetReaderAtBodyContents ();
+			object ret = null;
+			if (!message.IsEmpty) {
+				XmlDictionaryReader r = message.GetReaderAtBodyContents ();
+				if (md.Body.WrapperName != null)
+					r.ReadStartElement (md.Body.WrapperName, md.Body.WrapperNamespace);
+				for (r.MoveToContent (); r.NodeType == XmlNodeType.Element; r.MoveToContent ()) {
+					MessagePartDescription p = md.Body.ReturnValue;
 
-			object obj = GetSerializer (md).ReadObject (r);
-			// out/ref parameters
-			foreach (MessagePartDescription p in md.Body.Parts)
-				parameters [p.Index] = map.Fields [p.Index].GetValue (obj);
-			// return value
-			return map.Fields [md.Body.ReturnValue.Index].GetValue (obj);
+					object obj = map.Serializers [p.Type].ReadObject (r);
+					if (p == md.Body.ReturnValue)
+						ret = obj;
+					else
+						parameters [p.Index] = obj;
+				}
+				if (md.Body.WrapperName != null)
+					r.ReadEndElement ();
+			}
+			return ret;
 		}
 	}
 }
