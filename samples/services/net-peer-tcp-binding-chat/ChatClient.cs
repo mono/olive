@@ -47,12 +47,12 @@ namespace ChatClient
 				                                                  nptb, 
 				                                                  new EndpointAddress ("net.p2p://chatMesh/ChatServer"));
 //			channel.Open ();
-			Console.WriteLine ("Here!");
+//			Console.WriteLine ("Here!");
 			channel.Join ("Marcos");
 			// Right here, run the same process separately.
 			Console.ReadLine ();
 			channel.Leave ("Marcos");
-//			channel.Close ();
+			((IChannel) channel).Close ();
 //			factory.Close ();
 		}
 		
