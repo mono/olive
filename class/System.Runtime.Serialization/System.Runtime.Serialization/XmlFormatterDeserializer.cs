@@ -61,23 +61,24 @@ namespace System.Runtime.Serialization
 
 		// At the beginning phase, we still have to instantiate a new
 		// target object even if fromContent is true.
-		public object Deserialize (Type type, XmlReader reader, bool fromContent)
+		public object Deserialize (Type type, XmlReader reader, bool verifyObjectName)
 		{
-			if (!fromContent)
-				reader.MoveToContent ();
+			// FIXME: verifyObjectName
+
+			reader.MoveToContent ();
 
 			QName name = KnownTypeCollection.GetPredefinedTypeName (type);
 			if (name != QName.Empty)
 				return DeserializePrimitive (type, reader, name, true);
 			else
 				return DeserializeCustom (type, reader,
-					types.FindUserMap (type));
+					types.FindUserMap (type), verifyObjectName);
 		}
 
 		object DeserializePrimitive (Type type, XmlReader reader,
-			QName name, bool fromContent)
+			QName name, bool verifyObjectName)
 		{
-			if (!fromContent) {
+			if (!verifyObjectName) {
 				reader.ReadStartElement (name.Name, name.Namespace);
 				if (reader.GetAttribute ("nil", XmlSchema.InstanceNamespace) == "true")
 					return type.IsValueType ? Activator.CreateInstance (type) : null;
@@ -87,12 +88,14 @@ namespace System.Runtime.Serialization
 		}
 
 		object DeserializeCustom (Type type, XmlReader reader,
-			SerializationMap map)
+			SerializationMap map, bool verifyObjectName)
 		{
 			if (map == null)
 				throw new SerializationException (String.Format ("Unknown type {0} is used for DataContract. Any derived types of a data contract or a data member should be added to KnownTypes.", type));
 
-			return map.Deserialize (reader, this);
+			return verifyObjectName ?
+				map.Deserialize (reader, this) :
+				map.DeserializeNoVerify (reader, this);
 		}
 	}
 }

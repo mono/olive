@@ -310,11 +310,11 @@ namespace System.Runtime.Serialization
 			return null;
 		}
 
-		public virtual object Deserialize (XmlReader reader,
+		public object Deserialize (XmlReader reader,
 			XmlFormatterDeserializer deserializer)
 		{
 			/* These checks are required only on the top DataContract,
-			   so not included in DeserializeInternal */
+			   so not included in DeserializeNoVerify */
 
 			QName graph_qname = new QName (reader.Name, reader.NamespaceURI);
 			SerializationMap map = KnownTypes.FindUserMap (graph_qname);
@@ -330,12 +330,12 @@ namespace System.Runtime.Serialization
 				while (baseType != null) {
 					QName qname = KnownTypes.GetQName (baseType);
 					if (qname == graph_qname)
-						return DeserializeInternal (reader, deserializer);
+						return DeserializeNoVerify (reader, deserializer);
 
 					baseType = baseType.BaseType;
 				}
 			} else if (map.XmlName == this.XmlName) {
-				return DeserializeInternal (reader, deserializer);
+				return DeserializeNoVerify (reader, deserializer);
 			}
 
 			throw new SerializationException (String.Format (
@@ -343,7 +343,7 @@ namespace System.Runtime.Serialization
 				XmlName.Name, XmlName.Namespace, graph_qname.Name, graph_qname.Namespace));
 		}
 
-		private object DeserializeInternal (XmlReader reader,
+		public object DeserializeNoVerify (XmlReader reader,
 			XmlFormatterDeserializer deserializer)
 		{
 			string global_ns = reader.NamespaceURI;
@@ -431,7 +431,7 @@ namespace System.Runtime.Serialization
 
 				if (dmi.MemberType == typeof (object)) {
 					SetValue (dmi, instance,
-						DeserializeInternal (reader, deserializer));
+						DeserializeNoVerify (reader, deserializer));
 					filled [i] = true;
 					continue;
 				}
@@ -441,7 +441,7 @@ namespace System.Runtime.Serialization
 					/* dmi.XmlName - compare with reader's element name,
 					   < .. > <shape1 .. /> <../> */
 					SetValue (dmi, instance, 
-						map.DeserializeInternal (reader, deserializer));
+						map.DeserializeNoVerify (reader, deserializer));
 					filled [i] = true;
 					continue;
 				}

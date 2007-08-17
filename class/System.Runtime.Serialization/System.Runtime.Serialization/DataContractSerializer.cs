@@ -249,15 +249,17 @@ namespace System.Runtime.Serialization
 		}
 
 		[MonoTODO]
-		public override object ReadObject (XmlDictionaryReader reader, bool readContentOnly)
+		public override object ReadObject (XmlDictionaryReader reader, bool verifyObjectName)
 		{
 			int startTypeCount = known_types.Count;
 			known_types.Add (type);
 
-			object ret = XmlFormatterDeserializer.Deserialize (
-				reader, type, known_types, surrogate, readContentOnly);
+			bool isEmpty = reader.IsEmptyElement;
 
-			if (!readContentOnly && reader.NodeType == XmlNodeType.EndElement)
+			object ret = XmlFormatterDeserializer.Deserialize (
+				reader, type, known_types, surrogate, verifyObjectName);
+
+			if (!isEmpty)
 				reader.Read ();
 
 			// remove temporarily-added known types for

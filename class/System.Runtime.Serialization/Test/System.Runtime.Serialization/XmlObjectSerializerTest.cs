@@ -753,6 +753,14 @@ namespace MonoTests.System.Runtime.Serialization
 			Assert.AreEqual (Colors.Red, dc.colors, "#de8");
 		}
 
+		[Test]
+		public void ReadObjectVerifyObjectName ()
+		{
+			string xml = @"<any><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</Member1></any>";
+			new DataContractSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml)), false);
+		}
+
 		private object Deserialize (string xml, Type type)
 		{
 			DataContractSerializer ser = new DataContractSerializer (type);
@@ -892,6 +900,13 @@ namespace MonoTests.System.Runtime.Serialization
 	{
 		[DataMember]
 		public IPAddress [] IPAddresses = new IPAddress [0];
+	}
+
+	[DataContract]
+	public class VerifyObjectNameTestData
+	{
+		[DataMember]
+		string Member1 = "foo";
 	}
 }
 

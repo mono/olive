@@ -1,3 +1,9 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlFormatterDeserializer.cs DataContractSerializer.cs :
+	  uhoh, the semantic of bool parameter in ReadObject() has
+	  changed in the RTM. Implemented it as verifyObjectName.
+
 2007-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SerializationMap.cs
