@@ -1,3 +1,9 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* RegisterInfo.cs : rewritten. Fixed broken approach to static
+	  object and eliminated duplicate fields. Use DataMember on Guid
+	  field directly.
+
 2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
 
 	* PeerReferralPolicy.cs: Moved and updated here from AllEnums.cs.

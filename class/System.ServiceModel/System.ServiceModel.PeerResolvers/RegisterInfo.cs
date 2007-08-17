@@ -3,9 +3,30 @@
 // 
 // Author: 
 //     Marcos Cobena (marcoscobena@gmail.com)
+//	Atsushi Enomoto  <atsushi@ximian.com>
 // 
 // Copyright 2007 Marcos Cobena (http://www.youcannoteatbits.org/)
+// Copyright (C) 2007 Novell, Inc. http://novell.com
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
 // 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
 
 using System.Runtime.Serialization;
 
@@ -16,36 +37,30 @@ namespace System.ServiceModel.PeerResolvers
 	{
 		[MessageBodyMember (Name = "Register", Namespace = "http://schemas.microsoft.com/net/2006/05/peer")]
 		RegisterInfoDC body;
-		Guid client_id;
-		string mesh_id;
-		PeerNodeAddress node_address;
 		
 		public RegisterInfo ()
 		{
+			body = new RegisterInfoDC ();
 		}
 		
 		public RegisterInfo (Guid client, string meshId, PeerNodeAddress address)
+			: this ()
 		{
-			client_id = client;
-			mesh_id = meshId;
-			node_address = address;
-			
-			body = RegisterInfoDC.GetInstance ();
-			body.ClientId = ClientId;
-			body.MeshId = MeshId;
-			body.NodeAddress = NodeAddress;
+			body.ClientId = client;
+			body.MeshId = meshId;
+			body.NodeAddress = address;
 		}
 		
 		public Guid ClientId {
-			get { return client_id; }
+			get { return body.ClientId; }
 		}
 		
 		public string MeshId {
-			get { return mesh_id; }
+			get { return body.MeshId; }
 		}
 		
 		public PeerNodeAddress NodeAddress {
-			get { return node_address; }
+			get { return body.NodeAddress; }
 		}
 		
 		[MonoTODO]
@@ -62,20 +77,15 @@ namespace System.ServiceModel.PeerResolvers
 		private static RegisterInfoDC instance = null;
 		public string mesh_id;
 		public PeerNodeAddress node_address;
-		
-		private RegisterInfoDC ()
+
+		public RegisterInfoDC ()
 		{
 		}
 		
+		[DataMember]
 		public Guid ClientId {
 			get { return client_id; }
 			set { client_id = value; }
-		}
-		
-		[DataMember (Name = "ClientId")]
-		public string ClientIdToString {
-			get { return client_id.ToString (); }
-			set { client_id = new Guid (value); }
 		}
 		
 		[DataMember]
@@ -88,14 +98,6 @@ namespace System.ServiceModel.PeerResolvers
 		public PeerNodeAddress NodeAddress {
 			get { return node_address; }
 			set { node_address = value; }
-		}
-		
-		public static RegisterInfoDC GetInstance ()
-		{
-			if (instance == null)
-				instance = new RegisterInfoDC ();
-			
-			return instance;
 		}
 	}
 }
