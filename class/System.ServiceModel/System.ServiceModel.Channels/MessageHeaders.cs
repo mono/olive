@@ -169,7 +169,8 @@ namespace System.ServiceModel.Channels
 		{
 			if (serializer == null)
 				throw new ArgumentNullException ("serializer");
-			XmlDictionaryReader r = GetReaderAtHeader (index);				return (T) serializer.ReadObject (r, true);
+			XmlDictionaryReader r = GetReaderAtHeader (index);
+			return (T) serializer.ReadObject (r, false);
 		}
 
 		public T GetHeader<T> (string name, string ns)

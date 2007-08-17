@@ -1,3 +1,8 @@
+2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageHeaders.cs : due to the DataContractSerializer.ReadObject()
+	  semantic change, its bool parameter must be false, not true.
+
 2007-07-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* InputChannelBase.cs, MsmqChannelListener.cs, MsmqInputChannel.cs :
