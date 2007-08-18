@@ -1,3 +1,8 @@
+2007-08-18 Marcos Cobena (marcoscobena@gmail.com)
+
+	* System.ServiceModel_test.dll.sources: Updated with new tests for System.ServiceModel.PeerResolvers.
+	* Test/System.ServiceModel.PeerResolvers/CustomPeerResolverServiceTest.cs: New bunch of tests.
+
 2007-08-16 Marcos Cobena (marcoscobena@gmail.com)
 
 	* System.ServiceModel.dll.sources: Updated with System.ServiceModel.PeerResolvers/PeerReferralPolicy.cs.
