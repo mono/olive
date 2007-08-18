@@ -1,3 +1,10 @@
+2007-08-18  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Compiler.cs: use rowan generator in compiler to have a return
+	* Parser.cs: Patch from marek to have more readable code when syntax error
+	* RowanGenerator.cs : start to code the rowan generator but still a lot 
+	of work to convert compiler AST to runtime AST
+
 2007-07-15  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Engine.cs: Fill some methods

@@ -59,7 +59,7 @@ namespace Microsoft.JScript.Compiler.Shell
 			get { return " "; }
 		}
 
-#if !SILVERLIGHT
+#if !NET_2_1
 		protected override int RunFile (string filename)
 		{
 			throw new NotImplementedException ();

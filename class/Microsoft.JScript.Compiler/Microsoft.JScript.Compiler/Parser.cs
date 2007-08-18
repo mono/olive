@@ -202,7 +202,7 @@ namespace Microsoft.JScript.Compiler
 						return ParseExpressionStatement ();
 					break;
 			}
-			SyntaxError.Add ("Statement start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+			SyntaxError.Add ("Statement start with a strange token :" + current.Kind.ToString ());
 			return new Statement (Statement.Operation.SyntaxError, new TextSpan (current, current));
 		}
 
@@ -680,7 +680,7 @@ namespace Microsoft.JScript.Compiler
 					expr = new InvocationExpression (target, arguments,Expression.Operation.@new, new TextSpan(start,current));
 					break;
 				default:
-					SyntaxError.Add ("expression start with a strange token :" + Enum.GetName (typeof (Token.Type), current.Kind));
+					SyntaxError.Add ("Expression start with a strange token :" + current.Kind.ToString ());
 					return new Expression (Expression.Operation.SyntaxError, new TextSpan (start, current));
 			}
 			Next (); // to go ahead for other part
