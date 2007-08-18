@@ -1,3 +1,8 @@
+2007-08-18  Olivier Dufour  <olivier.duff@gmail.com>
+
+	* Makefile : add all things to said that is a silverlight 
+	assembly patch from Marek with little modification
+	
 2007-05-31  Olivier Dufour  <olivier.duff@gmail.com>
 
 	* rename : Mono => Microsoft
