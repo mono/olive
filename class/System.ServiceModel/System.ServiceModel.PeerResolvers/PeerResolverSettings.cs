@@ -19,19 +19,22 @@ namespace System.ServiceModel.PeerResolvers
 		PeerResolverMode mode = PeerResolverMode.Auto;
 		PeerReferralPolicy referral_policy;
 		
-		public PeerResolverSettings()
+		public PeerResolverSettings ()
 		{
 		}
 		
+		[MonoTODO]
 		public PeerCustomResolverSettings Custom {
 			get { return custom; }
 		}
 		
+		[MonoTODO]
 		public PeerResolverMode Mode {
 			get { return mode; }
 			set { mode = value; }
 		}
 		
+		[MonoTODO]
 		public PeerReferralPolicy ReferralPolicy {
 			get { return referral_policy; }
 			set { referral_policy = value; }

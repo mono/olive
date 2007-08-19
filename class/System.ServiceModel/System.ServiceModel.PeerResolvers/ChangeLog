@@ -1,3 +1,8 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* PeerResolverSettings.cs : there is nothing actually supported in
+	  this class, so don't forget MonoTODOs.
+
 2007-08-17 Marcos Cobena (marcoscobena@gmail.com)
 
 	* CustomPeerResolverService.cs: Updated to dependency types.
