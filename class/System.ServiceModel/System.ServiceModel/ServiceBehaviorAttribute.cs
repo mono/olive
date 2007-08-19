@@ -50,7 +50,8 @@ namespace System.ServiceModel
 		ConcurrencyMode concurrency;
 		IsolationLevel tx_level;
 		TimeSpan tx_timeout;
-		InstanceContextMode context_mode;
+		InstanceContextMode context_mode = InstanceContextMode.PerCall;
+		object singleton;
 
 		public bool AutomaticSessionShutdown {
 			get { return auto_session_shutdown; }
@@ -111,16 +112,16 @@ namespace System.ServiceModel
 			set { validate_must_understand = value; }
 		}
 
-		[MonoTODO]
 		public object GetWellKnownSingleton ()
 		{
-			throw new NotImplementedException ();
+			return singleton;
 		}
 
-		[MonoTODO]
 		public void SetWellKnownSingleton (object value)
 		{
-			throw new NotImplementedException ();
+			if (value == null)
+				throw new ArgumentNullException ("value");
+			singleton = value;
 		}
 
 		void IServiceBehavior.AddBindingParameters (
@@ -131,10 +132,35 @@ namespace System.ServiceModel
 		{
 		}
 
+		[MonoTODO]
 		void IServiceBehavior.ApplyDispatchBehavior (
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase)
 		{
+			if (singleton != null && context_mode != InstanceContextMode.Single)
+				throw new InvalidOperationException ("When creating a Service host with a service instance, use InstanceContext.Mode.Single in the ServiceBehaviorAttribute.");
+
+			foreach (ChannelDispatcherBase cdb in serviceHostBase.ChannelDispatchers) {
+				ChannelDispatcher cd = cdb as ChannelDispatcher;
+				if (cd == null)
+					continue;
+				foreach (EndpointDispatcher ed in cd.Endpoints)
+					ed.DispatchRuntime.InstanceContextProvider = CreateInstanceContextProvider (serviceHostBase);
+			}
+		}
+
+		IInstanceContextProvider CreateInstanceContextProvider (ServiceHostBase host)
+		{
+			switch (InstanceContextMode) {
+			case InstanceContextMode.Single:
+				return new SingletonInstanceContextProvider (new InstanceContext (host, GetWellKnownSingleton ()));
+			case InstanceContextMode.PerSession:
+				// FIXME: implement
+				throw new NotImplementedException ();
+			//case InstanceContextMode.PerCall:
+			default:
+				return null; // default
+			}
 		}
 
 		void IServiceBehavior.Validate (

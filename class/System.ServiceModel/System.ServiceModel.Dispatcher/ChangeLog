@@ -1,3 +1,7 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SingletonInstanceContextProvider.cs : new.
+
 2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DefaultMessageOperationFormatter.cs : dependent changes on

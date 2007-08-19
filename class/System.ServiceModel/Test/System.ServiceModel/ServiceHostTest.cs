@@ -31,6 +31,7 @@ using System.Collections.Generic;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
 using NUnit.Framework;
 
 namespace MonoTests.System.ServiceModel
@@ -201,6 +202,61 @@ namespace MonoTests.System.ServiceModel
 						 "http://localhost:8080");
 		}
 
+		[Test]
+		public void InstanceWithNonSingletonMode ()
+		{
+			ServiceHost host = new ServiceHost (
+				new NonSingletonService ());
+			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceBehaviorAttribute> ().GetWellKnownSingleton (), "premise1");
+			host.AddServiceEndpoint (
+				typeof (NonSingletonService),
+				new BasicHttpBinding (),
+				new Uri ("http://localhost:37564/s1"));
+
+			// in case Open() didn't fail, we need to close the host.
+			// And even if Close() caused the expected exception,
+			// the test should still fail.
+			try {
+				host.Open ();
+				try {
+					if (host.State == CommunicationState.Opened)
+						host.Close ();
+				} catch (InvalidOperationException) {
+				}
+				Assert.Fail ("InstanceContextMode was not checked");
+			} catch (InvalidOperationException) {
+			}
+		}
+
+
+		[Test]
+		public void InstanceWithSingletonMode ()
+		{
+			SingletonService instance = new SingletonService ();
+			ServiceHost host = new ServiceHost (instance);
+			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceBehaviorAttribute> ().GetWellKnownSingleton (), "#1");
+			host.AddServiceEndpoint (
+				typeof (SingletonService),
+				new BasicHttpBinding (),
+				new Uri ("http://localhost:37564/s2"));
+
+			// in case Open() didn't fail, we need to close the host.
+			// And even if Close() caused the expected exception,
+			// the test should still fail.
+			try {
+				host.Open ();
+				ChannelDispatcher cd = (ChannelDispatcher) host.ChannelDispatchers [0];
+				DispatchRuntime dr = cd.Endpoints [0].DispatchRuntime;
+				Assert.IsNotNull (dr.InstanceContextProvider, "#2");
+				InstanceContext ctx = dr.InstanceContextProvider.GetExistingInstanceContext (null, null);
+				Assert.IsNotNull (ctx, "#3");
+				Assert.AreEqual (instance, ctx.GetServiceInstance (), "#4");
+			} finally {
+				if (host.State == CommunicationState.Opened)
+					host.Close ();
+			}
+		}
+
 		[ServiceContract]
 		interface IBar
 		{
@@ -243,6 +299,25 @@ namespace MonoTests.System.ServiceModel
 			public Message EndGet (IAsyncResult result)
 			{
 				throw new NotImplementedException ();
+			}
+		}
+
+		[ServiceContract]
+		public class NonSingletonService
+		{
+			[OperationContract]
+			public void Process (string input)
+			{
+			}
+		}
+
+		[ServiceContract]
+		[ServiceBehavior (InstanceContextMode = InstanceContextMode.Single)]
+		public class SingletonService
+		{
+			[OperationContract]
+			public void Process (string input)
+			{
 			}
 		}
 	}

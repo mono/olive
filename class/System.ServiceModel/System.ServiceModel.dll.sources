@@ -613,6 +613,7 @@ System.ServiceModel.Dispatcher/NavigatorInvalidBodyAccessException.cs
 System.ServiceModel.Dispatcher/PrefixEndpointAddressMessageFilter.cs
 System.ServiceModel.Dispatcher/SeekableXPathNavigator.cs
 System.ServiceModel.Dispatcher/ServiceThrottle.cs
+System.ServiceModel.Dispatcher/SingletonInstanceContextProvider.cs
 System.ServiceModel.Dispatcher/XPathMessageContext.cs
 System.ServiceModel.Dispatcher/XPathMessageFilter.cs
 System.ServiceModel.Dispatcher/XPathMessageFilterTable.cs

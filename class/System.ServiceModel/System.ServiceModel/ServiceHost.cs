@@ -129,16 +129,20 @@ namespace System.ServiceModel
 			}
 			contracts.Add (cd.ContractType.FullName, cd);
 
-			// FIXME: find out where to get type.
-			// description = ServiceDescription.GetService (serviceType);
-			sd.Behaviors.Add (
-				new ServiceBehaviorAttribute ());
-			sd.Behaviors.Add (
-				new ServiceAuthorizationBehavior ());
-			sd.Behaviors.Add (
-				new ServiceDebugBehavior ());
+			ServiceBehaviorAttribute sba = PopulateAttribute<ServiceBehaviorAttribute> ();
+			if (SingletonInstance != null)
+				sba.SetWellKnownSingleton (SingletonInstance);
+			sd.Behaviors.Add (sba);
+			sd.Behaviors.Add (Authorization);
+			sd.Behaviors.Add (new ServiceDebugBehavior ());
 
 			return sd;
+		}
+
+		TAttr PopulateAttribute<TAttr> ()
+		{
+			object [] atts = service_type.GetCustomAttributes (typeof (TAttr), false);
+			return (TAttr) (atts.Length > 0 ? atts [0] : Activator.CreateInstance (typeof (TAttr)));
 		}
 
 		[MonoTODO]
@@ -155,8 +159,8 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected void InitializeDescription (object serviceInstance, UriSchemeKeyedCollection baseAddresses)
 		{
-			InitializeDescription (serviceInstance.GetType (), baseAddresses);
 			instance = serviceInstance;
+			InitializeDescription (serviceInstance.GetType (), baseAddresses);
 		}
 	}
 }

@@ -1,3 +1,8 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceHostTest.cs : added test for InstanceContextMode in
+	  ServiceBehaviorAttribute.
+
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* NetMsmqBindingTest.cs : new test.
