@@ -70,7 +70,7 @@ namespace System.ServiceModel.PeerResolvers
 		}
 	}
 	
-	[DataContract]
+	[DataContract (Namespace = "http://schemas.microsoft.com/net/2006/05/peer")]
 	internal class RegisterInfoDC
 	{
 		Guid client_id;
