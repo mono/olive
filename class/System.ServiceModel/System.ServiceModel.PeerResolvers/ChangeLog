@@ -1,5 +1,9 @@
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* PeerCustomResolverSettings.cs : this class too.
+
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* PeerResolverSettings.cs : there is nothing actually supported in
 	  this class, so don't forget MonoTODOs.
 

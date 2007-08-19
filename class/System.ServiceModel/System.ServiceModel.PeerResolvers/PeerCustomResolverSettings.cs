@@ -22,16 +22,19 @@ namespace System.ServiceModel.PeerResolvers
 		{
 		}
 		
+		[MonoTODO]
 		public EndpointAddress Address {
 			get { return address; }
 			set { address = value; }
 		}
 		
+		[MonoTODO]
 		public Binding Binding {
 			get { return binding; }
 			set { binding = value; }
 		}
 		
+		[MonoTODO]
 		public PeerResolver Resolver {
 			get { return resolver; }
 			set { resolver = value; }
