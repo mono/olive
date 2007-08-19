@@ -446,7 +446,8 @@ namespace MonoTests.System.ServiceModel.Description
 			WSServiceDescription wsd = GetServiceDescription (ms, "http://tempuri.org/", label + "#a1");
 			Assert.AreEqual (3, wsd.Messages.Count, "#cw5");
 
-			/*WSMessage m =*/ wsd.Messages [0];
+			Assert.IsNotNull (wsd.Messages [0]);
+			// WSMessage m = wsd.Messages [0];
 			CheckMessage (wsd, "ThisIsEchoService_Echo_InputMessage", "http://tempuri.org/:Echo");
 			CheckMessage (wsd, "ThisIsEchoService_Echo_OutputMessage", "http://tempuri.org/:EchoResponse");
 
@@ -502,7 +503,8 @@ namespace MonoTests.System.ServiceModel.Description
 			WSServiceDescription wsd = GetServiceDescription (ms, "http://myns/echo", label + "#a0");
 			Assert.AreEqual (4, wsd.Messages.Count, "#cw5");
 
-			/*WSMessage m =*/ wsd.Messages [0];
+			Assert.IsNotNull (wsd.Messages [0]);
+			//WSMessage m = wsd.Messages [0];
 
 			CheckMessage (wsd, "IEchoService_Echo_InputMessage", "http://myns/echo:Echo");
 			CheckMessage (wsd, "IEchoService_Echo_OutputMessage", "http://myns/echo:EchoResponse");
