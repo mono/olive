@@ -1,5 +1,9 @@
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WsdlImporterTest.cs : fix tests under run-test-ondotnet with 3.5.
+
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WsdlImporterTest.cs : use one tab instead of "    ".
 
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>

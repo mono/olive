@@ -108,33 +108,39 @@ namespace MonoTests.System.ServiceModel.Description
 		private void CheckDefaultPolicyImportExtensions (KeyedByTypeCollection<IPolicyImportExtension> list)
 		{
 			Assert.IsNotNull (list, "#CN1");
-			Assert.AreEqual (9, list.Count, "#CN2");
+			// 9 in 3.0, 10 in 3.5
+			// Assert.AreEqual (10, list.Count, "#CN2");
 
 			Assert.AreEqual (typeof (PrivacyNoticeBindingElementImporter), list [0].GetType (), "#CN3");
 			Assert.AreEqual (typeof (UseManagedPresentationBindingElementImporter), list [1].GetType (), "#CN4");
 			Assert.AreEqual (typeof (TransactionFlowBindingElementImporter), list [2].GetType (), "#CN5");
 			Assert.AreEqual (typeof (ReliableSessionBindingElementImporter), list [3].GetType (), "#CN6");
 			Assert.AreEqual (typeof (SecurityBindingElementImporter), list [4].GetType (), "#CN7");
-			//Assert.AreEqual (typeof (CompositeDuplexBindingElementImporter), list [5].GetType (), "#CN8");
-			//Assert.AreEqual (typeof (OneWayBindingElementImporter), list [6].GetType (), "#CN9");
+			Assert.AreEqual (typeof (CompositeDuplexBindingElementImporter), list [5].GetType (), "#CN8");
+			Assert.AreEqual (typeof (OneWayBindingElementImporter), list [6].GetType (), "#CN9");
 			Assert.AreEqual (typeof (MessageEncodingBindingElementImporter), list [7].GetType (), "#CN10");
 			Assert.AreEqual (typeof (TransportBindingElementImporter), list [8].GetType (), "#CN11");
+			// It is in System.WorkflowServices.dll (3.5)
+			//Assert.AreEqual (typeof (ContextBindingElementImporter), list [9].GetType (), "#CN12");
 		}
 
 		private void CheckDefaultWsdlImportExtensions (KeyedByTypeCollection<IWsdlImportExtension> list)
 		{
 			Assert.IsNotNull (list, "#CN20");
-			Assert.AreEqual (5, list.Count, "#CN21");
+			// 5 in 3.0, 6 in 3.5
+			// Assert.AreEqual (6, list.Count, "#CN21");
 
 			Assert.AreEqual (typeof (DataContractSerializerMessageContractImporter), list [0].GetType (), "#CN22");
 			Assert.AreEqual (typeof (XmlSerializerMessageContractImporter), list [1].GetType (), "#CN23");
 			Assert.AreEqual (typeof (MessageEncodingBindingElementImporter), list [2].GetType (), "#CN24");
 			Assert.AreEqual (typeof (TransportBindingElementImporter), list [3].GetType (), "#CN25");
 			Assert.AreEqual (typeof (StandardBindingImporter), list [4].GetType (), "#CN26");
+			// It is in System.WorkflowServices.dll (3.5)
+			//Assert.AreEqual (typeof (ContextBindingElementImporter), list [5].GetType (), "#CN27");
 		}
 
 		[Test]
-	[Category ("NotWorking")]
+		[Category ("NotWorking")]
 		public void CtorNullTest2 ()
 		{
 			WsdlImporter wi = new WsdlImporter (new MetadataSet (), null, new List<IWsdlImportExtension> ());
@@ -142,12 +148,12 @@ namespace MonoTests.System.ServiceModel.Description
 			Assert.IsNotNull (wi.WsdlImportExtensions, "#CN12");
 			Assert.AreEqual (0, wi.WsdlImportExtensions.Count, "#CN13");
 
-		/* FIXME: Not all importers are implemented yet */
+			/* FIXME: Not all importers are implemented yet */
 			CheckDefaultPolicyImportExtensions (wi.PolicyImportExtensions);
 		}
 
 		[Test]
-	[Category ("NotWorking")]
+		[Category ("NotWorking")]
 		public void CtorNullTest3 ()
 		{
 			WsdlImporter wi = new WsdlImporter (new MetadataSet (), new List<IPolicyImportExtension> (), null);
@@ -155,16 +161,16 @@ namespace MonoTests.System.ServiceModel.Description
 			Assert.IsNotNull (wi.PolicyImportExtensions, "#CN18");
 			Assert.AreEqual (0, wi.PolicyImportExtensions.Count, "#CN19");
 
-		/* FIXME: Not all importers are implemented yet */
+			/* FIXME: Not all importers are implemented yet */
 			CheckDefaultWsdlImportExtensions (wi.WsdlImportExtensions);
 		}
 
 		[Test]
-	[Category ("NotWorking")]
+		[Category ("NotWorking")]
 		public void CtorNullTest4 ()
 		{
 			WsdlImporter wi = new WsdlImporter (new MetadataSet (), null, null);
-		/* FIXME: Not all importers are implemented yet */
+			/* FIXME: Not all importers are implemented yet */
 			CheckDefaultPolicyImportExtensions (wi.PolicyImportExtensions);
 			CheckDefaultWsdlImportExtensions (wi.WsdlImportExtensions);
 		}

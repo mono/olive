@@ -1,3 +1,8 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* OneWayBindingElementImporter.cs
+	  CompositeDuplexBindingElementImporter.cs : new files.
+
 2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MessageHeaders.cs : due to the DataContractSerializer.ReadObject()
