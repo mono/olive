@@ -11,6 +11,7 @@ using System.Runtime.Serialization;
 
 namespace System.ServiceModel.PeerResolvers
 {
+	[MessageContract (IsWrapped = false)]
 	public class UnregisterInfo
 	{
 		[MessageBodyMember (Name = "Unregister", Namespace = "http://schemas.microsoft.com/net/2006/05/peer")]

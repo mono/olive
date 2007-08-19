@@ -7,31 +7,52 @@
 // Copyright 2007 Marcos Cobena (http://www.youcannoteatbits.org/)
 // 
 
+using System.Runtime.Serialization;
+
 namespace System.ServiceModel.PeerResolvers
 {
+	[MessageContract (IsWrapped = false)]
 	public class ServiceSettingsResponseInfo
 	{
-		private bool control_mesh_shape;
+		[MessageBodyMember (Name = "ServiceSettings", Namespace = "http://schemas.microsoft.com/net/2006/05/peer")]
+		ServiceSettingsResponseInfoDC body;
 		
 		public ServiceSettingsResponseInfo ()
 		{
-			control_mesh_shape = true;
+			body = new ServiceSettingsResponseInfoDC ();
 		}
 		
 		public ServiceSettingsResponseInfo (bool control)
+			: this ()
 		{
-			control_mesh_shape = control;
+			body.ControlMeshShape = control;
 		}
 		
 		public bool ControlMeshShape {
-			get { return control_mesh_shape; }
-			set { control_mesh_shape = value; }
+			get { return body.ControlMeshShape; }
+			set { body.ControlMeshShape = value; }
 		}
 		
 		[MonoTODO]
 		public bool HasBody ()
 		{
 			throw new NotImplementedException ();
+		}
+	}
+	
+	[DataContract]
+	internal class ServiceSettingsResponseInfoDC
+	{
+		bool control_mesh_shape;
+
+		public ServiceSettingsResponseInfoDC ()
+		{
+		}
+		
+		[DataMember]
+		public bool ControlMeshShape {
+			get { return control_mesh_shape; }
+			set { control_mesh_shape = value; }
 		}
 	}
 }

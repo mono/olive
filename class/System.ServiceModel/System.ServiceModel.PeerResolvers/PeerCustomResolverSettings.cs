@@ -34,6 +34,10 @@ namespace System.ServiceModel.PeerResolvers
 			set { binding = value; }
 		}
 		
+		public bool IsBindingSpecified {
+			get { return Binding != null; }
+		}
+		
 		[MonoTODO]
 		public PeerResolver Resolver {
 			get { return resolver; }
