@@ -157,6 +157,7 @@ System.ServiceModel.Channels/ChannelPoolSettings.cs
 System.ServiceModel.Channels/CommunicationObject.cs
 System.ServiceModel.Channels/CompilationException.cs
 System.ServiceModel.Channels/CompositeDuplexBindingElement.cs
+System.ServiceModel.Channels/CompositeDuplexBindingElementImporter.cs
 System.ServiceModel.Channels/ConnectionOrientedTransportBindingElement.cs
 System.ServiceModel.Channels/CustomBinding.cs
 System.ServiceModel.Channels/DeliveryFailure.cs
@@ -235,6 +236,7 @@ System.ServiceModel.Channels/MtomMessageEncoderFactory.cs
 System.ServiceModel.Channels/MtomMessageEncodingBindingElement.cs
 System.ServiceModel.Channels/NamedPipetransportBindingElement.cs
 System.ServiceModel.Channels/OneWayBindingElement.cs
+System.ServiceModel.Channels/OneWayBindingElementImporter.cs
 System.ServiceModel.Channels/OutputChannelBase.cs
 System.ServiceModel.Channels/PeerResolverBindingElement.cs
 System.ServiceModel.Channels/PeerTransportBindingElement.cs
