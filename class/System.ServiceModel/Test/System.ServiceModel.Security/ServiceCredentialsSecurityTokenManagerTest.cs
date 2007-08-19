@@ -583,7 +583,7 @@ namespace MonoTests.System.ServiceModel.Security
 			RecipientServiceModelSecurityTokenRequirement r =
 				CreateSecureConvRequirement ();
 			SecurityTokenResolver resolver;
-			SecurityTokenAuthenticator a =
+			//SecurityTokenAuthenticator a =
 				def_c.CreateSecurityTokenAuthenticator (r, out resolver);
 			Assert.IsNotNull (resolver, "#1");
 		}

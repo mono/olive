@@ -102,7 +102,7 @@ namespace MonoTests.System.ServiceModel.Description
         [ExpectedException (typeof (ArgumentNullException))]
         public void CtorNullTest1 ()
         {
-            WsdlImporter wi = new WsdlImporter (null);
+            new WsdlImporter (null);
         }
 
         private void CheckDefaultPolicyImportExtensions (KeyedByTypeCollection<IPolicyImportExtension> list)

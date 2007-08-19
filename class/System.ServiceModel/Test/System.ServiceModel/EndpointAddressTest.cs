@@ -154,7 +154,7 @@ namespace MonoTests.System.ServiceModel
 				XmlDictionaryReader.CreateDictionaryReader (src);
 
 			//Reading address with e10 address!
-			EndpointAddress a = EndpointAddress.ReadFrom (AddressingVersion.WSAddressingAugust2004, reader);
+			EndpointAddress.ReadFrom (AddressingVersion.WSAddressingAugust2004, reader);
 		}
 
 		[Test]
@@ -178,7 +178,7 @@ namespace MonoTests.System.ServiceModel
 			XmlReader src = XmlReader.Create (new StringReader (xml));
 			XmlDictionaryReader reader =
 				XmlDictionaryReader.CreateDictionaryReader (src);
-			EndpointAddress a = EndpointAddress.ReadFrom (AddressingVersion.WSAddressing10, reader);
+			EndpointAddress.ReadFrom (AddressingVersion.WSAddressing10, reader);
 		}
 
 		[Test]

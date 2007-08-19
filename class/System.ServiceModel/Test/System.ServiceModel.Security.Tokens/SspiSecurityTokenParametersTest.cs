@@ -149,7 +149,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
+			//SecurityTokenProvider p =
 				manager.CreateSecurityTokenProvider (r);
 		}
 
@@ -170,7 +170,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
+			//SecurityTokenProvider p =
 				manager.CreateSecurityTokenProvider (r);
 		}
 
@@ -191,7 +191,7 @@ namespace MonoTests.System.ServiceModel.Security.Tokens
 			ClientCredentials cred = new ClientCredentials ();
 			ClientCredentialsSecurityTokenManager manager =
 				new ClientCredentialsSecurityTokenManager (cred);
-			SecurityTokenProvider p =
+			//SecurityTokenProvider p =
 				manager.CreateSecurityTokenProvider (r);
 		}
 

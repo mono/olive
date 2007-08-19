@@ -99,7 +99,7 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (1, s.Actions.Count, "#7");
 			s.TryGetParts ("urn:foo", out m);
 			Assert.IsNotNull (m, "#8");
-			List<XmlQualifiedName> l = new List<XmlQualifiedName> (m.HeaderTypes);
+			//List<XmlQualifiedName> l = new List<XmlQualifiedName> (m.HeaderTypes);
 			Assert.AreEqual (2, m.HeaderTypes.Count, "#9");
 			Assert.IsTrue (m.IsBodyIncluded, "#10");
 		}

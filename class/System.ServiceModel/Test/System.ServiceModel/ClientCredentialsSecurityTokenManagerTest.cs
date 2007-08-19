@@ -561,8 +561,7 @@ Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premis
 
 			r.Properties [ReqType.IssuedSecurityTokenParametersProperty] = ip;
 
-			SecurityTokenProvider p =
-				def_c.CreateSecurityTokenProvider (r);
+			def_c.CreateSecurityTokenProvider (r);
 		}
 
 		// CreateSecurityTokenAuthenticator

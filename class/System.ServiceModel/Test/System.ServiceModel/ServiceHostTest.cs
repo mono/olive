@@ -80,28 +80,28 @@ namespace MonoTests.System.ServiceModel
 		[ExpectedException (typeof (ArgumentNullException))]
 		public void CtorNull ()
 		{
-			ServiceHost host = new ServiceHost (typeof (Foo), null);
+			new ServiceHost (typeof (Foo), null);
 		}
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
 		public void CtorServiceTypeNotClass ()
 		{
-			ServiceHost host = new ServiceHost (typeof (IBar), new Uri ("http://localhost"));
+			new ServiceHost (typeof (IBar), new Uri ("http://localhost"));
 		}
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
 		public void CtorRelativeBaseAddress ()
 		{
-			ServiceHost host = new ServiceHost (typeof (Foo), new Uri ("test", UriKind.Relative));
+			new ServiceHost (typeof (Foo), new Uri ("test", UriKind.Relative));
 		}
 		
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
 		public void CtorMultipleAddressPerScheme ()
 		{
-			ServiceHost host = new ServiceHost ( typeof (Foo), 
+			new ServiceHost ( typeof (Foo), 
 					new Uri ("http://localhost", UriKind.Absolute),
 					new Uri ("http://someotherhost", UriKind.Absolute));
 		}

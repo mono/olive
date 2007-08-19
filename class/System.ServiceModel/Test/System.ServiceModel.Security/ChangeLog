@@ -1,3 +1,9 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSSecurityTokenSerializerTest.cs
+	  ServiceCredentialsSecurityTokenManagerTest.cs
+	  ScopedMessagePartSpecificationTest.cs : warning cleanup.
+
 2007-04-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceCredentialsSecurityTokenManagerTest.cs : test that ssl

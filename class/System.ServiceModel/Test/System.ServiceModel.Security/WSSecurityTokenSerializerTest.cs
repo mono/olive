@@ -627,7 +627,7 @@ namespace MonoTests.System.ServiceModel.Security
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (String.Format ("<o:UsernameToken u:Id='urn:foo' xmlns:o='{0}' xmlns:u='{1}' />", wssNS, wsuNS)))) {
-				SecurityToken token = serializer.ReadToken (xr, null);
+				serializer.ReadToken (xr, null);
 			}
 		}
 
@@ -638,7 +638,7 @@ namespace MonoTests.System.ServiceModel.Security
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
-				SecurityToken token = serializer.ReadToken (xr, null);
+				serializer.ReadToken (xr, null);
 			}
 		}
 
@@ -649,7 +649,7 @@ namespace MonoTests.System.ServiceModel.Security
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (derived_key_token1))) {
-				SecurityToken token = serializer.ReadToken (xr, GetResolver ());
+				serializer.ReadToken (xr, GetResolver ());
 			}
 		}
 
@@ -828,7 +828,6 @@ namespace MonoTests.System.ServiceModel.Security
       </t:RequestSecurityTokenResponse>";
 			WSSecurityTokenSerializer serializer =
 				WSSecurityTokenSerializer.DefaultInstance;
-			SecurityContextSecurityToken sct;
 			using (XmlReader xr = XmlReader.Create (new StringReader (xml))) {
 				serializer.ReadToken (xr, null);
 			}
@@ -892,7 +891,7 @@ namespace MonoTests.System.ServiceModel.Security
 				WSSecurityTokenSerializer.DefaultInstance;
 			using (XmlReader xr = XmlReader.Create (new StringReader (wrapped_key1))) {
 				try {
-					SecurityToken token = serializer.ReadToken (xr, null);
+					serializer.ReadToken (xr, null);
 					Assert.Fail ("Should fail due to the lack of resolver");
 				} catch {
 				}
@@ -917,22 +916,22 @@ namespace MonoTests.System.ServiceModel.Security
 			protected override bool TryResolveTokenCore (SecurityKeyIdentifier ident, out SecurityToken token)
 			{
 throw new Exception ("1");
-				token = null;
-				return false;
+//				token = null;
+//				return false;
 			}
 
 			protected override bool TryResolveTokenCore (SecurityKeyIdentifierClause clause, out SecurityToken token)
 			{
 throw new Exception ("2");
-				token = null;
-				return false;
+//				token = null;
+//				return false;
 			}
 
 			protected override bool TryResolveSecurityKeyCore (SecurityKeyIdentifierClause clause, out SecurityKey key)
 			{
 throw new Exception ("3");
-				key = null;
-				return false;
+//				key = null;
+//				return false;
 			}
 		}
 

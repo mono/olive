@@ -1,5 +1,11 @@
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ClientCredentialsSecurityTokenManagerTest.cs
+	  ChannelFactory_1Test.cs EndpointAddressTest.cs
+	  EndpointAddress10Test.cs ServiceHostTest.cs : warning cleanup.
+
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ServiceHostTest.cs : added test for InstanceContextMode in
 	  ServiceBehaviorAttribute.
 

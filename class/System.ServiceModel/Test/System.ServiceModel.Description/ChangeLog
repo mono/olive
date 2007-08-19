@@ -1,3 +1,7 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WsdlImporterTest.cs WsdlExporterTest.cs : warning cleanup.
+
 2007-03-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ContractDescriptionTest.cs : added conceptual test case that shows

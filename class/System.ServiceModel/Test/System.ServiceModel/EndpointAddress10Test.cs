@@ -85,7 +85,7 @@ namespace MonoTests.System.ServiceModel
 			// actually it just returns null. That makes sense
 			// since there's no way to include reasonable claim
 			// schemas.
-			EndpointAddress10 e = EndpointAddress10.FromEndpointAddress (new EndpointAddress ("http://localhost:8080"));
+			EndpointAddress10.FromEndpointAddress (new EndpointAddress ("http://localhost:8080"));
 			XmlSchemaSet xss = new XmlSchemaSet ();
 			XmlQualifiedName q = EndpointAddress10.GetSchema (xss);
 			Assert.AreEqual (1, xss.Count, "#1");

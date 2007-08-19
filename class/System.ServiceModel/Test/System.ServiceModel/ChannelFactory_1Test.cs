@@ -57,7 +57,7 @@ namespace MonoTests.System.ServiceModel
 		[ExpectedException (typeof (InvalidOperationException))]
 		public void CreateChannelForClass ()
 		{
-			ChannelFactory<TestService> f =
+			//ChannelFactory<TestService> f =
 				new ChannelFactory<TestService> (
 					new BasicHttpBinding (),
 					new EndpointAddress ("http://localhost:37564"));
@@ -86,7 +86,7 @@ namespace MonoTests.System.ServiceModel
 				new ChannelFactory<ITestService> (
 					new BasicHttpBinding (),
 					new EndpointAddress ("http://localhost:37564"));
-			ITestService ts = f.CreateChannel ();
+			f.CreateChannel ();
 		}
 
 		[Test]
