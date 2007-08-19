@@ -49,15 +49,17 @@ namespace System.ServiceModel
 			use_sync_ctx, tx_close, validate_must_understand;
 		ConcurrencyMode concurrency;
 		IsolationLevel tx_level;
-		TimeSpan tx_timeout;
+		string tx_timeout;
 		InstanceContextMode context_mode = InstanceContextMode.PerCall;
 		object singleton;
 
+		[MonoTODO]
 		public bool AutomaticSessionShutdown {
 			get { return auto_session_shutdown; }
 			set { auto_session_shutdown = value; }
 		}
 
+		[MonoTODO]
 		public ConcurrencyMode ConcurrencyMode {
 			get { return concurrency; }
 			set { concurrency = value; }
@@ -91,19 +93,26 @@ namespace System.ServiceModel
 			set { use_sync_ctx = value; }
 		}
 
+		[MonoTODO]
 		public bool TransactionAutoCompleteOnSessionClose {
 			get { return tx_close; }
 			set { tx_close = value; }
 		}
 
+		[MonoTODO]
 		public IsolationLevel TransactionIsolationLevel {
 			get { return tx_level; }
 			set { tx_level = value; }
 		}
 
-		public TimeSpan TransactionTimeout {
+		[MonoTODO]
+		public string TransactionTimeout {
 			get { return tx_timeout; }
-			set { tx_timeout = value; }
+			set {
+				if (value != null)
+					TimeSpan.Parse (value);
+				tx_timeout = value;
+			}
 		}
 
 		[MonoTODO]
@@ -124,6 +133,7 @@ namespace System.ServiceModel
 			singleton = value;
 		}
 
+		[MonoTODO]
 		void IServiceBehavior.AddBindingParameters (
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase,
@@ -163,6 +173,7 @@ namespace System.ServiceModel
 			}
 		}
 
+		[MonoTODO]
 		void IServiceBehavior.Validate (
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase)

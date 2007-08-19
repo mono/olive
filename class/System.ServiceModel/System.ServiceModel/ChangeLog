@@ -1,5 +1,10 @@
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* EndpointAddressBuilder.cs ServiceBehaviorAttribute.cs :
+	  some more cosmetic API fixes and missing MonoTODOs.
+
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ServiceHost.cs : ServiceBehaviorAttribute must be first retrieved
 	  from the service type (or instance).
 	* ServiceBehaviorAttribute.cs : InstanceContextMode default is

@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Xml;
 using System.ServiceModel.Channels;
 
@@ -34,7 +34,7 @@ namespace System.ServiceModel
 {
 	public class EndpointAddressBuilder
 	{
-		List<AddressHeader> headers = new List<AddressHeader> ();
+		Collection<AddressHeader> headers = new Collection<AddressHeader> ();
 		EndpointIdentity identity;
 		Uri uri;
 		XmlDictionaryReader ext, meta;
@@ -47,18 +47,21 @@ namespace System.ServiceModel
 		{
 			identity = address.Identity;
 			uri = address.Uri;
-			headers.AddRange (address.Headers);
+			foreach (AddressHeader h in address.Headers)
+				headers.Add (h);
 		}
 
-		public List<AddressHeader> Headers {
+		public Collection<AddressHeader> Headers {
 			get { return headers; }
 		}
 
+		[MonoTODO]
 		public EndpointIdentity Identity {
 			get { return identity; }
 			set { identity = value; }
 		}
 
+		[MonoTODO]
 		public Uri Uri {
 			get { return uri; }
 			set { uri = value; }
@@ -66,6 +69,12 @@ namespace System.ServiceModel
 
 		[MonoTODO]
 		public XmlDictionaryReader GetReaderAtExtensions ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public XmlDictionaryReader GetReaderAtMetadata ()
 		{
 			throw new NotImplementedException ();
 		}
