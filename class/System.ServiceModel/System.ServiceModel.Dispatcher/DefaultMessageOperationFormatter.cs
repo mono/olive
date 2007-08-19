@@ -114,7 +114,7 @@ namespace System.ServiceModel.Dispatcher
 					md = mdi;
 
 			if (md.MessageType != null)
-				return GetConverter (md).ToMessage (parameters [0], version);
+				return GetConverter (md).ToMessage (result, version);
 			string replyAction = version.Addressing == AddressingVersion.None ? null : md.Action;
 			return Message.CreateMessage (version, replyAction,
 				new DefaultResponseBodyWriter (md.Body, GetMapping (md), result, parameters));
