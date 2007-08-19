@@ -1,3 +1,8 @@
+2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Type2Message.cs Type3Message.cs : let's just commit my updates to
+	  ntlm stuff here as I have done before ahead of sys.security.dll.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Type1Message.cs : handle offsets per (assumed) document.

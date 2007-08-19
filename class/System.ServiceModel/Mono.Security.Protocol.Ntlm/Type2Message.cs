@@ -161,7 +161,7 @@ namespace Mono.Security.Protocol.Ntlm {
 				target_len = (short) target.Length;
 			}
 
-			uint name_offset = (uint) (Version == NtlmVersion.Version3 ? 56 : 48);
+			uint name_offset = (uint) (Version == NtlmVersion.Version3 ? 56 : 40);
 
 			int size = (int) name_offset +
 				   (name_len > 0 ? name_len + 8 : 0) +
