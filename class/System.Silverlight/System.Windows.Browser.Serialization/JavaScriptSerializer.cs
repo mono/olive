@@ -6,6 +6,8 @@ using System.Reflection;
 using System.Text;
 using System.Security.Permissions;
 
+using Mono;
+
 using IJSONObject = System.Collections.Generic.IDictionary<string,object>;
 
 namespace System.Windows.Browser.Serialization
@@ -179,7 +181,7 @@ namespace System.Windows.Browser.Serialization
 					if (t == type)
 						return conv.Deserialize (dic, type, this);
 
-			object o = Activator.CreateInstance (type, false);
+			object o = Helper.CreateInstance (type, false);
 			foreach (KeyValuePair<string,object> p in dic) {
 				if (p.Key == "__type")
 					continue;

@@ -1,3 +1,8 @@
+2007-08-20  Jb Evain  <jbevain@novell.com>
+
+	* JavaScriptSerializer.cs: use Helper methods to avoid calling
+	internal methods of mscorlib.
+
 2007-08-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JavaScriptSerializer.cs : use Convert.ChangeType() which exists

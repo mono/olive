@@ -319,7 +319,7 @@ namespace System.Windows
 			case TypeCode.String:
 				v.k = Kind.STRING;
 				byte[] bytes = System.Text.Encoding.UTF8.GetBytes (o as string);
-				IntPtr result = Marshal.AllocHGlobal (bytes.Length + 1);
+				IntPtr result = Helper.AllocHGlobal (bytes.Length + 1);
 				Marshal.Copy (bytes, 0, result, bytes.Length);
 				Marshal.WriteByte (result, bytes.Length, 0);
 				v.u.p = result;
