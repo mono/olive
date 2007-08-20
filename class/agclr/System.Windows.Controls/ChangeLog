@@ -1,3 +1,8 @@
+2007-08-20  Jb Evain  <jbevain@novell.com>
+
+	* MediaElement.cs: use methods in [agmono]Mono.Helper to avoid calling
+	internal methods of mscorlib.
+
 2007-08-03  Chris Toshok  <toshok@ximian.com>
 
 	* MediaElement.cs: switch NaturalDuration back to Duration.

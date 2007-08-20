@@ -97,7 +97,7 @@ namespace System.Windows.Media.Animation {
 
 		private static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			Storyboard sb = (Storyboard)GCHandle.FromIntPtr (closure).Target;
+			Storyboard sb = (Storyboard) Helper.GCHandleFromIntPtr (closure).Target;
 			sb.InvokeCompleted ();
 		}
 

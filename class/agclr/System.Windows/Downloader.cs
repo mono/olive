@@ -113,7 +113,7 @@ namespace System.Windows {
 					}
 				}
 			}
-			Marshal.FreeHGlobal (n);
+			Helper.FreeHGlobal (n);
 			
 			return s;
 		}
@@ -175,7 +175,7 @@ namespace System.Windows {
 		static UnmanagedEventHandler completed_proxy = new UnmanagedEventHandler (UnmanagedCompleted);
 		static void UnmanagedCompleted (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+			Downloader dl = (Downloader) Helper.GCHandleFromIntPtr (closure).Target;
 
 			try {
 				dl.InvokeEmptyEvent (CompletedEvent);
@@ -187,7 +187,7 @@ namespace System.Windows {
 		static UnmanagedEventHandler progress_changed_proxy = new UnmanagedEventHandler (UnmanagedDownloadProgressChanged);
 		static void UnmanagedDownloadProgressChanged (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+			Downloader dl = (Downloader) Helper.GCHandleFromIntPtr (closure).Target;
 			try {
 				dl.InvokeEmptyEvent (DownloadProgressChangedEvent);
 			} catch (Exception e){
@@ -205,9 +205,9 @@ namespace System.Windows {
 		static UnmanagedEventHandler failed_proxy = new UnmanagedEventHandler (UnmanagedDownloadFailed);
 		static void UnmanagedDownloadFailed (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			Downloader dl = (Downloader)GCHandle.FromIntPtr (closure).Target;
+			Downloader dl = (Downloader) Helper.GCHandleFromIntPtr (closure).Target;
 
-			string filename = Marshal.PtrToStringAuto (calldata);
+			string filename = Helper.PtrToStringAuto (calldata);
 			ErrorEventArgs eea = new ErrorEventArgs (4001, filename, ErrorType.DownloadError);
 
 			try {

@@ -63,25 +63,25 @@ namespace Mono {
 
 		static void got_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeGotFocus ();
 		}
 
 		static void lost_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeLostFocus ();
 		}
 
 		static void loaded_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeLoaded ();
 		}
 
 		static void mouse_leave_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeMouseLeave ();
 		}
 
@@ -96,13 +96,13 @@ namespace Mono {
 
 		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeKeyUp (MarshalKeyboardEventArgs (calldata));
 		}
 
 		static void key_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeKeyDown (MarshalKeyboardEventArgs (calldata));
 		}
 
@@ -115,25 +115,25 @@ namespace Mono {
 		
 		static void mouse_motion_notify_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_button_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_button_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
 		}
 		
 		static void mouse_enter_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)GCHandle.FromIntPtr (closure).Target;
+			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
 			e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
 		}
 

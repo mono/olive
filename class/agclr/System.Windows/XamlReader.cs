@@ -151,7 +151,7 @@ namespace System.Windows {
 			Helper.SetPropertyFromString (target, name, value, out error);
 			if (error != null){
 				Console.Error.WriteLine (
-					"Error: XamlReader, set_attribute on '{0}' from '{1}': {2}", name, value, error);
+					"Error: XamlReader, set_attribute on '{0}' from '{1}': {2}", new object [] {name, value, error});
 				return;
 			}
 		}

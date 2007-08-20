@@ -111,7 +111,7 @@ namespace System.Windows {
 			DependencyObject dop = (DependencyObject) CreateObject (k, ptr);
 			if (dop == null){
 				Console.WriteLine ("agclr: Returning a null object, did not know how to construct {0}", k);
-				Console.WriteLine (Environment.StackTrace);
+				Console.WriteLine (Helper.GetStackTrace ());
 			}
 
 			return dop;
@@ -409,7 +409,7 @@ namespace System.Windows {
 					return val->u.i32;
 
 				case Kind.STRING:
-					return Marshal.PtrToStringAuto (val->u.p);
+					return Helper.PtrToStringAuto (val->u.p);
 
 				case Kind.POINT: {
 					UnmanagedPoint *point = (UnmanagedPoint*)val->u.p;
@@ -535,7 +535,7 @@ namespace System.Windows {
 					value.k = Kind.STRING;
 
 					byte[] bytes = System.Text.Encoding.UTF8.GetBytes (v as string);
-					IntPtr result = Marshal.AllocHGlobal (bytes.Length + 1);
+					IntPtr result = Helper.AllocHGlobal (bytes.Length + 1);
 					Marshal.Copy (bytes, 0, result, bytes.Length);
 					Marshal.WriteByte (result, bytes.Length, 0);
 
@@ -544,7 +544,7 @@ namespace System.Windows {
 					double [] dv = (double []) v;
 
 					value.k = Kind.DOUBLE_ARRAY;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (double) * dv.Length);
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (double) * dv.Length);
 					UnmanagedArray* array = (UnmanagedArray*) value.u.p;
 					array->count = dv.Length;
 					array->refcount = 1;
@@ -553,7 +553,7 @@ namespace System.Windows {
 					Point [] dv = (Point []) v;
 
 					value.k = Kind.POINT_ARRAY;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (Point) * dv.Length);
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedArray) + sizeof (Point) * dv.Length);
 					UnmanagedArray* array = (UnmanagedArray*) value.u.p;
 					array->count = dv.Length;
 					array->refcount = 1;
@@ -564,17 +564,17 @@ namespace System.Windows {
 				} else if (v is Rect) {
 					Rect rect = (Rect) v;
 					value.k = Kind.RECT;
-					value.u.p = Marshal.AllocHGlobal (sizeof (Rect));
+					value.u.p = Helper.AllocHGlobal (sizeof (Rect));
 					Marshal.StructureToPtr (rect, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Point) {
 					Point pnt = (Point) v;
 					value.k = Kind.POINT;
-					value.u.p = Marshal.AllocHGlobal (sizeof (Point));
+					value.u.p = Helper.AllocHGlobal (sizeof (Point));
 					Marshal.StructureToPtr (pnt, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Color){
 					Color c = (Color) v;
 					value.k = Kind.COLOR;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedColor));
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedColor));
 					UnmanagedColor* color = (UnmanagedColor*) value.u.p;
 					color->r = c.ScR;
 					color->g = c.ScG;
@@ -583,19 +583,19 @@ namespace System.Windows {
 				} else if (v is Matrix) {
 					Matrix mat = (Matrix) v;
 					value.k = Kind.MATRIX;
-					value.u.p = Marshal.AllocHGlobal (sizeof (double) * 6);
+					value.u.p = Helper.AllocHGlobal (sizeof (double) * 6);
 					Marshal.StructureToPtr (mat, value.u.p, false); // Unmanaged and managed structure layout is equal.
 				} else if (v is Duration) {
 					Duration d = (Duration) v;
 					value.k = Kind.DURATION;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedDuration));
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedDuration));
 					UnmanagedDuration* duration = (UnmanagedDuration*) value.u.p;
 					duration->kind = d.KindInternal;
 					duration->timespan = d.TimeSpanInternal.Ticks;
 				} else if (v is KeyTime) {
 					KeyTime k = (KeyTime) v;
 					value.k = Kind.KEYTIME;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedKeyTime));
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedKeyTime));
 					UnmanagedKeyTime* keytime = (UnmanagedKeyTime*) value.u.p;
 					keytime->kind = (int) k.type;
 					keytime->percent = k.percent;
@@ -603,7 +603,7 @@ namespace System.Windows {
 				} else if (v is RepeatBehavior) {
 					RepeatBehavior d = (RepeatBehavior) v;
 					value.k = Kind.REPEATBEHAVIOR;
-					value.u.p = Marshal.AllocHGlobal (sizeof (UnmanagedRepeatBehavior));
+					value.u.p = Helper.AllocHGlobal (sizeof (UnmanagedRepeatBehavior));
 					UnmanagedRepeatBehavior* rep = (UnmanagedRepeatBehavior*) value.u.p;
 					rep->kind = d.kind;
 					rep->count = d.count;
@@ -649,7 +649,7 @@ namespace System.Windows {
 			if (t == property.type || property.type.IsAssignableFrom (t))
 				v = GetAsValue (obj);
 			else
-				v = GetAsValue (Convert.ChangeType (obj, property.type));
+				v = GetAsValue (Helper.ChangeType (obj, property.type));
 			
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);
 
