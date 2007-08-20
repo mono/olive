@@ -1,3 +1,7 @@
+2007-08-20  Jb Evain  <jbevain@novell.com>
+
+	* Helper.cs: Add helper methods used in System.SilverLight.
+
 2007-08-11  Miguel de Icaza  <miguel@novell.com>
 
 	* Helper.cs: Add two helper methods that access the mscorlib

@@ -7,6 +7,7 @@
 // Authors:
 //   Miguel de Icaza (miguel@novell.com)
 //   Chris Toshok (toshok@novell.com)
+//   Jb Evain (jbevain@novell.com)
 //
 // Copyright 2007 Novell, Inc.
 //
@@ -30,6 +31,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Runtime.InteropServices;
 using System.Reflection;
 using System.ComponentModel;
 
@@ -108,6 +110,11 @@ namespace Mono {
 			return target.CreateInstanceAndUnwrap (assemblyName, typeName);
 		}
 
+		public static object CreateInstance (Type type, bool nonPublic)
+		{
+			return Activator.CreateInstance (type, nonPublic);
+		}
+
 		public static Assembly LoadFile (string path)
 		{
 			return Assembly.LoadFile (path);
@@ -116,6 +123,11 @@ namespace Mono {
 		public static AssemblyName [] GetReferencedAssemblies (Assembly ass)
 		{
 			return ass.GetReferencedAssemblies ();
+		}
+
+		public static IntPtr AllocHGlobal (int cb)
+		{
+			return Marshal.AllocHGlobal (cb);
 		}
 	}
 }
