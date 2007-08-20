@@ -31,7 +31,7 @@ namespace ChatClient
 			EndpointAddress ea = new EndpointAddress (
 				new Uri ("http://localhost:8080/ChatServer"));
 			IPeerResolverContract proxy = ChannelFactory<IPeerResolverContract>.CreateChannel (binding, ea);
-			try {
+//			try {
 				Guid guid = Guid.NewGuid ();
 				Console.WriteLine (guid);
 				RegisterInfo ri = new RegisterInfo (
@@ -40,10 +40,10 @@ namespace ChatClient
 					                     new ReadOnlyCollection<System.Net.IPAddress> (new List<System.Net.IPAddress> ())));
 				RegisterResponseInfo rri = proxy.Register (ri);
 				Console.WriteLine ("Response: {0}", rri);
-			}
-			catch (Exception e) {
-				Console.WriteLine (e.Message);
-			}
+//			}
+//			catch (Exception e) {
+//				Console.WriteLine (e.Message);
+//			}
 		}
 	}
 }

@@ -31,3 +31,25 @@ UnregisterInfo OK
 <MeshId>chatmesh</MeshId>
 <RegistrationId>f1c8bdd0-f36e-4d2d-9e57-292ade9cebf3</RegistrationId>
 </Unregister>
+
+
+RefreshInfo O
+
+(Message trace left.)
+
+
+RefreshResponseInfo O
+
+(Message trace left.)
+
+
+ServiceSettingsResponseInfo OK
+
+<ServiceSettings xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.microsoft.com/net/2006/05/peer">
+<ControlMeshShape>false</ControlMeshShape>
+</ServiceSettings>
+
+
+UpdateInfo OK
+
+(Same response as RegisterResponseInfo.)
