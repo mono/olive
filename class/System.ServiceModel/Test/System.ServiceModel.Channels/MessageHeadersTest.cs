@@ -335,5 +335,59 @@ namespace MonoTests.System.ServiceModel.Channels
 			msg2.Headers.CopyHeadersFrom (msg);
 			Assert.AreEqual ("urn:myaction2", msg2.Headers.Action);
 		}
+
+		[Test]
+		public void AddressingNoneAndAction ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.Action = "urn:foo";
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddressingNoneAndFrom ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.From = new EndpointAddress ("http://localhost:8080");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddressingNoneAndFaultTo ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.FaultTo = new EndpointAddress ("http://localhost:8080");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddressingNoneAndMessageId ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.MessageId = new UniqueId (Guid.NewGuid ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddressingNoneAndRelatesTo ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.RelatesTo = new UniqueId (Guid.NewGuid ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void AddressingNoneAndReplyTo ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.ReplyTo = new EndpointAddress ("http://localhost:8080");
+		}
+
+		[Test]
+		public void AddressingNoneAndTo ()
+		{
+			MessageHeaders h = new MessageHeaders (MessageVersion.Soap12);
+			h.To = new Uri ("http://localhost:8080");
+		}
 	}
 }

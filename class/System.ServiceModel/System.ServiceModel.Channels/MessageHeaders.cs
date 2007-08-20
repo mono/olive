@@ -318,13 +318,15 @@ namespace System.ServiceModel.Channels
 			get { return l.Count; }
 		}
 
-		[MonoTODO]
 		public EndpointAddress FaultTo {
 			get {
 				int idx = FindHeader ("FaultTo", Constants.WSA1);
 				return idx < 0 ? null : GetHeader<EndpointAddress> (idx);
 			}
 			set {
+				if (version.Addressing == AddressingVersion.None)
+					throw new InvalidOperationException ("WS-Addressing header is not allowed for AddressingVersion.None");
+
 				RemoveAll ("FaultTo", Constants.WSA1);
 				Add (MessageHeader.CreateHeader (
 						"FaultTo", 
@@ -333,13 +335,15 @@ namespace System.ServiceModel.Channels
 			}
 		}
 
-		[MonoTODO]
 		public EndpointAddress From {
 			get {
 				int idx = FindHeader ("From", version.Addressing.Namespace);
 				return idx < 0 ? null : GetHeader<EndpointAddress> (idx);
 			}
 			set { 
+				if (version.Addressing == AddressingVersion.None)
+					throw new InvalidOperationException ("WS-Addressing header is not allowed for AddressingVersion.None");
+
 				RemoveAll ("From", Constants.WSA1);
 				Add (MessageHeader.CreateHeader (
 						"From", 
@@ -352,13 +356,15 @@ namespace System.ServiceModel.Channels
 			get { return l [index]; }
 		}
 
-		[MonoTODO]
 		public UniqueId MessageId {
 			get { 
 				int idx = FindHeader ("MessageID", Constants.WSA1);
 				return idx < 0 ? null : new UniqueId (GetHeader<string> (idx));
 			}
 			set {
+				if (version.Addressing == AddressingVersion.None)
+					throw new InvalidOperationException ("WS-Addressing header is not allowed for AddressingVersion.None");
+
 				RemoveAll ("MessageID", Constants.WSA1);
 				Add (MessageHeader.CreateHeader (
 						"MessageID", 
@@ -369,13 +375,15 @@ namespace System.ServiceModel.Channels
 
 		public MessageVersion MessageVersion { get { return version; } }
 
-		[MonoTODO]
 		public UniqueId RelatesTo {
 			get { 
 				int idx = FindHeader ("RelatesTo", Constants.WSA1);
 				return idx < 0 ? null : new UniqueId (GetHeader<string> (idx));
 			}
 			set {
+				if (version.Addressing == AddressingVersion.None)
+					throw new InvalidOperationException ("WS-Addressing header is not allowed for AddressingVersion.None");
+
 				RemoveAll ("MessageID", Constants.WSA1);
 				Add (MessageHeader.CreateHeader (
 						"RelatesTo", 
@@ -385,13 +393,15 @@ namespace System.ServiceModel.Channels
 
 		}
 
-		[MonoTODO]
 		public EndpointAddress ReplyTo {
 			get {
 				int idx = FindHeader ("ReplyTo", Constants.WSA1);
 				return idx < 0 ? null : GetHeader<EndpointAddress> (idx);
 			}
 			set {
+				if (version.Addressing == AddressingVersion.None)
+					throw new InvalidOperationException ("WS-Addressing header is not allowed for AddressingVersion.None");
+
 				RemoveAll ("ReplyTo", Constants.WSA1);
 				Add (MessageHeader.CreateHeader (
 						"ReplyTo", 
@@ -400,7 +410,6 @@ namespace System.ServiceModel.Channels
 			}
 		}
 
-		[MonoTODO]
 		public Uri To {
 			get {
 				int idx = FindHeader ("To", version.Addressing.Namespace);

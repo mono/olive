@@ -1,3 +1,8 @@
+2007-08-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MessageHeadersTest.cs : added couple of property settters and
+	  AddressingVersion.None.
+
 2007-07-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MsmqTransportBindingElementTest.cs : modified or removed copied-and-
