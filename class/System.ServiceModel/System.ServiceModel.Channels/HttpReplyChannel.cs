@@ -92,7 +92,8 @@ namespace System.ServiceModel.Channels
 
 				msg = Encoder.ReadMessage (
 					ctx.Request.InputStream, maxSizeOfHeaders);
-				if (source.MessageEncoder.MessageVersion.Envelope == EnvelopeVersion.Soap11) {
+				if (source.MessageEncoder.MessageVersion.Envelope == EnvelopeVersion.Soap11 ||
+				    source.MessageEncoder.MessageVersion.Addressing == AddressingVersion.None) {
 					string action = GetHeaderItem (ctx.Request.Headers ["SOAPAction"]);
 					if (action != null)
 						msg.Headers.Action = action;

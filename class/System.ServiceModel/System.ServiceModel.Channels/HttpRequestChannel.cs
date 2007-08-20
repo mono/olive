@@ -86,6 +86,19 @@ namespace System.ServiceModel.Channels
 		{
 			web_request.Timeout = (int) timeout.TotalMilliseconds;
 
+			// There is no SOAP Action/To header when AddressingVersion is None.
+			if (message.Version.Addressing == AddressingVersion.None) {
+				if (message.Headers.Action != null) {
+					web_request.Headers ["SOAPAction"] = message.Headers.Action;
+					message.Headers.RemoveAll ("Action", message.Version.Addressing.Namespace);
+					if (message.Headers.Action != null) throw new Exception (message.Headers.Action);
+				}
+
+				// FIXME: "To" header might also need special
+				// processing, but am not sure if it is fine
+				// to create a new WebRequest.
+			}
+
 			MemoryStream buffer = new MemoryStream ();
 			Encoder.WriteMessage (message, buffer);
 
