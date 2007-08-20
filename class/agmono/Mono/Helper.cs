@@ -31,9 +31,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Runtime.InteropServices;
-using System.Reflection;
 using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
+using System.Runtime.InteropServices;
 
 namespace Mono {
 
@@ -100,6 +101,16 @@ namespace Mono {
 			}
 		}
 
+		public static object ChangeType (object obj, Type type)
+		{
+			return Convert.ChangeType (obj, type);
+		}
+
+		public static string GetStackTrace ()
+		{
+			return Environment.StackTrace;
+		}
+
 		public static AppDomain CreateDomain (IntPtr key)
 		{
 			return AppDomain.CreateDomain ("moonlight-" + key);
@@ -128,6 +139,21 @@ namespace Mono {
 		public static IntPtr AllocHGlobal (int cb)
 		{
 			return Marshal.AllocHGlobal (cb);
+		}
+
+		public static GCHandle GCHandleFromIntPtr (IntPtr ptr)
+		{
+			return GCHandle.FromIntPtr (ptr);
+		}
+
+		public static void FreeHGlobal (IntPtr ptr)
+		{
+			Marshal.FreeHGlobal (ptr);
+		}
+
+		public static string PtrToStringAuto (IntPtr ptr)
+		{
+			return Marshal.PtrToStringAuto (ptr);
 		}
 	}
 }
