@@ -15,7 +15,7 @@ common/Consts.cs: common/Consts.cs.in $(wildcard config.make)
 	sed -e 's,@''MONO_VERSION@,$(MONO_VERSION),' $< > $@
 
 PLATFORMS = linux win32
-PROFILES = net_3_0
+PROFILES = net_3_0 net_2_1
 
 COMMON_SRCS = \
 	Consts.cs.in			\
