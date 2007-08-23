@@ -1,3 +1,7 @@
+2007-08-23  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Build common for all profiles.
+
 2007-08-23  Jb Evain  <jbevain@novell.com>
 
     * profiles/net_2_1.make: remove LIBRARY_PACKAGE = none,
