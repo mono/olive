@@ -1,5 +1,10 @@
 2007-08-23  Jb Evain  <jbevain@novell.com>
 
+	* Makefile, silver.pc.in, agmonosilver.pc.in: don't locate the
+	assemblies in the GAC anymore.
+
+2007-08-23  Jb Evain  <jbevain@novell.com>
+
 	* Makefile, silver.pc.in: for 2.1 assemblies, locate them directly in the GAC.
 	* agmonosilver.pc.in: new file, to reference agmono.dll on 2.1.
 

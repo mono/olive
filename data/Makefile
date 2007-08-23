@@ -5,10 +5,8 @@ include ../build/rules.make
 ifeq ($(PLATFORM), win32)
 	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/3.0')
 else
-	olivedir  = $(prefix)/lib/mono/3.0
-	agmonodir = $(prefix)/lib/mono/gac/agmono/2.1.0.0__31bf3856ad364e35/
-	agclrdir  = $(prefix)/lib/mono/gac/agclr/0.0.0.0__b03f5f7f11d50a3a/
-	syssldir  = $(prefix)/lib/mono/gac/System.SilverLight/1.0.0.0__b03f5f7f11d50a3a/
+	olivedir   = $(prefix)/lib/mono/3.0
+	silverdir  = $(prefix)/lib/mono/2.1
 endif
 
 all-local: olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc
@@ -21,11 +19,11 @@ olive.pc: olive.pc.in Makefile
 	mv $@.tmp $@
 
 silver.pc: silver.pc.in Makefile
-	sed -e "s,@agclrdir@,$(agclrdir),g" -e "s,@syssldir@,$(syssldir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
+	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
 	mv $@.tmp $@
 
 agmonosilver.pc: agmonosilver.pc.in Makefile
-	sed -e "s,@agmonodir@,$(agmonodir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < agmonosilver.pc.in > $@.tmp
+	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < agmonosilver.pc.in > $@.tmp
 	mv $@.tmp $@
 
 silverdesktop.pc: silverdesktop.pc.in Makefile

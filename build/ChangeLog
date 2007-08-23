@@ -1,5 +1,11 @@
 2007-08-23  Jb Evain  <jbevain@novell.com>
 
+    * profiles/net_2_1.make: remove LIBRARY_PACKAGE = none,
+	on check, make a private copy of smcs.exe. Make MCS use the
+	private smcs.exe.
+
+2007-08-23  Jb Evain  <jbevain@novell.com>
+
 	* library.make: if LIBRARY_PACKAGE = none, install in the GAC,
 	but don't create a symlink to $(prefix)/lib/mono/$(package)
     * profiles/net_2_1.make: use LIBRARY_PACKAGE = none
