@@ -1,3 +1,7 @@
+2007-08-23  Marek Safar  <marek.safar@gmail.com>
+
+	* Consts.cs.in: add versions for 3.5 profile.
+	
 2007-08-16  Jb Evain  <jbevain@novell.com>
 
 	* Consts.cs.in: add versions for the 2.1 profile.
