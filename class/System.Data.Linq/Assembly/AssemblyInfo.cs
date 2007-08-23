@@ -39,8 +39,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct("System.Query")]
 [assembly: AssemblyCopyright("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyFileVersion ("2.0.0.0")]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
 [assembly: NeutralResourcesLanguage ("en-US")]
+[assembly: AssemblyInformationalVersion ("")]
 
 [assembly: CLSCompliant(true)]
 [assembly: ComVisible (false)]
@@ -49,6 +50,7 @@ using System.Runtime.InteropServices;
 [assembly: SatelliteContractVersion (Consts.FxVersion)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../msfinal.pub")]
+[assembly: AssemblyKeyFile("../ecma.pub")]
 [assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification=true)]
 [assembly: AllowPartiallyTrustedCallers]
+
