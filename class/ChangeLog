@@ -1,3 +1,7 @@
+2007-08-23  Marek Safar  <marek.safar@gmail.com>
+
+	* ecma.pub: Copied from mcs.
+
 2007-08-07  Jb Evain  <jbevain@novell.com>
 
 	* Makefile, 2.1 profile: System.Silverlight depends on agmono.
