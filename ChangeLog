@@ -1,3 +1,7 @@
+2007-08-23  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: also visit folder `data` on profile net_2_1.
+
 2007-08-13  Jb Evain  <jbevain@novell.com>
 
 	* Makefile: revert temporarly to old behavior: only build net_3_0

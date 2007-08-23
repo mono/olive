@@ -1,3 +1,9 @@
+2007-08-23  Jb Evain  <jbevain@novell.com>
+
+	* library.make: if LIBRARY_PACKAGE = none, install in the GAC,
+	but don't create a symlink to $(prefix)/lib/mono/$(package)
+    * profiles/net_2_1.make: use LIBRARY_PACKAGE = none
+
 2007-02-27  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: Include net_2_1.make in tarball

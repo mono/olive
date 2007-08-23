@@ -3,7 +3,7 @@ thisdir := .
 SUBDIRS := build class tools data scripts
 
 net_3_0_SUBDIRS := build class tools data scripts
-net_2_1_SUBDIRS := build class
+net_2_1_SUBDIRS := build class data
 
 PROFILES = net_3_0 net_2_1
 
