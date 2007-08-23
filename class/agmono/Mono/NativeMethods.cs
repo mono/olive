@@ -607,10 +607,10 @@ namespace Mono {
 		
 #region EventObject
 		[DllImport("moon")]
-		public extern static void dependency_object_add_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
+		public extern static void event_object_add_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
 
 		[DllImport("moon")]
-		public extern static void dependency_object_remove_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
+		public extern static void event_object_remove_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
 #endregion
 
 #region plugin

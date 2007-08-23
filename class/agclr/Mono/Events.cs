@@ -58,8 +58,7 @@ namespace Mono {
 		internal static UnmanagedEventHandler lost_focus = new UnmanagedEventHandler (lost_focus_callback);
 		internal static UnmanagedEventHandler loaded = new UnmanagedEventHandler (loaded_callback);
 		internal static UnmanagedEventHandler mouse_leave = new UnmanagedEventHandler (mouse_leave_callback);
-
-		static PlainEvent surface_resized = new PlainEvent (surface_resized_callback);
+		internal static UnmanagedEventHandler surface_resized = new UnmanagedEventHandler (surface_resized_callback);
 
 		static void got_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
@@ -137,7 +136,7 @@ namespace Mono {
 			e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
 		}
 
-		static void surface_resized_callback (IntPtr target)
+		static void surface_resized_callback (IntPtr target, IntPtr calldata, IntPtr clozure)
 		{
 			// Parameter ignored
 
@@ -146,17 +145,18 @@ namespace Mono {
 
 		internal static void InitSurface (IntPtr surface)
 		{
-			NativeMethods.surface_register_events (surface, surface_resized);
+			// We don't really need a closure for this event
+			NativeMethods.event_object_add_event_handler (surface, "Resize", surface_resized, new GCHandle ());
 		}
 
 		internal static void AddHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_add_event_handler (obj.native, eventName, handler, obj.GCHandle);
+			NativeMethods.event_object_add_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 
 		internal static void RemoveHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
-			NativeMethods.dependency_object_remove_event_handler (obj.native, eventName, handler, obj.GCHandle);
+			NativeMethods.event_object_remove_event_handler (obj.native, eventName, handler, obj.GCHandle);
 		}
 	}
 }
