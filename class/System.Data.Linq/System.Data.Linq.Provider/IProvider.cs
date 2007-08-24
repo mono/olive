@@ -50,7 +50,7 @@ namespace System.Data.Linq.Provider
 
         IMultipleResults ExecuteMultipleResults(Expression query);
 
-        IExecuteResults ExecuteNonQuery(Expression query);
+        IExecuteResult ExecuteNonQuery(Expression query);
 
         IQueryResults ExecuteQuery(Expression query);
 

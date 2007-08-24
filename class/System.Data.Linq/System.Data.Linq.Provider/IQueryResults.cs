@@ -24,7 +24,7 @@ using System.Collections;
 
 namespace System.Data.Linq.Provider
 {
-    public interface IQueryResults : IExecuteResults, IEnumerable
+    public interface IQueryResults : IExecuteResult, IEnumerable
     {
     }
 }

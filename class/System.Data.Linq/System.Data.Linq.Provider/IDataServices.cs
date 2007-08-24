@@ -23,10 +23,11 @@
 using System.Linq;
 using System.Linq.Expressions;
 
+
 namespace System.Data.Linq.Provider
 {
     public interface IDataServices
-    {
+    {/*
         #region Properties
         DataContext Context { get; }
 
@@ -62,5 +63,6 @@ namespace System.Data.Linq.Provider
 
         void OnEntityMaterialized(MetaType type, object instance);
         #endregion
+        */
     }
 }
