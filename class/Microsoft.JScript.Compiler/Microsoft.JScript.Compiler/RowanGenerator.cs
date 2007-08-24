@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Reflection;
 using Microsoft.Scripting;
 using MSIA = Microsoft.Scripting.Internal.Ast;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
@@ -61,9 +62,13 @@ namespace Microsoft.JScript.Compiler
 
 		# region AST Converter
 
-		public Microsoft.Scripting.Internal.Ast.Expression ConvertToObject(Microsoft.Scripting.Internal.Ast.Expression Value)
+		public MSIA.Expression ConvertToObject(MSIA.Expression Value)
 		{
-			throw new NotImplementedException ();
+			List<MSIA.Expression> Args = new List<MSIA.Expression>();
+			Args.Add(new MSIA.CodeContextExpression());
+			Args.Add(Value);
+			MethodInfo met = typeof (Microsoft.JScript.Runtime.Convert).GetMethod ("ToObject");
+			return new MSIA.MethodCallExpression (met, null, Args);
 		}
 
 		#region Expression

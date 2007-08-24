@@ -1,3 +1,8 @@
+2007-08-24  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* RowanGenerator.cs: add convertToObject and start generate of 
+	function definition
+
 2007-08-18  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Compiler.cs: use rowan generator in compiler to have a return
