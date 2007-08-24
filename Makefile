@@ -4,8 +4,9 @@ SUBDIRS := build class tools data scripts
 
 net_3_0_SUBDIRS := build class tools data scripts
 net_2_1_SUBDIRS := build class data
+net_3_5_SUBDIRS := build class
 
-PROFILES = net_3_0 net_2_1
+PROFILES = net_3_0 net_2_1 net_3_5
 
 ifndef PROFILE
 OVERRIDE_TARGET_ALL = yes

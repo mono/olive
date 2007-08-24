@@ -1,3 +1,7 @@
+2007-08-24  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Added 3.5 profile to default build.
+	
 2007-08-23  Jb Evain  <jbevain@novell.com>
 
 	* Makefile: also visit folder `data` on profile net_2_1.
