@@ -12,7 +12,7 @@ TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
 EXTRA_DISTFILES =
 
-VALID_PROFILE := $(filter net_3_0, $(PROFILE))
+VALID_PROFILE := $(filter net_3_5, $(PROFILE))
 ifndef VALID_PROFILE
 LIBRARY_NAME = dummy-System.Web.Extensions.dll
 NO_INSTALL = yes

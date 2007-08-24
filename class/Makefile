@@ -15,7 +15,6 @@ net_3_0_dirs = \
 	System.IdentityModel		\
 	System.IdentityModel.Selectors	\
 	System.ServiceModel 		\
-	System.ServiceModel.Web		\
 	agmono				\
 	System.Silverlight		\
 	agclr
@@ -27,7 +26,9 @@ net_2_1_dirs = \
 	
 net_3_5_dirs = \
 	System.Data.Linq	\
-	System.Xml.Linq
+	System.Xml.Linq		\
+	System.ServiceModel.Web		\
+	System.Web.Extensions	
 	
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)

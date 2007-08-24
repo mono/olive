@@ -1,5 +1,9 @@
 2007-08-24  Marek Safar  <marek.safar@gmail.com>
 
+	* Makefile: Add System.ServiceModel.Web, System.Web.Extensions.
+	
+2007-08-24  Marek Safar  <marek.safar@gmail.com>
+
 	* Makefile: Add 3.5 profile.
 	
 2007-08-23  Marek Safar  <marek.safar@gmail.com>
