@@ -37,16 +37,15 @@ using System.Runtime.InteropServices;
 
 // General Information about the System.Xml.Linq assembly
 
-[assembly: AssemblyVersion ("2.0.0.0")]
-[assembly: SatelliteContractVersion ("2.0.0.0")]
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
 
 [assembly: AssemblyTitle ("System.Xml.Linq.dll")]
 [assembly: AssemblyDescription ("System.Xml.Linq.dll")]
-[assembly: AssemblyConfiguration ("Development version")]
 [assembly: AssemblyCompany ("MONO development team")]
 [assembly: AssemblyProduct ("MONO CLI")]
 [assembly: AssemblyCopyright ("(c) 2003 Various Authors")]
-[assembly: AssemblyTrademark ("")]
 
 [assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.Xml.Linq.dll")]
@@ -56,4 +55,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../winfx.pub")]
+[assembly: AssemblyKeyFile("../ecma.pub")]
