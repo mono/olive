@@ -9,11 +9,11 @@ LIB_MCS_FLAGS = \
                 /r:System.Data.dll \
                 /r:System.Transactions.dll \
                 /r:System.Xml.dll \
-                /langversion:linq
+
 NO_TEST = yes
 
-# This is a .NET 2.0 only assembly
-VALID_PROFILE := $(filter net_3_0, $(PROFILE))
+# This is a .NET 3.5 only assembly
+VALID_PROFILE := $(filter net_3_5, $(PROFILE))
 ifndef VALID_PROFILE
 LIBRARY_NAME = dummy-System.Data.Linq.dll
 NO_INSTALL = yes
