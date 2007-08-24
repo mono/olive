@@ -1,3 +1,7 @@
+2007-08-24  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* RowanGeneratorTest.cs : add test
+
 2007-06-28  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* ParserTest.cs : add empty return test
