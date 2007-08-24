@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining
+// Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
@@ -23,7 +23,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Data.Linq.Provider;
+using System.Data.Linq.Mapping;
 using System.Linq;
 using System.Linq.Expressions;
 
@@ -93,33 +93,12 @@ namespace System.Data.Linq
         {
             get { return null; }
         }
-
-        IQueryable IQueryable.CreateQuery(Expression expression)
-        {
-            if (expression == null)
-                throw new ArgumentNullException("expression");
-
-            //TODO:
-            throw new NotImplementedException();
-        }
-
-        IQueryable<S> IQueryable<T>.CreateQuery<S>(Expression expression)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
-
-        S IQueryable<T>.Execute<S>(Expression expression)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
-
-        object IQueryable.Execute(Expression expression)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
+        
+	public IQueryProvider Provider {
+		get {
+			throw new NotImplementedException ();
+		}
+	}        
         #endregion
 
         #region ICollection Implementations

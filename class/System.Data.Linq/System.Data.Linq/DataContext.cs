@@ -22,13 +22,14 @@
 
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Linq.Mapping;
 using System.Data.Linq.Provider;
 using System.IO;
 using System.Linq;
 
 namespace System.Data.Linq
 {
-    public class DataContext : ICloneable, IDisposable
+    public class DataContext : IDisposable
     {
         #region .ctor
         public DataContext(IDbConnection connection, MappingSource mapping)
@@ -153,11 +154,6 @@ namespace System.Data.Linq
         #endregion
 
         #region Public Methods
-        public object Clone()
-        {
-            return new DataContext(Connection, mapping);
-        }
-
         public void CreateDatabase()
         {
             CheckIsDisposed();

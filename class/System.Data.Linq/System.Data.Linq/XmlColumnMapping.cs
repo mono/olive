@@ -21,7 +21,7 @@
 //
 
 namespace System.Data.Linq
-{
+{/*
     class XmlColumnMapping : XmlMemberMapping
     {
         #region .ctor
@@ -99,4 +99,5 @@ namespace System.Data.Linq
         }
         #endregion
     }
+    */
 }

@@ -20,49 +20,16 @@
 //        Antonello Provenzano  <antonello@deveel.com>
 //
 
-using System.Data.Linq.Provider;
-using System.Reflection;
-
 namespace System.Data.Linq
 {
-    public abstract class Schema
+    public interface IExecuteResult
     {
-        protected Schema(DataContext context)
-        {
-            if (context == null)
-                throw new ArgumentNullException("context");
-            this.context = context;
-        }
-
-        #region Fields
-        private DataContext context;
-        #endregion
-
         #region Properties
-        public DataContext Context
-        {
-            get { return context; }
-        }
+        object ReturnValue { get; }
         #endregion
 
-        #region Protected Methods
-        protected IExecuteResult ExecuteMethodCall(object instance, MethodInfo methodInfo, params object[] parameters)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
-
-        protected IQueryResults<T> ExecuteMethodCall<T>(object instance, MethodInfo methodInfo, params object[] parameters)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
-
-        protected IMultipleResults ExecuteMethodCallWithMultipleResults(object instance, MethodInfo methodInfo, params object[] parameters)
-        {
-            //TODO:
-            throw new NotImplementedException();
-        }
+        #region Methods
+        object GetParameterValue(int parameterIndex);
         #endregion
     }
 }
