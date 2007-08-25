@@ -1,3 +1,9 @@
+2007-08-25  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* RowanGenerator.cs: code quite all statement things. 
+	I have the feeling to redo the parser. Anyway, I will end it...
+	* Parser.cs: fix a customisation of MS for spec
+	
 2007-08-24  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* RowanGenerator.cs: add convertToObject and start generate of 

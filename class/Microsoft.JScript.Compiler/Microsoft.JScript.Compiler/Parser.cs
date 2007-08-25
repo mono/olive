@@ -189,16 +189,18 @@ namespace Microsoft.JScript.Compiler
 					return ParseThrow ();
 				case Token.Type.@return:
 					return ParseReturn ();
-				case Token.Type.function:
-					return ParseFunctionDeclaration ();
+				//  SEEMS THAT MS DO NOT RESPECT SPEC AND FUNCTION IS GET AFTER THAT IN EXPRESSION
+				// SO ONLY USE FOR PARSE PROGRAMME AND NOT HERE
+				//case Token.Type.function:
+				//	return ParseFunctionDeclaration ();
 				case Token.Type.Semicolon:
 					return new Statement (Statement.Operation.Empty, new TextSpan (current, current));
 				case Token.Type.Identifier:
 					return ParseLabelStatement(); //TODO if 2 not colon => expression statement
 				default:
 					if ( current.Kind != Token.Type.LeftBrace
-						&& current.Kind != Token.Type.Comma
-						&& current.Kind != Token.Type.function)
+						&& current.Kind != Token.Type.Comma)
+						//&& current.Kind != Token.Type.function)
 						return ParseExpressionStatement ();
 					break;
 			}

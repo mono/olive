@@ -32,6 +32,7 @@ using System.Reflection;
 using Microsoft.Scripting;
 using MSIA = Microsoft.Scripting.Internal.Ast;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
+using MJR = Microsoft.JScript.Runtime;
 
 namespace Microsoft.JScript.Compiler
 {
@@ -82,7 +83,10 @@ namespace Microsoft.JScript.Compiler
 			switch (Input.Opcode) {
 
 				case MJCP.Expression.Operation.SyntaxError :
+					return null;//sample show null
 				case MJCP.Expression.Operation.@this :
+					result = new MSIA.BoundExpression (GetVarRef (thisIdent));
+					break;
 				case MJCP.Expression.Operation.@false :
 					result = new MSIA.ConstantExpression (false);
 					break;
@@ -91,7 +95,7 @@ namespace Microsoft.JScript.Compiler
 					break;
 				case MJCP.Expression.Operation.Identifier :
 						Identifier id = ((MJCP.IdentifierExpression)Input).ID;
-						result = new MSIA.BoundExpression (new MSIA.VariableReference (idMappingTable.GetRowanID (id)));
+						result = new MSIA.BoundExpression (GetVarRef (id));
 						break;
 				case MJCP.Expression.Operation.NumericLiteral :
 				case MJCP.Expression.Operation.HexLiteral :
@@ -194,14 +198,55 @@ namespace Microsoft.JScript.Compiler
 
 		#endregion
 
+		[MonoTODO("fill all detail and complete test")]
 		public MSIA.Statement Generate (ParseTree.FunctionDefinition Input)
 		{
-			throw new NotImplementedException();
+			MSIA.VariableReference vr = GetVarRef (Input.Name);
+			List<MSIA.Expression> arguments = new List<MSIA.Expression> ();
+			//TODO: a lot have to be found here
+			arguments.Add (new MSIA.CodeContextExpression ());
+			arguments.Add (new MSIA.ConstantExpression (Input.Name.Spelling));
+			arguments.Add (new MSIA.ConstantExpression (-1));//must be something but not found for moment
+			string name = "_";//TODO: find what is behind this or hardcoded?
+			MSIA.Statement body = this.Generate (Input.Body);//must be that but not tested
+			
+			MSIA.CodeBlock block = new MSIA.CodeBlock (name, null, body);
+			List<MSIA.Parameter> parameters = this.Generate (Input.Parameters, block);
+			block.Parameters = parameters;
+			arguments.Add (new MSIA.CodeBlockExpression (block, true));//true or false?
+			List<MSIA.Expression> initializers = new List<MSIA.Expression> ();// TODO fill it
+			arguments.Add (MSIA.NewArrayExpression.NewArrayInit (typeof(string[]), initializers));
+			arguments.Add (new MSIA.ConstantExpression (true));
+			arguments.Add (new MSIA.ConstantExpression (false));
+
+			MSIA.MethodCallExpression val = new MSIA.MethodCallExpression (typeof (MJR.JSFunctionObject).GetMethod ("MakeFunction"), null, arguments);
+			MSIA.BoundAssignment bound = new Microsoft.Scripting.Internal.Ast.BoundAssignment (vr, val, Operators.None);
+			return new MSIA.ExpressionStatement (bound);
+		}
+
+		private List<MSIA.Parameter> Generate (List<MJCP.Parameter> parameters, MSIA.CodeBlock block)
+		{
+			List<MSIA.Parameter> result = new List<MSIA.Parameter> ();
+			foreach (MJCP.Parameter p in parameters)
+				result.Add (MSIA.Parameter.Create (block, idMappingTable.GetRowanID (p.Name)));
+			return result;
 		}
 
 		#region Statement
 
-		public MSIA.Statement Generate (ParseTree.Statement Input)
+		public MSIA.BlockStatement Generate (DList<MJCP.Statement, MJCP.BlockStatement> Input, bool PrintExpressions)
+		{
+			DList<MJCP.Statement, MJCP.BlockStatement>.Iterator it = new DList<MJCP.Statement, MJCP.BlockStatement>.Iterator (Input);
+			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			while (it.ElementAvailable) {
+				statements.Add (Generate (it.Element, PrintExpressions));
+				it.Advance ();
+			}
+			return new MSIA.BlockStatement (statements.ToArray ());
+
+		}
+
+		public MSIA.Statement Generate (ParseTree.Statement Input, bool PrintExpressions)
 		{
 			MSIA.Statement result;
 			switch (Input.Opcode) {
@@ -212,10 +257,10 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateVarDeclaration ((MJCP.VariableDeclarationStatement)Input);
 					break;
 				case MJCP.Statement.Operation.Empty:
-					result = GenerateEmpty (Input);
+					result = new MSIA.EmptyStatement ();
 					break;
 				case MJCP.Statement.Operation.Expression:
-					result = GenerateExpressionStatement ((MJCP.ExpressionStatement)Input);
+					result = GenerateExpressionStatement ((MJCP.ExpressionStatement)Input, PrintExpressions);
 					break;
 				case MJCP.Statement.Operation.If:
 					result = GenerateIfStatement ((MJCP.IfStatement)Input);
@@ -227,7 +272,7 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateWhileStatement ((MJCP.WhileStatement)Input);
 					break;
 				case MJCP.Statement.Operation.ExpressionFor:
-					result = GenerateForStatement ((MJCP.ForStatement)Input);
+					result = GenerateExpressionForStatement ((MJCP.ForStatement)Input);
 					break;
 				case MJCP.Statement.Operation.DeclarationFor:
 					result = GenerateDeclarationForStatement ((MJCP.DeclarationForStatement)Input);
@@ -239,12 +284,16 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateDeclarationForInStatement ((MJCP.DeclarationForInStatement)Input);
 					break;
 				case MJCP.Statement.Operation.Break:
+					result = new MSIA.BreakStatement ();
+					break;
 				case MJCP.Statement.Operation.Continue:
-					result = GenerateBreakOrContinueStatement ((MJCP.BreakOrContinueStatement)Input);
+					result = new MSIA.ContinueStatement ();
 					break;
 				case MJCP.Statement.Operation.Return:
+					result = new MSIA.ReturnStatement (Generate (((MJCP.ReturnOrThrowStatement)Input).Value));
+					break;
 				case MJCP.Statement.Operation.Throw:
-					result = GenerateReturnOrThrowStatement ((MJCP.ReturnOrThrowStatement)Input);
+					result = new MSIA.ExpressionStatement (new MSIA.ThrowExpression (Generate (((MJCP.ReturnOrThrowStatement)Input).Value)));
 					break;
 				case MJCP.Statement.Operation.With:
 					result = GenerateWithStatement ((MJCP.WithStatement)Input);
@@ -262,120 +311,168 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateFunctionStatement ((MJCP.FunctionStatement)Input);
 					break;
 				case MJCP.Statement.Operation.SyntaxError:
-					result = GenerateSyntaxErrorStatement (Input);
-					break;
+					return null;//my sample return null...
 				default:
 					throw new Exception ("Bad kind of statement to translate from compiler ast to runtime ast.");
 			}
 			return result;
 		}
 
-		private MSIA.Statement GenerateVarDeclaration (Microsoft.JScript.Compiler.ParseTree.VariableDeclarationStatement variableDeclarationStatement)
+		public MSIA.Statement Generate (ParseTree.Statement Input)
 		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateEmpty (Microsoft.JScript.Compiler.ParseTree.Statement Input)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateExpressionStatement (Microsoft.JScript.Compiler.ParseTree.ExpressionStatement expressionStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateIfStatement (Microsoft.JScript.Compiler.ParseTree.IfStatement ifStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateDoStatement (Microsoft.JScript.Compiler.ParseTree.DoStatement doStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateWhileStatement (Microsoft.JScript.Compiler.ParseTree.WhileStatement whileStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateForStatement (Microsoft.JScript.Compiler.ParseTree.ForStatement forStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateDeclarationForStatement (Microsoft.JScript.Compiler.ParseTree.DeclarationForStatement declarationForStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateForInStatement (Microsoft.JScript.Compiler.ParseTree.ForInStatement forInStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateDeclarationForInStatement (Microsoft.JScript.Compiler.ParseTree.DeclarationForInStatement declarationForInStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateBreakOrContinueStatement (Microsoft.JScript.Compiler.ParseTree.BreakOrContinueStatement breakOrContinueStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateReturnOrThrowStatement (Microsoft.JScript.Compiler.ParseTree.ReturnOrThrowStatement returnOrThrowStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateWithStatement (Microsoft.JScript.Compiler.ParseTree.WithStatement withStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateLabelStatement (Microsoft.JScript.Compiler.ParseTree.LabelStatement labelStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateSwitchStatement (Microsoft.JScript.Compiler.ParseTree.SwitchStatement switchStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateTryStatement (Microsoft.JScript.Compiler.ParseTree.TryStatement tryStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateFunctionStatement (Microsoft.JScript.Compiler.ParseTree.FunctionStatement functionStatement)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
-		private MSIA.Statement GenerateSyntaxErrorStatement (Microsoft.JScript.Compiler.ParseTree.Statement Input)
-		{
-			throw new Exception ("The method or operation is not implemented.");
+			return Generate (Input, false);
 		}
 
 		private MSIA.BlockStatement GenerateBlockStatement (MJCP.BlockStatement blockStatement)
 		{
+			DList<MJCP.Statement, MJCP.BlockStatement>.Iterator it = new DList<MJCP.Statement, MJCP.BlockStatement>.Iterator (blockStatement.Children);
+			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			while (it.ElementAvailable){
+				 MSIA.Statement statement = Generate (it.Element);
+				 statements.Add (statement);
+				 it.Advance ();
+			}
+			return new MSIA.BlockStatement (statements.ToArray());
+		}
+
+		private MSIA.Statement GenerateVarDeclaration (Microsoft.JScript.Compiler.ParseTree.VariableDeclarationStatement variableDeclarationStatement)
+		{
+			List<MSIA.Expression> expressions = new List<MSIA.Expression> ();
+			foreach (MJCP.VariableDeclarationListElement element in variableDeclarationStatement.Declarations) {
+				MSIA.VariableReference vr = GetVarRef (element.Declaration.Name);
+				MSIA.Expression value = null;
+				if (element.Declaration is MJCP.InitializerVariableDeclaration) {
+					value = Generate (((MJCP.InitializerVariableDeclaration)element.Declaration).Initializer);
+				}
+				expressions.Add (new MSIA.BoundAssignment (vr, value, Operators.None));			
+			}
+			if (expressions.Count == 0)
+				return new MSIA.EmptyStatement ();
+			MSIA.CommaExpression exp = new MSIA.CommaExpression (expressions, expressions.Count - 1);
+			return new MSIA.ExpressionStatement (exp);
+		}
+
+		[MonoTODO ("PrintExpressions is not used")]
+		private MSIA.Statement GenerateExpressionStatement (MJCP.ExpressionStatement expressionStatement, bool PrintExpressions)
+		{
+			return new MSIA.ExpressionStatement (Generate (expressionStatement.Expression));
+		}
+
+		private MSIA.Statement GenerateIfStatement (MJCP.IfStatement ifStatement)
+		{
+			MSIA.Statement @else = Generate (ifStatement.ElseBody);
+			List<MSIA.IfStatementTest> tests = new List<MSIA.IfStatementTest> ();
+			tests.Add (new MSIA.IfStatementTest (Generate (ifStatement.Condition), Generate (ifStatement.IfBody)));
+			//TODO strange to have list here maybe for elseif in other language
+			return new MSIA.IfStatement (tests.ToArray(), @else);
+		}
+
+		private MSIA.Statement GenerateDoStatement (MJCP.DoStatement doStatement)
+		{
+			MSIA.Expression test = Generate (doStatement.Condition);
+			MSIA.Statement body = Generate (doStatement.Body);
+			SourceSpan span = GetRowanTextSpan (doStatement.Location);
+			SourceLocation header = GetRowanStartLocation (doStatement.HeaderLocation);
+			return new MSIA.DoStatement (test, body, span, header);
+		}
+
+		private MSIA.Statement GenerateWhileStatement (MJCP.WhileStatement whileStatement)
+		{
+			MSIA.Expression test = Generate (whileStatement.Condition);
+			MSIA.Statement body = Generate (whileStatement.Body);
+			SourceSpan span = GetRowanTextSpan (whileStatement.Location);
+			SourceLocation header = GetRowanStartLocation (whileStatement.HeaderLocation);
+			return new MSIA.LoopStatement (test, null, body, null, span, header);
+		}
+
+		private MSIA.Statement GenerateExpressionForStatement (MJCP.ForStatement forStatement)
+		{
+			//TODO unit test + inital somewhere
+			MSIA.Expression test = Generate (forStatement.Condition);
+			MSIA.Expression increment = Generate (forStatement.Increment);
+			MSIA.Statement body = Generate (forStatement.Body);
+			SourceSpan span = GetRowanTextSpan (forStatement.Location);
+			SourceLocation header = GetRowanStartLocation (forStatement.HeaderLocation);
+			return new MSIA.LoopStatement (test, increment, body, null, span, header);
+		}
+
+		private MSIA.Statement GenerateDeclarationForStatement (MJCP.DeclarationForStatement declarationForStatement)
+		{
+			//TODO unit test + inital somewhere
+			MSIA.Expression test = Generate (declarationForStatement.Condition);
+			MSIA.Expression increment = Generate (declarationForStatement.Increment);
+			MSIA.Statement body = Generate (declarationForStatement.Body);
+			SourceSpan span = GetRowanTextSpan (declarationForStatement.Location);
+			SourceLocation header = GetRowanStartLocation (declarationForStatement.HeaderLocation);
+			return new MSIA.LoopStatement (test, increment, body, null, span, header);
+		}
+
+		private MSIA.Statement GenerateForInStatement (MJCP.ForInStatement forInStatement)
+		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
+		private MSIA.Statement GenerateDeclarationForInStatement (MJCP.DeclarationForInStatement declarationForInStatement)
+		{
+			throw new Exception ("The method or operation is not implemented.");
+		}
+
+		private MSIA.Statement GenerateWithStatement (MJCP.WithStatement withStatement)
+		{
+			return new MSIA.ScopeStatement (Generate (withStatement.Scope),Generate (withStatement.Body));
+		}
+
+		private MSIA.Statement GenerateLabelStatement (MJCP.LabelStatement labelStatement)
+		{
+			//TODO must use label somewhere maybe done a collection of label with statement
+			//labelStatement.Label
+			return new MSIA.LabeledStatement (Generate (labelStatement.Labeled));
+		}
+
+		private MSIA.Statement GenerateSwitchStatement (MJCP.SwitchStatement switchStatement)
+		{
+			MSIA.Expression testValue = Generate (switchStatement.Value);
+			List<MSIA.SwitchCase> cases = new List<MSIA.SwitchCase>();
+			DList<MJCP.CaseClause, MJCP.SwitchStatement>.Iterator it = new DList<MJCP.CaseClause, MJCP.SwitchStatement>.Iterator (switchStatement.Cases);
+			while (it.ElementAvailable) {
+				if ( it.Element is MJCP.ValueCaseClause)
+					cases.Add(new MSIA.SwitchCase (Generate(((MJCP.ValueCaseClause)it.Element).Value), Generate (it.Element.Children)));
+				else //default
+					cases.Add (new MSIA.SwitchCase (null, Generate (it.Element.Children)));
+				it.Advance ();
+			}
+			SourceSpan span = GetRowanTextSpan (switchStatement.Location);
+			SourceLocation header = GetRowanStartLocation (switchStatement.HeaderLocation);
+			return new MSIA.SwitchStatement (testValue, cases, span, header);
+		}
+
+		private MSIA.Statement Generate (DList<MJCP.Statement, MJCP.CaseClause> children)
+		{
+			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			DList<MJCP.Statement, MJCP.CaseClause>.Iterator it = new DList<MJCP.Statement, MJCP.CaseClause>.Iterator (children);
+			while (it.ElementAvailable) {
+				statements.Add (Generate (it.Element));
+				it.Advance ();
+			}
+			return new MSIA.BlockStatement (statements.ToArray());
+		}
+
+		private MSIA.Statement GenerateTryStatement (MJCP.TryStatement tryStatement)
+		{
+			MSIA.Statement body = Generate (tryStatement.Block);
+			List<MSIA.TryStatementHandler> handlers = new List<MSIA.TryStatementHandler> ();
+			handlers.Add (new MSIA.TryStatementHandler(null, GetVarRef (tryStatement.Catch.Name), Generate(tryStatement.Catch.Handler)));
+			MSIA.Statement finallySuite = Generate (tryStatement.Finally.Handler);
+			SourceSpan span = GetRowanTextSpan (tryStatement.Location);
+			return new MSIA.TryStatement (body, handlers.ToArray(), null, finallySuite, span, SourceLocation.None);
+		}
+
+		private MSIA.Statement GenerateFunctionStatement (MJCP.FunctionStatement functionStatement)
+		{
+			return Generate (functionStatement.Function);
+		}
+
 		#endregion
-
-		public MSIA.BlockStatement Generate(DList<ParseTree.Statement, ParseTree.BlockStatement> Input, bool PrintExpressions)
-		{
-			throw new NotImplementedException();
-		}
-
-		public MSIA.Statement Generate (ParseTree.Statement Input, bool PrintExpressions)
-		{
-			throw new NotImplementedException();
-		}
 
 		#endregion
 
@@ -410,5 +507,13 @@ namespace Microsoft.JScript.Compiler
 			throw new NotImplementedException();
 		}
 
+		#region helpers
+
+		private MSIA.VariableReference GetVarRef (Identifier ID)
+		{
+			return new MSIA.VariableReference (idMappingTable.GetRowanID (ID));
+		}
+
+		#endregion
 	}
 }
