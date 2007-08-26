@@ -1,3 +1,7 @@
+2007-08-26  Marek Safar  <marek.safar@gmail.com>
+
+	* XElement.cs : Implemented explicit operators.
+	
 2007-05-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XNamespace.cs : added missing implicit operator.
