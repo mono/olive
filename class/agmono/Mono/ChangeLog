@@ -1,3 +1,7 @@
+2007-08-29  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Kind.cs: Updated.
+
 2007-08-23  Jackson Harper  <jackson@ximian.com>
 
 	* NativeMethods.cs: add/remove handler methods have been renamed.
