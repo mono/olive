@@ -1,3 +1,7 @@
+2007-08-30  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyProperty.cs: Make the error message somewhat more explicit.
+
 2007-08-20  Jb Evain  <jbevain@novell.com>
 
 	* XamlReadre.cs, Downloader.cs, DependencyObject.cs: use methods
