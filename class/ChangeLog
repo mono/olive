@@ -1,5 +1,11 @@
 2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Makefile : let's just drop System.Web.Extensions from the build.
+	  It will become outdated and will become much easier to import
+	  Mainsoft works (if we really need separate one).
+
+2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* orcas.pub : new file, got from sn -e System.ServiceModel.Web.dll.
 
 2007-08-24  Marek Safar  <marek.safar@gmail.com>

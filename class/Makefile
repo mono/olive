@@ -23,13 +23,11 @@ net_2_1_dirs = \
 	agmono		\
 	System.Silverlight	\
 	agclr		\
-	
+
 net_3_5_dirs = \
 	System.Data.Linq	\
 	System.Xml.Linq		\
-	System.ServiceModel.Web		\
-	System.Web.Extensions	
-	
+	System.ServiceModel.Web
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
 net_2_1_SUBDIRS := $(net_2_1_dirs)
