@@ -48,10 +48,10 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.ServiceModel.Web.dll")]
-[assembly: AssemblyInformationalVersion ("0.0.0.1")]
+[assembly: AssemblyInformationalVersion ("3.5.0.0")]
 [assembly: NeutralResourcesLanguage ("en-US")]
 
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../winfx.pub")]
+[assembly: AssemblyKeyFile("../orcas.pub")]
