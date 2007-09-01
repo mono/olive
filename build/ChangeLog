@@ -1,3 +1,10 @@
+2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* config-default.make : nowadays we could use nunit-console.exe from
+	  olive tree, not mcs.
+	* library.make : use appropriate PROFILE to get correct path to
+	  the target assembly.
+
 2007-08-23  Marek Safar  <marek.safar@gmail.com>
 
 	* Makefile: Build common for all profiles.

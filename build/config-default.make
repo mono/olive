@@ -7,7 +7,7 @@
 # there.
 
 RUNTIME_FLAGS = 
-TEST_HARNESS_ONDOTNET = $(topdir)/../mcs/class/lib/net_2_0/nunit-console.exe
+TEST_HARNESS_ONDOTNET = $(topdir)/../olive/class/lib/$(PROFILE)/nunit-console.exe
 MCS_FLAGS = $(PLATFORM_DEBUG_FLAGS)
 MBAS_FLAGS = $(PLATFORM_DEBUG_FLAGS)
 LIBRARY_FLAGS = /noconfig

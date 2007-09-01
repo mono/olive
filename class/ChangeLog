@@ -1,3 +1,7 @@
+2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* orcas.pub : new file, got from sn -e System.ServiceModel.Web.dll.
+
 2007-08-24  Marek Safar  <marek.safar@gmail.com>
 
 	* Makefile: Add System.ServiceModel.Web, System.Web.Extensions.
