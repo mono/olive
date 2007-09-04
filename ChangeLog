@@ -1,3 +1,8 @@
+2007-09-04  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: override all clean and install to work on all
+	the profiles. Thanks Raja for this nice solution.
+
 2007-08-24  Marek Safar  <marek.safar@gmail.com>
 
 	* Makefile: Added 3.5 profile to default build.

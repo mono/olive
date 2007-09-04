@@ -8,10 +8,11 @@ net_3_5_SUBDIRS := build class
 
 PROFILES = net_3_0 net_2_1 net_3_5
 
+STD_TARGETS_OVERRIDE = all clean install uninstall
+
 ifndef PROFILE
-OVERRIDE_TARGET_ALL = yes
-all.override:
-	$(MAKE) PROFILES='$(PROFILES)' all-profiles
+OVERRIDE_STD_TARGETS = yes
+$(STD_TARGETS_OVERRIDE:=.override): %.override: profiles-do--%
 endif
 
 include build/rules.make

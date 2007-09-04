@@ -1,3 +1,8 @@
+2007-09-04  Jb Evain  <jbevain@novell.com>
+
+	* rules.make: add the ability to override all standard
+	targets. Thanks Raja for this nice solution.
+
 2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* config-default.make : nowadays we could use nunit-console.exe from

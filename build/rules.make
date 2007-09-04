@@ -103,7 +103,11 @@ endif
 
 STD_TARGETS = test run-test run-test-ondotnet clean install uninstall
 
+ifdef OVERRIDE_STD_TARGETS
+$(STD_TARGETS): %: %.override
+else
 $(STD_TARGETS): %: do-%
+endif
 
 do-run-test:
 	ok=:; $(MAKE) run-test-recursive || ok=false; $(MAKE) run-test-local || ok=false; $$ok
