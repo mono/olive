@@ -98,10 +98,21 @@ namespace Microsoft.JScript.Compiler
 						result = new MSIA.BoundExpression (GetVarRef (id));
 						break;
 				case MJCP.Expression.Operation.NumericLiteral :
+					double val = 0;
+					if (Double.TryParse (((MJCP.NumericLiteralExpression)Input).Spelling, out val)) {
+						result = new MSIA.ConstantExpression (val);
+					}
+					break;
 				case MJCP.Expression.Operation.HexLiteral :
+					result = new MSIA.ConstantExpression (((MJCP.HexLiteralExpression)Input).Value);
+					break;
 				case MJCP.Expression.Operation.OctalLiteral :
+					result = new MSIA.ConstantExpression (((MJCP.OctalLiteralExpression)Input).Value);
+					break;
 				case MJCP.Expression.Operation.RegularExpressionLiteral :
 				case MJCP.Expression.Operation.StringLiteral :
+					result = new MSIA.ConstantExpression (((MJCP.StringLiteralExpression)Input).Value);
+					break;
 				case MJCP.Expression.Operation.ArrayLiteral :
 				case MJCP.Expression.Operation.ObjectLiteral :
 				case MJCP.Expression.Operation.Parenthesized :
@@ -109,6 +120,12 @@ namespace Microsoft.JScript.Compiler
 				case MJCP.Expression.Operation.Subscript :
 				case MJCP.Expression.Operation.Qualified :
 				case MJCP.Expression.Operation.@new :
+					MSIA.Expression constructor = Generate (((MJCP.InvocationExpression)Input).Target);
+					List<MSIA.Arg> args = new List<MSIA.Arg> ();
+					foreach (MJCP.ExpressionListElement element in ((MJCP.InvocationExpression)Input).Arguments.Arguments)
+						args.Add (MSIA.Arg.Simple (Generate(element.Value)));
+					result = new MSIA.DynamicNewExpression (constructor, args.ToArray(), false, false, 0, 0);
+					break;
 				case MJCP.Expression.Operation.Function :
 				case MJCP.Expression.Operation.delete :
 				case MJCP.Expression.Operation.@void :
@@ -135,7 +152,11 @@ namespace Microsoft.JScript.Compiler
 				case MJCP.Expression.Operation.CircumflexEqual :
 				case MJCP.Expression.Operation.BarEqual :
 				case MJCP.Expression.Operation.BarBar :
+					result = new MSIA.OrExpression (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right), GetRowanTextSpan (Input.Location));
+					break;
 				case MJCP.Expression.Operation.AmpersandAmpersand :
+					result = new MSIA.AndExpression (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right), GetRowanTextSpan (Input.Location));
+					break;
 				case MJCP.Expression.Operation.Bar :
 				case MJCP.Expression.Operation.Circumflex :
 				case MJCP.Expression.Operation.Ampersand :
@@ -162,19 +183,14 @@ namespace Microsoft.JScript.Compiler
 					break;
 			}
 			/*MSIA.ActionExpression;
-			MSIA.AndExpression;
 			MSIA.ArrayIndexExpression;
 			MSIA.BinaryExpression;
-			MSIA.BoundExpression;
 			MSIA.CallExpression;
 			MSIA.CallWithThisExpression;
 			MSIA.CodeBlockExpression;
 			MSIA.CodeContextExpression;
 			MSIA.CommaExpression;
 			MSIA.ConditionalExpression;
-			MSIA.ConstantExpression;
-			MSIA.DeleteDynamicMemberExpression;
-			MSIA.DeleteIndexExpression;
 			MSIA.DynamicNewExpression;
 			MSIA.EnvironmentExpression;
 			MSIA.Expression;
@@ -182,8 +198,6 @@ namespace Microsoft.JScript.Compiler
 			MSIA.MemberExpression;
 			MSIA.MethodCallExpression;
 			MSIA.NewArrayExpression;
-			MSIA.NewExpression;
-			MSIA.OrExpression;
 			MSIA.ParamsExpression;
 			MSIA.ParenthesisExpression;
 			MSIA.ShortCircuitExpression;
