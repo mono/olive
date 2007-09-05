@@ -37,13 +37,13 @@ SUBDIRS = $(net_3_0_dirs) $(net_2_1_dirs) $(net_3_5_dirs)
 
 include ../build/rules.make
 
-DIST_PROFILE_DIRS = net_3_0
+DIST_PROFILE_DIRS = net_2_1 net_3_0 net_3_5
 
 dist-local: dist-default
 	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
 
 
-DISTFILES = msfinal.pub msfinal3.pub winfx.pub mono.snk mono.pub ecma.pub
+DISTFILES = msfinal.pub msfinal3.pub winfx.pub mono.snk mono.pub ecma.pub orcas.pub
 
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):

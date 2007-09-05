@@ -1,3 +1,8 @@
+2007-09-05  Wade Berrier  <wberrier@novell.com>
+
+	* Makefile: Add orcas.pub to DIST
+	Create 2.1 and 3.5 lib dirs during make dist
+
 2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : let's just drop System.Web.Extensions from the build.
