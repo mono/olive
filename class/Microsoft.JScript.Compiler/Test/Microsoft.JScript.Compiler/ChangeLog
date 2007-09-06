@@ -1,6 +1,10 @@
 2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* TokenizerCategorizerTest.cs: Implment ReadToken and start to do unit test on it
+	* TokenizerCategorizerTest.cs: finished full test of ReadToken
+	
+2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* TokenizerCategorizerTest.cs: Implement ReadToken and start to do unit test on it
 	
 2007-08-25  Olivier Dufour  <olivier.Duff@gmail.com>
 
