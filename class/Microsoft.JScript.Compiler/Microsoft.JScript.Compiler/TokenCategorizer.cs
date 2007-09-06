@@ -45,7 +45,7 @@ namespace Microsoft.JScript.Compiler
 
 		public override void Initialize(object state, SourceUnitReader sourceReader, SourceLocation initialLocation)
 		{
-			Tokenizer tokenizer = new Tokenizer (sourceReader.ReadToEnd ().ToCharArray (), new IdentifierTable ());
+			tokenizer = new Tokenizer (sourceReader.ReadToEnd ().ToCharArray (), new IdentifierTable ());
 			tokenizer.Position = initialLocation;
 			this.state = state;
 			errorSink = new ErrorSink ();
@@ -65,6 +65,9 @@ namespace Microsoft.JScript.Compiler
 		{
 			switch (type) {				
 				case Token.Type.None:
+				case Token.Type.final:
+				case Token.Type.OctalIntegerLiteral:
+				case Token.Type.HexIntegerLiteral:
 					return TokenCategory.None;
 				case Token.Type.EndOfInput:
 					return TokenCategory.EndOfStream;
@@ -156,7 +159,6 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.@long:	
 				case Token.Type.super:	
 				case Token.Type.@char:	
-				case Token.Type.final:	
 				case Token.Type.native:	
 				case Token.Type.synchronized:	
 				case Token.Type.@class:	
@@ -178,8 +180,6 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.@true:	
 				case Token.Type.@false:
 					return TokenCategory.Keyword;
-				case Token.Type.HexIntegerLiteral:
-				case Token.Type.OctalIntegerLiteral:
 				case Token.Type.NumericLiteral:
 					return TokenCategory.NumericLiteral;
 				case Token.Type.StringLiteral:
@@ -190,8 +190,6 @@ namespace Microsoft.JScript.Compiler
 					return TokenCategory.Identifier;
 				case Token.Type.Bad:
 					return TokenCategory.Error;
-				case Token.Type.Comment:
-					return TokenCategory.Comment;
 			}
 			return TokenCategory.None;
 		}
@@ -321,7 +319,6 @@ namespace Microsoft.JScript.Compiler
 				case Token.Type.RegularExpressionLiteral:
 				case Token.Type.Identifier:
 				case Token.Type.Bad:
-				case Token.Type.Comment:
 					return TokenTriggers.None;
 			}
 			return TokenTriggers.None;

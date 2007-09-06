@@ -152,7 +152,7 @@ namespace Microsoft.JScript.Compiler
 							return CreateToken (Token.Type.BangEqual);
 						}
 					}
-					break;
+					return CreateToken (Token.Type.Bang);
 				case '+':
 					if (next == '+') {
 						ReadChar ();
@@ -695,7 +695,7 @@ namespace Microsoft.JScript.Compiler
 			keywords.Add ("int", Token.Type.@int);
 			keywords.Add ("short", Token.Type.@short);
 			keywords.Add ("boolean", Token.Type.boolean);
-			keywords.Add ("Export", Token.Type.export);
+			keywords.Add ("export", Token.Type.export);
 			keywords.Add ("interface", Token.Type.@interface);
 			keywords.Add ("static", Token.Type.@static);
 			keywords.Add ("byte", Token.Type.@byte);
@@ -708,7 +708,7 @@ namespace Microsoft.JScript.Compiler
 			keywords.Add ("synchronized", Token.Type.synchronized);
 			keywords.Add ("class", Token.Type.@class);
 			keywords.Add ("float", Token.Type.@float);
-			keywords.Add ("package", Token.Type.packate);
+			keywords.Add ("packate", Token.Type.packate);
 			keywords.Add ("throws", Token.Type.throws);
 			keywords.Add ("const", Token.Type.@const);
 			keywords.Add ("goto", Token.Type.@goto);

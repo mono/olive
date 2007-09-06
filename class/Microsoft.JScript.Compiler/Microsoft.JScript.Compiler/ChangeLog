@@ -1,6 +1,11 @@
 2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* TokenCategorizer.cs: Implment ReadToken and start to do unit test on it
+	* Tokenizer.cs: Fix 3 bugs (export & Packate keyword, bang token)
+	* TokenCategorizer.cs: fix all category and trigger with unit test
+
+2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* TokenCategorizer.cs: Implement ReadToken and start to do unit test on it
 
 2007-08-25  Olivier Dufour  <olivier.Duff@gmail.com>
 
