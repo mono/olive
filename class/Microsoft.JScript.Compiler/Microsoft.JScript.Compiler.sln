@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.JScript.Compiler.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.JScript.Compiler", "Microsoft.JScript.Compiler.csproj", "{03952B85-C1DB-4253-B822-AF37BD6B1C66}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sample", "Sample\Sample.csproj", "{954BE948-9216-4A6B-8B3C-FA6965408962}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03952B85-C1DB-4253-B822-AF37BD6B1C66}.Release|Any CPU.Build.0 = Release|Any CPU
+		{954BE948-9216-4A6B-8B3C-FA6965408962}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{954BE948-9216-4A6B-8B3C-FA6965408962}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{954BE948-9216-4A6B-8B3C-FA6965408962}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{954BE948-9216-4A6B-8B3C-FA6965408962}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

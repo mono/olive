@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;NET_2_0; SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_2_1; SILVERLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -26,7 +26,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>TRACE;NET_2_0; SILVERLIGHT</DefineConstants>
+    <DefineConstants>TRACE;NET_2_1; SILVERLIGHT</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <GenerateSerializationAssemblies>Auto</GenerateSerializationAssemblies>
@@ -40,9 +40,6 @@
   </Target>
   -->
   <ItemGroup>
-    <Compile Include="..\..\build\common\Consts.cs">
-      <Link>Consts.cs</Link>
-    </Compile>
     <Compile Include="..\..\build\common\Locale.cs">
       <Link>Locale.cs</Link>
     </Compile>
@@ -142,6 +139,10 @@
     <Reference Include="Microsoft.Scripting, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\Microsoft.Scripting.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Scripting.Vestigial, Version=1.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>C:\Program Files\Microsoft Silverlight\Microsoft.Scripting.Vestigial.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
