@@ -663,7 +663,7 @@ namespace Microsoft.JScript.Compiler
 					break;
 				case Token.Type.LeftParenthesis:
 					Next ();
-					expr = ParseExpression ();
+					expr = new UnaryOperatorExpression(ParseExpression (), Expression.Operation.Parenthesized, new TextSpan(current,current));
 					CheckSyntaxExpected (Token.Type.RightParenthesis);
 					break;
 				//end primary

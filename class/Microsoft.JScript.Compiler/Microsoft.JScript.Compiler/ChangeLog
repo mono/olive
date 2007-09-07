@@ -1,3 +1,8 @@
+2007-09-07  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* Parser.cs: Fix a bug for parenthesized
+	* RowanGenerator.cs: add a lot of expression convertion thanks to sample and unit test
+
 2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Tokenizer.cs: Fix 3 bugs (export & Packate keyword, bang token)
