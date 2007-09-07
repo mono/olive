@@ -1,3 +1,7 @@
+2007-09-07  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* RowanGeneratorTest.cs: add a lot of unit test for rowan generator about 50% is test now but still a lot to do in that way
+	
 2007-09-06  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* TokenizerCategorizerTest.cs: finished full test of ReadToken
