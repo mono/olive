@@ -615,7 +615,7 @@ namespace MonoTests.System.Xml
 			CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
 			try {
 				Thread.CurrentThread.CurrentCulture = new CultureInfo ("de-DE");
-				// if we don't read a number just by current culture, it will be regarded as correct JSON.
+				// if we read a number just by current culture, it will be regarded as correct JSON.
 				ReadToEnd (CreateReader ("123,45"));
 			} finally {
 				Thread.CurrentThread.CurrentCulture = originalCulture;
