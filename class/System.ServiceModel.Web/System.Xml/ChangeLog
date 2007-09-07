@@ -1,3 +1,10 @@
+2007-09-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JsonReader.cs
+	  IXmlJsonWriterInitializer.cs
+	  IXmlJsonReaderInitializer.cs : new files.
+	* JsonReaderWriterFactory.cs : use JsonReader.
+
 2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JsonWriter.cs,

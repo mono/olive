@@ -34,7 +34,7 @@ using System.Xml;
 
 namespace System.Xml
 {
-	class JsonWriter : XmlDictionaryWriter
+	class JsonWriter : XmlDictionaryWriter, IXmlJsonWriterInitializer
 	{
 		enum ElementType
 		{
@@ -55,6 +55,12 @@ namespace System.Xml
 
 		public JsonWriter (Stream stream, Encoding encoding, bool closeOutput)
 		{
+			SetOutput (stream, encoding, closeOutput);
+		}
+
+		public void SetOutput (Stream stream, Encoding encoding, bool ownsStream)
+		{
+			// null stream and encoding will be rejected by StreamWriter.ctor.
 			output = new StreamWriter (stream, encoding);
 		}
 

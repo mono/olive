@@ -35,6 +35,8 @@ namespace System.Xml
 	{
 		public static XmlDictionaryReader CreateJsonReader (byte [] source, XmlDictionaryReaderQuotas quotas)
 		{
+			if (source == null)
+				throw new ArgumentNullException ("source");
 			return CreateJsonReader (source, 0, source.Length, quotas);
 		}
 
@@ -43,10 +45,9 @@ namespace System.Xml
 			return CreateJsonReader (source, offset, length, Encoding.UTF8, quotas, null);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryReader CreateJsonReader (byte [] source, int offset, int length, Encoding encoding, XmlDictionaryReaderQuotas quotas, OnXmlDictionaryReaderClose readerClose)
 		{
-			throw new NotImplementedException ();
+			return new JsonReader (source, offset, length, encoding, quotas, readerClose);
 		}
 
 		public static XmlDictionaryReader CreateJsonReader (Stream source, XmlDictionaryReaderQuotas quotas)
@@ -54,10 +55,9 @@ namespace System.Xml
 			return CreateJsonReader (source, Encoding.UTF8, quotas, null);
 		}
 
-		[MonoTODO]
 		public static XmlDictionaryReader CreateJsonReader (Stream source, Encoding encoding, XmlDictionaryReaderQuotas quotas, OnXmlDictionaryReaderClose readerClose)
 		{
-			throw new NotImplementedException ();
+			return new JsonReader (source, encoding, quotas, readerClose);
 		}
 
 		public static XmlDictionaryWriter CreateJsonWriter (Stream stream)

@@ -19,5 +19,8 @@ System.ServiceModel.Syndication/TextSyndicationContent.cs
 System.ServiceModel.Syndication/TextSyndicationContentKind.cs
 System.ServiceModel.Syndication/UrlSyndicationContent.cs
 System.ServiceModel.Syndication/XmlSyndicationContent.cs
+System.Xml/IXmlJsonReaderInitializer.cs
+System.Xml/IXmlJsonWriterInitializer.cs
+System.Xml/JsonReader.cs
 System.Xml/JsonReaderWriterFactory.cs
 System.Xml/JsonWriter.cs
