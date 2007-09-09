@@ -5,18 +5,21 @@ using Microsoft.JScript.Compiler;
 using NUnit.Core;
 using NUnit.Framework;
 using MSIA = Microsoft.Scripting.Internal.Ast;
+using MSA = Microsoft.Scripting.Actions;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
 using MJR = Microsoft.JScript.Runtime;
-
+using MSO = Microsoft.Scripting.Operators;
 namespace MonoTests.Microsoft.JScript.Compiler
 {
+	
+
 	[TestFixture]
 	public class RowanGeneratorTest
 	{
 		RowanGenerator gen;
 		IdentifierTable idtable;
 		IdentifierMappingTable maptable;
-
+		
 		[SetUp]
 		public void init ()
 		{
@@ -96,7 +99,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			//Assert.IsNull (((MSIA.CodeBlockExpression)call.Arguments[3]).Block.Parameters, "#7.4.4");
 
 			Assert.IsInstanceOfType (typeof (MSIA.NewArrayExpression), call.Arguments[4], "#7.5");
-			Assert.IsInstanceOfType (typeof (string[]), ((MSIA.NewArrayExpression)call.Arguments[4]).ExpressionType, "#7.5.1");
+			//Assert.IsInstanceOfType (typeof (string[]), ((MSIA.NewArrayExpression)call.Arguments[4]).ExpressionType, "#7.5.1");
 			
 			Assert.IsInstanceOfType (typeof (MSIA.ConstantExpression), call.Arguments[5], "#7.6");
 			Assert.IsInstanceOfType (typeof (MSIA.ConstantExpression), call.Arguments[6], "#7.7");
@@ -200,17 +203,17 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			Assert.AreEqual (true, ((MSIA.ConstantExpression)exp).Value, "#2");
 		}
 
-		//TODO : fix this test
 		[Test]
 		public void GenerateIdentifier ()
 		{
-			Parser parser = new Parser ("foo;".ToCharArray ());
+			Parser parser = new Parser ("foo;".ToCharArray (), idtable);
 			List<Comment> comms = new List<Comment> ();
 			MJCP.Expression input = parser.ParseExpression (ref comms);
 			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
 			MSIA.Expression exp = gen.Generate (input);
 			Assert.IsInstanceOfType (typeof (MSIA.BoundExpression), exp, "#1");
-			Assert.AreEqual (maptable.GetRowanID (idtable.InsertIdentifier("foo")), ((MSIA.BoundExpression)exp).Reference.Name, "#2");
+			Assert.AreEqual (maptable.GetRowanID (idtable.InsertIdentifier ("foo")), ((MSIA.BoundExpression)exp).Name, "#2");
+			Assert.AreEqual (maptable.GetRowanID (idtable.InsertIdentifier("foo")), ((MSIA.BoundExpression)exp).Reference.Name, "#3");
 		}
 
 		[Test]
@@ -283,72 +286,709 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			MSIA.Expression exp = gen.Generate (input);
 			Assert.IsInstanceOfType (typeof (MSIA.ParenthesisExpression), exp, "#1");
 		}
+		
+		[Test]
+		public void GenerateInvocation ()
+		{
+			Parser parser = new Parser ("foo();".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.CallAction), ((MSIA.ActionExpression)exp).Action, "#2");
+		}
 
+		[Test]
+		public void GenerateSubscript ()
+		{
+			Parser parser = new Parser ("this.foo[0];".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.GetItem, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
 
-		/*
-		case MJCP.Expression.Operation.RegularExpressionLiteral :
-		case MJCP.Expression.Operation.Invocation :
-		case MJCP.Expression.Operation.Subscript :
-		case MJCP.Expression.Operation.Qualified :
-		case MJCP.Expression.Operation.@new :
-		case MJCP.Expression.Operation.Function :
-		case MJCP.Expression.Operation.delete :
-		case MJCP.Expression.Operation.@void :
-		case MJCP.Expression.Operation.@typeof :
-		case MJCP.Expression.Operation.PrefixPlusPlus :
-		case MJCP.Expression.Operation.PrefixMinusMinus :
-		case MJCP.Expression.Operation.PrefixPlus :
-		case MJCP.Expression.Operation.PrefixMinus :
-		case MJCP.Expression.Operation.Tilda :
-		case MJCP.Expression.Operation.Bang :
-		case MJCP.Expression.Operation.PostfixPlusPlus :
-		case MJCP.Expression.Operation.PostfixMinusMinus :
-		case MJCP.Expression.Operation.Comma :
-		case MJCP.Expression.Operation.Equal :
-		case MJCP.Expression.Operation.StarEqual :
-		case MJCP.Expression.Operation.DivideEqual :
-		case MJCP.Expression.Operation.PercentEqual :
-		case MJCP.Expression.Operation.PlusEqual :
-		case MJCP.Expression.Operation.MinusEqual :
-		case MJCP.Expression.Operation.LessLessEqual :
-		case MJCP.Expression.Operation.GreaterGreaterEqual :
-		case MJCP.Expression.Operation.GreaterGreaterGreaterEqual :
-		case MJCP.Expression.Operation.AmpersandEqual :
-		case MJCP.Expression.Operation.CircumflexEqual :
-		case MJCP.Expression.Operation.BarEqual :
-		case MJCP.Expression.Operation.BarBar :
-		case MJCP.Expression.Operation.AmpersandAmpersand :
-		case MJCP.Expression.Operation.Bar :
-		case MJCP.Expression.Operation.Circumflex :
-		case MJCP.Expression.Operation.Ampersand :
-		case MJCP.Expression.Operation.EqualEqual :
-		case MJCP.Expression.Operation.BangEqual :
-		case MJCP.Expression.Operation.EqualEqualEqual :
-		case MJCP.Expression.Operation.BangEqualEqual :
-		case MJCP.Expression.Operation.Less :
-		case MJCP.Expression.Operation.Greater :
-		case MJCP.Expression.Operation.LessEqual :
-		case MJCP.Expression.Operation.GreaterEqual :
-		case MJCP.Expression.Operation.instanceof :
-		case MJCP.Expression.Operation.@in :
-		case MJCP.Expression.Operation.LessLess :
-		case MJCP.Expression.Operation.GreaterGreater :
-		case MJCP.Expression.Operation.GreaterGreaterGreater :
-		case MJCP.Expression.Operation.Plus :
-		case MJCP.Expression.Operation.Minus :
-		case MJCP.Expression.Operation.Star :
-		case MJCP.Expression.Operation.Divide :
-		case MJCP.Expression.Operation.Percent :
-		case MJCP.Expression.Operation.Question :
-		case MJCP.Expression.Operation.@null:
-		 */
+		[Test]
+		public void GenerateQualified ()
+		{
+			Parser parser = new Parser ("this.foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.GetMemberAction), ((MSIA.ActionExpression)exp).Action, "#2");
+		}
+
+		[Test]
+		public void GenerateNew ()
+		{
+			Parser parser = new Parser ("new foo();".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.DynamicNewExpression), exp, "#1");
+		}
+
+		[Test]
+		public void GenerateFunctionExp ()
+		{
+			Parser parser = new Parser ("function foo() {}".ToCharArray (), idtable);
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.None, ((MSIA.BoundAssignment)exp).Operator, "#2");
+			//TODO more test
+		}
+
+		[Test]
+		public void GenerateDelete ()
+		{
+			Parser parser = new Parser ("delete foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Delete"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateVoid ()
+		{
+			Parser parser = new Parser ("void foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Void"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateTypeof ()
+		{
+			Parser parser = new Parser ("typeof foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("TypeOf"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GeneratePrefixPlusPlus ()
+		{
+			Parser parser = new Parser ("++foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), ((MSIA.BoundAssignment)exp).Value, "#2");
+			MSA.Action action = ((MSIA.ActionExpression)((MSIA.BoundAssignment)exp).Value).Action;
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), action, "#3");
+			Assert.AreEqual (MSO.Add, ((MSA.DoOperationAction)action).Operation, "#4");
+		}
+
+		[Test]
+		public void GeneratePrefixMinusMinus ()
+		{
+			Parser parser = new Parser ("--foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), ((MSIA.BoundAssignment)exp).Value, "#2");
+			MSA.Action action = ((MSIA.ActionExpression)((MSIA.BoundAssignment)exp).Value).Action;
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), action, "#3");
+			Assert.AreEqual (MSO.Subtract, ((MSA.DoOperationAction)action).Operation, "#4");
+		}
+
+		[Test]
+		public void GeneratePrefixPlus ()
+		{
+			Parser parser = new Parser ("+foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Positive"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GeneratePrefixMinus ()
+		{
+			Parser parser = new Parser ("-foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Negate"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateTilda ()
+		{
+			Parser parser = new Parser ("~foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("OnesComplement"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateBang ()
+		{
+			Parser parser = new Parser ("!foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Not"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GeneratePostfixPlusPlus ()
+		{
+			Parser parser = new Parser ("foo++;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.CommaExpression), exp, "#1");
+			Assert.AreEqual (2, ((MSIA.CommaExpression)exp).Expressions.Count, "#2");
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), ((MSIA.CommaExpression)exp).Expressions[0], "#3");
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), ((MSIA.CommaExpression)exp).Expressions[1], "#4");
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), ((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[0]).Value, "#5");
+			Assert.AreEqual (typeof (MJR.Convert).GetMethod ("ToNumber", new Type[] {typeof(object)}), ((MSIA.MethodCallExpression)((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[0]).Value).Method, "#6");
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), ((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[1]).Value, "#7");
+			MSIA.ActionExpression  action = (MSIA.ActionExpression)((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[1]).Value;
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), action.Action, "#8");
+			Assert.AreEqual (MSO.Add, ((MSA.DoOperationAction)action.Action).Operation, "#9");
+		}
+
+		[Test]
+		public void GeneratePostfixMinusMinus ()
+		{
+			Parser parser = new Parser ("foo--;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.CommaExpression), exp, "#1");
+			Assert.AreEqual (2, ((MSIA.CommaExpression)exp).Expressions.Count, "#2");
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), ((MSIA.CommaExpression)exp).Expressions[0], "#3");
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), ((MSIA.CommaExpression)exp).Expressions[1], "#4");
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), ((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[0]).Value, "#5");
+			Assert.AreEqual (typeof (MJR.Convert).GetMethod ("ToNumber", new Type[] {typeof(object)}), ((MSIA.MethodCallExpression)((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[0]).Value).Method, "#6");
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), ((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[1]).Value, "#7");
+			MSIA.ActionExpression action = (MSIA.ActionExpression)((MSIA.BoundAssignment)((MSIA.CommaExpression)exp).Expressions[1]).Value;
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), action.Action, "#8");
+			Assert.AreEqual (MSO.Subtract, ((MSA.DoOperationAction)action.Action).Operation, "#9");
+		}
+
+		[Test]
+		public void GenerateComma ()
+		{
+			Parser parser = new Parser ("1,5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.CommaExpression), exp, "#1");
+		}
+		
+		[Test]
+		public void GenerateEqual ()
+		{
+			Parser parser = new Parser ("foo = 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.None, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateStarEqual ()
+		{
+			Parser parser = new Parser ("foo *= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceMultiply, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateDivideEqual ()
+		{
+			Parser parser = new Parser ("foo /= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceDivide, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GeneratePercentEqual ()
+		{
+			Parser parser = new Parser ("foo %= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceMod, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GeneratePlusEqual ()
+		{
+			Parser parser = new Parser ("foo += 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceAdd, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateMinusEqual ()
+		{
+			Parser parser = new Parser ("foo -= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceSubtract, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateLessLessEqual ()
+		{
+			Parser parser = new Parser ("foo <<= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceLeftShift, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateGreaterGreaterEqual ()
+		{
+			Parser parser = new Parser ("foo >>= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceRightShift, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+		
+		[Test]
+		public void GenerateGreaterGreaterGreaterEqual ()
+		{
+			Parser parser = new Parser ("foo >>>= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceRightShiftUnsigned, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateAmpersandEqual ()
+		{
+			Parser parser = new Parser ("foo &= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceBitwiseAnd, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateCircumflexEqual ()
+		{
+			Parser parser = new Parser ("foo ^= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceXor, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateBarEqual ()
+		{
+			Parser parser = new Parser ("foo |= 5;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.BoundAssignment), exp, "#1");
+			Assert.AreEqual (MSO.InPlaceBitwiseOr, ((MSIA.BoundAssignment)exp).Operator, "#2");
+		}
+
+		[Test]
+		public void GenerateBarBar ()
+		{
+			Parser parser = new Parser ("true || false;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.OrExpression), exp, "#1");
+		}
+
+		[Test]
+		public void GenerateAmpersandAmpersand ()
+		{
+			Parser parser = new Parser ("true && false;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.AndExpression), exp, "#1");
+		}
+
+		[Test]
+		public void GenerateBar ()
+		{
+			Parser parser = new Parser ("0 | 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.BitwiseOr, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateCircumflex ()
+		{
+			Parser parser = new Parser ("0 ^ 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Xor, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateAmpersand ()
+		{
+			Parser parser = new Parser ("0 & 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.BitwiseAnd, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateEqualEqual ()
+		{
+			Parser parser = new Parser ("0 == 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Equal, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateBangEqual ()
+		{
+			Parser parser = new Parser ("0 != 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.NotEqual, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateEqualEqualEqual ()
+		{
+			Parser parser = new Parser ("0 === 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("Is"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateBangEqualEqual ()
+		{
+			Parser parser = new Parser ("0 !== 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("IsNot"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateLess ()
+		{
+			Parser parser = new Parser ("0 < 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.LessThan, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateGreater ()
+		{
+			Parser parser = new Parser ("0 > 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.GreaterThan, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateLessEqual ()
+		{
+			Parser parser = new Parser ("0 <= 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.LessThanOrEqual, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateGreaterEqual ()
+		{
+			Parser parser = new Parser ("0 >= 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.GreaterThanOrEqual, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateInstanceof ()
+		{
+			Parser parser = new Parser ("bar instanceof foo;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("InstanceOf"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateIn ()
+		{
+			Parser parser = new Parser ("foo in bar;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.MethodCallExpression), exp, "#1");
+			Assert.AreEqual (typeof (MJR.JSCompilerHelpers).GetMethod ("In"), ((MSIA.MethodCallExpression)exp).Method, "#2");
+		}
+
+		[Test]
+		public void GenerateLessLess ()
+		{
+			Parser parser = new Parser ("foo << 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.LeftShift, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateGreaterGreater ()
+		{
+			Parser parser = new Parser ("foo >> 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.RightShift, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateGreaterGreaterGreater ()
+		{
+			Parser parser = new Parser ("foo >>> 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.RightShiftUnsigned, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+		
+		[Test]
+		public void GeneratePlus ()
+		{
+			Parser parser = new Parser ("foo + 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Add, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateMinus ()
+		{
+			Parser parser = new Parser ("foo - 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Subtract, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateStar ()
+		{
+			Parser parser = new Parser ("foo * 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Multiply, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateDivide ()
+		{
+			Parser parser = new Parser ("foo / 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Divide, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+		
+		[Test]
+		public void GeneratePercent ()
+		{
+			Parser parser = new Parser ("foo % 1;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ActionExpression), exp, "#1");
+			Assert.IsInstanceOfType (typeof (MSA.DoOperationAction), ((MSIA.ActionExpression)exp).Action, "#2");
+			Assert.AreEqual (MSO.Mod, ((MSA.DoOperationAction)((MSIA.ActionExpression)exp).Action).Operation, "#3");
+		}
+
+		[Test]
+		public void GenerateQuestion ()
+		{
+			Parser parser = new Parser ("foo?1:0;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ConditionalExpression), exp, "#1");
+		}
+		
+		[Test]
+		public void GenerateNull ()
+		{
+			Parser parser = new Parser ("null;".ToCharArray ());
+			List<Comment> comms = new List<Comment> ();
+			MJCP.Expression input = parser.ParseExpression (ref comms);
+			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
+			MSIA.Expression exp = gen.Generate (input);
+			Assert.IsInstanceOfType (typeof (MSIA.ConstantExpression), exp, "#1");
+			Assert.IsNull (((MSIA.ConstantExpression)exp).Value, "#2");
+		}
+
+		//TODO
+		[Test]
+		[Ignore]
+		public void GenerateRegularExpressionLiteral ()
+		{
+			Assert.Fail ();
+		}
 
 		#endregion
 
+		//TODO
 		[Test]
+		[Ignore]
 		public void SetGlobals ()
 		{
-			//gen.SetGlobals();
+			MSIA.CodeBlock globals = new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ());
+			gen.SetGlobals (globals);
+			Assert.Fail ();
 		}
 	}
 }
