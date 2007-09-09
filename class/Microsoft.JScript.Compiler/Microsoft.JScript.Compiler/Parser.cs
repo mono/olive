@@ -1168,14 +1168,15 @@ namespace Microsoft.JScript.Compiler
 		private ArrayLiteralExpression ParseArrayLiteral ()
 		{
 			Token start = current;
-			Next();
+			
 			List<ExpressionListElement> elements = new List<ExpressionListElement> ();
-			if (current.Kind == Token.Type.RightBracket) {
-				return new ArrayLiteralExpression (elements, new TextSpan(start, current));
-			}
+			
 			// TODO elision?
 			TextPoint comma = new TextPoint();
 			do {
+				Next ();
+				if (current.Kind == Token.Type.RightBracket)
+					break;
 				Expression exp = ParseExpression ();
 				ExpressionListElement element = new ExpressionListElement (exp, comma);
 				elements.Add (element);
