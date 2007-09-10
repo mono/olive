@@ -1,3 +1,7 @@
+2007-09-10  Marek Safar  <marek.safar@gmail.com>
+
+	* library.make, corcompare* : Sync with mcs.
+
 2007-09-04  Jb Evain  <jbevain@novell.com>
 
 	* rules.make: add the ability to override all standard
