@@ -1,3 +1,7 @@
+2007-09-10  Marek Safar  <marek.safar@gmail.com>
+
+	* mono-api-* : Sync with mcs.
+
 2007-09-10  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile.net_3_5 : a hack to generate status pages for 3.5 stuff
