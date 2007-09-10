@@ -122,7 +122,18 @@ namespace Microsoft.JScript.Compiler
 						if (next == '=') {
 							ReadChar ();
 							return CreateToken (Token.Type.GreaterGreaterEqual);
-						} else {
+						}
+						else if (next == '>') {
+							ReadChar ();
+							next = PeekChar ();
+							if (next == '=') {
+								ReadChar ();
+								return CreateToken (Token.Type.GreaterGreaterGreaterEqual);
+							}
+							else
+								return CreateToken (Token.Type.GreaterGreaterGreater);
+						}
+						else {
 							return CreateToken (Token.Type.GreaterGreater);
 						}
 					} else {
@@ -208,7 +219,7 @@ namespace Microsoft.JScript.Compiler
 						return CreateToken (Token.Type.Bar);
 					}
 				case '^':
-					if (next == '^') {
+					if (next == '=') {
 						ReadChar ();
 						return CreateToken (Token.Type.CircumflexEqual);
 					} else {

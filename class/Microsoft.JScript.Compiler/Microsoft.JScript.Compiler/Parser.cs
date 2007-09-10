@@ -248,7 +248,7 @@ namespace Microsoft.JScript.Compiler
 				if (current.Kind == Token.Type.Equal) {
 					Token start2 = current;
 					Next ();
-					Expression initializer = ParseExpression ();
+					Expression initializer = ParseAssignmentExpression (false);
 					declaration = new InitializerVariableDeclaration (name, initializer, new TextSpan (start2, current), new TextPoint (start2.StartPosition));
 					//Next ();
 				}
@@ -694,30 +694,32 @@ namespace Microsoft.JScript.Compiler
 		private Expression ParseRightExpression (Expression expr)
 		{
 			Token start = current;
-			
-			switch (current.Kind) {
-				case Token.Type.LeftParenthesis:
-					ArgumentList argumentList = ParseArgumentList ();
-					expr = new InvocationExpression (expr, argumentList, Expression.Operation.Invocation, new TextSpan (start, current));
-					Next ();
-					break;
-				case Token.Type.LeftBracket:
-					Next ();
-					Expression subscript = ParseExpression ();
-					CheckSyntaxExpected (Token.Type.RightBracket);
-					expr = new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
-					Next ();
-					break;
-				case Token.Type.Dot:
-					Next ();
-					Identifier id = null;
-					if (CheckSyntaxExpected (Token.Type.Identifier))
-						id = ((IdentifierToken)current).Spelling;
-					expr = new QualifiedExpression (expr, id, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
-					Next ();
-					break;
+			while(true) {
+				switch (current.Kind) {
+					case Token.Type.LeftParenthesis:
+						ArgumentList argumentList = ParseArgumentList ();
+						expr = new InvocationExpression (expr, argumentList, Expression.Operation.Invocation, new TextSpan (start, current));
+						Next ();
+						break;
+					case Token.Type.LeftBracket:
+						Next ();
+						Expression subscript = ParseExpression ();
+						CheckSyntaxExpected (Token.Type.RightBracket);
+						expr = new SubscriptExpression (expr, subscript, new TextSpan (start, current), new TextPoint (start.StartPosition));
+						Next ();
+						break;
+					case Token.Type.Dot:
+						Next ();
+						Identifier id = null;
+						if (CheckSyntaxExpected (Token.Type.Identifier))
+							id = ((IdentifierToken)current).Spelling;
+						expr = new QualifiedExpression (expr, id, new TextSpan (start, current), new TextPoint (start.StartPosition), new TextPoint (current.StartPosition));
+						Next ();
+						break;
+					default:
+						return expr;
+				}
 			}
-			return expr;
 		}
 
 		private Expression ParsePostfixExpression ()
@@ -794,7 +796,7 @@ namespace Microsoft.JScript.Compiler
 			List<ExpressionListElement> arguments = new List<ExpressionListElement> ();
 			Next ();
 			while (current.Kind != Token.Type.RightParenthesis) {
-				Expression arg = ParseExpression ();
+				Expression arg = ParseAssignmentExpression (false);
 				CheckSyntaxExpected (Token.Type.Comma);
 				arguments.Add (new ExpressionListElement (arg, new TextPoint(current.StartPosition)));
 			}
@@ -1091,13 +1093,14 @@ namespace Microsoft.JScript.Compiler
 				
 		private Expression ParseExpression (bool noIn)
 		{
-			//TODO list of expression
-			//do {
-			//	  ParseAssignmentExpression (noIn);
-			//	  Next ();
-			//} while (current.Kind == Token.Type.Comma);
-			//
-			return ParseAssignmentExpression (noIn);
+			Token start = current;
+			Expression expr = ParseAssignmentExpression (noIn);
+			while (current.Kind == Token.Type.Comma) {
+				Next ();
+				Expression right = ParseAssignmentExpression (noIn);
+				expr = new BinaryOperatorExpression (expr, right, Expression.Operation.Comma, new TextSpan (start, current), new TextPoint (start.StartPosition));
+			}
+			return expr;
 		}
 
 		private FunctionDefinition ParseFunctionDefinition ()
@@ -1144,18 +1147,27 @@ namespace Microsoft.JScript.Compiler
 			ObjectLiteralElement element;
 			TextPoint comma = new TextPoint ();
 			TextPoint colon = new TextPoint ();
+			Expression name;
 			do {
-				if (current.Kind != Token.Type.Identifier
-					&& current.Kind != Token.Type.StringLiteral
-					&& current.Kind != Token.Type.NumericLiteral) {
-					Error (DiagnosticCode.SyntaxError, new TextSpan (current, current));
-					return new Expression (Expression.Operation.SyntaxError, new TextSpan (current, current));					
+				switch (current.Kind) {
+					case Token.Type.Identifier:
+						name = new IdentifierExpression ((current as IdentifierToken).Spelling, new TextSpan (current, current));
+						break;
+					case Token.Type.NumericLiteral:
+						name = new NumericLiteralExpression (((NumericLiteralToken)current).Spelling, new TextSpan (current, current));
+						break;
+					case Token.Type.StringLiteral:
+						name = new StringLiteralExpression ((current as StringLiteralToken).Value, (current as StringLiteralToken).Spelling, new TextSpan (current, current));
+						break;
+					default:
+						Error (DiagnosticCode.SyntaxError, new TextSpan (current, current));
+						return new Expression (Expression.Operation.SyntaxError, new TextSpan (current, current));					
 				}
-				Expression name = ParseExpression ();
+				Next ();
 				CheckSyntaxExpected (Token.Type.Colon);
 				colon = new TextPoint (current.StartPosition);
 				Next ();
-				Expression val = ParseExpression ();
+				Expression val = ParseAssignmentExpression (false);
 				element = new ObjectLiteralElement (name, val, colon, comma);
 				elements.Add (element);
 				comma = new TextPoint (current.StartPosition);
@@ -1171,13 +1183,15 @@ namespace Microsoft.JScript.Compiler
 			
 			List<ExpressionListElement> elements = new List<ExpressionListElement> ();
 			
-			// TODO elision?
 			TextPoint comma = new TextPoint();
 			do {
 				Next ();
 				if (current.Kind == Token.Type.RightBracket)
 					break;
-				Expression exp = ParseExpression ();
+				Expression exp = null;
+				//take care of elision
+				if (current.Kind != Token.Type.Comma)
+					exp = ParseAssignmentExpression (false);
 				ExpressionListElement element = new ExpressionListElement (exp, comma);
 				elements.Add (element);
 				comma = new TextPoint(current.StartPosition);
