@@ -119,7 +119,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			MSIA.Statement result = gen.Generate (input);
 			Assert.IsInstanceOfType(typeof(MSIA.BlockStatement), result, "#1");
 		}
-		
+
 		[Test]
 		public void GenerateVariableDeclaration ()
 		{
@@ -511,6 +511,7 @@ namespace MonoTests.Microsoft.JScript.Compiler
 			gen.SetGlobals (new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), new MSIA.EmptyStatement ()));
 			MSIA.Expression exp = gen.Generate (input);
 			Assert.IsInstanceOfType (typeof (MSIA.CommaExpression), exp, "#1");
+			Assert.AreEqual (1, ((MSIA.CommaExpression)exp).ValueIndex, "#1");
 		}
 		
 		[Test]

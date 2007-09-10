@@ -1,3 +1,7 @@
+2007-09-10  Olivier Dufour  <olivier.Duff@gmail.com>
+
+	* RowanGeneratorTest.cs: 
+	
 2007-09-09  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* RowanGeneratorTest.cs: 70 tests added whooo!!! (have just 2 small tests missing)
