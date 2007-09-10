@@ -28,6 +28,7 @@ DISTFILES = \
 	executable.make			\
 	library.make			\
 	rules.make			\
+	corcompare.make			\
 	$(COMMON_SRCS:%=common/%)	\
 	$(PLATFORMS:%=platforms/%.make) $(PROFILES:%=profiles/%.make)
 
