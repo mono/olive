@@ -69,8 +69,33 @@ namespace System.Windows.Controls {
 			}
 		}
 
-		public event ErrorEventHandler ImageFailed;
+		static object ImageFailedEvent = new object ();
 
+		public event ErrorEventHandler ImageFailed {
+			add {
+				if (events[ImageFailedEvent] == null)
+					Events.AddHandler (this, "ImageFailed", image_failed);
+				events.AddHandler (ImageFailedEvent, value);
+			}
+			remove {
+				if (events[ImageFailedEvent] == null)
+					Events.AddHandler (this, "ImageFailed", image_failed);
+				events.AddHandler (ImageFailedEvent, value);
+			}
+		}
+
+		static UnmanagedEventHandler image_failed = new UnmanagedEventHandler (image_failed_cb);
+
+		private static void image_failed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+			// XXX we need to marshal calldata to an ErrorEventArgs struct
+			((Image) Helper.GCHandleFromIntPtr (closure).Target).InvokeImageFailed (/* XXX and pass it here*/);
+		}
+
+		private void InvokeImageFailed (/* XXX ErrorEventArgs args */)
+		{
+			EventHandler h = (EventHandler)events[ImageFailedEvent]; // XXX should be ErrorEventHandler
+			if (h != null) h (this, EventArgs.Empty); // XXX pass args here
+		}
 
 		internal override Kind GetKind ()
 		{
