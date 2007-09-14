@@ -54,7 +54,7 @@ namespace System.Windows.Controls {
 			get {
 				// Uri is not a DependencyObject, we save it as a string
 				string uri = (string) GetValue (SourceProperty);
-				return new Uri (uri);
+				return new Uri (uri, UriKind.RelativeOrAbsolute);
 			}
 			set {
 				string uri = value.OriginalString;

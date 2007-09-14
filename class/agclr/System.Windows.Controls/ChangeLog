@@ -1,3 +1,7 @@
+2007-09-14  Miguel de Icaza  <miguel@novell.com>
+
+	* MediaBase.cs: Fixes the Uri crash from TopBanana.
+
 2007-09-10  Chris Toshok  <toshok@ximian.com>
 
 	* Image.cs: hookup ImageFailed, which a bunch of XXX's due to the
