@@ -111,7 +111,7 @@ namespace Mono {
 		public extern static Kind dependency_object_get_object_type (IntPtr obj);
 		
 		[DllImport("moon")]
-	    	public extern static IntPtr xaml_create_from_str (string xaml, bool create_namescope,
+	    public extern static IntPtr xaml_create_from_str (IntPtr native_loader, string xaml, bool create_namescope,
 								  out Kind kind);
 
 		[DllImport("moon")]
@@ -582,9 +582,17 @@ namespace Mono {
 
 
 		[DllImport ("moon")]
-		public extern static void xaml_set_parser_callbacks (Mono.CreateCustomXamlElementCallback ccecb,
+		public extern static void xaml_set_parser_callbacks (IntPtr native_object, 
+								     Mono.CreateCustomXamlElementCallback ccecb,
 								     Mono.SetCustomXamlAttributeCallback scacb,
 								     Mono.XamlHookupEventCallback hue);
+		
+		[DllImport ("moon")]
+		public extern static IntPtr xaml_loader_new (string filename, string str, IntPtr surface);
+		
+		[DllImport ("moon")]
+		public extern static void xaml_loader_free (IntPtr loader);
+		
 #region HtmlTimer
 		public delegate bool GSourceFunc  (IntPtr data);
 		
