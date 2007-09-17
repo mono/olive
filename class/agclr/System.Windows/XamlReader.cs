@@ -42,7 +42,6 @@ namespace System.Windows {
 		internal static XamlHookupEventCallback hookup_event_cb = new XamlHookupEventCallback (hookup_event);
 
 		static XamlReader () {
-			NativeMethods.xaml_set_parser_callbacks (custom_el_cb, custom_at_cb, hookup_event_cb);
 		}
 
 		public static DependencyObject Load (string xaml)
@@ -58,8 +57,10 @@ namespace System.Windows {
 
 			DependencyObject.Ping ();
 			Kind kind;
-			IntPtr top = NativeMethods.xaml_create_from_str (xaml, createNamescope, out kind);
-
+			IntPtr loader = NativeMethods.xaml_loader_new (null, xaml, IntPtr.Zero);
+			IntPtr top = NativeMethods.xaml_create_from_str (loader, xaml, createNamescope, out kind);
+			NativeMethods.xaml_loader_free (loader);
+			
 			if (top == IntPtr.Zero)
 				return null;
 

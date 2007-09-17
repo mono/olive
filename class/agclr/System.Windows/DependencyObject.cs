@@ -348,12 +348,18 @@ namespace System.Windows {
 			return null;
 		}
 
+		internal void Free ()
+		{
+			if (this.native != IntPtr.Zero) {
+				NativeMethods.base_unref (this.native);
+				this.native = IntPtr.Zero;
+			}
+		}
+		
 		~DependencyObject ()
 		{
-			lock (PendingDestroys){
-				PendingDestroys.Add (this.native);
-				pending = true;
-			}
+			Console.WriteLine ("Destructing: " + GetType ().Name);
+			Free ();
 			if (_handle.IsAllocated) {
 				_handle.Free();
 			}
