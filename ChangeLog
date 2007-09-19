@@ -1,3 +1,10 @@
+2007-09-19  Jb Evain  <jbevain@novell.com>
+
+	* Makefile, configure: build the net_2_1 (moonlight) profile
+	only if WITH_MOONLIGHT is defined in the config.make (it is
+	by default). mono will override the config file to build only
+	the moonlight profile if mono is built with moonlight as well.
+
 2007-09-04  Jb Evain  <jbevain@novell.com>
 
 	* Makefile: override all clean and install to work on all
