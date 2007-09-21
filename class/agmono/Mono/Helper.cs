@@ -116,6 +116,11 @@ namespace Mono {
 			return AppDomain.CreateDomain ("moonlight-" + key);
 		}
 
+		public static void UnloadDomain (AppDomain domain)
+		{
+			AppDomain.Unload (domain);
+		}
+		
 		public static object CreateInstanceAndUnwrap (AppDomain target, string assemblyName, string typeName)
 		{
 			return target.CreateInstanceAndUnwrap (assemblyName, typeName);

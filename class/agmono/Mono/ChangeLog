@@ -1,3 +1,10 @@
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Helper.cs: Added UnloadDomain.
+	* XamlLoaderCallbacks.cs: Added, contains delegates and structures used by
+	  ManagedXamlLoader.
+	* NativeMethods.cs: More native methods.
+
 2007-09-17  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* NativeMethods.cs: Update according to recent Xaml API changes.

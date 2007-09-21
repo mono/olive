@@ -42,6 +42,9 @@ namespace Mono {
 	
 		[DllImport("moon")]
 		public extern static void runtime_init ();
+		
+		[DllImport("moon")]
+		public extern static void runtime_shutdown ();
 
 		[DllImport("moon")]
 		public extern static void surface_register_events (
@@ -580,12 +583,11 @@ namespace Mono {
 		public extern static IntPtr control_initialize_from_xaml (IntPtr control, string xaml,
 									  out Kind kind);
 
-
 		[DllImport ("moon")]
-		public extern static void xaml_set_parser_callbacks (IntPtr native_object, 
-								     Mono.CreateCustomXamlElementCallback ccecb,
-								     Mono.SetCustomXamlAttributeCallback scacb,
-								     Mono.XamlHookupEventCallback hue);
+		public extern static void xaml_loader_set_callbacks (IntPtr native_object, Xaml.XamlLoaderCallbacks callbacks);		
+		
+		[DllImport ("moon")]
+		public extern static void xaml_loader_add_missing (IntPtr native_object, string file);
 		
 		[DllImport ("moon")]
 		public extern static IntPtr xaml_loader_new (string filename, string str, IntPtr surface);
