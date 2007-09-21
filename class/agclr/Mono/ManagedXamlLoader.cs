@@ -42,7 +42,7 @@ namespace Mono.Xaml
 		IntPtr native_loader;
 //		string filename;
 //		string contents;
-		Hashtable mappings = new Hashtable ();
+		static Hashtable mappings = new Hashtable ();
 		XamlLoaderCallbacks callbacks;
 				
 		public IntPtr PluginHandle {
