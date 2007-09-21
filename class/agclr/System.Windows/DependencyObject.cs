@@ -358,7 +358,6 @@ namespace System.Windows {
 		
 		~DependencyObject ()
 		{
-			Console.WriteLine ("Destructing: " + GetType ().Name);
 			Free ();
 			if (_handle.IsAllocated) {
 				_handle.Free();

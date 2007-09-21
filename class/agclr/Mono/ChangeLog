@@ -1,3 +1,8 @@
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Added, unify code from moonlight.cs and
+	  XamlReader.cs into one class (code was basically duplicated).
+
 2007-08-23  Jackson Harper  <jackson@ximian.com>
 
 	* Events.cs: Resize is now a proper event.

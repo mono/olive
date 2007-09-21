@@ -1,3 +1,8 @@
+2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: Use the new ManagedXamlLoader.
+	* DependencyObject.cs: Remove cwl.
+
 2007-09-17  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* XamlReader.cs: Update according to recent Xaml API changes.

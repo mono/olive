@@ -32,15 +32,12 @@ using Mono;
 using System.IO;
 using System.Reflection;
 using System.ComponentModel;
+using Mono.Xaml;
 
 namespace System.Windows {
 	
 	public static class XamlReader {
 	
-		internal static CreateCustomXamlElementCallback custom_el_cb = new CreateCustomXamlElementCallback (create_element);
-		internal static SetCustomXamlAttributeCallback custom_at_cb = new SetCustomXamlAttributeCallback (set_attribute);
-		internal static XamlHookupEventCallback hookup_event_cb = new XamlHookupEventCallback (hookup_event);
-
 		static XamlReader () {
 		}
 
@@ -57,161 +54,15 @@ namespace System.Windows {
 
 			DependencyObject.Ping ();
 			Kind kind;
-			IntPtr loader = NativeMethods.xaml_loader_new (null, xaml, IntPtr.Zero);
-			IntPtr top = NativeMethods.xaml_create_from_str (loader, xaml, createNamescope, out kind);
-			NativeMethods.xaml_loader_free (loader);
+			ManagedXamlLoader loader = new ManagedXamlLoader ();
+			loader.CreateNativeLoader (null, xaml);
+			IntPtr top = NativeMethods.xaml_create_from_str (loader.NativeLoader, xaml, createNamescope, out kind);
+			loader.FreeNativeLoader ();
 			
 			if (top == IntPtr.Zero)
 				return null;
 
 			return DependencyObject.Lookup (kind, top);
-		}
-
-		//
-		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
-		// genreating an exception and unwinding the stack.
-		//
-		internal static IntPtr create_element (string xmlns, string name)
-		{
-			try {
-				return real_create_element (xmlns, name);
-			} catch {
-				return IntPtr.Zero;
-			} finally {
-				Console.WriteLine ("create_element: returning");
-			}
-			
-		}
-		
-		internal static IntPtr real_create_element (string xmlns, string name)
-		{
-			string ns;
-			string type_name;
-			string asm_path;
-
-			ParseXmlns (xmlns, out type_name, out ns, out asm_path);
-
-			if (asm_path == null) {
-				Console.Error.WriteLine ("XamlReader, create_element: unable to parse xmlns string: '{0}'", xmlns);
-				return IntPtr.Zero;
-			}
-
-			Console.Error.WriteLine ("XamlReader: Loading assembly from {0}", asm_path);
-
-			// TODO: Use a downloader here
-			Assembly clientlib = Moonlight.LoadFile (asm_path);
-			if (clientlib == null) {
-				Console.Error.WriteLine ("XamlReader, create_element: could not load client library: '{0}'", asm_path);
-				return IntPtr.Zero;
-			}
-
-			if (type_name != null)
-				name = type_name;
-
-			if (ns != null)
-				name = String.Concat (ns, ".", name);
-
-			object r = clientlib.CreateInstance (name);
-			if (r == null){
-				Console.Error.WriteLine ("XamlReader, create_element: unable to create object instance:  '{0}'",
-							 name);
-				return IntPtr.Zero;
-			}
-			DependencyObject res = r as DependencyObject;
-			if (res == null){
-				Console.WriteLine ("Object is not a dependency object:  '{0}'", r.GetType ());
-				return IntPtr.Zero;
-			}
-
-			IntPtr p = Hosting.GetNativeObject (res);
-			return p;
-		}
-
-		//
-		// Proxy to prevent exceptions from being returned to unmanaged code.
-		//
-		internal static void set_attribute (IntPtr target_ptr, string name, string value)
-		{
-			try {
-				real_set_attribute (target_ptr, name, value);
-			} catch {
-			}
-		}
-		
-		internal static void real_set_attribute (IntPtr target_ptr, string name, string value)
-		{
-			DependencyObject target = DependencyObject.Lookup (target_ptr);
-
-			if (target == null) {
-				Console.Error.WriteLine ("XamlReader, set_attribute: unable to create target object from: 0x{0:x}",
-							 target_ptr);
-				return;
-			}
-
-			string error;
-			Helper.SetPropertyFromString (target, name, value, out error);
-			if (error != null){
-				Console.Error.WriteLine (
-					"Error: XamlReader, set_attribute on '{0}' from '{1}': {2}", new object [] {name, value, error});
-				return;
-			}
-		}
-
-		//
-		// Proxy to prevent exceptions from being returned to unmanaged code.
-		//
-		internal static void hookup_event (IntPtr target_ptr, string name, string value)
-		{
-			try {
-				real_hookup_event (target_ptr, name, value);
-			} catch {
-			}
-		}
-			
-		internal static void real_hookup_event (IntPtr target_ptr, string name, string value)
-		{
-			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr);
-			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
-
-			if (target == null) {
-				Console.Error.WriteLine ("XamlReader, hookup_event: unable to create target object from: 0x{0:x}",
-							 target_ptr);
-				return;
-			}
-
-			EventInfo src = target.GetType ().GetEvent (name);
-			if (src == null) {
-				Console.Error.WriteLine ("Xamlreader, hookup_event: unable to find event to hook to: '{0}'.", name);
-				return;
-			}
-
-			Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
-			if (d == null) {
-				Console.Error.WriteLine ("XamlReader, hookup_event: unable to create delegate.");
-				return;
-			}
-
-			src.AddEventHandler (target, d);
-		}
-
-		internal static void ParseXmlns (string xmlns, out string type_name, out string ns, out string asm)
-		{
-			type_name = null;
-			ns = null;
-			asm = null;
-
-			string [] decls = xmlns.Split (';');
-			foreach (string decl in decls) {
-				if (decl.StartsWith ("clr-namespace:")) {
-					ns = decl.Substring (14, decl.Length - 14);
-					continue;
-				}
-				if (decl.StartsWith ("assembly=")) {
-					asm = decl.Substring (9, decl.Length - 9);
-					continue;
-				}
-				type_name = decl;
-			}
 		}
 	}
 }
