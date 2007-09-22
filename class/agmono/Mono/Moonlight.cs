@@ -27,17 +27,22 @@
 //
 using System;
 using System.Reflection;
+using System.IO;
 
 namespace Mono {
 
 	public static class Moonlight {
 		static LoaderCallback loader_callback;
+		static ResourceLoaderCallback resource_loader_callback;
 		
 		public delegate Assembly LoaderCallback (string asm_path);
+
+		public delegate Stream ResourceLoaderCallback (string path);
 		
-		static public void RegisterLoader (LoaderCallback cb)
+		static public void RegisterLoader (LoaderCallback cb, ResourceLoaderCallback rcb)
 		{
 			loader_callback = cb;
+			resource_loader_callback = rcb;
 		}
 		
 		static public Assembly LoadFile (string asm_path)
@@ -46,6 +51,14 @@ namespace Mono {
 				return loader_callback (asm_path);
 
 			return Helper.LoadFile (asm_path);
+		}
+
+		static public Stream LoadResource (string path)
+		{
+			if (resource_loader_callback != null)
+				return resource_loader_callback (path);
+
+			return null;
 		}
 	}
 }
