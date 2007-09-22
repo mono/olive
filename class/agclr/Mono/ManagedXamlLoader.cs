@@ -30,6 +30,7 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using System.IO;
 using System.Windows;
 using System.Windows.Controls;
 using Mono;
@@ -344,6 +345,25 @@ namespace Mono.Xaml
 		private void load_code (string source, string type)
 		{
 			Console.WriteLine ("ManagedXamlLoader.load_code: '" + source + "' '" + type + "'");
+
+			if (source == null) {
+				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: Source can't be null.");
+				return;
+			}
+
+			Stream s = null;
+			try {
+				s = Moonlight.LoadResource (source);
+			}
+			catch (Exception ex) {
+				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: LoadResource failed: '" + ex + "'");
+				return;
+			}
+
+			if (s == null) {
+				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: Source file cannot be loaded.");
+				return;
+			}
 		}
 	}
 }
