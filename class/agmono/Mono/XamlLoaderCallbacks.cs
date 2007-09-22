@@ -36,6 +36,7 @@ namespace Mono.Xaml
 	public delegate bool HookupEventCallback (IntPtr target, string name, string value);
 	public delegate void InsertMappingCallback (string key, string value);
 	public delegate string GetMappingCallback (string key);
+	public delegate void LoadCodeCallback (string source, string type);
 	
 	public struct XamlLoaderCallbacks {
 		public LoadObjectCallback load_managed_object;
@@ -43,6 +44,7 @@ namespace Mono.Xaml
 		public HookupEventCallback hookup_event;
 		public GetMappingCallback get_mapping;
 		public InsertMappingCallback insert_mapping;
+		public LoadCodeCallback load_code;
 	}
 
 	public enum AssemblyLoadResult

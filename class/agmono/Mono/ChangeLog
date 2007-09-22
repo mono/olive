@@ -1,3 +1,7 @@
+2007-09-22  Zoltan Varga  <vargaz@gmail.com>
+
+	* XamlLoaderCallbacks.cs: Add new load_code callback.
+
 2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Helper.cs: Added UnloadDomain.
