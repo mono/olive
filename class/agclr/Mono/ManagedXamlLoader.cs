@@ -90,6 +90,7 @@ namespace Mono.Xaml
 			callbacks.hookup_event = new HookupEventCallback (hookup_event);
 			callbacks.insert_mapping = new InsertMappingCallback (insert_mapping);
 			callbacks.get_mapping = new GetMappingCallback (get_mapping);
+			callbacks.load_code = new LoadCodeCallback (load_code);
 
 			NativeMethods.xaml_loader_set_callbacks (native_loader, callbacks);
 			
@@ -338,6 +339,11 @@ namespace Mono.Xaml
 			catch {
 				return false;
 			}
+		}
+
+		private void load_code (string source, string type)
+		{
+			Console.WriteLine ("ManagedXamlLoader.load_code: '" + source + "' '" + type + "'");
 		}
 	}
 }

@@ -1,3 +1,7 @@
+2007-09-22  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs: Add a new load_code callback.
+
 2007-09-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Make mappings static. Makes DrPopper work again.
