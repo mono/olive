@@ -1,5 +1,8 @@
 2007-09-22  Zoltan Varga  <vargaz@gmail.com>
 
+	* ManagedXamlLoader.cs: Call Moonlight.LoadFile so the desktop code in mopen.cs
+	can take control of assembly loading.
+	
 	* ManagedXamlLoader.cs: Add a new load_code callback.
 
 2007-09-22  Rolf Bjarne Kvinge <RKvinge@novell.com> 

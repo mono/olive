@@ -153,7 +153,7 @@ namespace Mono.Xaml
 			clientlib = null;
 			
 			try {
-				clientlib = Helper.LoadFile (asm_path);
+				clientlib = Moonlight.LoadFile (asm_path);
 			} catch (System.IO.FileNotFoundException ex) {
 				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): client library not found.", asm_path, asm_name);
 				RequestAssembly (asm_path);
