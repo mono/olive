@@ -90,7 +90,7 @@ namespace Mono {
 				(UnmanagedKeyboardEventArgs)Marshal.PtrToStructure (calldata,
 										    typeof (UnmanagedKeyboardEventArgs));
 
-			return new KeyboardEventArgs (false/*XXX*/, false/*XXX*/, args.key, args.platformcode);
+			return new KeyboardEventArgs ((args.state & 4) != 0, (args.state & 1) != 0, args.key, args.platformcode);
 		}
 
 		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)

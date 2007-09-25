@@ -1,3 +1,7 @@
+2007-09-26  Zoltan Varga  <vargaz@gmail.com>
+
+	* Events.cs: Implement setting of KeyBoardEventArgs.{shift, ctrl}.
+
 2007-09-22  Zoltan Varga  <vargaz@gmail.com>
 
 	* ManagedXamlLoader.cs (load_file): Load the source using Moonlight.LoadResource.
