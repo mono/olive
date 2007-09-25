@@ -1,3 +1,7 @@
+2007-09-26  Zoltan Varga  <vargaz@gmail.com>
+
+	* Inline.cs: Use our own properties instead of the TextBlock ones.
+
 2007-07-31  Chris Toshok  <toshok@ximian.com>
 
 	* Glyphs.cs: StyleSimulations has switched types from string to

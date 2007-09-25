@@ -34,19 +34,19 @@ namespace System.Windows.Documents {
 	public abstract class Inline : DependencyObject {
 
 		public static readonly DependencyProperty FontFamilyProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontFamily", typeof (string));
+			DependencyProperty.Lookup (Kind.INLINE, "FontFamily", typeof (string));
 		public static readonly DependencyProperty FontSizeProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontSize", typeof (double));
+			DependencyProperty.Lookup (Kind.INLINE, "FontSize", typeof (double));
 		public static readonly DependencyProperty FontStretchProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontStretch", typeof (FontStretches));
+			DependencyProperty.Lookup (Kind.INLINE, "FontStretch", typeof (FontStretches));
 		public static readonly DependencyProperty FontStyleProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontStyle", typeof (FontStyles));
+			DependencyProperty.Lookup (Kind.INLINE, "FontStyle", typeof (FontStyles));
 		public static readonly DependencyProperty FontWeightProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "FontWeight", typeof (int));
+			DependencyProperty.Lookup (Kind.INLINE, "FontWeight", typeof (int));
 		public static readonly DependencyProperty ForegroundProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "Foreground", typeof (Brush));
+			DependencyProperty.Lookup (Kind.INLINE, "Foreground", typeof (Brush));
 		public static readonly DependencyProperty TextDecorationsProperty =
-			DependencyProperty.Lookup (Kind.TEXTBLOCK, "TextDecorations", typeof (TextDecorations));
+			DependencyProperty.Lookup (Kind.INLINE, "TextDecorations", typeof (TextDecorations));
 
 		public Inline ()  : base (NativeMethods.glyphs_new ())
 		{
