@@ -1,3 +1,8 @@
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Internal.cs: Don't ref ourself if we're created using a *_new function,
+	  the creation itself already gives us a ref.
+
 2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* agclr.dll.sources: Added ManagedXamlLoader.cs
