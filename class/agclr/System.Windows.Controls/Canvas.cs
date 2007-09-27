@@ -41,7 +41,6 @@ namespace System.Windows.Controls {
 
 		public Canvas () : base (NativeMethods.canvas_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Canvas (IntPtr raw) : base (raw)

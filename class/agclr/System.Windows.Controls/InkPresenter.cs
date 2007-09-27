@@ -40,7 +40,6 @@ namespace System.Windows.Controls
 		
 		public InkPresenter() : base (NativeMethods.ink_presenter_new ()) 
 		{
-			NativeMethods.base_ref (native);
 		}
 	
 		internal InkPresenter (IntPtr raw) : base (raw) 

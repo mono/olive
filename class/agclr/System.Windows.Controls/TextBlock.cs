@@ -60,7 +60,6 @@ namespace System.Windows.Controls {
 
 		public TextBlock ()  : base (NativeMethods.text_block_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal TextBlock (IntPtr raw) : base (raw)

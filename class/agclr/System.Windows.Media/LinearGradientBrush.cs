@@ -38,7 +38,6 @@ namespace System.Windows.Media {
 
 		public LinearGradientBrush () : base (NativeMethods.linear_gradient_brush_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LinearGradientBrush (IntPtr raw) : base (raw)

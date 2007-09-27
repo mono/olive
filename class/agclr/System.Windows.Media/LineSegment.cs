@@ -37,7 +37,6 @@ namespace System.Windows.Media {
 
 		public LineSegment () : base (Mono.NativeMethods.line_segment_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LineSegment (IntPtr raw) : base (raw)

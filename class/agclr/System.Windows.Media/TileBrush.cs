@@ -38,7 +38,6 @@ namespace System.Windows.Media {
 
 		public TileBrush () : base (NativeMethods.tile_brush_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal TileBrush (IntPtr raw) : base (raw)

@@ -30,7 +30,6 @@ namespace System.Windows.Media.Animation
 	public sealed class ColorKeyFrameCollection : MS.Internal.Collection<ColorKeyFrame> {
 		public ColorKeyFrameCollection () : base (NativeMethods.color_key_frame_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal ColorKeyFrameCollection (IntPtr raw) : base (raw)

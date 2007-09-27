@@ -65,7 +65,6 @@ namespace System.Windows {
 			
 		public UIElement () : base (NativeMethods.uielement_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal UIElement (IntPtr raw) : base (raw)

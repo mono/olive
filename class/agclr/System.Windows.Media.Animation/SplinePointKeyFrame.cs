@@ -40,7 +40,6 @@ namespace System.Windows.Media.Animation
 		
 		public SplinePointKeyFrame () : base (NativeMethods.spline_color_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal SplinePointKeyFrame (IntPtr raw) : base (raw)

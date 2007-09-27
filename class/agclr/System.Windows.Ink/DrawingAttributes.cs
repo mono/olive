@@ -48,7 +48,6 @@ namespace System.Windows.Ink
 
 		public DrawingAttributes() : base (NativeMethods.drawing_attributes_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal DrawingAttributes (IntPtr raw) : base (raw)

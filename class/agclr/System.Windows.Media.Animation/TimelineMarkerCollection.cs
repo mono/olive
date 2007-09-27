@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{
 		public TimelineMarkerCollection() : base (NativeMethods.timeline_marker_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal TimelineMarkerCollection (IntPtr raw) : base (raw)

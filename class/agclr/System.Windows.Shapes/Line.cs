@@ -41,7 +41,6 @@ namespace System.Windows.Shapes {
 
 		public Line () : base (Mono.NativeMethods.line_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Line (IntPtr raw) : base (raw)

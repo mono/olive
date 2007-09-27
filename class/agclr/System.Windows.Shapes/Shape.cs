@@ -61,7 +61,6 @@ namespace System.Windows.Shapes {
 		
 		public Shape () : base (NativeMethods.shape_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		public Brush Fill {

@@ -37,7 +37,6 @@ namespace System.Windows.Media.Animation
 		
 		public KeySpline () : base (NativeMethods.key_spline_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal KeySpline (IntPtr raw) : base (raw)

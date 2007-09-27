@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{		
 		public LinearPointKeyFrame() : base (NativeMethods.linear_point_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LinearPointKeyFrame (IntPtr raw) : base (raw)

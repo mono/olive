@@ -37,7 +37,6 @@ namespace System.Windows.Media {
 
 		public PolyLineSegment () : base (NativeMethods.poly_line_segment_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal PolyLineSegment (IntPtr raw) : base (raw)

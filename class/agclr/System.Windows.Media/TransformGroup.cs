@@ -32,7 +32,6 @@ namespace System.Windows.Media {
 		
 		public TransformGroup () : base (NativeMethods.transform_group_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal TransformGroup (IntPtr raw) : base (raw)

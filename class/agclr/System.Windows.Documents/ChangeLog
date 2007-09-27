@@ -1,3 +1,9 @@
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* LineBreak.cs, Inline.cs, Run.cs, Glyphs.cs: Don't ref ourself if we're
+	  created using a *_new function, the creation itself already gives us a
+	  ref.
+
 2007-09-26  Zoltan Varga  <vargaz@gmail.com>
 
 	* Inline.cs: Use our own properties instead of the TextBlock ones.

@@ -40,7 +40,6 @@ namespace System.Windows.Media.Animation
 		
 		public PointKeyFrame() : base (NativeMethods.point_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal PointKeyFrame (IntPtr raw) : base (raw)

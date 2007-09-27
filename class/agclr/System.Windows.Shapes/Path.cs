@@ -37,7 +37,6 @@ namespace System.Windows.Shapes {
 		
 		public Path () :  base (Mono.NativeMethods.path_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Path (IntPtr raw) : base (raw)

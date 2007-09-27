@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{		
 		public DiscretePointKeyFrame() : base (NativeMethods.discrete_point_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal DiscretePointKeyFrame (IntPtr raw) : base (raw)

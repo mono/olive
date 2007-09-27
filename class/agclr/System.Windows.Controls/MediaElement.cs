@@ -93,7 +93,6 @@ namespace System.Windows.Controls
 		
 		public MediaElement () : base (NativeMethods.media_element_new ()) 
 		{
-			NativeMethods.base_ref (native);
 		}
 	
 		internal MediaElement (IntPtr raw) : base (raw) 

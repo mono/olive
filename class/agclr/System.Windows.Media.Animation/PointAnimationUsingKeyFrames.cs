@@ -35,7 +35,6 @@ namespace System.Windows.Media.Animation
 		
 		public PointAnimationUsingKeyFrames() : base (NativeMethods.point_animation_using_key_frames_new ()) 
 		{
-			NativeMethods.base_ref (native);
 		}
 	
 		internal PointAnimationUsingKeyFrames (IntPtr raw) : base (raw) 

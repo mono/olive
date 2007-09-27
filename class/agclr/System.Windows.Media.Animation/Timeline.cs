@@ -50,7 +50,6 @@ namespace System.Windows.Media.Animation {
 		
 		public Timeline () : base (NativeMethods.timeline_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		public bool AutoReverse {

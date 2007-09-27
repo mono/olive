@@ -42,7 +42,6 @@ namespace System.Windows.Input
 		
 		public StylusInfo() : base (NativeMethods.stylus_info_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal StylusInfo (IntPtr raw) : base (raw)

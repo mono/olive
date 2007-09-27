@@ -34,7 +34,6 @@ namespace System.Windows.Media {
 	public sealed class PathFigureCollection : Collection<PathFigure> {
 		public PathFigureCollection () : base (NativeMethods.path_figure_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal PathFigureCollection (IntPtr raw) : base (raw)

@@ -40,7 +40,6 @@ namespace System.Windows.Media.Animation
 
 		public PointAnimation(): base (Mono.NativeMethods.point_animation_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal PointAnimation (IntPtr raw) : base (raw)

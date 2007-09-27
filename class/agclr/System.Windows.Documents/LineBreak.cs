@@ -33,7 +33,6 @@ namespace System.Windows.Documents {
 	public sealed class LineBreak : Inline {
 		public LineBreak () : base (NativeMethods.line_break_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LineBreak (IntPtr raw) : base (raw)

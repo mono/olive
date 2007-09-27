@@ -35,7 +35,6 @@ namespace System.Windows.Media.Animation
 
 		public DoubleAnimationUsingKeyFrames (): base (Mono.NativeMethods.double_animation_using_key_frames_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal DoubleAnimationUsingKeyFrames (IntPtr raw) : base (raw)

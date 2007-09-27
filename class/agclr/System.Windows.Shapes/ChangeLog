@@ -1,3 +1,9 @@
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Polyline.cs, Path.cs, Ellipse.cs, Shape.cs, Rectangle.cs, Line.cs,
+	  Polygon.cs: Don't ref ourself if we're created using a *_new function,
+	  the creation itself already gives us a ref.
+
 2007-06-14  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Polyline.cs, Polygon.cs: Fix property type.

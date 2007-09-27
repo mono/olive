@@ -36,7 +36,6 @@ namespace System.Windows.Documents {
 
 		public Run () : base (NativeMethods.run_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Run (IntPtr raw) : base (raw)

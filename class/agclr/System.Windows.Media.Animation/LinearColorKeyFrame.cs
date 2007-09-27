@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{		
 		public LinearColorKeyFrame() : base (NativeMethods.linear_color_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LinearColorKeyFrame (IntPtr raw) : base (raw)

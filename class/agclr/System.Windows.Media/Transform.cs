@@ -31,7 +31,6 @@ namespace System.Windows.Media {
 		
 		public Transform () : base (NativeMethods.transform_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Transform (IntPtr raw) : base (raw)

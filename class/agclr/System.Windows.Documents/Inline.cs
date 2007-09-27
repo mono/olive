@@ -50,7 +50,6 @@ namespace System.Windows.Documents {
 
 		public Inline ()  : base (NativeMethods.glyphs_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Inline (IntPtr raw) : base (raw)

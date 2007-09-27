@@ -35,7 +35,6 @@ namespace System.Windows {
 	{
 		public Inlines () : base (NativeMethods.inlines_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Inlines (IntPtr raw) : base (raw)

@@ -43,7 +43,6 @@ namespace System.Windows.Ink
 
 		public Stroke() : base (NativeMethods.stroke_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Stroke (IntPtr raw) : base (raw)

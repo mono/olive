@@ -36,7 +36,6 @@ namespace System.Windows.Media {
 		
 		public Visual () : base (NativeMethods.visual_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		public bool CaptureMouse ()

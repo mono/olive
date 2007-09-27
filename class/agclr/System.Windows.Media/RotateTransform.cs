@@ -40,7 +40,6 @@ namespace System.Windows.Media {
 
 		public RotateTransform () : base (NativeMethods.rotate_transform_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal RotateTransform (IntPtr raw) : base (raw)

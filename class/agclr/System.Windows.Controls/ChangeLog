@@ -1,3 +1,12 @@
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Canvas.cs, Panel.cs, TextBlock.cs, Image.cs, InkPresenter.cs,
+	  MediaElement.cs, MediaBase.cs: Don't ref ourself if we're created using
+	  a *_new function, the creation itself already gives us a ref.
+	* Control.cs: Don't ref ourself if we're created using a *_new function, the
+	  creation itself already gives us a ref. InitializeFromXaml: use the new
+	  control_initialize_from_xaml_callbacks and specify a XamlLoader.
+
 2007-09-14  Miguel de Icaza  <miguel@novell.com>
 
 	* MediaBase.cs: Fixes the Uri crash from TopBanana.

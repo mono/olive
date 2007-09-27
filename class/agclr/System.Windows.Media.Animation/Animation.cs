@@ -33,7 +33,6 @@ namespace System.Windows.Media.Animation
 	{
 		public Animation(): base (Mono.NativeMethods.animation_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 

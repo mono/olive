@@ -42,7 +42,6 @@ namespace System.Windows.Controls {
 
 		public MediaBase ()  : base (NativeMethods.media_base_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal MediaBase (IntPtr raw) : base (raw)

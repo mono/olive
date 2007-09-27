@@ -35,7 +35,6 @@ namespace System.Windows.Media {
 
 		public PathGeometry () : base (NativeMethods.path_geometry_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal PathGeometry (IntPtr raw) : base (raw)

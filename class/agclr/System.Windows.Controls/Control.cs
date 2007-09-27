@@ -27,6 +27,7 @@
 //
 
 using Mono;
+using Mono.Xaml;
 
 namespace System.Windows.Controls {
 
@@ -34,7 +35,6 @@ namespace System.Windows.Controls {
 
 		public Control ()  : base (NativeMethods.control_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Control (IntPtr raw) : base (raw)
@@ -44,8 +44,11 @@ namespace System.Windows.Controls {
 		protected FrameworkElement InitializeFromXaml (string xaml)
 		{
 			Kind kind;
-			IntPtr native_child = NativeMethods.control_initialize_from_xaml (native, xaml,
-											  out kind);
+			ManagedXamlLoader loader = new ManagedXamlLoader ();
+			loader.CreateNativeLoader (null, xaml);
+			IntPtr native_child = NativeMethods.control_initialize_from_xaml_callbacks (native, xaml,
+											  out kind, loader.NativeLoader);
+			loader.FreeNativeLoader ();
 			
 			DependencyObject o = DependencyObject.Lookup (kind, native_child);
 			return (FrameworkElement) o;

@@ -43,7 +43,6 @@ namespace System.Windows.Media {
 
 		public GradientBrush () : base (NativeMethods.gradient_brush_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal GradientBrush (IntPtr raw) : base (raw)

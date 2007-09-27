@@ -40,7 +40,6 @@ namespace System.Windows.Media.Animation
 
 		public DoubleAnimation(): base (Mono.NativeMethods.double_animation_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal DoubleAnimation (IntPtr raw) : base (raw)

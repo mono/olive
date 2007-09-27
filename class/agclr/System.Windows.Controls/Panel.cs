@@ -43,7 +43,6 @@ namespace System.Windows.Controls {
 		
 		public Panel () : base (NativeMethods.panel_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Panel (IntPtr raw) : base (raw)

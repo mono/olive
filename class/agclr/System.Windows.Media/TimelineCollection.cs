@@ -35,7 +35,6 @@ namespace System.Windows.Media {
 	public sealed class TimelineCollection : Collection<Timeline> {
 		public TimelineCollection () : base (NativeMethods.timeline_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal TimelineCollection (IntPtr raw) : base (raw)

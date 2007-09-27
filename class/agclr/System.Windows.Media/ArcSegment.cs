@@ -42,7 +42,6 @@ namespace System.Windows.Media {
 		
 		public ArcSegment () : base (NativeMethods.arc_segment_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal ArcSegment (IntPtr raw) : base (raw)

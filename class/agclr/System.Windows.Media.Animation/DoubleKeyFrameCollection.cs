@@ -31,7 +31,6 @@ namespace System.Windows.Media.Animation
 	public sealed class DoubleKeyFrameCollection : MS.Internal.Collection<DoubleKeyFrame> {
 		public DoubleKeyFrameCollection () : base (NativeMethods.double_key_frame_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal DoubleKeyFrameCollection (IntPtr raw) : base (raw)

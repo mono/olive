@@ -54,7 +54,6 @@ namespace System.Windows.Documents {
 
 		public Glyphs ()  : base (NativeMethods.glyphs_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Glyphs (IntPtr raw) : base (raw)

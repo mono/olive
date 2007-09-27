@@ -50,7 +50,6 @@ namespace System.Windows.Media.Animation {
 		public Storyboard ()
 			: base (Mono.NativeMethods.storyboard_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		public void Begin ()

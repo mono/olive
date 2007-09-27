@@ -50,7 +50,6 @@ namespace System.Windows {
 
 		public Downloader () : base (NativeMethods.downloader_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal Downloader (IntPtr raw) : base (raw)

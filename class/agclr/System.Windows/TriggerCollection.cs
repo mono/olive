@@ -36,7 +36,6 @@ namespace System.Windows {
 	public sealed class TriggerCollection : MS.Internal.Collection<EventTrigger> {
 		public TriggerCollection () : base (NativeMethods.trigger_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal TriggerCollection (IntPtr raw) : base (raw)

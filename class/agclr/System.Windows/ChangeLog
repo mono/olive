@@ -1,5 +1,12 @@
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* ResourceDictionary.cs, TriggerActionCollection.cs, TriggerCollection.cs,
+	  UIElement.cs, Downloader.cs, Inlines.cs, EventTrigger.cs,
+	  FrameworkElement.cs: Don't ref ourself if we're created using a *_new
+	  function, the creation itself already gives us a ref.
+
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* XamlReader.cs: Load: unref the created object once we have a managed
 	  DependencyObject version.
 

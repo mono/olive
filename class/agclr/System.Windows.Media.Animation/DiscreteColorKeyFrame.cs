@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{		
 		public DiscreteColorKeyFrame() : base (NativeMethods.discrete_color_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal DiscreteColorKeyFrame (IntPtr raw) : base (raw)

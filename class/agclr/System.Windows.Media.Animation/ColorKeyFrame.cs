@@ -39,7 +39,6 @@ namespace System.Windows.Media.Animation
 		
 		public ColorKeyFrame() : base (NativeMethods.color_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal ColorKeyFrame (IntPtr raw) : base (raw)

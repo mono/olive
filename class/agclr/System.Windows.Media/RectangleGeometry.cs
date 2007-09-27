@@ -37,7 +37,6 @@ namespace System.Windows.Media {
 
 		public RectangleGeometry () : base (NativeMethods.rectangle_geometry_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal RectangleGeometry (IntPtr raw) : base (raw)

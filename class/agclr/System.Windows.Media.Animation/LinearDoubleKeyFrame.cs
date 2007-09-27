@@ -36,7 +36,6 @@ namespace System.Windows.Media.Animation
 	{		
 		public LinearDoubleKeyFrame() : base (NativeMethods.linear_double_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal LinearDoubleKeyFrame (IntPtr raw) : base (raw)

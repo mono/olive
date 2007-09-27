@@ -38,7 +38,6 @@ namespace System.Windows.Controls {
 
 		public Image ()  : base (NativeMethods.image_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal Image (IntPtr raw) : base (raw)

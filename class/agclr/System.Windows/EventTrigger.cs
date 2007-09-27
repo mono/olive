@@ -39,7 +39,6 @@ namespace System.Windows
 
 		public EventTrigger(): base (Mono.NativeMethods.event_trigger_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal EventTrigger (IntPtr raw) : base (raw)

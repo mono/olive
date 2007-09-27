@@ -45,7 +45,6 @@ namespace System.Windows.Input
 		
 		public StylusPoint() : base (NativeMethods.stylus_point_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal StylusPoint (IntPtr raw) : base (raw)

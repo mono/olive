@@ -31,7 +31,6 @@ namespace System.Windows.Media.Animation
 	public sealed class PointKeyFrameCollection : MS.Internal.Collection<PointKeyFrame> {
 		public PointKeyFrameCollection () : base (NativeMethods.point_key_frame_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 
 		internal PointKeyFrameCollection (IntPtr raw) : base (raw)

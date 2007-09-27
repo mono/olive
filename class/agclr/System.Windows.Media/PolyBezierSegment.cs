@@ -36,7 +36,6 @@ namespace System.Windows.Media {
 
 		public PolyBezierSegment () : base (NativeMethods.poly_bezier_segment_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal PolyBezierSegment (IntPtr raw) : base (raw)

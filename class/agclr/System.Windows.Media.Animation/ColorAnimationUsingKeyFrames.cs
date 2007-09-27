@@ -35,7 +35,6 @@ namespace System.Windows.Media.Animation
 		
 		public ColorAnimationUsingKeyFrames() : base (NativeMethods.color_animation_using_key_frames_new ()) 
 		{
-			NativeMethods.base_ref (native);
 		}
 	
 		internal ColorAnimationUsingKeyFrames (IntPtr raw) : base (raw) 

@@ -40,7 +40,6 @@ namespace System.Windows.Media.Animation
 		
 		public SplineDoubleKeyFrame () : base (NativeMethods.spline_double_key_frame_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal SplineDoubleKeyFrame (IntPtr raw) : base (raw)

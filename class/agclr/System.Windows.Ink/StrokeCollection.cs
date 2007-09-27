@@ -36,7 +36,6 @@ namespace System.Windows.Ink
 	{
 		public StrokeCollection() : base (NativeMethods.stroke_collection_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal StrokeCollection (IntPtr raw) : base (raw)

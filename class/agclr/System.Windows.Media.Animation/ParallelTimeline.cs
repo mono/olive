@@ -41,7 +41,6 @@ namespace System.Windows.Media.Animation {
 		
 		public ParallelTimeline () : base (NativeMethods.parallel_timeline_new ())
 		{
-			NativeMethods.base_ref (native);
 		}
 		
 		internal override Kind GetKind ()
