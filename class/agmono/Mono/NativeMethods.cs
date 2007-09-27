@@ -584,6 +584,10 @@ namespace Mono {
 									  out Kind kind);
 
 		[DllImport ("moon")]
+		public extern static IntPtr control_initialize_from_xaml_callbacks (IntPtr control, string xaml,
+									  out Kind kind, IntPtr native_loader);
+		
+		[DllImport ("moon")]
 		public extern static void xaml_loader_set_callbacks (IntPtr native_object, Xaml.XamlLoaderCallbacks callbacks);		
 		
 		[DllImport ("moon")]
@@ -594,6 +598,10 @@ namespace Mono {
 		
 		[DllImport ("moon")]
 		public extern static void xaml_loader_free (IntPtr loader);
+#if DEBUG
+		[DllImport ("moon")]
+		public extern static void print_stack_trace ();
+#endif
 		
 #region HtmlTimer
 		public delegate bool GSourceFunc  (IntPtr data);
