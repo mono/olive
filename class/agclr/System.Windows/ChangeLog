@@ -1,3 +1,8 @@
+2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: Load: unref the created object once we have a managed
+	  DependencyObject version.
+
 2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* XamlReader.cs: Use the new ManagedXamlLoader.

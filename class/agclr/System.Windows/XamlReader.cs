@@ -62,7 +62,14 @@ namespace System.Windows {
 			if (top == IntPtr.Zero)
 				return null;
 
-			return DependencyObject.Lookup (kind, top);
+			DependencyObject result = DependencyObject.Lookup (kind, top);
+			
+			if (result != null) {
+				// Delete our reference, result already has one.
+				NativeMethods.base_unref (top);
+			}
+			
+			return result;
 		}
 	}
 }
