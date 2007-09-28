@@ -50,7 +50,7 @@ namespace Mono {
 			if (loader_callback != null)
 				return loader_callback (asm_path);
 
-			return null;
+			return Helper.LoadFile (asm_path);
 		}
 
 		static public Stream LoadResource (string path)
