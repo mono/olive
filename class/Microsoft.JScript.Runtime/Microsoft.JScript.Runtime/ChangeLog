@@ -1,3 +1,13 @@
+2007-09-28  Olivier Dufour  <olivier.duff@gmail.com>
+	* JSCompilerHelpers.cs
+	* JSContext.cs
+	* JSErrorConvertor.cs
+	* JSFunctionObject.cs
+	* JSOps.cs
+	* URIErrorException.cs : mark all function/class call from compiler
+	with TODO and fill some function
+	
+
 2007-07-02  Marek Sieradzki  <marek.sieradzki@gmail.com>
 
 	* JSNumberPrototype.cs

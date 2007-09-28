@@ -61,6 +61,7 @@ namespace Microsoft.JScript.Runtime {
 							     Delegate target, string [] argNames, bool isStandardConstructor,
 							     bool usesArguments)
 		{
+			//TODO
 			throw new NotImplementedException ();
 		}
 
