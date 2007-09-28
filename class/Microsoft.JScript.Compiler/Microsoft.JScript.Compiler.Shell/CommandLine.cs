@@ -50,7 +50,7 @@ namespace Microsoft.JScript.Compiler.Shell
 		}
 
 		protected override string Logo {
-			get { return "Mono Java Script Compiler for Moonlight"; } 
+			get { return "Mono Java Script Compiler for Moonlight 0.1 " + Environment.NewLine; } 
 		}
 		protected override string Prompt {
 			get { return ">"; }
