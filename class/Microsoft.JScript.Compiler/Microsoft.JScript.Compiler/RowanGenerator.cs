@@ -119,8 +119,11 @@ namespace Microsoft.JScript.Compiler
 						break;
 				case MJCP.Expression.Operation.NumericLiteral :
 					double val = 0;
-					if (Double.TryParse (((MJCP.NumericLiteralExpression)Input).Spelling, out val)) {
+					try {
+						val = Double.Parse (((MJCP.NumericLiteralExpression)Input).Spelling);
 						result = new MSIA.ConstantExpression (val);
+					} catch {
+						//TODO 
 					}
 					break;
 				case MJCP.Expression.Operation.HexLiteral :

@@ -1,9 +1,8 @@
 2007-09-10  Olivier Dufour  <olivier.Duff@gmail.com>
 
-	* Parser.cs: Fix 2 bugs (ParseRightExpression & ParseObjectLiteral) , Add support 
-	for list of expression
-	* Tokenizer.cs: Add support for >>> and fix a bug for ^=
-	* RowanGenerator.cs: add a too many things to make a full list ;)
+	* Engine.cs: just fill with default
+	* OptionsParser.cs: replace TryParse for System v2.1
+	* RowanGenerator.cs: replace TryParse for System v2.1
 
 2007-09-09  Olivier Dufour  <olivier.Duff@gmail.com>
 

@@ -161,8 +161,13 @@ namespace Microsoft.JScript.Compiler
 					break;
 				case "-X:MaxRecursion":
 					int result =0;
-					if (Int32.TryParse(PopNextArg (), out result))
+					try {
+						result = Int32.Parse (PopNextArg ());
 						((Microsoft.JScript.Compiler.EngineOptions)EngineOptions).MaximumRecursion = result;
+					} catch {
+						Console.WriteLine ("Max recursion must be a number");
+						//TODO find the out better than console
+					}
 					break;
 				case "-X:MTA":
 					//TODO here not found!

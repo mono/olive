@@ -98,7 +98,8 @@ namespace Microsoft.JScript.Compiler
 
 		public override Microsoft.Scripting.CompilerOptions GetModuleCompilerOptions(ScriptModule scriptModule)
 		{
-			throw new NotImplementedException ();
+			return GetDefaultCompilerOptions ();
+			//TODO scriptModule.GetCompilerOptions ();
 		}
 
 		public override string[] GetObjectCallSignatures(object obj)
