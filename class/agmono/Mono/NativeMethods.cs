@@ -637,7 +637,9 @@ namespace Mono {
 
 		[DllImport("moonplugin")]
 		public extern static int plugin_instance_get_actual_width (IntPtr plugin_handle);
-		
+
+		[DllImport("moonplugin")]
+		public extern static void plugin_instance_report_exception (IntPtr plugin_handle, string msg, string details, string[] stack_trace, int num_frames);
 #endregion
 		
 	}

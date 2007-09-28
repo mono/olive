@@ -1,5 +1,7 @@
 2007-09-28  Zoltan Varga  <vargaz@gmail.com>
 
+	* NativeMethods.cs: Add plugin_instance_report_exception.
+
 	* XamlLoaderCallbacks.cs: Change return type of LoadCodeCallback. Add
 	SetNameAttributeCallback.
 
