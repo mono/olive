@@ -1,4 +1,4 @@
-//
+ //
 // ManagedXamlLoader.cs
 //
 // Authors:
@@ -30,6 +30,7 @@
 using System;
 using System.Reflection;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
@@ -43,8 +44,12 @@ namespace Mono.Xaml
 		IntPtr native_loader;
 //		string filename;
 //		string contents;
-		static Hashtable mappings = new Hashtable ();
+		static Dictionary<string, string> mappings = new Dictionary <string, string> ();
 		XamlLoaderCallbacks callbacks;
+
+#if WITH_DLR
+		DLRHost dlr_host;
+#endif
 				
 		public IntPtr PluginHandle {
 			get {
@@ -92,6 +97,7 @@ namespace Mono.Xaml
 			callbacks.insert_mapping = new InsertMappingCallback (insert_mapping);
 			callbacks.get_mapping = new GetMappingCallback (get_mapping);
 			callbacks.load_code = new LoadCodeCallback (load_code);
+			callbacks.set_name_attribute = new SetNameAttributeCallback (set_name_attribute);
 
 			NativeMethods.xaml_loader_set_callbacks (native_loader, callbacks);
 			
@@ -114,7 +120,9 @@ namespace Mono.Xaml
 		
 		public string GetMapping (string key)
 		{
-			return mappings [key] as string;
+			if (!mappings.ContainsKey (key))
+				return null;
+			return mappings [key];
 		}
 		
 		private void insert_mapping (string key, string name)
@@ -129,7 +137,7 @@ namespace Mono.Xaml
 		public void InsertMapping (string key, string name)
 		{
 			//Console.WriteLine ("ManagedXamlLoader::InsertMapping ({0}, {1}).", key, name);
-			if (mappings.Contains (key)){
+			if (mappings.ContainsKey (key)){
 				Console.Error.WriteLine ("ManagedXamlLoader::InsertMapping ({0}, {1}): Inserting a duplicate key? (current value: {2}).", key, name, mappings [key]);
 				return;
 			}
@@ -137,9 +145,9 @@ namespace Mono.Xaml
 			mappings [key] = name;
 		}
 		
-		public void RequestAssembly (string asm_path)
+		public void RequestFile (string asm_path)
 		{
-			//Console.WriteLine ("ManagedXamlLoader::RequestAssembly ({0}).", asm_path);
+			//Console.WriteLine ("ManagedXamlLoader::RequestFile ({0}).", asm_path);
 			NativeMethods.xaml_loader_add_missing (native_loader, asm_path);
 		}
 	
@@ -157,7 +165,7 @@ namespace Mono.Xaml
 				clientlib = Moonlight.LoadFile (asm_path);
 			} catch (System.IO.FileNotFoundException ex) {
 				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): client library not found.", asm_path, asm_name);
-				RequestAssembly (asm_path);
+				RequestFile (asm_path);
 				return AssemblyLoadResult.MissingAssembly;
 			}
 
@@ -211,7 +219,7 @@ namespace Mono.Xaml
 					// not been downloaded, request it
 					//
 					Console.Error.WriteLine ("ManagedXamlLoader::LoadAssembly ({0}, {1}): requesting download of '{2}' (exception: {3}).", asm_path, asm_name, req, ex.Message);
-					RequestAssembly (req);
+					RequestFile (req);
 				}
 			}
 			
@@ -327,6 +335,20 @@ namespace Mono.Xaml
 				return false;
 			}
 
+#if WITH_DLR
+			if (dlr_host != null) {
+				try {
+					dlr_host.HookupEvent (target, name, value);
+				}
+				catch (Exception ex) {
+					Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to hookup event: {3}", target_ptr, name, value, ex);
+					return false;
+				}
+			} else {
+				RememberEvent (target, name, value);
+			}
+#endif
+
 			try {
 				Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
 				if (d == null) {
@@ -342,28 +364,140 @@ namespace Mono.Xaml
 			}
 		}
 
-		private void load_code (string source, string type)
+		private bool load_code (string source, string type)
+		{
+			try {
+				return LoadCode (source, type);
+			}
+			catch (Exception ex) {
+				Console.WriteLine ("ManagedXamlLoader::LoadCode ({0}, {1}): {2}", source, type, ex);
+				return false;
+			}
+		}
+
+		private bool LoadCode (string source, string type)
 		{
 			Console.WriteLine ("ManagedXamlLoader.load_code: '" + source + "' '" + type + "'");
 
 			if (source == null) {
 				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: Source can't be null.");
-				return;
+				return false;
 			}
 
-			Stream s = null;
-			try {
-				s = Moonlight.LoadResource (source);
-			}
-			catch (Exception ex) {
-				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: LoadResource failed: '" + ex + "'");
-				return;
+			if (type == null) {
+				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: Type can't be null.");
+				return false;
 			}
 
-			if (s == null) {
-				Console.WriteLine ("ManagedXamlLoader.load_code: ERROR: Source file cannot be loaded.");
-				return;
+			//
+			// First try the desktop case
+			//
+			Stream s = Moonlight.LoadResource (source);
+			if (s != null) {
+#if WITH_DLR
+				if (dlr_host == null)
+					dlr_host = new DLRHost ();
+				dlr_host.LoadSource (s, type, mappings);
+				SetGlobalsAndEvents ();
+#else
+				Console.WriteLine ("ManagedXamlLoader.load_code: Ignoring request to load code.");
+#endif
+				return true;
+			}
+
+			//
+			// Then the browser case
+			//
+			string local = GetMapping (source);
+			if (local != null) {
+				s = new FileStream (local, FileMode.Open, FileAccess.Read);
+#if WITH_DLR
+				if (dlr_host == null)
+				    dlr_host = new DLRHost ();
+				try {
+					dlr_host.LoadSource (s, type, mappings);
+				} catch (MissingReferenceException ex) {
+					RequestFile (ex.Reference);
+					return false;
+				}
+				SetGlobalsAndEvents ();
+#else
+				Console.WriteLine ("ManagedXamlLoader.load_code: Ignoring request to load code.");
+#endif
+				return true;
+			} else {
+				RequestFile (source);
+
+				return false;
 			}
 		}
+
+		private void set_name_attribute (IntPtr target_ptr, string name)
+		{
+			try {
+				SetNameAttribute (target_ptr, name);
+			}
+			catch (Exception ex) {
+				Console.WriteLine ("ManagedXamlLoader::SetNameAttribute () threw an exception: " + ex);
+			}
+		}
+
+		private void SetNameAttribute (IntPtr target_ptr, string name) {
+#if WITH_DLR
+			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr); 
+			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
+
+			if (dlr_host != null) {
+				dlr_host.SetVariable (name, target);
+			} else {
+				RememberName (target, name);
+			}
+#endif
+		}
+
+#if WITH_DLR
+		private class RememberedEvent {
+			public DependencyObject target;
+			public string name;
+			public string value;
+		}
+
+		private Dictionary<string, DependencyObject> named_objects;
+
+		private Dictionary<RememberedEvent, RememberedEvent> events;
+
+		//
+		// When SetNameAttribute and hookup_event are called, scripts are not yet loaded.
+		// So we store the info in hash tables and process them after a script has been
+		// loaded
+		private void RememberName (DependencyObject target, string name) {
+			if (named_objects == null)
+				named_objects = new Dictionary<string, DependencyObject> ();
+			named_objects [name] = target;
+		}
+
+		private void RememberEvent (DependencyObject target, string name, string value) {
+			if (events == null)
+				events = new Dictionary<RememberedEvent, RememberedEvent> ();
+			RememberedEvent ev = new RememberedEvent ();
+			ev.target = target;
+			ev.name = name;
+			ev.value = value;
+			events [ev] = ev;
+		}
+
+		private void SetGlobalsAndEvents () {
+			if (named_objects != null) {
+				foreach (KeyValuePair<string, DependencyObject> kvp in named_objects)
+					dlr_host.SetVariable (kvp.Key, kvp.Value);
+				named_objects = null;
+			}
+			if (events != null) {
+				foreach (RememberedEvent ev in events.Keys) {
+					dlr_host.HookupEvent (ev.target, ev.name, ev.value);
+				}
+			}
+		}
+#endif
 	}
 }
