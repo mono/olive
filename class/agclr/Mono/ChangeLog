@@ -1,3 +1,14 @@
+2007-09-28  Zoltan Varga  <vargaz@gmail.com>
+
+	* Events.cs: Implement exception handling by forwarding exceptions to the plugin
+	instance.
+
+	* DLRHost.cs: New class hosting the MS DLR inside Silverlight. Requires a 
+	DLR which compiles cleanly under Silverlight, so it is not enabled yet.
+
+	* ManagedXamlLoader: Add hooks for creating the DLR, loading script files,
+	setting globals and hooking up events. Not enabled yet.
+
 2007-09-26  Zoltan Varga  <vargaz@gmail.com>
 
 	* Events.cs: Implement setting of KeyBoardEventArgs.{shift, ctrl}.

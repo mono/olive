@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
 using System;
+using System.Text;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -62,26 +63,58 @@ namespace Mono {
 
 		static void got_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeGotFocus ();
+			try {
+				UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeGotFocus ();
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static void lost_focus_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeLostFocus ();
+			try {
+				UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeLostFocus ();
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static void loaded_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeLoaded ();
+			try {
+				UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeLoaded ();
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static void mouse_leave_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeMouseLeave ();
+			try {
+				UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeMouseLeave ();
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static KeyboardEventArgs MarshalKeyboardEventArgs (IntPtr calldata)
@@ -95,14 +128,30 @@ namespace Mono {
 
 		static void key_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeKeyUp (MarshalKeyboardEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeKeyUp (MarshalKeyboardEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static void key_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeKeyDown (MarshalKeyboardEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeKeyDown (MarshalKeyboardEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static MouseEventArgs MarshalMouseEventArgs (IntPtr calldata)
@@ -114,33 +163,72 @@ namespace Mono {
 		
 		static void mouse_motion_notify_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 		
 		static void mouse_button_down_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 		
 		static void mouse_button_up_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 		
 		static void mouse_enter_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-			e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
+			try {
+				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
+				e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		static void surface_resized_callback (IntPtr target, IntPtr calldata, IntPtr clozure)
 		{
-			// Parameter ignored
-
-			BrowserHost.InvokeResize ();
+			try {
+				// Parameter ignored
+				BrowserHost.InvokeResize ();
+			}
+			catch (Exception ex) {
+				if (IsPlugin ())
+					ReportException (ex);
+				else
+					throw;
+			}
 		}
 
 		internal static void InitSurface (IntPtr surface)
@@ -157,6 +245,21 @@ namespace Mono {
 		internal static void RemoveHandler (DependencyObject obj, string eventName, UnmanagedEventHandler handler)
 		{
 			NativeMethods.event_object_remove_event_handler (obj.native, eventName, handler, obj.GCHandle);
+		}
+
+		internal static bool IsPlugin () {
+			return System.Windows.Interop.PluginHost.Handle != IntPtr.Zero;
+		}
+		
+		internal static void ReportException (Exception ex) {
+			String msg = ex.Message;
+			System.Text.StringBuilder sb = new StringBuilder (ex.GetType ().FullName);
+			sb.Append (": ").Append (ex.Message);
+			String details = sb.ToString ();
+			String[] stack_trace = Helper.Split (ex.StackTrace, new String [] { Environment.NewLine });
+
+			// FIXME: Desktop case
+			NativeMethods.plugin_instance_report_exception (System.Windows.Interop.PluginHost.Handle, msg, details, stack_trace, stack_trace.Length);
 		}
 	}
 }
