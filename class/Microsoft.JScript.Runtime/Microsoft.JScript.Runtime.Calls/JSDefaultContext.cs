@@ -12,7 +12,9 @@ namespace Microsoft.JScript.Runtime.Calls {
 
 		public static CodeContext CreateDefaultJSContext ()
 		{
-			throw new NotImplementedException ();
+			Default = new CodeContext (new Scope (), new JSContext (_JSScriptEngine));
+			JSContext = ContextId.RegisterContext (Default);
+			return Default;
 		}
 	}
 }
