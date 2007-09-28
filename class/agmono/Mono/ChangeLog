@@ -1,3 +1,8 @@
+2007-09-28  Zoltan Varga  <vargaz@gmail.com>
+
+	* XamlLoaderCallbacks.cs: Change return type of LoadCodeCallback. Add
+	SetNameAttributeCallback.
+
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* NativeMethods.cs: Added control_initialize_from_xaml_callbacks.
