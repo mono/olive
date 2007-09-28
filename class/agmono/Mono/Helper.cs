@@ -160,5 +160,10 @@ namespace Mono {
 		{
 			return Marshal.PtrToStringAuto (ptr);
 		}
+
+		public static String[] Split (String s, String[] separator)
+		{
+			return s.Split (separator, StringSplitOptions.None);
+		}
 	}
 }
