@@ -1,5 +1,7 @@
 2007-09-28  Zoltan Varga  <vargaz@gmail.com>
 
+	* Moonlight.cs (LoadFile): Avoid loading files in the plugin case.
+
 	* Helper.cs: Fix the build.
 
 	* NativeMethods.cs: Add plugin_instance_report_exception.
