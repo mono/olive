@@ -258,7 +258,6 @@ namespace Mono {
 			String details = sb.ToString ();
 			String[] stack_trace = Helper.Split (ex.StackTrace, new String [] { Environment.NewLine });
 
-			// FIXME: Desktop case
 			NativeMethods.plugin_instance_report_exception (System.Windows.Interop.PluginHost.Handle, msg, details, stack_trace, stack_trace.Length);
 		}
 	}

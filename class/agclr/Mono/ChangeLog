@@ -1,5 +1,7 @@
 2007-09-30  Zoltan Varga  <vargaz@gmail.com>
 
+	* Events.cs: Remove a FIXME.
+
 	* ManagedXamlLoader.cs (LoadCode): Report DLR errors through the plugin.
 
 	* DLRHost.cs: Remove some FIXMEs.
