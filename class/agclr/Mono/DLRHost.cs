@@ -271,9 +271,6 @@ namespace Mono
 
 //
 // FIXME:
-// - error handling: Silverlight usually displays a detailed error message in HTML
-// on top of the plugin frame
 // - in MS.NET, the x:Code directive should come before other elements
 // - changes to the x:Name property need to be propagated to the DLR
-// - exceptions in event handlers can bring down the whole process
 //

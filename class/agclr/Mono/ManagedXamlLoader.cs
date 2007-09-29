@@ -163,7 +163,7 @@ namespace Mono.Xaml
 			
 			try {
 				clientlib = Moonlight.LoadFile (asm_path);
-			} catch (System.IO.FileNotFoundException ex) {
+			} catch (System.IO.FileNotFoundException) {
 				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): client library not found.", asm_path, asm_name);
 				RequestFile (asm_path);
 				return AssemblyLoadResult.MissingAssembly;
@@ -419,6 +419,14 @@ namespace Mono.Xaml
 				} catch (MissingReferenceException ex) {
 					RequestFile (ex.Reference);
 					return false;
+				} catch (Exception ex) {
+					if (Events.IsPlugin ()) {
+						Events.ReportException (ex);
+						// This is not a fatal error
+						return true;
+					}
+					else
+						throw;
 				}
 				SetGlobalsAndEvents ();
 #else
