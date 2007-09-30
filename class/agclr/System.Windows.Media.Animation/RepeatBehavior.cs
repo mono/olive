@@ -89,6 +89,59 @@ namespace System.Windows.Media.Animation {
 				return kind == TIMESPAN;
 			}
 		}
-	}
 
+		public override bool Equals (object o)
+		{
+			if (! (o is RepeatBehavior))
+				return false;
+
+			return Equals (this, (RepeatBehavior) o);
+		}
+
+		public bool Equals (RepeatBehavior rb)
+		{
+			return Equals (this, rb);
+		}
+
+		public static bool Equals (RepeatBehavior ls, RepeatBehavior rs)
+		{
+			if (ls.kind != rs.kind)
+				return false;
+
+			switch (ls.kind) {
+			case COUNT:
+				return ls.count == rs.count;
+			case TIMESPAN:
+				return ls.duration == rs.duration;
+			case FOREVER:
+				return true;
+			default:
+				return false; // throw?
+			}
+		}
+
+		public static bool operator == (RepeatBehavior ls, RepeatBehavior rs)
+		{
+			return Equals (ls, rs);
+		}
+
+		public static bool operator != (RepeatBehavior ls, RepeatBehavior rs)
+		{
+			return !Equals (ls, rs);
+		}
+
+		public override int GetHashCode ()
+		{
+			switch (kind) {
+			case COUNT:
+				return count.GetHashCode ();
+			case TIMESPAN:
+				return duration.GetHashCode ();
+			case FOREVER:
+				return FOREVER.GetHashCode ();
+			default:
+				return base.GetHashCode (); // throw?
+			}
+		}
+	}
 }
