@@ -132,6 +132,9 @@ namespace System.Windows.Controls
 			get {
 				return (int) GetValue (AudioStreamCountProperty);
 			}
+			set {
+				SetValue (AudioStreamCountProperty, value);
+			}
 		}
 		
 		public int AudioStreamIndex {
