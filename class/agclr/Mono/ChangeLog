@@ -1,5 +1,8 @@
 2007-09-30  Zoltan Varga  <vargaz@gmail.com>
 
+	* ManagedXamlLoader.cs (LoadAssembly): Avoid loading non-downloaded assemblies from 
+	the local file system in the plugin case.
+
 	* Events.cs: Remove a FIXME.
 
 	* ManagedXamlLoader.cs (LoadCode): Report DLR errors through the plugin.

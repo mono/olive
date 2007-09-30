@@ -160,7 +160,7 @@ namespace Mono.Xaml
 			//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
 			
 			clientlib = null;
-			
+
 			try {
 				clientlib = Moonlight.LoadFile (asm_path);
 			} catch (System.IO.FileNotFoundException) {
@@ -170,8 +170,18 @@ namespace Mono.Xaml
 			}
 
 			if (clientlib == null) {
-				Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
-				return AssemblyLoadResult.LoadFailure;
+				string mapped = GetMapping (asm_path);
+
+				if (mapped != null) {
+					clientlib = Helper.LoadFile (mapped);
+					if (clientlib == null) {
+						Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
+						return AssemblyLoadResult.LoadFailure;
+					}
+				} else {
+					RequestFile (asm_path);
+					return AssemblyLoadResult.MissingAssembly;
+				}
 			}
 
 			//
