@@ -49,9 +49,13 @@ System.Windows/FontStyles.cs
 System.Windows/FontWeights.cs
 System.Windows/FrameworkElement.cs
 System.Windows/Inlines.cs
+System.Windows/ParserErrorEventArgs.cs
+System.Windows/ParserErrorEventHandler.cs
 System.Windows/Point.cs
 System.Windows/ResourceDictionary.cs
 System.Windows/Rect.cs
+System.Windows/RuntimeErrorEventArgs.cs
+System.Windows/RuntimeErrorEventHandler.cs
 System.Windows/Size.cs
 System.Windows/StyleSimulations.cs
 System.Windows/TextDecorations.cs
