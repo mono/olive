@@ -22,6 +22,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		private CodeContext context;
+		private string name;
+		private CallTargetN callTarget;
+		private string[] argNames;
+		private bool isStandardConstructor;
+		
 		public virtual object Call (CodeContext context, object instance, object [] args)
 		{
 			throw new NotImplementedException ();
@@ -66,13 +72,13 @@ namespace Microsoft.JScript.Runtime {
 		}
 
 		protected CallTargetN CallTarget {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return callTarget; }
+			set { callTarget = value; }
 		}
 
 		public CodeContext Context {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return context; }
+			set { context = value; }
 		}
 
 		public virtual Delegate Target {

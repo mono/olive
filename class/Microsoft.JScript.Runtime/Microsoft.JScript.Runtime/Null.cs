@@ -5,7 +5,7 @@ namespace Microsoft.JScript.Runtime {
 	[Serializable]
 	public sealed class Null {
 
-		public static readonly Null Value;
+		public static readonly Null Value = null;
 
 		Null ()
 		{

@@ -13,92 +13,92 @@ namespace Microsoft.JScript.Runtime {
 
 		public TypeCode GetTypeCode ()
 		{
-			throw new NotImplementedException ();
+			return TypeCode.Empty;
 		}
 
 		public bool ToBoolean (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
 		public byte ToByte (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0x00;
 		}
 
 		public char ToChar (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return '\0';//endding char
 		}
 
 		public DateTime ToDateTime (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return DateTime.MinValue;
 		}
 
 		public decimal ToDecimal (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public double ToDouble (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public short ToInt16 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public int ToInt32 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public long ToInt64 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public sbyte ToSByte (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public float ToSingle (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public string ToString (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return "undefined";
 		}
 
 		public object ToType (Type conversionType, IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		public ushort ToUInt16 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 		
 		public uint ToUInt32 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public ulong ToUInt64 (IFormatProvider provider)
 		{
-			throw new NotImplementedException ();
+			return 0;
 		}
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			return "undefined";
 		}
 	}
 }

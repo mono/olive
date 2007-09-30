@@ -49,12 +49,13 @@ namespace Microsoft.JScript.Runtime {
 
 		public static double ToNumber (object value)
 		{
+
 			throw new NotImplementedException ();
 		}
 
 		public static double ToNumber (string str)
 		{
-			throw new NotImplementedException ();
+			return Double.Parse (str);
 		}
 
 		public static object ToObject (CodeContext context, object value)
@@ -75,6 +76,32 @@ namespace Microsoft.JScript.Runtime {
 		public static string ToString (object value)
 		{
 			throw new NotImplementedException ();
+		}
+
+		internal static object ToPrimitive (object value)
+		{//TODO done something to get JSObject.eType from regulare type 
+			//else find a type which ever done that somewhere...
+			return ToPrimitive (value, null);
+		}
+
+		internal static object ToPrimitive (object value, JSObject.eType preferredType)
+		{
+			if (value is JSObject)
+			{
+
+				switch (preferredType) {
+					case JSObject.eType.Undefined:
+					case JSObject.eType.Null:
+					case JSObject.eType.Boolean:
+					case JSObject.eType.Number:
+					case JSObject.eType.String:
+						return value;
+					case JSObject.eType.Object:
+						return ((JSObject)value).GetDefaultValue (null, preferredType);
+					default:
+						break;
+				}
+			}
 		}
 
 		[DebuggerHidden]

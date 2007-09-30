@@ -9,8 +9,7 @@ namespace Microsoft.JScript.Runtime {
 		{
 			JSArrayObject result = new JSArrayObject ();
 			foreach (object obj in values) {
-				//convert to int the obj new SymbolId (obj.ToString ());
-				result.SetCustomMember (context, SymbolTable.StringToId (obj.ToString ()), obj);
+				result.AddObjectKey (obj.ToString (), obj);
 			}
 			return result;
 		}
@@ -22,8 +21,11 @@ namespace Microsoft.JScript.Runtime {
 
 		public static object ConstructObjectFromLiteral (CodeContext context, object [] names, object [] values)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			JSObject obj = new JSObject (((JSContext)context.LanguageContext).ObjectPrototype);
+			for (int i = 0; i < names.Length; i++) {
+				obj.AddObjectKey (names[i], values[i]);
+			}
+			return obj;
 		}
 
 		public static IAttributesCollection ConstructScopeObject (CodeContext context, object value)
@@ -33,8 +35,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public static bool Delete (CodeContext context, SymbolId name)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return context.LanguageContext.RemoveName (context.Scope, name);
 		}
 
 		public static IEnumerator GetEnumeratorForIteration (CodeContext context, object o)
@@ -78,8 +79,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public static double Negate (object x)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return (-1) * Convert.ToNumber (x);
 		}
 
 		public static bool Not (object x)
@@ -90,25 +90,22 @@ namespace Microsoft.JScript.Runtime {
 
 		public static int OnesComplement (object x)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return ~Convert.ToInt32 (x);
 		}
 
 		public static double Positive (object x)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return Convert.ToNumber (x);
 		}
 
 		public static void PrintExpressionValue (object o)
 		{
-			throw new NotImplementedException ();
+			Console.WriteLine (o.ToString ());
 		}
 
 		public static string TypeOf (object O)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return O.GetType ().ToString ();
 		}
 
 		public static object Void (object Operand)
