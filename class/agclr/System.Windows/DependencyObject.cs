@@ -653,7 +653,10 @@ namespace System.Windows {
 			Value v;
 			if (t == property.type || property.type.IsAssignableFrom (t))
 				v = GetAsValue (obj);
-			else
+			else if (t == typeof (string)) {
+				NativeMethods.xaml_set_property_from_str (native, property.native, obj.ToString ());
+				return;
+			} else
 				v = GetAsValue (Helper.ChangeType (obj, property.type));
 			
 			NativeMethods.dependency_object_set_value (native, property.native, ref v);

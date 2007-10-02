@@ -1,3 +1,9 @@
+2007-10-02  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: If we are trying to use a string to set a
+	property, use the special xaml parsing functions here.  This will
+	try to massage the string into the correct type.
+
 2007-09-30  Jb Evain  <jbevain@novell.com>
 
 	* ParserErrorEvent[Args|Handler].cs,
