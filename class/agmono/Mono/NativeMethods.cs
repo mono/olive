@@ -114,8 +114,11 @@ namespace Mono {
 		public extern static Kind dependency_object_get_object_type (IntPtr obj);
 		
 		[DllImport("moon")]
-	    public extern static IntPtr xaml_create_from_str (IntPtr native_loader, string xaml, bool create_namescope,
+		public extern static IntPtr xaml_create_from_str (IntPtr native_loader, string xaml, bool create_namescope,
 								  out Kind kind);
+
+		[DllImport ("moon")]
+		public extern static void xaml_set_property_from_str (IntPtr obj, IntPtr prop, string value);
 
 		[DllImport("moon")]
 		public extern static void value_free_value (ref Value val);
