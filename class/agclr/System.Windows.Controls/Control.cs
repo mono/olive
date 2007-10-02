@@ -28,6 +28,7 @@
 
 using Mono;
 using Mono.Xaml;
+using System.Windows.Markup;
 
 namespace System.Windows.Controls {
 
@@ -49,7 +50,11 @@ namespace System.Windows.Controls {
 			IntPtr native_child = NativeMethods.control_initialize_from_xaml_callbacks (native, xaml,
 											  out kind, loader.NativeLoader);
 			loader.FreeNativeLoader ();
-			
+
+			if (native_child == IntPtr.Zero)
+				// FIXME: Add detail
+				throw new XamlParseException ();
+
 			DependencyObject o = DependencyObject.Lookup (kind, native_child);
 			return (FrameworkElement) o;
 		}
