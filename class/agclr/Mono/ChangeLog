@@ -1,3 +1,7 @@
+2007-10-02  Zoltan Varga  <vargaz@gmail.com>
+
+	* ManagedXamlLoader.cs (LoadObject): Log exceptions thrown from CreateInstance.
+
 2007-09-30  Zoltan Varga  <vargaz@gmail.com>
 
 	* ManagedXamlLoader.cs (LoadAssembly): Avoid loading non-downloaded assemblies from 

@@ -287,7 +287,14 @@ namespace Mono.Xaml
 			else
 				name = String.Concat (ns, ".", type_name);
 
-			object res = clientlib.CreateInstance (name);
+			object res = null;
+			try {
+				res = clientlib.CreateInstance (name);
+			}
+			catch (TargetInvocationException ex) {
+				Console.WriteLine ("ManagedXamlLoader::LoadObject: CreateInstance ({0}) failed: {1}", name, ex.InnerException);
+				return IntPtr.Zero;
+			}
 			DependencyObject dob = res as DependencyObject;
 
 			if (dob == null) {
