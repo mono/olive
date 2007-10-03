@@ -47,7 +47,15 @@ namespace MonoTests.Microsoft.JScript.Runtime
 		[Test]
 		public void ConstructObjectFromLiteral ()
 		{
-
+			object key1 = new String ("test name".ToCharArray ());
+			object val1 = new String ("test value".ToCharArray ());
+			object obj = JSCompilerHelpers.ConstructObjectFromLiteral (new MSc.CodeContext (new MSc.Scope (), null), new object[] { key1 }, new object[] { val1});
+			Assert.IsInstanceOfType (typeof (JSObject), obj, "#1");
+			JSObject jsobj = (JSObject)obj;
+			foreach (object o in jsobj.Keys) {
+				Assert.AreEqual(key1, o, "#2");
+				Assert.AreEqual (val1, jsobj[o], "#3");
+			}
 		}
 
 		[Test]
@@ -89,7 +97,7 @@ namespace MonoTests.Microsoft.JScript.Runtime
 		[Test]
 		public void Negate ()
 		{
-
+			Assert.AreEqual(-5.0, JSCompilerHelpers.Negate (5),"#1");
 		}
 
 		[Test]
@@ -107,7 +115,7 @@ namespace MonoTests.Microsoft.JScript.Runtime
 		[Test]
 		public void Positive ()
 		{
-
+			Assert.AreEqual (5.0, JSCompilerHelpers.Positive (5), "#1");
 		}
 
 		[Test]
@@ -119,7 +127,7 @@ namespace MonoTests.Microsoft.JScript.Runtime
 		[Test]
 		public void Void ()
 		{
-
+			Assert.AreEqual (UnDefined.Value, JSCompilerHelpers.Void (new object()), "#1");
 		}
 	}
 }
