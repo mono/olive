@@ -16,7 +16,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public override string GetClassName ()
 		{
-			throw new NotImplementedException ();
+			return "number";
 		}
 	}
 }

@@ -11,17 +11,9 @@ namespace Microsoft.JScript.Runtime {
 	public class JSObject : IAttributesCollection, ICustomMembers, IEnumerable, IEnumerable<KeyValuePair<object,object>>,
 		IMapping, IPythonContainer {
 		
-		private JSObject prototype;
+		internal JSObject prototype;
 		private Dictionary<SymbolId, object> members;
-		internal enum eType
-		{
-			Undefined,
-			Null,
-			Boolean,
-			Number,
-			String,
-			Object
-		}
+
 		public JSObject (JSObject prototype)
 		{
 			this.prototype = prototype;
@@ -96,7 +88,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public virtual string GetClassName ()
 		{
-			return "Object";
+			return "object";
 		}
 		
 		public virtual IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
@@ -152,11 +144,11 @@ namespace Microsoft.JScript.Runtime {
 			return UnDefined.Value;
 		}
 
-		internal object GetDefaultValue (CodeContext context, eType hint)
+		internal object GetDefaultValue (CodeContext context, TypeCode hint)
 		{//ECAM 8.6.2.6 DefaultValue
 			object obj;
 			object result;
-			if (hint == eType.String || this is JSDateObject) {
+			if (hint == TypeCode.String || this is JSDateObject) {
 				if (this.TryGetCustomMember (null, ObjectToId ("toString"), out obj)) {
 					if (obj is JSFunctionObject) {
 						//call is with instance= this and arguement list empty
@@ -176,7 +168,7 @@ namespace Microsoft.JScript.Runtime {
 					}
 				}
 			}
-			if (hint == eType.Number) {
+			else {//number and other hint
 				if (this.TryGetCustomMember (null, ObjectToId ("valueOf"), out obj)) {
 					if (obj is JSFunctionObject) {
 						//call is with instance= this and arguement list empty

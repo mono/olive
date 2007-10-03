@@ -57,9 +57,8 @@ namespace Microsoft.JScript.Runtime {
 
 		public static JSGlobalObject GetGlobalObject (CodeContext context)
 		{
-			//TODO
 			throw new NotImplementedException ();
-			//return new JSGlobalObject (context.LanguageContext.);//get scriptModule somewhere
+			//return new JSGlobalObject (((JSContext)context.LanguageContext).);//get scriptModule somewhere
 		}
 
 		public static object GetThisObject (CodeContext context, SymbolId name)

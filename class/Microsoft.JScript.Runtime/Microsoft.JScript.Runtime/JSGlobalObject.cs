@@ -104,7 +104,8 @@ namespace Microsoft.JScript.Runtime {
 
 		public static bool isNaN (object num)
 		{
-			throw new NotImplementedException ();
+			double number = Convert.ToNumber (num);
+			return Double.IsNaN (number);
 		}
 
 		public static object isNaN (params object [] arguments)
@@ -124,7 +125,19 @@ namespace Microsoft.JScript.Runtime {
 
 		public static double parseFloat (object @string)
 		{
-			throw new NotImplementedException ();
+			string str = Convert.ToString (@string).Trim ();
+			if (str.StartsWith ("Infinity") || str.StartsWith ("+Infinity"))
+				return Double.PositiveInfinity;
+			else if (str.StartsWith ("-Infinity"))
+				return Double.NegativeInfinity;
+
+			if (str.Trim () == "")
+				return 0;
+			try {
+				return Double.Parse (str, System.Globalization.NumberStyles.Float);
+			} catch {
+				return Double.NaN;
+			}
 		}
 
 		public static object parseFloat (params object [] arguments)

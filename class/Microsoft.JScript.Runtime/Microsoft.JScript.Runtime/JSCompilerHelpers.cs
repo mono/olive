@@ -84,8 +84,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public static bool Not (object x)
 		{
-			//TODO
-			throw new NotImplementedException ();
+			return !Convert.ToBoolean (x);
 		}
 
 		public static int OnesComplement (object x)

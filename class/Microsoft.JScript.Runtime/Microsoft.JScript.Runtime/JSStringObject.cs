@@ -14,7 +14,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public override string GetClassName ()
 		{
-			return base.GetClassName ();
+			return "string";
 		}
 
 		public override object GetValue (object key)
