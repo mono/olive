@@ -46,6 +46,7 @@ namespace System.Windows.Controls {
 		{
 			Kind kind;
 			ManagedXamlLoader loader = new ManagedXamlLoader ();
+			loader.LoadDepsSynch = true;
 			loader.CreateNativeLoader (null, xaml);
 			IntPtr native_child = NativeMethods.control_initialize_from_xaml_callbacks (native, xaml,
 											  out kind, loader.NativeLoader);

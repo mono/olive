@@ -1,3 +1,7 @@
+2007-10-04  Zoltan Varga  <vargaz@gmail.com>
+
+	* Control.cs (InitialzeFromXaml): Load dependencies synchronously.
+
 2007-10-02  Zoltan Varga  <vargaz@gmail.com>
 
 	* Control.cs: Add some error checking.
