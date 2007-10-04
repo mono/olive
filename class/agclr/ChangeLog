@@ -1,3 +1,7 @@
+2007-10-04  Zoltan Varga  <vargaz@gmail.com>
+
+	* System.IO/SimpleUnmanagedMemoryStream.cs: Fix a warning.
+
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Internal.cs: Don't ref ourself if we're created using a *_new function,

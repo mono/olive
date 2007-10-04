@@ -40,7 +40,6 @@ namespace System.IO
 		long length;
 		long capacity;
 		IntPtr initial_pointer;
-		IntPtr pointer_position;
 		long initial_position;
 		long current_position;
 		
