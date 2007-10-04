@@ -1,3 +1,7 @@
+2007-10-04  Zoltan Varga  <vargaz@gmail.com>
+
+	* NativeMethods.cs: Add plugin_instance_load_url.
+
 2007-10-02  Jackson Harper  <jackson@ximian.com>
 
 	* NativeMethods.cs: Add function to set a property from a xaml
