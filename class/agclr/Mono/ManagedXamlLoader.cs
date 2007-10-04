@@ -46,6 +46,7 @@ namespace Mono.Xaml
 //		string contents;
 		static Dictionary<string, string> mappings = new Dictionary <string, string> ();
 		XamlLoaderCallbacks callbacks;
+		bool load_deps_synch = false;
 
 #if WITH_DLR
 		DLRHost dlr_host;
@@ -60,6 +61,17 @@ namespace Mono.Xaml
 		public IntPtr NativeLoader {
 			get {
 				return native_loader;
+			}
+		}
+
+		//
+		// Set whenever the loader will load dependencies synchronously using the browser
+		// This is used in cases where the user of the loader can't operate in async mode
+		// such as Control:InitializeFromXaml ()
+		//
+		public bool LoadDepsSynch {
+			set {
+				load_deps_synch = value;
 			}
 		}
 		
@@ -170,17 +182,28 @@ namespace Mono.Xaml
 			}
 
 			if (clientlib == null) {
-				string mapped = GetMapping (asm_path);
-
-				if (mapped != null) {
-					clientlib = Helper.LoadFile (mapped);
+				if (load_deps_synch) {
+					byte[] arr = LoadDependency (asm_path);
+					if (arr != null)
+						clientlib = Assembly.Load (arr);
 					if (clientlib == null) {
 						Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
 						return AssemblyLoadResult.LoadFailure;
 					}
+					// FIXME: Load dependencies
 				} else {
-					RequestFile (asm_path);
-					return AssemblyLoadResult.MissingAssembly;
+					string mapped = GetMapping (asm_path);
+
+					if (mapped != null) {
+						clientlib = Helper.LoadFile (mapped);
+						if (clientlib == null) {
+							Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
+							return AssemblyLoadResult.LoadFailure;
+						}
+					} else {
+						RequestFile (asm_path);
+						return AssemblyLoadResult.MissingAssembly;
+					}
 				}
 			}
 
@@ -524,5 +547,27 @@ namespace Mono.Xaml
 			}
 		}
 #endif
+
+		//
+		// Load a dependency file synchronously using the plugin
+		//
+		private byte[] LoadDependency (string path) {
+			IntPtr plugin_handle = System.Windows.Interop.PluginHost.Handle;
+			if (plugin_handle == IntPtr.Zero)
+				return null;
+
+			// FIXME: Cache result
+			int size = 0;
+			IntPtr n = NativeMethods.plugin_instance_load_url (plugin_handle, path, ref size);
+			byte[] arr = new byte [size];
+			unsafe {
+				using (Stream u = new SimpleUnmanagedMemoryStream ((byte *) n, (int) size)){
+					u.Read (arr, 0, size);
+				}
+			}
+			Helper.FreeHGlobal (n);
+
+			return arr;;
+		}
 	}
 }
