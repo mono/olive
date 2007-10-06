@@ -1,3 +1,11 @@
+2007-10-06  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs (GetAsValue): we can't use
+	Type.GetElementType() on enums.  there might be a way to do this
+	check (to see if the enum is int-sized), but I couldn't figure it
+	out - IsAssignableFrom doesn't work.  Remove the check for now,
+	since we break with it enabled.
+
 2007-10-02  Jackson Harper  <jackson@ximian.com>
 
 	* DependencyObject.cs: If we are trying to use a string to set a

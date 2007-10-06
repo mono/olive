@@ -517,7 +517,7 @@ namespace System.Windows {
 					value.k = dov.GetKind ();
 					value.u.p = dov_native;
 					NativeMethods.base_ref (dov_native);
-				} else if (v is int || (v.GetType ().IsEnum && v.GetType ().GetElementType () == typeof (int))){
+				} else if (v is int || v.GetType ().IsEnum) {
 					value.k = Kind.INT32;
 					value.u.i32 = (int) v;
 				} else if (v is bool){
