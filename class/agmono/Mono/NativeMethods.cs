@@ -121,6 +121,9 @@ namespace Mono {
 		public extern static void xaml_set_property_from_str (IntPtr obj, IntPtr prop, string value);
 
 		[DllImport("moon")]
+		public extern static IntPtr xaml_create_from_file (IntPtr native_loader, string filename, bool create_namescope,
+								  out Kind kind);
+		[DllImport("moon")]
 		public extern static void value_free_value (ref Value val);
 		
 #region UIElements
@@ -576,6 +579,24 @@ namespace Mono {
 		[DllImport ("moon")]
 		public extern static IntPtr surface_attach (IntPtr surface, IntPtr toplevel);
 
+		[DllImport ("moon")]
+		public extern static IntPtr surface_resize (IntPtr surface, int width, int height);
+		
+		[DllImport ("moon")]
+		public extern static void surface_paint (IntPtr surface, IntPtr ctx, int x, int y, int width, int height);
+		
+		[DllImport ("moon")]
+		public extern static IntPtr surface_new (int w, int h);
+
+		[DllImport ("moon")]
+		public extern static IntPtr surface_get_drawing_area (IntPtr surface);
+
+		[DllImport ("moon")]
+		public extern static void surface_set_trans (IntPtr surface, bool trans);
+		
+		[DllImport ("moon")]
+		public extern static bool surface_get_trans (IntPtr surface);
+		
 		[DllImport ("moon")]
 		public extern static void image_set_source (IntPtr image, IntPtr downloader, string PartName);
 
