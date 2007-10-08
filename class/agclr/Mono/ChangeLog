@@ -1,3 +1,9 @@
+2007-10-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Store the plugin and surface pointers as static
+	  values. Use those values when creating a native loader instead of
+	  IntPtr.Zero.
+
 2007-10-04  Zoltan Varga  <vargaz@gmail.com>
 
 	* ManagedXamlLoader.cs (LoadDepsSynch): New property to control the synchronous

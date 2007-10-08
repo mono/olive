@@ -39,8 +39,11 @@ using Mono;
 namespace Mono.Xaml
 {
 	internal class ManagedXamlLoader : XamlLoader	{
+		 // Contains any surface/plugins already loaded in the current domain
+		internal static IntPtr surface_in_domain;
+		internal static IntPtr plugin_in_domain;
+		IntPtr surface;
 		IntPtr plugin;
-//		IntPtr surface;
 		IntPtr native_loader;
 //		string filename;
 //		string contents;
@@ -81,12 +84,12 @@ namespace Mono.Xaml
 		
 		public void CreateNativeLoader (string filename, string contents)
 		{
-			native_loader = NativeMethods.xaml_loader_new (filename, contents, IntPtr.Zero);
+			native_loader = NativeMethods.xaml_loader_new (filename, contents, surface_in_domain);
 			
 			if (native_loader == IntPtr.Zero)
 				throw new Exception ("Unable to create native loader.");
 			
-			Setup (native_loader, IntPtr.Zero, IntPtr.Zero, filename, contents);
+			Setup (native_loader, plugin_in_domain, surface_in_domain, filename, contents);
 		}
 		
 		public void FreeNativeLoader ()
@@ -99,7 +102,7 @@ namespace Mono.Xaml
 		{
 			this.native_loader = native_loader;
 			this.plugin = plugin;
-//			this.surface = surface;
+			this.surface = surface;
 //			this.filename = filename;
 //			this.contents = contents;
 
@@ -116,6 +119,19 @@ namespace Mono.Xaml
 			if (plugin != IntPtr.Zero) {
 				AppDomain.CurrentDomain.SetData ("PluginInstance", plugin);
 				System.Windows.Interop.PluginHost.SetPluginHandle (plugin);
+				if (plugin_in_domain != IntPtr.Zero && plugin_in_domain != plugin) {
+					Console.Error.WriteLine ("There already is a plugin in this AppDomain.");
+				} else {
+					plugin_in_domain = plugin;
+				}
+			}
+			
+			if (surface != IntPtr.Zero) {
+				if (surface_in_domain != IntPtr.Zero && surface_in_domain != surface) {
+					Console.Error.WriteLine ("There already is a surface in this AppDomain.");
+				} else {
+					surface_in_domain = surface;
+				}
 			}
 			
 		}
