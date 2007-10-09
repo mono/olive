@@ -3,7 +3,7 @@ rest of Mono.
 
 To build:
 
-	./configure [--prefix=/yourprefix]
+	./configure [--prefix=/yourprefix] [--with-moonlight=yes|no]
 
 	make
 
@@ -14,6 +14,10 @@ To install:
 It defaults to the Mono installation prefix
 
 * Silverlight Assemblies
+
+	By default, --with-moonlight is enabled, which means that the 2.1
+	assemblies for Moonlight will be build. You can de-activate that
+	by configuring olive --with-moonlight=no.
 
 	Since Moonlight exposes both a 2.1 profile and a profile that
 	can be used on our desktop applications you will find two sets
