@@ -1,3 +1,8 @@
+2007-10-10  Wade Berrier  <wberrier@novell.com>
+
+	* configure: split up VERSION so no segments are longer than
+	4 chars, so svn revisions can be used.
+
 2007-10-09  Jb Evain  <jbevain@novell.com>
 
 	* README: update for the --with-moonlight configure option.
