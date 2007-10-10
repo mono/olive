@@ -26,16 +26,19 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using Mono;
+using Mono.Xaml;
 
 namespace System.Windows.Media {
 	public abstract class Visual : DependencyObject {
 
 		internal Visual (IntPtr raw) : base (raw)
 		{
+			NativeMethods.visual_set_surface (raw, XamlLoader.SurfaceInDomain);
 		}
 		
 		public Visual () : base (NativeMethods.visual_new ())
 		{
+			NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
 		}
 
 		public bool CaptureMouse ()

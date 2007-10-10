@@ -1,3 +1,7 @@
+2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Visual.cs: Set the surface of the visual upon creation.
+
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* RadialGradientBrush.cs, PolyLineSegment.cs, GradientStopCollection.cs,
