@@ -1,3 +1,8 @@
+2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Move the static surface and plugin fields to
+	  XamlLoader.
+
 2007-10-08  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Store the plugin and surface pointers as static
