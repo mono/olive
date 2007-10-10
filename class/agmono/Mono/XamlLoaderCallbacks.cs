@@ -58,7 +58,42 @@ namespace Mono.Xaml
 	
 	public abstract class XamlLoader : MarshalByRefObject
 	{
-		public abstract void Setup (IntPtr native_loader, IntPtr plugin, IntPtr surface, string filename, string contents);
+		 // Contains any surface/plugins already loaded in the current domain.
+		private static IntPtr surface_in_domain;
+		private static IntPtr plugin_in_domain;
 		
+		public abstract void Setup (IntPtr native_loader, IntPtr plugin, IntPtr surface, string filename, string contents);
+				
+		public static IntPtr SurfaceInDomain {
+			get {
+				return surface_in_domain;
+			}
+			set {
+				if (value == IntPtr.Zero || (value == surface_in_domain && value != IntPtr.Zero))
+					return;
+				
+				if (surface_in_domain != IntPtr.Zero) {
+					Console.Error.WriteLine ("There already is a surface in this AppDomain.");
+				} else {
+					surface_in_domain = value;
+				}
+			}
+		}
+		
+		public static IntPtr PluginInDomain {
+			get {
+				return plugin_in_domain;
+			}
+			set {
+				if (value == IntPtr.Zero || (value == plugin_in_domain && value != IntPtr.Zero))
+					return;
+				
+				if (plugin_in_domain != IntPtr.Zero) {
+					Console.Error.WriteLine ("There already is a plugin in this AppDomain.");
+				} else {
+					plugin_in_domain = value;
+				}
+			}			 
+		}
 	}
 }
