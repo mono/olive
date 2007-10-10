@@ -126,6 +126,9 @@ namespace Mono {
 		[DllImport("moon")]
 		public extern static void value_free_value (ref Value val);
 		
+		[DllImport("moon")]
+		public extern static void visual_set_surface (IntPtr visual, IntPtr surface);
+		
 #region UIElements
 		[DllImport("moon")]
 		public extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);

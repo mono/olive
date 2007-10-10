@@ -1,5 +1,9 @@
 2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* NativeMethods.cs: More native methods.
+
+2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* XamlLoaderCallbacks.cs: Moved the static surface and plugin fields here
 	  from ManagedXamlLoader.
 
