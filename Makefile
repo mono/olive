@@ -64,7 +64,7 @@ test-installed-compiler:
 	$(MAKE) TEST_SUBDIRS="tests errors" PROFILE=default TEST_RUNTIME=mono MCS=mcs run-test
 	$(MAKE) TEST_SUBDIRS="tests errors" PROFILE=net_2_0 TEST_RUNTIME=mono MCS=gmcs run-test
 
-package := olive-$(MONO_VERSION)
+package := olive-$(OLIVE_VERSION)
 
 dist-local: dist-default
 

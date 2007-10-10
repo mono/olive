@@ -2,6 +2,7 @@
 
 	* configure: split up VERSION so no segments are longer than
 	4 chars, so svn revisions can be used.
+	* Makefile: use OLIVE_VERSION for tarball name
 
 2007-10-09  Jb Evain  <jbevain@novell.com>
 

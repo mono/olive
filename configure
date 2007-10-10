@@ -47,6 +47,7 @@ echo "exec_prefix=\${prefix}" >> build/config.make
 echo "mono_libdir=\${exec_prefix}/lib" >> build/config.make
 echo "MCS_FLAGS=-debug+" >> build/config.make
 echo "RUNTIME=mono" >> build/config.make
+echo "OLIVE_VERSION=$VERSION" >> build/config.make
 echo "MONO_VERSION=$MONO_VERSION" >> build/config.make
 test "$with_moonlight" = yes && echo "WITH_MOONLIGHT=$with_moonlight" >> build/config.make
 
