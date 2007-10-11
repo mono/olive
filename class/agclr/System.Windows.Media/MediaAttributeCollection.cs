@@ -43,7 +43,9 @@ namespace System.Windows.Media {
 
 		public DependencyObject GetItemByName (string attribute_name)
 		{
-			throw new NotImplementedException ();
+			IntPtr item = NativeMethods.media_attribute_collection_get_item_by_name (native, attribute_name);
+			return DependencyObject.Lookup (
+				NativeMethods.dependency_object_get_object_type (item), item);
 		}
 
 		internal override Kind GetKind ()
