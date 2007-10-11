@@ -43,7 +43,7 @@ namespace System.Windows.Media {
 
 		public DependencyObject GetItemByName (string attribute_name)
 		{
-			return NativeMethods.media_attribute_collection_get_item_by_name (native, attribute_name);
+			throw new NotImplementedException ();
 		}
 
 		internal override Kind GetKind ()
