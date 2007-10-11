@@ -231,7 +231,10 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		public extern static IntPtr media_attribute_collection_new ();
-		
+
+		[DllImport("moon")]
+		public extern static IntPtr media_attribute_collection_get_item_by_name (IntPtr collection, string name);
+
 		[DllImport("moon")]
 		public extern static IntPtr path_figure_collection_new ();
 		
