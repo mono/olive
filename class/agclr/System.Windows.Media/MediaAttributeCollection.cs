@@ -32,6 +32,7 @@ using Mono;
 namespace System.Windows.Media {
 
 	public abstract class MediaAttributeCollection : Collection<MediaAttribute> {
+
 		public MediaAttributeCollection () : base (NativeMethods.media_attribute_collection_new ())
 		{
 		}
@@ -39,12 +40,12 @@ namespace System.Windows.Media {
 		internal MediaAttributeCollection (IntPtr raw) : base (raw)
 		{
 		}
-		
-		public DependencyObject GetItemByName (string AttributeName)
+
+		public DependencyObject GetItemByName (string attribute_name)
 		{
-			throw new NotImplementedException ();
+			return NativeMethods.media_attribute_collection_get_item_by_name (native, attribute_name);
 		}
-		
+
 		internal override Kind GetKind ()
 		{
 			return Kind.MEDIAATTRIBUTE_COLLECTION;

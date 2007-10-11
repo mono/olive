@@ -1,3 +1,7 @@
+2007-10-11  Jb Evain  <jbevain@novell.com>
+
+	* MediaAttributeCollection.cs: implement GetItemByName.
+
 2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Visual.cs: Set the surface of the visual upon creation.
