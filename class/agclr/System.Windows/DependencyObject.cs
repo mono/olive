@@ -43,8 +43,6 @@ using System.Threading;
 
 namespace System.Windows {
 	public abstract class DependencyObject {
-		static ArrayList PendingDestroys = new ArrayList ();
-		static volatile bool pending = false;
 		static Thread moonlight_thread;
 		static Hashtable objects = new Hashtable ();
 		internal IntPtr _native;
@@ -134,12 +132,6 @@ namespace System.Windows {
 			if (k <= Kind.DEPENDENCY_OBJECT)
 				throw new Exception ("the kind has to be a derived DependencyObject");
 
-			//
-			// FIXME: we should queue a timer
-			//
-			if (pending)
-				ClearPendingDestroys ();
-			
 			NativeMethods.base_ref (raw);
 			switch (k){
 			case Kind.CANVAS:
@@ -351,7 +343,7 @@ namespace System.Windows {
 		internal void Free ()
 		{
 			if (this.native != IntPtr.Zero) {
-				NativeMethods.base_unref (this.native);
+				NativeMethods.base_unref_delayed (this.native);
 				this.native = IntPtr.Zero;
 			}
 		}
@@ -364,17 +356,6 @@ namespace System.Windows {
 			}
 		}
 
-		static void ClearPendingDestroys ()
-		{
-			lock (PendingDestroys){
-				foreach (IntPtr v in PendingDestroys){
-					NativeMethods.base_unref (v);
-				}
-				PendingDestroys.Clear ();
-			}
-			pending = false;
-		}
-		
 		public virtual object GetValue (DependencyProperty property)
 		{
 			if (property == null)

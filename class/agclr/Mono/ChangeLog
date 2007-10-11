@@ -1,3 +1,9 @@
+2007-10-10  Chris Toshok  <toshok@ximian.com>
+
+	* ManagedXamlLoader.cs (LoadObject): we need to ref again in this
+	case, as the caller of this method assumes it owns a ref to this
+	object.  So, bump it up one for the managed ref.
+
 2007-10-10  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Move the static surface and plugin fields to

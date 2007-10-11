@@ -1,3 +1,11 @@
+2007-10-10  Chris Toshok  <toshok@ximian.com>
+
+	* DependencyObject.cs: remove the old ClearPendingDestroys code,
+	and just call base_unref_delayed from Free.
+
+	* XamlReader.cs: just to be consistent, all unmanaged unrefs call
+	base_unref_delayed.
+
 2007-10-06  Chris Toshok  <toshok@ximian.com>
 
 	* DependencyObject.cs (GetAsValue): we can't use

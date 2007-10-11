@@ -331,7 +331,9 @@ namespace Mono.Xaml
 				Console.Error.WriteLine ("ManagedXamlLoader::LoadObject ({0}, {1}, {2}, {3}): unable to create object instance: '{4}'", asm_name, asm_path, ns, type_name, name);
 				return IntPtr.Zero;
 			}
-			
+
+			NativeMethods.base_ref (dob.native);
+
 			return dob.native;
 		}
 		

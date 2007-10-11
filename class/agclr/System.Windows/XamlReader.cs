@@ -66,7 +66,7 @@ namespace System.Windows {
 			
 			if (result != null) {
 				// Delete our reference, result already has one.
-				NativeMethods.base_unref (top);
+				NativeMethods.base_unref_delayed (top);
 			}
 			
 			return result;
