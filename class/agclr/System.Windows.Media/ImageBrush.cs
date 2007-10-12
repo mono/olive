@@ -65,10 +65,9 @@ namespace System.Windows.Media {
 			}
 		}
 
-
 		public void SetSource (DependencyObject Downloader, string PartName)
 		{
-			throw new NotImplementedException ();
+			NativeMethods.image_brush_set_source (native, Downloader.native, PartName);
 		}
 
 		internal override Kind GetKind ()
