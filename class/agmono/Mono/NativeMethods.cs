@@ -610,6 +610,9 @@ namespace Mono {
 		public extern static void image_set_source (IntPtr image, IntPtr downloader, string PartName);
 
 		[DllImport ("moon")]
+		public extern static void image_brush_set_source (IntPtr image_brush, IntPtr downloader, string PartName);
+
+		[DllImport ("moon")]
 		public extern static void text_block_set_font_source (IntPtr textblock, IntPtr downloader);
 
 		[DllImport ("moon")]
