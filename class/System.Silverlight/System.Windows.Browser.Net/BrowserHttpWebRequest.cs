@@ -6,15 +6,23 @@ namespace System.Windows.Browser.Net
 {
 	public class BrowserHttpWebRequest : HttpWebRequest
 	{
-		[MonoTODO]
+#if !NET_2_1
 		public BrowserHttpWebRequest (Uri uri)
-#if NET_2_1
-			: base (uri)
-#else
-			: base (null, default (System.Runtime.Serialization.StreamingContext)) // FIXME: 2.0 != SL
-#endif
+			: base (null, default (System.Runtime.Serialization.StreamingContext))
 		{
-			throw new NotImplementedException ();
+			throw new NotSupportedException ("BrowserHttpWebRequest can only be used in the context of a plugin");
+		}
+
+		~BrowserHttpWebRequest ()
+		{
+		}
+#else
+		Uri uri;
+
+		public BrowserHttpWebRequest (Uri uri)
+			: base (uri)
+		{
+			this.uri = uri;
 		}
 
 		[MonoTODO]
@@ -23,7 +31,6 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-#if NET_2_1
 		[MonoTODO]
 		public override void Abort ()
 		{
