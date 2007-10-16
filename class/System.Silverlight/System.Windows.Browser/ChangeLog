@@ -1,3 +1,9 @@
+2007-10-16  Jb Evain  <jbevain@novell.com>
+
+	* BrowserRuntimeSettings.cs: use the new function
+	plugin_instance_get_browser_runtime_settings to get
+	the runtime settings.
+
 2007-08-08  Jackson Harper  <jackson@ximian.com>
 
 	* HtmlPage.cs: implement CurrentBookmark NavigateToBookmark and

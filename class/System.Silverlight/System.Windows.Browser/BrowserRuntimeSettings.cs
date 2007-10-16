@@ -40,13 +40,14 @@ namespace System.Windows.Browser
 		bool debug, html, httpnet, script;
 
 		[DllImport ("moonplugin")]
-		static extern void LoadBrowserRuntimeSettings (BrowserRuntimeSettings instance);
+		static extern void plugin_instance_get_browser_runtime_settings (out bool debug, out bool html_access,
+																		 out bool httpnet_access, out bool script_access);
 
 		internal BrowserRuntimeSettings ()
 		{
 			culture = Thread.CurrentThread.CurrentCulture;
 			ui_culture = Thread.CurrentThread.CurrentUICulture;
-			LoadBrowserRuntimeSettings (this);
+			plugin_instance_get_browser_runtime_settings (out debug, out html, out httpnet, out script);
 		}
 
 		public CultureInfo Culture {
