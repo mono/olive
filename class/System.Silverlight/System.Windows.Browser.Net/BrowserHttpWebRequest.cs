@@ -1,3 +1,31 @@
+//
+// System.Windows.Browser.Net.BrowserHttpWebRequest class
+//
+// Authors:
+//	Jb Evain  <jbevain@novell.com>
+//
+// Copyright (C) 2007 Novell, Inc (http://www.novell.com)
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+//
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+//
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
 using System;
 using System.IO;
 using System.Net;
@@ -6,18 +34,9 @@ namespace System.Windows.Browser.Net
 {
 	public class BrowserHttpWebRequest : HttpWebRequest
 	{
-#if !NET_2_1
-		public BrowserHttpWebRequest (Uri uri)
-			: base (null, default (System.Runtime.Serialization.StreamingContext))
-		{
-			throw new NotSupportedException ("BrowserHttpWebRequest can only be used in the context of a plugin");
-		}
-
-		~BrowserHttpWebRequest ()
-		{
-		}
-#else
+#if NET_2_1
 		Uri uri;
+		WebHeaderCollection headers = new WebHeaderCollection ();
 
 		public BrowserHttpWebRequest (Uri uri)
 			: base (uri)
@@ -97,15 +116,13 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 		
-		[MonoTODO]
 		public override string Accept {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.Accept]; }
+			set { headers [HttpRequestHeader.Connection] = value; }
 		}
 
-		[MonoTODO]
 		public override Uri Address {
-			get { throw new NotImplementedException (); }
+			get { return uri; }
 		}
 
 		[MonoTODO]
@@ -126,10 +143,9 @@ namespace System.Windows.Browser.Net
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string Connection {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.Connection]; }
+			set { headers [HttpRequestHeader.Connection] = value; }
 		}
 
 		[MonoTODO]
@@ -138,10 +154,9 @@ namespace System.Windows.Browser.Net
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string ContentType {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.ContentType]; }
+			set { headers [HttpRequestHeader.ContentType] = value; }
 		}
 
 		[MonoTODO]
@@ -162,10 +177,9 @@ namespace System.Windows.Browser.Net
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string Expect {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.Expect]; }
+			set { headers [HttpRequestHeader.Expect] = value; }
 		}
 
 		[MonoTODO]
@@ -175,8 +189,8 @@ namespace System.Windows.Browser.Net
 
 		[MonoTODO]
 		public override WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers; }
+			set { headers = value; }
 		}
 
 		[MonoTODO]
@@ -215,15 +229,13 @@ namespace System.Windows.Browser.Net
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string Referer {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.Referer]; }
+			set { headers [HttpRequestHeader.Referer] = value; }
 		}
 
-		[MonoTODO]
 		public override Uri RequestUri {
-			get { throw new NotImplementedException (); }
+			get { return uri; }
 		}
 
 		[MonoTODO]
@@ -238,16 +250,24 @@ namespace System.Windows.Browser.Net
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string TransferEncoding {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.TransferEncoding]; }
+			set { headers [HttpRequestHeader.TransferEncoding] = value; }
 		}
 
-		[MonoTODO]
 		public override string UserAgent {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return headers [HttpRequestHeader.UserAgent]; }
+			set { headers [HttpRequestHeader.UserAgent] = value; }
+		}
+#else
+		public BrowserHttpWebRequest (Uri uri)
+			: base (null, default (System.Runtime.Serialization.StreamingContext))
+		{
+			throw new NotSupportedException ("BrowserHttpWebRequest can only be used in the context of a plugin");
+		}
+
+		~BrowserHttpWebRequest ()
+		{
 		}
 #endif
 	}

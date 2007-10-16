@@ -1,3 +1,8 @@
+2007-10-16  Jb Evain  <jbevain@novell.com>
+
+	* BrowserHttpWebRequest.cs: Start implementing HTTP header related
+	properties.
+
 2007-06-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SoapHttpClientProtocol.cs : CancelAsync() was missing.
