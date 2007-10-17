@@ -58,28 +58,53 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void AddRange (int range)
 		{
-			throw new NotImplementedException ();
+			AddRange ("bytes", range);
 		}
 
-		[MonoTODO]
 		public override void AddRange (int @from, int to)
 		{
-			throw new NotImplementedException ();
+			AddRange ("bytes", @from, to);
 		}
 
-		[MonoTODO]
 		public override void AddRange (string rangeSpecifier, int range)
 		{
-			throw new NotImplementedException ();
+			AddRangeInternal (rangeSpecifier, range, null);
 		}
 
-		[MonoTODO]
 		public override void AddRange (string rangeSpecifier, int @from, int to)
 		{
-			throw new NotImplementedException ();
+			AddRangeInternal (rangeSpecifier, @from, to);
+		}
+
+		static bool IsSameRangeKind (string range, string rangeSpecifier)
+		{
+			return range.ToLower (CultureInfo.InvariantCulture).StartsWith (
+				rangeSpecifier.ToLower (CultureInfo.InvariantCulture));
+		}
+
+		void AddRangeInternal (string rangeSpecifier, int @from, int? to)
+		{
+			if (rangeSpecifier == null)
+				throw new ArgumentNullException ("rangeSpecifier");
+
+			if (from < 0 || ((to != null) && (to < 0 || from > to)))
+				throw new ArgumentOutOfRangeException ();
+
+			string range = headers [HttpRequestHeader.Range];
+			if (string.IsNullOrEmpty (range))
+				range = rangeSpecifier + "=";
+			else if (IsSameRangeKind (range, rangeSpecifier))
+				range += ",";
+			else
+				throw new InvalidOperationException ("rangeSpecifier");
+
+			range += from.ToString (CultureInfo.InvariantCulture) + "-";
+			if (to != null)
+				range += ((int) to).ToString (CultureInfo.InvariantCulture);
+
+			headers [HttpRequestHeader.Range] = range;
 		}
 
 		[MonoTODO]
