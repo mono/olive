@@ -3,6 +3,7 @@
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 System.Windows.Browser.Net/BrowserHttpWebRequest.cs
+System.Windows.Browser.Net/BrowserHttpWebResponse.cs
 System.Windows.Browser.Net/SoapHttpClientProtocol.cs
 System.Windows.Browser.Serialization/JavaScriptConverter.cs
 System.Windows.Browser.Serialization/JavaScriptSerializer.cs
