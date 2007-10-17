@@ -1,5 +1,5 @@
 //
-// System.IO.UnmanagedMemoryStream.cs
+// System.IO.SimpleUnmanagedMemoryStream.cs
 //
 // Copyright (C) 2006 Sridhar Kulkarni, All Rights Reserved
 //
@@ -35,7 +35,7 @@ using System.Runtime.InteropServices;
 
 namespace System.IO
 {
-	internal class SimpleUnmanagedMemoryStream : Stream
+	public class SimpleUnmanagedMemoryStream : Stream
 	{
 		long length;
 		long capacity;
