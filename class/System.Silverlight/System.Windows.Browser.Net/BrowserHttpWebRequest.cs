@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Globalization;
 using System.IO;
 using System.Net;
 
@@ -36,6 +37,7 @@ namespace System.Windows.Browser.Net
 	{
 #if NET_2_1
 		Uri uri;
+		string method = "GET";
 		WebHeaderCollection headers = new WebHeaderCollection ();
 
 		public BrowserHttpWebRequest (Uri uri)
@@ -125,22 +127,19 @@ namespace System.Windows.Browser.Net
 			get { return uri; }
 		}
 
-		[MonoTODO]
 		public override bool AllowAutoRedirect {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return true; } // silverlight always returns true
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override bool AllowWriteStreamBuffering {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return true; }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override DecompressionMethods AutomaticDecompression {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return DecompressionMethods.None; }
+			set { throw new NotSupportedException (); }
 		}
 
 		public override string Connection {
@@ -148,10 +147,13 @@ namespace System.Windows.Browser.Net
 			set { headers [HttpRequestHeader.Connection] = value; }
 		}
 
-		[MonoTODO]
 		public override long ContentLength {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get {
+					return long.Parse (headers [HttpRequestHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);
+			}
+			set {
+				headers [HttpRequestHeader.ContentLength] = value.ToString (CultureInfo.InvariantCulture);
+			}
 		}
 
 		public override string ContentType {
@@ -159,22 +161,19 @@ namespace System.Windows.Browser.Net
 			set { headers [HttpRequestHeader.ContentType] = value; }
 		}
 
-		[MonoTODO]
 		public Delegate ContinueDelegate {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public object CookieContainer {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public object Credentials {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
 		public override string Expect {
@@ -187,46 +186,39 @@ namespace System.Windows.Browser.Net
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override WebHeaderCollection Headers {
 			get { return headers; }
 			set { headers = value; }
 		}
 
-		[MonoTODO]
 		public override bool KeepAlive {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override string MediaType {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override string Method {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return method; }
+			set { method = value; }
 		}
 
-		[MonoTODO]
 		public override bool Pipelined {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override bool PreAuthenticate {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override int ReadWriteTimeout {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
 		public override string Referer {
@@ -238,16 +230,14 @@ namespace System.Windows.Browser.Net
 			get { return uri; }
 		}
 
-		[MonoTODO]
 		public override bool SendChunked {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
-		[MonoTODO]
 		public override int Timeout {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { throw new NotSupportedException (); }
+			set { throw new NotSupportedException (); }
 		}
 
 		public override string TransferEncoding {
