@@ -147,14 +147,14 @@ namespace System.Windows.Browser.Net
 				throw new InvalidOperationException ();
 
 			int size = 0;
-			//IntPtr n = NativeMethods.plugin_instance_load_url (plugin_handle, uri.AbsolutePath, ref size);
+			IntPtr n = NativeMethods.plugin_instance_load_url (plugin_handle, uri.AbsolutePath, ref size);
 			byte [] data = new byte [size];
 			unsafe {
-			//	using (Stream stream = new SimpleUnmanagedMemoryStream ((byte *) n, size))
-			//		stream.Read (data, 0, size);
+				using (Stream stream = new SimpleUnmanagedMemoryStream ((byte *) n, size))
+					stream.Read (data, 0, size);
 			}
 
-			//Helper.FreeHGlobal (n);
+			Helper.FreeHGlobal (n);
 
 			BrowserHttpWebResponse response = new BrowserHttpWebResponse (new MemoryStream (data));
 			this.response = response;
