@@ -31,6 +31,8 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 
+using Mono;
+
 namespace System.Windows.Browser.Net
 {
 	public class BrowserHttpWebRequest : HttpWebRequest
@@ -39,6 +41,7 @@ namespace System.Windows.Browser.Net
 		Uri uri;
 		string method = "GET";
 		WebHeaderCollection headers = new WebHeaderCollection ();
+		BrowserHttpWebResponse response = null;
 
 		public BrowserHttpWebRequest (Uri uri)
 			: base (uri)
@@ -137,12 +140,27 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override HttpWebResponse GetResponse ()
 		{
-			throw new NotImplementedException ();
+			IntPtr plugin_handle = System.Windows.Interop.PluginHost.Handle;
+			if (plugin_handle == IntPtr.Zero)
+				throw new InvalidOperationException ();
+
+			int size = 0;
+			//IntPtr n = NativeMethods.plugin_instance_load_url (plugin_handle, uri.AbsolutePath, ref size);
+			byte [] data = new byte [size];
+			unsafe {
+			//	using (Stream stream = new SimpleUnmanagedMemoryStream ((byte *) n, size))
+			//		stream.Read (data, 0, size);
+			}
+
+			//Helper.FreeHGlobal (n);
+
+			BrowserHttpWebResponse response = new BrowserHttpWebResponse (new MemoryStream (data));
+			this.response = response;
+			return response;
 		}
-		
+
 		public override string Accept {
 			get { return headers [HttpRequestHeader.Accept]; }
 			set { headers [HttpRequestHeader.Connection] = value; }
@@ -174,7 +192,8 @@ namespace System.Windows.Browser.Net
 
 		public override long ContentLength {
 			get {
-					return long.Parse (headers [HttpRequestHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);
+				// silverlight 1.1 throws FormatException on ContentLength when it's not set.
+				return long.Parse (headers [HttpRequestHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);
 			}
 			set {
 				headers [HttpRequestHeader.ContentLength] = value.ToString (CultureInfo.InvariantCulture);
@@ -206,9 +225,8 @@ namespace System.Windows.Browser.Net
 			set { headers [HttpRequestHeader.Expect] = value; }
 		}
 
-		[MonoTODO]
 		public override bool HaveResponse {
-			get { throw new NotImplementedException (); }
+			get { return response != null; }
 		}
 
 		public override WebHeaderCollection Headers {
@@ -275,13 +293,8 @@ namespace System.Windows.Browser.Net
 			set { headers [HttpRequestHeader.UserAgent] = value; }
 		}
 #else
-		public BrowserHttpWebRequest (Uri uri)
+		BrowserHttpWebRequest ()
 			: base (null, default (System.Runtime.Serialization.StreamingContext))
-		{
-			throw new NotSupportedException ("BrowserHttpWebRequest can only be used in the context of a plugin");
-		}
-
-		~BrowserHttpWebRequest ()
 		{
 		}
 #endif

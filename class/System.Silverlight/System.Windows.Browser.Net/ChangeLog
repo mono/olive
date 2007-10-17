@@ -1,5 +1,9 @@
 2007-10-17  Jb Evain  <jbevain@novell.com>
 
+	* BrowserHttpWebRequest.cs: start working on GetResponse().
+
+2007-10-17  Jb Evain  <jbevain@novell.com>
+
 	* BrowserHttpWebResponse.cs: stubbed out.
 
 2007-10-17  Jb Evain  <jbevain@novell.com>
