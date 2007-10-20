@@ -1,5 +1,5 @@
 //
-// KeyboardEventArgs.cs
+// System.Windows.Input.MouseEventArgs
 //
 // Author:
 //   Miguel de Icaza (miguel@novell.com)
