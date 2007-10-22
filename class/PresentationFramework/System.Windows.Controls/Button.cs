@@ -45,8 +45,15 @@ namespace System.Windows.Controls {
 		{
 		}
 
-		public bool IsCancel { get; set; }
-		public bool IsDefault { get; set; }
+		public bool IsCancel {
+			get { return (bool)GetValue (IsCancelProperty); }
+			set { SetValue (IsCancelProperty, value); }
+		}
+
+		public bool IsDefault {
+			get { return (bool)GetValue (IsDefaultProperty); }
+			set { SetValue (IsDefaultProperty, value); }
+		}
 	}
 
 }

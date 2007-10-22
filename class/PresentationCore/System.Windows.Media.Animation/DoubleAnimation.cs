@@ -83,21 +83,15 @@ namespace System.Windows.Media.Animation {
 		}
 
 		public Nullable<double> By { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (Nullable<double>)GetValue (ByProperty); }
+			set { SetValue (ByProperty, value); }
 		}
+
 		public Nullable<double> From { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (Nullable<double>)GetValue (FromProperty); }
+			set { SetValue (FromProperty, value); }
 		}
+
 		public bool IsAdditive { 
 			get {
 				throw new NotImplementedException ();
@@ -106,6 +100,7 @@ namespace System.Windows.Media.Animation {
 				throw new NotImplementedException ();
 			}
 		}
+
 		public bool IsCumulative { 
 			get {
 				throw new NotImplementedException ();
@@ -114,13 +109,10 @@ namespace System.Windows.Media.Animation {
 				throw new NotImplementedException ();
 			}
 		}
+
 		public Nullable<double> To { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (Nullable<double>)GetValue (ToProperty); }
+			set { SetValue (ToProperty, value); }
 		}
 	}
 

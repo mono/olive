@@ -221,11 +221,13 @@ namespace System.Windows.Media.Animation {
 		public static void SetTargetName (DependencyObject element,
 						  string name)
 		{
+			element.SetValue (Storyboard.TargetNameProperty, name);
 		}
 
 		public static void SetTargetProperty (DependencyObject element,
 						      PropertyPath path)
 		{
+			element.SetValue (Storyboard.TargetPropertyProperty, name);
 		}
 
 		public void SkipToFill (FrameworkContentElement containingObject)

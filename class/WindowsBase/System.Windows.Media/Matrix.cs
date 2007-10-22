@@ -193,7 +193,6 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting
 		public Point Transform (Point point)
 		{
 			throw new NotImplementedException ();
@@ -213,7 +212,7 @@ namespace System.Windows.Media {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
+
 		public void Translate (double offsetX,
 				       double offsetY)
 		{

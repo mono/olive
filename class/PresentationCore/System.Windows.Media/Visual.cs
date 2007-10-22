@@ -82,7 +82,6 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting
 		public Point PointFromScreen (Point point)
 		{
 			throw new NotImplementedException ();
@@ -92,7 +91,6 @@ namespace System.Windows.Media {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		protected void RemoveVisualChild (Visual child)
 		{

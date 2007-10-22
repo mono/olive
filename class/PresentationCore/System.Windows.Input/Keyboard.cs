@@ -112,45 +112,39 @@ namespace System.Windows.Input {
 
 		public static void Focus (IInputElement element)
 		{
-			throw new NotImplementedException ();
+			PrimaryDevice.Focus (element);
 		}
 
 		public static KeyStates GetKeyState (Key key)
 		{
-			throw new NotImplementedException ();
+			return PrimaryDevice.GetKeyStates (key);
 		}
 
 		public static bool IsKeyDown (Key key)
 		{
-			throw new NotImplementedException ();
+			return PrimaryDevice.IsKeyDown (key);
 		}
 
 		public static bool IsKeyToggled (Key key)
 		{
-			throw new NotImplementedException ();
+			return PrimaryDevice.IsKeyToggled (key);
 		}
 
 		public static bool IsKeyUp (Key key)
 		{
-			throw new NotImplementedException ();
+			return PrimaryDevice.IsKeyUp (key);
 		}
 
 		public static IInputElement FocusedElement {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return PrimaryDevice.FocusedElement; }
 		}
 
 		public static ModifierKeys Modifiers {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return PrimaryDevice.ModifierKeys; }
 		}
 
 		public static KeyboardDevice PrimaryDevice {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return InputManager.Current.PrimaryKeyboardDevice; }
 		}
 
 		public static readonly RoutedEvent GotKeyboardFocusEvent;

@@ -25,18 +25,19 @@
 
 using System;
 using System.Windows;
+using System.Windows.Media.Animation;
 using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
 	//[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	public abstract class GeneralTransform : /*Animatable,*/ IFormattable {
-		public GeneralTransform Clone ()
+	public abstract class GeneralTransform : Animatable, IFormattable {
+		public new GeneralTransform Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GeneralTransform CloneCurrentValue ()
+		public new GeneralTransform CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

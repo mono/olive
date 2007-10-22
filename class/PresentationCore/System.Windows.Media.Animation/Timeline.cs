@@ -127,76 +127,40 @@ namespace System.Windows.Media.Animation {
 		}
 
 		public double AccelerationRatio {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (AccelerationRatioProperty); }
+			set { SetValue (AccelerationRatioProperty, value); }
 		}
 		public bool AutoReverse {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (bool)GetValue (AutoReverseProperty); }
+			set { SetValue (AutoReverseProperty, value); }
 		}
 		public Nullable<TimeSpan> BeginTime {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (Nullable<TimeSpan>)GetValue (BeginTimeProperty); }
+			set { SetValue (BeginTimeProperty, value); }
 		}
 		public double DecelerationRatio {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (DecelerationRatioProperty); }
+			set { SetValue (DecelerationRatioProperty, value); }
 		}
 		public Duration Duration {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (Duration)GetValue (DurationProperty); }
+			set { SetValue (DurationProperty, value); }
 		}
 		public FillBehavior FillBehavior {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (FillBehavior)GetValue (FillBehaviorProperty); }
+			set { SetValue (FillBehaviorProperty, value); }
 		}
 		public string Name {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (string)GetValue (NameProperty); }
+			set { SetValue (NameProperty, value); }
 		}
 		public RepeatBehavior RepeatBehavior {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (RepeatBehavior)GetValue (RepeatBehaviorProperty); }
+			set { SetValue (RepeatBehaviorProperty, value); }
 		}
 		public double SpeedRatio {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (SpeedRatioProperty); }
+			set { SetValue (SpeedRatioProperty, value); }
 		}
 
 		public event EventHandler Completed;

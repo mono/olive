@@ -67,7 +67,7 @@ namespace System.Windows {
 
 		protected void ClearContentRenderedListeners ()
 		{
-			throw new NotImplementedException ();
+			ContentRendered = null;
 		}
 
 		protected void RootChanged (Visual oldRoot, Visual newRoot)

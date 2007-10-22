@@ -36,59 +36,55 @@ namespace System.Windows.Media {
 
 		static RotateTransform ()
 		{
+			// register the properties here
 			throw new NotImplementedException ();
 		}
 
-		public RotateTransform ()
+		public RotateTransform () : this (0.0)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public RotateTransform (double angle)
 		{
-			throw new NotImplementedException ();
+			Angle = angle;
 		}
 
 		public RotateTransform (double angle,
 					double centerX,
 					double centerY)
 		{
-			throw new NotImplementedException ();
+			Angle = angle;
+			CenterX = centerX;
+			CenterY = centerY;
 		}
 
 		public new RotateTransform Clone ()
 		{
-			throw new NotImplementedException ();
+			return new RotateTransform (Angle, CenterX, CenterY);
 		}
 
 		public new RotateTransform CloneCurrentValue ()
+		{
+			/* how is this different? */
+			return new RotateTransform (Angle, CenterX, CenterY);
+		}
+
+		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		public double Angle { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (AngleProperty); }
+			set { SetValue (AngleProperty, value); }
 		}
 		public double CenterX { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (CenterXProperty); }
+			set { SetValue (CenterXProperty, value); }
 		}
 		public double CenterY { 
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
+			get { return (double)GetValue (CenterYProperty); }
+			set { SetValue(CenterYProperty, value); }
 		}
 		public override Matrix Value {
 			get {

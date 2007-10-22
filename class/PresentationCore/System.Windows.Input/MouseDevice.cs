@@ -49,7 +49,7 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
-		protected Point GetclientPosition ()
+		protected Point GetClientPosition ()
 		{
 			throw new NotImplementedException ();
 		}

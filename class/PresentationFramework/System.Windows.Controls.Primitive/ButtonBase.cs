@@ -114,28 +114,28 @@ namespace System.Windows.Controls.Primitive {
 
 		[Bindable (true)] 
 		public ClickMode ClickMode {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (ClickMode)GetValue (ClickModeProperty); }
+			set { SetValue (ClickModeProperty, value); }
 		}
 
 		[Bindable (true)] 
 		//[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
 		public ICommand Command {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (ICommand)GetValue (CommandProperty); }
+			set { SetValue (CommandProperty, value); }
 		}
 
 		[Bindable (true)] 
 		//[LocalizabilityAttribute(LocalizationCategory.NeverLocalize)] 
 		public object CommandParameter {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (object)GetValue (CommandParameterProperty); }
+			set { SetValue (CommandParameterProperty, value); }
 		}
 
 		[Bindable (true)] 
 		public IInputElement CommandTarget {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (IInputElement)GetValue (CommandTargetProperty); }
+			set { SetValue (CommandTargetProperty, value); }
 		}
 
 #if notyet
@@ -145,7 +145,7 @@ namespace System.Windows.Controls.Primitive {
 #endif
 
 		public bool IsPressed {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsPressedProperty); }
 		}
 
 		public event RoutedEventHandler Click;
