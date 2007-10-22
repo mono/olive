@@ -282,7 +282,7 @@ namespace System.Windows
 				// containing the event was validated.
 				ScriptableObjectWrapper event_wrapper = event_gen.Generate (false);
 
-				Console.WriteLine ("emitting scriptable event!");
+				//Console.WriteLine ("emitting scriptable event!");
 
 				ScriptableNativeMethods.emit_event (WebApplication.Current.PluginHandle,
 								    scriptable_handle,
@@ -371,17 +371,14 @@ namespace System.Windows
 			object[] margs = new object[arg_count];
 			ParameterInfo[] pis = mi.GetParameters ();
 
-			Console.WriteLine ("arg_count = {0}", arg_count);
+			//Console.WriteLine ("arg_count = {0}", arg_count);
 			for (int i = 0; i < arg_count; i ++) {
 				Value v = (Value)Marshal.PtrToStructure (uargs[i], typeof (Value));
 
 				object o = ObjectFromValue (v);
-				Console.WriteLine ("margs[{1}] = {2} ({0})", o.GetType(), i, o);
+				//Console.WriteLine ("margs[{1}] = {2} ({0})", o.GetType(), i, o);
 
 				margs[i] = o; //Convert.ChangeType (o, pis[i].ParameterType);
-			}
-
-			for (int i = 0; i < arg_count; i ++) {
 			}
 
 			object rv = mi.Invoke (obj, BindingFlags.Default, new JSFriendlyMethodBinder(), margs, null);
@@ -467,8 +464,8 @@ namespace System.Windows
 				if (ei.GetCustomAttributes (typeof (ScriptableAttribute), false).Length == 0)
 					continue;
 
-				Console.WriteLine ("event handler type = {0}", ei.EventHandlerType);
-				Console.WriteLine ("typeof (EventHandler<>) == {0}", typeof (EventHandler<>));
+// 				Console.WriteLine ("event handler type = {0}", ei.EventHandlerType);
+// 				Console.WriteLine ("typeof (EventHandler<>) == {0}", typeof (EventHandler<>));
 
 				if (ei.EventHandlerType != typeof (EventHandler)
 				    && typeof (EventHandler<>).IsAssignableFrom (ei.EventHandlerType)) {
