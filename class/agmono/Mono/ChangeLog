@@ -1,3 +1,8 @@
+2007-10-23  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: add functions related to BrowserHttpRequest
+	and BrowserHttpResponse.
+
 2007-10-11  Jb Evain  <jbevain@novell.com>
 
 	* NativeMethods.cs: add media_attribute_collection_get_item_by_name.

@@ -33,20 +33,47 @@ using System.Globalization;
 using System.IO;
 using System.Net;
 
+using Mono;
+
 namespace System.Windows.Browser.Net
 {
 	class BrowserHttpWebResponse : HttpWebResponse
 	{
+		IntPtr native;
 		Stream response;
 
-		public BrowserHttpWebResponse (Stream response)
+		public BrowserHttpWebResponse (IntPtr native)
 		{
-			this.response = response;
+			this.native = native;
+		}
+
+		~BrowserHttpWebResponse ()
+		{
+			if (native == IntPtr.Zero)
+				return;
+
+			NativeMethods.browser_http_response_destroy (native);
 		}
 
 		public override void Close ()
 		{
 			response.Dispose ();
+		}
+
+		internal void Read ()
+		{
+			int size = 0;
+			IntPtr p = NativeMethods.browser_http_sync_response_read (native, ref size);
+
+			byte [] data = new byte [size];
+			unsafe {
+				using (Stream stream = new SimpleUnmanagedMemoryStream ((byte *) p, size))
+					stream.Read (data, 0, size);
+			}
+
+			Helper.FreeHGlobal (p);
+
+			response = new MemoryStream (data);
 		}
 
 		[MonoTODO]

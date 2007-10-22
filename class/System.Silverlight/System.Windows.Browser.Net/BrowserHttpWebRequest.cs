@@ -27,6 +27,7 @@
 //
 
 using System;
+using System.Collections;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -38,6 +39,7 @@ namespace System.Windows.Browser.Net
 	public class BrowserHttpWebRequest : HttpWebRequest
 	{
 #if NET_2_1
+		IntPtr native;
 		Uri uri;
 		string method = "GET";
 		WebHeaderCollection headers = new WebHeaderCollection ();
@@ -49,10 +51,12 @@ namespace System.Windows.Browser.Net
 			this.uri = uri;
 		}
 
-		[MonoTODO]
 		~BrowserHttpWebRequest ()
 		{
-			throw new NotImplementedException ();
+			if (native == IntPtr.Zero)
+				return;
+
+			NativeMethods.browser_http_request_destroy (native);
 		}
 
 		[MonoTODO]
@@ -140,24 +144,26 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
+		void InitializeNativeRequest ()
+		{
+			if (native != IntPtr.Zero)
+				return;
+
+			native = NativeMethods.browser_http_request_new (method, uri.AbsoluteUri);
+
+			//foreach (DictionaryEntry entry in headers)
+			//	NativeMethods.browser_http_request_set_header (native, (string) entry.Key, (string) entry.Value);
+		}
+
 		public override HttpWebResponse GetResponse ()
 		{
-			IntPtr plugin_handle = System.Windows.Interop.PluginHost.Handle;
-			if (plugin_handle == IntPtr.Zero)
-				throw new InvalidOperationException ();
+			InitializeNativeRequest ();
 
-			int size = 0;
-			IntPtr n = NativeMethods.plugin_instance_load_url (plugin_handle, uri.AbsolutePath, ref size);
-			byte [] data = new byte [size];
-			unsafe {
-				using (Stream stream = new SimpleUnmanagedMemoryStream ((byte *) n, size))
-					stream.Read (data, 0, size);
-			}
+			IntPtr resp = NativeMethods.browser_http_request_get_response (native);
 
-			Helper.FreeHGlobal (n);
+			response = new BrowserHttpWebResponse (resp);
+			response.Read ();
 
-			BrowserHttpWebResponse response = new BrowserHttpWebResponse (new MemoryStream (data));
-			this.response = response;
 			return response;
 		}
 
