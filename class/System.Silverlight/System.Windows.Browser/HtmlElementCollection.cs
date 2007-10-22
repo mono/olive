@@ -33,7 +33,7 @@ using System.Collections.Generic;
 
 namespace System.Windows.Browser
 {
-	public class HtmlElementCollection : IEnumerable, IEnumerable<HtmlElement>
+	public sealed class HtmlElementCollection : IEnumerable, IEnumerable<HtmlElement>
 	{
 		private IntPtr node_list;
 

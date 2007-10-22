@@ -1,3 +1,9 @@
+2007-10-22  Chris Toshok  <toshok@ximian.com>
+
+	* ScriptableAttribute.cs: sealed.
+
+	* HtmlElementCollection.cs: sealed.
+
 2007-10-16  Jb Evain  <jbevain@novell.com>
 
 	* BrowserRuntimeSettings.cs: use the new function
