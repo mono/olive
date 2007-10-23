@@ -159,8 +159,10 @@ namespace System.Windows.Browser.Net
 			//foreach (DictionaryEntry entry in headers)
 			//	NativeMethods.browser_http_request_set_header (native, (string) entry.Key, (string) entry.Value);
 
-			if (request != null && request.Length > 0)
-				NativeMethods.browser_http_request_set_body (native, request.ToArray ());
+			if (request != null && request.Length > 0) {
+				byte [] body = request.ToArray ();
+				NativeMethods.browser_http_request_set_body (native, body, body.Length);
+			}
 		}
 
 		public override HttpWebResponse GetResponse ()
