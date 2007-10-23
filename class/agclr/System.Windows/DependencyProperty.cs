@@ -38,7 +38,7 @@ namespace System.Windows {
 		
 		static DependencyProperty ()
 		{
-			NativeMethods.runtime_init ();
+			NativeMethods.runtime_init (0);
 		}
 		
 		public DependencyProperty ()
