@@ -1,3 +1,9 @@
+2007-10-23  Chris Toshok  <toshok@ximian.com>
+
+	* Kind.cs: fix up the BASE and TIMESOURCE stuff.
+
+	* NativeMethods.cs: add parameter to runtime_init.
+
 2007-10-23  Jb Evain  <jbevain@novell.com>
 
 	* NativeMethods: add browser_http_request_abort and
