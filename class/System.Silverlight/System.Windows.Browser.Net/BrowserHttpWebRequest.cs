@@ -43,7 +43,8 @@ namespace System.Windows.Browser.Net
 		Uri uri;
 		string method = "GET";
 		WebHeaderCollection headers = new WebHeaderCollection ();
-		BrowserHttpWebResponse response = null;
+		MemoryStream request;
+		BrowserHttpWebResponse response;
 
 		public BrowserHttpWebRequest (Uri uri)
 			: base (uri)
@@ -59,10 +60,12 @@ namespace System.Windows.Browser.Net
 			NativeMethods.browser_http_request_destroy (native);
 		}
 
-		[MonoTODO]
 		public override void Abort ()
 		{
-			throw new NotImplementedException ();
+			if (native == IntPtr.Zero)
+				return;
+
+			NativeMethods.browser_http_request_abort (native);
 		}
 
 		public override void AddRange (int range)
@@ -138,10 +141,12 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override Stream GetRequestStream ()
 		{
-			throw new NotImplementedException ();
+			if (request == null)
+				request = new MemoryStream ();
+
+			return request;
 		}
 
 		void InitializeNativeRequest ()
@@ -153,6 +158,9 @@ namespace System.Windows.Browser.Net
 
 			//foreach (DictionaryEntry entry in headers)
 			//	NativeMethods.browser_http_request_set_header (native, (string) entry.Key, (string) entry.Value);
+
+			if (request != null && request.Length > 0)
+				NativeMethods.browser_http_request_set_body (native, request.ToArray ());
 		}
 
 		public override HttpWebResponse GetResponse ()

@@ -1,5 +1,10 @@
 2007-10-23  Jb Evain  <jbevain@novell.com>
 
+	* NativeMethods: add browser_http_request_abort and
+	browser_http_request_set_body.
+
+2007-10-22  Jb Evain  <jbevain@novell.com>
+
 	* NativeMethods.cs: add functions related to BrowserHttpRequest
 	and BrowserHttpResponse.
 

@@ -1,3 +1,8 @@
+2007-10-23  Jb Evain  <jbevain@novell.com>
+
+	* BrowserHttpWebRequest.cs: implement Abort
+	and GetRequestStream.
+
 2007-10-17  Jb Evain  <jbevain@novell.com>
 
 	* BrowserHttpWebRequest.cs, BrowserHttpWebResponse: work

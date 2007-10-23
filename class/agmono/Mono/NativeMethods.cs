@@ -687,7 +687,13 @@ namespace Mono {
 		public extern static void browser_http_request_destroy (IntPtr handle);
 
 		[DllImport("moonplugin")]
+		public extern static void browser_http_request_abort (IntPtr handle);
+
+		[DllImport("moonplugin")]
 		public extern static void browser_http_request_set_header (IntPtr handle, string name, string value);
+
+		[DllImport("moonplugin")]
+		public extern static void browser_http_request_set_body (IntPtr handle, byte [] body);
 
 		[DllImport("moonplugin")]
 		public extern static IntPtr browser_http_request_get_response (IntPtr handle);
