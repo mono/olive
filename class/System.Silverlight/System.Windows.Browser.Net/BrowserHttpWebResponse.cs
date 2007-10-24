@@ -42,6 +42,8 @@ namespace System.Windows.Browser.Net
 		IntPtr native;
 		Stream response;
 
+		WebHeaderCollection headers = new WebHeaderCollection ();
+
 		public BrowserHttpWebResponse (IntPtr native)
 		{
 			this.native = native;
@@ -63,7 +65,7 @@ namespace System.Windows.Browser.Net
 		internal void Read ()
 		{
 			int size = 0;
-			IntPtr p = NativeMethods.browser_http_sync_response_read (native, ref size);
+			IntPtr p = NativeMethods.browser_http_response_read (native, ref size);
 
 			byte [] data = new byte [size];
 			unsafe {
@@ -107,9 +109,8 @@ namespace System.Windows.Browser.Net
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
+			get { return headers; }
 		}
 
 		[MonoTODO]
