@@ -47,6 +47,11 @@ namespace System.Windows.Browser.Net
 		public BrowserHttpWebResponse (IntPtr native)
 		{
 			this.native = native;
+
+			if (native == IntPtr.Zero)
+				return;
+
+			NativeMethods.browser_http_response_visit_headers (native, OnHttpHeader);
 		}
 
 		~BrowserHttpWebResponse ()
@@ -55,6 +60,11 @@ namespace System.Windows.Browser.Net
 				return;
 
 			NativeMethods.browser_http_response_destroy (native);
+		}
+
+		void OnHttpHeader (string name, string value)
+		{
+			// TODO: add them to headers
 		}
 
 		public override void Close ()
