@@ -36,7 +36,10 @@ namespace Mono {
 	public delegate void UnmanagedEventHandler (IntPtr sender, IntPtr calldata, IntPtr closure);
 
 	public delegate void PlainEvent (IntPtr target);
-	
+
+	public delegate void HttpHeaderHandler (string name, string value);
+	public delegate void AsyncResponseAvailableHandler (IntPtr response, IntPtr context);
+
 	public static class NativeMethods {
 
 	
@@ -699,7 +702,13 @@ namespace Mono {
 		public extern static IntPtr browser_http_request_get_response (IntPtr handle);
 
 		[DllImport("moonplugin")]
-		public extern static IntPtr browser_http_sync_response_read (IntPtr handler, ref int size);
+		public extern static IntPtr browser_http_request_get_async_response (IntPtr handle, IntPtr context);
+
+		[DllImport("moonplugin")]
+		public extern static IntPtr browser_http_response_read (IntPtr handler, ref int size);
+
+		[DllImport("moonplugin")]
+		public extern static void browser_http_response_visit_headers (IntPtr handle, HttpHeaderHandler handler);
 
 		[DllImport("moonplugin")]
 		public extern static void browser_http_response_destroy (IntPtr handle);
