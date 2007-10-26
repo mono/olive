@@ -1,3 +1,8 @@
+2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XElementTest.cs, XNamespaceTest.cs, XNodeWriterTest.cs:
+	  XNamespace.Blank does not exist anymore.
+
 2007-05-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XNodeReaderTest.cs : removed debug console output.

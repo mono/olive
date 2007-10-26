@@ -71,194 +71,171 @@ namespace System.Xml.Linq
 			this.name = name;
 			Add (contents);
 		}
-		
+
+		public static explicit operator bool (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToBoolean (element.Value);
+		}
+
+		public static explicit operator bool? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (bool?) null : XmlConvert.ToBoolean (element.Value);
+		}
+
+		public static explicit operator DateTime (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToDateTime (element.Value, XmlDateTimeSerializationMode.RoundtripKind);
+		}
+
+		public static explicit operator DateTime? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (DateTime?) null : XmlConvert.ToDateTime (element.Value, XmlDateTimeSerializationMode.RoundtripKind);
+		}
+
+		public static explicit operator decimal (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToDecimal (element.Value);
+		}
+
+		public static explicit operator decimal? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (decimal?) null : XmlConvert.ToDecimal (element.Value);
+		}
+
+		public static explicit operator double (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToDouble (element.Value);
+		}
+
+		public static explicit operator double? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (double?) null : XmlConvert.ToDouble (element.Value);
+		}
+
+		public static explicit operator float (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToSingle (element.Value);
+		}
+
+		public static explicit operator float? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (float?) null : XmlConvert.ToSingle (element.Value);
+		}
+
+		public static explicit operator Guid (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToGuid (element.Value);
+		}
+
+		public static explicit operator Guid? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (Guid?) null : XmlConvert.ToGuid (element.Value);
+		}
+
 		public static explicit operator int (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
 			return XmlConvert.ToInt32 (element.Value);
 		}
-		
+
 		public static explicit operator int? (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToInt32 (element.Value);
-		}		
-		
-		[CLSCompliant (false)]
-		public static explicit operator uint (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToUInt32 (element.Value);
+			return element.Value == null ? (int?) null : XmlConvert.ToInt32 (element.Value);
 		}
-		
-		[CLSCompliant (false)]
-		public static explicit operator uint? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToUInt32 (element.Value);
-		}		
 
 		public static explicit operator long (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
 			return XmlConvert.ToInt64 (element.Value);
 		}
-		
+
 		public static explicit operator long? (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToInt64 (element.Value);
-		}			
+			return element.Value == null ? (long?) null : XmlConvert.ToInt64 (element.Value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator uint (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return XmlConvert.ToUInt32 (element.Value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator uint? (XElement element)
+		{
+			if (element == null)
+				throw new ArgumentNullException ("element");
+			return element.Value == null ? (uint?) null : XmlConvert.ToUInt32 (element.Value);
+		}
 
 		[CLSCompliant (false)]
 		public static explicit operator ulong (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
 			return XmlConvert.ToUInt64 (element.Value);
 		}
-		
+
 		[CLSCompliant (false)]
 		public static explicit operator ulong? (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToUInt64 (element.Value);
-		}		
+			return element.Value == null ? (ulong?) null : XmlConvert.ToUInt64 (element.Value);
+		}
 
-		public static explicit operator float (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToSingle (element.Value);
-		}
-		
-		public static explicit operator float? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToSingle (element.Value);
-		}		
-				
-		public static explicit operator double (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToDouble (element.Value);
-		}
-		
-		public static explicit operator double? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToDouble (element.Value);
-		}		
-		
-		public static explicit operator decimal (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToDecimal (element.Value);
-		}
-		
-		public static explicit operator decimal? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToDecimal (element.Value);
-		}			
-		
-		public static explicit operator bool (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToBoolean (element.Value);
-		}
-		
-		public static explicit operator bool? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToBoolean (element.Value);
-		}		
-		
-		public static explicit operator Guid (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToGuid (element.Value);
-		}
-		
-		public static explicit operator Guid? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToGuid (element.Value);
-		}		
-		
-		public static explicit operator DateTime (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			
-			throw new NotImplementedException ();	
-		}
-		
-		public static explicit operator DateTime? (XElement element)
-		{
-			if (element == null)
-				throw new ArgumentNullException ("element");
-			
-			throw new NotImplementedException ();	
-		}				
-		
 		public static explicit operator TimeSpan (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
 			return XmlConvert.ToTimeSpan (element.Value);
 		}
-		
+
 		public static explicit operator TimeSpan? (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
-			return XmlConvert.ToTimeSpan (element.Value);
-		}			
-		
+			return element.Value == null ? (TimeSpan?) null : XmlConvert.ToTimeSpan (element.Value);
+		}
+
 		public static explicit operator string (XElement element)
 		{
 			if (element == null)
 				throw new ArgumentNullException ("element");
-				
 			return element.Value;
-		}			
+		}
 
 		public XAttribute FirstAttribute {
 			get { return attr_first; }

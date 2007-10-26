@@ -1,3 +1,8 @@
+2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XElement.cs, XAttribute.cs : implemented missing explicit operators.
+	* XNamespace.cs : Blank is not public anymore.
+
 2007-08-26  Marek Safar  <marek.safar@gmail.com>
 
 	* XElement.cs : Implemented explicit operators.

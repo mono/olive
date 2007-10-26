@@ -39,7 +39,7 @@ namespace System.Xml.Linq
 		static readonly XNamespace xml = Get ("http://www.w3.org/XML/1998/namespace");
 		static readonly XNamespace xmlns = Get ("http://www.w3.org/2000/xmlns/");
 
-		public static XNamespace Blank {
+		internal static XNamespace Blank {
 			get { return blank; }
 		}
 

@@ -313,8 +313,8 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual (ns1, bar.GetDefaultNamespace (), "#4");
 			Assert.AreEqual (ns1, ((XElement) bar.FirstNode).GetDefaultNamespace (), "#5");
 			XElement baz = (XElement) bar.NextNode;
-			Assert.AreEqual (XNamespace.Blank, baz.GetDefaultNamespace (), "#6");
-			Assert.AreEqual (XNamespace.Blank, ((XElement) baz.FirstNode).GetDefaultNamespace (), "#7");
+			Assert.AreEqual (XNamespace.Get (String.Empty), baz.GetDefaultNamespace (), "#6");
+			Assert.AreEqual (XNamespace.Get (String.Empty), ((XElement) baz.FirstNode).GetDefaultNamespace (), "#7");
 		}
 
 		[Test]

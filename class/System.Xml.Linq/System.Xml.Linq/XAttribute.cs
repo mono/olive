@@ -60,6 +60,171 @@ namespace System.Xml.Linq
 			SetValue (value);
 		}
 
+		public static explicit operator bool (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToBoolean (attribute.value);
+		}
+
+		public static explicit operator bool? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (bool?) null : XmlConvert.ToBoolean (attribute.value);
+		}
+
+		public static explicit operator DateTime (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToDateTime (attribute.value, XmlDateTimeSerializationMode.RoundtripKind);
+		}
+
+		public static explicit operator DateTime? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (DateTime?) null : XmlConvert.ToDateTime (attribute.value, XmlDateTimeSerializationMode.RoundtripKind);
+		}
+
+		public static explicit operator decimal (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToDecimal (attribute.value);
+		}
+
+		public static explicit operator decimal? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (decimal?) null : XmlConvert.ToDecimal (attribute.value);
+		}
+
+		public static explicit operator double (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToDouble (attribute.value);
+		}
+
+		public static explicit operator double? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (double?) null : XmlConvert.ToDouble (attribute.value);
+		}
+
+		public static explicit operator float (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToSingle (attribute.value);
+		}
+
+		public static explicit operator float? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (float?) null : XmlConvert.ToSingle (attribute.value);
+		}
+
+		public static explicit operator Guid (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToGuid (attribute.value);
+		}
+
+		public static explicit operator Guid? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (Guid?) null : XmlConvert.ToGuid (attribute.value);
+		}
+
+		public static explicit operator int (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToInt32 (attribute.value);
+		}
+
+		public static explicit operator int? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (int?) null : XmlConvert.ToInt32 (attribute.value);
+		}
+
+		public static explicit operator long (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToInt64 (attribute.value);
+		}
+
+		public static explicit operator long? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (long?) null : XmlConvert.ToInt64 (attribute.value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator uint (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToUInt32 (attribute.value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator uint? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (uint?) null : XmlConvert.ToUInt32 (attribute.value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator ulong (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToUInt64 (attribute.value);
+		}
+
+		[CLSCompliant (false)]
+		public static explicit operator ulong? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (ulong?) null : XmlConvert.ToUInt64 (attribute.value);
+		}
+
+		public static explicit operator TimeSpan (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return XmlConvert.ToTimeSpan (attribute.value);
+		}
+
+		public static explicit operator TimeSpan? (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value == null ? (TimeSpan?) null : XmlConvert.ToTimeSpan (attribute.value);
+		}
+
+		public static explicit operator string (XAttribute attribute)
+		{
+			if (attribute == null)
+				throw new ArgumentNullException ("attribute");
+			return attribute.value;
+		}
+
 		public bool IsNamespaceDeclaration {
 			get { return name.Namespace == XNamespace.Xmlns || (name.LocalName == "xmlns" && name.Namespace == XNamespace.Blank); }
 		}

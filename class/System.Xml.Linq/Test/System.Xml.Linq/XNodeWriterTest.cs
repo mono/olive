@@ -67,7 +67,7 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual (XNamespace.Get ("urn:x"), el.Name.Namespace, "#5-2");
 			// xmlns=''
 			Assert.AreEqual ("xmlns", el.FirstAttribute.Name.LocalName, "#5-3");
-			Assert.AreEqual (XNamespace.Blank, el.FirstAttribute.Name.Namespace, "#5-4");
+			Assert.AreEqual (XNamespace.Get (String.Empty), el.FirstAttribute.Name.Namespace, "#5-4");
 			XText t = el.FirstNode as XText;
 			Assert.AreEqual ("test", t.Value, "#6");
 			XComment c = el.NextNode as XComment;

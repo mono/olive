@@ -98,6 +98,8 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual ("http://www.w3.org/2000/xmlns/", XNamespace.Xmlns.NamespaceName, "#2");
 		}
 
+/*
+// there is no Blank anymore
 		[Test]
 		public void Equals ()
 		{
@@ -106,5 +108,6 @@ namespace MonoTests.System.Xml.Linq
 			Assert.IsFalse (XNamespace.Blank.Equals (XNamespace.Get (" ")), "#3");
 			Assert.IsFalse (XNamespace.Blank == XNamespace.Get (" "), "#4");
 		}
+*/
 	}
 }
