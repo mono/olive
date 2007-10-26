@@ -42,5 +42,11 @@ namespace MonoTests.System.Xml.Linq
 			Assert.AreEqual (XmlNodeType.Text, new XText ("test").NodeType, "#1");
 			Assert.AreEqual (XmlNodeType.Text, new XText ("    ").NodeType, "#2");
 		}
+
+		[Test]
+		public void ToString ()
+		{
+			Assert.AreEqual ("Foo", new XText ("Foo").ToString ());
+		}
 	}
 }

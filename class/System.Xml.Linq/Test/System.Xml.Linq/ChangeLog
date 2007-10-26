@@ -1,5 +1,9 @@
 2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XTextTest.cs : added test for ToString().
+
+2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XElementTest.cs, XNamespaceTest.cs, XNodeWriterTest.cs:
 	  XNamespace.Blank does not exist anymore.
 

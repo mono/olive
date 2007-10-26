@@ -81,6 +81,7 @@ namespace System.Xml.Linq
 		{
 			StringWriter sw = new StringWriter ();
 			XmlWriterSettings s = new XmlWriterSettings ();
+			s.ConformanceLevel = ConformanceLevel.Auto;
 			if ((options & SaveOptions.DisableFormatting) == 0) {
 				// hacky!
 				s.Indent = true;

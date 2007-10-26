@@ -1,5 +1,10 @@
 2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XNode.cs : use ConformanceLevel.Auto for ToString().
+	  Fixed bug #336927.
+
+2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XElement.cs, XAttribute.cs : implemented missing explicit operators.
 	* XNamespace.cs : Blank is not public anymore.
 
