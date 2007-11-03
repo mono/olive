@@ -9,7 +9,7 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: AssemblyVersion ("2.1")]
 
 [assembly: AssemblyTitle ("Microsoft.JScript.Runtime")]
 [assembly: AssemblyDescription ("")]
