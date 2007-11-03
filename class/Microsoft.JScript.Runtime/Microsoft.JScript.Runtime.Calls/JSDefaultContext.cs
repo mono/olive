@@ -11,8 +11,8 @@ namespace Microsoft.JScript.Runtime.Calls {
 		public static ScriptEngine _JSScriptEngine;
 
 		public static CodeContext CreateDefaultJSContext ()
-		{
-			Default = new CodeContext (new Scope (), new JSContext (_JSScriptEngine));
+		{//TODO find moduleContext
+			Default = new CodeContext (new Scope (), new JSContext (), null);
 			JSContext = ContextId.RegisterContext (Default);
 			return Default;
 		}

@@ -1,8 +1,8 @@
 using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
-using Microsoft.Scripting.Internal.Ast;
-using Microsoft.Scripting.Internal.Generation;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Generation;
 
 namespace Microsoft.JScript.Runtime.Calls {
 
@@ -35,12 +35,16 @@ namespace Microsoft.JScript.Runtime.Calls {
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		protected override StandardRule<T> MakeRule<T> (Action action, object [] args)
+		protected override StandardRule<T> MakeRule<T> (CodeContext callerContext, DynamicAction action, object [] args)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
 		public override bool PreferConvert (Type t1, Type t2)
+		{
+			throw new Exception ("The method or operation is not implemented.");
+		}
+		public override Expression CheckExpression(Expression expr, Type toType)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
