@@ -2,12 +2,12 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
 using Microsoft.Scripting.Hosting;
+using Microsoft.Scripting.Ast;
 
 namespace Microsoft.JScript.Runtime {
-	//TODO
+//TODO
 	public sealed class JSContext : LanguageContext {
-		public JSContext (ScriptEngine engine)
-			: base (engine)
+		public JSContext () : base ()
 		{
 		}
 
@@ -36,75 +36,75 @@ namespace Microsoft.JScript.Runtime {
 			return base.CallWithThis (context, function, instance, args);
 		}
 
-		public override object DeleteIndex (CodeContext context, object target, object index)
+		/*public override object DeleteIndex (CodeContext context, object target, object index)
 		{
 			return base.DeleteIndex (context, target, index);
-		}
+		}*/
 
-		public override object DeleteMember (CodeContext context, object target, SymbolId name)
+		/*public override object DeleteMember (CodeContext context, object target, SymbolId name)
 		{
 			return base.DeleteMember (context, target, name);
-		}
+		}*/
 
 		public override bool EqualReturnBool (CodeContext context, object x, object y)
 		{
 			return base.EqualReturnBool (context, x, y);
 		}
 
-		public override object GetBoundMember (CodeContext context, object target, SymbolId name)
+		/*public override object GetBoundMember (CodeContext context, object target, SymbolId name)
 		{
 			return base.GetBoundMember (context, target, name);
-		}
+		}*/
 
-		public override object GetIndex (CodeContext context, object target, object index)
+		/*public override object GetIndex (CodeContext context, object target, object index)
 		{
 			return base.GetIndex (context, target, index);
-		}
+		}*/
 
-		public override LanguageContext GetLanguageContextForModule (ScriptModule module)
+		/*public override LanguageContext GetLanguageContextForModule (ScriptModule module)
 		{
 			return base.GetLanguageContextForModule (module);
-		}
+		}*/
 
-		public override object GetMember (CodeContext context, object target, SymbolId name)
+		/*public override object GetMember (CodeContext context, object target, SymbolId name)
 		{
 			return base.GetMember (context, target, name);
-		}
+		}*/
 
 		public override bool IsTrue (object obj)
 		{
 			return base.IsTrue (obj);
 		}
 
-		public override object PushExceptionHandler (CodeContext context, Exception exception)
+		/*public override object PushExceptionHandler (CodeContext context, Exception exception)
 		{
 			return base.PushExceptionHandler (context, exception);
-		}
+		}*/
 
-		public override bool RemoveName (Scope scope, SymbolId name)
+		public override bool RemoveName (CodeContext context, SymbolId name)
 		{
-			return base.RemoveName (scope, name);
+			return base.RemoveName (context, name);
 		}
 
-		public override void SetIndex (CodeContext context, object target, object index, object value)
+		/*public override void SetIndex (CodeContext context, object target, object index, object value)
 		{
 			base.SetIndex (context, target, index, value);
-		}
+		}*/
 
-		public override void SetMember (CodeContext context, object target, SymbolId name, object value)
+		/*public override void SetMember (CodeContext context, object target, SymbolId name, object value)
 		{
 			base.SetMember (context, target, name, value);
-		}
+		}*/
 
-		public override void SetName (Scope scope, SymbolId name, object value)
+		/*public override void SetName (Scope scope, SymbolId name, object value)
 		{
 			base.SetName (scope, name, value);
-		}
+		}*/
 
-		public override bool TryGetSwitchIndex (CodeContext context, object exprVal, out int index)
+		/*public override bool TryGetSwitchIndex (CodeContext context, object exprVal, out int index)
 		{
 			return base.TryGetSwitchIndex (context, exprVal, out index);
-		}
+		}*/
 
 		public JSFunctionObject ArrayConstructor {
 			get { throw new NotImplementedException (); }
@@ -206,10 +206,10 @@ namespace Microsoft.JScript.Runtime {
 			get { throw new NotImplementedException (); }
 		}
 
-		public override bool ShowCls {
+		/*public override bool ShowCls {
 			get { throw new Exception ("The method or operation is not implemented."); }
 			set { throw new Exception ("The method or operation is not implemented."); }
-		}
+		}*/
 
 		public JSFunctionObject StringConstructor {
 			get { throw new NotImplementedException (); }
@@ -243,5 +243,9 @@ namespace Microsoft.JScript.Runtime {
 			get { throw new NotImplementedException (); }
 		}
 
+		public override CodeBlock ParseSourceCode(CompilerContext context)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
