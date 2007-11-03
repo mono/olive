@@ -1,12 +1,3 @@
-2007-11-03  Olivier Dufour  <olivier.Duff@gmail.com>
-
-	* Compiler.cs
-	* Engine.cs
-	* JavaScriptCompiler.cs
-	* OptionParser.cs
-	* Parser.cs
-	* RowanGenerator.cs: Convert to use the new MS.Scripting.dll from ironRuby svn
-
 2007-09-10  Olivier Dufour  <olivier.Duff@gmail.com>
 
 	* Engine.cs: just fill with default

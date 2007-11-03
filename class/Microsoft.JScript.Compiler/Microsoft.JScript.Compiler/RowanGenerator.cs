@@ -30,10 +30,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
 using Microsoft.Scripting;
-using MSIA = Microsoft.Scripting.Internal.Ast;
+using MSA = Microsoft.Scripting.Ast;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
 using MJR = Microsoft.JScript.Runtime;
-using MSA = Microsoft.Scripting.Actions;
+using MSAc = Microsoft.Scripting.Actions;
 using MSO = Microsoft.Scripting.Operators;
 
 namespace Microsoft.JScript.Compiler
@@ -58,8 +58,9 @@ namespace Microsoft.JScript.Compiler
 		private	Identifier underscore;
 		private	Identifier arguments;
 		private	Identifier eval;
-		private int withinFunction;
-
+		private int withinFunction;//TODO make a queue to have the last function
+		private MSA.CodeBlock globalBlock;
+		
 		public void Bind()
 		{
 			throw new NotImplementedException();
@@ -71,26 +72,26 @@ namespace Microsoft.JScript.Compiler
 		}
 		# region AST Converter
 
-		public MSIA.Expression ConvertToObject(MSIA.Expression Value)
+		public MSA.Expression ConvertToObject(MSA.Expression Value)
 		{
-			List<MSIA.Expression> Args = new List<MSIA.Expression>();
-			Args.Add(new MSIA.CodeContextExpression());
+			List<MSA.Expression> Args = new List<MSA.Expression>();
+			Args.Add(MSA.Ast.CodeContext ());
 			Args.Add(Value);
 			MethodInfo met = typeof (Microsoft.JScript.Runtime.Convert).GetMethod ("ToObject");
-			return new MSIA.MethodCallExpression (met, null, Args);
+			return MSA.Ast.Call (met, Args.ToArray());
 		}
 
 		#region Expression
 
-		public MSIA.Expression Generate(ParseTree.Expression Input)
+		public MSA.Expression Generate(ParseTree.Expression Input)
 		{
 			Init ();
-			MSIA.Expression result = null;
+			MSA.Expression result = null;
 			if (Input == null)
 				return null;
-			List<MSIA.Expression> arguments;
-			List<MSIA.Expression> initializers;
-			List<MSIA.Arg> args;
+			List<MSA.Expression> arguments;
+			List<MSA.Expression> initializers;
+			MSA.Expression right;
 
 			MJCP.BinaryOperatorExpression binOp;
 			switch (Input.Opcode) {
@@ -98,121 +99,126 @@ namespace Microsoft.JScript.Compiler
 				case MJCP.Expression.Operation.SyntaxError :
 					return null;//sample show null
 				case MJCP.Expression.Operation.@this :
-					//TODO
+					//TODO this must not be a variable!
 					if (withinFunction > 1)//if this is call inside a function
-						result = new MSIA.BoundExpression (GetVarRef (thisIdent));
+						result = MSA.Ast.Read (globalBlock.CreateVariable (GetSymbolId(thisIdent), MSA.Variable.VariableKind.Global, null));
 					else {//if this is call ouside of function
-						arguments = new List<MSIA.Expression> ();
-						arguments.Add (new MSIA.CodeContextExpression ());
-						result = new MSIA.MethodCallExpression (typeof (MJR.JSOps).GetMethod ("GetGlobalObject"), null, arguments);
+						arguments = new List<MSA.Expression> ();
+						arguments.Add (MSA.Ast.CodeContext ());
+						result = MSA.Ast.Call (typeof (MJR.JSOps).GetMethod ("GetGlobalObject"), arguments.ToArray ());
 					}
 					break;
 				case MJCP.Expression.Operation.@false :
-					result = new MSIA.ConstantExpression (false);
+					result = MSA.Ast.False ();
 					break;
 				case MJCP.Expression.Operation.@true :
-					result = new MSIA.ConstantExpression (true);
+					result = MSA.Ast.True ();
 					break;
 				case MJCP.Expression.Operation.Identifier :
-						Identifier id = ((MJCP.IdentifierExpression)Input).ID;
-						result = new MSIA.BoundExpression (GetVarRef (id));
+						Identifier id = ((MJCP.IdentifierExpression)Input).ID;//TODO make a tree of variable and allow to get it 
+						result = MSA.Ast.Read (globalBlock.CreateVariable (GetSymbolId(id), MSA.Variable.VariableKind.Global, null));
 						break;
 				case MJCP.Expression.Operation.NumericLiteral :
 					double val = 0;
 					try {
 						val = Double.Parse (((MJCP.NumericLiteralExpression)Input).Spelling);
-						result = new MSIA.ConstantExpression (val);
+						result = MSA.Ast.Constant (val);
 					} catch {
 						//TODO 
 					}
 					break;
 				case MJCP.Expression.Operation.HexLiteral :
-					result = new MSIA.ConstantExpression (((MJCP.HexLiteralExpression)Input).Value);
+					result = MSA.Ast.Constant (((MJCP.HexLiteralExpression)Input).Value);
 					break;
 				case MJCP.Expression.Operation.OctalLiteral :
-					result = new MSIA.ConstantExpression (((MJCP.OctalLiteralExpression)Input).Value);
+					result = MSA.Ast.Constant (((MJCP.OctalLiteralExpression)Input).Value);
 					break;
 				case MJCP.Expression.Operation.RegularExpressionLiteral :
 					//TODO
 					throw new NotImplementedException ();
 				case MJCP.Expression.Operation.StringLiteral :
-					result = new MSIA.ConstantExpression (((MJCP.StringLiteralExpression)Input).Value);
+					result = MSA.Ast.Constant (((MJCP.StringLiteralExpression)Input).Value);
 					break;
 				case MJCP.Expression.Operation.ArrayLiteral :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					
-					arguments.Add (new MSIA.CodeContextExpression ());
+					arguments.Add (MSA.Ast.CodeContext ());
 
-					initializers =new List<MSIA.Expression> ();
+					initializers =new List<MSA.Expression> ();
 					foreach (MJCP.ExpressionListElement element in ((MJCP.ArrayLiteralExpression)Input).Elements)
 							initializers.Add (Generate (element.Value));
-					arguments.Add (MSIA.NewArrayExpression.NewArrayInit (typeof (object []), initializers));
+					arguments.Add (MSA.Ast.NewArray (typeof (object []), initializers));
 
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("ConstructArrayFromArrayLiteral"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("ConstructArrayFromArrayLiteral"), arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.ObjectLiteral :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 
-					arguments.Add (new MSIA.CodeContextExpression ());
+					arguments.Add (MSA.Ast.CodeContext ());
 					
-					initializers = new List<MSIA.Expression> ();
-					List<MSIA.Expression> initializers2 = new List<MSIA.Expression> ();
+					initializers = new List<MSA.Expression> ();
+					List<MSA.Expression> initializers2 = new List<MSA.Expression> ();
 					foreach (MJCP.ObjectLiteralElement element in ((MJCP.ObjectLiteralExpression)Input).Elements) {
 						initializers.Add (Generate (element.Name));
 						initializers2.Add (Generate (element.Value));
 					}
-					arguments.Add (MSIA.NewArrayExpression.NewArrayInit (typeof (object[]), initializers));
-					arguments.Add (MSIA.NewArrayExpression.NewArrayInit (typeof (object[]), initializers2));
+					arguments.Add (MSA.Ast.NewArray (typeof (object[]), initializers));
+					arguments.Add (MSA.Ast.NewArray (typeof (object[]), initializers2));
 
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("ConstructObjectFromLiteral"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("ConstructObjectFromLiteral"), arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.Parenthesized :
-					result = new MSIA.ParenthesisExpression (Generate (((MJCP.UnaryOperatorExpression)Input).Operand)); 
+					result = MSA.Ast.Parenthesize (Generate (((MJCP.UnaryOperatorExpression)Input).Operand)); 
 					break;
 				case MJCP.Expression.Operation.Invocation :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					args = new List<MSIA.Arg> ();
+					//args = new List<MSA.Arg> ();
 					foreach (MJCP.ExpressionListElement element in ((MJCP.InvocationExpression)Input).Arguments.Arguments)
-						args.Add (MSIA.Arg.Simple (Generate (element.Value)));
-					result = new MSIA.ActionExpression (MSA.CallAction.Make (args.ToArray()), arguments, GetRowanTextSpan (Input.Location)); 
+						arguments.Add (Generate (element.Value));
+					
+					MSA.Expression instance = Generate (((MJCP.InvocationExpression)Input).Target);
+					//(Expression instance,) MethodInfo method, params Expression[] arguments
+					//TODO MethodInfo!
+					result = MSA.Ast.Call (instance, null, arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.Subscript :
-					arguments = new List<MSIA.Expression> ();
-					//TODO fill arguments
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.GetItem), arguments, GetRowanTextSpan (Input.Location));
+					arguments = new List<MSA.Expression> ();
+					//TODO fill arguments and type result
+					result = MSA.Ast.Action.Operator (MSO.GetItem, null, arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Qualified :
-					arguments = new List<MSIA.Expression> ();
-					//TODO fill arguments
-					result = new MSIA.ActionExpression (MSA.GetMemberAction.Make (idMappingTable.GetRowanID (((MJCP.QualifiedExpression)Input).Qualifier)), arguments, GetRowanTextSpan (Input.Location));
+					arguments = new List<MSA.Expression> ();
+					//TODO fill arguments and type result
+					result = MSA.Ast.Action.GetMember (GetSymbolId (((MJCP.QualifiedExpression)Input).Qualifier), null, arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.@new :
-					MSIA.Expression constructor = Generate (((MJCP.InvocationExpression)Input).Target);
-					args = new List<MSIA.Arg> ();
+					MSA.Expression constructor = Generate (((MJCP.InvocationExpression)Input).Target);
+					arguments = new List<MSA.Expression> ();
 					foreach (MJCP.ExpressionListElement element in ((MJCP.InvocationExpression)Input).Arguments.Arguments)
-						args.Add (MSIA.Arg.Simple (Generate(element.Value)));
-					result = new MSIA.DynamicNewExpression (constructor, args.ToArray(), false, false, 0, 0);
+						arguments.Add (Generate(element.Value));
+					//todo fill the type result
+					result = MSA.Ast.Action.Create (null, arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Function :
 					result = GenerateFunction (((MJCP.FunctionExpression)Input).Function);
 					//the statement and expression is not the same
-					result = new MSIA.BoundAssignment (GetVarRef (((MJCP.FunctionExpression)Input).Function.Name), result, MSO.None);
+					result = MSA.Ast.Assign (GetVar (((MJCP.FunctionExpression)Input).Function.Name), result);
 					break;
 				case MJCP.Expression.Operation.delete :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Delete"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Delete"), arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.@void :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Void"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Void"), arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.@typeof :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("TypeOf"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("TypeOf"), arguments.ToArray ());
 					break;
 				case MJCP.Expression.Operation.PrefixPlusPlus :
 					//
@@ -221,307 +227,291 @@ namespace Microsoft.JScript.Compiler
 					//
 					break;
 				case MJCP.Expression.Operation.PrefixPlus :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Positive"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Positive"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.PrefixMinus :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Negate"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Negate"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Tilda :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("OnesComplement"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("OnesComplement"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Bang :
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Not"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Not"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.PostfixPlusPlus :
-					//
+					//TODO
 					break;
 				case MJCP.Expression.Operation.PostfixMinusMinus :
 					MJCP.UnaryOperatorExpression expr = (MJCP.UnaryOperatorExpression)Input;
-					//expr.Operand
-
-					int indexer = 1;
 					//TODO
-					//result = new MSIA.CommaExpression (arguments, indexer);
 					break;
 				case MJCP.Expression.Operation.Comma :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					arguments.Add (Generate (binOp.Left));
 					arguments.Add (Generate (binOp.Right));
-					result = new MSIA.CommaExpression (arguments, 1);
+					result = MSA.Ast.Comma (arguments);
 					break;
 				case MJCP.Expression.Operation.Equal :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.None);
+					result = GenerateBoundAssignment (binOp.Left, binOp.Right);
 					break;
 				case MJCP.Expression.Operation.StarEqual :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceMultiply);
+					right = MSA.Ast.Multiply (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.DivideEqual :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceDivide);
+					right = MSA.Ast.Multiply (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.PercentEqual :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceMod);
+					right = MSA.Ast.Modulo (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.PlusEqual :
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceAdd);
+					right = MSA.Ast.Add (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.MinusEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceSubtract);
+					right = MSA.Ast.Subtract (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.LessLessEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceLeftShift);
+					right = MSA.Ast.LeftShift (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.GreaterGreaterEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceRightShift);
+					right = MSA.Ast.RightShift (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.GreaterGreaterGreaterEqual:
-					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceRightShiftUnsigned);
+					binOp = (MJCP.BinaryOperatorExpression)Input;//TODO right shift unsigned
+					right = MSA.Ast.RightShift (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.AmpersandEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceBitwiseAnd);
+					right = MSA.Ast.And (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.CircumflexEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceXor);
+					right = MSA.Ast.ExclusiveOr (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.BarEqual:
 					binOp = (MJCP.BinaryOperatorExpression)Input;
-					result = GenerateBoundAssignment (binOp.Left, binOp.Right, MSO.InPlaceBitwiseOr);
+					right = MSA.Ast.Or (Generate(binOp.Left), Generate(binOp.Right));
+					result = GenerateBoundAssignment (binOp.Left, right);
 					break;
 				case MJCP.Expression.Operation.BarBar :
-					result = new MSIA.OrExpression (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right), GetRowanTextSpan (Input.Location));
+					result = MSA.Ast.OrElse (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right));
 					break;
 				case MJCP.Expression.Operation.AmpersandAmpersand :
-					result = new MSIA.AndExpression (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right), GetRowanTextSpan (Input.Location));
+					result = MSA.Ast.AndAlso (Generate (((MJCP.BinaryOperatorExpression)Input).Left), Generate (((MJCP.BinaryOperatorExpression)Input).Right));
 					break;
 				case MJCP.Expression.Operation.Bar:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.BitwiseOr), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Or (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Circumflex:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Xor), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.ExclusiveOr (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Ampersand:
-					arguments = new List<MSIA.Expression>();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.BitwiseAnd), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.And (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.EqualEqual:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Equal), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Equal (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.BangEqual:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.NotEqual), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.NotEqual (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.EqualEqualEqual:
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("Is"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("Is"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.BangEqualEqual:
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("IsNot"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("IsNot"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Less:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.LessThan), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.LessThan (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Greater:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.GreaterThan), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.GreaterThan (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.LessEqual:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.LessThanOrEqual), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.LessThanEquals (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.GreaterEqual:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.GreaterThanOrEqual), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.GreaterThanEquals (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.instanceof:
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("InstanceOf"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("InstanceOf"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.@in:
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					//TODO fill arguments
-					result = new MSIA.MethodCallExpression (typeof (MJR.JSCompilerHelpers).GetMethod ("In"), null, arguments);
+					result = MSA.Ast.Call (typeof (MJR.JSCompilerHelpers).GetMethod ("In"), arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.LessLess:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.LeftShift), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.LeftShift (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.GreaterGreater:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.RightShift), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.RightShift (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.GreaterGreaterGreater:
-					arguments = new List<MSIA.Expression> ();
+					arguments = new List<MSA.Expression> ();
 					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
 					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.RightShiftUnsigned), arguments, GetRowanTextSpan (Input.Location));
+					//TODO type result
+					result = MSA.Ast.Action.Operator (MSO.RightShiftUnsigned, null, arguments.ToArray());
 					break;
 				case MJCP.Expression.Operation.Plus:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Add), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Add (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Minus:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Subtract), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Subtract (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Star:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Multiply), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Multiply (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Divide:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Divide), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Divide (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Percent:
-					arguments = new List<MSIA.Expression> ();
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Left));
-					arguments.Add (Generate (((MJCP.BinaryOperatorExpression)Input).Right));
-					result = new MSIA.ActionExpression (MSA.DoOperationAction.Make (MSO.Mod), arguments, GetRowanTextSpan (Input.Location));
+					binOp = (MJCP.BinaryOperatorExpression)Input;
+					result = MSA.Ast.Modulo (Generate(binOp.Left), Generate(binOp.Right));
 					break;
 				case MJCP.Expression.Operation.Question:
-					result = new MSIA.ConditionalExpression (Generate (((MJCP.TernaryOperatorExpression)Input).First),
+					result = MSA.Ast.Condition (Generate (((MJCP.TernaryOperatorExpression)Input).First),
 															 Generate (((MJCP.TernaryOperatorExpression)Input).Second),
-															 Generate (((MJCP.TernaryOperatorExpression)Input).Third), 
-															 GetRowanTextSpan (Input.Location));
+															 Generate (((MJCP.TernaryOperatorExpression)Input).Third));
 					break;
 				case MJCP.Expression.Operation.@null:
-					result = new MSIA.ConstantExpression (null);
+					result = MSA.Ast.Null ();
 					break;
 			}
-		
-			result.SetLoc (GetRowanTextSpan (Input.Location));
+			//seems to have disappear now
+			//result.SetLoc (GetRowanTextSpan (Input.Location));
 			return result;
 		}
-
-		private MSIA.Expression GenerateBoundAssignment (MJCP.Expression left, MJCP.Expression right, Operators operators)
+		
+		private MSA.Expression GenerateBoundAssignment (MJCP.Expression left, MSA.Expression right)
 		{
+			//todo see BoundAssignment Ast partial Write and Assign 
 			if (left is MJCP.IdentifierExpression)
-				return new MSIA.BoundAssignment (GetVarRef (((MJCP.IdentifierExpression)left).ID), Generate (right), operators);
+				return MSA.Ast.Assign (GetVar (((MJCP.IdentifierExpression)left).ID), right);
 			else if(left.Opcode == MJCP.Expression.Operation.Parenthesized)
-				return GenerateBoundAssignment(((MJCP.UnaryOperatorExpression)left).Operand, right, operators);
+				return GenerateBoundAssignment(((MJCP.UnaryOperatorExpression)left).Operand, right);
 			else if (left.Opcode == MJCP.Expression.Operation.Qualified)
-				return new MSIA.BoundAssignment (GetVarRef (((MJCP.QualifiedExpression)left).Qualifier), Generate (right), operators);
+				return MSA.Ast.Assign (GetVar (((MJCP.QualifiedExpression)left).Qualifier), right);
 			
 			throw new Exception ("can not be assigned!" + left.Opcode.ToString());
-
+		}
+		
+		private MSA.Expression GenerateBoundAssignment (MJCP.Expression left, MJCP.Expression right)
+		{
+			return GenerateBoundAssignment (left, Generate (right));
 		}
 
 		#endregion
-
-		public MSIA.Statement Generate (ParseTree.FunctionDefinition Input)
+				
+		public MSA.Statement Generate (ParseTree.FunctionDefinition Input)
 		{
-			MSIA.VariableReference vr = GetVarRef (Input.Name);
-			MSIA.Expression val = GenerateFunction (Input);
-			MSIA.BoundAssignment bound = new Microsoft.Scripting.Internal.Ast.BoundAssignment (vr, val, Operators.None);
-			return new MSIA.ExpressionStatement (bound);
+			MSA.Variable v = GetVar (Input.Name);
+			MSA.Expression val = GenerateFunction (Input);
+			MSA.BoundAssignment bound = MSA.Ast.Assign (v, val);
+			return MSA.Ast.Statement (bound);
 		}
 
-		[MonoTODO ("fill all detail and complete test")]
-		private MSIA.Expression GenerateFunction (ParseTree.FunctionDefinition Input)
+		//[MonoTODO ("fill all detail and complete test")]
+		private MSA.Expression GenerateFunction (ParseTree.FunctionDefinition Input)
 		{
-			MSIA.VariableReference vr = GetVarRef (Input.Name);
-			List<MSIA.Expression> arguments = new List<MSIA.Expression> ();
+			MSA.Variable vr = GetVar (Input.Name);
+			List<MSA.Expression> arguments = new List<MSA.Expression> ();
 			//TODO: a lot have to be found here
-			arguments.Add (new MSIA.CodeContextExpression ());
-			arguments.Add (new MSIA.ConstantExpression (Input.Name.Spelling));
-			arguments.Add (new MSIA.ConstantExpression (-1));//must be something but not found for moment
+			arguments.Add (MSA.Ast.CodeContext ());
+			arguments.Add (MSA.Ast.Constant (Input.Name.Spelling));
+			arguments.Add (MSA.Ast.Constant (-1));//must be something but not found for moment
 			string name = "_";//TODO: find what is behind this or hardcoded?
 			withinFunction++;
-			MSIA.Statement body = this.Generate (Input.Body);//must be that but not tested
+			//TODO best is to do a node system or a queue if needed to get the function
+			//I think I will have to do that for variable system 
+			MSA.Statement body = this.Generate (Input.Body);//must be that but not tested
 			withinFunction--;
-			MSIA.CodeBlock block = new MSIA.CodeBlock (name, null, body);
-			List<MSIA.Parameter> parameters = this.Generate (Input.Parameters, block);
-			block.Parameters = parameters;
-			arguments.Add (new MSIA.CodeBlockExpression (block, true));//true or false?
-			List<MSIA.Expression> initializers = new List<MSIA.Expression> ();// TODO fill it
-			arguments.Add (MSIA.NewArrayExpression.NewArrayInit (typeof (string[]), initializers));
-			arguments.Add (new MSIA.ConstantExpression (true));
-			arguments.Add (new MSIA.ConstantExpression (false));
+			MSA.CodeBlock block = MSA.Ast.CodeBlock (name);
+			block.Parent= globalBlock;
+			block.Body = body;
+			List<MSA.Variable> parameters = this.Generate (Input.Parameters, block);
+			arguments.Add (MSA.Ast.CodeBlockExpression (block, false));//TODO maybe use other ones with more 
+			List<MSA.Expression> initializers = new List<MSA.Expression> ();// TODO fill it
+			arguments.Add (MSA.Ast.NewArray (typeof (string[]), initializers));
+			arguments.Add (MSA.Ast.Constant (true));
+			arguments.Add (MSA.Ast.Constant (false));
 
-			return new MSIA.MethodCallExpression (typeof (MJR.JSFunctionObject).GetMethod ("MakeFunction"), null, arguments);
+			return MSA.Ast.Call (typeof (MJR.JSFunctionObject).GetMethod ("MakeFunction"), arguments.ToArray());
 		}
 
-		private List<MSIA.Parameter> Generate (List<MJCP.Parameter> parameters, MSIA.CodeBlock block)
+		private List<MSA.Variable> Generate (List<MJCP.Parameter> parameters, MSA.CodeBlock sblock)
 		{
-			List<MSIA.Parameter> result = new List<MSIA.Parameter> ();
+			List<MSA.Variable> result = new List<MSA.Variable> ();
 			foreach (MJCP.Parameter p in parameters)
-				result.Add (MSIA.Parameter.Create (block, idMappingTable.GetRowanID (p.Name)));
+				result.Add (sblock.CreateParameter (GetSymbolId (p.Name), typeof(MJR.JSObject)));
+			//TODO type of param but no type in parameters so jsobject 
 			return result;
 		}
 
 		#region Statement
 
-		public MSIA.BlockStatement Generate (DList<MJCP.Statement, MJCP.BlockStatement> Input, bool PrintExpressions)
+		public MSA.Statement Generate (DList<MJCP.Statement, MJCP.BlockStatement> Input, bool PrintExpressions)
 		{
 			DList<MJCP.Statement, MJCP.BlockStatement>.Iterator it = new DList<MJCP.Statement, MJCP.BlockStatement>.Iterator (Input);
-			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			List<MSA.Statement> statements = new List<MSA.Statement> ();
 			while (it.ElementAvailable) {
 				statements.Add (Generate (it.Element, PrintExpressions));
 				it.Advance ();
 			}
-			return new MSIA.BlockStatement (statements.ToArray ());
+			return MSA.Ast.Block (statements);
 
 		}
 
-		public MSIA.Statement Generate (ParseTree.Statement Input, bool PrintExpressions)
+		public MSA.Statement Generate (ParseTree.Statement Input, bool PrintExpressions)
 		{
-			MSIA.Statement result;
+			MSA.Statement result;
 			switch (Input.Opcode) {
 				case MJCP.Statement.Operation.Block:
 					result = GenerateBlockStatement ((MJCP.BlockStatement)Input);
@@ -530,7 +520,7 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateVarDeclaration ((MJCP.VariableDeclarationStatement)Input);
 					break;
 				case MJCP.Statement.Operation.Empty:
-					result = new MSIA.EmptyStatement ();
+					result = MSA.Ast.Empty ();
 					break;
 				case MJCP.Statement.Operation.Expression:
 					result = GenerateExpressionStatement ((MJCP.ExpressionStatement)Input, PrintExpressions);
@@ -557,16 +547,16 @@ namespace Microsoft.JScript.Compiler
 					result = GenerateDeclarationForInStatement ((MJCP.DeclarationForInStatement)Input);
 					break;
 				case MJCP.Statement.Operation.Break:
-					result = new MSIA.BreakStatement ();
+					result = MSA.Ast.Break ();
 					break;
 				case MJCP.Statement.Operation.Continue:
-					result = new MSIA.ContinueStatement ();
+					result = MSA.Ast.Continue ();
 					break;
 				case MJCP.Statement.Operation.Return:
-					result = new MSIA.ReturnStatement (Generate (((MJCP.ReturnOrThrowStatement)Input).Value));
+					result = MSA.Ast.Return (Generate (((MJCP.ReturnOrThrowStatement)Input).Value));
 					break;
 				case MJCP.Statement.Operation.Throw:
-					result = new MSIA.ExpressionStatement (new MSIA.ThrowExpression (Generate (((MJCP.ReturnOrThrowStatement)Input).Value)));
+					result = MSA.Ast.Throw (Generate (((MJCP.ReturnOrThrowStatement)Input).Value));
 					break;
 				case MJCP.Statement.Operation.With:
 					result = GenerateWithStatement ((MJCP.WithStatement)Input);
@@ -591,156 +581,173 @@ namespace Microsoft.JScript.Compiler
 			return result;
 		}
 
-		public MSIA.Statement Generate (ParseTree.Statement Input)
+		public MSA.Statement Generate (ParseTree.Statement Input)
 		{
 			return Generate (Input, false);
 		}
 
-		private MSIA.BlockStatement GenerateBlockStatement (MJCP.BlockStatement blockStatement)
+		private MSA.Statement GenerateBlockStatement (MJCP.BlockStatement blockStatement)
 		{
 			DList<MJCP.Statement, MJCP.BlockStatement>.Iterator it = new DList<MJCP.Statement, MJCP.BlockStatement>.Iterator (blockStatement.Children);
-			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			List<MSA.Statement> statements = new List<MSA.Statement> ();
 			while (it.ElementAvailable){
-				 MSIA.Statement statement = Generate (it.Element);
+				 MSA.Statement statement = Generate (it.Element);
 				 statements.Add (statement);
 				 it.Advance ();
 			}
-			return new MSIA.BlockStatement (statements.ToArray());
+			return MSA.Ast.Block (statements);
 		}
 
-		private MSIA.Statement GenerateVarDeclaration (Microsoft.JScript.Compiler.ParseTree.VariableDeclarationStatement variableDeclarationStatement)
+		private MSA.Statement GenerateVarDeclaration (Microsoft.JScript.Compiler.ParseTree.VariableDeclarationStatement variableDeclarationStatement)
 		{
-			List<MSIA.Expression> expressions = new List<MSIA.Expression> ();
+			List<MSA.Expression> expressions = new List<MSA.Expression> ();
 			foreach (MJCP.VariableDeclarationListElement element in variableDeclarationStatement.Declarations) {
-				MSIA.VariableReference vr = GetVarRef (element.Declaration.Name);
-				MSIA.Expression value = null;
+				MSA.Variable vr = GetVar (element.Declaration.Name);
+				MSA.Expression value = null;
 				if (element.Declaration is MJCP.InitializerVariableDeclaration) {
 					value = Generate (((MJCP.InitializerVariableDeclaration)element.Declaration).Initializer);
-					expressions.Add (new MSIA.BoundAssignment (vr, value, Operators.None));
+					expressions.Add (MSA.Ast.Assign (vr, value));
 				}							
 			}
 			if (expressions.Count == 0)
-				return new MSIA.EmptyStatement ();
-			MSIA.CommaExpression exp = new MSIA.CommaExpression (expressions, expressions.Count - 1);
-			return new MSIA.ExpressionStatement (exp);
+				return MSA.Ast.Empty ();
+			MSA.CommaExpression exp = MSA.Ast.Comma (expressions.Count - 1, expressions);
+			return MSA.Ast.Statement (exp);
 		}
 
-		[MonoTODO ("PrintExpressions is not used")]
-		private MSIA.Statement GenerateExpressionStatement (MJCP.ExpressionStatement expressionStatement, bool PrintExpressions)
+		//[MonoTODO ("PrintExpressions is not used")]
+		private MSA.Statement GenerateExpressionStatement (MJCP.ExpressionStatement expressionStatement, bool PrintExpressions)
 		{
-			return new MSIA.ExpressionStatement (Generate (expressionStatement.Expression));
+			return MSA.Ast.Statement (Generate (expressionStatement.Expression));
 		}
 
-		private MSIA.Statement GenerateIfStatement (MJCP.IfStatement ifStatement)
+		private MSA.Statement GenerateIfStatement (MJCP.IfStatement ifStatement)
 		{
-			MSIA.Statement @else = Generate (ifStatement.ElseBody);
-			List<MSIA.IfStatementTest> tests = new List<MSIA.IfStatementTest> ();
-			tests.Add (new MSIA.IfStatementTest (Generate (ifStatement.Condition), Generate (ifStatement.IfBody)));
+			MSA.Statement @else = Generate (ifStatement.ElseBody);
+			List<MSA.IfStatementTest> tests = new List<MSA.IfStatementTest> ();
+			tests.Add (MSA.Ast.IfCondition (Generate (ifStatement.Condition), Generate (ifStatement.IfBody)));
 			//TODO strange to have list here maybe for elseif in other language
-			return new MSIA.IfStatement (tests.ToArray(), @else);
+			return MSA.Ast.If (tests.ToArray(), @else);
 		}
 
-		private MSIA.Statement GenerateDoStatement (MJCP.DoStatement doStatement)
+		private MSA.Statement GenerateDoStatement (MJCP.DoStatement doStatement)
 		{
-			MSIA.Expression test = Generate (doStatement.Condition);
-			MSIA.Statement body = Generate (doStatement.Body);
+			MSA.Expression test = Generate (doStatement.Condition);
+			MSA.Statement body = Generate (doStatement.Body);
 			SourceSpan span = GetRowanTextSpan (doStatement.Location);
 			SourceLocation header = GetRowanStartLocation (doStatement.HeaderLocation);
-			return new MSIA.DoStatement (test, body, span, header);
+			return MSA.Ast.Do (span, header, body).While (test);
 		}
 
-		private MSIA.Statement GenerateWhileStatement (MJCP.WhileStatement whileStatement)
+		private MSA.Statement GenerateWhileStatement (MJCP.WhileStatement whileStatement)
 		{
-			MSIA.Expression test = Generate (whileStatement.Condition);
-			MSIA.Statement body = Generate (whileStatement.Body);
+			MSA.Expression test = Generate (whileStatement.Condition);
+			MSA.Statement body = Generate (whileStatement.Body);
 			SourceSpan span = GetRowanTextSpan (whileStatement.Location);
 			SourceLocation header = GetRowanStartLocation (whileStatement.HeaderLocation);
-			return new MSIA.LoopStatement (test, null, body, null, span, header);
+			return MSA.Ast.While (span, header, test, body, null);
 		}
 
-		private MSIA.Statement GenerateExpressionForStatement (MJCP.ForStatement forStatement)
+		private MSA.Statement GenerateExpressionForStatement (MJCP.ForStatement forStatement)
 		{
 			//TODO unit test + inital somewhere
-			MSIA.Expression test = Generate (forStatement.Condition);
-			MSIA.Expression increment = Generate (forStatement.Increment);
-			MSIA.Statement body = Generate (forStatement.Body);
+			MSA.Expression test = Generate (forStatement.Condition);
+			MSA.Expression increment = Generate (forStatement.Increment);
+			MSA.Statement body = Generate (forStatement.Body);
 			SourceSpan span = GetRowanTextSpan (forStatement.Location);
 			SourceLocation header = GetRowanStartLocation (forStatement.HeaderLocation);
-			return new MSIA.LoopStatement (test, increment, body, null, span, header);
+			return MSA.Ast.Loop (span, header, test, increment, body, null);
 		}
 
-		private MSIA.Statement GenerateDeclarationForStatement (MJCP.DeclarationForStatement declarationForStatement)
+		private MSA.Statement GenerateDeclarationForStatement (MJCP.DeclarationForStatement declarationForStatement)
 		{
 			//TODO unit test + inital somewhere
-			MSIA.Expression test = Generate (declarationForStatement.Condition);
-			MSIA.Expression increment = Generate (declarationForStatement.Increment);
-			MSIA.Statement body = Generate (declarationForStatement.Body);
+			MSA.Expression test = Generate (declarationForStatement.Condition);
+			MSA.Expression increment = Generate (declarationForStatement.Increment);
+			MSA.Statement body = Generate (declarationForStatement.Body);
 			SourceSpan span = GetRowanTextSpan (declarationForStatement.Location);
 			SourceLocation header = GetRowanStartLocation (declarationForStatement.HeaderLocation);
-			return new MSIA.LoopStatement (test, increment, body, null, span, header);
+			return MSA.Ast.Loop (span, header, test, increment, body, null);
 		}
 
-		private MSIA.Statement GenerateForInStatement (MJCP.ForInStatement forInStatement)
+		private MSA.Statement GenerateForInStatement (MJCP.ForInStatement forInStatement)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private MSIA.Statement GenerateDeclarationForInStatement (MJCP.DeclarationForInStatement declarationForInStatement)
+		private MSA.Statement GenerateDeclarationForInStatement (MJCP.DeclarationForInStatement declarationForInStatement)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		private MSIA.Statement GenerateWithStatement (MJCP.WithStatement withStatement)
+		private MSA.Statement GenerateWithStatement (MJCP.WithStatement withStatement)
 		{
-			return new MSIA.ScopeStatement (Generate (withStatement.Scope),Generate (withStatement.Body));
+			return MSA.Ast.Scope (Generate (withStatement.Scope),Generate (withStatement.Body));
 		}
 
-		private MSIA.Statement GenerateLabelStatement (MJCP.LabelStatement labelStatement)
+		private MSA.Statement GenerateLabelStatement (MJCP.LabelStatement labelStatement)
 		{
 			//TODO must use label somewhere maybe done a collection of label with statement
 			//labelStatement.Label
-			return new MSIA.LabeledStatement (Generate (labelStatement.Labeled));
+			return MSA.Ast.Labeled (Generate (labelStatement.Labeled));
 		}
 
-		private MSIA.Statement GenerateSwitchStatement (MJCP.SwitchStatement switchStatement)
+		private MSA.Statement GenerateSwitchStatement (MJCP.SwitchStatement switchStatement)
 		{
-			MSIA.Expression testValue = Generate (switchStatement.Value);
-			List<MSIA.SwitchCase> cases = new List<MSIA.SwitchCase>();
+			MSA.Expression testValue = Generate (switchStatement.Value);
+			
+			SourceSpan span = GetRowanTextSpan (switchStatement.Location);
+			SourceLocation header = GetRowanStartLocation (switchStatement.HeaderLocation);
+			MSA.SwitchStatementBuilder builder = MSA.Ast.Switch (span, header, testValue);
+			
 			DList<MJCP.CaseClause, MJCP.SwitchStatement>.Iterator it = new DList<MJCP.CaseClause, MJCP.SwitchStatement>.Iterator (switchStatement.Cases);
 			while (it.ElementAvailable) {
 				if ( it.Element is MJCP.ValueCaseClause)
-					cases.Add(new MSIA.SwitchCase (Generate(((MJCP.ValueCaseClause)it.Element).Value), Generate (it.Element.Children)));
+					builder.Case ((int)((MSA.ConstantExpression)Generate(((MJCP.ValueCaseClause)it.Element).Value)).Value, Generate (it.Element.Children));
 				else //default
-					cases.Add (new MSIA.SwitchCase (null, Generate (it.Element.Children)));
+					builder.Default (Generate (it.Element.Children));
 				it.Advance ();
 			}
-			SourceSpan span = GetRowanTextSpan (switchStatement.Location);
-			SourceLocation header = GetRowanStartLocation (switchStatement.HeaderLocation);
-			return new MSIA.SwitchStatement (testValue, cases, span, header);
+			return builder.ToStatement ();
 		}
 
-		private MSIA.Statement Generate (DList<MJCP.Statement, MJCP.CaseClause> children)
+		private MSA.Statement Generate (DList<MJCP.Statement, MJCP.CaseClause> children)
 		{
-			List<MSIA.Statement> statements = new List<MSIA.Statement> ();
+			List<MSA.Statement> statements = new List<MSA.Statement> ();
 			DList<MJCP.Statement, MJCP.CaseClause>.Iterator it = new DList<MJCP.Statement, MJCP.CaseClause>.Iterator (children);
 			while (it.ElementAvailable) {
 				statements.Add (Generate (it.Element));
 				it.Advance ();
 			}
-			return new MSIA.BlockStatement (statements.ToArray());
+			return MSA.Ast.Block (statements);
 		}
-
-		private MSIA.Statement GenerateTryStatement (MJCP.TryStatement tryStatement)
+		
+		private MSA.CatchBlock[] Generate (MJCP.CatchClause Catch)
 		{
-			MSIA.Statement body = Generate (tryStatement.Block);
-			List<MSIA.TryStatementHandler> handlers = new List<MSIA.TryStatementHandler> ();
-			handlers.Add (new MSIA.TryStatementHandler(null, GetVarRef (tryStatement.Catch.Name), Generate(tryStatement.Catch.Handler)));
-			MSIA.Statement finallySuite = Generate (tryStatement.Finally.Handler);
+			return new MSA.CatchBlock[] {MSA.Ast.Catch (typeof(object), Generate (Catch.Handler))};
+		}
+		
+		private MSA.Statement GenerateTryStatement (MJCP.TryStatement tryStatement)
+		{
 			SourceSpan span = GetRowanTextSpan (tryStatement.Location);
-			return new MSIA.TryStatement (body, handlers.ToArray(), null, finallySuite, span, SourceLocation.None);
+			MSA.Statement body = Generate (tryStatement.Block);
+			
+			if (tryStatement.Catch != null) {
+				MSA.CatchBlock[] handlers = Generate(tryStatement.Catch);
+				if (tryStatement.Finally != null) {
+					MSA.Statement @finally = Generate (tryStatement.Finally.Handler);	
+					return MSA.Ast.TryCatchFinally (span, SourceLocation.None, body, handlers, @finally);
+				}
+				return MSA.Ast.TryCatch (span, SourceLocation.None, body, handlers);
+			}
+			else if (tryStatement.Finally != null) {
+				MSA.Statement finallySuite = Generate (tryStatement.Finally.Handler);
+				return MSA.Ast.TryFinally (span, SourceLocation.None, body, finallySuite);
+			}
+			return MSA.Ast.Try (span, SourceLocation.None,body);				
 		}
 
-		private MSIA.Statement GenerateFunctionStatement (MJCP.FunctionStatement functionStatement)
+		private MSA.Statement GenerateFunctionStatement (MJCP.FunctionStatement functionStatement)
 		{
 			return Generate (functionStatement.Function);
 		}
@@ -775,19 +782,24 @@ namespace Microsoft.JScript.Compiler
 
 		//TODO : find the use of this!
 		//maybe a main codeblock where all generated code is put
-		public void SetGlobals(MSIA.CodeBlock Globals)
+		public void SetGlobals(MSA.CodeBlock Globals)
 		{
+			globalBlock = Globals;
 			Init ();
 			//throw new NotImplementedException();
 		}
-
-		#region helpers
-
-		private MSIA.VariableReference GetVarRef (Identifier ID)
+		
+		private SymbolId GetSymbolId (Identifier ID)
 		{
-			return new MSIA.VariableReference (idMappingTable.GetRowanID (ID));
+			return idMappingTable.GetRowanID (ID);
 		}
-
-		#endregion
+			
+		//TODO when variable is ever created we must get it back
+		// so will search in current block and parent block if not field
+		// else will search in object tree if contain this member 
+		private MSA.Variable GetVar(Identifier ID)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

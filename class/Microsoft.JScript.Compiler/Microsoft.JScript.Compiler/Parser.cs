@@ -161,7 +161,7 @@ namespace Microsoft.JScript.Compiler
 
 		private Statement ParseStatement ()
 		{
-			Token start = current;
+			//Token start = current;
 			switch (current.Kind) {
 				case Token.Type.LeftBrace:
 					return ParseBlock ();

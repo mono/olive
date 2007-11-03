@@ -145,9 +145,9 @@ namespace Microsoft.JScript.Compiler
 				case "-X:ExceptionDetail":
 					this.EngineOptions.ExceptionDetail = true;
 					break;
-				case "-X:FastEval":
+				/*case "-X:FastEval":
 					this.EngineOptions.FastEvaluation = true;
-					break;
+					break;*/
 				case "-X:Frames":
 					this.GlobalOptions.Frames = true;
 					break;
@@ -157,7 +157,7 @@ namespace Microsoft.JScript.Compiler
 				case "-X:ILDebug":
 					// not sure here
 					this.EngineOptions.ClrDebuggingEnabled = true;
-					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.ILDebug;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Generation.AssemblyGenAttributes.ILDebug;
 					break;
 				case "-X:MaxRecursion":
 					int result =0;
@@ -175,7 +175,7 @@ namespace Microsoft.JScript.Compiler
 				case "-X:NoOptimize":
 					// not sure here
 					this.GlobalOptions.OptimizeEnvironments = false;
-					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.DisableOptimizations;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Generation.AssemblyGenAttributes.DisableOptimizations;
 					break;
 				case "-X:NoTraceback":
 					this.GlobalOptions.DynamicStackTraceSupport = false;
@@ -187,16 +187,16 @@ namespace Microsoft.JScript.Compiler
 					this.GlobalOptions.PrivateBinding = true;
 					break;
 				case "-X:SaveAssemblies":
-					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.SaveAndReloadAssemblies;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Generation.AssemblyGenAttributes.SaveAndReloadAssemblies;
 					break;
 				case "-X:ShowClrExceptions":
 					this.engineOptions.ShowClrExceptions = true;
 					break;
-				case "-X:SlowOps":
+				/*case "-X:SlowOps":
 					this.GlobalOptions.FastOps = true; // not sure for this one but no other talking about ops
-					break;
+					break;*/
 				case "-X:StaticMethods":
-					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Internal.Generation.AssemblyGenAttributes.GenerateStaticMethods;
+					this.GlobalOptions.AssemblyGenAttributes |= Microsoft.Scripting.Generation.AssemblyGenAttributes.GenerateStaticMethods;
 					break;
 				case "-X:TabCompletion":
 					this.ConsoleOptions.TabCompletion = true;

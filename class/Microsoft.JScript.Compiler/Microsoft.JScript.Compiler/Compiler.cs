@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.JScript.Compiler.ParseTree;
-using MSIA = Microsoft.Scripting.Internal.Ast;
+using MSA = Microsoft.Scripting.Ast;
 
 namespace Microsoft.JScript.Compiler
 {
@@ -39,12 +39,12 @@ namespace Microsoft.JScript.Compiler
 		{
 		}
 
-		public MSIA.CodeBlock CompileExpression (string Input, ref List<Diagnostic> Diagnostics)
+		public MSA.CodeBlock CompileExpression (string Input, ref List<Diagnostic> Diagnostics)
 		{
 			return CompileExpression (Input.ToCharArray (), ref Diagnostics);
 		}
 
-		public MSIA.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
+		public MSA.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
 		{
 			IdentifierMappingTable idmtable = new IdentifierMappingTable ();
 			IdentifierTable idtable = new IdentifierTable ();
@@ -53,19 +53,19 @@ namespace Microsoft.JScript.Compiler
 			Expression expr = parser.ParseExpression (ref comments);
 			Diagnostics = parser.Diagnostics;
 			RowanGenerator gen = new RowanGenerator (idmtable, idtable.InsertIdentifier("this"), idtable.InsertIdentifier("_"), idtable.InsertIdentifier("arguments"), idtable.InsertIdentifier("eval"));
-			MSIA.Expression expr2 = gen.Generate (expr);
+			MSA.Expression expr2 = gen.Generate (expr);
 			//TODO: I think that must be return statement but not sure so test with unit test needed!
-			MSIA.CodeBlock block = new MSIA.CodeBlock ("", new List<MSIA.Parameter>(0), new MSIA.ReturnStatement (expr2));
+			MSA.CodeBlock block = new MSA.CodeBlock ("", new List<MSA.Parameter>(0), new MSA.ReturnStatement (expr2));
 			return block;
 		}
 
-		public MSIA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
+		public MSA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
 		{
 			return CompileProgram (Input, ref Diagnostics, ref IncompleteInput, false);
 		}
 
 		[MonoTODO]
-		public MSIA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
+		public MSA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
 		{
 			IdentifierMappingTable idmtable = new IdentifierMappingTable ();
 			IdentifierTable idtable = new IdentifierTable ();
@@ -75,12 +75,12 @@ namespace Microsoft.JScript.Compiler
 			Diagnostics = parser.Diagnostics;
 			IncompleteInput = parser.SyntaxIncomplete();
 			RowanGenerator gen = new RowanGenerator (idmtable, idtable.InsertIdentifier ("this"), idtable.InsertIdentifier ("_"), idtable.InsertIdentifier ("arguments"), idtable.InsertIdentifier ("eval"));
-			MSIA.BlockStatement blockStatement = gen.Generate (list, PrintExpressions);
-			MSIA.CodeBlock block = new MSIA.CodeBlock ("", new List<MSIA.Parameter> (0), blockStatement);
+			MSA.BlockStatement blockStatement = gen.Generate (list, PrintExpressions);
+			MSA.CodeBlock block = new MSA.CodeBlock ("", new List<MSA.Parameter> (0), blockStatement);
 			return block;
 		}
 
-		public MSIA.Statement CompileStatement (char[] Input)
+		public MSA.Statement CompileStatement (char[] Input)
 		{
 			IdentifierMappingTable idmtable = new IdentifierMappingTable ();
 			IdentifierTable idtable = new IdentifierTable ();
@@ -91,7 +91,7 @@ namespace Microsoft.JScript.Compiler
 			return gen.Generate (statement);
 		}
 
-		public MSIA.Statement CompileStatement (string Input)
+		public MSA.Statement CompileStatement (string Input)
 		{
 			return CompileStatement (Input.ToCharArray ());
 		}

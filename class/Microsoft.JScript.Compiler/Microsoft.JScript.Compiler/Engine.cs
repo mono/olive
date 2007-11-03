@@ -40,16 +40,15 @@ namespace Microsoft.JScript.Compiler
 	public class Engine : ScriptEngine
 	{
 		public Engine(LanguageProvider provider, EngineOptions engineOptions)
-			: base(provider, engineOptions)
+			: base(provider, engineOptions, new JSContext ())
 		{
-			context = new JSContext (this);
-			compiler = new JavaScriptCompiler (this);
+			//compiler = new JavaScriptCompiler (this);
 		}
 
-		public override void AddAssembly(Assembly assembly)
+		/*public override void AddAssembly(Assembly assembly)
 		{
 			throw new NotImplementedException();
-		}
+		}*/
 
 		public void AddToPath(string Directory)
 		{
@@ -76,15 +75,15 @@ namespace Microsoft.JScript.Compiler
 			return new CompilerOptions ();
 		}
 
-		public override ErrorSink GetDefaultErrorSink()
+		/*public override ErrorSink GetDefaultErrorSink()
 		{
 			return new JSErrorSink ();
-		}
+		}*/
 
-		public override IAttributesCollection GetGlobalsDictionary(IDictionary<string, object> globals)
+		/*public override IAttributesCollection GetGlobalsDictionary(IDictionary<string, object> globals)
 		{
 			throw new NotImplementedException();
-		}
+		}*/
 
 		protected override LanguageContext GetLanguageContext(Microsoft.Scripting.CompilerOptions compilerOptions)
 		{
@@ -93,7 +92,8 @@ namespace Microsoft.JScript.Compiler
 
 		protected override LanguageContext GetLanguageContext(ScriptModule module)
 		{
-			return context.GetLanguageContextForModule (module);
+			throw new NotImplementedException();
+			//return context.GetLanguageContextForModule (module);
 		}
 
 		public override Microsoft.Scripting.CompilerOptions GetModuleCompilerOptions(ScriptModule scriptModule)
@@ -142,12 +142,12 @@ namespace Microsoft.JScript.Compiler
 			throw new NotImplementedException();
 		}
 
-		public override ScriptCompiler Compiler {
+		/*public override ScriptCompiler Compiler {
 			get { return compiler; }
-		}
+		}*/
 
 		private JSContext context;
-		private JavaScriptCompiler compiler;
+		//private JavaScriptCompiler compiler;
 
 		public static Engine CurrentEngine
 		{
