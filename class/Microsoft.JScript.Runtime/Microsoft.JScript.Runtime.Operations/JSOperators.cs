@@ -9,9 +9,9 @@ namespace Microsoft.JScript.Runtime.Operations {
 		public static readonly SymbolId OperatorReverseRightShiftUnsigned;
 		public static readonly SymbolId OperatorRightShiftUnsigned;
 
-		static Dictionary<string, OperatorMapping> operator_table;
-		static Dictionary<OperatorMapping, SymbolId> reverse_operator_table;
-
+		/*static Dictionary<string, OperatorMapping> operator_table;
+		static Dictionary<OperatorMapping, SymbolId> reverse_operator_table;*/
+		//TODO find what have replace operator mapping maybe OperatorInfo but private ...
 		public JSOperators ()
 		{
 		}
@@ -26,13 +26,13 @@ namespace Microsoft.JScript.Runtime.Operations {
 			throw new NotImplementedException ();
 		}
 
-		public static Dictionary<string, OperatorMapping> OperatorTable {
+		/*public static Dictionary<string, OperatorMapping> OperatorTable {
 			get { return operator_table; }
 		}
 
 		public static Dictionary<OperatorMapping, SymbolId> ReverseOperatorTable
 		{
 			get { return reverse_operator_table; }
-		}
+		}*/
 	}
 }
