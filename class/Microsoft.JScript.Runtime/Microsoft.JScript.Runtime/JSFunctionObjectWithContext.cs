@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
-using Microsoft.Scripting.Internal.Ast;
+using Microsoft.Scripting.Ast;
 
 namespace Microsoft.JScript.Runtime {
 

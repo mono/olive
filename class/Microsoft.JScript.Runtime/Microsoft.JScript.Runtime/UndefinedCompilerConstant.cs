@@ -1,6 +1,6 @@
 using System;
 using Microsoft.Scripting;
-using Microsoft.Scripting.Internal.Generation;
+using Microsoft.Scripting.Generation;
 
 namespace Microsoft.JScript.Runtime {
 	public class UndefinedCompilerConstant : CompilerConstant {

@@ -1,6 +1,5 @@
 using System;
 using Microsoft.Scripting;
-using IronPython.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime {
 

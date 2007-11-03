@@ -35,7 +35,7 @@ namespace Microsoft.JScript.Runtime {
 
 		public static bool Delete (CodeContext context, SymbolId name)
 		{
-			return context.LanguageContext.RemoveName (context.Scope, name);
+			return context.LanguageContext.RemoveName (context, name);
 		}
 
 		public static IEnumerator GetEnumeratorForIteration (CodeContext context, object o)

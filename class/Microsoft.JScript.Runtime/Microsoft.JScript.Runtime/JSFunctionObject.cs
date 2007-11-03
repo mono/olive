@@ -1,13 +1,13 @@
 using System;
 using Microsoft.Scripting;
-using Microsoft.Scripting.Internal.Ast;
+using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSFunctionObject : JSObject, IActionable, ICallableWithCodeContext, ICallableWithThis, IConstructorWithCodeContext {
-		
+	public class JSFunctionObject : JSObject, /*IActionable,*/ ICallableWithCodeContext, ICallableWithThis, IConstructorWithCodeContext {
+
 		public JSFunctionObject (CodeContext context, string name, int length, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
 			: base (GetPrototype ())
@@ -66,7 +66,7 @@ namespace Microsoft.JScript.Runtime {
 			return "Function";
 		}
 
-		public StandardRule<T> GetRule<T> (Action action, CodeContext context, object [] args)
+		public StandardRule<T> GetRule<T> (DynamicAction action, CodeContext context, object [] args)
 		{
 			throw new NotImplementedException ();
 		}

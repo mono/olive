@@ -3,13 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
-using IronPython.Runtime;
 
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSObject : IAttributesCollection, ICustomMembers, IEnumerable, IEnumerable<KeyValuePair<object,object>>,
-		IMapping, IPythonContainer {
+	public class JSObject : IAttributesCollection, ICustomMembers, IEnumerable, IEnumerable<KeyValuePair<object,object>>/*,
+		IMapping, IPythonContainer*/ {
 		
 		internal JSObject prototype;
 		private Dictionary<SymbolId, object> members;
