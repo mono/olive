@@ -1,0 +1,108 @@
+<Project name="Microsoft.JScript.Compiler" fileversion="2.0" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+  <Configurations active="Release">
+    <Configuration name="Debug" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Debug" assembly="Microsoft.JScript.Compiler" />
+      <Build debugmode="True" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+    <Configuration name="Release" ctype="DotNetProjectConfiguration">
+      <Output directory="./bin/Release" assembly="Microsoft.JScript.Compiler" />
+      <Build debugmode="False" target="Library" />
+      <Execution runwithwarnings="True" consolepause="False" runtime="MsNet" clr-version="Net_2_0" />
+      <CodeGeneration compiler="Mcs" warninglevel="4" optimize="True" unsafecodeallowed="False" generateoverflowchecks="True" generatexmldocumentation="False" ctype="CSharpCompilerParameters" />
+    </Configuration>
+  </Configurations>
+  <Contents>
+    <File name="./Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/BadToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Comment.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Compiler.cs" subtype="Code" buildaction="Nothing" />
+    <File name="./Microsoft.JScript.Compiler/CompilerOptions.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Diagnostic.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/DList.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Engine.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/EngineOptions.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/GlobalEnum.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/HexIntegerLiteralToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Identifier.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/IdentifierMappingTable.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/IdentifierTable.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/IdentifierToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/JavaScriptCompiler.cs" subtype="Code" buildaction="Nothing" />
+    <File name="./Microsoft.JScript.Compiler/NumericLiteralToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/OctalIntegerLiteralToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/OptionsParser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Parser.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/RegularExpressionLiteralToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/RowanGenerator.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/SplayTree.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/StringLiteralToken.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Strings.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Table.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/TextPoint.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/TextSpan.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Token.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/TokenCategorizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler/Tokenizer.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.Hosting/LanguageProvider.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ArgumentList.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ArrayLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/BinaryOperatorExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/BlockStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/BreakOrContinueStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/CaseClause.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/CatchClause.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/DeclarationForInStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/DeclarationForStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/DefaultCaseClause.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/DoStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/Expression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ExpressionForInStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ExpressionForStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ExpressionListElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ExpressionStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/FinallyClause.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ForInStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ForStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/FunctionDefinition.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/FunctionExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/FunctionStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/HexLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/IdentifierExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/IfStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/InitializerVariableDeclaration.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/InvocationExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/LabelStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/LoopStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/NullExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/NumericLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ObjectLiteralElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ObjectLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/OctalLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/Parameter.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/QualifiedExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/RegularExpressionLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ReturnOrThrowStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/Statement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/StringLiteralExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/SubscriptExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/SwitchStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/TernaryOperatorExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/TryStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/UnaryOperatorExpression.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/ValueCaseClause.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/VariableDeclaration.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/VariableDeclarationListElement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/VariableDeclarationStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/WhileStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.ParseTree/WithStatement.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.Shell/CommandLine.cs" subtype="Code" buildaction="Compile" />
+    <File name="./Microsoft.JScript.Compiler.Shell/ConsoleOptions.cs" subtype="Code" buildaction="Compile" />
+  </Contents>
+  <References>
+    <ProjectReference type="Project" localcopy="True" refto="Microsoft.JScript.Runtime" />
+    <ProjectReference type="Gac" localcopy="True" refto="System, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+    <ProjectReference type="Assembly" localcopy="True" refto="../../../ironruby/build/debug/Microsoft.Scripting.dll" />
+  </References>
+</Project>

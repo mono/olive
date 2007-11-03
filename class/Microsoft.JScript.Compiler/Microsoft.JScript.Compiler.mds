@@ -1,0 +1,20 @@
+<Combine name="Microsoft.JScript.Compiler" fileversion="2.0">
+  <Configurations active="Debug">
+    <Configuration name="Debug" ctype="CombineConfiguration">
+      <Entry build="True" name="Microsoft.JScript.Compiler" configuration="Debug" />
+      <Entry build="True" name="Microsoft.JScript.Runtime" configuration="Debug" />
+    </Configuration>
+    <Configuration name="Release" ctype="CombineConfiguration">
+      <Entry build="True" name="Microsoft.JScript.Compiler" configuration="Release" />
+      <Entry build="True" name="Microsoft.JScript.Runtime" configuration="Release" />
+    </Configuration>
+  </Configurations>
+  <StartMode startupentry="Microsoft.JScript.Compiler" single="True">
+    <Execute type="None" entry="Microsoft.JScript.Compiler" />
+    <Execute type="None" entry="Microsoft.JScript.Runtime" />
+  </StartMode>
+  <Entries>
+    <Entry filename="./Microsoft.JScript.Compiler.mdp" />
+    <Entry filename="../Microsoft.JScript.Runtime/Microsoft.JScript.Runtime.mdp" />
+  </Entries>
+</Combine>
