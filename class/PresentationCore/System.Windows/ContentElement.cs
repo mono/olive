@@ -114,7 +114,7 @@ namespace System.Windows {
 		public static readonly RoutedEvent TextInputEvent;
 
 		public ContentElement ()
-p		{
+		{
 		}
 	}
 }
