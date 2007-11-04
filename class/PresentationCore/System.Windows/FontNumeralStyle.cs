@@ -27,8 +27,8 @@ namespace System.Windows {
 
 	public enum FontNumeralStyle
 	{
-		Lining,
 		Normal,
+		Lining,
 		OldStyle
 	}
 

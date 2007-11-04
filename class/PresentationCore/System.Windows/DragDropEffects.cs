@@ -30,10 +30,12 @@ namespace System.Windows {
 	{
 		None    = 0,
 		Copy    = 1 << 0,
-		Link    = 1 << 1,
-		Move    = 1 << 2,
-		All     = unchecked ((int)0x7ffffffc),
-		Scroll  = unchecked ((int)0x80000000)
+		Move    = 1 << 1,
+		Link    = 1 << 2,
+		Scroll  = unchecked ((int)0x80000000),
+
+		/* LAMESPEC don't ask me why, but this doesn't include Link */
+		All     = Copy | Move | Scroll
 	}
 
 }

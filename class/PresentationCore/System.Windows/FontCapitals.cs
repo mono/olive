@@ -29,8 +29,8 @@ namespace System.Windows {
 	{
 		Normal,
 		AllSmallCaps,
-		AllPetiteCaps,
 		SmallCaps,
+		AllPetiteCaps,
 		PetiteCaps,
 		Unicase,
 		Titling

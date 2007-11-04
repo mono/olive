@@ -27,10 +27,10 @@ namespace System.Windows {
 
 	public enum LineBreakCondition
 	{
-		BreakAlways,
 		BreakDesired,
 		BreakPossible,
-		BreakRestrained
+		BreakRestrained,
+		BreakAlways
 	}
 
 }

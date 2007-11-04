@@ -3,6 +3,7 @@ Assembly/AssemblyInfo.cs
 System.Windows/AutoResizedEventArgs.cs
 System.Windows/AutoResizedEventHandler.cs
 System.Windows/BaselineAlignment.cs
+System.Windows/ContentElement.cs
 System.Windows/DragAction.cs
 System.Windows/DragDropEffects.cs
 System.Windows/DragDropKeyStates.cs
@@ -16,6 +17,7 @@ System.Windows/FontCapitals.cs
 System.Windows/FontFraction.cs
 System.Windows/FontVariants.cs
 System.Windows/Freezable.cs
+System.Windows/IContentHost.cs
 System.Windows/IInputElement.cs
 System.Windows/LineBreakCondition.cs
 System.Windows/LocalizationCategory.cs
