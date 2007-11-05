@@ -41,6 +41,7 @@ System.Windows/UIElement.cs
 System.Windows/Visibility.cs
 System.Windows.Input/AccessKeyPressedEventArgs.cs
 System.Windows.Input/AccessKeyPressedEventHandler.cs
+System.Windows.Input/ApplicationCommands.cs
 System.Windows.Input/CanExecuteRoutedEventArgs.cs
 System.Windows.Input/CanExecuteRoutedEventHandler.cs
 System.Windows.Input/CaptureMode.cs
@@ -56,6 +57,8 @@ System.Windows.Input/ImeSentenceModeValues.cs
 System.Windows.Input/InputDevice.cs
 System.Windows.Input/InputEventArgs.cs
 System.Windows.Input/InputEventHandler.cs
+System.Windows.Input/InputGesture.cs
+System.Windows.Input/InputGestureCollection.cs
 System.Windows.Input/InputLanguageEventArgs.cs
 System.Windows.Input/InputLanguageEventHandler.cs
 System.Windows.Input/InputManager.cs
@@ -80,6 +83,8 @@ System.Windows.Input/MouseButtonEventArgs.cs
 System.Windows.Input/MouseButtonEventHandler.cs
 System.Windows.Input/MouseEventArgs.cs
 System.Windows.Input/MouseEventHandler.cs
+System.Windows.Input/RoutedCommand.cs
+System.Windows.Input/RoutedUICommand.cs
 System.Windows.Input/SpeechMode.cs
 System.Windows.Input/StylusButtonState.cs
 System.Windows.Input/StylusDevice.cs
