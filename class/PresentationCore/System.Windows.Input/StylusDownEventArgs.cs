@@ -24,50 +24,23 @@
 //
 
 using System;
-using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class StylusDownEventArgs : StylusEventArgs
 	{
-		internal CanExecuteRoutedEventArgs ()
+		public StylusDownEventArgs (StylusDevice stylusDevice, int timestamp)
+			: base (stylusDevice, timestamp)
 		{
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
+		public int TapCount {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
 			throw new NotImplementedException ();
 		}
-
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
 	}
-
 }

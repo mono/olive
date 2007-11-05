@@ -24,50 +24,53 @@
 //
 
 using System;
-using System.Windows;
+
+using System.Windows.Threading;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class TextComposition : DispatcherObject
 	{
-		internal CanExecuteRoutedEventArgs ()
+		public TextComposition (InputManager inputManager, IInputElement source, string resultText)
 		{
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
+		public TextComposition (InputManager inputManager, IInputElement source, string resultText, TextCompositionAutoComplete autoComplete)
+		{
+		}
+
+		public TextCompositionAutoComplete AutoComplete {
+			get { throw new NotImplementedException (); }
+		}
+
+		public string CompositionText {
+			get { throw new NotImplementedException (); }
+			protected set { throw new NotImplementedException (); }
+		}
+
+		public string ControlText {
+			get { throw new NotImplementedException (); }
+			protected set { throw new NotImplementedException (); }
+		}
+
+		public string SystemCompositionText {
+			get { throw new NotImplementedException (); }
+			protected set { throw new NotImplementedException (); }
+		}
+
+		public string SystemText {
+			get { throw new NotImplementedException (); }
+			protected set { throw new NotImplementedException (); }
+		}
+
+		public string Text {
+			get { throw new NotImplementedException (); }
+			protected set { throw new NotImplementedException (); }
+		}
+
+		public virtual void Complete ()
 		{
 			throw new NotImplementedException ();
 		}
-
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
 	}
-
 }

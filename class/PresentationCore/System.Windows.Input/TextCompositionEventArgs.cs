@@ -24,50 +24,35 @@
 //
 
 using System;
-using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class TextCompositionEventArgs : InputEventArgs
 	{
-		internal CanExecuteRoutedEventArgs ()
+		public TextCompositionEventArgs (InputDevice inputDevice, TextComposition composition)
+			: base (inputDevice, /* XXX */ 0)
 		{
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
+		public string ContextText {
+			get { throw new NotImplementedException (); }
+		}
+
+		public string SystemText {
+			get { throw new NotImplementedException (); }
+		}
+
+		public string Text {
+			get { throw new NotImplementedException (); }
+		}
+
+		public TextComposition TextComposition {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
 			throw new NotImplementedException ();
 		}
-
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
 	}
-
 }

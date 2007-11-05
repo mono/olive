@@ -24,49 +24,32 @@
 //
 
 using System;
+
 using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class StylusButton
 	{
-		internal CanExecuteRoutedEventArgs ()
-		{
+		public Guid Guid {
+			get { throw new NotImplementedException (); }
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
+		public string Name {
+			get { throw new NotImplementedException (); }
+		}
+
+		public StylusButtonState StylusButtonState {
+			get { throw new NotImplementedException (); }
+		}
+
+		public StylusDevice StylusDevice {
+			get { throw new NotImplementedException (); }
+		}
+
+		public override string ToString ()
 		{
 			throw new NotImplementedException ();
-		}
-
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
 		}
 	}
 

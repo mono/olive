@@ -24,49 +24,29 @@
 //
 
 using System;
-using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class ProcessInputEventArgs : NotifyInputEventArgs
 	{
-		internal CanExecuteRoutedEventArgs ()
-		{
-		}
-
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
+		public StagingAreaInputItem PeekInput ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
+		public StagingAreaInputItem PopInput ()
+		{
+			throw new NotImplementedException ();
 		}
 
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
+		public StagingAreaInputItem PushInput (StagingAreaInputItem input)
+		{
+			throw new NotImplementedException ();
 		}
 
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
+		public StagingAreaInputItem PushInput (InputEventArgs input, StagingAreaInputItem promote)
+		{
+			throw new NotImplementedException ();
 		}
 	}
 

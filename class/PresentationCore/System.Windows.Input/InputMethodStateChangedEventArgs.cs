@@ -24,49 +24,33 @@
 //
 
 using System;
-using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class CanExecuteRoutedEventArgs : RoutedEventArgs
+	public class InputMethodStateChangedEventArgs : EventArgs
 	{
-		internal CanExecuteRoutedEventArgs ()
-		{
+		public bool IsHandwritingStateChanged {
+			get { throw new NotImplementedException (); }
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object target)
-		{
-			throw new NotImplementedException ();
+		public bool IsImeConversionModeChanged {
+			get { throw new NotImplementedException (); }
 		}
 
-		public bool CanExecute {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
+		public bool IsImeSentenceModeChanged {
+			get { throw new NotImplementedException (); }
 		}
 
-		public ICommand Command {
-			get {
-				throw new NotImplementedException ();
-			}
+		public bool IsImeStateChanged {
+			get { throw new NotImplementedException (); }
 		}
 
-		public bool ContinueRouting {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
+		public bool IsMicrophoneStateChanged {
+			get { throw new NotImplementedException (); }
 		}
 
-		public object Parameter {
-			get {
-				throw new NotImplementedException ();
-			}
+		public bool IsSpeechModeChanged {
+			get { throw new NotImplementedException (); }
 		}
 	}
 
