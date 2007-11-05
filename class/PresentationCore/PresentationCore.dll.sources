@@ -50,6 +50,7 @@ System.Windows.Input/ExecutedRoutedEventArgs.cs
 System.Windows.Input/ExecutedRoutedEventHandler.cs
 System.Windows.Input/ICommand.cs
 System.Windows.Input/ICommandSource.cs
+System.Windows.Input/IInputLanguageSource.cs
 System.Windows.Input/InputDevice.cs
 System.Windows.Input/InputEventArgs.cs
 System.Windows.Input/InputEventHandler.cs
@@ -76,6 +77,10 @@ System.Windows.Input/StylusButtonState.cs
 System.Windows.Input/StylusDevice.cs
 System.Windows.Input/StylusEventArgs.cs
 System.Windows.Input/StylusEventHandler.cs
+System.Windows.Input/SystemGesture.cs
+System.Windows.Input/TabletDeviceType.cs
+System.Windows.Input/TabletHardwareCapabilities.cs
+System.Windows.Input/TextCompositionAutoComplete.cs
 System.Windows.Markup/IAddChild.cs
 System.Windows.Markup/IUriContext.cs
 System.Windows.Media.Animation/AnimationClock.cs

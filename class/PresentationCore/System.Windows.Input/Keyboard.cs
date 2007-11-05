@@ -110,12 +110,12 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
-		public static void Focus (IInputElement element)
+		public static IInputElement Focus (IInputElement element)
 		{
-			PrimaryDevice.Focus (element);
+			return PrimaryDevice.Focus (element);
 		}
 
-		public static KeyStates GetKeyState (Key key)
+		public static KeyStates GetKeyStates (Key key)
 		{
 			return PrimaryDevice.GetKeyStates (key);
 		}
