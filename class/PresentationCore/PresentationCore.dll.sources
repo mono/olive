@@ -45,6 +45,7 @@ System.Windows.Input/ApplicationCommands.cs
 System.Windows.Input/CanExecuteRoutedEventArgs.cs
 System.Windows.Input/CanExecuteRoutedEventHandler.cs
 System.Windows.Input/CaptureMode.cs
+System.Windows.Input/ComponentCommands.cs
 System.Windows.Input/Cursor.cs
 System.Windows.Input/CursorType.cs
 System.Windows.Input/ExecutedRoutedEventArgs.cs
@@ -54,6 +55,7 @@ System.Windows.Input/ICommandSource.cs
 System.Windows.Input/IInputLanguageSource.cs
 System.Windows.Input/ImeConversionModeValues.cs
 System.Windows.Input/ImeSentenceModeValues.cs
+System.Windows.Input/InputBinding.cs
 System.Windows.Input/InputDevice.cs
 System.Windows.Input/InputEventArgs.cs
 System.Windows.Input/InputEventHandler.cs
@@ -74,7 +76,9 @@ System.Windows.Input/KeyboardEventArgs.cs
 System.Windows.Input/KeyboardEventHandler.cs
 System.Windows.Input/KeyboardFocusChangedEventArgs.cs
 System.Windows.Input/KeyboardFocusChangedEventHandler.cs
+System.Windows.Input/KeyGesture.cs
 System.Windows.Input/KeyStates.cs
+System.Windows.Input/MediaCommands.cs
 System.Windows.Input/MouseAction.cs
 System.Windows.Input/MouseDevice.cs
 System.Windows.Input/MouseButton.cs
@@ -83,6 +87,8 @@ System.Windows.Input/MouseButtonEventArgs.cs
 System.Windows.Input/MouseButtonEventHandler.cs
 System.Windows.Input/MouseEventArgs.cs
 System.Windows.Input/MouseEventHandler.cs
+System.Windows.Input/MouseGesture.cs
+System.Windows.Input/NavigationCommands.cs
 System.Windows.Input/RoutedCommand.cs
 System.Windows.Input/RoutedUICommand.cs
 System.Windows.Input/SpeechMode.cs
