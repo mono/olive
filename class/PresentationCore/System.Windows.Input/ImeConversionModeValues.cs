@@ -27,40 +27,19 @@ using System;
 
 namespace System.Windows.Input {
 
-	public class MouseButtonEventArgs : MouseEventArgs
-	{
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button)
-			: base (mouse, timestamp)
-		{
-		}
-
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button,
-					     StylusDevice stylusDevice)
-			: base (mouse, timestamp, stylusDevice)
-		{
-		}
-
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
-		{
-		}
-
-		public MouseButtonState ButtonState {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public MouseButton ChangedButton {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public int ClickCount {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
+	[Flags]
+	public enum ImeConversionModeValues {
+		Native = 1,
+		Katakana = 2,
+		FullShape = 4,
+		Roman = 8,
+		CharCode = 16,
+		NoConversion = 32,
+		Eudc = 64,
+		Symbol = 128,
+		Fixed = 256,
+		Alphanumeric = 512,
+		DoNotCare = -1
 	}
 
 }

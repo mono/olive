@@ -48,25 +48,16 @@ namespace System.Windows.Input {
 			get {
 				throw new NotImplementedException ();
 			}
-			set {
-				throw new NotImplementedException ();
-			}
 		}
 
 		public KeyboardDevice PrimaryKeyboardDevice {
 			get {
 				throw new NotImplementedException ();
 			}
-			set {
-				throw new NotImplementedException ();
-			}
 		}
 
 		public MouseDevice PrimaryMouseDevice {
 			get {
-				throw new NotImplementedException ();
-			}
-			set {
 				throw new NotImplementedException ();
 			}
 		}

@@ -23,44 +23,12 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-
 namespace System.Windows.Input {
 
-	public class MouseButtonEventArgs : MouseEventArgs
-	{
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button)
-			: base (mouse, timestamp)
-		{
-		}
-
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button,
-					     StylusDevice stylusDevice)
-			: base (mouse, timestamp, stylusDevice)
-		{
-		}
-
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
-		{
-		}
-
-		public MouseButtonState ButtonState {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public MouseButton ChangedButton {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public int ClickCount {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
+	public enum SpeechMode {
+		Dictation,
+		Command,
+		Indeterminate
 	}
 
 }

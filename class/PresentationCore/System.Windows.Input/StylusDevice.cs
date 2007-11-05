@@ -97,7 +97,7 @@ namespace System.Windows.Input {
 			}
 		}
 
-		public bool IsRange {
+		public bool InRange {
 			get {
 				throw new NotImplementedException ();
 			}

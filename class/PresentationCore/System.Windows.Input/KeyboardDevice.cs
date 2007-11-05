@@ -74,7 +74,7 @@ namespace System.Windows.Input {
 			}
 		}
 
-		public ModifierKeys ModifierKeys {
+		public ModifierKeys Modifiers {
 			get {
 				throw new NotImplementedException ();
 			}

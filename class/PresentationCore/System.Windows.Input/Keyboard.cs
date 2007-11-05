@@ -140,7 +140,7 @@ namespace System.Windows.Input {
 		}
 
 		public static ModifierKeys Modifiers {
-			get { return PrimaryDevice.ModifierKeys; }
+			get { return PrimaryDevice.Modifiers; }
 		}
 
 		public static KeyboardDevice PrimaryDevice {

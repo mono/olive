@@ -40,9 +40,6 @@ namespace System.Windows.Input {
 		}
 
 		public InputDevice Device {
-			set {
-				throw new NotImplementedException ();
-			}
 			get {
 				throw new NotImplementedException ();
 			}

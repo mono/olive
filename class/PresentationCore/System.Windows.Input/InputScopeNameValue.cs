@@ -27,40 +27,57 @@ using System;
 
 namespace System.Windows.Input {
 
-	public class MouseButtonEventArgs : MouseEventArgs
-	{
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button)
-			: base (mouse, timestamp)
-		{
-		}
-
-		public MouseButtonEventArgs (MouseDevice mouse, int timestamp, MouseButton button,
-					     StylusDevice stylusDevice)
-			: base (mouse, timestamp, stylusDevice)
-		{
-		}
-
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
-		{
-		}
-
-		public MouseButtonState ButtonState {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public MouseButton ChangedButton {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-
-		public int ClickCount {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
+	public enum InputScopeNameValue {
+		Xml = -4,
+		Srgs = -3,
+		RegularExpressin = -2,
+		PhraseList = -1,
+		Default,
+		Url,
+		FullFilePath,
+		FileName,
+		EmailUserName,
+		EmailSmtpAddress,
+		LogOnName,
+		PersonalFullName,
+		PersonalNamePrefix,
+		PersonalGivenName,
+		PersonalMiddleName,
+		PersonalSurname,
+		PersonalNameSuffix,
+		PostalAddress,
+		PostalCode,
+		AddressStreet,
+		AddressStateOrProvince,
+		AddressCity,
+		AddressCountryName,
+		AddressCountryShortName,
+		CurrencyAmountAndSymbol,
+		CurrencyAmount,
+		Date,
+		DateMonth,
+		DateDay,
+		DateMonthName,
+		DateDayName,
+		Digits,
+		Number,
+		OneChar,
+		Password,
+		TelephoneNumber,
+		TelephoneCountryCode,
+		TelephoneAreaCode,
+		TelephoneLocalNumber,
+		Time,
+		TimeHour,
+		TimeMinorSec,
+		NumberFullWidth,
+		AlphanumericHalfWidth,
+		AlphanumericFullWidth,
+		CurrencyChinese,
+		Bopomofo,
+		Hiragana,
+		KatakanaHalfWidth,
+		KatakanaFullWidth,
+		Hanja
 	}
-
 }

@@ -26,10 +26,12 @@
 using System;
 
 namespace System.Windows.Input {
+
+	[Flags]
 	public enum KeyStates {
-		None,
-		Down,
-		Toggled
+		None    = 0,
+		Down    = 1,
+		Toggled = 2
 	}
 }
 
