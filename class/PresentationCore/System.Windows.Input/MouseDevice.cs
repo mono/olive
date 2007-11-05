@@ -29,6 +29,10 @@ namespace System.Windows.Input {
 
 	public abstract class MouseDevice : InputDevice {
 
+		internal MouseDevice ()
+		{
+		}
+
 		public bool Capture (IInputElement element, CaptureMode captureMode)
 		{
 			throw new NotImplementedException ();
@@ -59,7 +63,7 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
-		protected Point GetScreenPoint ()
+		protected Point GetScreenPosition ()
 		{
 			throw new NotImplementedException ();
 		}
