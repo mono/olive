@@ -50,7 +50,7 @@ namespace System.Windows.Browser.Net
 		ManualResetEvent wait_handle;
 
 		public object AsyncState {
-			get { throw new NotImplementedException (); }
+			get { return state; }
 		}
 
 		public WaitHandle AsyncWaitHandle {
