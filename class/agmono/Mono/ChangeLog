@@ -1,3 +1,7 @@
+2007-11-07  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: add browser_http_response_get_status.
+
 2007-10-24  Jb Evain  <jbevain@novell.com>
 
 	* NativeMethods.cs: Add browser_http_response_visit_headers and

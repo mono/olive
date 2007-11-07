@@ -705,10 +705,13 @@ namespace Mono {
 		public extern static IntPtr browser_http_request_get_async_response (IntPtr handle, AsyncResponseAvailableHandler handler, IntPtr context);
 
 		[DllImport("moonplugin")]
-		public extern static IntPtr browser_http_response_read (IntPtr handler, ref int size);
+		public extern static IntPtr browser_http_response_read (IntPtr handler, out int size);
 
 		[DllImport("moonplugin")]
 		public extern static void browser_http_response_visit_headers (IntPtr handle, HttpHeaderHandler handler);
+
+		[DllImport("moonplugin")]
+		public extern static string browser_http_response_get_status (IntPtr handle, out int code);
 
 		[DllImport("moonplugin")]
 		public extern static void browser_http_response_destroy (IntPtr handle);
