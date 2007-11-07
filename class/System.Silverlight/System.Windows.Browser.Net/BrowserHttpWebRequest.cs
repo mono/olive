@@ -117,7 +117,6 @@ namespace System.Windows.Browser.Net
 			headers [HttpRequestHeader.Range] = range;
 		}
 
-		[MonoTODO]
 		public override IAsyncResult BeginGetRequestStream (AsyncCallback callback, object state)
 		{
 			throw new NotImplementedException ();
@@ -129,7 +128,6 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override Stream EndGetRequestStream (IAsyncResult asyncResult)
 		{
 			throw new NotImplementedException ();

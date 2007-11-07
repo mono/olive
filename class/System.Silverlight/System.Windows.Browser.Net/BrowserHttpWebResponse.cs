@@ -42,6 +42,9 @@ namespace System.Windows.Browser.Net
 		IntPtr native;
 		Stream response;
 
+		HttpStatusCode status_code;
+		string status_desc;
+
 		WebHeaderCollection headers = new WebHeaderCollection ();
 
 		public BrowserHttpWebResponse (IntPtr native)
@@ -74,8 +77,8 @@ namespace System.Windows.Browser.Net
 
 		internal void Read ()
 		{
-			int size = 0;
-			IntPtr p = NativeMethods.browser_http_response_read (native, ref size);
+			int size;
+			IntPtr p = NativeMethods.browser_http_response_read (native, out size);
 
 			byte [] data = new byte [size];
 			unsafe {
@@ -148,14 +151,31 @@ namespace System.Windows.Browser.Net
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
-		public override HttpStatusCode StatusCode {
-			get { throw new NotImplementedException (); }
+		void GetStatus ()
+		{
+			if (native == IntPtr.Zero)
+				return;
+
+			if (0 == (int) status_code)
+				return;
+
+			int code;
+			status_desc = NativeMethods.browser_http_response_get_status (native, out code);
+			status_code = (HttpStatusCode) code;
 		}
 
-		[MonoTODO]
+		public override HttpStatusCode StatusCode {
+			get {
+				GetStatus ();
+				return status_code;
+			}
+		}
+
 		public override string StatusDescription {
-			get { throw new NotImplementedException (); }
+			get {
+				GetStatus ();
+				return status_desc;
+			}
 		}
 	}
 }
