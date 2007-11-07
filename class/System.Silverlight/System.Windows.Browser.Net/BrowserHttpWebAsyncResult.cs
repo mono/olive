@@ -36,24 +36,72 @@ using System.Threading;
 
 using Mono;
 
+// I took this implementation from here:
+// http://www.bluebytesoftware.com/blog/2006/05/31/ImplementingAHighperfIAsyncResultLockfreeLazyAllocation.aspx
+// Thanks Joe!
+
 namespace System.Windows.Browser.Net
 {
-	class BrowserHttpWebAsyncResult : IAsyncResult
+	class BrowserHttpWebAsyncResult : IAsyncResult, IDisposable
 	{
+		object state;
+		bool completed;
+		AsyncCallback callback;
+		ManualResetEvent wait_handle;
+
 		public object AsyncState {
 			get { throw new NotImplementedException (); }
 		}
 
 		public WaitHandle AsyncWaitHandle {
-			get { throw new NotImplementedException (); }
+			get {
+				if (wait_handle != null)
+					return wait_handle;
+
+				ManualResetEvent new_handle = new ManualResetEvent (false);
+				if (Interlocked.CompareExchange (ref wait_handle, new_handle, null) != null)
+					new_handle.Close ();
+
+				if (completed)
+					wait_handle.Set ();
+
+				return wait_handle;
+			}
 		}
 
 		public bool CompletedSynchronously {
-			get { throw new NotImplementedException (); }
+			get { return false; }
 		}
 
 		public bool IsCompleted {
-			get { throw new NotImplementedException (); }
+			get { return completed; }
+		}
+
+		public BrowserHttpWebAsyncResult (AsyncCallback callback, object state)
+		{
+			this.callback = callback;
+			this.state = state;
+		}
+
+		public void SetComplete ()
+		{
+			completed = true;
+
+			Helper.ThreadMemoryBarrier ();
+
+			if (wait_handle != null)
+				wait_handle.Set ();
+
+			if (callback != null)
+				callback (this);
+		}
+
+		public void Dispose ()
+		{
+			if (wait_handle == null)
+				return;
+
+			wait_handle.Close ();
 		}
 	}
 }

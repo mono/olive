@@ -1,5 +1,9 @@
 2007-11-07  Jb Evain  <jbevain@novell.com>
 
+	* BrowserHttpWebAsyncResult.cs: implement this cutie.
+
+2007-11-07  Jb Evain  <jbevain@novell.com>
+
 	* BrowserHttpWebAsyncResult.cs: Create a stub to be used
 	to invoke responses asynchronously.
 
