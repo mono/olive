@@ -1,3 +1,10 @@
+2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* MediaElement.cs: Fixed all of the remove events to not /add/ the
+	event ;-)
+	(InvokeMarkerReached): Pass a TimelineMarkerEventArgs arg to the
+	handler rather than null.
+
 2007-10-04  Zoltan Varga  <vargaz@gmail.com>
 
 	* Control.cs (InitialzeFromXaml): Load dependencies synchronously.

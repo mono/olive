@@ -292,9 +292,9 @@ namespace System.Windows.Controls
 				events.AddHandler (BufferingProgressChangedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (BufferingProgressChangedEvent, value);
 				if (events[BufferingProgressChangedEvent] == null)
-					Events.AddHandler (this, "BufferingProgressChanged", buffering_progress_changed);
-				events.AddHandler (BufferingProgressChangedEvent, value);
+					Events.RemoveHandler (this, "BufferingProgressChanged", buffering_progress_changed);
 			}
 		}
 
@@ -305,11 +305,12 @@ namespace System.Windows.Controls
 				events.AddHandler (CurrentStateChangedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (CurrentStateChangedEvent, value);
 				if (events[CurrentStateChangedEvent] == null)
-					Events.AddHandler (this, "CurrentStateChanged", current_state_changed);
-				events.AddHandler (CurrentStateChangedEvent, value);
+					Events.RemoveHandler (this, "CurrentStateChanged", current_state_changed);
 			}
 		}
+		
 		public event EventHandler DownloadProgressChanged {
 			add {
 				if (events[DownloadProgressChangedEvent] == null)
@@ -317,11 +318,12 @@ namespace System.Windows.Controls
 				events.AddHandler (DownloadProgressChangedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (DownloadProgressChangedEvent, value);
 				if (events[DownloadProgressChangedEvent] == null)
-					Events.AddHandler (this, "DownloadProgressChanged", download_progress_changed);
-				events.AddHandler (DownloadProgressChangedEvent, value);
+					Events.RemoveHandler (this, "DownloadProgressChanged", download_progress_changed);
 			}
 		}
+		
 		public event TimelineMarkerEventHandler MarkerReached {
 			add {
 				if (events[MarkerReachedEvent] == null)
@@ -329,9 +331,9 @@ namespace System.Windows.Controls
 				events.AddHandler (MarkerReachedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (MarkerReachedEvent, value);
 				if (events[MarkerReachedEvent] == null)
-					Events.AddHandler (this, "MarkerReached", marker_reached);
-				events.AddHandler (MarkerReachedEvent, value);
+					Events.RemoveHandler (this, "MarkerReached", marker_reached);
 			}
 		}
 
@@ -342,9 +344,9 @@ namespace System.Windows.Controls
 				events.AddHandler (MediaOpenedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (MediaOpenedEvent, value);
 				if (events[MediaOpenedEvent] == null)
-					Events.AddHandler (this, "MediaOpened", media_opened);
-				events.AddHandler (MediaOpenedEvent, value);
+					Events.RemoveHandler (this, "MediaOpened", media_opened);
 			}
 		}
 
@@ -355,9 +357,9 @@ namespace System.Windows.Controls
 				events.AddHandler (MediaEndedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (MediaEndedEvent, value);
 				if (events[MediaEndedEvent] == null)
-					Events.AddHandler (this, "MediaEnded", media_ended);
-				events.AddHandler (MediaEndedEvent, value);
+					Events.RemoveHandler (this, "MediaEnded", media_ended);
 			}
 		}
 
@@ -368,9 +370,9 @@ namespace System.Windows.Controls
 				events.AddHandler (MediaFailedEvent, value);
 			}
 			remove {
+				events.RemoveHandler (MediaFailedEvent, value);
 				if (events[MediaFailedEvent] == null)
-					Events.AddHandler (this, "MediaFailed", media_failed);
-				events.AddHandler (MediaFailedEvent, value);
+					Events.RemoveHandler (this, "MediaFailed", media_failed);
 			}
 		}
 
@@ -385,67 +387,93 @@ namespace System.Windows.Controls
 		static UnmanagedEventHandler media_ended = new UnmanagedEventHandler (media_ended_cb);
 		static UnmanagedEventHandler media_failed = new UnmanagedEventHandler (media_failed_cb);
 
-		private static void buffering_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		private static void buffering_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeBufferingProgressChanged ();
 		}
+		
 		private void InvokeBufferingProgressChanged ()
 		{
-			EventHandler h = (EventHandler)events[BufferingProgressChangedEvent];
-			if (h != null) h (this, EventArgs.Empty);
+			EventHandler h = (EventHandler) events[BufferingProgressChangedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
 		}
-
-		private static void current_state_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		
+		private static void current_state_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeCurrentStateChanged ();
 		}
+		
 		private void InvokeCurrentStateChanged ()
 		{
-			EventHandler h = (EventHandler)events[CurrentStateChangedEvent];
-			if (h != null) h (this, EventArgs.Empty);
+			EventHandler h = (EventHandler) events[CurrentStateChangedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
 		}
-
-		private static void download_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		
+		private static void download_progress_changed_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeDownloadProgressChanged ();
 		}
+		
 		private void InvokeDownloadProgressChanged ()
 		{
-			EventHandler h = (EventHandler)events[DownloadProgressChangedEvent];
-			if (h != null) h (this, EventArgs.Empty);
+			EventHandler h = (EventHandler) events[DownloadProgressChangedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty);
 		}
 
-		private static void marker_reached_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
-			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMarkerReached ();
-		}
-		private void InvokeMarkerReached ()
+		private static void marker_reached_cb (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
-			TimelineMarkerEventHandler h = (TimelineMarkerEventHandler)events[MarkerReachedEvent];
-			if (h != null) h (this, null); // XXX
+			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMarkerReached (calldata);
 		}
-
-		private static void media_opened_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		
+		private void InvokeMarkerReached (IntPtr calldata)
+		{
+			TimelineMarkerEventHandler h = (TimelineMarkerEventHandler) events[MarkerReachedEvent];
+			
+			if (h == null)
+				return;
+			
+			TimelineMarker marker = new TimelineMarker (calldata);
+			
+			h (this, new TimelineMarkerEventArgs (marker));
+		}
+		
+		private static void media_opened_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMediaOpened ();
 		}
+		
 		private void InvokeMediaOpened ()
 		{
-			EventHandler h = (EventHandler)events[MediaOpenedEvent];
-			if (h != null) h (this, EventArgs.Empty); // XXX
+			EventHandler h = (EventHandler) events[MediaOpenedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty); // XXX
 		}
 
-		private static void media_ended_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		private static void media_ended_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMediaEnded ();
 		}
+		
 		private void InvokeMediaEnded ()
 		{
-			EventHandler h = (EventHandler)events[MediaEndedEvent];
-			if (h != null) h (this, EventArgs.Empty); // XXX
+			EventHandler h = (EventHandler) events[MediaEndedEvent];
+			if (h != null)
+				h (this, EventArgs.Empty); // XXX
 		}
 
-		private static void media_failed_cb (IntPtr target, IntPtr calldata, IntPtr closure) {
+		private static void media_failed_cb (IntPtr target, IntPtr calldata, IntPtr closure)
+		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMediaFailed ();
 		}
+		
 		private void InvokeMediaFailed ()
 		{
 			EventHandler h = (EventHandler)events[MediaFailedEvent];
-			if (h != null) h (this, EventArgs.Empty); // XXX
+			if (h != null)
+				h (this, EventArgs.Empty); // XXX
 		}
 	}
 }
