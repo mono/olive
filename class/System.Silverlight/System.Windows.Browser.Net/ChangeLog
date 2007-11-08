@@ -1,3 +1,8 @@
+2007-11-08  Jb Evain  <jbevain@novell.com>
+
+	* BrowserHttpWebAsyncResult.cs
+	* BrowserHttpWebRequest.cs: implement async requests.
+
 2007-11-07  Jb Evain  <jbevain@novell.com>
 
 	* BrowserHttpWebAsyncResult.cs: implement this cutie.

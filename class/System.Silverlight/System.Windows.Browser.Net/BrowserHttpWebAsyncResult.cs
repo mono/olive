@@ -49,8 +49,15 @@ namespace System.Windows.Browser.Net
 		AsyncCallback callback;
 		ManualResetEvent wait_handle;
 
+		BrowserHttpWebResponse response;
+
 		public object AsyncState {
 			get { return state; }
+		}
+
+		public BrowserHttpWebResponse Response {
+			get { return response; }
+			set { response = value; }
 		}
 
 		public WaitHandle AsyncWaitHandle {

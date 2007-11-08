@@ -45,6 +45,7 @@ namespace System.Windows.Browser.Net
 		WebHeaderCollection headers = new WebHeaderCollection ();
 		MemoryStream request;
 		BrowserHttpWebResponse response;
+		BrowserHttpWebAsyncResult async_result;
 
 		public BrowserHttpWebRequest (Uri uri)
 			: base (uri)
@@ -54,6 +55,9 @@ namespace System.Windows.Browser.Net
 
 		~BrowserHttpWebRequest ()
 		{
+			if (async_result != null)
+				async_result.Dispose ();
+
 			if (native == IntPtr.Zero)
 				return;
 
@@ -122,10 +126,19 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override IAsyncResult BeginGetResponse (AsyncCallback callback, object state)
 		{
-			throw new NotImplementedException ();
+			InitializeNativeRequest ();
+
+			async_result = new BrowserHttpWebAsyncResult (callback, state);
+			NativeMethods.browser_http_request_get_async_response (native, OnAsyncResponseAvailable, IntPtr.Zero);
+			return async_result;
+		}
+
+		void OnAsyncResponseAvailable (IntPtr native, IntPtr context)
+		{
+			async_result.Response = new BrowserHttpWebResponse (native);
+			async_result.SetComplete ();
 		}
 
 		public override Stream EndGetRequestStream (IAsyncResult asyncResult)
@@ -133,10 +146,19 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override HttpWebResponse EndGetResponse (IAsyncResult asyncResult)
 		{
-			throw new NotImplementedException ();
+			if (async_result != asyncResult)
+				throw new ArgumentException ();
+
+			if (!async_result.IsCompleted)
+				async_result.AsyncWaitHandle.WaitOne ();
+
+			response = async_result.Response;
+			async_result.Dispose ();
+
+			response.Read ();
+			return response;
 		}
 
 		public override Stream GetRequestStream ()
