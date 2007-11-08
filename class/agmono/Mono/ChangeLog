@@ -1,3 +1,8 @@
+2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeMethods.cs: Added binding to
+	plugin_instance_get_surface().
+
 2007-11-07  Jb Evain  <jbevain@novell.com>
 
 	* Helper.cs: add a ThreadMemoryBarrier helper.
