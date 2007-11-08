@@ -28,44 +28,134 @@ using System;
 namespace System.Windows.Input {
 
 	public static class ApplicationCommands {
+		static RoutedUICommand cancelPrint;
+		static RoutedUICommand close;
+		static RoutedUICommand contextMenu;
+		static RoutedUICommand copy;
+		static RoutedUICommand correctionList;
+		static RoutedUICommand cut;
+		static RoutedUICommand delete;
+		static RoutedUICommand find;
+		static RoutedUICommand help;
+		static RoutedUICommand new_;
+
 		public static RoutedUICommand CancelPrint {
-			get { throw new NotImplementedException (); }
+			get {
+				if (cancelPrint == null)
+					cancelPrint = new RoutedUICommand ("Cancel Print", "CancelPrint", typeof (ApplicationCommands));
+				return cancelPrint;
+			}
 		}
 
 		public static RoutedUICommand Close {
-			get { throw new NotImplementedException (); }
+			get {
+				if (close == null)
+					close = new RoutedUICommand ("Close", "Close", typeof (ApplicationCommands));
+				return close;
+			}
 		}
 
 		public static RoutedUICommand ContextMenu {
-			get { throw new NotImplementedException (); }
+			get {
+				if (contextMenu == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.AddRange (new InputGesture[] { new KeyGesture (Key.F10, ModifierKeys.Shift, "Shift+F10"),
+										new KeyGesture (Key.Apps, ModifierKeys.None, "Apps") });
+					contextMenu = new RoutedUICommand ("Context Menu", "ContextMenu",
+									   typeof (ApplicationCommands),
+									   gestures);
+				}
+				return contextMenu;
+			}
 		}
 
 		public static RoutedUICommand Copy {
-			get { throw new NotImplementedException (); }
+			get {
+				if (copy == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.AddRange (new InputGesture[] { new KeyGesture (Key.C, ModifierKeys.Control, "Ctrl+C"),
+										new KeyGesture (Key.Insert, ModifierKeys.Shift, "Shift+Insert") });
+					copy = new RoutedUICommand ("Copy", "Copy",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return copy;
+			}
 		}
 
 		public static RoutedUICommand CorrectionList {
-			get { throw new NotImplementedException (); }
+			get {
+				if (correctionList == null)
+					correctionList = new RoutedUICommand ("Correction List", "CorrectionList",
+									      typeof (ApplicationCommands));
+				return correctionList;
+			}
 		}
 
 		public static RoutedUICommand Cut {
-			get { throw new NotImplementedException (); }
+			get {
+				if (cut == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.AddRange (new InputGesture[] { new KeyGesture (Key.X, ModifierKeys.Control, "Ctrl+X"),
+										new KeyGesture (Key.Delete, ModifierKeys.Shift, "Shift+Delete") });
+					cut = new RoutedUICommand ("Cut", "Cut",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return cut;
+			}
 		}
 
 		public static RoutedUICommand Delete {
-			get { throw new NotImplementedException (); }
+			get {
+				if (delete == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.Add (new KeyGesture (Key.Delete, ModifierKeys.None, "Del"));
+					delete = new RoutedUICommand ("Delete", "Delete",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return delete;
+			}
 		}
 
 		public static RoutedUICommand Find {
-			get { throw new NotImplementedException (); }
+			get {
+				if (find == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.Add (new KeyGesture (Key.F, ModifierKeys.Control, "Ctrl+F"));
+					find = new RoutedUICommand ("Find", "Find",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return find;
+			}
 		}
 
 		public static RoutedUICommand Help {
-			get { throw new NotImplementedException (); }
+			get {
+				if (help == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.Add (new KeyGesture (Key.F1, ModifierKeys.Control, "Ctrl+F1"));
+					help = new RoutedUICommand ("Help", "Help",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return help;
+			}
 		}
 
 		public static RoutedUICommand New {
-			get { throw new NotImplementedException (); }
+			get {
+				if (new_ == null) {
+					InputGestureCollection gestures = new InputGestureCollection ();
+					gestures.Add (new KeyGesture (Key.N, ModifierKeys.Control, "Ctrl+N"));
+					new_ = new RoutedUICommand ("New", "New",
+								    typeof (ApplicationCommands),
+								    gestures);
+				}
+				return new_;
+			}
 		}
 
 		public static RoutedUICommand NotACommand {

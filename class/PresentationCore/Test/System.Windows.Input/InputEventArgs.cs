@@ -25,33 +25,59 @@
 
 using System;
 using System.Windows;
+using System.Windows.Input;
+using NUnit.Framework;
 
-namespace System.Windows.Input {
+namespace MonoTests.System.Windows.Input {
 
-	public class RoutedUICommand : RoutedCommand
-	{
-		public RoutedUICommand ()
+	class ArgsPoker : InputEventArgs {
+		public ArgsPoker (InputDevice device, int timestamp)
+			: base (device, timestamp)
 		{
 		}
 
-		public RoutedUICommand (string text, string name, Type ownerType)
-			: base (name, ownerType)
+		public void DoInvokeEventHandler (Delegate genericDelegate, object target)
 		{
-			this.text = text;
+			base.InvokeEventHandler (genericDelegate, target);
 		}
-
-		public RoutedUICommand (string text, string name, Type ownerType, InputGestureCollection inputGestures)
-			: base (name, ownerType, inputGestures)
-		{
-			this.text = text;
-		}
-
-		public string Text {
-			get { return text; }
-			set { text = value; }
-		}
-
-		string text;
 	}
 
+	[TestFixture]
+	public class InputEventArgsTest {
+
+		[Test]
+		public void CtorNullDevice ()
+		{
+			InputEventArgs e = new InputEventArgs (null, 1000);
+		}
+
+		[Test]
+		public void CtorNegativeTimestamp ()
+		{
+			InputEventArgs e = new InputEventArgs (Keyboard.PrimaryDevice, -1);
+		}
+
+		bool delegate_reached;
+		object delegate_sender;
+		InputEventArgs delegate_args;
+		public void input_delegate (object sender, InputEventArgs e)
+		{
+			delegate_reached = true;
+			delegate_sender = sender;
+			delegate_args = e;
+		}
+
+		[Test]
+		public void TestInvokeEventHandler ()
+		{
+			ArgsPoker e = new ArgsPoker (Keyboard.PrimaryDevice, 0);
+			object test_obj = new object ();
+
+			e.DoInvokeEventHandler (Delegate.CreateDelegate (typeof (InputEventHandler), this, "input_delegate"), test_obj);
+
+			Assert.IsTrue (delegate_reached);
+			Assert.AreEqual (test_obj, delegate_sender);
+			Assert.AreEqual (e, delegate_args);
+		}
+	}
 }

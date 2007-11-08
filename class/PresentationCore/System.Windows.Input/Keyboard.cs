@@ -32,82 +32,210 @@ namespace System.Windows.Input {
 	public static class Keyboard {
 		public static void AddGotKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (GotKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (GotKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemoveGotKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (GotKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (GotKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddLostKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (LostKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (LostKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemoveLostKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (LostKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (LostKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddPreviewGotKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (PreviewGotKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (PreviewGotKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemovePreviewGotKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (PreviewGotKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (PreviewGotKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddPreviewLostKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (PreviewLostKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (PreviewLostKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemovePreviewLostKeyboardFocusHandler (DependencyObject element, KeyboardFocusChangedEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (PreviewLostKeyboardFocusEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (PreviewLostKeyboardFocusEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddKeyDownHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (KeyDownEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (KeyDownEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemoveKeyDownHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (KeyDownEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (KeyDownEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddKeyUpHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (KeyUpEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (KeyUpEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemoveKeyUpHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (KeyUpEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (KeyUpEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddPreviewKeyDownHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (PreviewKeyDownEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (PreviewKeyDownEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemovePreviewKeyDownHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (PreviewKeyDownEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (PreviewKeyDownEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void AddPreviewKeyUpHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).AddHandler (PreviewKeyUpEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).AddHandler (PreviewKeyUpEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static void RemovePreviewKeyUpHandler (DependencyObject element, KeyEventHandler handler)
 		{
-			throw new NotImplementedException ();
+			if (element == null) throw new ArgumentNullException ("element");
+			if (handler == null) throw new ArgumentNullException ("handler");
+
+			if (element is UIElement)
+				((UIElement)element).RemoveHandler (PreviewKeyUpEvent, handler);
+			else if (element is ContentElement)
+				((ContentElement)element).RemoveHandler (PreviewKeyUpEvent, handler);
+			else
+				throw new NotSupportedException ();
 		}
 
 		public static IInputElement Focus (IInputElement element)
@@ -147,15 +275,54 @@ namespace System.Windows.Input {
 			get { return InputManager.Current.PrimaryKeyboardDevice; }
 		}
 
-		public static readonly RoutedEvent GotKeyboardFocusEvent;
-		public static readonly RoutedEvent LostKeyboardFocusEvent;
-		public static readonly RoutedEvent KeyDownEvent;
-		public static readonly RoutedEvent KeyUpEvent;
+		public static readonly RoutedEvent GotKeyboardFocusEvent =
+			EventManager.RegisterRoutedEvent ("GotKeyboardFocus",
+							  RoutingStrategy.Bubble,
+							  typeof (KeyboardFocusChangedEventHandler),
+							  typeof (Keyboard));
 
-		public static readonly RoutedEvent PreviewGotKeyboardFocusEvent;
-		public static readonly RoutedEvent PreviewLostKeyboardFocusEvent;
-		public static readonly RoutedEvent PreviewKeyDownEvent;
-		public static readonly RoutedEvent PreviewKeyUpEvent;
+		public static readonly RoutedEvent LostKeyboardFocusEvent =
+			EventManager.RegisterRoutedEvent ("LostKeyboardFocus",
+							  RoutingStrategy.Bubble,
+							  typeof (KeyboardFocusChangedEventHandler),
+							  typeof (Keyboard));
+
+		public static readonly RoutedEvent KeyDownEvent =
+			EventManager.RegisterRoutedEvent ("KeyDown",
+							  RoutingStrategy.Bubble,
+							  typeof (KeyEventHandler),
+							  typeof (Keyboard));
+
+		public static readonly RoutedEvent KeyUpEvent =
+			EventManager.RegisterRoutedEvent ("KeyUp",
+							  RoutingStrategy.Bubble,
+							  typeof (KeyEventHandler),
+							  typeof (Keyboard));
+
+
+		public static readonly RoutedEvent PreviewGotKeyboardFocusEvent =
+			EventManager.RegisterRoutedEvent ("PreviewGotKeyboardFocus",
+							  RoutingStrategy.Tunnel,
+							  typeof (KeyboardFocusChangedEventHandler),
+							  typeof (Keyboard));
+
+		public static readonly RoutedEvent PreviewLostKeyboardFocusEvent =
+			EventManager.RegisterRoutedEvent ("PreviewLostKeyboardFocus",
+							  RoutingStrategy.Tunnel,
+							  typeof (KeyboardFocusChangedEventHandler),
+							  typeof (Keyboard));
+
+		public static readonly RoutedEvent PreviewKeyDownEvent =
+			EventManager.RegisterRoutedEvent ("PreviewKeyDown",
+							  RoutingStrategy.Tunnel,
+							  typeof (KeyEventHandler),
+							  typeof (Keyboard));
+
+		public static readonly RoutedEvent PreviewKeyUpEvent =
+			EventManager.RegisterRoutedEvent ("PreviewKeyUp",
+							  RoutingStrategy.Tunnel,
+							  typeof (KeyEventHandler),
+							  typeof (Keyboard));
 	}
 
 }

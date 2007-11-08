@@ -36,7 +36,7 @@ namespace System.Windows.Input {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object target)
 		{
-			throw new NotImplementedException ();
+			((CanExecuteRoutedEventHandler)genericHandler) (target, this);
 		}
 
 		public bool CanExecute {

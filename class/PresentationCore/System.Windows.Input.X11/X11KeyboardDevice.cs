@@ -25,30 +25,21 @@
 
 using System;
 
-namespace System.Windows.Input {
+using System.Windows.Input;
 
-	public class InputEventArgs : RoutedEventArgs
-	{
-		InputDevice inputDevice;
-		int timestamp;
+namespace System.Windows.Input.X11 {
 
-		public InputEventArgs (InputDevice inputDevice, int timestamp)
+	public class X11KeyboardDevice : KeyboardDevice {
+
+		public X11KeyboardDevice (InputManager inputManager /* XXX more stuff */)
+			: base (inputManager)
 		{
-			this.inputDevice = inputDevice;
-			this.timestamp = timestamp;
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		protected override KeyStates GetKeyStatesFromSystem (Key key)
 		{
-			((InputEventHandler)genericHandler)(genericTarget, this);
-		}
-
-		public InputDevice Device {
-			get { return inputDevice; }
-		}
-
-		public int Timestamp {
-			get { return timestamp; }
+			throw new NotImplementedException ();
 		}
 	}
+
 }

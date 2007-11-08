@@ -8,6 +8,7 @@ System.Windows/DragAction.cs
 System.Windows/DragDropEffects.cs
 System.Windows/DragDropKeyStates.cs
 System.Windows/Duration.cs
+System.Windows/EventManager.cs
 System.Windows/FlowDirection.cs
 System.Windows/FontEastAsianLanguage.cs
 System.Windows/FontEastAsianWidths.cs
@@ -39,12 +40,15 @@ System.Windows/TextMarkerStyle.cs
 System.Windows/TextWrapping.cs
 System.Windows/UIElement.cs
 System.Windows/Visibility.cs
+System.Windows.Input/AccessKeyManager.cs
 System.Windows.Input/AccessKeyPressedEventArgs.cs
 System.Windows.Input/AccessKeyPressedEventHandler.cs
 System.Windows.Input/ApplicationCommands.cs
 System.Windows.Input/CanExecuteRoutedEventArgs.cs
 System.Windows.Input/CanExecuteRoutedEventHandler.cs
 System.Windows.Input/CaptureMode.cs
+System.Windows.Input/CommandBinding.cs
+System.Windows.Input/CommandManager.cs
 System.Windows.Input/ComponentCommands.cs
 System.Windows.Input/Cursor.cs
 System.Windows.Input/CursorType.cs
@@ -81,6 +85,7 @@ System.Windows.Input/KeyboardFocusChangedEventHandler.cs
 System.Windows.Input/KeyGesture.cs
 System.Windows.Input/KeyStates.cs
 System.Windows.Input/MediaCommands.cs
+System.Windows.Input/Mouse.cs
 System.Windows.Input/MouseAction.cs
 System.Windows.Input/MouseDevice.cs
 System.Windows.Input/MouseButton.cs
@@ -124,6 +129,8 @@ System.Windows.Input/TextComposition.cs
 System.Windows.Input/TextCompositionAutoComplete.cs
 System.Windows.Input/TextCompositionEventArgs.cs
 System.Windows.Input/TextCompositionEventHandler.cs
+System.Windows.Input.X11/X11KeyboardDevice.cs
+System.Windows.Input.X11/X11MouseDevice.cs
 System.Windows.Markup/IAddChild.cs
 System.Windows.Markup/IUriContext.cs
 System.Windows.Media.Animation/AnimationClock.cs

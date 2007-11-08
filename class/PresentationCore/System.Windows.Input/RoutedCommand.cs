@@ -35,22 +35,26 @@ namespace System.Windows.Input {
 
 		public RoutedCommand (string name, Type ownerType)
 		{
+			this.name = name;
+			this.ownerType = ownerType;
 		}
 
 		public RoutedCommand (string name, Type ownerType, InputGestureCollection inputGestures)
+			: this (name, ownerType)
 		{
+			this.inputGestures = inputGestures;
 		}
 
 		public InputGestureCollection InputGestures {
-			get { throw new NotImplementedException (); }
+			get { return inputGestures; }
 		}
 
 		public string Name {
-			get { throw new NotImplementedException (); }
+			get { return name; }
 		}
 
 		public Type OwnerType {
-			get { throw new NotImplementedException (); }
+			get { return ownerType; }
 		}
 
 		public event EventHandler CanExecuteChanged;
@@ -74,6 +78,10 @@ namespace System.Windows.Input {
 		{
 			throw new NotImplementedException ();
 		}
+
+		string name;
+		Type ownerType;
+		InputGestureCollection inputGestures;
 	}
 
 }

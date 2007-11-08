@@ -30,9 +30,11 @@ using System.Windows;
 namespace System.Windows.Input {
 
 	public abstract class KeyboardDevice : InputDevice {
+		InputManager inputManager;
+
 		protected KeyboardDevice (InputManager inputManager)
 		{
-			throw new NotImplementedException ();
+			this.inputManager = inputManager;
 		}
 
 		public IInputElement Focus (IInputElement element)

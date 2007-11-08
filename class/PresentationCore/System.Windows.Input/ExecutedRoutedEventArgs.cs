@@ -30,8 +30,13 @@ namespace System.Windows.Input {
 
 	public sealed class ExecutedRoutedEventArgs : RoutedEventArgs
 	{
+		internal ExecutedRoutedEventArgs ()
+		{
+		}
+
 		protected override void InvokeEventHandler (Delegate genericHandler, object target)
 		{
+			((ExecutedRoutedEventHandler)genericHandler)(target, this);
 		}
 
 		public ICommand Command {

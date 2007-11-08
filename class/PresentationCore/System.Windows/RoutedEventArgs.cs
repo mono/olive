@@ -27,20 +27,26 @@ using System;
 
 namespace System.Windows {
 
-	public class RoutedEventArgs : EventArgs {
+	public class RoutedEventArgs : EventArgs
+	{
+		bool handled;
+		RoutedEvent routedEvent;
+		object original_source;
+		object current_source;
+
 		public RoutedEventArgs (RoutedEvent routedEvent, object source)
 		{
-			throw new NotImplementedException ();
+			this.routedEvent = routedEvent;
+			original_source = current_source = source;
 		}
 
 		public RoutedEventArgs (RoutedEvent routedEvent)
 		{
-			throw new NotImplementedException ();
+			this.routedEvent = routedEvent;
 		}
 
 		public RoutedEventArgs ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		protected virtual void InvokeEventHandler (Delegate genericHandler, object genericTarget)
@@ -50,39 +56,29 @@ namespace System.Windows {
 
 		protected virtual void OnSetSource (object source)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public bool Handled {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
+			set { handled = value; }
+			get { return handled; }
 		}
 
 		public object OriginalSource {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return original_source; }
 		}
 
 		public RoutedEvent RoutedEvent {
-			set {
-				throw new NotImplementedException ();
-			}
-			get {
-				throw new NotImplementedException ();
-			}
+			set { routedEvent = value; }
+			get { return routedEvent; }
 		}
 
 		public object Source {
 			set {
-				throw new NotImplementedException ();
+				OnSetSource (value);
+				current_source = value;
 			}
 			get {
-				throw new NotImplementedException ();
+				return current_source;
 			}
 		}
 	}

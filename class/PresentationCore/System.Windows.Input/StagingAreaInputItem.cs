@@ -29,8 +29,15 @@ namespace System.Windows.Input {
 
 	public class StagingAreaInputItem
 	{
+		InputEventArgs input;
+
+		internal StagingAreaInputItem (InputEventArgs input)
+		{
+			this.input = input;
+		}
+
 		public InputEventArgs Input {
-			get { throw new NotImplementedException (); }
+			get { return input; }
 		}
 
 		public void SetData (object key, object value)

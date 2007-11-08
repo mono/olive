@@ -28,6 +28,12 @@ using System;
 namespace System.Windows.Input {
 
 	public sealed class PreProcessInputEventArgs : ProcessInputEventArgs {
+		internal PreProcessInputEventArgs (InputManager inputManager,
+						   StagingAreaInputItem stagingItem)
+			: base (inputManager, stagingItem)
+		{
+		}
+
 		public bool Canceled {
 			get { throw new NotImplementedException (); }
 		}

@@ -29,6 +29,12 @@ namespace System.Windows.Input {
 
 	public class ProcessInputEventArgs : NotifyInputEventArgs
 	{
+		internal ProcessInputEventArgs (InputManager inputManager,
+						StagingAreaInputItem stagingItem)
+			: base (inputManager, stagingItem)
+		{
+		}
+
 		public StagingAreaInputItem PeekInput ()
 		{
 			throw new NotImplementedException ();

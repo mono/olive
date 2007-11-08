@@ -28,15 +28,21 @@ using System;
 namespace System.Windows.Input {
 
 	public class KeyEventArgs : KeyboardEventArgs {
+
+		PresentationSource inputSource;
+		Key key;
+
 		public KeyEventArgs (KeyboardDevice keyboard, PresentationSource inputSource,
-				     int timestamp, Key key) : base (keyboard, timestamp)
+				     int timestamp, Key key)
+			: base (keyboard, timestamp)
 		{
-			throw new NotImplementedException ();
+			this.inputSource = inputSource;
+			this.key = key;
 		}
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((KeyEventHandler)genericHandler)(genericTarget, this);
 		}
 
 		public Key ImeProcessedKey {
@@ -46,9 +52,7 @@ namespace System.Windows.Input {
 		}
 
 		public PresentationSource InputSource {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return inputSource; }
 		}
 		
 		public bool IsDown {
@@ -76,9 +80,7 @@ namespace System.Windows.Input {
 		}
 
 		public Key Key {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return key; }
 		}
 
 		public KeyStates KeyStates {

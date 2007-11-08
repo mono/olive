@@ -116,5 +116,20 @@ namespace System.Windows {
 		public ContentElement ()
 		{
 		}
+
+		public void AddHandler (RoutedEvent routedEvent, Delegate handler)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void AddHandler (RoutedEvent routedEvent, Delegate handler, bool handledEventsToo)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void RemoveHandler (RoutedEvent routedEvent, Delegate handler)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

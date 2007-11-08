@@ -30,9 +30,12 @@ namespace System.Windows.Input {
 
 	public sealed class InputGestureCollection : IList, ICollection, IEnumerable
 	{
+		ArrayList list;
+		bool ro;
 
 		public InputGestureCollection ()
 		{
+			list = new ArrayList ();
 		}
 
 		public InputGestureCollection (IList inputGestures)
@@ -48,7 +51,7 @@ namespace System.Windows.Input {
 		}
 
 		public bool IsReadOnly {
-			get { throw new NotImplementedException(); }
+			get { return ro; }
 		}
 
 		public bool IsSynchronized {
@@ -91,12 +94,12 @@ namespace System.Windows.Input {
 
 		bool IList.Contains (object o)
 		{
-			throw new NotImplementedException ();
+			return Contains ((InputGesture) o);
 		}
 
 		public bool Contains (InputGesture key)
 		{
-			return Contains (key);
+			throw new NotImplementedException ();
 		}
 
 		void ICollection.CopyTo (Array array, int index)
@@ -116,32 +119,30 @@ namespace System.Windows.Input {
 
 		int IList.IndexOf (object o)
 		{
-			throw new NotImplementedException ();
+			return IndexOf ((InputGesture) o);
 		}
 
 		public int IndexOf (InputGesture value)
 		{
-			return IndexOf (value);
+			throw new NotImplementedException ();
 		}
 
 		void IList.Insert (int index, object o)
 		{
-			throw new NotImplementedException();
+			Insert (index, (InputGesture)o);
 		}
 
 		public void Insert (int index, InputGesture inputGesture)
 		{
-			Insert (index, inputGesture);
 		}
 
 		void IList.Remove (object o)
 		{
-			throw new NotImplementedException();
+			Remove ((InputGesture) o);
 		}
 
 		public void Remove (InputGesture inputGesture)
 		{
-			Remove (inputGesture);
 		}
 
 		public void RemoveAt (int index)
@@ -151,7 +152,7 @@ namespace System.Windows.Input {
 
 		public void Seal()
 		{
-			throw new NotImplementedException();
+			ro = true;
 		}
 	}
 

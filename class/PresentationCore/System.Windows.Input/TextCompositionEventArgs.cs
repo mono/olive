@@ -52,7 +52,7 @@ namespace System.Windows.Input {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((TextCompositionEventHandler)genericHandler) (genericTarget, this);
 		}
 	}
 }

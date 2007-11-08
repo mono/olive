@@ -40,7 +40,7 @@ namespace System.Windows.Input {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((StylusSystemGestureEventHandler)genericHandler) (genericTarget, this);
 		}
 	}
 }

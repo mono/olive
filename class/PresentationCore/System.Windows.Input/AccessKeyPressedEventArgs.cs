@@ -42,7 +42,7 @@ namespace System.Windows.Input {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((AccessKeyPressedEventHandler)genericHandler)(genericTarget, this);
 		}
 
 		public string Key {

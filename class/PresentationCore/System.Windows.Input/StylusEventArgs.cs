@@ -39,43 +39,37 @@ namespace System.Windows.Input {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((StylusEventHandler)genericHandler)(genericTarget, this);
 		}
 
 		public Point GetPosition (IInputElement relativeTo)
 		{
-			throw new NotImplementedException ();
+			return StylusDevice.GetPosition (relativeTo);
 		}
 
 #if notyet
 		public StylusPointCollection GetStylusPoints (IInputElement relativeTo,
 							      StylusPointDescription subsetToReformatTo)
 		{
-			throw new NotImplementedException ();
+			return StylusDevice.GetStylusPoints (relativeTo, subsetToReformatTo);
 		}
 
 		public StylusPointCollection GetStylusPoints (IInputElement relativeTo)
 		{
-			throw new NotImplementedException ();
+			return StylusDevice.GetStylusPoints (relativeTo);
 		}
 #endif
 
 		public bool InAir {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return StylusDevice.InAir; }
 		}
 
 		public bool Inverted {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return StylusDevice.Inverted; }
 		}
 
 		public StylusDevice StylusDevice {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return (StylusDevice)Device; }
 		}
 	}
 

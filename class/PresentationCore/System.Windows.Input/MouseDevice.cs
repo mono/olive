@@ -29,7 +29,7 @@ namespace System.Windows.Input {
 
 	public abstract class MouseDevice : InputDevice {
 
-		internal MouseDevice ()
+		internal MouseDevice (InputManager manager)
 		{
 		}
 

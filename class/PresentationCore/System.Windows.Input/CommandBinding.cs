@@ -27,28 +27,32 @@ using System;
 
 namespace System.Windows.Input {
 
-	public class InputEventArgs : RoutedEventArgs
-	{
-		InputDevice inputDevice;
-		int timestamp;
-
-		public InputEventArgs (InputDevice inputDevice, int timestamp)
+	public class CommandBinding {
+		public CommandBinding ()
 		{
-			this.inputDevice = inputDevice;
-			this.timestamp = timestamp;
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		public CommandBinding (ICommand command)
 		{
-			((InputEventHandler)genericHandler)(genericTarget, this);
 		}
 
-		public InputDevice Device {
-			get { return inputDevice; }
+		public CommandBinding (ICommand command, ExecutedRoutedEventHandler executed)
+		{
 		}
 
-		public int Timestamp {
-			get { return timestamp; }
+		public CommandBinding (ICommand command, ExecutedRoutedEventHandler executed, CanExecuteRoutedEventHandler canExecute)
+		{
 		}
+
+		public ICommand Command {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		public event CanExecuteRoutedEventHandler CanExecute;
+		public event ExecutedRoutedEventHandler Executed;
+		public event CanExecuteRoutedEventHandler PreviewCanExecute;
+		public event ExecutedRoutedEventHandler PreviewExecuted;
 	}
+
 }

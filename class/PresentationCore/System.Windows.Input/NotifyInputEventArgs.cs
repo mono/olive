@@ -29,12 +29,22 @@ namespace System.Windows.Input {
 
 	public class NotifyInputEventArgs : EventArgs
 	{
+		InputManager inputManager;
+		StagingAreaInputItem stagingItem;
+
+		internal NotifyInputEventArgs (InputManager inputManager,
+					       StagingAreaInputItem stagingItem)
+		{
+			this.inputManager = inputManager;
+			this.stagingItem = stagingItem;
+		}
+
 		public InputManager InputManager {
-			get { throw new NotImplementedException (); }
+			get { return inputManager; }
 		}
 
 		public StagingAreaInputItem StagingItem {
-			get { throw new NotImplementedException (); }
+			get { return stagingItem; }
 		}
 	}
 

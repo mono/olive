@@ -34,66 +34,53 @@ namespace System.Windows.Input {
 		public MouseEventArgs (MouseDevice mouse, int timestamp)
 			: base (mouse, timestamp)
 		{
-			throw new NotImplementedException ();
 		}
 
-		public MouseEventArgs (MouseDevice mouse, int timestamp, StylusDevice styleDevice)
+		public MouseEventArgs (MouseDevice mouse, int timestamp, StylusDevice stylusDevice)
 			: base (mouse, timestamp)
 		{
-			throw new NotImplementedException ();
+			this.stylusDevice = stylusDevice;
 		}
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((MouseEventHandler)genericHandler)(genericTarget, this);
 		}
 
 		public Point GetPosition (IInputElement relativeTo)
 		{
-			throw new NotImplementedException ();
+			return MouseDevice.GetPosition (relativeTo);
 		}
 
 		public MouseDevice MouseDevice {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return (MouseDevice)Device; }
 		}
 
 		public StylusDevice StylusDevice {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return stylusDevice; }
 		}
 
 		public MouseButtonState LeftButton {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return MouseDevice.LeftButton; }
 		}
 
 		public MouseButtonState MiddleButton {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return MouseDevice.MiddleButton; }
 		}
 
 		public MouseButtonState RightButton {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return MouseDevice.RightButton; }
 		}
 
 		public MouseButtonState XButton1 {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return MouseDevice.XButton1; }
 		}
 
 		public MouseButtonState XButton2 {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return MouseDevice.XButton2; }
 		}
+
+		StylusDevice stylusDevice;
 	}
 
 }

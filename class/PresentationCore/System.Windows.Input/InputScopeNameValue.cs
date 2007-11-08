@@ -30,7 +30,7 @@ namespace System.Windows.Input {
 	public enum InputScopeNameValue {
 		Xml = -4,
 		Srgs = -3,
-		RegularExpressin = -2,
+		RegularExpression = -2,
 		PhraseList = -1,
 		Default,
 		Url,
@@ -57,6 +57,7 @@ namespace System.Windows.Input {
 		Date,
 		DateMonth,
 		DateDay,
+		DateYear,
 		DateMonthName,
 		DateDayName,
 		Digits,

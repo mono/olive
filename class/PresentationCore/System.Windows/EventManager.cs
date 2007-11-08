@@ -25,30 +25,33 @@
 
 using System;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	public class InputEventArgs : RoutedEventArgs
-	{
-		InputDevice inputDevice;
-		int timestamp;
-
-		public InputEventArgs (InputDevice inputDevice, int timestamp)
+	public sealed class EventManager {
+		public static RoutedEvent[] GetRoutedEvents ()
 		{
-			this.inputDevice = inputDevice;
-			this.timestamp = timestamp;
+			throw new NotImplementedException ();
 		}
 
-		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		public static RoutedEvent[] GetRoutedEventsForOwnerType (Type ownerType)
 		{
-			((InputEventHandler)genericHandler)(genericTarget, this);
+			throw new NotImplementedException ();
 		}
 
-		public InputDevice Device {
-			get { return inputDevice; }
+		public static void RegisterClassHandler (Type classType, RoutedEvent routedEvent, Delegate handler)
+		{
+			throw new NotImplementedException ();
 		}
 
-		public int Timestamp {
-			get { return timestamp; }
+		public static void RegisterClassHandler (Type classType, RoutedEvent routedEvent, Delegate handler, bool handledEventsToo)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static RoutedEvent RegisterRoutedEvent (string name, RoutingStrategy routingStrategy, Type handlerType, Type ownerType)
+		{
+			throw new NotImplementedException ();
 		}
 	}
+
 }
