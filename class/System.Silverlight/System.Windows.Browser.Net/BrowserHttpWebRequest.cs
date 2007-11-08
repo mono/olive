@@ -176,8 +176,8 @@ namespace System.Windows.Browser.Net
 
 			native = NativeMethods.browser_http_request_new (method, uri.AbsoluteUri);
 
-			//foreach (DictionaryEntry entry in headers)
-			//	NativeMethods.browser_http_request_set_header (native, (string) entry.Key, (string) entry.Value);
+			foreach (string header in headers.Headers)
+				NativeMethods.browser_http_request_set_header (native, header, headers [header]);
 
 			if (request != null && request.Length > 0) {
 				byte [] body = request.ToArray ();
