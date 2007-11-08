@@ -1,3 +1,7 @@
+2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs: Implemented Resize event.
+
 2007-10-04  Zoltan Varga  <vargaz@gmail.com>
 
 	* System.IO/SimpleUnmanagedMemoryStream.cs: Fix a warning.

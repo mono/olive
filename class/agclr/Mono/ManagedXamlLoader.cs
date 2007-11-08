@@ -124,7 +124,6 @@ namespace Mono.Xaml
 
 			PluginInDomain = plugin;
 			SurfaceInDomain = surface;
-			
 		}
 
 		private string get_mapping (string key)

@@ -32,6 +32,9 @@ using Mono;
 namespace System.Windows.Interop {
 
 	public static class BrowserHost {
+		static EventHandlerList events = new EventHandlerList ();
+		static IntPtr surface = IntPtr.Zero;
+		
 		// Why are ActualHeight and ActualWidth uints?
 		
 		public static uint ActualHeight {
@@ -66,17 +69,34 @@ namespace System.Windows.Interop {
 				// not yet implemented
 			}
 		}
-
+		
 		public static event EventHandler FullScreenChange;
-
+		
+		static object ResizeEvent = new object ();
+		
 		internal static void InvokeResize ()
 		{
-			EventHandler h = Resize;
-
+			EventHandler h = (EventHandler) events[ResizeEvent];
+			
 			if (h != null)
 				h (null, EventArgs.Empty);
 		}
 		
-		public static event EventHandler Resize;
+		public static event EventHandler Resize {
+			add {
+				if (surface == IntPtr.Zero) {
+					surface = NativeMethods.plugin_instance_get_surface (PluginHost.Handle);
+					Events.InitSurface (surface);
+				}
+				
+				events.AddHandler (ResizeEvent, value);
+				
+				InvokeResize ();
+			}
+			
+			remove {
+				events.RemoveHandler (ResizeEvent, value);
+			}
+		}
 	}
 }
