@@ -1,4 +1,4 @@
- //
+//
 // ManagedXamlLoader.cs
 //
 // Authors:
@@ -124,6 +124,7 @@ namespace Mono.Xaml
 
 			PluginInDomain = plugin;
 			SurfaceInDomain = surface;
+			
 		}
 
 		private string get_mapping (string key)
@@ -327,7 +328,7 @@ namespace Mono.Xaml
 			DependencyObject dob = res as DependencyObject;
 
 			if (dob == null) {
-				Console.Error.WriteLine ("ManagedXamlLoader::LoadObject ({0}, {1}, {2}, {3}): unable to create object instance: '{4}'", asm_name, asm_path, ns, type_name, name);
+				Console.Error.WriteLine ("ManagedXamlLoader::LoadObject ({0}, {1}, {2}, {3}): unable to create object instance: '{4}', the object was of type '{5}'", asm_name, asm_path, ns, type_name, name, res.GetType ().FullName);
 				return IntPtr.Zero;
 			}
 
