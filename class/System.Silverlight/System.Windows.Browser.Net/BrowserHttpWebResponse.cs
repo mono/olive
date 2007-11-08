@@ -153,10 +153,10 @@ namespace System.Windows.Browser.Net
 
 		void GetStatus ()
 		{
-			if (native == IntPtr.Zero)
+			if(0 != (int) status_code)
 				return;
 
-			if (0 == (int) status_code)
+			if (native == IntPtr.Zero)
 				return;
 
 			int code;
