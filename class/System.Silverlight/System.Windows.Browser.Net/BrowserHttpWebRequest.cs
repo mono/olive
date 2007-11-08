@@ -137,7 +137,7 @@ namespace System.Windows.Browser.Net
 
 		void OnAsyncResponseAvailable (IntPtr native, IntPtr context)
 		{
-			async_result.Response = new BrowserHttpWebResponse (native);
+			async_result.Response = new BrowserHttpWebResponse (this, native);
 			async_result.SetComplete ();
 		}
 
@@ -194,7 +194,7 @@ namespace System.Windows.Browser.Net
 			if (resp == IntPtr.Zero)
 				throw new InvalidOperationException ();
 
-			response = new BrowserHttpWebResponse (resp);
+			response = new BrowserHttpWebResponse (this, resp);
 			response.Read ();
 
 			return response;

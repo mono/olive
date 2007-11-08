@@ -1,5 +1,10 @@
 2007-11-08  Jb Evain  <jbevain@novell.com>
 
+	* BrowserHttpWebRequest.cs
+	* BrowserHttpWebResponse.cs: implement response properties.
+
+2007-11-08  Jb Evain  <jbevain@novell.com>
+
 	* BrowserHttpWebRequest.cs: throw on invalid requests.
 
 2007-11-08  Jb Evain  <jbevain@novell.com>

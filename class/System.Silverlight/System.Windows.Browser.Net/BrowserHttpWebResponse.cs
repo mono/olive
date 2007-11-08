@@ -39,6 +39,7 @@ namespace System.Windows.Browser.Net
 {
 	class BrowserHttpWebResponse : HttpWebResponse
 	{
+		BrowserHttpWebRequest request;
 		IntPtr native;
 		Stream response;
 
@@ -47,8 +48,9 @@ namespace System.Windows.Browser.Net
 
 		WebHeaderCollection headers = new WebHeaderCollection ();
 
-		public BrowserHttpWebResponse (IntPtr native)
+		public BrowserHttpWebResponse (BrowserHttpWebRequest request, IntPtr native)
 		{
+			this.request = request;
 			this.native = native;
 
 			if (native == IntPtr.Zero)
@@ -67,7 +69,7 @@ namespace System.Windows.Browser.Net
 
 		void OnHttpHeader (string name, string value)
 		{
-			// TODO: add them to headers
+			headers [name] = value;
 		}
 
 		public override void Close ()
@@ -91,10 +93,9 @@ namespace System.Windows.Browser.Net
 			response = new MemoryStream (data);
 		}
 
-		[MonoTODO]
 		public override string GetResponseHeader (string headerName)
 		{
-			throw new NotImplementedException ();
+			return headers [headerName];
 		}
 
 		public override Stream GetResponseStream ()
@@ -102,53 +103,44 @@ namespace System.Windows.Browser.Net
 			return response;
 		}
 
-		[MonoTODO]
 		public override string CharacterSet {
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override string ContentEncoding {
-			get {  throw new NotImplementedException (); }
+			get { return headers [HttpResponseHeader.ContentEncoding]; }
 		}
 
-		[MonoTODO]
 		public override long ContentLength {
-			get { throw new NotImplementedException (); }
+			get { return long.Parse (headers [HttpResponseHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);; }
 		}
 
-		[MonoTODO]
 		public override string ContentType {
-			get { throw new NotImplementedException (); }
+			get { return headers [HttpResponseHeader.ContentType]; }
 		}
 
 		public override WebHeaderCollection Headers {
 			get { return headers; }
 		}
 
-		[MonoTODO]
 		public override DateTime LastModified {
-			get { throw new NotImplementedException (); }
+			get { return DateTime.Parse (headers [HttpResponseHeader.ContentLength], CultureInfo.InvariantCulture); }
 		}
 
-		[MonoTODO]
 		public override string Method {
-			get { throw new NotImplementedException (); }
+			get { return request.Method; }
 		}
 
-		[MonoTODO]
 		public override Version ProtocolVersion {
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public override Uri ResponseUri {
-			get { throw new NotImplementedException (); }
+			get { return request.RequestUri; }
 		}
 
-		[MonoTODO]
 		public override string Server {
-			get { throw new NotImplementedException (); }
+			get { return headers [HttpResponseHeader.Server]; }
 		}
 
 		void GetStatus ()
