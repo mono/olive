@@ -191,6 +191,9 @@ namespace System.Windows.Browser.Net
 
 			IntPtr resp = NativeMethods.browser_http_request_get_response (native);
 
+			if (resp == IntPtr.Zero)
+				throw new InvalidOperationException ();
+
 			response = new BrowserHttpWebResponse (resp);
 			response.Read ();
 
