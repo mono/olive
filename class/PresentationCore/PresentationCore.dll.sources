@@ -17,7 +17,6 @@ System.Windows/FontNumeralStyle.cs
 System.Windows/FontCapitals.cs
 System.Windows/FontFraction.cs
 System.Windows/FontVariants.cs
-System.Windows/Freezable.cs
 System.Windows/IContentHost.cs
 System.Windows/IDataObject.cs
 System.Windows/IInputElement.cs

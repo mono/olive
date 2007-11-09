@@ -5,6 +5,7 @@ System.Windows/DependencyProperty.cs
 System.Windows/DependencyPropertyChangedEventArgs.cs
 System.Windows/DependencyPropertyChangedEventHandler.cs
 System.Windows/DependencyPropertyKey.cs
+System.Windows/Freezable.cs
 System.Windows/IWeakEventListener.cs
 System.Windows/LocalValueEntry.cs
 System.Windows/LocalValueEnumerator.cs
