@@ -1,3 +1,7 @@
+2007-11-09  Jb Evain  <jbevain@novell.com>
+
+	* NativeMethods.cs: correct browser_http_request_get_async_response.
+
 2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
 
 	* NativeMethods.cs: Added binding to
