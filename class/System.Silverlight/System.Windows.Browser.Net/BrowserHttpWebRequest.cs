@@ -139,8 +139,12 @@ namespace System.Windows.Browser.Net
 
 		void OnAsyncResponseAvailable (IntPtr native, IntPtr context)
 		{
-			async_result.Response = new BrowserHttpWebResponse (this, native);
-			async_result.SetComplete ();
+			try {
+				async_result.Response = new BrowserHttpWebResponse (this, native);
+				async_result.SetComplete ();
+			} catch (Exception e) {
+				async_result.Exception = e;
+			}
 		}
 
 		public override Stream EndGetRequestStream (IAsyncResult asyncResult)
@@ -155,6 +159,11 @@ namespace System.Windows.Browser.Net
 
 			if (!async_result.IsCompleted)
 				async_result.AsyncWaitHandle.WaitOne ();
+
+			if (async_result.HasException) {
+				async_result.Dispose ();
+				throw async_result.Exception;
+			}
 
 			response = async_result.Response;
 			async_result.Dispose ();

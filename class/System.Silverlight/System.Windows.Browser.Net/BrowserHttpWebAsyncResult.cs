@@ -48,6 +48,7 @@ namespace System.Windows.Browser.Net
 		bool completed;
 		AsyncCallback callback;
 		ManualResetEvent wait_handle;
+		Exception exception;
 
 		BrowserHttpWebResponse response;
 
@@ -82,6 +83,15 @@ namespace System.Windows.Browser.Net
 
 		public bool IsCompleted {
 			get { return completed; }
+		}
+
+		public bool HasException {
+			get { return exception != null; }
+		}
+
+		public Exception Exception {
+			get { return exception; }
+			set { exception = value; }
 		}
 
 		public BrowserHttpWebAsyncResult (AsyncCallback callback, object state)

@@ -1,5 +1,12 @@
 2007-11-09  Jb Evain  <jbevain@novell.com>
 
+	* BrowserHttpWebAsyncResult.cs
+	* BrowserHttpWebResponse.cs
+	* BrowserHttpWebRequest.cs:
+		Do not allow methods that are called from the unmanaged
+		site of the BrowserHttpRequest to bubble up exceptions.
+2007-11-09  Jb Evain  <jbevain@novell.com>
+
 	* BrowserHttpWebRequest.cs: throw if an async request
 	cannot be started.
 

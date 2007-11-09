@@ -69,7 +69,9 @@ namespace System.Windows.Browser.Net
 
 		void OnHttpHeader (string name, string value)
 		{
-			headers [name] = value;
+			try {
+				headers [name] = value;
+			} catch {}
 		}
 
 		public override void Close ()
