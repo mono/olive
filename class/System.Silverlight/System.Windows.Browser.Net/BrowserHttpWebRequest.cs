@@ -131,7 +131,9 @@ namespace System.Windows.Browser.Net
 			InitializeNativeRequest ();
 
 			async_result = new BrowserHttpWebAsyncResult (callback, state);
-			NativeMethods.browser_http_request_get_async_response (native, OnAsyncResponseAvailable, IntPtr.Zero);
+			if (!NativeMethods.browser_http_request_get_async_response (native, OnAsyncResponseAvailable, IntPtr.Zero))
+				throw new InvalidOperationException ();
+
 			return async_result;
 		}
 

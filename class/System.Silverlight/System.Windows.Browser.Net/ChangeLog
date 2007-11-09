@@ -1,3 +1,8 @@
+2007-11-09  Jb Evain  <jbevain@novell.com>
+
+	* BrowserHttpWebRequest.cs: throw if an async request
+	cannot be started.
+
 2007-11-08  Jb Evain  <jbevain@novell.com>
 
 	* BrowserHttpWebRequest.cs
