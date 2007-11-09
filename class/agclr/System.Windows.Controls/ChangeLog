@@ -1,3 +1,10 @@
+2007-11-09  Jeffrey Stedfast  <fejj@novell.com>
+
+	* MediaElement.cs (InvokeMediaOpened): Always pass null as the
+	eventArgs parameter as defined by the msdn docs.
+	(InvokeMediaEnded): Same.
+	(InvokeMediaFailed): Same.
+
 2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
 
 	* MediaElement.cs: Fixed all of the remove events to not /add/ the

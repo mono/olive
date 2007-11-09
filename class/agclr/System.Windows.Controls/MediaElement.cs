@@ -449,9 +449,9 @@ namespace System.Windows.Controls
 		{
 			EventHandler h = (EventHandler) events[MediaOpenedEvent];
 			if (h != null)
-				h (this, EventArgs.Empty); // XXX
+				h (this, null);
 		}
-
+		
 		private static void media_ended_cb (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMediaEnded ();
@@ -461,9 +461,9 @@ namespace System.Windows.Controls
 		{
 			EventHandler h = (EventHandler) events[MediaEndedEvent];
 			if (h != null)
-				h (this, EventArgs.Empty); // XXX
+				h (this, null);
 		}
-
+		
 		private static void media_failed_cb (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			((MediaElement) Helper.GCHandleFromIntPtr (closure).Target).InvokeMediaFailed ();
@@ -471,9 +471,9 @@ namespace System.Windows.Controls
 		
 		private void InvokeMediaFailed ()
 		{
-			EventHandler h = (EventHandler)events[MediaFailedEvent];
+			EventHandler h = (EventHandler) events[MediaFailedEvent];
 			if (h != null)
-				h (this, EventArgs.Empty); // XXX
+				h (this, null);
 		}
 	}
 }
