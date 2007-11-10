@@ -34,7 +34,7 @@ namespace System.Windows.Input {
 		{
 		}
 
-		public string ContextText {
+		public string ControlText {
 			get { throw new NotImplementedException (); }
 		}
 

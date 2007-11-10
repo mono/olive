@@ -24,6 +24,8 @@
 //
 
 using System;
+using System.Security;
+
 using System.Windows;
 
 namespace System.Windows.Input {
@@ -64,6 +66,7 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public bool CanExecute (object parameter, IInputElement target)
 		{
 			throw new NotImplementedException ();
@@ -74,6 +77,7 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public void Execute (object parameter, IInputElement target)
 		{
 			throw new NotImplementedException ();

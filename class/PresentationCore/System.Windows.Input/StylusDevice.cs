@@ -24,11 +24,16 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows.Input {
 
 	public sealed class StylusDevice : InputDevice
 	{
+		internal StylusDevice ()
+		{
+		}
+
 		public bool Capture (IInputElement element, CaptureMode captureMode)
 		{
 			throw new NotImplementedException ();
@@ -39,6 +44,7 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public Point GetPosition (IInputElement relativeTo)
 		{
 			throw new NotImplementedException ();
@@ -57,6 +63,7 @@ namespace System.Windows.Input {
 		}
 #endif
 
+		[SecurityCritical]
 		public void Synchronize ()
 		{
 			throw new NotImplementedException ();
@@ -68,6 +75,7 @@ namespace System.Windows.Input {
 		}
 
 		public override PresentationSource ActiveSource {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}

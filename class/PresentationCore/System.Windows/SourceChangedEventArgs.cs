@@ -23,15 +23,20 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System;
+using System.Security;
+
 namespace System.Windows {
 
 	public sealed class SourceChangedEventArgs : RoutedEventArgs
 	{
+		[SecurityCritical]
 		public SourceChangedEventArgs (PresentationSource oldSource, PresentationSource newSource)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public SourceChangedEventArgs (PresentationSource oldSource, PresentationSource newSource,
 					       IInputElement element, IInputElement oldParent)
 		{
@@ -56,12 +61,14 @@ namespace System.Windows {
 		}
 
 		public PresentationSource NewSource {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}
 		}
 
 		public PresentationSource OldSource {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}

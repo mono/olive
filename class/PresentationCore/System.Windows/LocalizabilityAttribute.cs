@@ -20,34 +20,43 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
 using System;
-using System.Security;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	public class NotifyInputEventArgs : EventArgs
+	[AttributeUsage (AttributeTargets.Class |
+			 AttributeTargets.Struct |
+			 AttributeTargets.Enum |
+			 AttributeTargets.Property |
+			 AttributeTargets.Field)]
+	public sealed class LocalizabilityAttribute : Attribute
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		public LocalizabilityAttribute (LocalizationCategory category)
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
+			this.category = category;
+			modifiability = Modifiability.Modifiable;
+			readability = Readability.Readable;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public LocalizationCategory Category {
+			get { return category; }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public Modifiability Modifiability {
+			get { return modifiability; }
+			set { modifiability = value; }
 		}
+
+		public Readability Readability {
+			get { return readability; }
+			set { readability = value; }
+		}
+
+		LocalizationCategory category;
+		Modifiability modifiability;
+		Readability readability;
 	}
-
 }

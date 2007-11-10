@@ -25,10 +25,15 @@
 
 using System;
 using System.IO;
+using System.Windows;
 
 namespace System.Windows.Input {
 
-	public sealed class Cursor
+#if notyet
+	[TypeConverter (typeof (CursorConverter))]
+#endif
+	[Localizability (LocalizationCategory.None, Readability = Readability.Unreadable)]
+	public sealed class Cursor : IDisposable
 	{
 		public Cursor (Stream cursorStream)
 		{

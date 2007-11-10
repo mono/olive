@@ -24,6 +24,8 @@
 //
 
 using System;
+using System.Security;
+using System.Windows;
 
 namespace System.Windows.Input {
 
@@ -33,12 +35,18 @@ namespace System.Windows.Input {
 		{
 		}
 
+		[SecurityCritical]
 		public InputBinding (ICommand command, InputGesture gesture)
 		{
 		}
 
+		[Localizability (LocalizationCategory.NeverLocalize)]
+#if notyet
+		[TypeConverter ("System.Windows.Input.CommandConverter" + PresentationFrameworkAssemblyName)]
+#endif
 		public ICommand Command {
 			get { throw new NotImplementedException (); }
+			[SecurityCritical]
 			set { throw new NotImplementedException (); }
 		}
 
@@ -54,6 +62,7 @@ namespace System.Windows.Input {
 
 		public virtual InputGesture Gesture {
 			get { throw new NotImplementedException (); }
+			[SecurityCritical]
 			set { throw new NotImplementedException (); }
 		}
 	}

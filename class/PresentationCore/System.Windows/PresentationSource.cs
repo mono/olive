@@ -25,6 +25,7 @@
 
 using System;
 using System.Collections;
+using System.Security;
 using System.Windows.Media;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -37,6 +38,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public static PresentationSource FromVisual (Visual visual)
 		{
 			throw new NotImplementedException ();
@@ -53,6 +55,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public static void AddSourceChangedHandler (IInputElement element,
 							    SourceChangedEventHandler handler)
 		{
@@ -70,18 +73,22 @@ namespace System.Windows {
 			ContentRendered = null;
 		}
 
+		[SecurityCritical]
+		[SecurityTreatAsSafe]
 		protected void RootChanged (Visual oldRoot, Visual newRoot)
 		{
 			throw new NotImplementedException ();
 		}
 
 		public CompositionTarget CompositionTarget {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}
 		}
 
 		public static IEnumerable CurrentSources {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}
@@ -89,7 +96,11 @@ namespace System.Windows {
 
 		protected abstract CompositionTarget GetCompositionTargetCore ();
 		public abstract bool IsDisposed { get; }
-		public abstract Visual RootVisual { set; get; }
+		public abstract Visual RootVisual {
+			get;
+			[SecurityCritical]
+			set;
+		}
 		public event EventHandler ContentRendered;
 	}
 

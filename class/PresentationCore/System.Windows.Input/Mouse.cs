@@ -24,7 +24,7 @@
 //
 
 using System;
-
+using System.Security;
 using System.Windows;
 
 namespace System.Windows.Input {
@@ -70,6 +70,7 @@ namespace System.Windows.Input {
 		}
 
 		public static MouseDevice PrimaryDevice {
+			[SecurityCritical]
 			get { return InputManager.Current.PrimaryMouseDevice; }
 		}
 
@@ -290,6 +291,7 @@ namespace System.Windows.Input {
 			return PrimaryDevice.Capture (element, captureMode);
 		}
 
+		[SecurityCritical]
 		public static int GetIntermediatePoints (IInputElement relativeTo, Point[] points)
 		{
 			throw new NotImplementedException ();
@@ -495,9 +497,9 @@ namespace System.Windows.Input {
 				throw new NotSupportedException ();
 		}
 
-		public static void SetCursor (Cursor cursor)
+		public static bool SetCursor (Cursor cursor)
 		{
-			PrimaryDevice.SetCursor (cursor);
+			return PrimaryDevice.SetCursor (cursor);
 		}
 
 		public static void Synchronize ()

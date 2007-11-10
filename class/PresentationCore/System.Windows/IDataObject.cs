@@ -23,24 +23,39 @@
 //	Chris Toshok (toshok@novell.com)
 //
 
+using System;
+using System.Security;
+
 namespace System.Windows {
 
 	public interface IDataObject
 	{
+		[SecurityCritical]
 		object GetData (string format);
+		[SecurityCritical]
 		object GetData (Type format);
+		[SecurityCritical]
 		object GetData (string format, bool autoConvert);
 
+		[SecurityCritical]
 		bool GetDataPresent (string format);
+		[SecurityCritical]
 		bool GetDataPresent (Type format);
+		[SecurityCritical]
 		bool GetDataPresent (string format, bool autoConvert);
 
+		[SecurityCritical]
 		string[] GetFormats ();
+		[SecurityCritical]
 		string[] GetFormats (bool autoConvert);
 
+		[SecurityCritical]
 		void SetData (object data);
+		[SecurityCritical]
 		void SetData (string format, object data);
+		[SecurityCritical]
 		void SetData (Type format, object data);
+		[SecurityCritical]
 		void SetData (string format, object data, bool autoConvert);
 	}
 

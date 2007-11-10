@@ -20,34 +20,12 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
-using System;
-using System.Security;
+namespace System.Windows {
 
-namespace System.Windows.Input {
-
-	public class NotifyInputEventArgs : EventArgs
-	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
-		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
-		}
-
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
-		}
-
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
-		}
-	}
+	public delegate void DataObjectCopyingEventHandler (object sender, DataObjectCopyingEventArgs e);
 
 }
+

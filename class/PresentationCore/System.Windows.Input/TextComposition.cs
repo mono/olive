@@ -24,7 +24,7 @@
 //
 
 using System;
-
+using System.Security;
 using System.Windows.Threading;
 
 namespace System.Windows.Input {
@@ -35,6 +35,7 @@ namespace System.Windows.Input {
 		{
 		}
 
+		[SecurityCritical]
 		public TextComposition (InputManager inputManager, IInputElement source, string resultText, TextCompositionAutoComplete autoComplete)
 		{
 		}
@@ -43,31 +44,37 @@ namespace System.Windows.Input {
 			get { throw new NotImplementedException (); }
 		}
 
+		[CLSCompliant(false)]
 		public string CompositionText {
 			get { throw new NotImplementedException (); }
 			protected set { throw new NotImplementedException (); }
 		}
 
+		[CLSCompliant(false)]
 		public string ControlText {
 			get { throw new NotImplementedException (); }
 			protected set { throw new NotImplementedException (); }
 		}
 
+		[CLSCompliant(false)]
 		public string SystemCompositionText {
 			get { throw new NotImplementedException (); }
 			protected set { throw new NotImplementedException (); }
 		}
 
+		[CLSCompliant(false)]
 		public string SystemText {
 			get { throw new NotImplementedException (); }
 			protected set { throw new NotImplementedException (); }
 		}
 
+		[CLSCompliant(false)]
 		public string Text {
 			get { throw new NotImplementedException (); }
 			protected set { throw new NotImplementedException (); }
 		}
 
+		[SecurityCritical]
 		public virtual void Complete ()
 		{
 			throw new NotImplementedException ();

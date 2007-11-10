@@ -24,7 +24,7 @@
 //
 
 using System;
-
+using System.Security;
 using System.Windows;
 
 namespace System.Windows.Input {
@@ -272,6 +272,7 @@ namespace System.Windows.Input {
 		}
 
 		public static KeyboardDevice PrimaryDevice {
+			[SecurityCritical]
 			get { return InputManager.Current.PrimaryKeyboardDevice; }
 		}
 

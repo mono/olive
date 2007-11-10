@@ -29,7 +29,7 @@ using System.Windows.Input;
 
 namespace System.Windows.Input.X11 {
 
-	public class X11MouseDevice : MouseDevice {
+	internal class X11MouseDevice : MouseDevice {
 
 		public X11MouseDevice (InputManager manager)
 			: base (manager)

@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows.Input {
 
@@ -32,6 +33,7 @@ namespace System.Windows.Input {
 		PresentationSource inputSource;
 		Key key;
 
+		[SecurityCritical]
 		public KeyEventArgs (KeyboardDevice keyboard, PresentationSource inputSource,
 				     int timestamp, Key key)
 			: base (keyboard, timestamp)
@@ -52,6 +54,7 @@ namespace System.Windows.Input {
 		}
 
 		public PresentationSource InputSource {
+			[SecurityCritical]
 			get { return inputSource; }
 		}
 		

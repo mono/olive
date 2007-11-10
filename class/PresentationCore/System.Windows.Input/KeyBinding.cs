@@ -41,6 +41,10 @@ namespace System.Windows.Input {
 		{
 		}
 
+#if notyet
+		[ValueSerializer (typeof (KeyGestureValueSerializer))]
+		[TypeConverter (typeof (KeyGestureConverter))]
+#endif
 		public override InputGesture Gesture {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }

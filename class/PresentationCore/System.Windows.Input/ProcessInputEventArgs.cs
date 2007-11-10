@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows.Input {
 
@@ -35,21 +36,25 @@ namespace System.Windows.Input {
 		{
 		}
 
+		[SecurityCritical]
 		public StagingAreaInputItem PeekInput ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public StagingAreaInputItem PopInput ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public StagingAreaInputItem PushInput (StagingAreaInputItem input)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public StagingAreaInputItem PushInput (InputEventArgs input, StagingAreaInputItem promote)
 		{
 			throw new NotImplementedException ();

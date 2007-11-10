@@ -20,34 +20,13 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
 using System;
-using System.Security;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	public class NotifyInputEventArgs : EventArgs
-	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
-		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
-		}
-
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
-		}
-
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
-		}
-	}
+	public delegate void QueryContinueDragEventHandler (object sender, QueryContinueDragEventArgs e);
 
 }

@@ -24,10 +24,15 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows.Input {
 
 	public sealed class AccessKeyManager {
+		internal AccessKeyManager ()
+		{
+		}
+
 		public static readonly RoutedEvent AccessKeyPressedEvent =
 			EventManager.RegisterRoutedEvent ("AccessKeyPressed",
 							  RoutingStrategy.Bubble,
@@ -48,12 +53,13 @@ namespace System.Windows.Input {
 				throw new NotSupportedException ();
 		}
 
-		public static void IsKeyRegistered (object scope, string key)
+		public static bool IsKeyRegistered (object scope, string key)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void ProcessKey (object scope, string key, bool isMultiple)
+		[SecurityCritical]
+		public static bool ProcessKey (object scope, string key, bool isMultiple)
 		{
 			throw new NotImplementedException ();
 		}

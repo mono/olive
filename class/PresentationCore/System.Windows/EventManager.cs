@@ -27,13 +27,13 @@ using System;
 
 namespace System.Windows {
 
-	public sealed class EventManager {
+	public static class EventManager {
 		public static RoutedEvent[] GetRoutedEvents ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static RoutedEvent[] GetRoutedEventsForOwnerType (Type ownerType)
+		public static RoutedEvent[] GetRoutedEventsForOwner (Type ownerType)
 		{
 			throw new NotImplementedException ();
 		}

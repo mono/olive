@@ -28,6 +28,10 @@ using System;
 namespace System.Windows.Input {
 
 	public sealed class CommandManager {
+		internal CommandManager ()
+		{
+		}
+
 		public static readonly RoutedEvent CanExecuteEvent =
 			EventManager.RegisterRoutedEvent ("CanExecute",
 							  RoutingStrategy.Bubble,
@@ -83,6 +87,16 @@ namespace System.Windows.Input {
 		}
 
 		public static void InvalidateRequerySuggested ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static void RegisterClassCommandBinding (Type type, CommandBinding commandBinding)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static void RegisterClassInputBinding (Type type, InputBinding inputBinding)
 		{
 			throw new NotImplementedException ();
 		}

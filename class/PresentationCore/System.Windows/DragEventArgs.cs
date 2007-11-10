@@ -20,34 +20,44 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
-using System;
-using System.Security;
+namespace System.Windows {
 
-namespace System.Windows.Input {
-
-	public class NotifyInputEventArgs : EventArgs
+	public sealed class DragEventArgs : RoutedEventArgs
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		internal DragEventArgs ()
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public DragDropEffects AllowedEffects {
+			get { throw new NotImplementedException (); }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public IDataObject Data {
+			get { throw new NotImplementedException (); }
+		}
+
+		public DragDropEffects Effects {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		public DragDropKeyStates KeyStates {
+			get { throw new NotImplementedException (); }
+		}
+
+		public Point GetPosition (IInputElement relativeTo)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		{
+			((DragEventHandler)genericHandler)(genericTarget, this);
 		}
 	}
 
 }
+

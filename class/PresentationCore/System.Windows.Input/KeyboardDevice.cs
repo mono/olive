@@ -24,7 +24,7 @@
 //
 
 using System;
-
+using System.Security;
 using System.Windows;
 
 namespace System.Windows.Input {
@@ -32,6 +32,8 @@ namespace System.Windows.Input {
 	public abstract class KeyboardDevice : InputDevice {
 		InputManager inputManager;
 
+		[SecurityCritical]
+		[SecurityTreatAsSafe]
 		protected KeyboardDevice (InputManager inputManager)
 		{
 			this.inputManager = inputManager;
@@ -65,6 +67,7 @@ namespace System.Windows.Input {
 		}
 
 		public override PresentationSource ActiveSource {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}

@@ -24,30 +24,42 @@
 //
 
 using System;
-using System.Security;
+using System.ComponentModel;
 
 namespace System.Windows.Input {
 
-	public class NotifyInputEventArgs : EventArgs
-	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
+	public static class FocusManager {
 
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		public static readonly DependencyProperty FocusedElementProperty;
+		public static readonly DependencyProperty IsFocusScopeProperty;
+
+		public static readonly RoutedEvent GotFocusEvent;
+		public static readonly RoutedEvent LostFocusEvent;
+
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		public static IInputElement GetFocusedElement (DependencyObject element)
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
+			return (IInputElement)element.GetValue (FocusedElementProperty);
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public static DependencyObject GetFocusScope (DependencyObject element)
+		{
+			throw new NotImplementedException ();
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public static bool GetIsFocusScope (DependencyObject element)
+		{
+			return (bool)element.GetValue (IsFocusScopeProperty);
+		}
+
+		public static void SetFocusedElement (DependencyObject element, IInputElement value)
+		{
+			element.SetValue (FocusedElementProperty, value);
+		}
+
+		public static void SetIsFocusScope (DependencyObject element, bool value)
+		{
+			element.SetValue (IsFocusScopeProperty, value);
 		}
 	}
-
 }

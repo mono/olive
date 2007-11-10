@@ -20,34 +20,50 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
 using System;
-using System.Security;
+using System.ComponentModel;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	public class NotifyInputEventArgs : EventArgs
+	public sealed class EventRoute
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
 
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		public EventRoute (RoutedEvent routedEvent)
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
+			throw new NotImplementedException ();
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public void Add (object target, Delegate handler, bool handledEventsToo)
+		{
+			throw new NotImplementedException ();
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public object PeekBranchNode ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public object PeekBranchSource ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public object PopBranchNode ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public void PushBranchNode (object node, object source)
+		{
+			throw new NotImplementedException ();
 		}
 	}
-
 }
+

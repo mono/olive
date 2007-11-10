@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Windows;
 
 namespace System.Windows.Input {
 
@@ -44,6 +45,7 @@ namespace System.Windows.Input {
 		{
 		}
 
+		[Localizability (LocalizationCategory.NeverLocalize)]
 		public ICommand Command {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }

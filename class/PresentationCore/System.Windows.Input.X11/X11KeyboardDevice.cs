@@ -29,7 +29,7 @@ using System.Windows.Input;
 
 namespace System.Windows.Input.X11 {
 
-	public class X11KeyboardDevice : KeyboardDevice {
+	internal class X11KeyboardDevice : KeyboardDevice {
 
 		public X11KeyboardDevice (InputManager inputManager /* XXX more stuff */)
 			: base (inputManager)

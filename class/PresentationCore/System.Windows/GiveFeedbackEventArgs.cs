@@ -20,33 +20,29 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
-using System;
-using System.Security;
+namespace System.Windows {
 
-namespace System.Windows.Input {
-
-	public class NotifyInputEventArgs : EventArgs
+	public sealed class GiveFeedbackEventArgs : RoutedEventArgs
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		internal GiveFeedbackEventArgs ()
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public DragDropEffects Effects {
+			get { throw new NotImplementedException (); }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public bool UseDefaultCursors {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		{
+			((GiveFeedbackEventHandler)genericHandler)(genericTarget, this);
 		}
 	}
 

@@ -116,7 +116,7 @@ namespace System.Windows.Input {
 			get { throw new NotImplementedException (); }
 		}
 
-		public static RoutedUICommand ToggleMicrophoneOff {
+		public static RoutedUICommand ToggleMicrophoneOnOff {
 			get { throw new NotImplementedException (); }
 		}
 

@@ -31,6 +31,10 @@ namespace System.Windows.Input {
 
 	public class StylusButton
 	{
+		internal StylusButton ()
+		{
+		}
+
 		public Guid Guid {
 			get { throw new NotImplementedException (); }
 		}

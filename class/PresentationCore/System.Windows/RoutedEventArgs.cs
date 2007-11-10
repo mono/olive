@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows {
 
@@ -59,7 +60,10 @@ namespace System.Windows {
 		}
 
 		public bool Handled {
+			[SecurityCritical]
 			set { handled = value; }
+
+			[SecurityCritical]
 			get { return handled; }
 		}
 

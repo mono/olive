@@ -24,29 +24,21 @@
 //
 
 using System;
-using System.Security;
 
 namespace System.Windows.Input {
 
-	public class NotifyInputEventArgs : EventArgs
+	public class AccessKeyEventArgs : EventArgs
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		internal AccessKeyEventArgs ()
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public bool IsMultiple {
+			get { throw new NotImplementedException (); }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public string Key {
+			get { throw new NotImplementedException (); }
 		}
 	}
 

@@ -25,6 +25,7 @@
 
 namespace System.Windows {
 
+	[Localizability (LocalizationCategory.None, Readability = Readability.Unreadable)]
 	public enum FlowDirection
 	{
 		LeftToRight,

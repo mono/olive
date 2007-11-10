@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Security;
 
 namespace System.Windows.Input {
 
@@ -33,6 +34,7 @@ namespace System.Windows.Input {
 		{
 		}
 
+		[SecurityCritical]
 		public bool Capture (IInputElement element, CaptureMode captureMode)
 		{
 			throw new NotImplementedException ();
@@ -53,11 +55,14 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
+		[SecurityTreatAsSafe]
 		protected Point GetClientPosition ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public Point GetPosition (IInputElement relativeTo)
 		{
 			throw new NotImplementedException ();
@@ -68,11 +73,13 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public bool SetCursor (Cursor cursor)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public void Synchronize ()
 		{
 			throw new NotImplementedException ();
@@ -84,6 +91,7 @@ namespace System.Windows.Input {
 		}
 
 		public override PresentationSource ActiveSource {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}

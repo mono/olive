@@ -20,34 +20,35 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
 using System;
-using System.Security;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	public class NotifyInputEventArgs : EventArgs
+	public sealed class QueryContinueDragEventArgs : RoutedEventArgs
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
-
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		internal QueryContinueDragEventArgs ()
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public DragAction Action {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		public bool EscapePressed {
+			get { throw new NotImplementedException (); }
+		}
+
+		public DragDropKeyStates KeyStates {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		{
+			((QueryContinueDragEventHandler)genericHandler) (genericTarget, this);
 		}
 	}
-
 }

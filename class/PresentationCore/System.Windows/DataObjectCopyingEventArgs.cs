@@ -20,34 +20,29 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+//	Chris Toshok (toshok@novell.com)
 //
 
-using System;
-using System.Security;
+namespace System.Windows {
 
-namespace System.Windows.Input {
-
-	public class NotifyInputEventArgs : EventArgs
+	public sealed class DataObjectCopyingEventArgs : DataObjectEventArgs
 	{
-		InputManager inputManager;
-		StagingAreaInputItem stagingItem;
+		IDataObject dataObject;
+		bool isDragDrop;
 
-		internal NotifyInputEventArgs (InputManager inputManager,
-					       StagingAreaInputItem stagingItem)
+		public DataObjectCopyingEventArgs (IDataObject dataObject, bool isDragDrop)
 		{
-			this.inputManager = inputManager;
-			this.stagingItem = stagingItem;
+			this.dataObject = dataObject;
+			this.isDragDrop = isDragDrop;
 		}
 
-		public InputManager InputManager {
-			[SecurityCritical]
-			get { return inputManager; }
+		public IDataObject DataObject {
+			get { return dataObject; }
 		}
 
-		public StagingAreaInputItem StagingItem {
-			get { return stagingItem; }
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
+		{
+			((DataObjectCopyingEventHandler)genericHandler) (genericTarget, this);
 		}
 	}
-
 }

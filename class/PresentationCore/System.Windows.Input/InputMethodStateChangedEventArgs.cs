@@ -29,6 +29,10 @@ namespace System.Windows.Input {
 
 	public class InputMethodStateChangedEventArgs : EventArgs
 	{
+		internal InputMethodStateChangedEventArgs ()
+		{
+		}
+
 		public bool IsHandwritingStateChanged {
 			get { throw new NotImplementedException (); }
 		}

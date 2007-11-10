@@ -26,6 +26,8 @@
 using System;
 using System.Collections;
 
+using System.Security;
+
 using System.Windows.Threading;
 
 using System.Windows.Input.X11;
@@ -46,6 +48,7 @@ namespace System.Windows.Input {
 		}
 
 		public static InputManager Current {
+			[SecurityCritical]
 			get {
 				if (current == null) {
 					current = new InputManager ();
@@ -77,6 +80,7 @@ namespace System.Windows.Input {
 		}
 
 		public ICollection InputProviders {
+			[SecurityCritical]
 			get {
 				throw new NotImplementedException ();
 			}
@@ -102,6 +106,7 @@ namespace System.Windows.Input {
 		public event PreProcessInputEventHandler PreProcessInput;
 		public event ProcessInputEventHandler PostProcessInput;
 
+		[SecurityCritical]
 		public bool ProcessInput (InputEventArgs input)
 		{
 			StagingAreaInputItem stagingItem = new StagingAreaInputItem (input);

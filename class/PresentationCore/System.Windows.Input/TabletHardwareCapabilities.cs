@@ -28,6 +28,7 @@ using System;
 namespace System.Windows.Input {
 
 	[Flags]
+	[Serializable]
 	public enum TabletHardwareCapabilities {
 		None                 = 0,
 		Integrated           = 1,

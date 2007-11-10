@@ -28,7 +28,7 @@ namespace System.Windows {
 	public enum TextDecorationLocation
 	{
 		Underline,
-		Overline,
+		OverLine,
 		Strikethrough,
 		Baseline
 	}
