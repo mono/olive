@@ -29,6 +29,17 @@
 
 namespace System.Windows {
 	public class DependencyObjectType {
+
+		internal DependencyObjectType (DependencyObjectType baseType,
+					       int id, string name,
+					       Type systemType)
+		{
+			this.baseType = baseType;
+			this.id = id;
+			this.name = name;
+			this.systemType = systemType;
+		}
+
 		private DependencyObjectType baseType;
 		private int id;
 		private string name;
@@ -57,7 +68,7 @@ namespace System.Windows {
 			throw new NotImplementedException("IsInstanceOfType(DependencyObject d)");
 		}
 		[MonoTODO()]		
-		public bool IsSubClassOf(DependencyObjectType dependencyObjectType)
+		public bool IsSubclassOf(DependencyObjectType dependencyObjectType)
 		{
 			throw new NotImplementedException("IsSubClassOf(DependencyObjectType dependencyObjectType)");
 		}

@@ -29,6 +29,7 @@ using System.Windows.Media;
 
 namespace System.Windows {
 
+	[Serializable]
 	public struct Point : IFormattable
 	{
 		public Point (double x, double y)

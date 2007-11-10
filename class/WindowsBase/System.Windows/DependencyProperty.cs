@@ -27,7 +27,7 @@
 //
 
 namespace System.Windows {
-	public class DependencyProperty {
+	public sealed class DependencyProperty {
 		private PropertyMetadata defaultMetadata;
 		private string name;
 		private Type ownerType;
@@ -52,6 +52,11 @@ namespace System.Windows {
 		public PropertyMetadata DefaultMetadata { 
 			get { return defaultMetadata; }
 		}
+
+		public int GlobalIndex {
+			get { throw new NotImplementedException (); }
+		}
+
 		public string Name {
 			get { return name; }
 		}
@@ -61,6 +66,11 @@ namespace System.Windows {
 		public Type PropertyType {
 			get { return propertyType; }
 		}
+
+		public bool ReadOnly {
+			get { throw new NotImplementedException (); }
+		}
+
 		public ValidateValueCallback ValidateValueCallback {
 			get { return validateValueCallback; }
 		}
@@ -76,12 +86,6 @@ namespace System.Windows {
 			throw new NotImplementedException("AddOwner(Type ownerType, PropertyMetadata typeMetadata)");
 		}
 		
-		[MonoTODO()]		
-		public static DependencyProperty FromName(String name, Type ownerType)
-		{
-			return DependencyObject.lookup(ownerType, name);
-		}
-
 		[MonoTODO()]		
 		public PropertyMetadata GetMetadata(Type forType)
 		{

@@ -32,7 +32,6 @@ namespace System.Windows {
 		private bool isSealed;
 		private PropertyChangedCallback propertyChangedCallback;
 		private CoerceValueCallback coerceValueCallback;
-		private bool readOnly;
 		
 		public object DefaultValue {
 			get { return defaultValue; }
@@ -51,10 +50,6 @@ namespace System.Windows {
 		public CoerceValueCallback CoerceValueCallback {
 			get { return coerceValueCallback; }
 			set { coerceValueCallback = value; }
-		}
-
-		public bool ReadOnly {
-			get { return readOnly; }
 		}
 
 		public PropertyMetadata()

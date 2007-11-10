@@ -60,12 +60,12 @@ namespace System.Windows {
 			ClearValue (key.DependencyProperty);
 		}
 
-		public sealed override bool Equals (object obj)
+		public override bool Equals (object obj)
 		{
 			throw new NotImplementedException("Equals");
 		}
 
-		public sealed override int GetHashCode ()
+		public override int GetHashCode ()
 		{
 			throw new NotImplementedException("GetHashCode");
 		}

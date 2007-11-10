@@ -27,50 +27,13 @@
 //
 
 namespace System.Windows {
-	public struct DependencyPropertyChangedEventArgs {
 
-		DependencyProperty property;
-		object oldValue;
-		object newValue;
-
-		public DependencyPropertyChangedEventArgs (DependencyProperty property, object oldValue, object newValue)
+	public abstract class WeakEventManager : DispatcherObject
+	{
+		protected WeakEventManager ()
 		{
-			this.property = property;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
-		}
-
-		public object NewValue {
-			get { return newValue; }
-		}
-
-		public object OldValue {
-			get { return oldValue; }
-		}
-
-		public DependencyProperty Property {
-			get { return property; }
-		}
-
-		public override bool Equals (object obj)
-		{
-			if (!(obj is DependencyPropertyChangedEventArgs))
-				return false;
-
-			return Equals ((DependencyPropertyChangedEventArgs)obj);
-		}
-
-		public bool Equals (DependencyPropertyChangedEventArgs args)
-		{
-			return (property == args.Property &&
-				newValue == args.NewValue &&
-				oldValue == args.OldValue);
-		}
-
-		public override int GetHashCode()
-		{
-			throw new NotImplementedException ();
 		}
 
 	}
+
 }

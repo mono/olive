@@ -30,6 +30,7 @@ using System.Windows.Media;
 
 namespace System.Windows {
 
+	[Serializable]
 	public struct Rect {
 		public Rect (Size size)
 		{

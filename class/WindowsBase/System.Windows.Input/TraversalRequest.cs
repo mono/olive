@@ -1,11 +1,3 @@
-//
-// DependencyPropertyChangedEventArgs.cs
-//
-// Author:
-//   Chris Toshok (toshok@ximian.com)
-//
-// (C) 2007 Novell, Inc.
-//
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -25,52 +17,33 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+//
+// Authors:
+//	Chris Toshok (toshok@novell.com)
+//
 
-namespace System.Windows {
-	public struct DependencyPropertyChangedEventArgs {
+using System;
 
-		DependencyProperty property;
-		object oldValue;
-		object newValue;
+namespace System.Windows.Input {
 
-		public DependencyPropertyChangedEventArgs (DependencyProperty property, object oldValue, object newValue)
+	public class TraversalRequest
+	{
+		bool wrapped;
+		FocusNavigationDirection focusNavigationDirection;
+
+		public TraversalRequest (FocusNavigationDirection focusNavigationDirection)
 		{
-			this.property = property;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			this.focusNavigationDirection = focusNavigationDirection;
 		}
 
-		public object NewValue {
-			get { return newValue; }
+		public FocusNavigationDirection FocusNavigationDirection {
+			get { return focusNavigationDirection; }
 		}
 
-		public object OldValue {
-			get { return oldValue; }
+		public bool Wrapped {
+			get { return wrapped; }
+			set { wrapped = value; }
 		}
-
-		public DependencyProperty Property {
-			get { return property; }
-		}
-
-		public override bool Equals (object obj)
-		{
-			if (!(obj is DependencyPropertyChangedEventArgs))
-				return false;
-
-			return Equals ((DependencyPropertyChangedEventArgs)obj);
-		}
-
-		public bool Equals (DependencyPropertyChangedEventArgs args)
-		{
-			return (property == args.Property &&
-				newValue == args.NewValue &&
-				oldValue == args.OldValue);
-		}
-
-		public override int GetHashCode()
-		{
-			throw new NotImplementedException ();
-		}
-
 	}
 }

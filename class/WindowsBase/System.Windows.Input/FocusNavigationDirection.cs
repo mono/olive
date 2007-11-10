@@ -1,11 +1,3 @@
-//
-// DependencyPropertyKey.cs
-//
-// Author:
-//   Iain McCoy (iain@mccoy.id.au)
-//
-// (C) 2005 Iain McCoy
-//
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -25,22 +17,25 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+//
+// Authors:
+//	Chris Toshok (toshok@novell.com)
+//
 
-namespace System.Windows {
-	public sealed class DependencyPropertyKey {
-		internal DependencyPropertyKey (DependencyProperty dependencyProperty)
-		{
-			this.dependencyProperty = dependencyProperty;
-		}
+using System;
 
-		private DependencyProperty dependencyProperty;
-		public DependencyProperty DependencyProperty {
-			get { return dependencyProperty; }
-		}
+namespace System.Windows.Input {
 
-		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
-		{
-			dependencyProperty.OverrideMetadata (forType, typeMetadata);
-		}
+	public enum FocusNavigationDirection
+	{
+		Next,
+		Previous,
+		First,
+		Last,
+		Left,
+		Right,
+		Up,
+		Down
 	}
 }
