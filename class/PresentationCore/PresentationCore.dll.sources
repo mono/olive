@@ -5,6 +5,9 @@ System.Windows/AutoResizedEventHandler.cs
 System.Windows/BaselineAlignment.cs
 System.Windows/Clipboard.cs
 System.Windows/ContentElement.cs
+System.Windows/ContentOperations.cs
+System.Windows/DataFormat.cs
+System.Windows/DataFormats.cs
 System.Windows/DataObjectCopyingEventArgs.cs
 System.Windows/DataObjectCopyingEventHandler.cs
 System.Windows/DataObjectEventArgs.cs
@@ -19,6 +22,7 @@ System.Windows/DragEventArgs.cs
 System.Windows/DragEventHandler.cs
 System.Windows/Duration.cs
 System.Windows/EventManager.cs
+System.Windows/EventPrivateKey.cs
 System.Windows/EventRoute.cs
 System.Windows/FlowDirection.cs
 System.Windows/FontEastAsianLanguage.cs
@@ -44,7 +48,9 @@ System.Windows/Readability.cs
 System.Windows/RoutedEvent.cs
 System.Windows/RoutedEventArgs.cs
 System.Windows/RoutedEventHandler.cs
+System.Windows/RoutedEventHandlerInfo.cs
 System.Windows/RoutingStrategy.cs
+System.Windows/SizeChangedInfo.cs
 System.Windows/SizeToContent.cs
 System.Windows/SourceChangedEventArgs.cs
 System.Windows/SourceChangedEventHandler.cs
