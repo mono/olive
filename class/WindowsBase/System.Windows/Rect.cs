@@ -31,7 +31,12 @@ using System.Windows.Media;
 namespace System.Windows {
 
 	[Serializable]
-	public struct Rect {
+#if notyet
+	[ValueSerializer (typeof (RectValueSerializer))]
+	[TypeConverter (typeof (RectConverter))]
+#endif
+	public struct Rect : IFormattable
+	{
 		public Rect (Size size)
 		{
 			x = y = 0.0;
@@ -199,6 +204,19 @@ namespace System.Windows {
 			return result;
 		}
 
+		public void Offset (Vector offsetVector)
+		{
+			x += offsetVector.X;
+			y += offsetVector.Y;
+		}
+
+		public static Rect Offset (Rect rect, Vector offsetVector)
+		{
+			Rect result = rect;
+			result.Offset (offsetVector);
+			return result;
+		}
+
 		public void Scale(double scaleX, double scaleY)
 		{
 			x *= scaleX;
@@ -246,6 +264,26 @@ namespace System.Windows {
 			Union (new Rect (point, point));
 		}
 
+		public static Rect Parse (string source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static Rect Empty { 
 			get { return new Rect (0, 0, 0, 0); } 
 		}
@@ -277,19 +315,23 @@ namespace System.Windows {
 		}
 
 		public double X {
-			get { return X; }
+			get { return x; }
+			set { x = value; }
 		}
 
 		public double Y {
 			get { return y; }
+			set { y = value; }
 		}
 
 		public double Width {
 			get { return width; }
+			set { width = value; }
 		}
 
 		public double Height {
 			get { return height; }
+			set { height = value; }
 		}
 
 		public double Left { 

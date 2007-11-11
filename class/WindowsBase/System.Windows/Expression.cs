@@ -25,19 +25,16 @@
 
 using System;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	[Flags]
 #if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
+	[TypeConverter (typeof (ExpressionConverter))]
 #endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
+	public class Expression
+	{
+		internal Expression ()
+		{
+		}
 	}
-}
 
+}

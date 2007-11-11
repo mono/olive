@@ -25,19 +25,8 @@
 
 using System;
 
-namespace System.Windows.Input {
+namespace System.Collections.Specialized {
 
-	[Flags]
-#if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
-	}
+	public delegate void NotifyCollectionChangedEventHandler (object sender, NotifyCollectionChangedEventArgs e);
+
 }
-

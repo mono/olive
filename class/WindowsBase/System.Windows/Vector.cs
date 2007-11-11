@@ -30,6 +30,10 @@ using System.Windows.Media;
 namespace System.Windows {
 
 	[Serializable]
+#if notyet
+	[ValueSerializer (typeof (VectorValueSerializer))]
+	[TypeConverter (typeof (VectorConverter))]
+#endif
 	public struct Vector : IFormattable
 	{
 		public Vector (double x, double y)
@@ -118,22 +122,41 @@ namespace System.Windows {
 			return new Vector (scalar * vector.X, scalar * vector.Y);
 		}
 
-		public Vector Negate ()
+		public void Negate ()
 		{
-			return new Vector (-x, -y);
+			x = -x;
+			y = -y;
 		}
 
-		public Vector Normalize ()
+		public void Normalize ()
 		{
-			if (LengthSquared == 1)
-				return new Vector (x, y);
+			double ls = LengthSquared;
+			if (ls == 1)
+				return;
 
-			return Divide (this, Length);
+			double l = Math.Sqrt (ls);
+			x /= l;
+			y /= l;
 		}
 
 		public static Vector Subtract (Vector vector1, Vector vector2)
 		{
 			return new Vector (vector1.X - vector2.X, vector1.Y - vector2.Y);
+		}
+
+		public static Vector Parse (string source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
 		}
 
 		public double Length {
@@ -146,10 +169,12 @@ namespace System.Windows {
 
 		public double X {
 			get { return x; }
+			set { x = value; }
 		}
 
 		public double Y {
 			get { return y; }
+			set { y = value; }
 		}
 
 		/* operators */
@@ -170,7 +195,9 @@ namespace System.Windows {
 
 		public static Vector operator - (Vector vector)
 		{
-			return vector.Negate ();
+			Vector result = vector;
+			result.Negate ();
+			return result;
 		}
 
 		public static bool operator != (Vector vector1, Vector vector2)

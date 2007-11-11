@@ -27,9 +27,11 @@ using System;
 
 namespace System.Windows {
 
-	// [TypeConverter (typeof (SizeConverter))]
-	// [ValueSerializer (...)]
 	[Serializable]
+#if notyet
+	[ValueSerializer (typeof (SizeValueSerializer))]
+	[TypeConverter (typeof (SizeConverter))]
+#endif
 	public struct Size : IFormattable
 	{
 		public Size (double width, double height)
@@ -61,7 +63,23 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		string IFormattable.ToString(string format, IFormatProvider formatProvider) {
+		public static Size Parse (string source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider formatProvider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
 			throw new NotImplementedException ();
 		}
 

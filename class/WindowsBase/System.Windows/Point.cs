@@ -30,6 +30,10 @@ using System.Windows.Media;
 namespace System.Windows {
 
 	[Serializable]
+#if notyet
+	[TypeConverter (typeof (PointConverter))]
+	[ValueSerializer (typeof (PointValueSerializer))]
+#endif
 	public struct Point : IFormattable
 	{
 		public Point (double x, double y)
@@ -75,6 +79,11 @@ namespace System.Windows {
 		public static Point Add (Point point, Vector vector)
 		{
 			return new Point (point.X + vector.X, point.Y + vector.Y);
+		}
+
+		public static bool Equals (Point point1, Point point2)
+		{
+			return point1.Equals (point2);
 		}
 
 		public static Point Multiply (Point point, Matrix matrix)
@@ -131,6 +140,21 @@ namespace System.Windows {
 		public static explicit operator Vector (Point point)
 		{
 			return new Vector (point.X, point.Y);
+		}
+
+		public static Point Parse (string source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider formatProvider)
+		{
+			throw new NotImplementedException ();
 		}
 
 		string IFormattable.ToString (string format, IFormatProvider formatProvider)

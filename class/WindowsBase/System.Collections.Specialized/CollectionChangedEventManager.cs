@@ -24,20 +24,31 @@
 //
 
 using System;
+using System.Windows;
 
-namespace System.Windows.Input {
+namespace System.Collections.Specialized {
 
-	[Flags]
-#if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
+	public class CollectionChangedEventManager : WeakEventManager
+	{
+		internal CollectionChangedEventManager ()
+		{
+		}
+
+		public static void AddListener (INotifyCollectionChanged source, IWeakEventListener listener)
+		{
+		}
+
+		public static void RemoveListener (INotifyCollectionChanged source, IWeakEventListener listener)
+		{
+		}
+
+		protected override void StartListening (object source)
+		{
+		}
+
+		protected override void StopListening (object source)
+		{
+		}
 	}
 }
 

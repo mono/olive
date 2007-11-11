@@ -24,20 +24,19 @@
 //
 
 using System;
+using System.Windows.Input;
 
-namespace System.Windows.Input {
+namespace System.Windows.Interop {
 
-	[Flags]
-#if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
+	public interface IKeyboardInputSink
+	{
+		IKeyboardInputSite KeyboardInputSite { get; set; }
+
+		bool HasFocusWithin ();
+		bool OnMnemonic (ref MSG msg, ModifierKeys modifiers);
+		IKeyboardInputSite RegisterKeyboardInputSink (IKeyboardInputSink sink);
+		bool TabInto (TraversalRequest request);
+		bool TranslateAccelerator (ref MSG msg, ModifierKeys modifiers);
+		bool TranslateChar (ref MSG msg, ModifierKeys modifiers);
 	}
 }
-

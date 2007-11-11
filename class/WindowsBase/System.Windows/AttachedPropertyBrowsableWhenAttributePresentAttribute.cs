@@ -25,19 +25,30 @@
 
 using System;
 
-namespace System.Windows.Input {
+namespace System.Windows {
 
-	[Flags]
-#if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
+	[AttributeUsage (AttributeTargets.Method, AllowMultiple = false)]
+	public sealed class AttachedPropertyBrowsableWhenAttributePresentAttribute : AttachedPropertyBrowsableAttribute
+	{
+		Type attributeType;
+
+		public AttachedPropertyBrowsableWhenAttributePresentAttribute (Type attributeType)
+		{
+			this.attributeType = attributeType;
+		}
+
+		public Type AttributeType {
+			get { return attributeType; }
+		}
+
+		public override bool Equals (object obj)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override int GetHashCode ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
-

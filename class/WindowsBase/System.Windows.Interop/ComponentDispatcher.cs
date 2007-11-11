@@ -24,20 +24,50 @@
 //
 
 using System;
+using System.Security;
 
-namespace System.Windows.Input {
+namespace System.Windows.Interop {
 
-	[Flags]
-#if notyet
-	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
-	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
-	public enum ModifierKeys {
-		None = 0,
-		Alt = 1,
-		Control = 2,
-		Shift = 4,
-		Windows = 8
+	public static class ComponentDispatcher
+	{
+		public static MSG CurrentKeyboardMessage {
+			[SecurityCritical]
+			get { throw new NotImplementedException (); }
+		}
+
+		public static bool IsThreadModal {
+			[SecurityCritical]
+			get { throw new NotImplementedException (); }
+		}
+
+		public static event EventHandler EnterThreadModal;
+		public static event EventHandler LeaveThreadModal;
+		public static event ThreadMessageEventHandler ThreadFilterMessage;
+		public static event EventHandler ThreadIdle;
+		public static event ThreadMessageEventHandler ThreadPreprocessMessage;
+
+		[SecurityCritical]
+		public static void PopModal()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SecurityCritical]
+		public static void PushModal()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SecurityCritical]
+		public static void RaiseIdle()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SecurityCritical]
+		public static bool RaiseThreadMessage (ref MSG msg)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
-
