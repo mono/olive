@@ -1,4 +1,4 @@
-﻿// 
+// 
 // Client.cs
 // 
 // Author: 
@@ -17,11 +17,6 @@ namespace ProgrammingChannels
 	class Client
 	{
 		public static void Main ()
-		{
-			RunClient ();
-		}
-		
-		static void RunClient ()
 		{
 			Console.WriteLine ("Press ENTER when service is ready.");
 			Console.ReadLine ();
@@ -46,15 +41,22 @@ namespace ProgrammingChannels
 				
 				channel.Open ();
 				
-				Console.ReadLine ();
-				
 				Message message = Message.CreateMessage (
 					//channel.Manager.MessageVersion, 
 					MessageVersion.Default,
-					"Action", "Hello, World");
+					"Action", "Hello, World, from client side");
 				
 				channel.Send (message);
+
+				message = channel.Receive ();
 				
+				Console.WriteLine ("Message received.");
+				Console.WriteLine ("Message action: {0}", 
+					message.Headers.Action);
+				Console.WriteLine ("Message content: {0}", 
+					message.GetBody<string> ());
+
+				message.Close ();
 				channel.Close ();
 				factory.Close ();
 //			}

@@ -16,7 +16,7 @@ namespace ProgrammingChannels
 {
 	class Service
 	{
-		static void RunService ()
+		public static void Main ()
 		{
 			CustomBinding binding = new CustomBinding ();
 			
@@ -48,22 +48,20 @@ namespace ProgrammingChannels
 				Console.WriteLine ("Message received.");
 				Console.WriteLine ("Message action: {0}", 
 					message.Headers.Action);
-				// It crashes under Mono.
-//				Console.WriteLine ("Message content: {0}", 
-//					message.GetBody<string> ());
+				Console.WriteLine ("Message content: {0}", 
+					message.GetBody<string> ());
+
+				message = Message.CreateMessage (
+					//channel.Manager.MessageVersion, 
+					MessageVersion.Default,
+					"Action", "Hello, World, from service side");
+				
+				channel.Send (message);
 				
 				message.Close ();
 				channel.Close ();
 				listener.Close ();
 //			}
-		}
-		
-		public static void Main ()
-		{
-			Service.RunService ();
-			
-			Console.WriteLine ("Press ENTER to exit.");
-			Console.ReadLine ();
 		}
 	}
 }
