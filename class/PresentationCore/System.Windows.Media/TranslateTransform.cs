@@ -24,76 +24,59 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace System.Windows.Media {
 
-	public sealed class RotateTransform : Transform {
+	public sealed class TranslateTransform : Transform
+	{
+		public static readonly DependencyProperty XProperty;
+		public static readonly DependencyProperty YProperty;
 
-		public static readonly DependencyProperty AngleProperty;
-		public static readonly DependencyProperty CenterXProperty;
-		public static readonly DependencyProperty CenterYProperty;
-
-		static RotateTransform ()
-		{
-			// register the properties here
-			throw new NotImplementedException ();
-		}
-
-		public RotateTransform () : this (0.0)
+		public TranslateTransform ()
 		{
 		}
 
-		public RotateTransform (double angle)
+		public TranslateTransform (double offsetX, double offsetY)
 		{
-			Angle = angle;
-		}
-
-		public RotateTransform (double angle,
-					double centerX,
-					double centerY)
-		{
-			Angle = angle;
-			CenterX = centerX;
-			CenterY = centerY;
-		}
-
-		public double Angle { 
-			get { return (double)GetValue (RotateTransform.AngleProperty); }
-			set { SetValue (RotateTransform.AngleProperty, value); }
-		}
-		public double CenterX { 
-			get { return (double)GetValue (RotateTransform.CenterXProperty); }
-			set { SetValue (RotateTransform.CenterXProperty, value); }
-		}
-		public double CenterY { 
-			get { return (double)GetValue (RotateTransform.CenterYProperty); }
-			set { SetValue (RotateTransform.CenterYProperty, value); }
+			X = offsetX;
+			Y = offsetY;
 		}
 
 		public override Matrix Value {
 			get {
 				Matrix m = Matrix.Identity;
-				m.RotateAt (Angle, CenterX, CenterY);
+				m.Translate (X, Y);
 				return m;
 			}
 		}
 
-		public new RotateTransform Clone ()
-		{
-			return new RotateTransform (Angle, CenterX, CenterY);
+		public double X {
+			get { return (double)GetValue (TranslateTransform.XProperty); }
+			set { SetValue (TranslateTransform.XProperty, value); }
 		}
 
-		public new RotateTransform CloneCurrentValue ()
+		public double Y {
+			get { return (double)GetValue (TranslateTransform.YProperty); }
+			set { SetValue (TranslateTransform.YProperty, value); }
+		}
+
+		public new TranslateTransform Clone ()
 		{
-			/* how is this different? */
-			return new RotateTransform (Angle, CenterX, CenterY);
+			return new TranslateTransform (X, Y);
+		}
+
+		public new TranslateTransform CloneCurrentValue ()
+		{
+			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
-
 	}
+
 }
+

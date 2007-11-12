@@ -24,76 +24,44 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Windows;
+using System.Windows.Markup;
 
 namespace System.Windows.Media {
 
-	public sealed class RotateTransform : Transform {
+	[ContentProperty ("Children")]
+	public sealed class TransformGroup : Transform
+	{
+		public static readonly DependencyProperty ChildrenProperty;
 
-		public static readonly DependencyProperty AngleProperty;
-		public static readonly DependencyProperty CenterXProperty;
-		public static readonly DependencyProperty CenterYProperty;
-
-		static RotateTransform ()
-		{
-			// register the properties here
-			throw new NotImplementedException ();
-		}
-
-		public RotateTransform () : this (0.0)
+		public TransformGroup ()
 		{
 		}
 
-		public RotateTransform (double angle)
-		{
-			Angle = angle;
-		}
-
-		public RotateTransform (double angle,
-					double centerX,
-					double centerY)
-		{
-			Angle = angle;
-			CenterX = centerX;
-			CenterY = centerY;
-		}
-
-		public double Angle { 
-			get { return (double)GetValue (RotateTransform.AngleProperty); }
-			set { SetValue (RotateTransform.AngleProperty, value); }
-		}
-		public double CenterX { 
-			get { return (double)GetValue (RotateTransform.CenterXProperty); }
-			set { SetValue (RotateTransform.CenterXProperty, value); }
-		}
-		public double CenterY { 
-			get { return (double)GetValue (RotateTransform.CenterYProperty); }
-			set { SetValue (RotateTransform.CenterYProperty, value); }
+		public TransformCollection Children {
+			get { return (TransformCollection)GetValue (TransformGroup.ChildrenProperty); }
+			set { SetValue (TransformGroup.ChildrenProperty, value); }
 		}
 
 		public override Matrix Value {
-			get {
-				Matrix m = Matrix.Identity;
-				m.RotateAt (Angle, CenterX, CenterY);
-				return m;
-			}
+			get { throw new NotImplementedException (); }
 		}
 
-		public new RotateTransform Clone ()
+		public new TransformGroup Clone ()
 		{
-			return new RotateTransform (Angle, CenterX, CenterY);
+			throw new NotImplementedException ();
 		}
 
-		public new RotateTransform CloneCurrentValue ()
+		public new TransformGroup CloneCurrentValue ()
 		{
-			/* how is this different? */
-			return new RotateTransform (Angle, CenterX, CenterY);
+			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
-
 	}
+
 }

@@ -311,10 +311,15 @@ System.Windows.Media/NumberSubstitutionMethod.cs
 System.Windows.Media/PenLineCap.cs
 System.Windows.Media/PenLineJoin.cs
 System.Windows.Media/RotateTransform.cs
+System.Windows.Media/ScaleTransform.cs
+System.Windows.Media/SkewTransform.cs
 System.Windows.Media/Stretch.cs
 System.Windows.Media/StyleSimulations.cs
 System.Windows.Media/SweepDirection.cs
 System.Windows.Media/TileMode.cs
 System.Windows.Media/ToleranceType.cs
 System.Windows.Media/Transform.cs
+System.Windows.Media/TransformCollection.cs
+System.Windows.Media/TransformGroup.cs
+System.Windows.Media/TranslateTransform.cs
 System.Windows.Media/Visual.cs

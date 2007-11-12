@@ -24,76 +24,81 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace System.Windows.Media {
 
-	public sealed class RotateTransform : Transform {
-
-		public static readonly DependencyProperty AngleProperty;
+	public sealed class SkewTransform : Transform
+	{
+		public static readonly DependencyProperty AngleXProperty;
+		public static readonly DependencyProperty AngleYProperty;
 		public static readonly DependencyProperty CenterXProperty;
 		public static readonly DependencyProperty CenterYProperty;
 
-		static RotateTransform ()
-		{
-			// register the properties here
-			throw new NotImplementedException ();
-		}
-
-		public RotateTransform () : this (0.0)
+		public SkewTransform ()
 		{
 		}
 
-		public RotateTransform (double angle)
+		public SkewTransform (double angleX, double angleY)
 		{
-			Angle = angle;
+			AngleX = angleX;
+			AngleY = angleY;
 		}
 
-		public RotateTransform (double angle,
-					double centerX,
-					double centerY)
+		public SkewTransform (double angleX, double angleY, double centerX, double centerY)
 		{
-			Angle = angle;
+			AngleX = angleX;
+			AngleY = angleY;
 			CenterX = centerX;
 			CenterY = centerY;
 		}
 
-		public double Angle { 
-			get { return (double)GetValue (RotateTransform.AngleProperty); }
-			set { SetValue (RotateTransform.AngleProperty, value); }
-		}
-		public double CenterX { 
-			get { return (double)GetValue (RotateTransform.CenterXProperty); }
-			set { SetValue (RotateTransform.CenterXProperty, value); }
-		}
-		public double CenterY { 
-			get { return (double)GetValue (RotateTransform.CenterYProperty); }
-			set { SetValue (RotateTransform.CenterYProperty, value); }
-		}
 
 		public override Matrix Value {
 			get {
 				Matrix m = Matrix.Identity;
-				m.RotateAt (Angle, CenterX, CenterY);
+				m.Translate (CenterX, CenterY);
+				m.Skew (AngleX, AngleY);
+				m.Translate (-CenterX, -CenterY);
 				return m;
 			}
 		}
 
-		public new RotateTransform Clone ()
-		{
-			return new RotateTransform (Angle, CenterX, CenterY);
+		public double CenterX {
+			get { return (double)GetValue (SkewTransform.CenterXProperty); }
+			set { SetValue (SkewTransform.CenterXProperty, value); }
 		}
 
-		public new RotateTransform CloneCurrentValue ()
+		public double CenterY {
+			get { return (double)GetValue (SkewTransform.CenterYProperty); }
+			set { SetValue (SkewTransform.CenterYProperty, value); }
+		}
+
+		public double AngleX {
+			get { return (double)GetValue (SkewTransform.CenterXProperty); }
+			set { SetValue (SkewTransform.CenterXProperty, value); }
+		}
+
+		public double AngleY {
+			get { return (double)GetValue (SkewTransform.CenterYProperty); }
+			set { SetValue (SkewTransform.CenterYProperty, value); }
+		}
+
+		public new SkewTransform Clone ()
 		{
-			/* how is this different? */
-			return new RotateTransform (Angle, CenterX, CenterY);
+			return new SkewTransform (AngleX, AngleY, CenterX, CenterY);
+		}
+
+		public new SkewTransform CloneCurrentValue ()
+		{
+			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
-
 	}
 }
+

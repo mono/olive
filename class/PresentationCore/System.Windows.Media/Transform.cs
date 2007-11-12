@@ -26,7 +26,6 @@
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Threading;
 
 namespace System.Windows.Media {
 

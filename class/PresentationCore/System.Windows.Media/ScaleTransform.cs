@@ -24,76 +24,78 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace System.Windows.Media {
 
-	public sealed class RotateTransform : Transform {
-
-		public static readonly DependencyProperty AngleProperty;
+	public sealed class ScaleTransform : Transform
+	{
 		public static readonly DependencyProperty CenterXProperty;
 		public static readonly DependencyProperty CenterYProperty;
+		public static readonly DependencyProperty ScaleXProperty;
+		public static readonly DependencyProperty ScaleYProperty;
 
-		static RotateTransform ()
-		{
-			// register the properties here
-			throw new NotImplementedException ();
-		}
-
-		public RotateTransform () : this (0.0)
+		public ScaleTransform ()
 		{
 		}
 
-		public RotateTransform (double angle)
+		public ScaleTransform (double scaleX, double scaleY)
 		{
-			Angle = angle;
+			ScaleX = scaleX;
+			ScaleY = scaleY;
 		}
 
-		public RotateTransform (double angle,
-					double centerX,
-					double centerY)
+		public ScaleTransform (double scaleX, double scaleY, double centerX, double centerY)
 		{
-			Angle = angle;
+			ScaleX = scaleX;
+			ScaleY = scaleY;
 			CenterX = centerX;
 			CenterY = centerY;
 		}
 
-		public double Angle { 
-			get { return (double)GetValue (RotateTransform.AngleProperty); }
-			set { SetValue (RotateTransform.AngleProperty, value); }
-		}
-		public double CenterX { 
-			get { return (double)GetValue (RotateTransform.CenterXProperty); }
-			set { SetValue (RotateTransform.CenterXProperty, value); }
-		}
-		public double CenterY { 
-			get { return (double)GetValue (RotateTransform.CenterYProperty); }
-			set { SetValue (RotateTransform.CenterYProperty, value); }
-		}
 
 		public override Matrix Value {
 			get {
 				Matrix m = Matrix.Identity;
-				m.RotateAt (Angle, CenterX, CenterY);
+				m.ScaleAt (ScaleX, ScaleY, CenterX, CenterY);
 				return m;
 			}
 		}
 
-		public new RotateTransform Clone ()
-		{
-			return new RotateTransform (Angle, CenterX, CenterY);
+		public double CenterX {
+			get { return (double)GetValue (ScaleTransform.CenterXProperty); }
+			set { SetValue (ScaleTransform.CenterXProperty, value); }
 		}
 
-		public new RotateTransform CloneCurrentValue ()
+		public double CenterY {
+			get { return (double)GetValue (ScaleTransform.CenterYProperty); }
+			set { SetValue (ScaleTransform.CenterYProperty, value); }
+		}
+
+		public double ScaleX {
+			get { return (double)GetValue (ScaleTransform.CenterXProperty); }
+			set { SetValue (ScaleTransform.CenterXProperty, value); }
+		}
+
+		public double ScaleY {
+			get { return (double)GetValue (ScaleTransform.CenterYProperty); }
+			set { SetValue (ScaleTransform.CenterYProperty, value); }
+		}
+
+		public new ScaleTransform Clone ()
 		{
-			/* how is this different? */
-			return new RotateTransform (Angle, CenterX, CenterY);
+			return new ScaleTransform (ScaleX, ScaleY, CenterX, CenterY);
+		}
+
+		public new ScaleTransform CloneCurrentValue ()
+		{
+			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
-
 	}
 }
