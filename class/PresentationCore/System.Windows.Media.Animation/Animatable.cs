@@ -23,6 +23,8 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.ComponentModel;
+
 namespace System.Windows.Media.Animation {
 
 	public abstract class Animatable : Freezable, IAnimatable
@@ -73,6 +75,7 @@ namespace System.Windows.Media.Animation {
 			throw new NotImplementedException ();
 		}
 
+		[EditorBrowsable(EditorBrowsableState.Never)]
 		public static bool ShouldSerializeStoredWeakReference (DependencyObject target)
 		{
 			throw new NotImplementedException ();
