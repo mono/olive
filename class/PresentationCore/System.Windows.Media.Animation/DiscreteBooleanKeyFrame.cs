@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteBooleanKeyFrame : BooleanKeyFrame
 {
+	bool value;
+	KeyTime keyTime;
 
 	public DiscreteBooleanKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteBooleanKeyFrame : BooleanKeyFrame
 
 	public DiscreteBooleanKeyFrame (bool value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteBooleanKeyFrame (bool value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteBooleanKeyFrame : BooleanKeyFrame
 
 	protected override bool InterpolateValueCore (bool baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

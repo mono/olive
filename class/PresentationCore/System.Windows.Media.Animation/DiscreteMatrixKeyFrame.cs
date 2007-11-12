@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteMatrixKeyFrame : MatrixKeyFrame
 {
+	Matrix value;
+	KeyTime keyTime;
 
 	public DiscreteMatrixKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteMatrixKeyFrame : MatrixKeyFrame
 
 	public DiscreteMatrixKeyFrame (Matrix value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteMatrixKeyFrame (Matrix value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteMatrixKeyFrame : MatrixKeyFrame
 
 	protected override Matrix InterpolateValueCore (Matrix baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

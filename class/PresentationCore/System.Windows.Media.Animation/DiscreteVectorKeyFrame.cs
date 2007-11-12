@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteVectorKeyFrame : VectorKeyFrame
 {
+	Vector value;
+	KeyTime keyTime;
 
 	public DiscreteVectorKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteVectorKeyFrame : VectorKeyFrame
 
 	public DiscreteVectorKeyFrame (Vector value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteVectorKeyFrame (Vector value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteVectorKeyFrame : VectorKeyFrame
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

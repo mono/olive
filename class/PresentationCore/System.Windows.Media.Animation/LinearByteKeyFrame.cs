@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearByteKeyFrame : ByteKeyFrame
 {
+	byte value;
+	KeyTime keyTime;
 
 	public LinearByteKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearByteKeyFrame : ByteKeyFrame
 
 	public LinearByteKeyFrame (byte value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearByteKeyFrame (byte value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearByteKeyFrame : ByteKeyFrame
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return (byte)(baseValue + (value - baseValue) * keyFrameProgress);
 	}
 }
 

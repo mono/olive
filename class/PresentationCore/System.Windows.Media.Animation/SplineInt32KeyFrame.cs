@@ -17,20 +17,30 @@ public class SplineInt32KeyFrame : Int32KeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	int value;
+	KeyTime keyTime;
+
 	public SplineInt32KeyFrame ()
 	{
 	}
 
 	public SplineInt32KeyFrame (int value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineInt32KeyFrame (int value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineInt32KeyFrame (int value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineInt32KeyFrame : Int32KeyFrame
 
 	protected override int InterpolateValueCore (int baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (int)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

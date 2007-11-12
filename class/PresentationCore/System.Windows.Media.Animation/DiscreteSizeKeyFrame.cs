@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteSizeKeyFrame : SizeKeyFrame
 {
+	Size value;
+	KeyTime keyTime;
 
 	public DiscreteSizeKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteSizeKeyFrame : SizeKeyFrame
 
 	public DiscreteSizeKeyFrame (Size value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteSizeKeyFrame (Size value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteSizeKeyFrame : SizeKeyFrame
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

@@ -17,20 +17,30 @@ public class SplineSingleKeyFrame : SingleKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	float value;
+	KeyTime keyTime;
+
 	public SplineSingleKeyFrame ()
 	{
 	}
 
 	public SplineSingleKeyFrame (float value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineSingleKeyFrame (float value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineSingleKeyFrame (float value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineSingleKeyFrame : SingleKeyFrame
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (float)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

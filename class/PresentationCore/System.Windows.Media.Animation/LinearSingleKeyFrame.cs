@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearSingleKeyFrame : SingleKeyFrame
 {
+	float value;
+	KeyTime keyTime;
 
 	public LinearSingleKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearSingleKeyFrame : SingleKeyFrame
 
 	public LinearSingleKeyFrame (float value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearSingleKeyFrame (float value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearSingleKeyFrame : SingleKeyFrame
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return (float)(baseValue + (value - baseValue) * keyFrameProgress);
 	}
 }
 

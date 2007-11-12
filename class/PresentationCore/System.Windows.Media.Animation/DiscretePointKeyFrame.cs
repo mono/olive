@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscretePointKeyFrame : PointKeyFrame
 {
+	Point value;
+	KeyTime keyTime;
 
 	public DiscretePointKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscretePointKeyFrame : PointKeyFrame
 
 	public DiscretePointKeyFrame (Point value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscretePointKeyFrame (Point value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscretePointKeyFrame : PointKeyFrame
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

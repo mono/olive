@@ -17,20 +17,30 @@ public class SplineDoubleKeyFrame : DoubleKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	double value;
+	KeyTime keyTime;
+
 	public SplineDoubleKeyFrame ()
 	{
 	}
 
 	public SplineDoubleKeyFrame (double value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineDoubleKeyFrame (double value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineDoubleKeyFrame (double value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineDoubleKeyFrame : DoubleKeyFrame
 
 	protected override double InterpolateValueCore (double baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (double)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

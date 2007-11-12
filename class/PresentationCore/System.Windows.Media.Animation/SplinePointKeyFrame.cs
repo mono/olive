@@ -17,20 +17,30 @@ public class SplinePointKeyFrame : PointKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	Point value;
+	KeyTime keyTime;
+
 	public SplinePointKeyFrame ()
 	{
 	}
 
 	public SplinePointKeyFrame (Point value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplinePointKeyFrame (Point value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplinePointKeyFrame (Point value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplinePointKeyFrame : PointKeyFrame
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return new Point (baseValue.X + (value.X - baseValue.X) * splineProgress, baseValue.Y + (value.Y - baseValue.Y) * splineProgress);;
 	}
 }
 

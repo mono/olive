@@ -17,20 +17,30 @@ public class SplineDecimalKeyFrame : DecimalKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	Decimal value;
+	KeyTime keyTime;
+
 	public SplineDecimalKeyFrame ()
 	{
 	}
 
 	public SplineDecimalKeyFrame (Decimal value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineDecimalKeyFrame (Decimal value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineDecimalKeyFrame (Decimal value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineDecimalKeyFrame : DecimalKeyFrame
 
 	protected override Decimal InterpolateValueCore (Decimal baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (Decimal)((double)baseValue + ((double)value - (double)baseValue) * splineProgress);
 	}
 }
 

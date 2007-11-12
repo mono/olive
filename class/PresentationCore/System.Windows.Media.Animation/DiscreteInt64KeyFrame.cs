@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteInt64KeyFrame : Int64KeyFrame
 {
+	long value;
+	KeyTime keyTime;
 
 	public DiscreteInt64KeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteInt64KeyFrame : Int64KeyFrame
 
 	public DiscreteInt64KeyFrame (long value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteInt64KeyFrame (long value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteInt64KeyFrame : Int64KeyFrame
 
 	protected override long InterpolateValueCore (long baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

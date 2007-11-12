@@ -17,20 +17,30 @@ public class SplineRectKeyFrame : RectKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	Rect value;
+	KeyTime keyTime;
+
 	public SplineRectKeyFrame ()
 	{
 	}
 
 	public SplineRectKeyFrame (Rect value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineRectKeyFrame (Rect value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineRectKeyFrame (Rect value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineRectKeyFrame : RectKeyFrame
 
 	protected override Rect InterpolateValueCore (Rect baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return new Rect (baseValue.X + (value.X - baseValue.X) * splineProgress, baseValue.Y + (value.Y - baseValue.Y) * splineProgress, baseValue.Width + (value.Width - baseValue.Width) * splineProgress, baseValue.Height + (value.Height - baseValue.Height) * splineProgress);;
 	}
 }
 

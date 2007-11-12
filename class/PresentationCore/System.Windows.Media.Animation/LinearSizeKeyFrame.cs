@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearSizeKeyFrame : SizeKeyFrame
 {
+	Size value;
+	KeyTime keyTime;
 
 	public LinearSizeKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearSizeKeyFrame : SizeKeyFrame
 
 	public LinearSizeKeyFrame (Size value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearSizeKeyFrame (Size value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearSizeKeyFrame : SizeKeyFrame
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return new Size (baseValue.Width + (value.Width - baseValue.Width) * keyFrameProgress, baseValue.Height + (value.Height - baseValue.Height) * keyFrameProgress);;
 	}
 }
 

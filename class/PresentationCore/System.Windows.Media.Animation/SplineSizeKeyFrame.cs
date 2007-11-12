@@ -17,20 +17,30 @@ public class SplineSizeKeyFrame : SizeKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	Size value;
+	KeyTime keyTime;
+
 	public SplineSizeKeyFrame ()
 	{
 	}
 
 	public SplineSizeKeyFrame (Size value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineSizeKeyFrame (Size value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineSizeKeyFrame (Size value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineSizeKeyFrame : SizeKeyFrame
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return new Size (baseValue.Width + (value.Width - baseValue.Width) * splineProgress, baseValue.Height + (value.Height - baseValue.Height) * splineProgress);;
 	}
 }
 

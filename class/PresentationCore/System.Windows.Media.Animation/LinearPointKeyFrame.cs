@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearPointKeyFrame : PointKeyFrame
 {
+	Point value;
+	KeyTime keyTime;
 
 	public LinearPointKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearPointKeyFrame : PointKeyFrame
 
 	public LinearPointKeyFrame (Point value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearPointKeyFrame (Point value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearPointKeyFrame : PointKeyFrame
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return new Point (baseValue.X + (value.X - baseValue.X) * keyFrameProgress, baseValue.Y + (value.Y - baseValue.Y) * keyFrameProgress);;
 	}
 }
 

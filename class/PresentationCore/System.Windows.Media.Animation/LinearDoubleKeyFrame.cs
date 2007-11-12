@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearDoubleKeyFrame : DoubleKeyFrame
 {
+	double value;
+	KeyTime keyTime;
 
 	public LinearDoubleKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearDoubleKeyFrame : DoubleKeyFrame
 
 	public LinearDoubleKeyFrame (double value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearDoubleKeyFrame (double value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearDoubleKeyFrame : DoubleKeyFrame
 
 	protected override double InterpolateValueCore (double baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return (double)(baseValue + (value - baseValue) * keyFrameProgress);
 	}
 }
 

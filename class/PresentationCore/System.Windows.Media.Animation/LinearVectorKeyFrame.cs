@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearVectorKeyFrame : VectorKeyFrame
 {
+	Vector value;
+	KeyTime keyTime;
 
 	public LinearVectorKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearVectorKeyFrame : VectorKeyFrame
 
 	public LinearVectorKeyFrame (Vector value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearVectorKeyFrame (Vector value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearVectorKeyFrame : VectorKeyFrame
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return new Vector (baseValue.X + (value.X - baseValue.X) * keyFrameProgress, baseValue.Y + (value.Y - baseValue.Y) * keyFrameProgress);;
 	}
 }
 

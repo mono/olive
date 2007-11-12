@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class LinearInt32KeyFrame : Int32KeyFrame
 {
+	int value;
+	KeyTime keyTime;
 
 	public LinearInt32KeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class LinearInt32KeyFrame : Int32KeyFrame
 
 	public LinearInt32KeyFrame (int value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public LinearInt32KeyFrame (int value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,8 @@ public class LinearInt32KeyFrame : Int32KeyFrame
 
 	protected override int InterpolateValueCore (int baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		return (int)(baseValue + (value - baseValue) * keyFrameProgress);
 	}
 }
 

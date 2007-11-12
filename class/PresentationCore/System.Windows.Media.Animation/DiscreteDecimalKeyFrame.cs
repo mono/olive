@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteDecimalKeyFrame : DecimalKeyFrame
 {
+	Decimal value;
+	KeyTime keyTime;
 
 	public DiscreteDecimalKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteDecimalKeyFrame : DecimalKeyFrame
 
 	public DiscreteDecimalKeyFrame (Decimal value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteDecimalKeyFrame (Decimal value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteDecimalKeyFrame : DecimalKeyFrame
 
 	protected override Decimal InterpolateValueCore (Decimal baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

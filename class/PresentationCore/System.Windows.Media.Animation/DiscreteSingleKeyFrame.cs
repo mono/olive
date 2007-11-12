@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteSingleKeyFrame : SingleKeyFrame
 {
+	float value;
+	KeyTime keyTime;
 
 	public DiscreteSingleKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteSingleKeyFrame : SingleKeyFrame
 
 	public DiscreteSingleKeyFrame (float value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteSingleKeyFrame (float value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteSingleKeyFrame : SingleKeyFrame
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

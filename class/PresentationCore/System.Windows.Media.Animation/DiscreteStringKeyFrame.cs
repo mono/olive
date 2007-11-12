@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteStringKeyFrame : StringKeyFrame
 {
+	String value;
+	KeyTime keyTime;
 
 	public DiscreteStringKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteStringKeyFrame : StringKeyFrame
 
 	public DiscreteStringKeyFrame (String value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteStringKeyFrame (String value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteStringKeyFrame : StringKeyFrame
 
 	protected override String InterpolateValueCore (String baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

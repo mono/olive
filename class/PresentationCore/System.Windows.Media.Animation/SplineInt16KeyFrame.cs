@@ -17,20 +17,30 @@ public class SplineInt16KeyFrame : Int16KeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	short value;
+	KeyTime keyTime;
+
 	public SplineInt16KeyFrame ()
 	{
 	}
 
 	public SplineInt16KeyFrame (short value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineInt16KeyFrame (short value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineInt16KeyFrame (short value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineInt16KeyFrame : Int16KeyFrame
 
 	protected override short InterpolateValueCore (short baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (short)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

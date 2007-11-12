@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteByteKeyFrame : ByteKeyFrame
 {
+	byte value;
+	KeyTime keyTime;
 
 	public DiscreteByteKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteByteKeyFrame : ByteKeyFrame
 
 	public DiscreteByteKeyFrame (byte value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteByteKeyFrame (byte value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteByteKeyFrame : ByteKeyFrame
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

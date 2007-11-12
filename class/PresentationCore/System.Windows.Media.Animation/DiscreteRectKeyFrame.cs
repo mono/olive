@@ -14,6 +14,8 @@ namespace System.Windows.Media.Animation {
 
 public class DiscreteRectKeyFrame : RectKeyFrame
 {
+	Rect value;
+	KeyTime keyTime;
 
 	public DiscreteRectKeyFrame ()
 	{
@@ -21,10 +23,14 @@ public class DiscreteRectKeyFrame : RectKeyFrame
 
 	public DiscreteRectKeyFrame (Rect value)
 	{
+		this.value = value;
+		// XXX keytime?
 	}
 
 	public DiscreteRectKeyFrame (Rect value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	protected override Freezable CreateInstanceCore ()
@@ -34,7 +40,7 @@ public class DiscreteRectKeyFrame : RectKeyFrame
 
 	protected override Rect InterpolateValueCore (Rect baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

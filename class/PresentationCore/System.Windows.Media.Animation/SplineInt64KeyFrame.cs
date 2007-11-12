@@ -17,20 +17,30 @@ public class SplineInt64KeyFrame : Int64KeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	long value;
+	KeyTime keyTime;
+
 	public SplineInt64KeyFrame ()
 	{
 	}
 
 	public SplineInt64KeyFrame (long value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineInt64KeyFrame (long value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineInt64KeyFrame (long value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineInt64KeyFrame : Int64KeyFrame
 
 	protected override long InterpolateValueCore (long baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (long)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

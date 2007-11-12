@@ -17,20 +17,30 @@ public class SplineByteKeyFrame : ByteKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	byte value;
+	KeyTime keyTime;
+
 	public SplineByteKeyFrame ()
 	{
 	}
 
 	public SplineByteKeyFrame (byte value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineByteKeyFrame (byte value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineByteKeyFrame (byte value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineByteKeyFrame : ByteKeyFrame
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return (byte)(baseValue + (value - baseValue) * splineProgress);
 	}
 }
 

@@ -17,20 +17,30 @@ public class SplineVectorKeyFrame : VectorKeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	Vector value;
+	KeyTime keyTime;
+
 	public SplineVectorKeyFrame ()
 	{
 	}
 
 	public SplineVectorKeyFrame (Vector value)
 	{
+		this.value = value;
+		// XX keytime?
 	}
 
 	public SplineVectorKeyFrame (Vector value, KeyTime keyTime)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
 	}
 
 	public SplineVectorKeyFrame (Vector value, KeyTime keyTime, KeySpline keySpline)
 	{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}
 
 	public KeySpline KeySpline {
@@ -45,7 +55,9 @@ public class SplineVectorKeyFrame : VectorKeyFrame
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)
 	{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		return new Vector (baseValue.X + (value.X - baseValue.X) * splineProgress, baseValue.Y + (value.Y - baseValue.Y) * splineProgress);;
 	}
 }
 
