@@ -551,7 +551,7 @@ public class {0}KeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 ", type, gettype(type));
 	}
 
-	void OutputFile (AnimationClassType ac)
+	void OutputBaseClassFile (AnimationClassType ac)
 	{
 		if (ac == AnimationClassType.Animation
  		    && !istypecontinuous (type))
@@ -577,9 +577,140 @@ public class {0}KeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 			break;
 		case AnimationClassType.KeyFrameCollection:
 			OutputKeyFrameCollection (tw);
-			/* nothing yet */
 			break;
 		}
+		OutputFooter (tw);
+		tw.Close ();
+	}
+
+	void OutputDiscreteKeyFrame (TextWriter tw)
+	{
+		tw.WriteLine (@"
+public class Discrete{0}KeyFrame : {0}KeyFrame
+{{
+
+	public Discrete{0}KeyFrame ()
+	{{
+	}}
+
+	public Discrete{0}KeyFrame ({1} value)
+	{{
+	}}
+
+	public Discrete{0}KeyFrame ({1} value, KeyTime keyTime)
+	{{
+	}}
+
+	protected override Freezable CreateInstanceCore ()
+	{{
+		throw new NotImplementedException ();
+	}}
+
+	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
+	{{
+		throw new NotImplementedException ();
+	}}
+}}
+", type, gettype(type));
+	}
+
+	void OutputLinearKeyFrame (TextWriter tw)
+	{
+		tw.WriteLine (@"
+public class Linear{0}KeyFrame : {0}KeyFrame
+{{
+
+	public Linear{0}KeyFrame ()
+	{{
+	}}
+
+	public Linear{0}KeyFrame ({1} value)
+	{{
+	}}
+
+	public Linear{0}KeyFrame ({1} value, KeyTime keyTime)
+	{{
+	}}
+
+	protected override Freezable CreateInstanceCore ()
+	{{
+		throw new NotImplementedException ();
+	}}
+
+	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
+	{{
+		throw new NotImplementedException ();
+	}}
+}}
+", type, gettype(type));
+	}
+
+	void OutputSplineKeyFrame (TextWriter tw)
+	{
+		tw.WriteLine (@"
+public class Spline{0}KeyFrame : {0}KeyFrame
+{{
+
+	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+
+	public Spline{0}KeyFrame ()
+	{{
+	}}
+
+	public Spline{0}KeyFrame ({1} value)
+	{{
+	}}
+
+	public Spline{0}KeyFrame ({1} value, KeyTime keyTime)
+	{{
+	}}
+
+	public Spline{0}KeyFrame ({1} value, KeyTime keyTime, KeySpline keySpline)
+	{{
+	}}
+
+	public KeySpline KeySpline {{
+		get {{ throw new NotImplementedException (); }}
+		set {{ throw new NotImplementedException (); }}
+	}}
+
+	protected override Freezable CreateInstanceCore ()
+	{{
+		throw new NotImplementedException ();
+	}}
+
+	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
+	{{
+		throw new NotImplementedException ();
+	}}
+}}
+", type, gettype(type));
+	}
+
+	void OutputKeyFrameFile (KeyFrameType kt)
+	{
+		if (!istypecontinuous (type) &&
+		    (kt == KeyFrameType.Linear || kt == KeyFrameType.Spline))
+			return;
+
+		string filename = String.Format ("{0}{1}KeyFrame.cs", kt, type);
+		Console.WriteLine ("outputting {0}", filename);
+
+		TextWriter tw = File.CreateText (filename);
+		OutputHeader (tw);
+
+		switch (kt) {
+		case KeyFrameType.Discrete:
+			OutputDiscreteKeyFrame (tw);
+			break;
+		case KeyFrameType.Linear:
+			OutputLinearKeyFrame (tw);
+			break;
+		case KeyFrameType.Spline:
+			OutputSplineKeyFrame (tw);
+			break;
+		}
+
 		OutputFooter (tw);
 		tw.Close ();
 	}
@@ -589,8 +720,13 @@ public class {0}KeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 		foreach (AnimatableType at in Enum.GetValues(typeof (AnimatableType))) {
 			GenAnimationTypes ga = new GenAnimationTypes(at);
 
+			/* output the base class types */
 			foreach (AnimationClassType ac in Enum.GetValues (typeof (AnimationClassType)))
-				ga.OutputFile (ac);
+				ga.OutputBaseClassFile (ac);
+
+			/* output the keyframe types */
+			foreach (KeyFrameType kt in Enum.GetValues (typeof (KeyFrameType)))
+				ga.OutputKeyFrameFile (kt);
 		}
 	}
 }
