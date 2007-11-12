@@ -92,6 +92,34 @@ public class GenAnimationTypes {
 		return null;
 	}
 
+	string generateLerp (string from, string to, string progress)
+	{
+		switch (type) {
+		case AnimatableType.Byte:
+		case AnimatableType.Int16:
+		case AnimatableType.Int32:
+		case AnimatableType.Int64:
+		case AnimatableType.Single:
+		case AnimatableType.Double:
+			return String.Format ("return ({0})({1} + ({2} - {1}) * {3})", gettype(type), from, to, progress);
+
+		case AnimatableType.Decimal:
+			return String.Format ("return ({0})((double){1} + ((double){2} - (double){1}) * {3})", gettype(type), from, to, progress);
+
+		case AnimatableType.Point:
+		case AnimatableType.Vector:
+			return String.Format ("return new {3} ({0}.X + ({1}.X - {0}.X) * {2}, {0}.Y + ({1}.Y - {0}.Y) * {2});", from, to, progress, type);
+		case AnimatableType.Rect:
+			return String.Format ("return new Rect ({0}.X + ({1}.X - {0}.X) * {2}, {0}.Y + ({1}.Y - {0}.Y) * {2}, {0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2});", from, to, progress);
+
+		case AnimatableType.Size:
+			return String.Format ("return new Size ({0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2});", from, to, progress);
+
+		default:
+			return "XXX";
+		}
+	}
+
 	AnimatableType type;
 
 	GenAnimationTypes (AnimatableType type)
@@ -588,6 +616,8 @@ public class {0}KeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 		tw.WriteLine (@"
 public class Discrete{0}KeyFrame : {0}KeyFrame
 {{
+	{1} value;
+	KeyTime keyTime;
 
 	public Discrete{0}KeyFrame ()
 	{{
@@ -595,10 +625,14 @@ public class Discrete{0}KeyFrame : {0}KeyFrame
 
 	public Discrete{0}KeyFrame ({1} value)
 	{{
+		this.value = value;
+		// XXX keytime?
 	}}
 
 	public Discrete{0}KeyFrame ({1} value, KeyTime keyTime)
 	{{
+		this.value = value;
+		this.keyTime = keyTime;
 	}}
 
 	protected override Freezable CreateInstanceCore ()
@@ -608,7 +642,7 @@ public class Discrete{0}KeyFrame : {0}KeyFrame
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
 	{{
-		throw new NotImplementedException ();
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}}
 }}
 ", type, gettype(type));
@@ -619,6 +653,8 @@ public class Discrete{0}KeyFrame : {0}KeyFrame
 		tw.WriteLine (@"
 public class Linear{0}KeyFrame : {0}KeyFrame
 {{
+	{1} value;
+	KeyTime keyTime;
 
 	public Linear{0}KeyFrame ()
 	{{
@@ -626,10 +662,14 @@ public class Linear{0}KeyFrame : {0}KeyFrame
 
 	public Linear{0}KeyFrame ({1} value)
 	{{
+		this.value = value;
+		// XXX keytime?
 	}}
 
 	public Linear{0}KeyFrame ({1} value, KeyTime keyTime)
 	{{
+		this.value = value;
+		this.keyTime = keyTime;
 	}}
 
 	protected override Freezable CreateInstanceCore ()
@@ -639,10 +679,11 @@ public class Linear{0}KeyFrame : {0}KeyFrame
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
 	{{
-		throw new NotImplementedException ();
+		// standard linear interpolation
+		{2};
 	}}
 }}
-", type, gettype(type));
+", type, gettype(type), generateLerp ("baseValue", "value", "keyFrameProgress"));
 	}
 
 	void OutputSplineKeyFrame (TextWriter tw)
@@ -653,20 +694,30 @@ public class Spline{0}KeyFrame : {0}KeyFrame
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
+	{1} value;
+	KeyTime keyTime;
+
 	public Spline{0}KeyFrame ()
 	{{
 	}}
 
 	public Spline{0}KeyFrame ({1} value)
 	{{
+		this.value = value;
+		// XX keytime?
 	}}
 
 	public Spline{0}KeyFrame ({1} value, KeyTime keyTime)
 	{{
+		this.value = value;
+		this.keyTime = keyTime;
 	}}
 
 	public Spline{0}KeyFrame ({1} value, KeyTime keyTime, KeySpline keySpline)
 	{{
+		this.value = value;
+		this.keyTime = keyTime;
+		KeySpline = keySpline;
 	}}
 
 	public KeySpline KeySpline {{
@@ -681,10 +732,12 @@ public class Spline{0}KeyFrame : {0}KeyFrame
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
 	{{
-		throw new NotImplementedException ();
+		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
+
+		{2};
 	}}
 }}
-", type, gettype(type));
+", type, gettype(type), generateLerp ("baseValue", "value", "splineProgress"));
 	}
 
 	void OutputKeyFrameFile (KeyFrameType kt)
