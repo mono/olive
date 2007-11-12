@@ -37,6 +37,7 @@ System.Windows.Interop/IKeyboardInputSink.cs
 System.Windows.Interop/IKeyboardInputSite.cs
 System.Windows.Interop/MSG.cs
 System.Windows.Interop/ThreadMessageEventHandler.cs
+System.Windows.Markup/ContentPropertyAttribute.cs
 System.Windows.Media/Matrix.cs
 System.Windows.Threading/Dispatcher.cs
 System.Windows.Threading/DispatcherEventArgs.cs
