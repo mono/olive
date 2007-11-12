@@ -23,32 +23,11 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Security;
-using System.Windows.Threading;
-
 namespace System.Windows.Media {
-	public abstract class CompositionTarget : DispatcherObject, IDisposable
-	{
-		internal CompositionTarget ()
-		{
-		}
 
-		public virtual void Dispose ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public virtual Visual RootVisual {
-			[SecurityCritical]
-			set { throw new NotImplementedException (); }
-			[SecurityCritical]
-			get { throw new NotImplementedException (); }
-		}
-
-		public abstract Matrix TransformFromDevice { get; }
-		public abstract Matrix TransformToDevice { get; }
-
-		public static event EventHandler Rendering;
+	public enum GradientSpreadMethod {
+		Pad,
+		Reflect,
+		Repeat
 	}
 }

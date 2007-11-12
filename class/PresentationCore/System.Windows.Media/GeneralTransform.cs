@@ -30,8 +30,12 @@ using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	//[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
+	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
 	public abstract class GeneralTransform : Animatable, IFormattable {
+		internal GeneralTransform ()
+		{
+		}
+
 		public new GeneralTransform Clone ()
 		{
 			throw new NotImplementedException ();

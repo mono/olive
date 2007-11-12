@@ -30,9 +30,15 @@ using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	//[TypeConverterAttribute(typeof(TransformConverter))] 
-	//[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
+#if notyet
+	[TypeConverterAttribute(typeof(TransformConverter))] 
+#endif
+	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
 	public abstract class Transform : GeneralTransform {
+
+		internal Transform ()
+		{
+		}
 
 		public new Transform Clone ()
 		{
