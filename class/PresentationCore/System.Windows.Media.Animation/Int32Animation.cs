@@ -12,43 +12,43 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class DoubleAnimation : DoubleAnimationBase
+public class Int32Animation : Int32AnimationBase
 {
 	public static readonly DependencyProperty ByProperty; /* XXX initialize */
 	public static readonly DependencyProperty FromProperty; /* XXX initialize */
 	public static readonly DependencyProperty ToProperty; /* XXX initialize */
 
-	public DoubleAnimation ()
+	public Int32Animation ()
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration)
+	public Int32Animation (int toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration, FillBehavior fillBehavior)
+	public Int32Animation (int toValue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double toValue, Duration duration)
+	public Int32Animation (int fromValue, int toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double tovalue, Duration duration, FillBehavior fillBehavior)
+	public Int32Animation (int fromValue, int tovalue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public double? By {
+	public int? By {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? From {
+	public int? From {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? To {
+	public int? To {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
@@ -63,7 +63,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		set { throw new NotImplementedException (); }
 	}
 
-	public new DoubleAnimation Clone ()
+	public new Int32Animation Clone ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		throw new NotImplementedException ();
 	}
 
-	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)
+	protected override int GetCurrentValueCore (int defaultOriginValue, int defaultDestinationValue, AnimationClock animationClock)
 	{
 		throw new NotImplementedException ();
 	}

@@ -12,43 +12,43 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class DoubleAnimation : DoubleAnimationBase
+public class PointAnimation : PointAnimationBase
 {
 	public static readonly DependencyProperty ByProperty; /* XXX initialize */
 	public static readonly DependencyProperty FromProperty; /* XXX initialize */
 	public static readonly DependencyProperty ToProperty; /* XXX initialize */
 
-	public DoubleAnimation ()
+	public PointAnimation ()
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration)
+	public PointAnimation (Point toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration, FillBehavior fillBehavior)
+	public PointAnimation (Point toValue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double toValue, Duration duration)
+	public PointAnimation (Point fromValue, Point toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double tovalue, Duration duration, FillBehavior fillBehavior)
+	public PointAnimation (Point fromValue, Point tovalue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public double? By {
+	public Point? By {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? From {
+	public Point? From {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? To {
+	public Point? To {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
@@ -63,7 +63,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		set { throw new NotImplementedException (); }
 	}
 
-	public new DoubleAnimation Clone ()
+	public new PointAnimation Clone ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		throw new NotImplementedException ();
 	}
 
-	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)
+	protected override Point GetCurrentValueCore (Point defaultOriginValue, Point defaultDestinationValue, AnimationClock animationClock)
 	{
 		throw new NotImplementedException ();
 	}

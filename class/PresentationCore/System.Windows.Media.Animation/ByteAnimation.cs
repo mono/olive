@@ -12,43 +12,43 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class DoubleAnimation : DoubleAnimationBase
+public class ByteAnimation : ByteAnimationBase
 {
 	public static readonly DependencyProperty ByProperty; /* XXX initialize */
 	public static readonly DependencyProperty FromProperty; /* XXX initialize */
 	public static readonly DependencyProperty ToProperty; /* XXX initialize */
 
-	public DoubleAnimation ()
+	public ByteAnimation ()
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration)
+	public ByteAnimation (byte toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration, FillBehavior fillBehavior)
+	public ByteAnimation (byte toValue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double toValue, Duration duration)
+	public ByteAnimation (byte fromValue, byte toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double tovalue, Duration duration, FillBehavior fillBehavior)
+	public ByteAnimation (byte fromValue, byte tovalue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public double? By {
+	public byte? By {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? From {
+	public byte? From {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? To {
+	public byte? To {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
@@ -63,7 +63,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		set { throw new NotImplementedException (); }
 	}
 
-	public new DoubleAnimation Clone ()
+	public new ByteAnimation Clone ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		throw new NotImplementedException ();
 	}
 
-	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)
+	protected override byte GetCurrentValueCore (byte defaultOriginValue, byte defaultDestinationValue, AnimationClock animationClock)
 	{
 		throw new NotImplementedException ();
 	}

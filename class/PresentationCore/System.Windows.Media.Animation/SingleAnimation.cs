@@ -12,43 +12,43 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class DoubleAnimation : DoubleAnimationBase
+public class SingleAnimation : SingleAnimationBase
 {
 	public static readonly DependencyProperty ByProperty; /* XXX initialize */
 	public static readonly DependencyProperty FromProperty; /* XXX initialize */
 	public static readonly DependencyProperty ToProperty; /* XXX initialize */
 
-	public DoubleAnimation ()
+	public SingleAnimation ()
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration)
+	public SingleAnimation (float toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration, FillBehavior fillBehavior)
+	public SingleAnimation (float toValue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double toValue, Duration duration)
+	public SingleAnimation (float fromValue, float toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double tovalue, Duration duration, FillBehavior fillBehavior)
+	public SingleAnimation (float fromValue, float tovalue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public double? By {
+	public float? By {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? From {
+	public float? From {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? To {
+	public float? To {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
@@ -63,7 +63,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		set { throw new NotImplementedException (); }
 	}
 
-	public new DoubleAnimation Clone ()
+	public new SingleAnimation Clone ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		throw new NotImplementedException ();
 	}
 
-	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)
+	protected override float GetCurrentValueCore (float defaultOriginValue, float defaultDestinationValue, AnimationClock animationClock)
 	{
 		throw new NotImplementedException ();
 	}

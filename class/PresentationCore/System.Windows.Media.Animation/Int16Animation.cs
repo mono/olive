@@ -12,43 +12,43 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class DoubleAnimation : DoubleAnimationBase
+public class Int16Animation : Int16AnimationBase
 {
 	public static readonly DependencyProperty ByProperty; /* XXX initialize */
 	public static readonly DependencyProperty FromProperty; /* XXX initialize */
 	public static readonly DependencyProperty ToProperty; /* XXX initialize */
 
-	public DoubleAnimation ()
+	public Int16Animation ()
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration)
+	public Int16Animation (short toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double toValue, Duration duration, FillBehavior fillBehavior)
+	public Int16Animation (short toValue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double toValue, Duration duration)
+	public Int16Animation (short fromValue, short toValue, Duration duration)
 	{
 	}
 
-	public DoubleAnimation (double fromValue, double tovalue, Duration duration, FillBehavior fillBehavior)
+	public Int16Animation (short fromValue, short tovalue, Duration duration, FillBehavior fillBehavior)
 	{
 	}
 
-	public double? By {
+	public short? By {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? From {
+	public short? From {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
 
-	public double? To {
+	public short? To {
 		get { throw new NotImplementedException (); }
 		set { throw new NotImplementedException (); }
 	}
@@ -63,7 +63,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		set { throw new NotImplementedException (); }
 	}
 
-	public new DoubleAnimation Clone ()
+	public new Int16Animation Clone ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 		throw new NotImplementedException ();
 	}
 
-	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)
+	protected override short GetCurrentValueCore (short defaultOriginValue, short defaultDestinationValue, AnimationClock animationClock)
 	{
 		throw new NotImplementedException ();
 	}
