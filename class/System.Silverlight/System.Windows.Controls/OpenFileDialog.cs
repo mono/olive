@@ -4,6 +4,7 @@
 // Authors:
 //	Atsushi Enomoto  <atsushi@ximian.com>
 //	Miguel de Icaza  <miguel@ximian.com>
+//	Sebastien Pouliot  <sebastien@ximian.com>
 //
 // Copyright (C) 2007 Novell, Inc (http://www.novell.com)
 //
@@ -34,39 +35,40 @@ using System.Runtime.InteropServices;
 namespace System.Windows.Controls
 {
 	// It simply opens a native file dialog
-	//
-	// Note that those unmanaged icalls are not in the runtime yet.
+
 	public sealed class OpenFileDialog : IDisposable 
 	{
 		FileDialogFileInfo [] files;
 		
-		bool allow_multiple_selection = false;
-		string filter = "";
-		int filter_index = 0;
-		string title = null;
+		bool allow_multiple_selection;
+		string filter = String.Empty;
+		int filter_index;
+		string title;
 		
 		public OpenFileDialog ()
 		{
 		}
 
-		void IDisposable.Dispose ()
+		public void Dispose ()
 		{
+			// note: Dispose doesn't clear the SelectedFile or SelectedFiles properties
+			GC.SuppressFinalize (this);
 		}
 
 		public DialogResult ShowDialog ()
 		{
 			IntPtr result = open_file_dialog_show (
-				title == null ? "" : title,
+				String.IsNullOrEmpty (title) ? "Open" : title,
 				allow_multiple_selection,
-				filter == null ? "" : filter,
+				filter,
 				filter_index);
 
 			if (result == IntPtr.Zero){
-				files = null;
+				// when called several times the previous results are still available after a Cancel
 				return DialogResult.Cancel;
 			}
 
-			uint inc = (uint) Marshal.SizeOf (typeof (IntPtr));
+			uint inc = (uint) IntPtr.Size;
 			IntPtr p;
 			int n = 0;
 
@@ -106,12 +108,29 @@ namespace System.Windows.Controls
 
 		public string Filter {
 			get { return filter; }
-			set { filter = value; }
+			set {
+				if (String.IsNullOrEmpty (value))
+					filter = String.Empty;
+				// an odd number of '|' must be present (so an exact number of name+pattern pairs exists)
+				int count = 0;
+				for (int i=0; i < value.Length; i++) {
+					if (value [i] == '|')
+						count++;
+				}
+				if ((count & 1) == 1)
+					throw new ArgumentException ("Filter");
+				filter = value;
+			}
 		}
 
 		public int FilterIndex {
 			get { return filter_index; }
-			set { filter_index = value; }
+			set {
+				// note: the value isn't semi-validated (no maximum check wrt filters)
+				if (value < 0)
+					throw new ArgumentOutOfRangeException ("FilterIndex");
+				filter_index = value;
+			}
 		}
 
 		public string Title {
