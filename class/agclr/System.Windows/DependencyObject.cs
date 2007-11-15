@@ -134,185 +134,75 @@ namespace System.Windows {
 
 			NativeMethods.base_ref (raw);
 			switch (k){
-			case Kind.CANVAS:
-				return new Canvas (raw);
-
-			case Kind.IMAGE:
-				return new Image (raw);
-
-			case Kind.GRADIENTSTOP:
-				return new GradientStop (raw);
-
-			case Kind.ROTATETRANSFORM:
-				return new RotateTransform (raw);
-				
-			case Kind.SCALETRANSFORM:
-				return new ScaleTransform (raw);
-
-			case Kind.TRANSLATETRANSFORM:
-				return new TranslateTransform (raw);
-				
-			case Kind.MATRIXTRANSFORM:
-				return new MatrixTransform (raw);
-				
-			case Kind.STORYBOARD:
-				return new Storyboard (raw);
-
-			case Kind.DOUBLEANIMATIONUSINGKEYFRAMES:
-				return new DoubleAnimationUsingKeyFrames (raw);
-				
-			case Kind.DOUBLEANIMATION: 
-				return new DoubleAnimation (raw);
-				
-			case Kind.COLORANIMATION: 
-				return new ColorAnimation (raw);
-				
-			case Kind.POINTANIMATION: 
-				return new PointAnimation (raw);
-				
-			case Kind.ELLIPSE:
-				return new Ellipse (raw);
-				
-			case Kind.LINE:
-				return new Line (raw);
-				
-			case Kind.PATH:
-				return new Path (raw);
-				
-			case Kind.POLYGON:
-				return new Polygon (raw);
-				
-			case Kind.POLYLINE:
-				return new Polyline (raw);
-				
-			case Kind.RECTANGLE:
-				return new Rectangle (raw);
-				
-			case Kind.GEOMETRYGROUP:
-				return new GeometryGroup (raw);
-				
-			case Kind.ELLIPSEGEOMETRY:
-				return new EllipseGeometry (raw);
-				
-			case Kind.LINEGEOMETRY:
-				return new LineGeometry (raw);
-				
-			case Kind.PATHGEOMETRY:
-				return new PathGeometry (raw);
-				
-			case Kind.RECTANGLEGEOMETRY:
-				return new RectangleGeometry (raw);
-
-			case Kind.IMAGEBRUSH:
-				return new ImageBrush (raw);
-				
-			case Kind.SOLIDCOLORBRUSH:
-				return new SolidColorBrush (raw);
-				
-			case Kind.PATHFIGURE:
-				return new PathFigure (raw);
-				
-			case Kind.ARCSEGMENT:
-				return new ArcSegment (raw);
-				
-			case Kind.BEZIERSEGMENT:
-				return new BezierSegment (raw);
-				
-			case Kind.LINESEGMENT:
-				return new LineSegment (raw);
-				
-			case Kind.INLINES: 
-				return new Inlines (raw);
-				
-			case Kind.POLYBEZIERSEGMENT:
-				return new PolyBezierSegment (raw);
-				
-			case Kind.POLYLINESEGMENT:
-				return new PolyLineSegment (raw);
-				
-			case Kind.POLYQUADRATICBEZIERSEGMENT:
-				return new PolyQuadraticBezierSegment (raw);
-				
-			case Kind.QUADRATICBEZIERSEGMENT:
-				return new QuadraticBezierSegment (raw);
-
-			case Kind.TEXTBLOCK:
-				return new TextBlock (raw);
-
-			case Kind.RUN:
-				return new Run (raw);
-
-			case Kind.GLYPHS:
-				return new Glyphs (raw);
-				
-			case Kind.STYLUSPOINT:
-				return new StylusPoint (raw);
-			
-			case Kind.STYLUSINFO:
-				return new StylusInfo (raw);
-
-			case Kind.LINEBREAK:
-				return new LineBreak (raw);
-				
-			case Kind.BEGINSTORYBOARD: 
-				return new BeginStoryboard (raw);
-				
-			case Kind.EVENTTRIGGER: 
-				return new EventTrigger (raw);
-
-			case Kind.STROKE_COLLECTION: 
-				return new StrokeCollection (raw);
-				
-			case Kind.STYLUSPOINT_COLLECTION: 
-				return new StylusPointCollection (raw);
-			
-			case Kind.COLORKEYFRAME_COLLECTION: 
-				return new ColorKeyFrameCollection (raw);
-
-			case Kind.DOUBLEKEYFRAME_COLLECTION: 
-				return new DoubleKeyFrameCollection (raw);
-				
-			case Kind.POINTKEYFRAME_COLLECTION: 
-				return new PointKeyFrameCollection (raw);
-
-			case Kind.TIMELINEMARKER_COLLECTION: 
-				return new TimelineMarkerCollection (raw);
-				
-			case Kind.GEOMETRY_COLLECTION: 
-				return new GeometryCollection (raw);
-					
-			case Kind.GRADIENTSTOP_COLLECTION: 
-				return new GradientStopCollection (raw);
-				
-			case Kind.PATHFIGURE_COLLECTION: 
-				return new PathFigureCollection (raw);
-				
-			case Kind.PATHSEGMENT_COLLECTION: 
-				return new PathSegmentCollection (raw);
-				
-			case Kind.TIMELINE_COLLECTION: 
-				return new TimelineCollection (raw);
-				
-			case Kind.TRANSFORM_COLLECTION: 
-				return new TransformCollection (raw);
-				
-			case Kind.VISUAL_COLLECTION:
-				return new VisualCollection (raw);
-				
-			case Kind.RESOURCE_DICTIONARY:
-				return new ResourceDictionary (raw);
-
-			case Kind.TRIGGERACTION_COLLECTION: 
-				return new TriggerActionCollection (raw);
-				
-			case Kind.TRIGGER_COLLECTION: 
-				return new TriggerCollection (raw);
-
-			case Kind.MEDIAELEMENT:
-				return new MediaElement (raw);
-				
-			case Kind.KEYSPLINE:
-				return new KeySpline(raw);
+			case Kind.ARCSEGMENT: return new ArcSegment (raw);
+			case Kind.BEGINSTORYBOARD: return new BeginStoryboard (raw);
+			case Kind.BEZIERSEGMENT: return new BezierSegment (raw);
+			case Kind.CANVAS: return new Canvas (raw);
+			case Kind.COLORANIMATION: return new ColorAnimation (raw);
+			case Kind.COLORKEYFRAME_COLLECTION: return new ColorKeyFrameCollection (raw);
+			case Kind.DISCRETECOLORKEYFRAME: return new DiscreteColorKeyFrame (raw);
+			case Kind.DISCRETEDOUBLEKEYFRAME: return new DiscreteDoubleKeyFrame (raw);
+			case Kind.DISCRETEPOINTKEYFRAME: return new DiscretePointKeyFrame (raw);
+			case Kind.DOUBLEANIMATION: return new DoubleAnimation (raw);
+			case Kind.DOUBLEANIMATIONUSINGKEYFRAMES: return new DoubleAnimationUsingKeyFrames (raw);
+			case Kind.DOUBLEKEYFRAME_COLLECTION: return new DoubleKeyFrameCollection (raw);
+			case Kind.ELLIPSEGEOMETRY: return new EllipseGeometry (raw);
+			case Kind.ELLIPSE: return new Ellipse (raw);
+			case Kind.EVENTTRIGGER: return new EventTrigger (raw);
+			case Kind.GEOMETRY_COLLECTION: return new GeometryCollection (raw);
+			case Kind.GEOMETRYGROUP: return new GeometryGroup (raw);
+			case Kind.GLYPHS: return new Glyphs (raw);
+			case Kind.GRADIENTSTOP_COLLECTION: return new GradientStopCollection (raw);
+			case Kind.GRADIENTSTOP: return new GradientStop (raw);
+			case Kind.IMAGEBRUSH: return new ImageBrush (raw);
+			case Kind.IMAGE: return new Image (raw);
+			case Kind.INLINES: return new Inlines (raw);
+			case Kind.KEYSPLINE: return new KeySpline(raw);
+			case Kind.LINEBREAK: return new LineBreak (raw);
+			case Kind.LINEGEOMETRY: return new LineGeometry (raw);
+			case Kind.LINE: return new Line (raw);
+			case Kind.LINEARCOLORKEYFRAME: return new LinearColorKeyFrame (raw);
+			case Kind.LINEARDOUBLEKEYFRAME: return new LinearDoubleKeyFrame (raw);
+			case Kind.LINEARPOINTKEYFRAME: return new LinearPointKeyFrame (raw);
+			case Kind.LINESEGMENT: return new LineSegment (raw);
+			case Kind.MATRIXTRANSFORM: return new MatrixTransform (raw);
+			case Kind.MEDIAELEMENT: return new MediaElement (raw);
+			case Kind.PATHFIGURE_COLLECTION: return new PathFigureCollection (raw);
+			case Kind.PATHFIGURE: return new PathFigure (raw);
+			case Kind.PATHGEOMETRY: return new PathGeometry (raw);
+			case Kind.PATH: return new Path (raw);
+			case Kind.PATHSEGMENT_COLLECTION: return new PathSegmentCollection (raw);
+			case Kind.POINTANIMATION: return new PointAnimation (raw);
+			case Kind.POINTKEYFRAME_COLLECTION: return new PointKeyFrameCollection (raw);
+			case Kind.POLYBEZIERSEGMENT: return new PolyBezierSegment (raw);
+			case Kind.POLYGON: return new Polygon (raw);
+			case Kind.POLYLINE: return new Polyline (raw);
+			case Kind.POLYLINESEGMENT: return new PolyLineSegment (raw);
+			case Kind.POLYQUADRATICBEZIERSEGMENT: return new PolyQuadraticBezierSegment (raw);
+			case Kind.QUADRATICBEZIERSEGMENT: return new QuadraticBezierSegment (raw);
+			case Kind.RECTANGLEGEOMETRY: return new RectangleGeometry (raw);
+			case Kind.RECTANGLE: return new Rectangle (raw);
+			case Kind.RESOURCE_DICTIONARY: return new ResourceDictionary (raw);
+			case Kind.ROTATETRANSFORM: return new RotateTransform (raw);
+			case Kind.RUN: return new Run (raw);
+			case Kind.SCALETRANSFORM: return new ScaleTransform (raw);
+			case Kind.SOLIDCOLORBRUSH: return new SolidColorBrush (raw);
+			case Kind.SPLINECOLORKEYFRAME: return new SplineColorKeyFrame (raw);
+			case Kind.SPLINEDOUBLEKEYFRAME: return new SplineDoubleKeyFrame (raw);
+			case Kind.SPLINEPOINTKEYFRAME: return new SplinePointKeyFrame (raw);
+			case Kind.STORYBOARD: return new Storyboard (raw);
+			case Kind.STROKE_COLLECTION: return new StrokeCollection (raw);
+			case Kind.STYLUSINFO: return new StylusInfo (raw);
+			case Kind.STYLUSPOINT_COLLECTION: return new StylusPointCollection (raw);
+			case Kind.STYLUSPOINT: return new StylusPoint (raw);
+			case Kind.TEXTBLOCK: return new TextBlock (raw);
+			case Kind.TIMELINE_COLLECTION: return new TimelineCollection (raw);
+			case Kind.TIMELINEMARKER_COLLECTION: return new TimelineMarkerCollection (raw);
+			case Kind.TRANSFORM_COLLECTION: return new TransformCollection (raw);
+			case Kind.TRANSLATETRANSFORM: return new TranslateTransform (raw);
+			case Kind.TRIGGERACTION_COLLECTION: return new TriggerActionCollection (raw);
+			case Kind.TRIGGER_COLLECTION: return new TriggerCollection (raw);
+			case Kind.VISUAL_COLLECTION: return new VisualCollection (raw);
 
 			case Kind.CLOCKGROUP:
 			case Kind.ANIMATIONCLOCK:
@@ -335,6 +225,10 @@ namespace System.Windows {
 			case Kind.MEDIAATTRIBUTE_COLLECTION: 
 				throw new Exception (
 					String.Format ("Should never get an abstract class from unmanaged code {0}", k));
+
+			default:
+				throw new Exception (
+					String.Format ("Kind missing from switch: {0}", k ));
 			}
 
 			return null;
