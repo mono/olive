@@ -88,7 +88,8 @@ namespace System.Windows {
 
 		public static Point Multiply (Point point, Matrix matrix)
 		{
-			throw new NotImplementedException ();
+			return new Point (point.X * matrix.M11 + point.Y * matrix.M21 + matrix.OffsetX,
+					  point.X * matrix.M12 + point.Y * matrix.M22 + matrix.OffsetY);
 		}
 
 		public static Vector Subtract (Point point1, Point point2)
@@ -149,7 +150,7 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			return String.Format ("{0},{1}", x, y);
 		}
 
 		public string ToString (IFormatProvider formatProvider)
