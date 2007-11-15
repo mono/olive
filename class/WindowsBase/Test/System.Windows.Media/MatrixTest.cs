@@ -154,8 +154,6 @@ namespace MonoTests.System.Windows.Media {
 			CheckMatrix (new Matrix (0, 0, 0, 0, 10, 10),
 				     Matrix.Multiply (new Matrix (1, 0, 0, 1, 0, 0),
 						      new Matrix (0, 0, 0, 0, 10, 10)));
-
-			// XXX more here
 		}
 
 		[Test]
@@ -170,26 +168,65 @@ namespace MonoTests.System.Windows.Media {
 		[Test]
 		public void Prepend ()
 		{
+			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.Prepend (new Matrix (2, 4, 6, 8, 10, 12));
+
+			CheckMatrix (new Matrix (14, 20, 30, 44, 51, 74), m);
 		}
 
 		[Test]
 		public void Rotate ()
 		{
+			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.Rotate (33);
+
+			CheckMatrix (new Matrix (-0.25060750208463,
+						 2.22198017090588,
+						 0.337455563776164,
+						 4.98859937682678,
+						 0.925518629636958,
+						 7.75521858274768), m);
 		}
 
 		[Test]
 		public void RotateAt ()
 		{
+			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.RotateAt (33, 5, 5);
+
+			CheckMatrix (new Matrix (-0.25060750208463,
+						 2.22198017090588,
+						 0.337455563776164,
+						 4.98859937682678,
+						 4.45536096498497,
+						 5.83867056794542), m);
 		}
 
 		[Test]
 		public void RotateAtPrepend ()
 		{
+			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.RotateAtPrepend (33, 5, 5);
+
+			CheckMatrix (new Matrix (2.47258767299051,
+						 3.85589727595096,
+						 1.97137266882125,
+						 2.26540420175164,
+						 2.78019829094125,
+						 5.39349261148701), m);
 		}
 
 		[Test]
 		public void RotatePrepend ()
 		{
+			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.RotatePrepend (33);
+
+			CheckMatrix (new Matrix (2.47258767299051,
+						 3.85589727595096,
+						 1.97137266882125,
+						 2.26540420175164,
+						 5, 6), m);
 		}
 
 		[Test]
@@ -224,11 +261,30 @@ namespace MonoTests.System.Windows.Media {
 		[Test]
 		public void ScaleAtPrepend ()
 		{
+			Matrix m = new Matrix (1, 0, 0, 1, 2, 2);
+			m.ScaleAtPrepend (2, 2, 0, 0);
+			CheckMatrix (new Matrix (2, 0, 0, 2, 2, 2), m);
+
+			m = new Matrix (1, 0, 0, 1, 2, 2);
+			m.ScaleAtPrepend (2, 2, 4, 4);
+			CheckMatrix (new Matrix (2, 0, 0, 2, -2, -2), m);
+
+			m = new Matrix (1, 0, 0, 1, 2, 2);
+			m.ScaleAtPrepend (2, 2, 2, 2);
+			CheckMatrix (new Matrix (2, 0, 0, 2, 0, 0), m);
 		}
 
 		[Test]
 		public void ScalePrepend ()
 		{
+			Matrix m = Matrix.Identity;
+
+			m.ScalePrepend (5, 6);
+			CheckMatrix (new Matrix (5, 0, 0, 6, 0, 0), m);
+
+			m = new Matrix (1, 2, 2, 1, 3, 3);
+			m.ScalePrepend (5, 5);
+			CheckMatrix (new Matrix (5, 10, 10, 5, 3, 3), m);
 		}
 
 		[Test]
@@ -242,11 +298,42 @@ namespace MonoTests.System.Windows.Media {
 		[Test]
 		public void Skew ()
 		{
+			Matrix m = Matrix.Identity;
+
+			m.Skew (10, 15);
+			CheckMatrix (new Matrix (1,
+						 0.267949192431123,
+						 0.176326980708465,
+						 1, 0, 0), m);
+
+			m = new Matrix (1, 2, 2, 1, 3, 3);
+			m.Skew (10, 15);
+			CheckMatrix (new Matrix (1.35265396141693,
+						 2.26794919243112,
+						 2.17632698070847,
+						 1.53589838486225,
+						 3.52898094212539,
+						 3.80384757729337), m);
 		}
 
 		[Test]
 		public void SkewPrepend ()
 		{
+			Matrix m = Matrix.Identity;
+
+			m.SkewPrepend (10, 15);
+			CheckMatrix (new Matrix (1,
+						 0.267949192431123,
+						 0.176326980708465,
+						 1, 0, 0), m);
+
+			m = new Matrix (1, 2, 2, 1, 3, 3);
+			m.SkewPrepend (10, 15);
+			CheckMatrix (new Matrix (1.53589838486225,
+						 2.26794919243112,
+						 2.17632698070847,
+						 1.35265396141693,
+						 3, 3), m);
 		}
 
 		[Test]
@@ -264,11 +351,36 @@ namespace MonoTests.System.Windows.Media {
 			Matrix m = new Matrix (2, 0, 0, 2, 4, 4);
 
 			Point p = new Point (5, 6);
+
+			Assert.AreEqual (new Point (14, 16), m.Transform (p));
+
+			Point[] ps = new Point[10];
+			for (int i = 0; i < ps.Length; i ++)
+				ps[i] = new Point (3 * i, 2 * i);
+
+			m.Transform (ps);
+
+			for (int i = 0; i < ps.Length; i ++)
+				Assert.AreEqual (m.Transform (new Point (3 * i, 2 * i)), ps[i]);
 		}
 
 		[Test]
 		public void VectorTransform ()
 		{
+			Matrix m = new Matrix (2, 0, 0, 2, 4, 4);
+
+			Vector p = new Vector (5, 6);
+
+			Assert.AreEqual (new Vector (10, 12), m.Transform (p));
+
+			Vector[] ps = new Vector[10];
+			for (int i = 0; i < ps.Length; i ++)
+				ps[i] = new Vector (3 * i, 2 * i);
+
+			m.Transform (ps);
+
+			for (int i = 0; i < ps.Length; i ++)
+				Assert.AreEqual (m.Transform (new Vector (3 * i, 2 * i)), ps[i]);
 		}
 
 		[Test]
