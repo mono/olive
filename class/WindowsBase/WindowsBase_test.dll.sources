@@ -1,3 +1,5 @@
 AttachedProperties.cs
+System.Windows/PointTest.cs
+System.Windows/VectorTest.cs
 System.Windows.Media/MatrixTest.cs
 System.Windows.Threading/DispatcherTest.cs
