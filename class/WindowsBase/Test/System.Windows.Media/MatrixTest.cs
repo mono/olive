@@ -177,9 +177,15 @@ namespace MonoTests.System.Windows.Media {
 		[Test]
 		public void Rotate ()
 		{
-			Matrix m = new Matrix (1, 2, 3, 4, 5, 6);
-			m.Rotate (33);
+			Matrix m = Matrix.Identity;
+			m.Rotate (45);
+			CheckMatrix (new Matrix (0.707106781186548,
+						 0.707106781186547,
+						 -0.707106781186547,
+						 0.707106781186548, 0, 0), m);
 
+			m = new Matrix (1, 2, 3, 4, 5, 6);
+			m.Rotate (33);
 			CheckMatrix (new Matrix (-0.25060750208463,
 						 2.22198017090588,
 						 0.337455563776164,
