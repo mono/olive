@@ -84,17 +84,19 @@ namespace System.Windows {
 		{
 			double cos_theta = (vector1.X * vector2.X + vector1.Y * vector2.Y) / (vector1.Length * vector2.Length);
 
-			return Math.Acos (cos_theta);
+			return Math.Acos (cos_theta) / Math.PI * 180;
 		}
 
 		public static double CrossProduct (Vector vector1, Vector vector2)
 		{
+			// ... what operation is this exactly?
 			return vector1.X * vector2.Y - vector1.Y * vector2.X;
 		}
 
 		public static double Determinant (Vector vector1, Vector vector2)
 		{
-			throw new NotImplementedException ();
+			// same as CrossProduct, it appears.
+			return vector1.X * vector2.Y - vector1.Y * vector2.X;
 		}
 
 		public static Vector Divide (Vector vector, double scalar)
@@ -109,7 +111,8 @@ namespace System.Windows {
 
 		public static Vector Multiply (Vector vector, Matrix matrix)
 		{
-			throw new NotImplementedException ();
+			return new Vector (vector.X * matrix.M11 + vector.Y * matrix.M21,
+					   vector.X * matrix.M12 + vector.Y * matrix.M22);
 		}
 
 		public static Vector Multiply (double scalar, Vector vector)
@@ -151,7 +154,7 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			return String.Format ("{0},{1}", x, y);
 		}
 
 		public string ToString (IFormatProvider provider)
@@ -164,7 +167,7 @@ namespace System.Windows {
 		}
 
 		public double LengthSquared {
-			get { return x * x + y + y; }
+			get { return x * x + y * y; }
 		}
 
 		public double X {
