@@ -35,7 +35,7 @@ using System.Globalization;
 using System.Windows.Threading;
 using System.Threading;
 
-namespace MonoTests.System.Web.UI.WebControls
+namespace MonoTests.System.Windows.Threading
 {
 
 	delegate void Action ();

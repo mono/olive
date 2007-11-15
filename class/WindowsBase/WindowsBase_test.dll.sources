@@ -1,2 +1,3 @@
 AttachedProperties.cs
+System.Windows.Media/MatrixTest.cs
 System.Windows.Threading/DispatcherTest.cs
