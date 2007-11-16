@@ -1,3 +1,9 @@
+2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs (add_Resize): Don't
+	auto-invoke the Resize handler whenever a new handler gets added -
+	might fix the Baloons3 crash.
+
 2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
 
 	* System.Windows.Interop/BrowserHost.cs: Implemented Resize event.

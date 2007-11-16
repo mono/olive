@@ -90,8 +90,6 @@ namespace System.Windows.Interop {
 				}
 				
 				events.AddHandler (ResizeEvent, value);
-				
-				InvokeResize ();
 			}
 			
 			remove {
