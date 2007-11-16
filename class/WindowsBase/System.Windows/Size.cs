@@ -36,6 +36,9 @@ namespace System.Windows {
 	{
 		public Size (double width, double height)
 		{
+			if (width < 0 || height < 0)
+				throw new ArgumentException ("Width and Height must be non-negative.");
+
 			this.width = width;
 			this.height = height;
 		}
@@ -70,7 +73,9 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			if (IsEmpty)
+				return "Empty";
+			return String.Format ("{0},{1}", width, height);
 		}
 
 		public string ToString (IFormatProvider formatProvider)
@@ -84,21 +89,44 @@ namespace System.Windows {
 		}
 
 		public bool IsEmpty {
-			get { return width == 0.0 && height == 0.0; }
+			get {
+				return (width == Double.NegativeInfinity &&
+					height == Double.NegativeInfinity);
+			}
 		}
 
 		public double Height {
 			get { return height; }
-			set { height = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Size.");
+
+				if (value < 0)
+					throw new ArgumentException ("height must be non-negative.");
+
+				height = value;
+			}
 		}
 
 		public double Width {
 			get { return width; }
-			set { width = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Size.");
+
+				if (value < 0)
+					throw new ArgumentException ("width must be non-negative.");
+
+				width = value;
+			}
 		}
 
 		public static Size Empty {
-			get { return new Size (0, 0); }
+			get {
+				Size s = new Size ();
+				s.width = s.height = Double.NegativeInfinity;
+				return s;
+			}
 		}
 
 		/* operators */
