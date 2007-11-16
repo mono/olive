@@ -79,14 +79,20 @@ namespace System.Windows.Interop {
 			EventHandler h = (EventHandler) events[ResizeEvent];
 			
 			if (h != null)
-				h (null, EventArgs.Empty);
+				h (null, null);
 		}
 		
 		public static event EventHandler Resize {
 			add {
 				if (surface == IntPtr.Zero) {
+					IntPtr toplevel;
+					
 					surface = NativeMethods.plugin_instance_get_surface (PluginHost.Handle);
 					Events.InitSurface (surface);
+					
+					toplevel = NativeMethods.surface_get_toplevel (surface);
+					if (toplevel != IntPtr.Zero && NativeMethods.uielement_get_isloaded (toplevel))
+						value (null, null);
 				}
 				
 				events.AddHandler (ResizeEvent, value);

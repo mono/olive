@@ -1,8 +1,8 @@
 2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
 
-	* System.Windows.Interop/BrowserHost.cs (add_Resize): Don't
-	auto-invoke the Resize handler whenever a new handler gets added -
-	might fix the Baloons3 crash.
+	* System.Windows.Interop/BrowserHost.cs (add_Resize): Invoke the
+	Resize handler being added if the toplevel canvas has already been
+	loaded.
 
 2007-11-08  Jeffrey Stedfast  <fejj@novell.com>
 
