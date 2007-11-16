@@ -30,13 +30,13 @@ public abstract class ByteKeyFrame : Freezable, IKeyFrame
 	}
 
 	public KeyTime KeyTime {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (KeyTime)GetValue (KeyTimeProperty); }
+		set { SetValue (KeyTimeProperty, value); }
 	}
 
 	public byte Value {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (byte)GetValue (ValueProperty); }
+		set { SetValue (ValueProperty, value); }
 	}
 
 	object IKeyFrame.Value {

@@ -39,28 +39,28 @@ public class ByteAnimation : ByteAnimationBase
 	}
 
 	public byte? By {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (byte?) GetValue (ByProperty); }
+		set { SetValue (ByProperty, value); }
 	}
 
 	public byte? From {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (byte?) GetValue (FromProperty); }
+		set { SetValue (FromProperty, value); }
 	}
 
 	public byte? To {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (byte?) GetValue (ToProperty); }
+		set { SetValue (ToProperty, value); }
 	}
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 	public new ByteAnimation Clone ()

@@ -30,13 +30,13 @@ public abstract class Int32KeyFrame : Freezable, IKeyFrame
 	}
 
 	public KeyTime KeyTime {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (KeyTime)GetValue (KeyTimeProperty); }
+		set { SetValue (KeyTimeProperty, value); }
 	}
 
 	public int Value {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (int)GetValue (ValueProperty); }
+		set { SetValue (ValueProperty, value); }
 	}
 
 	object IKeyFrame.Value {

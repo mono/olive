@@ -30,13 +30,13 @@ public abstract class MatrixKeyFrame : Freezable, IKeyFrame
 	}
 
 	public KeyTime KeyTime {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (KeyTime)GetValue (KeyTimeProperty); }
+		set { SetValue (KeyTimeProperty, value); }
 	}
 
 	public Matrix Value {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Matrix)GetValue (ValueProperty); }
+		set { SetValue (ValueProperty, value); }
 	}
 
 	object IKeyFrame.Value {

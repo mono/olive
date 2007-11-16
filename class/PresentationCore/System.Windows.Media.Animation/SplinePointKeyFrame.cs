@@ -44,8 +44,8 @@ public class SplinePointKeyFrame : PointKeyFrame
 	}
 
 	public KeySpline KeySpline {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (KeySpline)GetValue (KeySplineProperty); }
+		set { SetValue (KeySplineProperty, value); }
 	}
 
 	protected override Freezable CreateInstanceCore ()

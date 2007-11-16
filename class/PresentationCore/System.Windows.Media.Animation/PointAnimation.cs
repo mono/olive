@@ -39,28 +39,28 @@ public class PointAnimation : PointAnimationBase
 	}
 
 	public Point? By {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Point?) GetValue (ByProperty); }
+		set { SetValue (ByProperty, value); }
 	}
 
 	public Point? From {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Point?) GetValue (FromProperty); }
+		set { SetValue (FromProperty, value); }
 	}
 
 	public Point? To {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Point?) GetValue (ToProperty); }
+		set { SetValue (ToProperty, value); }
 	}
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 	public new PointAnimation Clone ()

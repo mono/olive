@@ -115,13 +115,13 @@ public class RectAnimationUsingKeyFrames : RectAnimationBase, IKeyFrameAnimation
 
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 

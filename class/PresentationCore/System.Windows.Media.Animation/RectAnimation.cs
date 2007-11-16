@@ -39,28 +39,28 @@ public class RectAnimation : RectAnimationBase
 	}
 
 	public Rect? By {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Rect?) GetValue (ByProperty); }
+		set { SetValue (ByProperty, value); }
 	}
 
 	public Rect? From {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Rect?) GetValue (FromProperty); }
+		set { SetValue (FromProperty, value); }
 	}
 
 	public Rect? To {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (Rect?) GetValue (ToProperty); }
+		set { SetValue (ToProperty, value); }
 	}
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 	public new RectAnimation Clone ()

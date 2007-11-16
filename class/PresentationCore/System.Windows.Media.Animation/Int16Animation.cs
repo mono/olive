@@ -39,28 +39,28 @@ public class Int16Animation : Int16AnimationBase
 	}
 
 	public short? By {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (short?) GetValue (ByProperty); }
+		set { SetValue (ByProperty, value); }
 	}
 
 	public short? From {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (short?) GetValue (FromProperty); }
+		set { SetValue (FromProperty, value); }
 	}
 
 	public short? To {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (short?) GetValue (ToProperty); }
+		set { SetValue (ToProperty, value); }
 	}
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 	public new Int16Animation Clone ()

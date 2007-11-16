@@ -39,28 +39,28 @@ public class DoubleAnimation : DoubleAnimationBase
 	}
 
 	public double? By {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (double?) GetValue (ByProperty); }
+		set { SetValue (ByProperty, value); }
 	}
 
 	public double? From {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (double?) GetValue (FromProperty); }
+		set { SetValue (FromProperty, value); }
 	}
 
 	public double? To {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (double?) GetValue (ToProperty); }
+		set { SetValue (ToProperty, value); }
 	}
 
 	public bool IsAdditive {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }
+		set { SetValue (AnimationTimeline.IsAdditiveProperty, value); }
 	}
 
 	public bool IsCumulative {
-		get { throw new NotImplementedException (); }
-		set { throw new NotImplementedException (); }
+		get { return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }
+		set { SetValue (AnimationTimeline.IsCumulativeProperty, value); }
 	}
 
 	public new DoubleAnimation Clone ()

@@ -209,28 +209,28 @@ public class {0}Animation : {0}AnimationBase
 	}}
 
 	public {1}? By {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return ({1}?) GetValue (ByProperty); }}
+		set {{ SetValue (ByProperty, value); }}
 	}}
 
 	public {1}? From {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return ({1}?) GetValue (FromProperty); }}
+		set {{ SetValue (FromProperty, value); }}
 	}}
 
 	public {1}? To {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return ({1}?) GetValue (ToProperty); }}
+		set {{ SetValue (ToProperty, value); }}
 	}}
 
 	public bool IsAdditive {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }}
+		set {{ SetValue (AnimationTimeline.IsAdditiveProperty, value); }}
 	}}
 
 	public bool IsCumulative {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }}
+		set {{ SetValue (AnimationTimeline.IsCumulativeProperty, value); }}
 	}}
 
 	public new {0}Animation Clone ()
@@ -359,13 +359,13 @@ public class {0}AnimationUsingKeyFrames : {0}AnimationBase, IKeyFrameAnimation, 
 		if (istypecontinuous (type)) {
 			tw.WriteLine (@"
 	public bool IsAdditive {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (bool) GetValue (AnimationTimeline.IsAdditiveProperty); }}
+		set {{ SetValue (AnimationTimeline.IsAdditiveProperty, value); }}
 	}}
 
 	public bool IsCumulative {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (bool) GetValue (AnimationTimeline.IsCumulativeProperty); }}
+		set {{ SetValue (AnimationTimeline.IsCumulativeProperty, value); }}
 	}}
 ", type, gettype(type));
 		}
@@ -394,13 +394,13 @@ public abstract class {0}KeyFrame : Freezable, IKeyFrame
 	}}
 
 	public KeyTime KeyTime {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (KeyTime)GetValue (KeyTimeProperty); }}
+		set {{ SetValue (KeyTimeProperty, value); }}
 	}}
 
 	public {1} Value {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return ({1})GetValue (ValueProperty); }}
+		set {{ SetValue (ValueProperty, value); }}
 	}}
 
 	object IKeyFrame.Value {{
@@ -721,8 +721,8 @@ public class Spline{0}KeyFrame : {0}KeyFrame
 	}}
 
 	public KeySpline KeySpline {{
-		get {{ throw new NotImplementedException (); }}
-		set {{ throw new NotImplementedException (); }}
+		get {{ return (KeySpline)GetValue (KeySplineProperty); }}
+		set {{ SetValue (KeySplineProperty, value); }}
 	}}
 
 	protected override Freezable CreateInstanceCore ()
