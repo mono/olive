@@ -1,3 +1,9 @@
+2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeMethods.cs: Bind to surface_get_toplevel() and fix the
+	bindings for a few of the other surface_get_*() functions that
+	return void, not IntPtr. Also bind to uielement_get_isloaded().
+
 2007-11-09  Jb Evain  <jbevain@novell.com>
 
 	* NativeMethods.cs: correct browser_http_request_get_async_response.

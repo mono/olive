@@ -137,6 +137,9 @@ namespace Mono {
 		
 #region UIElements
 		[DllImport("moon")]
+		public extern static bool uielement_get_isloaded (IntPtr item);
+		
+		[DllImport("moon")]
 		public extern static void uielement_transform_point (IntPtr item, ref double x, ref double y);
 
 		[DllImport("moon")]
@@ -589,17 +592,20 @@ namespace Mono {
 #endregion
 		
 		[DllImport ("moon")]
-		public extern static IntPtr surface_attach (IntPtr surface, IntPtr toplevel);
+		public extern static void surface_attach (IntPtr surface, IntPtr toplevel);
 
 		[DllImport ("moon")]
-		public extern static IntPtr surface_resize (IntPtr surface, int width, int height);
+		public extern static void surface_resize (IntPtr surface, int width, int height);
 		
 		[DllImport ("moon")]
 		public extern static void surface_paint (IntPtr surface, IntPtr ctx, int x, int y, int width, int height);
 		
 		[DllImport ("moon")]
 		public extern static IntPtr surface_new (int w, int h);
-
+		
+		[DllImport ("moon")]
+		public extern static IntPtr surface_get_toplevel (IntPtr surface);
+		
 		[DllImport ("moon")]
 		public extern static IntPtr surface_get_drawing_area (IntPtr surface);
 
