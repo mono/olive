@@ -41,7 +41,7 @@ namespace System.Windows {
 		{
 			x = y = 0.0;
 			width = size.Width;
-			height = size.Width;
+			height = size.Height;
 		}
 
 		public Rect (Point point, Vector vector) : this (point, Point.Add (point, vector))
@@ -70,6 +70,8 @@ namespace System.Windows {
 
 		public Rect (double x, double y, double width, double height)
 		{
+			if (width < 0 || height < 0)
+				throw new ArgumentException ("width and height must be non-negative.");
 			this.x = x;
 			this.y = y;
 			this.width = width;
@@ -112,12 +114,12 @@ namespace System.Windows {
 
 		public bool Contains (Rect rect)
 		{
-			if (rect.Left > this.Right ||
-			    rect.Right < this.Left)
+			if (rect.Left < this.Left ||
+			    rect.Right > this.Right)
 				return false;
 
-			if (rect.Top > this.Bottom ||
-			    rect.Bottom < this.Top)
+			if (rect.Top < this.Top ||
+			    rect.Bottom > this.Bottom)
 				return false;
 
 			return true;
@@ -178,10 +180,21 @@ namespace System.Windows {
 
 		public void Intersect(Rect rect)
 		{
-			x = Math.Max (x, rect.x);
-			y = Math.Max (y, rect.y);
-			width = Math.Min (Right, rect.Right) - x;
-			height = Math.Min (Bottom, rect.Bottom) - y; 
+			double _x = Math.Max (x, rect.x);
+			double _y = Math.Max (y, rect.y);
+			double _width = Math.Min (Right, rect.Right) - _x;
+			double _height = Math.Min (Bottom, rect.Bottom) - _y; 
+
+			if (_width < 0 || _height < 0) {
+				x = y = Double.PositiveInfinity;
+				width = height = Double.NegativeInfinity;
+			}
+			else {
+				x = _x;
+				y = _y;
+				width = _width;
+				height = _height;
+			}
 		}
 
 		public static Rect Intersect(Rect rect1, Rect rect2)
@@ -271,7 +284,11 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			if (IsEmpty)
+				return "Empty";
+
+			return String.Format ("{0},{1},{2},{3}",
+					      x, y, width, height);
 		}
 
 		public string ToString (IFormatProvider provider)
@@ -285,12 +302,20 @@ namespace System.Windows {
 		}
 
 		public static Rect Empty { 
-			get { return new Rect (0, 0, 0, 0); } 
+			get {
+				Rect r = new Rect ();
+				r.x = r.y = Double.PositiveInfinity;
+				r.width = r.height = Double.NegativeInfinity;
+				return r;
+			} 
 		}
 		
 		public bool IsEmpty { 
 			get {
-				return width == 0 || height == 0;
+				return (x == Double.PositiveInfinity &&
+					y == Double.PositiveInfinity &&
+					width == Double.NegativeInfinity &&
+					height == Double.NegativeInfinity);
 			}
 		}
 		
@@ -299,6 +324,9 @@ namespace System.Windows {
 				return new Point (x, y);
 			}
 			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
 				x = value.X;
 				y = value.Y;
 			}
@@ -309,6 +337,9 @@ namespace System.Windows {
 				return new Size (width, height);
 			}
 			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
 				width = value.Width;
 				height = value.Height;
 			}
@@ -316,28 +347,54 @@ namespace System.Windows {
 
 		public double X {
 			get { return x; }
-			set { x = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
+				x = value;
+			}
 		}
 
 		public double Y {
 			get { return y; }
-			set { y = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
+				y = value;
+			}
 		}
 
 		public double Width {
 			get { return width; }
-			set { width = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
+				if (value < 0)
+					throw new ArgumentException ("width must be non-negative.");
+
+				width = value;
+			}
 		}
 
 		public double Height {
 			get { return height; }
-			set { height = value; }
+			set {
+				if (IsEmpty)
+					throw new InvalidOperationException ("Cannot modify this property on the Empty Rect.");
+
+				if (value < 0)
+					throw new ArgumentException ("height must be non-negative.");
+
+				height = value;
+			}
 		}
 
 		public double Left { 
 			get { return x; }
 		}
-		
+
 		public double Top { 
 			get { return y; }
 		}
@@ -351,19 +408,19 @@ namespace System.Windows {
 		}
 		
 		public Point TopLeft { 
-			get { return new Point (Top, Left); }
+			get { return new Point (Left, Top); }
 		}
 		
 		public Point TopRight { 
-			get { return new Point (Top, Right); }
+			get { return new Point (Right, Top); }
 		}
 		
 		public Point BottomLeft { 
-			get { return new Point (Bottom, Left); }
+			get { return new Point (Left, Bottom); }
 		}
 
 		public Point BottomRight { 
-			get { return new Point (Bottom, Right); }
+			get { return new Point (Right, Bottom); }
 		}
 		
 		double x;
