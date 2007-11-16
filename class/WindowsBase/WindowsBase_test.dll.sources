@@ -1,4 +1,4 @@
-AttachedProperties.cs
+System.Windows/DependencyObjectTest.cs
 System.Windows/Int32RectTest.cs
 System.Windows/Int32RectConverterTest.cs
 System.Windows/PointTest.cs
