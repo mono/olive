@@ -119,7 +119,9 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			if (IsEmpty)
+				return "Empty";
+			return String.Format ("{0},{1},{2},{3}", x, y, width, height);
 		}
 
 		public string ToString (IFormatProvider provider)
