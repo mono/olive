@@ -271,7 +271,7 @@ namespace MonoTests.System.Windows {
 		[ExpectedException (typeof (ArgumentException))]
 		public void ParseNegative ()
 		{
-			Rect r = Rect.Parse ("1, 2, -3, -4");
+			Rect.Parse ("1, 2, -3, -4");
 		}
 
 		[Test]

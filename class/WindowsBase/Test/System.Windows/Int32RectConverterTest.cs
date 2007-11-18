@@ -74,7 +74,7 @@ namespace MonoTests.System.Windows {
 		{
 			Int32RectConverter r = new Int32RectConverter ();
 
-			object or = r.ConvertFrom (new Size (10, 20));
+			r.ConvertFrom (new Size (10, 20));
 		}
 
 		[Test]

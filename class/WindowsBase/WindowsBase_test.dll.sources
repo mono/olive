@@ -1,8 +1,10 @@
 System.Windows/DependencyObjectTest.cs
+System.Windows/DependencyPropertyTest.cs
 System.Windows/Int32RectTest.cs
 System.Windows/Int32RectConverterTest.cs
 System.Windows/PointTest.cs
 System.Windows/PointConverterTest.cs
+System.Windows/PropertyMetadataTest.cs
 System.Windows/RectTest.cs
 System.Windows/RectConverterTest.cs
 System.Windows/SizeTest.cs

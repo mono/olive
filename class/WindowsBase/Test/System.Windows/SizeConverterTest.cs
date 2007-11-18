@@ -68,7 +68,7 @@ namespace MonoTests.System.Windows {
 		{
 			SizeConverter r = new SizeConverter ();
 
-			object or = r.ConvertFrom (new Size (10, 20));
+			r.ConvertFrom (new Size (10, 20));
 		}
 
 		[Test]

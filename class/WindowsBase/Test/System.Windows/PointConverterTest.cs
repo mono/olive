@@ -72,7 +72,7 @@ namespace MonoTests.System.Windows {
 		{
 			PointConverter r = new PointConverter ();
 
-			object or = r.ConvertFrom (new Point (10, 20));
+			r.ConvertFrom (new Point (10, 20));
 		}
 
 		[Test]

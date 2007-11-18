@@ -151,7 +151,7 @@ namespace MonoTests.System.Windows {
 		[Test]
 		public void ParseNegative ()
 		{
-			Int32Rect r = Int32Rect.Parse ("1, 2, -3, -4");
+			Int32Rect.Parse ("1, 2, -3, -4");
 		}
 
 		[Test]
