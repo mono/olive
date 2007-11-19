@@ -1,11 +1,3 @@
-//
-// DependencyObjectType.cs
-//
-// Author:
-//   Iain McCoy (iain@mccoy.id.au)
-//
-// (C) 2005 Iain McCoy
-//
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -25,52 +17,68 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+// (C) 2005 Iain McCoy
+// (C) 2007 Novell, Inc.
+//
+// Authors:
+//   Iain McCoy (iain@mccoy.id.au)
+//   Chris Toshok (toshok@ximian.com)
+//
+//
 
+using System.Collections.Generic;
 
 namespace System.Windows {
 	public class DependencyObjectType {
 
-		internal DependencyObjectType (DependencyObjectType baseType,
-					       int id, string name,
-					       Type systemType)
+		private static Dictionary<Type,DependencyObjectType> typeMap = new Dictionary<Type,DependencyObjectType>();
+		private static int current_id;
+
+		private int id;
+		private Type systemType;
+		
+		private DependencyObjectType (int id, Type systemType)
 		{
-			this.baseType = baseType;
 			this.id = id;
-			this.name = name;
 			this.systemType = systemType;
 		}
 
-		private DependencyObjectType baseType;
-		private int id;
-		private string name;
-		private Type systemType;
-		
 		public DependencyObjectType BaseType { 
-			get { return baseType; }
+			get { return DependencyObjectType.FromSystemType (systemType.BaseType); }
 		}
+
 		public int Id { 
 			get { return id; }
 		}
+
 		public string Name { 
-			get { return name; }
+			get { return systemType.Name; }
 		}
+
 		public Type SystemType {
 			get { return systemType; }
 		}
-		[MonoTODO()]		
+
 		public static DependencyObjectType FromSystemType(Type systemType)
 		{
-			throw new NotImplementedException("FromSystemType(Type systemType)");
+			if (typeMap.ContainsKey (systemType))
+				return typeMap[systemType];
+
+			DependencyObjectType dot;
+
+			typeMap[systemType] = dot = new DependencyObjectType (current_id++, systemType);
+
+			return dot;
 		}
-		[MonoTODO()]		
+
 		public bool IsInstanceOfType(DependencyObject d)
 		{
-			throw new NotImplementedException("IsInstanceOfType(DependencyObject d)");
+			return systemType.IsInstanceOfType (d);
 		}
-		[MonoTODO()]		
+
 		public bool IsSubclassOf(DependencyObjectType dependencyObjectType)
 		{
-			throw new NotImplementedException("IsSubClassOf(DependencyObjectType dependencyObjectType)");
+			return systemType.IsSubclassOf (dependencyObjectType.SystemType);
 		}
 	}
 }

@@ -1,3 +1,8 @@
+2007-11-18  Chris Toshok  <toshok@ximian.com>
+
+	* System.Windows/DependencyObjectType.cs: implement such that it
+	passes all unit tests.
+
 2007-01-25  Miguel de Icaza  <miguel@novell.com>
 
 	* Assembly/AssemblyInfo.cs: Use the right key to sign things so we
