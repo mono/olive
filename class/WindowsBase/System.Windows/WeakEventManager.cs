@@ -1,5 +1,5 @@
 //
-// DependencyPropertyChangedEventArgs.cs
+// WeakEventManager.cs
 //
 // Author:
 //   Chris Toshok (toshok@ximian.com)
