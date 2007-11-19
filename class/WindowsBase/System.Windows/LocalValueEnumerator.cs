@@ -28,14 +28,16 @@
 
 
 using System.Collections;
+using System.Collections.Generic;
 
 namespace System.Windows {
 	public struct LocalValueEnumerator : IEnumerator {
 		private IDictionaryEnumerator propertyEnumerator;
-		private Hashtable properties;
+		private Dictionary<DependencyProperty,object> properties;
 
 		private int count;
-		internal LocalValueEnumerator(Hashtable properties)
+
+		internal LocalValueEnumerator(Dictionary<DependencyProperty,object> properties)
 		{
 			this.count = properties.Count;
 			this.properties = properties;

@@ -28,22 +28,21 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows.Threading;
 
 namespace System.Windows {
 	public class DependencyObject : DispatcherObject {
-		private static Hashtable propertyDeclarations = new Hashtable();
-		private Hashtable properties = new Hashtable();
-		private DependencyObjectType dependencyObjectType;
+		private static Dictionary<Type,Dictionary<string,DependencyProperty>> propertyDeclarations = new Dictionary<Type,Dictionary<string,DependencyProperty>>();
+		private Dictionary<DependencyProperty,object> properties = new Dictionary<DependencyProperty,object>();
 
 		[MonoTODO]
 		public bool IsSealed {
-			get { throw new NotImplementedException (); }
+			get { return false; }
 		}
 
 		public DependencyObjectType DependencyObjectType { 
-			get { return dependencyObjectType; }
+			get { return DependencyObjectType.FromSystemType (GetType()); }
 		}
 
 		public void ClearValue(DependencyProperty dp)
@@ -54,10 +53,16 @@ namespace System.Windows {
 			properties[dp] = null;
 		}
 		
-		[MonoTODO]
 		public void ClearValue(DependencyPropertyKey key)
 		{
 			ClearValue (key.DependencyProperty);
+		}
+
+		public void CoerceValue (DependencyProperty dp)
+		{
+			PropertyMetadata pm = dp.GetMetadata (this);
+			if (pm.CoerceValueCallback != null)
+				pm.CoerceValueCallback (this, GetValue (dp));
 		}
 
 		public override bool Equals (object obj)
@@ -88,10 +93,11 @@ namespace System.Windows {
 			throw new NotImplementedException("InvalidateProperty(DependencyProperty dp)");
 		}
 		
-		[MonoTODO]
 		protected virtual void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
 		{
-			throw new NotImplementedException();
+			PropertyMetadata pm = e.Property.GetMetadata (this);
+			if (pm.PropertyChangedCallback != null)
+				pm.PropertyChangedCallback (this, e);
 		}
 		
 		public object ReadLocalValue(DependencyProperty dp)
@@ -115,23 +121,16 @@ namespace System.Windows {
 				properties[dp] = value;
 		}
 		
-		[MonoTODO]
 		public void SetValue(DependencyPropertyKey key, object value)
 		{
 			SetValue (key.DependencyProperty, value);
 		}
-		
-
-		internal static DependencyProperty lookup(Type t, string name)
-		{
-			return (DependencyProperty)((Hashtable)propertyDeclarations[t])[name];
-		}
 
 		internal static void register(Type t, DependencyProperty dp)
 		{
-			if (propertyDeclarations[t] == null)
-				propertyDeclarations[t] = new Hashtable();
-			Hashtable typeDeclarations = (Hashtable)propertyDeclarations[t];
+			if (!propertyDeclarations.ContainsKey (t))
+				propertyDeclarations[t] = new Dictionary<string,DependencyProperty>();
+			Dictionary<string,DependencyProperty> typeDeclarations = propertyDeclarations[t];
 			if (!typeDeclarations.ContainsKey(dp.Name))
 				typeDeclarations[dp.Name] = dp;
 			else
