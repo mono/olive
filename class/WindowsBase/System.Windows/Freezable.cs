@@ -134,9 +134,7 @@ namespace System.Windows {
 		}
 
 		public bool CanFreeze {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return FreezeCore (true); }
 		}
 
 		public bool IsFrozen {
