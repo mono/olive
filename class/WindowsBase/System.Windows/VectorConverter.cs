@@ -43,6 +43,9 @@ namespace System.Windows {
 
 		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
+			if (!(value is string))
+				throw new NotSupportedException ("VectorConverter only supports converting from strings");
+
 			return Vector.Parse ((string)value);
 		}
 

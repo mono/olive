@@ -43,6 +43,9 @@ namespace System.Windows {
 
 		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
 		{
+			if (!(value is string))
+				throw new NotSupportedException ("SizeConverter only supports converting from strings");
+
 			return Size.Parse ((string)value);
 		}
 
