@@ -1,11 +1,3 @@
-//
-// DependencyProperty.cs
-//
-// Author:
-//   Iain McCoy (iain@mccoy.id.au)
-//
-// (C) 2005 Iain McCoy
-//
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
@@ -25,21 +17,35 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+// (C) 2005 Iain McCoy
+//
+// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+//
+// Authors:
+//	Iain McCoy (iain@mccoy.id.au)
+//	Chris Toshok (toshok@ximian.com)
+//
+
+using System.Collections.Generic;
 
 namespace System.Windows {
 	public sealed class DependencyProperty {
+		private Dictionary<Type,PropertyMetadata> metadataByType = new Dictionary<Type,PropertyMetadata>();
 		private PropertyMetadata defaultMetadata;
 		private string name;
 		private Type ownerType;
 		private Type propertyType;
 		private ValidateValueCallback validateValueCallback;
 
+		private bool isReadOnly;
 		private bool isAttached;
 		internal bool IsAttached { get { return isAttached; } }
 
 		public static readonly object UnsetValue = new object ();
 
-		private DependencyProperty (bool isAttached, string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata, ValidateValueCallback validateValueCallback)
+		private DependencyProperty (bool isAttached, string name, Type propertyType, Type ownerType,
+					    PropertyMetadata defaultMetadata,
+					    ValidateValueCallback validateValueCallback)
 		{
 			this.isAttached = isAttached;
 			this.defaultMetadata = (defaultMetadata == null ? new PropertyMetadata() : defaultMetadata);
@@ -68,74 +74,109 @@ namespace System.Windows {
 		}
 
 		public bool ReadOnly {
-			get { throw new NotImplementedException (); }
+			get { return isReadOnly; }
 		}
 
 		public ValidateValueCallback ValidateValueCallback {
 			get { return validateValueCallback; }
 		}
 
-		[MonoTODO()]		
 		public DependencyProperty AddOwner(Type ownerType)
 		{
-			throw new NotImplementedException("AddOwner(Type ownerType)");
+			return AddOwner (ownerType, null);
 		}
-		[MonoTODO()]		
+
 		public DependencyProperty AddOwner(Type ownerType, PropertyMetadata typeMetadata)
 		{
-			throw new NotImplementedException("AddOwner(Type ownerType, PropertyMetadata typeMetadata)");
+			if (typeMetadata == null) typeMetadata = new PropertyMetadata ();
+			OverrideMetadata (ownerType, typeMetadata);
+
+			// MS seems to always return the same DependencyProperty
+			return this;
 		}
 		
-		[MonoTODO()]		
 		public PropertyMetadata GetMetadata(Type forType)
 		{
-			throw new NotImplementedException("GetMetadata(Type forType)");
+			Console.WriteLine ("getting metadata of prop {0} for type {1}, default value = {2}",
+					   name, forType, metadataByType[forType].DefaultValue);
+
+			return metadataByType[forType];
 		}
-		[MonoTODO()]		
+
 		public PropertyMetadata GetMetadata(DependencyObject d)
 		{
-			throw new NotImplementedException("GetMetadata(DependencyObject d)");
+			return metadataByType[d.GetType()];
 		}
-		[MonoTODO()]		
+
 		public PropertyMetadata GetMetadata(DependencyObjectType dependencyObjectType)
 		{
 			throw new NotImplementedException("GetMetadata(DependencyObjectType dependencyObjectType)");
 		}
 
-		[MonoTODO()]		
+
 		public bool IsValidType(object value)
 		{
 			throw new NotImplementedException("IsValidType(object value)");
 		}
-		[MonoTODO()]		
+
 		public bool IsValidValue(object value)
 		{
 			throw new NotImplementedException("IsValidValue(object value)");
 		}
 		
-		[MonoTODO()]		
 		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
 		{
-			throw new NotImplementedException("OverrideMetadata(Type forType, PropertyMetadata typeMetadata)");
+			if (forType == null)
+				throw new ArgumentNullException ("forType");
+			if (typeMetadata == null)
+				throw new ArgumentNullException ("typeMetadata");
+
+			if (ReadOnly)
+				throw new InvalidOperationException (String.Format ("Cannot override metadata on readonly property '{0}' without using a DependencyPropertyKey", name));
+
+			typeMetadata.DoMerge (DefaultMetadata, this, forType);
+			metadataByType.Add (forType, typeMetadata);
 		}
-		[MonoTODO()]		
-		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata, DependencyPropertyKey key)
+
+		public void OverrideMetadata (Type forType, PropertyMetadata typeMetadata, DependencyPropertyKey key)
 		{
-			throw new NotImplementedException("OverrideMetadata(Type forType, PropertyMetadata typeMetadata, DependencyPropertyKey key)");
+			if (forType == null)
+				throw new ArgumentNullException ("forType");
+			if (typeMetadata == null)
+				throw new ArgumentNullException ("typeMetadata");
+
+
+			// further checking?  should we check
+			// key.DependencyProperty == this?
+
+			typeMetadata.DoMerge (DefaultMetadata, this, forType);
+			metadataByType.Add (forType, typeMetadata);
 		}
 		
 		public static DependencyProperty Register(string name, Type propertyType, Type ownerType)
 		{
 			return Register(name, propertyType, ownerType, null, null);
 		}
-		public static DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
+
+		public static DependencyProperty Register(string name, Type propertyType, Type ownerType,
+							  PropertyMetadata typeMetadata)
 		{
 			return Register(name, propertyType, ownerType, typeMetadata, null);
 		}
-		public static DependencyProperty Register(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata, ValidateValueCallback validateValueCallback)
+
+		public static DependencyProperty Register(string name, Type propertyType, Type ownerType,
+							  PropertyMetadata typeMetadata,
+							  ValidateValueCallback validateValueCallback)
 		{
-			DependencyProperty dp = new DependencyProperty(false, name, propertyType, ownerType, typeMetadata, validateValueCallback);
+			if (typeMetadata == null)
+				typeMetadata = new PropertyMetadata();
+
+			DependencyProperty dp = new DependencyProperty(false, name, propertyType, ownerType,
+								       typeMetadata, validateValueCallback);
 			DependencyObject.register(ownerType, dp);
+
+			dp.OverrideMetadata (ownerType, typeMetadata);
+
 			return dp;
 		}
 		
@@ -144,37 +185,49 @@ namespace System.Windows {
 			return RegisterAttached(name, propertyType, ownerType, null, null);
 		}
 
-		public static DependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata)
+		public static DependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType,
+								  PropertyMetadata defaultMetadata)
 		{
 			return RegisterAttached(name, propertyType, ownerType, defaultMetadata, null);
 		}
 		
-		public static DependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata, ValidateValueCallback validateValueCallback)
+		public static DependencyProperty RegisterAttached(string name, Type propertyType, Type ownerType,
+								  PropertyMetadata defaultMetadata,
+								  ValidateValueCallback validateValueCallback)
 		{
-			DependencyProperty dp = new DependencyProperty(true, name, propertyType, ownerType, defaultMetadata, validateValueCallback);
+			DependencyProperty dp = new DependencyProperty(true, name, propertyType, ownerType,
+								       defaultMetadata, validateValueCallback);
 			DependencyObject.register(ownerType, dp);
 			return dp;
 		}
 
-		[MonoTODO()]		
-		public static DependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata)
+		public static DependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType,
+									     PropertyMetadata defaultMetadata)
 		{
 			throw new NotImplementedException("RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata)");
 		}
-		[MonoTODO()]		
-		public static DependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata, ValidateValueCallback validateValueCallback)
+
+		public static DependencyPropertyKey RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType,
+									     PropertyMetadata defaultMetadata,
+									     ValidateValueCallback validateValueCallback)
 		{
 			throw new NotImplementedException("RegisterAttachedReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata defaultMetadata, ValidateValueCallback validateValueCallback)");
 		}
-		[MonoTODO()]		
-		public static DependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)
+
+		public static DependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType,
+								     PropertyMetadata typeMetadata)
 		{
-			throw new NotImplementedException("RegisterReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata)");
+			return RegisterReadOnly (name, propertyType, ownerType, typeMetadata, null);
 		}
-		[MonoTODO()]		
-		public static DependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata, ValidateValueCallback validateValueCallback)
+
+
+		public static DependencyPropertyKey RegisterReadOnly(string name, Type propertyType, Type ownerType,
+								     PropertyMetadata typeMetadata,
+								     ValidateValueCallback validateValueCallback)
 		{
-			throw new NotImplementedException("RegisterReadOnly(string name, Type propertyType, Type ownerType, PropertyMetadata typeMetadata, ValidateValueCallback validateValueCallback)");
+			DependencyProperty prop = Register (name, propertyType, ownerType, typeMetadata, validateValueCallback);
+			prop.isReadOnly = true;
+			return new DependencyPropertyKey (prop);
 		}
 
 	}
