@@ -263,8 +263,28 @@ namespace MonoTests.System.Windows {
 		[Test]
 		public void Parse ()
 		{
-			Rect r = Rect.Parse ("1, 2, 3, 4");
+			Rect r = Rect.Parse ("1 , 2, 3, 4");
 			Assert.AreEqual (new Rect (1, 2, 3, 4), r);
+		}
+
+		[Test]
+		public void Parse2 ()
+		{
+			Rect r = Rect.Parse ("1 2 3 4");
+			Assert.AreEqual (new Rect (1, 2, 3, 4), r);
+		}
+
+		[Test]
+		public void Parse3 ()
+		{
+			Rect r = Rect.Parse ("  1 2 3 4  ");
+			Assert.AreEqual (new Rect (1, 2, 3, 4), r);
+		}
+
+		[Test]
+		public void ParseWithBothSeparators ()
+		{
+			Rect.Parse ("1.0, 3 2.0, 5.0");
 		}
 
 		[Test]
@@ -272,6 +292,55 @@ namespace MonoTests.System.Windows {
 		public void ParseNegative ()
 		{
 			Rect.Parse ("1, 2, -3, -4");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))] // "Premature string termination encountered."
+		public void Parse3Doubles ()
+		{
+			Rect.Parse ("1.0, 3, -5");
+		}
+
+		[Test]
+		[ExpectedException (typeof (FormatException))]
+		public void ParseInvalidString1 ()
+		{
+			Rect.Parse ("1.0, 3, -x, 5.0");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ParseInvalidString3 ()
+		{
+			Rect.Parse ("1.0, 3, 2.0, 5.0, 2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (FormatException))]
+		public void ParseInvalidString4 ()
+		{
+			Rect.Parse ("1.0-3, 2.0, 5.0, 2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ParseInvalidString5 ()
+		{
+			Rect.Parse ("1.0, 2.0, 5.0, 2,");
+		}
+
+		[Test]
+		public void ParseInvalidString6 ()
+		{
+			Rect.Parse ("\n1.0, 2.0, 5.0, 2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ParseInvalidString7 ()
+		{
+			Rect r = Rect.Parse ("1,, 2, 3, 4");
+			Assert.AreEqual (new Rect (1, 2, 3, 4), r);
 		}
 
 		[Test]

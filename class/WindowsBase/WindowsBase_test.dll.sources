@@ -1,4 +1,5 @@
 System.Windows/DependencyObjectTest.cs
+System.Windows/DependencyObjectTypeTest.cs
 System.Windows/DependencyPropertyTest.cs
 System.Windows/Int32RectTest.cs
 System.Windows/Int32RectConverterTest.cs
