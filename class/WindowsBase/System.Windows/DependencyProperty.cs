@@ -97,31 +97,38 @@ namespace System.Windows {
 		
 		public PropertyMetadata GetMetadata(Type forType)
 		{
-			Console.WriteLine ("getting metadata of prop {0} for type {1}, default value = {2}",
-					   name, forType, metadataByType[forType].DefaultValue);
-
-			return metadataByType[forType];
+			if (metadataByType.ContainsKey (forType))
+				return metadataByType[forType];
+			return null;
 		}
 
 		public PropertyMetadata GetMetadata(DependencyObject d)
 		{
-			return metadataByType[d.GetType()];
+			if (metadataByType.ContainsKey (d.GetType()))
+				return metadataByType[d.GetType()];
+			return null;
 		}
 
 		public PropertyMetadata GetMetadata(DependencyObjectType dependencyObjectType)
 		{
-			throw new NotImplementedException("GetMetadata(DependencyObjectType dependencyObjectType)");
+			if (metadataByType.ContainsKey (dependencyObjectType.SystemType))
+				return metadataByType[dependencyObjectType.SystemType];
+			return null;
 		}
 
 
 		public bool IsValidType(object value)
 		{
-			throw new NotImplementedException("IsValidType(object value)");
+			return propertyType.IsInstanceOfType (value);
 		}
 
 		public bool IsValidValue(object value)
 		{
-			throw new NotImplementedException("IsValidValue(object value)");
+			if (!IsValidType (value))
+				return false;
+			if (validateValueCallback == null)
+				return true;
+			return validateValueCallback (value);
 		}
 		
 		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
