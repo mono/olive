@@ -40,7 +40,7 @@ namespace System.Windows {
 
 		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
 		{
-			dependencyProperty.OverrideMetadata (forType, typeMetadata);
+			dependencyProperty.OverrideMetadata (forType, typeMetadata, this);
 		}
 	}
 }
