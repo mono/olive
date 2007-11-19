@@ -256,15 +256,23 @@ namespace System.Windows {
 				throw new ArgumentNullException ("property");
 			
 			CheckNativeAndThread ();
-			
-			unsafe {
-				Value* val = (Value*)NativeMethods.dependency_object_get_value (native, property.native);
-				if (val == null) {
-					if (property.IsValueType && !property.IsNullable)
-						Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, property.Name);
+
+			IntPtr val = NativeMethods.dependency_object_get_value (native, property.native);
+			if (val == IntPtr.Zero) {
+				if (property.IsValueType && !property.IsNullable)
+					Console.WriteLine ("Found null for object {0}, with property {1}", GetType ().FullName, property.Name);
 				
-					return null;
-				}
+				return null;
+			}
+
+			return ValueToObject (val);
+		}
+
+		internal static object ValueToObject (IntPtr value)
+		{
+						
+			unsafe {
+				Value* val = (Value *) value;
 
 				switch (val->k) {
 				case Kind.INVALID:

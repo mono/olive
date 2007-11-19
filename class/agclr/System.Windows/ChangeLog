@@ -1,3 +1,8 @@
+2007-11-19  Jackson Harper  <jackson@ximian.com>
+
+	* DependencyObject.cs: Move the value-to-object code into a
+	separate function, so I can use it in the managed xaml parser.
+
 2007-10-10  Chris Toshok  <toshok@ximian.com>
 
 	* DependencyObject.cs: remove the old ClearPendingDestroys code,
