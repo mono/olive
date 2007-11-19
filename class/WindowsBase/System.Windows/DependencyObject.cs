@@ -135,7 +135,7 @@ namespace System.Windows {
 			if (!typeDeclarations.ContainsKey(dp.Name))
 				typeDeclarations[dp.Name] = dp;
 			else
-				throw new Exception("A property named " + dp.Name + " already exists on " + t.Name);
+				throw new ArgumentException("A property named " + dp.Name + " already exists on " + t.Name);
 		}
 	}
 }
