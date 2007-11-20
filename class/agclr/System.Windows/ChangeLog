@@ -1,3 +1,9 @@
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* UIElement.cs: Pass null instead of EventArgs.Empty for some of
+	the event handlers (they are defined to always take null args by
+	the msdn docs).
+
 2007-11-19  Jackson Harper  <jackson@ximian.com>
 
 	* DependencyObject.cs: Move the value-to-object code into a

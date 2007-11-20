@@ -387,7 +387,7 @@ namespace System.Windows {
 		{
 			EventHandler h = (EventHandler)events[MouseLeaveEvent];
 			if (h != null)
-				h (this, EventArgs.Empty);
+				h (this, null);
 		}
 
 		internal void InvokeMouseEnter (MouseEventArgs m)
@@ -401,7 +401,7 @@ namespace System.Windows {
 		{
 			EventHandler h = (EventHandler)events[LoadedEvent];
 			if (h != null)
-				h (this, EventArgs.Empty);
+				h (this, null);
 		}
 
 		internal override Kind GetKind ()
