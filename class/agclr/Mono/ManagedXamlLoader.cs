@@ -341,31 +341,43 @@ namespace Mono.Xaml
 		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
 		// genreating an exception and unwinding the stack.
 		//
-		private void set_custom_attribute (IntPtr target_ptr, string name, string value)
+		private bool set_custom_attribute (IntPtr target_ptr, string name, string value)
 		{
 			try {
-				SetCustomAttribute (target_ptr, name, value);
+				return SetCustomAttribute (target_ptr, name, value);
 			} catch (Exception ex) {
 				Console.Error.WriteLine ("ManagedXamlLoader::SetCustomAttribute ({0}, {1}, {2}) threw an exception: {3}.", target_ptr, name, value, ex.Message);
+				return false;
 			}
 		}
 		
-		private void SetCustomAttribute (IntPtr target_ptr, string name, string value)
+		private bool SetCustomAttribute (IntPtr target_ptr, string name, string value)
 		{
 			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr); 
 			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
 
 			if (target == null) {
 				//Console.Error.WriteLine ("ManagedXamlLoader::SetCustomAttribute ({0}, {1}, {2}): unable to create target object.", target_ptr, name, value);
-				return;
+				return false;
 			}
 
 			string error;
-			Helper.SetPropertyFromString (target, name, value, out error);
+			IntPtr unmanaged_value;
+			Helper.SetPropertyFromString (target, name, value, out error, out unmanaged_value);
+
+			if (unmanaged_value != IntPtr.Zero) {
+				object obj_value = DependencyObject.ValueToObject (unmanaged_value);
+
+				error = null;
+				Helper.SetPropertyFromValue (target, name, obj_value, out error);
+			}
+
 			if (error != null){
 				//Console.Error.WriteLine ("ManagedXamlLoader::SetCustomAttribute ({0}, {1}, {2}) unable to set property: {3}.", target_ptr, name, value, error);
-				return;
+				return false;
 			}
+
+			return true;
 		}
 
 		private bool hookup_event (IntPtr target_ptr, string name, string value)

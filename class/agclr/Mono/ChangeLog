@@ -1,3 +1,10 @@
+2007-11-20  Jackson Harper  <jackson@ximian.com>
+
+	* ManagedXamlLoader.cs: Helper now gives us back an unmanaged
+	value if we tried to set a property that was an agclr type.
+	Create the wrapper for this type and set the property using the
+	new object.
+
 2007-10-10  Chris Toshok  <toshok@ximian.com>
 
 	* ManagedXamlLoader.cs (LoadObject): we need to ref again in this
