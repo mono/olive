@@ -1,3 +1,8 @@
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* Events.cs (loaded_callback): call BrowserHost.InvokeResize().
+	Patch by Stephen. Fixes bug #325031.
+
 2007-11-20  Jackson Harper  <jackson@ximian.com>
 
 	* ManagedXamlLoader.cs: Helper now gives us back an unmanaged

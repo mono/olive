@@ -94,6 +94,8 @@ namespace Mono {
 			try {
 				UIElement e = (UIElement)Helper.GCHandleFromIntPtr (closure).Target;
 				e.InvokeLoaded ();
+				
+				BrowserHost.InvokeResize ();
 			}
 			catch (Exception ex) {
 				if (IsPlugin ())
