@@ -1,5 +1,8 @@
 thisdir := .
 
+#include <necko/nsNetError.h>
+#include <xpcom/nsIStorageStream.h>
+
 SUBDIRS := build class tools data scripts
 
 net_3_0_SUBDIRS := build class tools data scripts
@@ -13,7 +16,7 @@ ifdef WITH_MOONLIGHT
 PROFILES += net_2_1
 endif
 
-STD_TARGETS_OVERRIDE = all clean install uninstall
+STD_TARGETS_OVERRIDE = all clean install uninstall run-test
 
 ifndef PROFILE
 OVERRIDE_STD_TARGETS = yes
