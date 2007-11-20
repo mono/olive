@@ -1,3 +1,8 @@
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* NativeMethods.cs: Removed uielement_is_loaded() and
+	surface_get_toplevel() bindings.
+
 2007-11-20  Jackson Harper  <jackson@ximian.com>
 
 	* NativeMethods.cs: Add value_from_str_with_typename.  This allows
