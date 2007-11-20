@@ -2,7 +2,7 @@
 #
 # Very simple configure for Olive
 #
-VERSION=0.1
+VERSION=0.2
 
 prefix=NONE
 with_moonlight=yes
