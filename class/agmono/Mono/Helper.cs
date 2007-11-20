@@ -73,26 +73,30 @@ namespace Mono {
 			return converter;
 		}
 		
-		public static void SetPropertyFromString (object target, string name, string value, out string error)
+		public static bool SetPropertyFromString (object target, string name, string value, out string error, out IntPtr unmanaged_value)
 		{
+			unmanaged_value = IntPtr.Zero;
+
 			PropertyInfo pi = target.GetType ().GetProperty (name);
 			if (pi == null){
 				error = "no property descriptor found";
-				return;
+				return false;
 			}
 
 			TypeConverter converter = GetConverterFor (pi);
 			if (!converter.CanConvertFrom (typeof (string))){
 				//
-				// MS does not seem to handle this yet either, but I think a logical improvement
-				// here is to call back into unmanaged code something like xaml_create_object_from_str
-				// with the attribute string, and see if the managed code can parse it, this would
-				// allow you to stick things like Colors and KeySplines on your object and still have
-				// custom setters
+				// Attempt to create an unmanaged Value* object, if one is created, the managed parser
+				// will create a managed wrapper for the object and call SetPropertyFromValue with the
+				// managed object
 				//
 
-				error = "unable to convert to this type from a string";
-				return;
+				unmanaged_value = NativeMethods.value_from_str_with_typename (pi.PropertyType.Name, name, value);
+				if (unmanaged_value == IntPtr.Zero)
+					error = "unable to convert to this type from a string";
+
+				error = "Unmanaged object created, a managed wrapper must be created to set this property.";
+				return false;
 			}
 
 			error = null;
@@ -101,6 +105,27 @@ namespace Mono {
 			} catch (Exception e) {
 				error = e.ToString ();
 			}
+
+			return true;
+		}
+
+		public static bool SetPropertyFromValue (object target, string name, object value, out string error)
+		{
+			PropertyInfo pi = target.GetType ().GetProperty (name);
+			if (pi == null){
+				error = "no property descriptor found";
+				return false;
+			}
+
+			error = null;
+			try {
+				pi.SetValue (target, value, null);
+			} catch (Exception e) {
+				error = e.ToString ();
+				return false;
+			}
+
+			return true;
 		}
 
 		public static object ChangeType (object obj, Type type)

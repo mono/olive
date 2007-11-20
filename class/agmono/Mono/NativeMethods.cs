@@ -67,7 +67,10 @@ namespace Mono {
 
 		[DllImport("moon")]
 		public extern static bool type_get_value_type (Kind type);
-		
+
+                [DllImport("moon")]
+		public extern static bool type_create_instance_from_kind (Kind type);
+
 		[DllImport("moon")]
 		public extern static IntPtr dependency_property_lookup (Kind type, string name);
 
@@ -647,7 +650,10 @@ namespace Mono {
 		[DllImport ("moon")]
 		public extern static void print_stack_trace ();
 #endif
-		
+
+		[DllImport ("moon")]
+		public extern static IntPtr value_from_str_with_typename (string type_name, string prop_name, string str);
+
 #region HtmlTimer
 		public delegate bool GSourceFunc  (IntPtr data);
 		

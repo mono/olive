@@ -32,7 +32,7 @@ using Mono;
 namespace Mono.Xaml
 {
 	public delegate IntPtr LoadObjectCallback (string asm_name, string asm_path, string ns, string type_name);
-	public delegate void SetAttributeCallback (IntPtr target, string name, string value);
+	public delegate bool SetAttributeCallback (IntPtr target, string name, string value);
 	public delegate bool HookupEventCallback (IntPtr target, string name, string value);
 	public delegate void InsertMappingCallback (string key, string value);
 	public delegate string GetMappingCallback (string key);

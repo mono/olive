@@ -1,3 +1,16 @@
+2007-11-20  Jackson Harper  <jackson@ximian.com>
+
+	* NativeMethods.cs: Add value_from_str_with_typename.  This allows
+	you to parse a value string without having it's Kind.
+	- Also added type_create_instance_from_kind.  Pretty self
+	explanatory function.
+	* XamlLoaderCallbacks.cs: Make SetAttribute return true if it
+	actually does set the attribute.
+	* Helper.cs: When we encounter an agclr.dll type while trying to
+	parse an attribute, give agclr (who is calling us) back the
+	unmanaged value so that it can create the managed wrapper and call
+	the new function SetAttributeFromValue.
+
 2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
 
 	* NativeMethods.cs: Bind to surface_get_toplevel() and fix the
