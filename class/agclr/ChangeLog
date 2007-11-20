@@ -1,3 +1,8 @@
+2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* System.Windows.Interop/BrowserHost.cs (add_Resize): Removed old
+	hack.
+
 2007-11-16  Jeffrey Stedfast  <fejj@novell.com>
 
 	* System.Windows.Interop/BrowserHost.cs (add_Resize): Invoke the
@@ -14,8 +19,8 @@
 
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
-	* Internal.cs: Don't ref ourself if we're created using a *_new function,
-	  the creation itself already gives us a ref.
+	* Internal.cs: Don't ref ourself if we're created using a *_new
+	  function, the creation itself already gives us a ref.
 
 2007-09-21  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
