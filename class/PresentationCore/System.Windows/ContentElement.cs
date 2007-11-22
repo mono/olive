@@ -605,8 +605,8 @@ namespace System.Windows {
 
 
 		public bool AllowDrop {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (bool)GetValue (AllowDropProperty); }
+			set { SetValue (AllowDropProperty, value); }
 		}
 
 #if notyet
@@ -616,8 +616,8 @@ namespace System.Windows {
 #endif
 
 		public bool Focusable {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (bool)GetValue (FocusableProperty); }
+			set { SetValue (FocusableProperty, value); }
 		}
 
 		public bool HasAnimatedProperties {
@@ -631,8 +631,8 @@ namespace System.Windows {
 #endif
 
 		public bool IsEnabled {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsEnabledProperty); }
+			set { SetValue (IsEnabledProperty, value); }
 		}
 
 		public virtual bool IsEnabledCore {
@@ -640,7 +640,7 @@ namespace System.Windows {
 		}
 		
 		public bool IsFocused {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsFocusedProperty); }
 		}
 
 		public bool IsInputMethodEnabled {
@@ -648,42 +648,42 @@ namespace System.Windows {
 		}
 
 		public bool IsKeyboardFocused {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsKeyboardFocusedProperty); }
 		}
 
 		public bool IsKeyboardFocusWithin {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsKeyboardFocusWithinProperty); }
 		}
 
 		public bool IsMouseCaptured {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsMouseCapturedProperty); }
 		}
 
 		public bool IsMouseCaptureWithin {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsMouseCaptureWithinProperty); }
 		}
 
 		public bool IsMouseDirectlyOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsMouseDirectlyOverProperty); }
 		}
 
 		public bool IsMouseOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsMouseOverProperty); }
 		}
 
 		public bool IsStylusCaptured {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsStylusCapturedProperty); }
 		}
 
 		public bool IsStylusCaptureWithin {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsStylusCaptureWithinProperty); }
 		}
 
 		public bool IsStylusDirectlyOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsStylusDirectlyOverProperty); }
 		}
 		public bool IsStylusOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsStylusOverProperty); }
 		}
 
 
