@@ -45,7 +45,12 @@ namespace System.Windows.Media {
 		}
 
 		public override Matrix Value {
-			get { throw new NotImplementedException (); }
+			get {
+				Matrix m = Matrix.Identity;
+				for (int i = 0; i < Children.Count; i ++)
+					m.Append (Children[i].Value);
+				return m;
+			}
 		}
 
 		public new TransformGroup Clone ()
@@ -55,12 +60,16 @@ namespace System.Windows.Media {
 
 		public new TransformGroup CloneCurrentValue ()
 		{
-			throw new NotImplementedException ();
+			// creates a deep copy
+			TransformGroup tg = new TransformGroup ();
+			foreach (Transform t in Children)
+				tg.Children.Add (t.CloneCurrentValue ());
+			return tg;
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new TransformGroup ();
 		}
 	}
 
