@@ -7,7 +7,7 @@ public class GenAnimationTypes {
 		Boolean,
 		Byte,
 		Char,
-		//Color,
+		Color,
 		Decimal,
 		Double,
 		Int16,
@@ -51,7 +51,7 @@ public class GenAnimationTypes {
 		case AnimatableType.Matrix:
 			return false;
 
-		//case AnimatableType.Color:
+		case AnimatableType.Color:
 		//case AnimatableType.Point3D:
 		//case AnimatableType.Quaternion:
 		//case AnimatableType.Rotation3D:
@@ -75,7 +75,7 @@ public class GenAnimationTypes {
 		case AnimatableType.Int32: return "int";
 		case AnimatableType.Int64: return "long";
 		case AnimatableType.Decimal:
-			//case AnimatableType.Color:
+		case AnimatableType.Color:
 		case AnimatableType.Matrix:
 			//case AnimatableType.Point3D:
 		case AnimatableType.Point:
@@ -110,10 +110,13 @@ public class GenAnimationTypes {
 		case AnimatableType.Vector:
 			return String.Format ("return new {3} ({0}.X + ({1}.X - {0}.X) * {2}, {0}.Y + ({1}.Y - {0}.Y) * {2});", from, to, progress, type);
 		case AnimatableType.Rect:
-			return String.Format ("return new Rect ({0}.X + ({1}.X - {0}.X) * {2}, {0}.Y + ({1}.Y - {0}.Y) * {2}, {0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2});", from, to, progress);
+			return String.Format ("return new Rect ({0}.X + ({1}.X - {0}.X) * {2}, {0}.Y + ({1}.Y - {0}.Y) * {2}, {0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2})", from, to, progress);
 
 		case AnimatableType.Size:
-			return String.Format ("return new Size ({0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2});", from, to, progress);
+			return String.Format ("return new Size ({0}.Width + ({1}.Width - {0}.Width) * {2}, {0}.Height + ({1}.Height - {0}.Height) * {2})", from, to, progress);
+
+		case AnimatableType.Color:
+			return String.Format ("return Color.FromScRgb ((float)({0}.ScA + ({1}.ScA - {0}.ScA) * {2}), (float)({0}.ScR + ({1}.ScR - {0}.ScR) * {2}), (float)({0}.ScG + ({1}.ScG - {0}.ScG) * {2}), (float)({0}.ScB + ({1}.ScB - {0}.ScB) * {2}))", from, to, progress);
 
 		default:
 			return "XXX";

@@ -12,22 +12,22 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class LinearSizeKeyFrame : SizeKeyFrame
+public class DiscreteColorKeyFrame : ColorKeyFrame
 {
-	Size value;
+	Color value;
 	KeyTime keyTime;
 
-	public LinearSizeKeyFrame ()
+	public DiscreteColorKeyFrame ()
 	{
 	}
 
-	public LinearSizeKeyFrame (Size value)
+	public DiscreteColorKeyFrame (Color value)
 	{
 		this.value = value;
 		// XXX keytime?
 	}
 
-	public LinearSizeKeyFrame (Size value, KeyTime keyTime)
+	public DiscreteColorKeyFrame (Color value, KeyTime keyTime)
 	{
 		this.value = value;
 		this.keyTime = keyTime;
@@ -38,10 +38,9 @@ public class LinearSizeKeyFrame : SizeKeyFrame
 		throw new NotImplementedException ();
 	}
 
-	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
+	protected override Color InterpolateValueCore (Color baseValue, double keyFrameProgress)
 	{
-		// standard linear interpolation
-		return new Size (baseValue.Width + (value.Width - baseValue.Width) * keyFrameProgress, baseValue.Height + (value.Height - baseValue.Height) * keyFrameProgress);
+		return keyFrameProgress == 1.0 ? value : baseValue;
 	}
 }
 

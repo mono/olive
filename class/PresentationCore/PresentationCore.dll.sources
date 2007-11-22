@@ -190,6 +190,11 @@ System.Windows.Media.Animation/CharAnimationBase.cs
 System.Windows.Media.Animation/CharAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/CharKeyFrameCollection.cs
 System.Windows.Media.Animation/CharKeyFrame.cs
+System.Windows.Media.Animation/ColorAnimationBase.cs
+System.Windows.Media.Animation/ColorAnimation.cs
+System.Windows.Media.Animation/ColorAnimationUsingKeyFrames.cs
+System.Windows.Media.Animation/ColorKeyFrameCollection.cs
+System.Windows.Media.Animation/ColorKeyFrame.cs
 System.Windows.Media.Animation/DecimalAnimationBase.cs
 System.Windows.Media.Animation/DecimalAnimation.cs
 System.Windows.Media.Animation/DecimalAnimationUsingKeyFrames.cs
@@ -255,6 +260,7 @@ System.Windows.Media.Animation/VectorKeyFrame.cs
 System.Windows.Media.Animation/DiscreteBooleanKeyFrame.cs
 System.Windows.Media.Animation/DiscreteByteKeyFrame.cs
 System.Windows.Media.Animation/DiscreteCharKeyFrame.cs
+System.Windows.Media.Animation/DiscreteColorKeyFrame.cs
 System.Windows.Media.Animation/DiscreteDecimalKeyFrame.cs
 System.Windows.Media.Animation/DiscreteDoubleKeyFrame.cs
 System.Windows.Media.Animation/DiscreteInt16KeyFrame.cs
@@ -269,6 +275,7 @@ System.Windows.Media.Animation/DiscreteSizeKeyFrame.cs
 System.Windows.Media.Animation/DiscreteStringKeyFrame.cs
 System.Windows.Media.Animation/DiscreteVectorKeyFrame.cs
 System.Windows.Media.Animation/LinearByteKeyFrame.cs
+System.Windows.Media.Animation/LinearColorKeyFrame.cs
 System.Windows.Media.Animation/LinearDecimalKeyFrame.cs
 System.Windows.Media.Animation/LinearDoubleKeyFrame.cs
 System.Windows.Media.Animation/LinearInt16KeyFrame.cs
@@ -280,6 +287,7 @@ System.Windows.Media.Animation/LinearSingleKeyFrame.cs
 System.Windows.Media.Animation/LinearSizeKeyFrame.cs
 System.Windows.Media.Animation/LinearVectorKeyFrame.cs
 System.Windows.Media.Animation/SplineByteKeyFrame.cs
+System.Windows.Media.Animation/SplineColorKeyFrame.cs
 System.Windows.Media.Animation/SplineDecimalKeyFrame.cs
 System.Windows.Media.Animation/SplineDoubleKeyFrame.cs
 System.Windows.Media.Animation/SplineInt16KeyFrame.cs
@@ -295,6 +303,8 @@ System.Windows.Media/AlignmentY.cs
 System.Windows.Media/BitmapScalingMode.cs
 System.Windows.Media/BrushMappingMode.cs
 System.Windows.Media/CachingHint.cs
+System.Windows.Media/Color.cs
+System.Windows.Media/ColorContext.cs
 System.Windows.Media/ColorInterpolationMode.cs
 System.Windows.Media/CompositionTarget.cs
 System.Windows.Media/EdgeMode.cs

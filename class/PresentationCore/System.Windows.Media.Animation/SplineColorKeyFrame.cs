@@ -12,31 +12,31 @@ using System.Windows.Markup;
 namespace System.Windows.Media.Animation {
 
 
-public class SplineSizeKeyFrame : SizeKeyFrame
+public class SplineColorKeyFrame : ColorKeyFrame
 {
 
 	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
 
-	Size value;
+	Color value;
 	KeyTime keyTime;
 
-	public SplineSizeKeyFrame ()
+	public SplineColorKeyFrame ()
 	{
 	}
 
-	public SplineSizeKeyFrame (Size value)
+	public SplineColorKeyFrame (Color value)
 	{
 		this.value = value;
 		// XX keytime?
 	}
 
-	public SplineSizeKeyFrame (Size value, KeyTime keyTime)
+	public SplineColorKeyFrame (Color value, KeyTime keyTime)
 	{
 		this.value = value;
 		this.keyTime = keyTime;
 	}
 
-	public SplineSizeKeyFrame (Size value, KeyTime keyTime, KeySpline keySpline)
+	public SplineColorKeyFrame (Color value, KeyTime keyTime, KeySpline keySpline)
 	{
 		this.value = value;
 		this.keyTime = keyTime;
@@ -53,11 +53,11 @@ public class SplineSizeKeyFrame : SizeKeyFrame
 		throw new NotImplementedException ();
 	}
 
-	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
+	protected override Color InterpolateValueCore (Color baseValue, double keyFrameProgress)
 	{
 		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
 
-		return new Size (baseValue.Width + (value.Width - baseValue.Width) * splineProgress, baseValue.Height + (value.Height - baseValue.Height) * splineProgress);
+		return Color.FromScRgb ((float)(baseValue.ScA + (value.ScA - baseValue.ScA) * splineProgress), (float)(baseValue.ScR + (value.ScR - baseValue.ScR) * splineProgress), (float)(baseValue.ScG + (value.ScG - baseValue.ScG) * splineProgress), (float)(baseValue.ScB + (value.ScB - baseValue.ScB) * splineProgress));
 	}
 }
 

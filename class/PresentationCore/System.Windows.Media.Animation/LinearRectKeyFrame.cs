@@ -41,7 +41,7 @@ public class LinearRectKeyFrame : RectKeyFrame
 	protected override Rect InterpolateValueCore (Rect baseValue, double keyFrameProgress)
 	{
 		// standard linear interpolation
-		return new Rect (baseValue.X + (value.X - baseValue.X) * keyFrameProgress, baseValue.Y + (value.Y - baseValue.Y) * keyFrameProgress, baseValue.Width + (value.Width - baseValue.Width) * keyFrameProgress, baseValue.Height + (value.Height - baseValue.Height) * keyFrameProgress);;
+		return new Rect (baseValue.X + (value.X - baseValue.X) * keyFrameProgress, baseValue.Y + (value.Y - baseValue.Y) * keyFrameProgress, baseValue.Width + (value.Width - baseValue.Width) * keyFrameProgress, baseValue.Height + (value.Height - baseValue.Height) * keyFrameProgress);
 	}
 }
 

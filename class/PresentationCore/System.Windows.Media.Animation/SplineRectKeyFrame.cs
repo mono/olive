@@ -57,7 +57,7 @@ public class SplineRectKeyFrame : RectKeyFrame
 	{
 		double splineProgress = KeySpline.GetSplineProgress (keyFrameProgress);
 
-		return new Rect (baseValue.X + (value.X - baseValue.X) * splineProgress, baseValue.Y + (value.Y - baseValue.Y) * splineProgress, baseValue.Width + (value.Width - baseValue.Width) * splineProgress, baseValue.Height + (value.Height - baseValue.Height) * splineProgress);;
+		return new Rect (baseValue.X + (value.X - baseValue.X) * splineProgress, baseValue.Y + (value.Y - baseValue.Y) * splineProgress, baseValue.Width + (value.Width - baseValue.Width) * splineProgress, baseValue.Height + (value.Height - baseValue.Height) * splineProgress);
 	}
 }
 
