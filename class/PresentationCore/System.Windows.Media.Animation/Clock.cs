@@ -29,6 +29,13 @@ using System.Windows.Threading;
 namespace System.Windows.Media.Animation {
 
 	public class Clock : DispatcherObject {
+		Timeline timeline;
+
+		public Clock (Timeline timeline)
+		{
+			this.timeline = timeline;
+		}
+
 		protected virtual void DiscontinuousTimeMovement ()
 		{
 			throw new NotImplementedException ();
@@ -115,9 +122,7 @@ namespace System.Windows.Media.Animation {
 			}
 		}
 		public Timeline Timeline {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return timeline; }
 		}
 
 		public event EventHandler Completed;

@@ -29,6 +29,7 @@ namespace System.Windows.Media.Animation {
 
 	public class AnimationClock : Clock {
 		protected internal AnimationClock (AnimationTimeline animation)
+			: base (animation)
 		{
 			throw new NotImplementedException ();
 		}
