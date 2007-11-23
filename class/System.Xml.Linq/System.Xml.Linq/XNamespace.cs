@@ -71,6 +71,13 @@ namespace System.Xml.Linq
 				throw new ArgumentNullException ("namespaceName");
 			uri = namespaceName;
 		}
+		
+		[MonoTODO]
+		public static XNamespace None { 
+			get {
+				return null;
+			}
+		}
 
 		public string NamespaceName {
 			get { return uri; }
@@ -90,6 +97,11 @@ namespace System.Xml.Linq
 		public static bool operator != (XNamespace o1, XNamespace o2)
 		{
 			return ! (o1 == o2);
+		}
+		
+		public static XName operator +(XNamespace ns, string localName)
+		{
+			return null;
 		}
 
 		public static implicit operator XNamespace (string s)

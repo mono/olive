@@ -1,3 +1,10 @@
+2007-11-23  Marek Safar  <marek.safar@gmail.com>
+
+	* XElement.cs, XNamespace.cs, XStreamingElement.cs, XObject.cs,
+	XDocument.cs: API update.
+	
+	* XObjectChangeEventHandler.cs: Removed.
+
 2007-10-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XNode.cs : use ConformanceLevel.Auto for ToString().

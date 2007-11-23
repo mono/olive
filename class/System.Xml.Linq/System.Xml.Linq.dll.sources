@@ -25,7 +25,6 @@ System.Xml.Linq/XNodeWriter.cs
 System.Xml.Linq/XObject.cs
 System.Xml.Linq/XObjectChange.cs
 System.Xml.Linq/XObjectChangeEventArgs.cs
-System.Xml.Linq/XObjectChangeEventHandler.cs
 System.Xml.Linq/XProcessingInstruction.cs
 System.Xml.Linq/XStreamingElement.cs
 System.Xml.Linq/XText.cs

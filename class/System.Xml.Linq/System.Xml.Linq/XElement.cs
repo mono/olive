@@ -35,8 +35,7 @@ using System.Xml.Serialization;
 
 namespace System.Xml.Linq
 {
-	[XmlRoot ("XElement")]
-	[XmlSchemaProvider ("GetSchemaType")]
+	[XmlSchemaProvider (null, IsAny = true)]
 	public class XElement : XContainer, IXmlSerializable
 	{
 		static IEnumerable <XElement> emptySequence =
@@ -70,6 +69,12 @@ namespace System.Xml.Linq
 		{
 			this.name = name;
 			Add (contents);
+		}
+
+		[MonoTODO ("finish")]		
+		public XElement (XStreamingElement source)
+		{
+			this.name = source.Name;
 		}
 
 		public static explicit operator bool (XElement element)
@@ -623,12 +628,6 @@ namespace System.Xml.Linq
 		{
 			if (node is XDocument || node is XDocumentType)
 				throw new ArgumentException (String.Format ("A node of type {0} cannot be added as a content", node.GetType ()));
-		}
-
-		[MonoTODO]
-		public static XmlSchemaType GetSchemaType (XmlSchemaSet schemas)
-		{
-			throw new NotImplementedException ();
 		}
 
 		void IXmlSerializable.WriteXml (XmlWriter writer)

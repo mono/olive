@@ -30,5 +30,19 @@ namespace System.Xml.Linq
 {
 	public class XStreamingElement
 	{
+		XName name;
+		
+		public XStreamingElement (XName name)
+		{
+		}
+		
+		public XName Name {
+			get {
+				return name;
+			}
+			set {
+				name = value;
+			}
+		}
 	}
 }

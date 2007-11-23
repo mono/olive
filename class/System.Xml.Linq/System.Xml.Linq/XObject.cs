@@ -41,8 +41,8 @@ namespace System.Xml.Linq
 		string baseuri;
 		int line, column;
 
-		public event XObjectChangeEventHandler Changing;
-		public event XObjectChangeEventHandler Changed;
+		public event EventHandler<XObjectChangeEventArgs> Changing;
+		public event EventHandler<XObjectChangeEventArgs> Changed;
 
 		public string BaseUri {
 			get { return baseuri; }

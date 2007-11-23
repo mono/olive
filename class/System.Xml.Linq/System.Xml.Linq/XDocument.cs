@@ -35,9 +35,7 @@ using System.Xml.Serialization;
 
 namespace System.Xml.Linq
 {
-	[XmlRoot ("XDocument")]
-	[XmlSchemaProvider ("GetSchemaType")]
-	public class XDocument : XContainer, IXmlSerializable
+	public class XDocument : XContainer
 	{
 		XDeclaration xmldecl;
 
@@ -249,27 +247,6 @@ namespace System.Xml.Linq
 				if (DocumentType != null && addFirst)
 					throw new InvalidOperationException ("An element cannot be added before the document type declaration");
 			}
-		}
-
-		[MonoTODO]
-		public static XmlSchemaType GetSchemaType (XmlSchemaSet schemas)
-		{
-			throw new NotImplementedException ();
-		}
-
-		void IXmlSerializable.WriteXml (XmlWriter writer)
-		{
-			Save (writer);
-		}
-
-		void IXmlSerializable.ReadXml (XmlReader reader)
-		{
-			ReadContent (reader);
-		}
-
-		XmlSchema IXmlSerializable.GetSchema ()
-		{
-			return null;
 		}
 	}
 }
