@@ -1,8 +1,5 @@
 thisdir := .
 
-#include <necko/nsNetError.h>
-#include <xpcom/nsIStorageStream.h>
-
 SUBDIRS := build class tools data scripts
 
 net_3_0_SUBDIRS := build class tools data scripts
