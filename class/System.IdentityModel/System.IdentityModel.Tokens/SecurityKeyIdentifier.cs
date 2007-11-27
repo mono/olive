@@ -124,6 +124,7 @@ namespace System.IdentityModel.Tokens
 		public bool TryFind<TClause> (out TClause result)
 			where TClause : SecurityKeyIdentifierClause
 		{
+			result = default (TClause);
 			foreach (SecurityKeyIdentifierClause kic in this)
 				if (typeof (TClause).IsAssignableFrom (kic.GetType ())) {
 					result = (TClause) kic;

@@ -1,3 +1,8 @@
+2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SecurityKeyIdentifier.cs : fill 'out' parameter properly (gmcs
+	  does not report this as error; see bug #334258).
+
 2007-02-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* InMemorySymmetricSecurityKey.cs : added some argument check.

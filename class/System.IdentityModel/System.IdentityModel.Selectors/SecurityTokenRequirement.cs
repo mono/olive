@@ -136,6 +136,7 @@ namespace System.IdentityModel.Selectors
 		public bool TryGetProperty<TValue> (string property, out TValue value)
 		{
 			object tmp;
+			value = default (TValue);
 
 			if (!Properties.TryGetValue (property, out tmp))
 				return false;
