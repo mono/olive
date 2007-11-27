@@ -25,24 +25,133 @@
 //
 
 using System;
+using System.IO;
+using System.Collections.Generic;
 
 namespace System.Xml.Linq
 {
 	public class XStreamingElement
 	{
-		XName name;
-		
 		public XStreamingElement (XName name)
 		{
+			Name = name;
 		}
-		
+
+		public XStreamingElement (XName name, object content)
+			: this (name)
+		{
+			Add (content);
+		}
+
+		public XStreamingElement (XName name, object [] content)
+			: this (name)
+		{
+			Add (content);
+		}
+
+		XName name;
+		List<object> contents;
+
 		public XName Name {
-			get {
-				return name;
+			get { return name; }
+			set { name = value; }
+		}
+
+		[MonoTODO]
+		public void Add (object content)
+		{
+			if (contents == null)
+				contents = new List<object> ();
+			contents.Add (content);
+		}
+
+		[MonoTODO]
+		public void Add (object [] content)
+		{
+			if (contents == null)
+				contents = new List<object> ();
+			contents.Add (content);
+		}
+
+		[MonoTODO]
+		public void Save (string fileName)
+		{
+			using (TextWriter w = File.CreateText (fileName))
+				Save (w);
+		}
+
+		[MonoTODO]
+		public void Save (TextWriter textWriter)
+		{
+			Save (textWriter, SaveOptions.None);
+		}
+
+		[MonoTODO]
+		public void Save (XmlWriter writer)
+		{
+			WriteTo (writer);
+		}
+
+		[MonoTODO]
+		public void Save (string fileName, SaveOptions options)
+		{
+			using (TextWriter w = File.CreateText (fileName))
+				Save (w, options);
+		}
+
+		[MonoTODO]
+		public void Save (TextWriter textWriter, SaveOptions options)
+		{
+			XmlWriterSettings s = new XmlWriterSettings ();
+			s.Indent = options != SaveOptions.DisableFormatting;
+			using (XmlWriter w = XmlWriter.Create (textWriter, s))
+				Save (w);
+		}
+
+		public override string ToString ()
+		{
+			return ToString (SaveOptions.None);
+		}
+
+		public string ToString (SaveOptions options)
+		{
+			StringWriter sw = new StringWriter ();
+			Save (sw, options);
+			return sw.ToString ();
+		}
+
+		public void WriteTo (XmlWriter writer)
+		{
+			writer.WriteStartElement (name.LocalName, name.Namespace.NamespaceName);
+			WriteContents (contents, writer);
+			writer.WriteEndElement ();
+		}
+
+		void WriteContents (IEnumerable<object> items, XmlWriter w)
+		{
+			foreach (object o in contents) {
+				if (o == null)
+					continue;
+				else if (o is object [])
+					WriteContents ((object []) o, w);
+				else if (o is XAttribute)
+					WriteAttribute ((XAttribute) o, w);
+				else
+					// FIXME: check node validity
+					XUtil.ToNode (o).WriteTo (w);
 			}
-			set {
-				name = value;
+		}
+
+		void WriteAttribute (XAttribute a, XmlWriter w)
+		{
+			if (a.IsNamespaceDeclaration) {
+				if (a.Name.Namespace == XNamespace.Xmlns)
+					w.WriteAttributeString ("xmlns", a.Name.LocalName, XNamespace.Xmlns.NamespaceName, a.Value);
+				else
+					w.WriteAttributeString ("xmlns", a.Value);
 			}
+			else
+				w.WriteAttributeString (a.Name.LocalName, a.Name.Namespace.NamespaceName, a.Value);
 		}
 	}
 }
