@@ -182,7 +182,7 @@ namespace System.Xml
 		}
 
 		[MonoTODO ("make use of dictionary reader optimization")]
-		public virtual void WriteNode (XmlReader reader, bool defattr)
+		public override void WriteNode (XmlReader reader, bool defattr)
 		{
 			base.WriteNode (reader, defattr);
 		}

@@ -1,3 +1,7 @@
+2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryWriter.cs : WriteNode() is override, not new.
+
 2007-07-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryWriter.cs : store Depth for dummy prefix output.
