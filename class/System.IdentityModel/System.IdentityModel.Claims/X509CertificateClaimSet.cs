@@ -56,7 +56,7 @@ namespace System.IdentityModel.Claims
 				throw new ArgumentNullException ("certificate");
 			this.cert = certificate;
 			Claim ident = new Claim (ClaimTypes.Thumbprint, cert.Thumbprint, Rights.Identity);
-			issuer = new X509IdentityClaimSet (ident);
+//			issuer = new X509IdentityClaimSet (ident);
 			claims.Add (ident);
 			//claims.Add (Claim.CreateX500DistinguishedNameClaim (cert.SubjectName));
 			//claims.Add (Claim.CreateNameClaim (cert.SubjectName.Name));
@@ -75,7 +75,16 @@ namespace System.IdentityModel.Claims
 		}
 
 		public override ClaimSet Issuer {
-			get { return issuer; }
+			get {
+				if (issuer == null) {
+					X509Chain chain = new X509Chain ();
+					chain.Build (cert);
+					if (chain.ChainElements.Count <= 1)
+						throw new InvalidOperationException ("hmm, the certificate chain does not contain enough information");
+					issuer = new X509CertificateClaimSet (chain.ChainElements [1].Certificate);
+				}
+				return issuer;
+			}
 		}
 
 		public override Claim this [int index] {

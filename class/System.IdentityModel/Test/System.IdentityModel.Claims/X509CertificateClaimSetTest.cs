@@ -42,13 +42,19 @@ namespace MonoTests.System.IdentityModel.Claims
 		static X509Certificate2 cert = new X509Certificate2 ("Test/Resources/test.pfx", "mono");
 
 		[Test]
-		[Category ("NotWorking")] // X509Certificate2.SubjectName
+		[Category ("NotWorking")] // X509Chain
 		public void DefaultValues ()
 		{
+			X509Chain chain = new X509Chain ();
+			chain.Build (cert);
+			Assert.IsTrue (chain.ChainElements.Count > 1, "#0");
 			ClaimSet cs = new X509CertificateClaimSet (cert);
 			ClaimSet ident = cs.Issuer;
+			X509CertificateClaimSet x509is = ident as X509CertificateClaimSet;
+			Assert.IsNotNull (x509is, "#0-2");
+			Assert.AreEqual (chain.ChainElements [1].Certificate, x509is.X509Certificate, "#0-3");
 			Assert.AreEqual (6, cs.Count, "#1");
-			Assert.AreEqual (0, ident.Issuer.Count, "#2");
+			Assert.AreEqual (6, ident.Issuer.Count, "#2");
 			Assert.IsFalse (cs.ContainsClaim (Claim.System), "#3");
 			List<string> d = new List<string> ();
 			foreach (Claim c in cs) {

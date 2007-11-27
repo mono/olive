@@ -1,3 +1,8 @@
+2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* X509CertificateClaimSet.cs : the semantics of the members has
+	  changed after I practically touched this type last time.
+
 2007-04-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Claim.cs : added serialized fields.
