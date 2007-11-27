@@ -437,6 +437,7 @@ namespace MonoTests.System.Runtime.Serialization
 		// CollectionContainer : Items must have a setter.
 		[Test]
 		[ExpectedException (typeof (InvalidDataContractException))]
+		[Category ("NotWorking")]
 		public void SerializeReadOnlyCollectionMember ()
 		{
 			DataContractSerializer ser =
@@ -450,6 +451,7 @@ namespace MonoTests.System.Runtime.Serialization
 		// DataCollectionContainer : Items must have a setter.
 		[Test]
 		[ExpectedException (typeof (InvalidDataContractException))]
+		[Category ("NotWorking")]
 		public void SerializeReadOnlyDataCollectionMember ()
 		{
 			DataContractSerializer ser =

@@ -58,6 +58,11 @@ namespace MonoTests.System.Runtime.Serialization
 		{
 			XmlReader xr = XmlTextReader.Create ("Test/System.Runtime.Serialization/one.xml");
 			metadata = MetadataSet.ReadFrom (xr);
+		}
+		
+		[SetUp]
+		public void Setup ()
+		{
 			NewXmlSchemaSet ();
 		}
 
@@ -191,12 +196,37 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullSchemas ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (null, new XmlQualifiedName ("foo"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullTypeName ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (new XmlSchemaSet (), (XmlQualifiedName) null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullElement ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (new XmlSchemaSet (), (XmlSchemaElement) null);
+		}
+
+		[Test]
+		//[Category ("NotWorking")]
 		public void ImportTest ()
 		{
 			XsdDataContractImporter xsdi = GetImporter ();
 			XmlSchemaElement element = new XmlSchemaElement();
 			//Assert.IsTrue (xsdi.CanImport (xss, element));
-			xsdi.Import (xss, element);
+			Assert.AreEqual (new XmlQualifiedName ("anyType", XmlSchema.Namespace), xsdi.Import (xss, element), "#i02");
 
 			CodeCompileUnit ccu = xsdi.CodeCompileUnit;
 			Assert.AreEqual (1, ccu.Namespaces.Count, "#i03");
@@ -210,6 +240,7 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ImportDataContract1 ()
 		{
 			NewXmlSchemaSet ();
@@ -266,6 +297,7 @@ namespace MonoTests.System.Runtime.Serialization
 
 		[Test]
 		[ExpectedException (typeof (InvalidDataContractException))]
+		[Category ("NotWorking")]
 		public void ImportMessageEcho ()
 		{
 			XsdDataContractImporter xsdi = GetImporter ();
@@ -366,15 +398,17 @@ namespace MonoTests.System.Runtime.Serialization
 
 		private void CheckDataContractAttribute (CodeTypeDeclaration type, string msg)
 		{
-			Assert.AreEqual (2, type.CustomAttributes.Count, msg + "a");
+			Assert.AreEqual (3, type.CustomAttributes.Count, msg + "a");
+
+			// DebuggerStepThroughAttribute - skip it
 
 			//GeneratedCodeAttribute
-			CodeAttributeDeclaration ca = type.CustomAttributes [0];
+			CodeAttributeDeclaration ca = type.CustomAttributes [1];
 			Assert.AreEqual ("System.CodeDom.Compiler.GeneratedCodeAttribute", ca.Name, msg + "b");
 
-			ca = type.CustomAttributes [1];
+			ca = type.CustomAttributes [2];
 			Assert.AreEqual ("System.Runtime.Serialization.DataContractAttribute", ca.Name, msg + "c");
-			Assert.AreEqual (0, ca.Arguments.Count, msg + "d");
+			Assert.AreEqual (2, ca.Arguments.Count, msg + "d");
 		}
 
 		CodeTypeMember FindMember (CodeTypeDeclaration type, string name)

@@ -1,3 +1,7 @@
+2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReaderTest.cs : added [NotWorking]
+
 2007-07-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlSimpleDictionaryWriterTest.cs : added test for null prefix case.

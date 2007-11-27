@@ -46,6 +46,7 @@ namespace MonoTests.System.Xml
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void UseCase1 ()
 		{
 			string xml = @"<?xml version=""1.0"" encoding=""utf-16""?><root a=""""><!---->     <AAA xmlns=""urn:AAA""></AAA><ePfix:AAA xmlns:ePfix=""urn:AAABBB""></ePfix:AAA><AAA>CCCÅXàÍCCCAAA&amp;AAADDD&amp;DDDíö<!--COMMENT--></AAA><AAA BBB=""bbb"" pfix:BBB=""bbbbb"" xml:lang=""ja"" xml:space=""preserve"" xml:base=""local:hogehoge"" xmlns:pfix=""urn:bbb"">CCCICAg/4Aw</AAA></root>";
@@ -104,6 +105,7 @@ namespace MonoTests.System.Xml
 			};
 
 		[Test]
+		[Category ("NotWorking")]
 		public void UseCase2 ()
 		{
 			XmlDictionary dic = new XmlDictionary ();
@@ -174,6 +176,7 @@ namespace MonoTests.System.Xml
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ContainsInvalidIndex ()
 		{
 			byte [] bytes = new byte [] {
@@ -193,6 +196,7 @@ namespace MonoTests.System.Xml
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void Beyond128DictionaryEntries ()
 		{
 			XmlDictionaryString ds;
