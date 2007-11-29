@@ -1,3 +1,7 @@
+2007-11-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : System.Xml.Linq is moved to mcs/class.
+
 2007-09-05  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: Add orcas.pub to DIST

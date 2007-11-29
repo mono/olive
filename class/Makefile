@@ -26,7 +26,6 @@ net_2_1_dirs = \
 
 net_3_5_dirs = \
 	System.Data.Linq	\
-	System.Xml.Linq		\
 	System.ServiceModel.Web
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
