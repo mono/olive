@@ -188,44 +188,47 @@ public class Outline {
 				o.Write (fi.GetValue (this));
 		}
 		else if (fi.IsStatic) {
-			if (fi.FieldType == typeof (RoutedUICommand)) {
-			}
-			else if (fi.FieldType == typeof (RoutedEvent)) {
-				RoutedEvent re = (RoutedEvent)fi.GetValue (null);
-				o.Write (" = RoutedEvent ('{0}', {1}, {2}, {3})",
-					 re.Name, re.HandlerType.Name, re.OwnerType.Name, re.RoutingStrategy);
-			}
-			if (fi.FieldType == typeof (DependencyProperty)) {
-				DependencyProperty dp = (DependencyProperty)fi.GetValue (null);
-				o.Write (" = DependencyProperty ('{0}', {1}, {2})",
-					 dp.Name, dp.PropertyType.Name, dp.OwnerType.Name);
+			object fv = fi.GetValue (null);
+			if (fv != null) {
+				if (fi.FieldType == typeof (RoutedUICommand)) {
+				}
+				else if (fi.FieldType == typeof (RoutedEvent)) {
+					RoutedEvent re = (RoutedEvent)fv;
+					o.Write (" = RoutedEvent ('{0}', {1}, {2}, {3})",
+						 re.Name, re.HandlerType.Name, re.OwnerType.Name, re.RoutingStrategy);
+				}
+				if (fi.FieldType == typeof (DependencyProperty)) {
+					DependencyProperty dp = (DependencyProperty)fv;
+					o.Write (" = DependencyProperty ('{0}', {1}, {2})",
+						 dp.Name, dp.PropertyType.Name, dp.OwnerType.Name);
 
-				if (options.PropMetadata) {
-					PropertyMetadata pm = dp.DefaultMetadata;
-					PropertyMetadata type_pm;
+					if (options.PropMetadata) {
+						PropertyMetadata pm = dp.DefaultMetadata;
+						PropertyMetadata type_pm;
 
-					if (pm != null) {
-						o.Indent++;
-						o.WriteLine (";");
-						o.Write ("DefaultMetadata = (default={0}, has_changed_cb={1}, has_coerce_cb={2})",
-							 pm.DefaultValue == null ? "<null>" : pm.DefaultValue.ToString(),
-							 pm.PropertyChangedCallback != null,
-							 pm.CoerceValueCallback != null);
+						if (pm != null) {
+							o.Indent++;
+							o.WriteLine (";");
+							o.Write ("DefaultMetadata = (default={0}, has_changed_cb={1}, has_coerce_cb={2})",
+								 pm.DefaultValue == null ? "<null>" : pm.DefaultValue.ToString(),
+								 pm.PropertyChangedCallback != null,
+								 pm.CoerceValueCallback != null);
 						 
-						o.Indent--;
-					}
+							o.Indent--;
+						}
 
-					type_pm = dp.GetMetadata (t);
-					if (type_pm != null && type_pm != pm) {
-						o.Indent++;
-						o.WriteLine (";");
-						o.Write ("MetaData for {3} = (default={0}, has_changed_cb={1}, has_coerce_cb={2})",
-							 type_pm.DefaultValue == null ? "<null>" : type_pm.DefaultValue.ToString(),
-							 type_pm.PropertyChangedCallback != null,
-							 pm.CoerceValueCallback != null,
-							 t.Name);
+						type_pm = dp.GetMetadata (t);
+						if (type_pm != null && type_pm != pm) {
+							o.Indent++;
+							o.WriteLine (";");
+							o.Write ("MetaData for {3} = (default={0}, has_changed_cb={1}, has_coerce_cb={2})",
+								 type_pm.DefaultValue == null ? "<null>" : type_pm.DefaultValue.ToString(),
+								 type_pm.PropertyChangedCallback != null,
+								 pm.CoerceValueCallback != null,
+								 t.Name);
 						 
-						o.Indent--;
+							o.Indent--;
+						}
 					}
 				}
 			}
