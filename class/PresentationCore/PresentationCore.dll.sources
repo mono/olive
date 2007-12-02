@@ -16,6 +16,7 @@ System.Windows/DataObjectPastingEventHandler.cs
 System.Windows/DataObjectSettingDataEventArgs.cs
 System.Windows/DataObjectSettingDataEventHandler.cs
 System.Windows/DragAction.cs
+System.Windows/DragDrop.cs
 System.Windows/DragDropEffects.cs
 System.Windows/DragDropKeyStates.cs
 System.Windows/DragEventArgs.cs
@@ -156,6 +157,7 @@ System.Windows.Input/TextComposition.cs
 System.Windows.Input/TextCompositionAutoComplete.cs
 System.Windows.Input/TextCompositionEventArgs.cs
 System.Windows.Input/TextCompositionEventHandler.cs
+System.Windows.Input/TextCompositionManager.cs
 System.Windows.Input.X11/X11KeyboardDevice.cs
 System.Windows.Input.X11/X11MouseDevice.cs
 System.Windows.Markup/IAddChild.cs
