@@ -1,2 +1,5 @@
+System.Windows/ContentElementTest.cs
+System.Windows/DragDropTest.cs
+System.Windows/UIElementTest.cs
 System.Windows.Input/ApplicationCommands.cs
 System.Windows.Input/InputEventArgs.cs
