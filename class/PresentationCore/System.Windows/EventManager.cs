@@ -25,17 +25,40 @@
 
 using System;
 
+using System.Collections.Generic;
+
 namespace System.Windows {
 
 	public static class EventManager {
+
+		static Dictionary<Type, Dictionary <string, RoutedEvent>> eventsByType = new Dictionary<Type, Dictionary<string, RoutedEvent>>();
+
 		public static RoutedEvent[] GetRoutedEvents ()
 		{
-			throw new NotImplementedException ();
+			int count = 0;
+			foreach (Type t in eventsByType.Keys)
+				count += eventsByType[t].Values.Count;
+
+			RoutedEvent[] event_array = new RoutedEvent[count];
+			int idx = 0;
+			foreach (Type t in eventsByType.Keys) {
+				Dictionary<string, RoutedEvent> events = eventsByType[t];
+				events.Values.CopyTo (event_array, idx);
+				idx += events.Count;
+			}
+
+			return event_array;
 		}
 
 		public static RoutedEvent[] GetRoutedEventsForOwner (Type ownerType)
 		{
-			throw new NotImplementedException ();
+			Dictionary<string, RoutedEvent> events = eventsByType[ownerType];
+			if (events == null)
+				return new RoutedEvent[0];
+
+			RoutedEvent[] event_array = new RoutedEvent[events.Values.Count];
+			events.Values.CopyTo (event_array, 0);
+			return event_array;
 		}
 
 		public static void RegisterClassHandler (Type classType, RoutedEvent routedEvent, Delegate handler)
@@ -50,7 +73,22 @@ namespace System.Windows {
 
 		public static RoutedEvent RegisterRoutedEvent (string name, RoutingStrategy routingStrategy, Type handlerType, Type ownerType)
 		{
-			throw new NotImplementedException ();
+			RoutedEvent re = new RoutedEvent (name, handlerType, ownerType, routingStrategy);
+			Dictionary<string, RoutedEvent> events;
+
+			if (eventsByType.ContainsKey (ownerType)) {
+				events = eventsByType[ownerType];
+			}
+			else {
+				events = eventsByType[ownerType] = new Dictionary<string, RoutedEvent>();
+			}
+
+			if (events.ContainsKey (name))
+				throw new InvalidOperationException (String.Format ("Type '{0}' already has routed event '{1}' registered.", ownerType, name));
+
+			events[name] = re;
+
+			return re;
 		}
 	}
 
