@@ -1,3 +1,7 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added net_3_5 as a valid profile.
+
 2006-07-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Microsoft.InfoCards.Diagnostics has gone.
