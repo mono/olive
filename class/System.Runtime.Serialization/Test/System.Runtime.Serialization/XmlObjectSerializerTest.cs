@@ -76,6 +76,7 @@ namespace MonoTests.System.Runtime.Serialization
 			// null knownTypes is allowed.
 			new DataContractSerializer (typeof (Sample1), null);
 			new DataContractSerializer (typeof (Sample1), "Foo", String.Empty, null);
+			new DataContractSerializer (typeof (Sample1), new XmlDictionary ().Add ("Foo"), XmlDictionaryString.Empty, null);
 		}
 
 		[Test]

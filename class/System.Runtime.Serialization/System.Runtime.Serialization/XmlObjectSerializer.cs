@@ -62,7 +62,7 @@ namespace System.Runtime.Serialization
 
 		public abstract bool IsStartObject (XmlDictionaryReader reader);
 
-		public object ReadObject (Stream stream)
+		public virtual object ReadObject (Stream stream)
 		{
 			return ReadObject (XmlReader.Create (stream));
 		}
@@ -87,7 +87,7 @@ namespace System.Runtime.Serialization
 		[MonoTODO]
 		public abstract object ReadObject (XmlDictionaryReader reader, bool readContentOnly);
 
-		public void WriteObject (Stream stream, object graph)
+		public virtual void WriteObject (Stream stream, object graph)
 		{
 			WriteObject (XmlWriter.Create (stream), graph);
 		}

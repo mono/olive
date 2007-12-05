@@ -1,3 +1,7 @@
+2007-12-05  Atsushi Enomoto  <atushi@ximian.com>
+
+	* XmlObjectSerializerTest.cs : test for .ctor() with null knownTypes.
+
 2007-11-27  Atsushi Enomoto  <atushi@ximian.com>
 
 	* XmlObjectSerializerTest.cs, XsdDataContractImporterTest.cs:

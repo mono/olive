@@ -4,7 +4,7 @@
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2005-2007 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -113,8 +113,6 @@ namespace System.Runtime.Serialization
 		{
 			if (type == null)
 				throw new ArgumentNullException ("type");
-			if (knownTypes == null)
-				throw new ArgumentNullException ("knownTypes");
 			if (rootName == null)
 				throw new ArgumentNullException ("rootName");
 			if (rootNamespace == null)
@@ -248,6 +246,18 @@ namespace System.Runtime.Serialization
 			throw new NotImplementedException ();
 		}
 
+		// SP1
+		public override bool IsStartObject (XmlReader reader)
+		{
+			return IsStartObject (XmlDictionaryReader.CreateDictionaryReader (reader));
+		}
+
+		// SP1
+		public override object ReadObject (XmlReader reader)
+		{
+			return ReadObject (XmlDictionaryReader.CreateDictionaryReader (reader));
+		}
+
 		[MonoTODO]
 		public override object ReadObject (XmlDictionaryReader reader, bool verifyObjectName)
 		{
@@ -282,6 +292,13 @@ namespace System.Runtime.Serialization
 			reader.Read ();
 		}
 
+		// SP1
+		public override void WriteObject (XmlWriter writer, object graph)
+		{
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateDictionaryWriter (writer);
+			WriteObject (w, graph);
+		}
+
 		[MonoTODO ("support arrays; support Serializable; support SharedType; use DataContractSurrogate")]
 		/*
 			when writeContentOnly is true, then the input XmlWriter
@@ -310,6 +327,13 @@ namespace System.Runtime.Serialization
 			// rootType and object graph type.
 			while (known_types.Count > startTypeCount)
 				known_types.RemoveAt (startTypeCount);
+		}
+
+		// SP1
+		public override void WriteStartObject (
+			XmlWriter writer, object graph)
+		{
+			WriteStartObject (XmlDictionaryWriter.CreateDictionaryWriter (writer), graph);
 		}
 
 		public override void WriteStartObject (
@@ -369,6 +393,12 @@ namespace System.Runtime.Serialization
 		public override void WriteEndObject (XmlDictionaryWriter writer)
 		{
 			writer.WriteEndElement ();
+		}
+
+		// SP1
+		public override void WriteEndObject (XmlWriter writer)
+		{
+			WriteEndObject (XmlDictionaryWriter.CreateDictionaryWriter (writer));
 		}
 	}
 }

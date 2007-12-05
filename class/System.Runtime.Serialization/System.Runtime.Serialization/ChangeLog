@@ -1,3 +1,9 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlObjectSerializer.cs : some methods became virtual (in Redbits).
+	* DataContractSerializer.cs : added some overriden methods in Redbits.
+	  knownTypes can be null in .ctor().
+
 2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* SerializationMap.cs : for void it cannot be instantiated. Return
