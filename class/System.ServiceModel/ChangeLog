@@ -1,3 +1,7 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added net_3_5 profile as a valid target.
+
 2007-08-18 Marcos Cobena (marcoscobena@gmail.com)
 
 	* System.ServiceModel_test.dll.sources: Updated with new tests for System.ServiceModel.PeerResolvers.
