@@ -1,0 +1,6 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DataContractJsonSerializerTest.cs :
+	  moved from Test/System.Runtime.Serialization and fixed some.
+	* JsonReaderTest.cs, JsonWriterTest.cs : moved from Test/System.Xml.
+

@@ -1,0 +1,12 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Ato10FeedFormatter.cs Atom10FeedFormatter_1.cs
+	  Rss20FeedFormatter.cs Rss20FeedFormatter_1.cs
+	  SyndicationCategory.cs SyndicationContent.cs
+	  SyndicationElementExtension.cs
+	  SyndicationElementExtensionCollection.cs
+	  SyndicationFeed.cs SyndicationFeedFormatter.cs
+	  SyndicationItem.cs SyndicationLink.cs SyndicationPerson.cs
+	  SyndicationVersions.cs TextSyndicationContentKind.cs :
+	  new stubs.
+

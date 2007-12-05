@@ -1,0 +1,8 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DataContractJsonSerializer.cs :
+	  moved from System.Runtime.Serialization and changed the namespace.
+	* JsonReader.cs, JsonWriter.cs, JsonReaderWriterFactory.cs,
+	  IXmlJsonReaderInitializer.cs, IXmlJsonWriterInitializer.cs :
+	  moved from System.Xml and changed the namespace.
+
