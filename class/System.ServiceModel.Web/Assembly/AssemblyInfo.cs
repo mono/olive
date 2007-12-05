@@ -48,7 +48,7 @@ using System.Runtime.InteropServices;
 
 [assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.ServiceModel.Web.dll")]
-[assembly: AssemblyInformationalVersion ("3.5.0.0")]
+[assembly: AssemblyInformationalVersion ("3.5.594.0")]
 [assembly: NeutralResourcesLanguage ("en-US")]
 
 [assembly: ComVisible (false)]

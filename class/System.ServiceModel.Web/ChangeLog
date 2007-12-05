@@ -1,3 +1,10 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.Web_test.dll.sources,
+	  System.ServiceModel.Web.dll.sources : updated to reflect the latest
+	  file lists.
+	* Makefile : added -r:System.ServiceModel.dll
+
 2007-09-01  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.ServiceModel.Web_test.dll.sources : removed all old tests
