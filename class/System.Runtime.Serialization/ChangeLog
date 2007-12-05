@@ -1,3 +1,7 @@
+2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : add net_3_5 profile as a target profile.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* reader-method-gen.cs : changed ReadElementContentAsXxx() 

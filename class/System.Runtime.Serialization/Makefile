@@ -16,8 +16,8 @@ TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) /r:System.ServiceModel.dll
 
 EXTRA_DISTFILES = $(RESOURCE_FILES)
 
-# This is a WinFX only assembly
-VALID_PROFILE := $(filter net_3_0, $(PROFILE))
+# This assembly is .NET 3.0 or later only
+VALID_PROFILE := $(filter net_3_0 net_3_5, $(PROFILE))
 ifndef VALID_PROFILE
 LIBRARY_NAME = dummy-System.Runtime.Serialization.dll
 NO_INSTALL = yes
