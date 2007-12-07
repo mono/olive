@@ -1,3 +1,7 @@
+2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* System.ServiceModel.Web.dll.sources : fixed wrong source name.
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* System.ServiceModel.Web_test.dll.sources,

@@ -1,3 +1,8 @@
+2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Ato10FeedFormatter.cs Atom10FeedFormatter.cs :
+	  oops, wrong file name. renamed former to latter.
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Ato10FeedFormatter.cs Atom10FeedFormatter_1.cs

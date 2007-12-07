@@ -8,7 +8,7 @@ System.Runtime.Serialization.Json/IXmlJsonWriterInitializer.cs
 System.Runtime.Serialization.Json/JsonReader.cs
 System.Runtime.Serialization.Json/JsonReaderWriterFactory.cs
 System.Runtime.Serialization.Json/JsonWriter.cs
-System.ServiceModel.Syndication/Ato10FeedFormatter.cs
+System.ServiceModel.Syndication/Atom10FeedFormatter.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter_1.cs
 System.ServiceModel.Syndication/Rss20FeedFormatter.cs
 System.ServiceModel.Syndication/Rss20FeedFormatter_1.cs
