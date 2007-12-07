@@ -70,13 +70,13 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static SyndicationLink CreatePerson (SyndicationFeed feed)
+		protected internal static SyndicationPerson CreatePerson (SyndicationFeed feed)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal static SyndicationLink CreatePerson (SyndicationItem item)
+		protected internal static SyndicationPerson CreatePerson (SyndicationItem item)
 		{
 			throw new NotImplementedException ();
 		}

@@ -44,19 +44,40 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		public SyndicationFeed (string name)
+		public SyndicationFeed (IEnumerable<SyndicationItem> items)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationFeed (string name, string scheme, string label)
+		public SyndicationFeed (string title, string description, Uri feedAlternateLink)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected SyndicationFeed (SyndicationFeed source)
+		public SyndicationFeed (string title, string description, Uri feedAlternateLink,
+					IEnumerable<SyndicationItem> items)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationFeed (string title, string description, Uri feedAlternateLink, string id,
+					DateTimeOffset lastUpdatedTime)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationFeed (string title, string description, Uri feedAlternateLink, string id,
+					DateTimeOffset lastUpdatedTime, IEnumerable<SyndicationItem> items)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected SyndicationFeed (SyndicationFeed source, bool cloneItems)
 		{
 			throw new NotImplementedException ();
 		}
@@ -72,25 +93,153 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		public string Label {
+		public Collection<SyndicationPerson> Authors {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Collection<SyndicationCategory> Categories {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Collection<SyndicationPerson> Contributors {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public IEnumerable<SyndicationItem> Items {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Name {
+		public Collection<SyndicationLink> Links {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Uri BaseUri {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Scheme {
+		public TextSyndicationContent Copyright {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public virtual SyndicationFeed Clone ()
+		public TextSyndicationContent Description {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string Generator {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string Id {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Uri ImageUrl {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string Language {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public DateTimeOffset LastUpdatedTime {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public TextSyndicationContent Title {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public virtual SyndicationFeed Clone (bool cloneItems)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationCategory CreateCategory ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationItem CreateItem ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationLink CreateLink ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationPerson CreatePerson ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Atom10FeedFormatter GetAtom10Formatter ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20FeedFormatter GetRss20Formatter ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20FeedFormatter GetRss20Formatter (bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationFeed Load (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static TSyndicationFeed Load<TSyndicationFeed> (XmlReader reader) where TSyndicationFeed : SyndicationFeed
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void SaveAsAtom10 (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void SaveAsRss20 (XmlWriter writer)
 		{
 			throw new NotImplementedException ();
 		}

@@ -22,4 +22,10 @@ System.ServiceModel.Syndication/SyndicationItem.cs
 System.ServiceModel.Syndication/SyndicationLink.cs
 System.ServiceModel.Syndication/SyndicationPerson.cs
 System.ServiceModel.Syndication/SyndicationVersions.cs
+System.ServiceModel.Syndication/TextSyndicationContent.cs
 System.ServiceModel.Syndication/TextSyndicationContentKind.cs
+System.ServiceModel.Syndication/UrlSyndicationContent.cs
+System.ServiceModel.Syndication/XmlSyndicationContent.cs
+System.ServiceModel/WebHttpBinding.cs
+System.ServiceModel/WebHttpSecurity.cs
+System.ServiceModel/WebHttpSecurityMode.cs

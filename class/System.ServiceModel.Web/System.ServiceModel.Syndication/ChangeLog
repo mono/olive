@@ -1,5 +1,13 @@
 2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* TextSyndicationContent.cs, XmlSyndicationContent.cs,
+	  UrlSyndicationContent.cs : new stubs.
+	* SyndicationContent.cs, TextSyndicationContentKind.cs,
+	  SyndicationFeedFormatter.cs, SyndicationFeed.cs :
+	  ongoing stub fixes.
+
+2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Ato10FeedFormatter.cs Atom10FeedFormatter.cs :
 	  oops, wrong file name. renamed former to latter.
 

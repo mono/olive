@@ -32,10 +32,91 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationContent
+	public abstract class SyndicationContent
 	{
+		[MonoTODO]
+		public static TextSyndicationContent CreateHtmlContent (string content)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static TextSyndicationContent CreatePlaintextContent (string content)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static UrlSyndicationContent CreateUrlContent (Uri url, string mediaType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static TextSyndicationContent CreateXhtmlContent (string content)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static XmlSyndicationContent CreateXmlContent (object dataContractObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static XmlSyndicationContent CreateXmlContent (object dataContractObject, XmlObjectSerializer dataContractSerializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static XmlSyndicationContent CreateXmlContent (object xmlSerializerObject, XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static XmlSyndicationContent CreateXmlContent (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected SyndicationContent ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected SyndicationContent (SyndicationContent source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public abstract string Type { get; }
+
+		[MonoTODO]
+		public abstract SyndicationContent Clone ();
+
+		[MonoTODO]
+		protected abstract void WriteContentsTo (XmlWriter writer);
+
+		[MonoTODO]
+		public void WriteTo (XmlWriter writer, string outerElementName, string outerElementNamespace)
+		{
+			throw new NotImplementedException ();
+		}
+
 	}
 }

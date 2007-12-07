@@ -39,6 +39,6 @@ namespace System.ServiceModel.Syndication
 	{
 		Plaintext,
 		Html,
-		Xhtml
+		XHtml
 	}
 }

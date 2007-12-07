@@ -1,5 +1,5 @@
 //
-// SyndicationItem.cs
+// TextSyndicationContent.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -35,89 +35,46 @@ using System.Xml;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationItem
+	public class TextSyndicationContent : SyndicationContent
 	{
 		[MonoTODO]
-		public SyndicationItem ()
+		public TextSyndicationContent (string text)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name)
+		public TextSyndicationContent (string text, TextSyndicationContentKind textKind)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name, string scheme, string label)
+		protected TextSyndicationContent (TextSyndicationContent source)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected SyndicationItem (SyndicationItem source)
+		public override SyndicationContent Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
+		protected override void WriteContentsTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public string Text {
 			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public SyndicationElementExtensionCollection ElementExtensions {
+		public override string Type {
 			get { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Label {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Name {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Scheme {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public virtual SyndicationItem Clone ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual bool TryParseElement (XmlReader reader, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[MonoTODO]
-		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual void WriteElementExtensions (XmlWriter writer, string version)
-		{
-			throw new NotImplementedException ();
 		}
 	}
 }

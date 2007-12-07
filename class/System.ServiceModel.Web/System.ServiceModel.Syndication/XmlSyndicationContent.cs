@@ -1,5 +1,5 @@
 //
-// SyndicationItem.cs
+// XmlSyndicationContent.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -32,92 +32,86 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationItem
+	public class XmlSyndicationContent : SyndicationContent
 	{
 		[MonoTODO]
-		public SyndicationItem ()
+		public XmlSyndicationContent (XmlReader reader)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name)
+		public XmlSyndicationContent (string type, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name, string scheme, string label)
+		public XmlSyndicationContent (string type, object xmlSerializerExtension, XmlSerializer serializer)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected SyndicationItem (SyndicationItem source)
+		public XmlSyndicationContent (string type, SyndicationElementExtension extension)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
+		protected XmlSyndicationContent (XmlSyndicationContent source)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public override SyndicationContent Clone ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public XmlDictionaryReader GetReaderAtContent ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TContent ReadContent<TContent> ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TContent ReadContent<TContent> (XmlObjectSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TContent ReadContent<TContent> (XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void WriteContentsTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension Extension {
 			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public SyndicationElementExtensionCollection ElementExtensions {
+		public override string Type {
 			get { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Label {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Name {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Scheme {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public virtual SyndicationItem Clone ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual bool TryParseElement (XmlReader reader, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[MonoTODO]
-		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual void WriteElementExtensions (XmlWriter writer, string version)
-		{
-			throw new NotImplementedException ();
 		}
 	}
 }
