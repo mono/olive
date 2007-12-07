@@ -38,19 +38,50 @@ namespace System.ServiceModel.Syndication
 	public class SyndicationLink
 	{
 		[MonoTODO]
+		public static SyndicationLink CreateAlternateLink (Uri uri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
+
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationLink CreateSelfLink (Uri uri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationLink CreateSelfLink (Uri uri, string mediaType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
 		public SyndicationLink ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationLink (string name)
+		public SyndicationLink (Uri uri)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationLink (string name, string scheme, string label)
+		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
 		{
 			throw new NotImplementedException ();
 		}
@@ -72,19 +103,37 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		public string Label {
+		public Uri BaseUri {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Name {
+		public long Length {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Scheme {
+		public string MediaType {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string RelationshipType {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string Title {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Uri Uri {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
@@ -116,6 +165,12 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		protected internal virtual void WriteElementExtensions (XmlWriter writer, string version)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Uri GetAbsoluteUri ()
 		{
 			throw new NotImplementedException ();
 		}

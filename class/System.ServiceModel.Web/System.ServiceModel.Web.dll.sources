@@ -10,8 +10,12 @@ System.Runtime.Serialization.Json/JsonReaderWriterFactory.cs
 System.Runtime.Serialization.Json/JsonWriter.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter_1.cs
+System.ServiceModel.Syndication/Atom10ItemFormatter.cs
+System.ServiceModel.Syndication/Atom10ItemFormatter_1.cs
 System.ServiceModel.Syndication/Rss20FeedFormatter.cs
 System.ServiceModel.Syndication/Rss20FeedFormatter_1.cs
+System.ServiceModel.Syndication/Rss20ItemFormatter.cs
+System.ServiceModel.Syndication/Rss20ItemFormatter_1.cs
 System.ServiceModel.Syndication/SyndicationCategory.cs
 System.ServiceModel.Syndication/SyndicationContent.cs
 System.ServiceModel.Syndication/SyndicationElementExtension.cs
@@ -19,6 +23,7 @@ System.ServiceModel.Syndication/SyndicationElementExtensionCollection.cs
 System.ServiceModel.Syndication/SyndicationFeed.cs
 System.ServiceModel.Syndication/SyndicationFeedFormatter.cs
 System.ServiceModel.Syndication/SyndicationItem.cs
+System.ServiceModel.Syndication/SyndicationItemFormatter.cs
 System.ServiceModel.Syndication/SyndicationLink.cs
 System.ServiceModel.Syndication/SyndicationPerson.cs
 System.ServiceModel.Syndication/SyndicationVersions.cs

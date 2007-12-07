@@ -44,13 +44,21 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name)
+		public SyndicationItem (string title, string description, Uri feedAlternateLink)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationItem (string name, string scheme, string label)
+		public SyndicationItem (string title, string description, Uri feedAlternateLink, string id,
+					DateTimeOffset lastUpdatedTime)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationItem (string title, SyndicationContent content, Uri feedAlternateLink, string id,
+					DateTimeOffset lastUpdatedTime)
 		{
 			throw new NotImplementedException ();
 		}
@@ -72,25 +80,141 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		public string Label {
+		public Collection<SyndicationPerson> Authors {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Collection<SyndicationCategory> Categories {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Collection<SyndicationPerson> Contributors {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Collection<SyndicationLink> Links {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public Uri BaseUri {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Name {
+		public TextSyndicationContent Copyright {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Scheme {
+		public SyndicationContent Content {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string Id {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public DateTimeOffset LastUpdatedTime {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public DateTimeOffset PublishDate {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public SyndicationFeed SourceFeed {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public TextSyndicationContent Summary {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public TextSyndicationContent Title {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
 		public virtual SyndicationItem Clone ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationCategory CreateCategory ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationLink CreateLink ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual SyndicationPerson CreatePerson ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Atom10ItemFormatter GetAtom10Formatter ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20ItemFormatter GetRss20Formatter ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20ItemFormatter GetRss20Formatter (bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static SyndicationItem Load (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public static TSyndicationItem Load<TSyndicationItem> (XmlReader reader) where TSyndicationItem : SyndicationItem
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void SaveAsAtom10 (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void SaveAsRss20 (XmlWriter writer)
 		{
 			throw new NotImplementedException ();
 		}

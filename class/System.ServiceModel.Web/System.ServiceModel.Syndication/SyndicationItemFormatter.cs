@@ -1,5 +1,5 @@
 //
-// SyndicationFeedFormatter.cs
+// SyndicationItemFormatter.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -36,15 +36,9 @@ using System.Xml;
 namespace System.ServiceModel.Syndication
 {
 	[DataContract]
-	public abstract class SyndicationFeedFormatter
+	public abstract class SyndicationItemFormatter
 	{
 		#region static members
-
-		[MonoTODO]
-		protected internal static SyndicationCategory CreateCategory (SyndicationFeed feed)
-		{
-			throw new NotImplementedException ();
-		}
 
 		[MonoTODO]
 		protected internal static SyndicationCategory CreateCategory (SyndicationItem item)
@@ -53,25 +47,7 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static SyndicationItem CreateItem (SyndicationFeed feed)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal static SyndicationLink CreateLink (SyndicationFeed feed)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		protected internal static SyndicationLink CreateLink (SyndicationItem item)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal static SyndicationPerson CreatePerson (SyndicationFeed feed)
 		{
 			throw new NotImplementedException ();
 		}
@@ -84,12 +60,6 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationCategory category, int maxExtensionSize)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationFeed feed, int maxExtensionSize)
 		{
 			throw new NotImplementedException ();
 		}
@@ -114,12 +84,6 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationCategory category, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationFeed feed, string version)
 		{
 			throw new NotImplementedException ();
 		}
@@ -155,12 +119,6 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static bool TryParseElement (XmlReader reader, SyndicationFeed feed, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationItem item, string version)
 		{
 			throw new NotImplementedException ();
@@ -185,12 +143,6 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationFeed feed, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationItem item, string version)
 		{
 			throw new NotImplementedException ();
@@ -209,13 +161,7 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationCategory category, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationFeed feed, string version)
+		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationCategory category, string version)
 		{
 			throw new NotImplementedException ();
 		}
@@ -227,13 +173,13 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
-		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationLink link, string version)
+		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationLink link, string version)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationPerson person, string version)
+		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationPerson person, string version)
 		{
 			throw new NotImplementedException ();
 		}
@@ -243,25 +189,25 @@ namespace System.ServiceModel.Syndication
 		#region instance members
 
 		[MonoTODO]
-		protected SyndicationFeedFormatter ()
+		protected SyndicationItemFormatter ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected SyndicationFeedFormatter (SyndicationFeed feedToWrite)
+		protected SyndicationItemFormatter (SyndicationItem itemToWrite)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal virtual void SetFeed (SyndicationFeed feed)
+		protected internal virtual void SetItem (SyndicationItem item)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationFeed Feed { 
+		public SyndicationItem Item { 
 			get { throw new NotImplementedException (); }
 		}
 
@@ -269,7 +215,7 @@ namespace System.ServiceModel.Syndication
 		public abstract string Version { get; }
 
 		[MonoTODO]
-		protected abstract SyndicationFeed CreateFeedInstance ();
+		protected abstract SyndicationItem CreateItemInstance ();
 
 		public abstract bool CanRead (XmlReader reader);
 

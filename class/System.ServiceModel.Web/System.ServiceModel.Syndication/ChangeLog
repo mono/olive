@@ -1,5 +1,13 @@
 2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatter.cs, Atom10ItemFormatter_1.cs,
+	  Rss20ItemFormatter.cs, Rss20ItemFormatter_1.cs,
+	  SyndicationItemFormatter.cs : more new stubs.
+	* SyndicationFeedFormatter.cs, SyndicationItem.cs,
+	  SyndicationLink.cs, SyndicationPerson.cs : more stub fixes.
+
+2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TextSyndicationContent.cs, XmlSyndicationContent.cs,
 	  UrlSyndicationContent.cs : new stubs.
 	* SyndicationContent.cs, TextSyndicationContentKind.cs,

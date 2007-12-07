@@ -1,5 +1,5 @@
 //
-// SyndicationPerson.cs
+// Atom10ItemFormatter.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -35,87 +35,68 @@ using System.Xml;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationPerson
+	public class Atom10ItemFormatter : SyndicationItemFormatter
 	{
 		[MonoTODO]
-		public SyndicationPerson ()
+		public Atom10ItemFormatter ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationPerson (string name)
+		public Atom10ItemFormatter (SyndicationItem feedToWrite)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		public SyndicationPerson (string name, string scheme, string label)
+		public Atom10ItemFormatter (Type feedTypeToCreate)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected SyndicationPerson (SyndicationPerson source)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
+		protected Type ItemType {
 			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public SyndicationElementExtensionCollection ElementExtensions {
-			get { throw new NotImplementedException (); }
-		}
-
-		[MonoTODO]
-		public string Email {
+		public bool PreserveAttributeExtensions {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Name {
+		public bool PreserveElementExtensions {
 			get { throw new NotImplementedException (); }
 			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public string Uri {
+		public override string Version {
 			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public virtual SyndicationPerson Clone ()
+		protected override SyndicationItem CreateItemInstance ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
+		public override bool CanRead (XmlReader reader)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal virtual bool TryParseElement (XmlReader reader, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[MonoTODO]
-		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)
+		public override void ReadFrom (XmlReader reader)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected internal virtual void WriteElementExtensions (XmlWriter writer, string version)
+		public override void WriteTo (XmlWriter writer)
 		{
 			throw new NotImplementedException ();
 		}
