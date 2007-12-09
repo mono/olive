@@ -47,6 +47,7 @@ namespace System.Windows {
 		public int Count {
 			get { return count; }
 		}
+
 		public LocalValueEntry Current {
 			get { return new LocalValueEntry((DependencyProperty)propertyEnumerator.Key, 
 					propertyEnumerator.Value); }
@@ -54,6 +55,7 @@ namespace System.Windows {
 		object IEnumerator.Current {
 			get { return this.Current; }
 		}
+
 		public bool MoveNext()
 		{
 			return propertyEnumerator.MoveNext();
