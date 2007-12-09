@@ -1,3 +1,4 @@
+System.Collections.ObjectModel/ObservableCollectionTest.cs
 System.Windows/DependencyObjectTest.cs
 System.Windows/DependencyObjectTypeTest.cs
 System.Windows/DependencyPropertyTest.cs

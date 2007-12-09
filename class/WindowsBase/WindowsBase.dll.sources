@@ -1,3 +1,5 @@
+System.Collections.ObjectModel/ObservableCollection.cs
+System.Collections.ObjectModel/ReadOnlyObservableCollection.cs
 System.Collections.Specialized/CollectionChangedEventManager.cs
 System.Collections.Specialized/INotifyCollectionChanged.cs
 System.Collections.Specialized/NotifyCollectionChangedAction.cs
