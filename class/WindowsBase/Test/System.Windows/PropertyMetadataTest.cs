@@ -38,7 +38,7 @@ namespace MonoTests.System.Windows {
 		public static readonly DependencyProperty TestProp4 = DependencyProperty.Register ("property4", typeof (string), typeof (TestDepObj), new PropertyMetadata ("default", changed, coerce));
 
 		static void changed (DependencyObject d, DependencyPropertyChangedEventArgs e) { }
-		static void coerce (DependencyObject d, object baseValue) { }
+		static object coerce (DependencyObject d, object baseValue) { return baseValue; }
 	}
 
 	class TestSubclass : TestDepObj {
