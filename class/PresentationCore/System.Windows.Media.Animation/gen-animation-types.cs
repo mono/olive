@@ -187,9 +187,12 @@ namespace System.Windows.Media.Animation {
 		tw.WriteLine (@"
 public class {0}Animation : {0}AnimationBase
 {{
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register (""By"", typeof ({1}), typeof ({0}KeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register (""From"", typeof ({1}), typeof ({0}KeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register (""To"", typeof ({1}), typeof ({0}KeyFrame));
 
 	public {0}Animation ()
 	{{
@@ -381,8 +384,11 @@ public class {0}AnimationUsingKeyFrames : {0}AnimationBase, IKeyFrameAnimation, 
 		tw.WriteLine (@"
 public abstract class {0}KeyFrame : Freezable, IKeyFrame
 {{
-	public static readonly DependencyProperty KeyTimeProperty; /* XXX initialize */
-	public static readonly DependencyProperty ValueProperty; /* XXX initialize */
+	public static readonly DependencyProperty KeyTimeProperty
+				= DependencyProperty.Register (""KeyTime"", typeof (KeyTime), typeof ({0}KeyFrame));
+
+	public static readonly DependencyProperty ValueProperty
+				= DependencyProperty.Register (""Value"", typeof ({1}), typeof ({0}KeyFrame));
 
 	protected {0}KeyFrame ()
 	{{
@@ -695,7 +701,8 @@ public class Linear{0}KeyFrame : {0}KeyFrame
 public class Spline{0}KeyFrame : {0}KeyFrame
 {{
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register (""KeySpline"", typeof (KeySpline), typeof (Spline{0}KeyFrame));
 
 	{1} value;
 	KeyTime keyTime;
