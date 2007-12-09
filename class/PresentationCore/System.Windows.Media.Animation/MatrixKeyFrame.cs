@@ -14,8 +14,11 @@ namespace System.Windows.Media.Animation {
 
 public abstract class MatrixKeyFrame : Freezable, IKeyFrame
 {
-	public static readonly DependencyProperty KeyTimeProperty; /* XXX initialize */
-	public static readonly DependencyProperty ValueProperty; /* XXX initialize */
+	public static readonly DependencyProperty KeyTimeProperty
+				= DependencyProperty.Register ("KeyTime", typeof (KeyTime), typeof (MatrixKeyFrame));
+
+	public static readonly DependencyProperty ValueProperty
+				= DependencyProperty.Register ("Value", typeof (Matrix), typeof (MatrixKeyFrame));
 
 	protected MatrixKeyFrame ()
 	{

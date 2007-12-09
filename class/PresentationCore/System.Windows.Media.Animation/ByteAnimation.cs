@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class ByteAnimation : ByteAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (byte), typeof (ByteKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (byte), typeof (ByteKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (byte), typeof (ByteKeyFrame));
 
 	public ByteAnimation ()
 	{

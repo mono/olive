@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class SizeAnimation : SizeAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (Size), typeof (SizeKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (Size), typeof (SizeKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (Size), typeof (SizeKeyFrame));
 
 	public SizeAnimation ()
 	{

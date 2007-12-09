@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class Int16Animation : Int16AnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (short), typeof (Int16KeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (short), typeof (Int16KeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (short), typeof (Int16KeyFrame));
 
 	public Int16Animation ()
 	{

@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class DecimalAnimation : DecimalAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (Decimal), typeof (DecimalKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (Decimal), typeof (DecimalKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (Decimal), typeof (DecimalKeyFrame));
 
 	public DecimalAnimation ()
 	{

@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class Int64Animation : Int64AnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (long), typeof (Int64KeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (long), typeof (Int64KeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (long), typeof (Int64KeyFrame));
 
 	public Int64Animation ()
 	{

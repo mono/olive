@@ -14,8 +14,11 @@ namespace System.Windows.Media.Animation {
 
 public abstract class BooleanKeyFrame : Freezable, IKeyFrame
 {
-	public static readonly DependencyProperty KeyTimeProperty; /* XXX initialize */
-	public static readonly DependencyProperty ValueProperty; /* XXX initialize */
+	public static readonly DependencyProperty KeyTimeProperty
+				= DependencyProperty.Register ("KeyTime", typeof (KeyTime), typeof (BooleanKeyFrame));
+
+	public static readonly DependencyProperty ValueProperty
+				= DependencyProperty.Register ("Value", typeof (bool), typeof (BooleanKeyFrame));
 
 	protected BooleanKeyFrame ()
 	{

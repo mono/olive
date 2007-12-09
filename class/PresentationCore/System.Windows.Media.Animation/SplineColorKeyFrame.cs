@@ -15,7 +15,8 @@ namespace System.Windows.Media.Animation {
 public class SplineColorKeyFrame : ColorKeyFrame
 {
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register ("KeySpline", typeof (KeySpline), typeof (SplineColorKeyFrame));
 
 	Color value;
 	KeyTime keyTime;

@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class ColorAnimation : ColorAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (Color), typeof (ColorKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (Color), typeof (ColorKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (Color), typeof (ColorKeyFrame));
 
 	public ColorAnimation ()
 	{

@@ -15,7 +15,8 @@ namespace System.Windows.Media.Animation {
 public class SplineSizeKeyFrame : SizeKeyFrame
 {
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register ("KeySpline", typeof (KeySpline), typeof (SplineSizeKeyFrame));
 
 	Size value;
 	KeyTime keyTime;

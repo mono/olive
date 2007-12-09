@@ -14,8 +14,11 @@ namespace System.Windows.Media.Animation {
 
 public abstract class Int64KeyFrame : Freezable, IKeyFrame
 {
-	public static readonly DependencyProperty KeyTimeProperty; /* XXX initialize */
-	public static readonly DependencyProperty ValueProperty; /* XXX initialize */
+	public static readonly DependencyProperty KeyTimeProperty
+				= DependencyProperty.Register ("KeyTime", typeof (KeyTime), typeof (Int64KeyFrame));
+
+	public static readonly DependencyProperty ValueProperty
+				= DependencyProperty.Register ("Value", typeof (long), typeof (Int64KeyFrame));
 
 	protected Int64KeyFrame ()
 	{

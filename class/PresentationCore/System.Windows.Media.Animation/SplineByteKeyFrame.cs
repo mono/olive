@@ -15,7 +15,8 @@ namespace System.Windows.Media.Animation {
 public class SplineByteKeyFrame : ByteKeyFrame
 {
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register ("KeySpline", typeof (KeySpline), typeof (SplineByteKeyFrame));
 
 	byte value;
 	KeyTime keyTime;

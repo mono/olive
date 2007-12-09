@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class RectAnimation : RectAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (Rect), typeof (RectKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (Rect), typeof (RectKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (Rect), typeof (RectKeyFrame));
 
 	public RectAnimation ()
 	{

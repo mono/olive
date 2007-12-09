@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class DoubleAnimation : DoubleAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (double), typeof (DoubleKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (double), typeof (DoubleKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (double), typeof (DoubleKeyFrame));
 
 	public DoubleAnimation ()
 	{

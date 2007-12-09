@@ -14,8 +14,11 @@ namespace System.Windows.Media.Animation {
 
 public abstract class SizeKeyFrame : Freezable, IKeyFrame
 {
-	public static readonly DependencyProperty KeyTimeProperty; /* XXX initialize */
-	public static readonly DependencyProperty ValueProperty; /* XXX initialize */
+	public static readonly DependencyProperty KeyTimeProperty
+				= DependencyProperty.Register ("KeyTime", typeof (KeyTime), typeof (SizeKeyFrame));
+
+	public static readonly DependencyProperty ValueProperty
+				= DependencyProperty.Register ("Value", typeof (Size), typeof (SizeKeyFrame));
 
 	protected SizeKeyFrame ()
 	{

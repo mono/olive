@@ -15,7 +15,8 @@ namespace System.Windows.Media.Animation {
 public class SplineInt16KeyFrame : Int16KeyFrame
 {
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register ("KeySpline", typeof (KeySpline), typeof (SplineInt16KeyFrame));
 
 	short value;
 	KeyTime keyTime;

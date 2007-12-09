@@ -15,7 +15,8 @@ namespace System.Windows.Media.Animation {
 public class SplineDecimalKeyFrame : DecimalKeyFrame
 {
 
-	public static readonly DependencyProperty KeySplineProperty; // XXX initialize
+	public static readonly DependencyProperty KeySplineProperty =
+		DependencyProperty.Register ("KeySpline", typeof (KeySpline), typeof (SplineDecimalKeyFrame));
 
 	Decimal value;
 	KeyTime keyTime;

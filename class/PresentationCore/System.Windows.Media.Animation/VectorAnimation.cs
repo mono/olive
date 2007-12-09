@@ -14,9 +14,12 @@ namespace System.Windows.Media.Animation {
 
 public class VectorAnimation : VectorAnimationBase
 {
-	public static readonly DependencyProperty ByProperty; /* XXX initialize */
-	public static readonly DependencyProperty FromProperty; /* XXX initialize */
-	public static readonly DependencyProperty ToProperty; /* XXX initialize */
+	public static readonly DependencyProperty ByProperty
+				= DependencyProperty.Register ("By", typeof (Vector), typeof (VectorKeyFrame));
+	public static readonly DependencyProperty FromProperty
+				= DependencyProperty.Register ("From", typeof (Vector), typeof (VectorKeyFrame));
+	public static readonly DependencyProperty ToProperty
+				= DependencyProperty.Register ("To", typeof (Vector), typeof (VectorKeyFrame));
 
 	public VectorAnimation ()
 	{
