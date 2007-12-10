@@ -37,111 +37,123 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationLink : ISyndicationElement
 	{
-		[MonoTODO]
+		#region Static members
+
 		public static SyndicationLink CreateAlternateLink (Uri uri)
 		{
-			throw new NotImplementedException ();
+			return CreateAlternateLink (uri, null);
 		}
 
-		[MonoTODO]
 		public static SyndicationLink CreateAlternateLink (Uri uri, string mediaType)
 		{
-			throw new NotImplementedException ();
+			return new SyndicationLink (uri, "alternate", null, mediaType, 0);
 		}
 
-		[MonoTODO]
 		public static SyndicationLink CreateMediaEnclosureLink (Uri uri, string mediaType, long length)
 
 		{
-			throw new NotImplementedException ();
+			return new SyndicationLink (uri, "enclosure", null, mediaType, length);
 		}
 
-		[MonoTODO]
 		public static SyndicationLink CreateSelfLink (Uri uri)
 		{
-			throw new NotImplementedException ();
+			return CreateSelfLink (uri, null);
 		}
 
-		[MonoTODO]
 		public static SyndicationLink CreateSelfLink (Uri uri, string mediaType)
 		{
-			throw new NotImplementedException ();
+			return new SyndicationLink (uri, "self", null, mediaType, 0);
 		}
 
-		[MonoTODO]
+		#endregion
+
+		#region Instance members
+
+		Uri base_uri, href;
+		long length;
+		string rel, title, type;
+		SyndicationExtensions extensions = new SyndicationExtensions ();
+
 		public SyndicationLink ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public SyndicationLink (Uri uri)
 		{
-			throw new NotImplementedException ();
+			Uri = uri;
 		}
 
-		[MonoTODO]
 		public SyndicationLink (Uri uri, string relationshipType, string title, string mediaType, long length)
 		{
-			throw new NotImplementedException ();
+			Uri = uri;
+			RelationshipType = relationshipType;
+			Title = title;
+			MediaType = mediaType;
+			Length = length;
 		}
 
-		[MonoTODO]
 		protected SyndicationLink (SyndicationLink source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			base_uri = source.base_uri;
+			href = source.href;
+			length = source.length;
+			rel = source.rel;
+			title = source.title;
+			type = source.type;
+			extensions = source.extensions.Clone ();
 		}
 
-		[MonoTODO]
 		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Attributes; }
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtensionCollection ElementExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Elements; }
 		}
 
-		[MonoTODO]
 		public Uri BaseUri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return base_uri; }
+			set {
+				if (value != null && !value.IsAbsoluteUri)
+					throw new ArgumentException ("Base URI must not be relative");
+				base_uri = value;
+			}
 		}
 
-		[MonoTODO]
 		public long Length {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return length; }
+			set {
+				if (length < 0)
+					throw new ArgumentOutOfRangeException ("length");
+				length = value;
+			}
 		}
 
-		[MonoTODO]
 		public string MediaType {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return type; }
+			set { type = value; }
 		}
 
-		[MonoTODO]
 		public string RelationshipType {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return rel; }
+			set { rel = value; }
 		}
 
-		[MonoTODO]
 		public string Title {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return title; }
+			set { title = value; }
 		}
 
-		[MonoTODO]
 		public Uri Uri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return href; }
+			set { href = value; }
 		}
 
-		[MonoTODO]
 		public virtual SyndicationLink Clone ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationLink (this);
 		}
 
 		[MonoTODO]
@@ -169,10 +181,14 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Uri GetAbsoluteUri ()
 		{
-			throw new NotImplementedException ();
+			if (href == null)
+				return null;
+			// our BaseUri is always absolute (unlike .NET).
+			return  base_uri != null ? new Uri (base_uri, href.ToString ()) : href.IsAbsoluteUri ? href : null;
 		}
+
+		#endregion
 	}
 }

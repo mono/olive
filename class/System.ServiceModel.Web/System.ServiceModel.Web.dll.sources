@@ -21,6 +21,7 @@ System.ServiceModel.Syndication/SyndicationCategory.cs
 System.ServiceModel.Syndication/SyndicationContent.cs
 System.ServiceModel.Syndication/SyndicationElementExtension.cs
 System.ServiceModel.Syndication/SyndicationElementExtensionCollection.cs
+System.ServiceModel.Syndication/SyndicationExtensions.cs
 System.ServiceModel.Syndication/SyndicationFeed.cs
 System.ServiceModel.Syndication/SyndicationFeedFormatter.cs
 System.ServiceModel.Syndication/SyndicationItem.cs

@@ -42,6 +42,14 @@ namespace System.ServiceModel.Syndication
 		{
 		}
 
+		internal SyndicationElementExtensionCollection (IEnumerable<SyndicationElementExtension> source)
+		{
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			foreach (SyndicationElementExtension item in source)
+				Add (item);
+		}
+
 		[MonoTODO]
 		public void Add (object extension)
 		{
