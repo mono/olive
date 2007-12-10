@@ -35,7 +35,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationLink
+	public class SyndicationLink : ISyndicationElement
 	{
 		[MonoTODO]
 		public static SyndicationLink CreateAlternateLink (Uri uri)

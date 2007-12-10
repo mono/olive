@@ -32,10 +32,86 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
 	public class SyndicationElementExtension
 	{
+		[MonoTODO]
+		public SyndicationElementExtension (object dataContractExtension)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension (object dataContractExtension, XmlObjectSerializer dataContractSerializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension (object xmlSerializerExtension, XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension (string outerName, string outerNamespace, object dataContractExtension)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension (string outerName, string outerNamespace, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public SyndicationElementExtension (XmlReader xmlReader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public string OuterName {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public string OuterNamespace {
+			get { throw new NotImplementedException (); }
+		}
+
+		[MonoTODO]
+		public TExtension GetObject<TExtension> ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TExtension GetObject<TExtension> (XmlObjectSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public TExtension GetObject<TExtension> (XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public XmlReader GetReader ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void WriteTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

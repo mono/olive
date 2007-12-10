@@ -32,10 +32,13 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	public class Atom10FeedFormatter : SyndicationFeedFormatter
+	[XmlRoot ("feed", Namespace = "http://www.w3.org/2005/Atom")]
+	public class Atom10FeedFormatter : SyndicationFeedFormatter, IXmlSerializable
 	{
 		[MonoTODO]
 		public Atom10FeedFormatter ()
@@ -121,6 +124,24 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
 		}

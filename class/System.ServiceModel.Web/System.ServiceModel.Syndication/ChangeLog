@@ -1,3 +1,16 @@
+2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Atom10FeedFormatter.cs Atom10FeedFormatter_1.cs
+	  Atom10ItemFormatter.cs Atom10ItemFormatter_1.cs
+	  Rss20FeedFormatter.cs Rss20FeedFormatter_1.cs
+	  Rss20ItemFormatter.cs Rss20ItemFormatter_1.cs
+	  SyndicationCategory.cs SyndicationElementExtension.cs
+	  SyndicationElementExtensionCollection.cs SyndicationFeed.cs
+	  SyndicationItem.cs SyndicationLink.cs SyndicationPerson.cs:
+	  finished stubs.
+	* ISyndicationElement.cs : internal interface, introduced to reduce
+	  corcompare obstacles.
+
 2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Atom10ItemFormatter.cs, Atom10ItemFormatter_1.cs,

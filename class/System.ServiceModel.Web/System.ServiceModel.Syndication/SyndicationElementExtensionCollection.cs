@@ -32,10 +32,98 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
 	public sealed class SyndicationElementExtensionCollection : Collection<SyndicationElementExtension>
 	{
+		internal SyndicationElementExtensionCollection ()
+		{
+		}
+
+		[MonoTODO]
+		public void Add (object extension)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void Add (object dataContractExtension, DataContractSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void Add (object xmlSerializerExtension, XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void Add (string outerName, string outerNamespace, object dataContractExtension)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void Add (string outerName, string outerNamespace, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public void Add (XmlReader xmlReader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void ClearItems ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public XmlReader GetReaderAtElementExtensions ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void InsertItem (int index, SyndicationElementExtension item)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace, XmlObjectSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace, XmlSerializer serializer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void RemoveItem (int index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override void SetItem (int index, SyndicationElementExtension item)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

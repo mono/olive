@@ -32,10 +32,13 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	public class Rss20ItemFormatter : SyndicationItemFormatter
+	[XmlRoot ("item", Namespace = "")]
+	public class Rss20ItemFormatter : SyndicationItemFormatter, IXmlSerializable
 	{
 		[MonoTODO]
 		public Rss20ItemFormatter ()
@@ -50,9 +53,21 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
+		public Rss20ItemFormatter (SyndicationItem feedToWrite, bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
 		public Rss20ItemFormatter (Type feedTypeToCreate)
 		{
 			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public bool SerializeExtensionsAsAtom {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
@@ -97,6 +112,24 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
 		}

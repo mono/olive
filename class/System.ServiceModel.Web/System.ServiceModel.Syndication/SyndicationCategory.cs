@@ -35,7 +35,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationCategory
+	public class SyndicationCategory : ISyndicationElement
 	{
 		[MonoTODO]
 		public SyndicationCategory ()

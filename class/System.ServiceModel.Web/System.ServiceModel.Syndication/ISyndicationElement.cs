@@ -1,5 +1,5 @@
 //
-// Atom10ItemFormatter_1.cs
+// Atom10FeedFormatter.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -27,35 +27,16 @@
 //
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Runtime.Serialization;
-using System.Text;
 using System.Xml;
-using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	[XmlRoot ("entry", Namespace = "http://www.w3.org/2005/Atom")]
-	public class Atom10ItemFormatter<TSyndicationItem> : Atom10ItemFormatter
-			where TSyndicationItem : SyndicationItem, new ()
+	// For now it makes few points; just to hide some corcompare obstacles
+	// for "Final Virtual" members in syndication elements.
+	interface ISyndicationElement
 	{
-		[MonoTODO]
-		public Atom10ItemFormatter ()
-		{
-			throw new NotImplementedException ();
-		}
+		Dictionary<XmlQualifiedName, string> AttributeExtensions { get; }
 
-		[MonoTODO]
-		public Atom10ItemFormatter (TSyndicationItem feedToWrite)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected override SyndicationItem CreateItemInstance ()
-		{
-			throw new NotImplementedException ();
-		}
+		SyndicationElementExtensionCollection ElementExtensions { get; }
 	}
 }

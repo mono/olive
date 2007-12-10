@@ -35,7 +35,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Syndication
 {
-	public class SyndicationItem
+	public class SyndicationItem : ISyndicationElement
 	{
 		[MonoTODO]
 		public SyndicationItem ()
@@ -154,6 +154,12 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
+		public void AddPermalink (Uri link)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
 		public virtual SyndicationItem Clone ()
 		{
 			throw new NotImplementedException ();
@@ -221,6 +227,12 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal virtual bool TryParseContent (XmlReader reader, string contentType, string version, out SyndicationContent content)
 		{
 			throw new NotImplementedException ();
 		}

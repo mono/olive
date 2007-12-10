@@ -32,9 +32,11 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
+	[XmlRoot ("item", Namespace = "")]
 	public class Rss20ItemFormatter<TSyndicationItem> : Rss20ItemFormatter
 			where TSyndicationItem : SyndicationItem, new ()
 	{
@@ -46,6 +48,18 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public Rss20ItemFormatter (TSyndicationItem feedToWrite)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20ItemFormatter (TSyndicationItem feedToWrite, bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override SyndicationItem CreateItemInstance ()
 		{
 			throw new NotImplementedException ();
 		}

@@ -32,9 +32,11 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
+	[XmlRoot ("feed", Namespace = "http://www.w3.org/2005/Atom")]
 	public class Atom10FeedFormatter<TSyndicationFeed> : Atom10FeedFormatter
 			where TSyndicationFeed : SyndicationFeed, new ()
 	{
@@ -46,6 +48,12 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public Atom10FeedFormatter (TSyndicationFeed feedToWrite)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override SyndicationFeed CreateFeedInstance ()
 		{
 			throw new NotImplementedException ();
 		}

@@ -32,10 +32,13 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
-	public class Rss20FeedFormatter : SyndicationFeedFormatter
+	[XmlRoot ("rss", Namespace = "")]
+	public class Rss20FeedFormatter : SyndicationFeedFormatter, IXmlSerializable
 	{
 		[MonoTODO]
 		public Rss20FeedFormatter ()
@@ -50,9 +53,21 @@ namespace System.ServiceModel.Syndication
 		}
 
 		[MonoTODO]
+		public Rss20FeedFormatter (SyndicationFeed feedToWrite, bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
 		public Rss20FeedFormatter (Type feedTypeToCreate)
 		{
 			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public bool SerializeExtensionsAsAtom {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
@@ -79,6 +94,12 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		protected override SyndicationFeed CreateFeedInstance ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected internal override void SetFeed (SyndicationFeed feed)
 		{
 			throw new NotImplementedException ();
 		}
@@ -121,6 +142,24 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
 		}

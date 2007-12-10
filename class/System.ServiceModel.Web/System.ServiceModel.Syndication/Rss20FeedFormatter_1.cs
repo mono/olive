@@ -32,9 +32,11 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 
 namespace System.ServiceModel.Syndication
 {
+	[XmlRoot ("rss", Namespace = "")]
 	public class Rss20FeedFormatter<TSyndicationFeed> : Rss20FeedFormatter
 			where TSyndicationFeed : SyndicationFeed, new ()
 	{
@@ -46,6 +48,18 @@ namespace System.ServiceModel.Syndication
 
 		[MonoTODO]
 		public Rss20FeedFormatter (TSyndicationFeed feedToWrite)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public Rss20FeedFormatter (TSyndicationFeed feedToWrite, bool serializeExtensionsAsAtom)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		protected override SyndicationFeed CreateFeedInstance ()
 		{
 			throw new NotImplementedException ();
 		}
