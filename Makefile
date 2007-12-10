@@ -2,9 +2,9 @@ thisdir := .
 
 SUBDIRS := build class tools data scripts
 
-net_3_0_SUBDIRS := build class tools data scripts
+net_3_0_SUBDIRS := build class tools data scripts nunit20
 net_2_1_SUBDIRS := build class data
-net_3_5_SUBDIRS := build class
+net_3_5_SUBDIRS := build class nunit20
 
 include build/config.make
 

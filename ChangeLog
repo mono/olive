@@ -1,3 +1,7 @@
+2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : include nunit20 to the build for 3.0 and 3.5.
+
 2007-10-10  Wade Berrier  <wberrier@novell.com>
 
 	* configure: split up VERSION so no segments are longer than
