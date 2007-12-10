@@ -1,5 +1,10 @@
 2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatterTest.cs, Rss20ItemFormatterTest.cs,
+	  SyndicationFeedTest.cs, SyndicationItemTest.cs : new tests.
+
+2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationLinkTest.cs : test RelationshipType too. Tiny renaming.
 
 2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>

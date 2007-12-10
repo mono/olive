@@ -188,40 +188,39 @@ namespace System.ServiceModel.Syndication
 
 		#region instance members
 
-		[MonoTODO]
+		SyndicationItem item;
+
 		protected SyndicationItemFormatter ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected SyndicationItemFormatter (SyndicationItem itemToWrite)
 		{
-			throw new NotImplementedException ();
+			if (itemToWrite == null)
+				throw new ArgumentNullException ("itemToWrite");
+			SetItem (itemToWrite);
 		}
 
 		[MonoTODO]
 		protected internal virtual void SetItem (SyndicationItem item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			this.item = item;
 		}
 
-		[MonoTODO]
 		public SyndicationItem Item { 
-			get { throw new NotImplementedException (); }
+			get { return item; }
 		}
 
-		[MonoTODO]
 		public abstract string Version { get; }
 
-		[MonoTODO]
 		protected abstract SyndicationItem CreateItemInstance ();
 
 		public abstract bool CanRead (XmlReader reader);
 
 		public abstract void ReadFrom (XmlReader reader);
 
-		[MonoTODO]
 		public abstract void WriteTo (XmlWriter writer);
 
 		[MonoTODO]

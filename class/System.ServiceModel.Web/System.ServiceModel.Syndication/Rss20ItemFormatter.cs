@@ -40,56 +40,52 @@ namespace System.ServiceModel.Syndication
 	[XmlRoot ("item", Namespace = "")]
 	public class Rss20ItemFormatter : SyndicationItemFormatter, IXmlSerializable
 	{
-		[MonoTODO]
+		bool ext_atom_serialization, preserve_att_ext, preserve_elem_ext;
+		Type item_type;
+
 		public Rss20ItemFormatter ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Rss20ItemFormatter (SyndicationItem feedToWrite)
+			: this (feedToWrite, true)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Rss20ItemFormatter (SyndicationItem feedToWrite, bool serializeExtensionsAsAtom)
+			: base (feedToWrite)
 		{
-			throw new NotImplementedException ();
+			ext_atom_serialization = serializeExtensionsAsAtom;
 		}
 
-		[MonoTODO]
-		public Rss20ItemFormatter (Type feedTypeToCreate)
+		public Rss20ItemFormatter (Type itemTypeToCreate)
 		{
-			throw new NotImplementedException ();
+			if (itemTypeToCreate == null)
+				throw new ArgumentNullException ("itemTypeToCreate");
+			item_type = itemTypeToCreate;
 		}
 
-		[MonoTODO]
 		public bool SerializeExtensionsAsAtom {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return ext_atom_serialization; }
+			set { ext_atom_serialization = value; }
 		}
 
-		[MonoTODO]
 		protected Type ItemType {
-			get { throw new NotImplementedException (); }
+			get { return item_type; }
 		}
 
-		[MonoTODO]
 		public bool PreserveAttributeExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_att_ext; }
+			set { preserve_att_ext = value; }
 		}
 
-		[MonoTODO]
 		public bool PreserveElementExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_elem_ext; }
+			set { preserve_elem_ext = value; }
 		}
 
-		[MonoTODO]
 		public override string Version {
-			get { throw new NotImplementedException (); }
+			get { return "Rss20"; }
 		}
 
 		[MonoTODO]

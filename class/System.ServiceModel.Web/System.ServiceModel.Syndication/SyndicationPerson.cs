@@ -37,62 +37,61 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationPerson : ISyndicationElement
 	{
-		[MonoTODO]
+		string email, name, uri;
+		SyndicationExtensions extensions = new SyndicationExtensions ();
+
 		public SyndicationPerson ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public SyndicationPerson (string name)
+		public SyndicationPerson (string email)
 		{
-			throw new NotImplementedException ();
+			Email = email;
 		}
 
-		[MonoTODO]
-		public SyndicationPerson (string name, string scheme, string label)
+		public SyndicationPerson (string email, string name, string uri)
 		{
-			throw new NotImplementedException ();
+			Email = email;
+			Name = name;
+			Uri = uri;
 		}
 
-		[MonoTODO]
 		protected SyndicationPerson (SyndicationPerson source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			email = source.email;
+			name = source.name;
+			uri = source.uri;
+			extensions = source.extensions.Clone ();
 		}
 
-		[MonoTODO]
 		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Attributes; }
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtensionCollection ElementExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Elements; }
 		}
 
-		[MonoTODO]
 		public string Email {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return email; }
+			set { email = value; }
 		}
 
-		[MonoTODO]
 		public string Name {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return name; }
+			set { name = value; }
 		}
 
-		[MonoTODO]
 		public string Uri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return uri; }
+			set { uri = value; }
 		}
 
-		[MonoTODO]
 		public virtual SyndicationPerson Clone ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationPerson (this);
 		}
 
 		[MonoTODO]

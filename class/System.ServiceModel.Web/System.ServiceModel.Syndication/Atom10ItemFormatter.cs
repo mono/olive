@@ -40,44 +40,41 @@ namespace System.ServiceModel.Syndication
 	[XmlRoot ("entry", Namespace = "http://www.w3.org/2005/Atom")]
 	public class Atom10ItemFormatter : SyndicationItemFormatter, IXmlSerializable
 	{
-		[MonoTODO]
+		bool preserve_att_ext, preserve_elem_ext;
+		Type item_type;
+
 		public Atom10ItemFormatter ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Atom10ItemFormatter (SyndicationItem feedToWrite)
+			: base (feedToWrite)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public Atom10ItemFormatter (Type feedTypeToCreate)
+		public Atom10ItemFormatter (Type itemTypeToCreate)
 		{
-			throw new NotImplementedException ();
+			if (itemTypeToCreate == null)
+				throw new ArgumentNullException ("itemTypeToCreate");
+			item_type = itemTypeToCreate;
 		}
 
-		[MonoTODO]
 		protected Type ItemType {
-			get { throw new NotImplementedException (); }
+			get { return item_type; }
 		}
 
-		[MonoTODO]
 		public bool PreserveAttributeExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_att_ext; }
+			set { preserve_att_ext = value; }
 		}
 
-		[MonoTODO]
 		public bool PreserveElementExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_elem_ext; }
+			set { preserve_elem_ext = value; }
 		}
 
-		[MonoTODO]
 		public override string Version {
-			get { throw new NotImplementedException (); }
+			get { return "Atom10"; }
 		}
 
 		[MonoTODO]

@@ -37,62 +37,61 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationCategory : ISyndicationElement
 	{
-		[MonoTODO]
+		string name, scheme, label;
+		SyndicationExtensions extensions = new SyndicationExtensions ();
+
 		public SyndicationCategory ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public SyndicationCategory (string name)
 		{
-			throw new NotImplementedException ();
+			Name = name;
 		}
 
-		[MonoTODO]
 		public SyndicationCategory (string name, string scheme, string label)
 		{
-			throw new NotImplementedException ();
+			Name = name;
+			Scheme = scheme;
+			Label = label;
 		}
 
-		[MonoTODO]
 		protected SyndicationCategory (SyndicationCategory source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			name = source.name;
+			scheme = source.scheme;
+			label = source.label;
+			extensions = source.extensions.Clone ();
 		}
 
-		[MonoTODO]
 		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Attributes; }
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtensionCollection ElementExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Elements; }
 		}
 
-		[MonoTODO]
 		public string Label {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return label; }
+			set { label = value; }
 		}
 
-		[MonoTODO]
 		public string Name {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return name; }
+			set { name = value; }
 		}
 
-		[MonoTODO]
 		public string Scheme {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return scheme; }
+			set { scheme = value; }
 		}
 
-		[MonoTODO]
 		public virtual SyndicationCategory Clone ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationCategory (this);
 		}
 
 		[MonoTODO]

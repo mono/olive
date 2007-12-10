@@ -38,28 +38,26 @@ namespace System.ServiceModel.Syndication
 {
 	public abstract class SyndicationContent
 	{
-		[MonoTODO]
+		#region Static members
+
 		public static TextSyndicationContent CreateHtmlContent (string content)
 		{
-			throw new NotImplementedException ();
+			return new TextSyndicationContent (content, TextSyndicationContentKind.Html);
 		}
 
-		[MonoTODO]
 		public static TextSyndicationContent CreatePlaintextContent (string content)
 		{
-			throw new NotImplementedException ();
+			return new TextSyndicationContent (content, TextSyndicationContentKind.Plaintext);
 		}
 
-		[MonoTODO]
-		public static UrlSyndicationContent CreateUrlContent (Uri url, string mediaType)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		public static TextSyndicationContent CreateXhtmlContent (string content)
 		{
-			throw new NotImplementedException ();
+			return new TextSyndicationContent (content, TextSyndicationContentKind.XHtml);
+		}
+
+		public static UrlSyndicationContent CreateUrlContent (Uri url, string mediaType)
+		{
+			return new UrlSyndicationContent (url, mediaType);
 		}
 
 		[MonoTODO]
@@ -86,30 +84,31 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
+		#endregion
+
+		#region Instance members
+
+		SyndicationExtensions extensions = new SyndicationExtensions ();
+
 		protected SyndicationContent ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected SyndicationContent (SyndicationContent source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			extensions = source.extensions.Clone ();
 		}
 
-		[MonoTODO]
 		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Attributes; }
 		}
 
-		[MonoTODO]
 		public abstract string Type { get; }
 
-		[MonoTODO]
 		public abstract SyndicationContent Clone ();
 
-		[MonoTODO]
 		protected abstract void WriteContentsTo (XmlWriter writer);
 
 		[MonoTODO]
@@ -118,5 +117,6 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
+		#endregion
 	}
 }

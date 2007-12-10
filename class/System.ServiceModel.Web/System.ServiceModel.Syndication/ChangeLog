@@ -1,5 +1,12 @@
 2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatter.cs, Rss20ItemFormatter.cs,
+	  SyndicationCategory.cs, SyndicationContent.cs, SyndicationFeed.cs,
+	  SyndicationItem.cs, SyndicationItemFormatter.cs,
+	  SyndicationPerson.cs : a bunch of implementation.
+
+2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationElementExtensionCollection.cs : added copy .ctor().
 	* SyndicationLink.cs : implemented everything but read/write part.
 

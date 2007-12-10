@@ -37,168 +37,209 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationItem : ISyndicationElement
 	{
-		[MonoTODO]
+		SyndicationExtensions extensions = new SyndicationExtensions ();
+		Collection<SyndicationCategory> categories;
+		Collection<SyndicationPerson> authors, contributors;
+		Collection<SyndicationLink> links;
+		Uri base_uri;
+		TextSyndicationContent copyright, summary, title;
+		SyndicationContent content;
+		string id;
+		DateTimeOffset last_updated_time, published_date;
+		SyndicationFeed source_feed;
+
 		public SyndicationItem ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public SyndicationItem (string title, string description, Uri feedAlternateLink)
+		public SyndicationItem (string title, string content, Uri feedAlternateLink)
+			: this (title, content, feedAlternateLink, null, default (DateTimeOffset))
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public SyndicationItem (string title, string description, Uri feedAlternateLink, string id,
+		public SyndicationItem (string title, string content, Uri feedAlternateLink, string id,
 					DateTimeOffset lastUpdatedTime)
+			: this (title, content != null ? SyndicationContent.CreatePlaintextContent (content) : null, feedAlternateLink, id, lastUpdatedTime)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public SyndicationItem (string title, SyndicationContent content, Uri feedAlternateLink, string id,
 					DateTimeOffset lastUpdatedTime)
 		{
-			throw new NotImplementedException ();
+			Title = title != null ? new TextSyndicationContent (title) : null;
+			Content = content;
+			if (feedAlternateLink != null)
+				AddPermalink (feedAlternateLink);
+			Id = id;
+			LastUpdatedTime = lastUpdatedTime;
 		}
 
-		[MonoTODO]
 		protected SyndicationItem (SyndicationItem source)
 		{
-			throw new NotImplementedException ();
+			extensions = source.extensions.Clone ();
+			categories = Copy<SyndicationCategory> (source.categories);
+			authors = Copy<SyndicationPerson> (source.authors);
+			contributors = Copy<SyndicationPerson> (source.contributors);
+			links = Copy<SyndicationLink> (source.links);
+			base_uri = source.base_uri; // copy by reference !!
+			copyright = source.copyright == null ? null : source.copyright.Clone () as TextSyndicationContent;
+			summary = source.summary == null ? null : source.summary.Clone () as TextSyndicationContent;
+			title = source.title == null ? null : source.title.Clone () as TextSyndicationContent;
+			content = source.content == null ? null : source.content.Clone ();
+			id = source.id;
+			last_updated_time = source.last_updated_time;
+			published_date = source.published_date;
+			source_feed = source.source_feed == null ? null : source.source_feed.Clone (false);
 		}
 
-		[MonoTODO]
+		Collection<T> Copy<T> (Collection<T> source)
+		{
+			if (source == null)
+				return source;
+			Collection<T> ret = new Collection<T> ();
+			foreach (object item in source)
+				ret.Add ((T) CreateCopy (item));
+			return ret;
+		}
+
+		object CreateCopy (object source)
+		{
+			if (source == null)
+				return null;
+			if (source is SyndicationPerson)
+				return ((SyndicationPerson) source).Clone ();
+			if (source is SyndicationLink)
+				return ((SyndicationLink) source).Clone ();
+			if (source is SyndicationCategory)
+				return ((SyndicationCategory) source).Clone ();
+			throw new InvalidOperationException ();
+		}
+
 		public Dictionary<XmlQualifiedName, string> AttributeExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Attributes; }
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtensionCollection ElementExtensions {
-			get { throw new NotImplementedException (); }
+			get { return extensions.Elements; }
 		}
 
-		[MonoTODO]
 		public Collection<SyndicationPerson> Authors {
-			get { throw new NotImplementedException (); }
+			get {
+				if (authors == null)
+					authors = new Collection<SyndicationPerson> ();
+				return authors;
+			}
 		}
 
-		[MonoTODO]
 		public Collection<SyndicationCategory> Categories {
-			get { throw new NotImplementedException (); }
+			get {
+				if (categories == null)
+					categories = new Collection<SyndicationCategory> ();
+				return categories;
+			}
 		}
 
-		[MonoTODO]
 		public Collection<SyndicationPerson> Contributors {
-			get { throw new NotImplementedException (); }
+			get {
+				if (contributors == null)
+					contributors = new Collection<SyndicationPerson> ();
+				return contributors;
+			}
 		}
 
-		[MonoTODO]
 		public Collection<SyndicationLink> Links {
-			get { throw new NotImplementedException (); }
+			get {
+				if (links == null)
+					links = new Collection<SyndicationLink> ();
+				return links;
+			}
 		}
 
-		[MonoTODO]
 		public Uri BaseUri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return base_uri; }
+			set { base_uri = value; }
 		}
 
-		[MonoTODO]
 		public TextSyndicationContent Copyright {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return copyright; }
+			set { copyright = value; }
 		}
 
-		[MonoTODO]
 		public SyndicationContent Content {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return content; }
+			set { content = value; }
 		}
 
-		[MonoTODO]
 		public string Id {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return id; }
+			set { id = value; }
 		}
 
-		[MonoTODO]
 		public DateTimeOffset LastUpdatedTime {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return last_updated_time; }
+			set { last_updated_time = value; }
 		}
 
-		[MonoTODO]
 		public DateTimeOffset PublishDate {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return published_date; }
+			set { published_date = value; }
 		}
 
-		[MonoTODO]
 		public SyndicationFeed SourceFeed {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return source_feed; }
+			set { source_feed = value; }
 		}
 
-		[MonoTODO]
 		public TextSyndicationContent Summary {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return summary; }
+			set { summary = value; }
 		}
 
-		[MonoTODO]
 		public TextSyndicationContent Title {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return title; }
+			set { title = value; }
 		}
 
-		[MonoTODO]
 		public void AddPermalink (Uri link)
 		{
-			throw new NotImplementedException ();
+			if (link == null)
+				throw new ArgumentNullException ("link");
+			Links.Add (SyndicationLink.CreateAlternateLink (link));
 		}
 
-		[MonoTODO]
 		public virtual SyndicationItem Clone ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationItem (this);
 		}
 
-		[MonoTODO]
 		protected internal virtual SyndicationCategory CreateCategory ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationCategory ();
 		}
 
-		[MonoTODO]
 		protected internal virtual SyndicationLink CreateLink ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationLink ();
 		}
 
-		[MonoTODO]
 		protected internal virtual SyndicationPerson CreatePerson ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationPerson ();
 		}
 
-		[MonoTODO]
 		public Atom10ItemFormatter GetAtom10Formatter ()
 		{
-			throw new NotImplementedException ();
+			return new Atom10ItemFormatter (this);
 		}
 
-		[MonoTODO]
 		public Rss20ItemFormatter GetRss20Formatter ()
 		{
-			throw new NotImplementedException ();
+			return GetRss20Formatter (true);
 		}
 
-		[MonoTODO]
 		public Rss20ItemFormatter GetRss20Formatter (bool serializeExtensionsAsAtom)
 		{
-			throw new NotImplementedException ();
+			return new Rss20ItemFormatter (this, serializeExtensionsAsAtom);
 		}
 
 		[MonoTODO]
@@ -213,26 +254,28 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public void SaveAsAtom10 (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			GetAtom10Formatter ().WriteTo (writer);
+		}
+
+		public void SaveAsRss20 (XmlWriter writer)
+		{
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			GetRss20Formatter ().WriteTo (writer);
 		}
 
 		[MonoTODO]
-		public void SaveAsRss20 (XmlWriter writer)
+		protected internal virtual bool TryParseContent (XmlReader reader, string contentType, string version, out SyndicationContent content)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected internal virtual bool TryParseContent (XmlReader reader, string contentType, string version, out SyndicationContent content)
 		{
 			throw new NotImplementedException ();
 		}
