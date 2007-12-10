@@ -97,14 +97,25 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
-		public void TestMediaType ()
+		public void MediaType ()
 		{
 			SyndicationLink link = new SyndicationLink (new Uri ("http://mono-project.com/index.rss"));
 			link.MediaType = "text/xml";
 			Assert.AreEqual ("text/xml", link.MediaType, "#1");
 			link.MediaType = null;
 			Assert.IsNull (link.MediaType, "#2");
-			link.MediaType = "WTF";
+			link.MediaType = "WTF"; // no error
+		}
+
+		[Test]
+		public void RelationshipType ()
+		{
+			SyndicationLink link = new SyndicationLink (new Uri ("http://mono-project.com/index.rss"));
+			link.RelationshipType = "alternate";
+			Assert.AreEqual ("alternate", link.RelationshipType, "#1");
+			link.RelationshipType = null;
+			Assert.IsNull (link.RelationshipType, "#2");
+			link.RelationshipType = "WTF"; // no error
 		}
 
 		[Test]
