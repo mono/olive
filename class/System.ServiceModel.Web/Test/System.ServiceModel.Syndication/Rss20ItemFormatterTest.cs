@@ -32,6 +32,7 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Xml.Serialization;
 using System.ServiceModel.Syndication;
 using NUnit.Framework;
 
@@ -79,6 +80,89 @@ namespace MonoTests.System.ServiceModel.Syndication
 		{
 			Rss20ItemFormatter f = new Rss20ItemFormatter ();
 			Assert.IsTrue (f.SerializeExtensionsAsAtom, "#1");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void DefaultConstructorThenWriteXml ()
+		{
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter ().WriteTo (w);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void WriteToNull ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			new Rss20ItemFormatter (item).WriteTo (null);
+		}
+
+		[Test]
+		public void WriteTo_EmptyItem ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter (item).WriteTo (w);
+			// either title or description must exist (RSS 2.0 spec)
+			Assert.AreEqual ("<item><description /></item>", sw.ToString ());
+		}
+
+		[Test]
+		public void WriteTo_TitleOnlyItem ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			item.Title = new TextSyndicationContent ("title text");
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter (item).WriteTo (w);
+			Assert.AreEqual ("<item><title>title text</title></item>", sw.ToString ());
+		}
+
+		[Test]
+		public void WriteTo_Category ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			item.Categories.Add (new SyndicationCategory ("myname", "myscheme", "mylabel"));
+			item.Authors.Add (new SyndicationPerson ("john@doe.com", "John Doe", "http://john.doe.name"));
+			item.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter (item).WriteTo (w);
+			// contributors are serialized as Atom extension
+			Assert.AreEqual ("<item><author>john@doe.com</author><category domain=\"myscheme\">myname</category><description /><contributor xmlns=\"http://www.w3.org/2005/Atom\"><name>Jane Doe</name><uri>http://jane.doe.name</uri><email>jane@doe.com</email></contributor></item>", sw.ToString ());
+		}
+
+		[Test]
+		public void SerializeExtensionsAsAtomFalse ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			item.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter (item, false).WriteTo (w);
+			// skip contributors
+			Assert.AreEqual ("<item><description /></item>", sw.ToString ());
+		}
+
+		[Test]
+		public void ISerializableWriteXml ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			item.Title = new TextSyndicationContent ("title text");
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				((IXmlSerializable) new Rss20ItemFormatter (item)).WriteXml (w);
+			Assert.AreEqual ("<title>title text</title>", sw.ToString ());
+		}
+
+		XmlWriter CreateWriter (StringWriter sw)
+		{
+			XmlWriterSettings s = new XmlWriterSettings ();
+			s.OmitXmlDeclaration = true;
+			return XmlWriter.Create (sw, s);
 		}
 	}
 }

@@ -37,44 +37,53 @@ namespace System.ServiceModel.Syndication
 {
 	public class TextSyndicationContent : SyndicationContent
 	{
-		[MonoTODO]
+		string text;
+		TextSyndicationContentKind kind;
+
 		public TextSyndicationContent (string text)
+			: this (text, TextSyndicationContentKind.Plaintext)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public TextSyndicationContent (string text, TextSyndicationContentKind textKind)
 		{
-			throw new NotImplementedException ();
+			this.text = text;
+			kind = textKind;
 		}
 
-		[MonoTODO]
 		protected TextSyndicationContent (TextSyndicationContent source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			text = source.text;
+			kind = source.kind;
 		}
 
-		[MonoTODO]
 		public override SyndicationContent Clone ()
 		{
-			throw new NotImplementedException ();
+			return new TextSyndicationContent (this);
 		}
 
-		[MonoTODO]
 		protected override void WriteContentsTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			writer.WriteString (text ?? String.Empty);
 		}
 
-		[MonoTODO]
 		public string Text {
-			get { throw new NotImplementedException (); }
+			get { return text; }
 		}
 
-		[MonoTODO]
 		public override string Type {
-			get { throw new NotImplementedException (); }
+			get {
+				switch (kind) {
+				case TextSyndicationContentKind.Html:
+					return "html";
+				case TextSyndicationContentKind.XHtml:
+					return "xhtml";
+				default:
+					return "text";
+				}
+			}
 		}
 	}
 }

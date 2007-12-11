@@ -40,11 +40,14 @@ namespace System.ServiceModel.Syndication
 	[XmlRoot ("item", Namespace = "")]
 	public class Rss20ItemFormatter : SyndicationItemFormatter, IXmlSerializable
 	{
+		const string AtomNamespace ="http://www.w3.org/2005/Atom";
+
 		bool ext_atom_serialization, preserve_att_ext, preserve_elem_ext;
 		Type item_type;
 
 		public Rss20ItemFormatter ()
 		{
+			ext_atom_serialization = true;
 		}
 
 		public Rss20ItemFormatter (SyndicationItem feedToWrite)
@@ -109,7 +112,7 @@ namespace System.ServiceModel.Syndication
 		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, true);
 		}
 
 		[MonoTODO]
@@ -121,13 +124,72 @@ namespace System.ServiceModel.Syndication
 		[MonoTODO]
 		void IXmlSerializable.WriteXml (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, false);
 		}
 
 		[MonoTODO]
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		// FIXME: call WriteElementExtensions() and WriteAttributExtensions on every syndication element.
+		void WriteXml (XmlWriter writer, bool writeRoot)
+		{
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (Item == null)
+				throw new InvalidOperationException ("Syndication item must be set before writing");
+
+			if (writeRoot)
+				writer.WriteStartElement ("item");
+
+			if (Item.Title != null) {
+				writer.WriteStartElement ("title");
+				writer.WriteString (Item.Title.Text);
+				writer.WriteEndElement ();
+			}
+
+			foreach (SyndicationPerson author in Item.Authors)
+				if (author != null) {
+					writer.WriteStartElement ("author");
+					writer.WriteString (author.Email);
+					writer.WriteEndElement ();
+				}
+			foreach (SyndicationCategory category in Item.Categories)
+				if (category != null) {
+					writer.WriteStartElement ("category");
+					if (category.Scheme != null)
+						writer.WriteAttributeString ("domain", category.Scheme);
+					writer.WriteString (category.Name);
+					writer.WriteEndElement ();
+				}
+			if (Item.Summary != null)
+				Item.Summary.WriteTo (writer, "description", String.Empty);
+			else if (Item.Title == null) { // according to the RSS 2.0 spec, either of title or description must exist.
+				writer.WriteStartElement ("description");
+				writer.WriteEndElement ();
+			}
+			// FIXME; what to do for Contributors?
+			foreach (SyndicationLink link in Item.Links)
+				if (link != null) {
+					writer.WriteStartElement ("link");
+					writer.WriteString (link.Uri != null ? link.Uri.ToString () : String.Empty);
+					writer.WriteEndElement ();
+				}
+
+			// Contributors are part of Atom extension
+			if (SerializeExtensionsAsAtom)
+				foreach (SyndicationPerson contributor in Item.Contributors) {
+					writer.WriteStartElement ("contributor", AtomNamespace);
+					writer.WriteElementString ("name", AtomNamespace, contributor.Name);
+					writer.WriteElementString ("uri", AtomNamespace, contributor.Uri);
+					writer.WriteElementString ("email", AtomNamespace, contributor.Email);
+					writer.WriteEndElement ();
+				}
+
+			if (writeRoot)
+				writer.WriteEndElement ();
 		}
 	}
 }

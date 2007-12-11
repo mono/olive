@@ -111,10 +111,18 @@ namespace System.ServiceModel.Syndication
 
 		protected abstract void WriteContentsTo (XmlWriter writer);
 
-		[MonoTODO]
 		public void WriteTo (XmlWriter writer, string outerElementName, string outerElementNamespace)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (outerElementName == null)
+				throw new ArgumentNullException ("outerElementName");
+			if (outerElementNamespace == null)
+				throw new ArgumentNullException ("outerElementNamespace");
+			writer.WriteStartElement (outerElementName, outerElementNamespace);
+			writer.WriteAttributeString ("type", Type);
+			WriteContentsTo (writer);
+			writer.WriteFullEndElement ();
 		}
 
 		#endregion

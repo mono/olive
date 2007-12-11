@@ -1,3 +1,8 @@
+2007-12-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Rss20ItemFormatter.cs, SyndicationContent.cs,
+	  TextSyndicationContent.cs : flush some more implementation.
+
 2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Atom10ItemFormatter.cs, Rss20ItemFormatter.cs,

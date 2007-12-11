@@ -6,3 +6,4 @@ System.ServiceModel.Syndication/Rss20ItemFormatterTest.cs
 System.ServiceModel.Syndication/SyndicationFeedTest.cs
 System.ServiceModel.Syndication/SyndicationItemTest.cs
 System.ServiceModel.Syndication/SyndicationLinkTest.cs
+System.ServiceModel.Syndication/TextSyndicationContentTest.cs
