@@ -38,80 +38,184 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationElementExtension
 	{
-		[MonoTODO]
+		ReadWriteHandler handler;
+
 		public SyndicationElementExtension (object dataContractExtension)
+			: this (dataContractExtension, (XmlObjectSerializer) null)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtension (object dataContractExtension, XmlObjectSerializer dataContractSerializer)
+			: this (null, null, dataContractExtension, dataContractSerializer)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public SyndicationElementExtension (object xmlSerializerExtension, XmlSerializer serializer)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		public SyndicationElementExtension (string outerName, string outerNamespace, object dataContractExtension)
+			: this (outerName, outerNamespace, dataContractExtension, null)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtension (string outerName, string outerNamespace, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			if (dataContractExtension == null)
+				throw new ArgumentNullException ("dataContractExtension");
+			handler = new DataContractReadWriteHandler (outerName, outerNamespace, dataContractExtension, dataContractSerializer);
 		}
 
-		[MonoTODO]
+		public SyndicationElementExtension (object xmlSerializerExtension, XmlSerializer serializer)
+		{
+			if (xmlSerializerExtension == null)
+				throw new ArgumentNullException ("xmlSerializerExtension");
+			handler = new XmlSerializationReadWriteHandler (xmlSerializerExtension, serializer);
+		}
+
 		public SyndicationElementExtension (XmlReader xmlReader)
 		{
-			throw new NotImplementedException ();
+			if (xmlReader == null)
+				throw new ArgumentNullException ("xmlReader");
+			xmlReader.MoveToContent ();
+			if (xmlReader.NodeType != XmlNodeType.Element)
+				throw new XmlException ("Element node is expected on the argument xmlReader");
+
+			handler = new XmlReaderReadWriteHandler (xmlReader);
 		}
 
-		[MonoTODO]
 		public string OuterName {
-			get { throw new NotImplementedException (); }
+			get { return handler != null ? handler.Name : null; }
 		}
 
-		[MonoTODO]
 		public string OuterNamespace {
-			get { throw new NotImplementedException (); }
+			get { return handler != null ? handler.Namespace : null; }
 		}
 
-		[MonoTODO]
 		public TExtension GetObject<TExtension> ()
 		{
-			throw new NotImplementedException ();
+			return GetObject<TExtension> (new DataContractSerializer (typeof (TExtension)));
 		}
 
-		[MonoTODO]
 		public TExtension GetObject<TExtension> (XmlObjectSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			if (serializer == null)
+				throw new ArgumentNullException ("serializer");
+			return (TExtension) serializer.ReadObject (GetReader ());
 		}
 
-		[MonoTODO]
 		public TExtension GetObject<TExtension> (XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			if (serializer == null)
+				throw new ArgumentNullException ("serializer");
+			return (TExtension) serializer.Deserialize (GetReader ());
 		}
 
-		[MonoTODO]
 		public XmlReader GetReader ()
 		{
-			throw new NotImplementedException ();
+			return handler.GetReader ();
 		}
 
-		[MonoTODO]
 		public void WriteTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+
+			handler.WriteTo (writer);
+		}
+
+		abstract class ReadWriteHandler
+		{
+			public virtual string Name {
+				get { return null; }
+			}
+
+			public virtual string Namespace {
+				get { return null; }
+			}
+
+			public virtual XmlReader GetReader ()
+			{
+				StringWriter sw = new StringWriter ();
+				using (XmlWriter w = XmlWriter.Create (sw))
+					WriteTo (w);
+				return XmlReader.Create (new StringReader (sw.ToString ()));
+			}
+
+			public abstract void WriteTo (XmlWriter writer);
+		}
+
+		class DataContractReadWriteHandler : ReadWriteHandler
+		{
+			string name, ns;
+			object extension;
+			XmlObjectSerializer serializer;
+			
+			public DataContractReadWriteHandler (string name, string ns, object extension, XmlObjectSerializer serializer)
+			{
+				this.name = name;
+				this.ns = ns;
+				this.extension = extension;
+				this.serializer = serializer;
+
+				if (this.serializer == null)
+					this.serializer = new DataContractSerializer (extension.GetType ());
+			}
+
+			public override string Name {
+				get { return name; }
+			}
+
+			public override string Namespace {
+				get { return ns; }
+			}
+
+			public override void WriteTo (XmlWriter writer)
+			{
+				if (name != null) {
+					writer.WriteStartElement (name, ns);
+					serializer.WriteObjectContent (writer, extension);
+					writer.WriteFullEndElement ();
+				}
+				else
+					serializer.WriteObject (writer, extension);
+			}
+		}
+
+		class XmlSerializationReadWriteHandler : ReadWriteHandler
+		{
+			object extension;
+			XmlSerializer serializer;
+
+			public XmlSerializationReadWriteHandler (object extension, XmlSerializer serializer)
+			{
+				this.extension = extension;
+				this.serializer = serializer;
+
+				if (serializer == null)
+					serializer = new XmlSerializer (extension.GetType ());
+			}
+
+			public override void WriteTo (XmlWriter writer)
+			{
+				serializer.Serialize (writer, extension);
+			}
+		}
+
+		class XmlReaderReadWriteHandler : ReadWriteHandler
+		{
+			XmlDocument doc = new XmlDocument ();
+
+			public XmlReaderReadWriteHandler (XmlReader reader)
+			{
+				doc.AppendChild (doc.ReadNode (reader));
+			}
+
+			public override XmlReader GetReader ()
+			{
+				return new XmlNodeReader (doc.FirstChild);
+			}
+
+			public override void WriteTo (XmlWriter writer)
+			{
+				doc.FirstChild.WriteTo (writer);
+			}
 		}
 	}
 }

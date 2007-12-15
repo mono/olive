@@ -82,106 +82,95 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
+		// My assumption is that those static methods are defined to
+		// be used in the derived classes and to dispatch the actual
+		// processing to each syndication element. Considering that
+		// they can be overriden in each element, I assume that these
+		// methods depend on the elements, not in reverse order.
+
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			return category.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			return item.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			return link.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			return person.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseContent (XmlReader reader, SyndicationItem item, string contentType, string version, out SyndicationContent content)
 		{
-			throw new NotImplementedException ();
+			return item.TryParseContent (reader, contentType, version, out content);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			return category.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			return item.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			return link.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			return person.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			category.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			item.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			link.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			person.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			category.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			item.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			link.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal void WriteElementExtensions (XmlWriter writer, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			person.WriteElementExtensions (writer, version);
 		}
 
 		#endregion
@@ -228,7 +217,6 @@ namespace System.ServiceModel.Syndication
 		{
 			return base.ToString ();
 		}
-
 		#endregion
 	}
 }

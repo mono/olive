@@ -109,7 +109,6 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
 		{
 			WriteXml (writer, true);
@@ -121,7 +120,6 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		void IXmlSerializable.WriteXml (XmlWriter writer)
 		{
 			WriteXml (writer, false);
@@ -133,7 +131,7 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		// FIXME: call WriteElementExtensions() and WriteAttributExtensions on every syndication element.
+		// FIXME: output every non-ISyndicationElement properties (id, pubDate, etc.)
 		void WriteXml (XmlWriter writer, bool writeRoot)
 		{
 			if (writer == null)
@@ -153,7 +151,9 @@ namespace System.ServiceModel.Syndication
 			foreach (SyndicationPerson author in Item.Authors)
 				if (author != null) {
 					writer.WriteStartElement ("author");
+					WriteAttributeExtensions (writer, author, Version);
 					writer.WriteString (author.Email);
+					WriteElementExtensions (writer, author, Version);
 					writer.WriteEndElement ();
 				}
 			foreach (SyndicationCategory category in Item.Categories)
@@ -161,7 +161,9 @@ namespace System.ServiceModel.Syndication
 					writer.WriteStartElement ("category");
 					if (category.Scheme != null)
 						writer.WriteAttributeString ("domain", category.Scheme);
+					WriteAttributeExtensions (writer, category, Version);
 					writer.WriteString (category.Name);
+					WriteElementExtensions (writer, category, Version);
 					writer.WriteEndElement ();
 				}
 			if (Item.Summary != null)
@@ -174,18 +176,24 @@ namespace System.ServiceModel.Syndication
 			foreach (SyndicationLink link in Item.Links)
 				if (link != null) {
 					writer.WriteStartElement ("link");
+					WriteAttributeExtensions (writer, link, Version);
 					writer.WriteString (link.Uri != null ? link.Uri.ToString () : String.Empty);
+					WriteElementExtensions (writer, link, Version);
 					writer.WriteEndElement ();
 				}
 
 			// Contributors are part of Atom extension
 			if (SerializeExtensionsAsAtom)
 				foreach (SyndicationPerson contributor in Item.Contributors) {
-					writer.WriteStartElement ("contributor", AtomNamespace);
-					writer.WriteElementString ("name", AtomNamespace, contributor.Name);
-					writer.WriteElementString ("uri", AtomNamespace, contributor.Uri);
-					writer.WriteElementString ("email", AtomNamespace, contributor.Email);
-					writer.WriteEndElement ();
+					if (contributor != null) {
+						writer.WriteStartElement ("contributor", AtomNamespace);
+						WriteAttributeExtensions (writer, contributor, Version);
+						writer.WriteElementString ("name", AtomNamespace, contributor.Name);
+						writer.WriteElementString ("uri", AtomNamespace, contributor.Uri);
+						writer.WriteElementString ("email", AtomNamespace, contributor.Email);
+						WriteElementExtensions (writer, contributor, Version);
+						writer.WriteEndElement ();
+					}
 				}
 
 			if (writeRoot)

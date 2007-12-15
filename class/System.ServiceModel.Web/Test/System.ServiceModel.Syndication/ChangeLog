@@ -1,3 +1,8 @@
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SyndicationElementExtensionTest.cs : new test.
+	* TextSyndicationContentTest.cs : was missing in the previous commit.
+
 2007-12-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TextSyndicationContentTest.cs : new test.

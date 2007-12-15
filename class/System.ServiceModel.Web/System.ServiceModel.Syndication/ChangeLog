@@ -1,3 +1,21 @@
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SyndicationFeed.cs : do not try to set null items in .ctor() (null
+	  items are allowed in .ctor, while not allowed in set_Items()).
+	  Remove extra NotImplementedException.
+	  Implemented WriteAttributeExtensions and WriteElementExtensions.
+	* SyndicationElementExtension.cs : implemented.
+	* SyndicationExtensions.cs,
+	  SyndicationItem.cs, SyndicationLink.cs, SyndicationCategory.cs,
+	  SyndicationPerson.cs : Implemented WriteAttributeExtensions() and
+	  WriteElementExtensions() in each syndication element to call 
+	  corresponding method in SyndicationExtensions.
+	* SyndicationItemFormatter.cs :
+	  implemented Write[Element/Attribute]Extensions() and
+	  TryParse[Element/Attribute]().
+	* Rss20ItemFormatter.cs : write extensions on writing to xml.
+	  Null check in Contributors on writing to xml.
+
 2007-12-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Rss20ItemFormatter.cs, SyndicationContent.cs,

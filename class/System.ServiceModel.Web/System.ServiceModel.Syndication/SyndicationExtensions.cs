@@ -64,6 +64,25 @@ namespace System.ServiceModel.Syndication
 			ret.elements = elements == null ? null : new SyndicationElementExtensionCollection (elements);
 			return ret;
 		}
+
+		internal void WriteAttributeExtensions (XmlWriter writer, string version)
+		{
+			if (attributes == null)
+				return;
+
+			foreach (KeyValuePair<XmlQualifiedName,string> pair in attributes)
+				writer.WriteAttributeString (pair.Key.Name, pair.Key.Namespace, pair.Value);
+		}
+
+		internal void WriteElementExtensions (XmlWriter writer, string version)
+		{
+			if (elements == null)
+				return;
+
+			foreach (SyndicationElementExtension el in elements)
+				if (el != null)
+					el.WriteTo (writer);
+		}
 	}
 }
 

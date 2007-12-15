@@ -57,7 +57,8 @@ namespace System.ServiceModel.Syndication
 
 		public SyndicationFeed (IEnumerable<SyndicationItem> items)
 		{
-			Items = items;
+			if (items != null)
+				Items = items;
 		}
 
 		public SyndicationFeed (string title, string description, Uri feedAlternateLink)
@@ -69,7 +70,6 @@ namespace System.ServiceModel.Syndication
 					IEnumerable<SyndicationItem> items)
 			: this (title, description, feedAlternateLink, null, default (DateTimeOffset), items)
 		{
-			throw new NotImplementedException ();
 		}
 
 		public SyndicationFeed (string title, string description, Uri feedAlternateLink, string id,
@@ -87,7 +87,8 @@ namespace System.ServiceModel.Syndication
 				Links.Add (SyndicationLink.CreateAlternateLink (feedAlternateLink));
 			Id = id;
 			LastUpdatedTime = lastUpdatedTime;
-			Items = items;
+			if (items != null)
+				Items = items;
 		}
 
 		protected SyndicationFeed (SyndicationFeed source, bool cloneItems)
@@ -284,17 +285,14 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-
-		[MonoTODO]
 		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)
 		{
-			throw new NotImplementedException ();
+			extensions.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal virtual void WriteElementExtensions (XmlWriter writer, string version)
 		{
-			throw new NotImplementedException ();
+			extensions.WriteElementExtensions (writer, version);
 		}
 	}
 }
