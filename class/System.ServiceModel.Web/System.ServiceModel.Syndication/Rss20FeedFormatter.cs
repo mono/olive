@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -40,56 +41,55 @@ namespace System.ServiceModel.Syndication
 	[XmlRoot ("rss", Namespace = "")]
 	public class Rss20FeedFormatter : SyndicationFeedFormatter, IXmlSerializable
 	{
-		[MonoTODO]
+		const string AtomNamespace ="http://www.w3.org/2005/Atom";
+
+		bool ext_atom_serialization, preserve_att_ext, preserve_elem_ext;
+		Type feed_type;
+
 		public Rss20FeedFormatter ()
 		{
-			throw new NotImplementedException ();
+			ext_atom_serialization = true;
 		}
 
-		[MonoTODO]
 		public Rss20FeedFormatter (SyndicationFeed feedToWrite)
+			: this (feedToWrite, true)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Rss20FeedFormatter (SyndicationFeed feedToWrite, bool serializeExtensionsAsAtom)
+			: base (feedToWrite)
 		{
-			throw new NotImplementedException ();
+			ext_atom_serialization = serializeExtensionsAsAtom;
 		}
 
-		[MonoTODO]
 		public Rss20FeedFormatter (Type feedTypeToCreate)
 		{
-			throw new NotImplementedException ();
+			if (feedTypeToCreate == null)
+				throw new ArgumentNullException ("feedTypeToCreate");
+			feed_type = feedTypeToCreate;
 		}
 
-		[MonoTODO]
 		public bool SerializeExtensionsAsAtom {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return ext_atom_serialization; }
+			set { ext_atom_serialization = value; }
 		}
 
-		[MonoTODO]
 		protected Type FeedType {
-			get { throw new NotImplementedException (); }
+			get { return feed_type; }
 		}
 
-		[MonoTODO]
 		public bool PreserveAttributeExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_att_ext; }
+			set { preserve_att_ext = value; }
 		}
 
-		[MonoTODO]
 		public bool PreserveElementExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_elem_ext; }
+			set { preserve_elem_ext = value; }
 		}
 
-		[MonoTODO]
 		public override string Version {
-			get { throw new NotImplementedException (); }
+			get { return "Rss20"; }
 		}
 
 		[MonoTODO]
@@ -98,10 +98,10 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
+		[MonoTODO ("Find out what is expected here")]
 		protected internal override void SetFeed (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			base.SetFeed (feed);
 		}
 
 		[MonoTODO]
@@ -128,22 +128,23 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
+		[MonoTODO ("Find out how feedBaseUri is used")]
 		protected virtual void WriteItem (XmlWriter writer, SyndicationItem item, Uri feedBaseUri)
 		{
-			throw new NotImplementedException ();
+			item.SaveAsRss20 (writer);
 		}
 
-		[MonoTODO]
 		protected virtual void WriteItems (XmlWriter writer, IEnumerable<SyndicationItem> items, Uri feedBaseUri)
 		{
-			throw new NotImplementedException ();
+			if (items == null)
+				throw new ArgumentNullException ("items");
+			foreach (SyndicationItem item in items)
+				WriteItem (writer, item, feedBaseUri);
 		}
 
-		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, true);
 		}
 
 		[MonoTODO]
@@ -152,16 +153,133 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		void IXmlSerializable.WriteXml (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, false);
 		}
 
 		[MonoTODO]
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		void WriteXml (XmlWriter writer, bool writeRoot)
+		{
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (Feed == null)
+				throw new InvalidOperationException ("Syndication item must be set before writing");
+
+			if (writeRoot)
+				writer.WriteStartElement ("rss");
+
+			if (SerializeExtensionsAsAtom)
+				writer.WriteAttributeString ("xmlns", "a10", "http://www.w3.org/2000/xmlns/", AtomNamespace);
+			writer.WriteAttributeString ("version", "2.0");
+
+			writer.WriteStartElement ("channel");
+
+			if (Feed.BaseUri != null)
+				writer.WriteAttributeString ("xml:base", Feed.BaseUri.ToString ());
+
+			writer.WriteElementString ("title", String.Empty, Feed.Title != null ? Feed.Title.Text : String.Empty);
+
+			writer.WriteElementString ("description", String.Empty, Feed.Description != null ? Feed.Description.Text : String.Empty);
+
+			if (Feed.Copyright != null)
+				writer.WriteElementString ("copyright", String.Empty, Feed.Copyright.Text);
+
+			if (!Feed.LastUpdatedTime.Equals (default (DateTimeOffset))) {
+				writer.WriteStartElement ("lastBuildDate");
+				writer.WriteString (ToRFC822DateString (Feed.LastUpdatedTime));
+				writer.WriteEndElement ();
+			}
+
+			if (Feed.Generator != null)
+				writer.WriteElementString ("generator", String.Empty, Feed.Generator);
+			if (Feed.ImageUrl != null) {
+				writer.WriteStartElement ("image");
+				writer.WriteElementString ("url", String.Empty, Feed.ImageUrl.ToString ());
+				// FIXME: are they really empty?
+				writer.WriteElementString ("title", String.Empty, String.Empty);
+				writer.WriteElementString ("link", String.Empty, String.Empty);
+				writer.WriteEndElement ();
+			}
+			if (Feed.Language != null)
+				writer.WriteElementString ("language", String.Empty, Feed.Language);
+
+			foreach (SyndicationPerson author in Feed.Authors)
+				if (author != null) {
+					writer.WriteStartElement ("managingEditor");
+					WriteAttributeExtensions (writer, author, Version);
+					writer.WriteString (author.Email);
+					WriteElementExtensions (writer, author, Version);
+					writer.WriteEndElement ();
+				}
+			foreach (SyndicationCategory category in Feed.Categories)
+				if (category != null) {
+					writer.WriteStartElement ("category");
+					if (category.Scheme != null)
+						writer.WriteAttributeString ("domain", category.Scheme);
+					WriteAttributeExtensions (writer, category, Version);
+					writer.WriteString (category.Name);
+					WriteElementExtensions (writer, category, Version);
+					writer.WriteEndElement ();
+				}
+
+			foreach (SyndicationLink link in Feed.Links)
+				if (link != null) {
+					writer.WriteStartElement ("link");
+					WriteAttributeExtensions (writer, link, Version);
+					writer.WriteString (link.Uri != null ? link.Uri.ToString () : String.Empty);
+					WriteElementExtensions (writer, link, Version);
+					writer.WriteEndElement ();
+				}
+
+			WriteItems (writer, Feed.Items, Feed.BaseUri);
+
+			if (SerializeExtensionsAsAtom) {
+
+				if (Feed.Id != null) {
+					writer.WriteStartElement ("a10", "id", AtomNamespace);
+					writer.WriteString (Feed.Id);
+					writer.WriteEndElement ();
+				}
+
+				foreach (SyndicationPerson contributor in Feed.Contributors) {
+					if (contributor != null) {
+						writer.WriteStartElement ("a10", "contributor", AtomNamespace);
+						WriteAttributeExtensions (writer, contributor, Version);
+						writer.WriteElementString ("a10", "name", AtomNamespace, contributor.Name);
+						writer.WriteElementString ("a10", "uri", AtomNamespace, contributor.Uri);
+						writer.WriteElementString ("a10", "email", AtomNamespace, contributor.Email);
+						WriteElementExtensions (writer, contributor, Version);
+						writer.WriteEndElement ();
+					}
+				}
+			}
+
+			writer.WriteEndElement (); // </channel>
+
+			if (writeRoot)
+				writer.WriteEndElement (); // </rss>
+		}
+
+		// FIXME: DateTimeOffset.ToString() needs another overload.
+		// When it is implemented, just remove ".DateTime" parts below.
+		string ToRFC822DateString (DateTimeOffset date)
+		{
+			switch (date.DateTime.Kind) {
+			case DateTimeKind.Utc:
+				return date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss 'Z'", DateTimeFormatInfo.InvariantInfo);
+			case DateTimeKind.Local:
+				StringBuilder sb = new StringBuilder (date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss zzz", DateTimeFormatInfo.InvariantInfo));
+				sb.Remove (sb.Length - 3, 1);
+				return sb.ToString (); // remove ':' from +hh:mm
+			default:
+				return date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+			}
 		}
 	}
 }

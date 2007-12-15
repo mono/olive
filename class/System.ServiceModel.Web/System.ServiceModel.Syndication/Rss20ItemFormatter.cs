@@ -51,13 +51,13 @@ namespace System.ServiceModel.Syndication
 			ext_atom_serialization = true;
 		}
 
-		public Rss20ItemFormatter (SyndicationItem feedToWrite)
-			: this (feedToWrite, true)
+		public Rss20ItemFormatter (SyndicationItem itemToWrite)
+			: this (itemToWrite, true)
 		{
 		}
 
-		public Rss20ItemFormatter (SyndicationItem feedToWrite, bool serializeExtensionsAsAtom)
-			: base (feedToWrite)
+		public Rss20ItemFormatter (SyndicationItem itemToWrite, bool serializeExtensionsAsAtom)
+			: base (itemToWrite)
 		{
 			ext_atom_serialization = serializeExtensionsAsAtom;
 		}

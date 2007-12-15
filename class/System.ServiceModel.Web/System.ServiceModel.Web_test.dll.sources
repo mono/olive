@@ -2,6 +2,7 @@ System.Runtime.Serialization.Json/DataContractJsonSerializerTest.cs
 System.Runtime.Serialization.Json/JsonReaderTest.cs
 System.Runtime.Serialization.Json/JsonWriterTest.cs
 System.ServiceModel.Syndication/Atom10ItemFormatterTest.cs
+System.ServiceModel.Syndication/Rss20FeedFormatterTest.cs
 System.ServiceModel.Syndication/Rss20ItemFormatterTest.cs
 System.ServiceModel.Syndication/SyndicationElementExtensionTest.cs
 System.ServiceModel.Syndication/SyndicationFeedTest.cs

@@ -1,5 +1,13 @@
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20ItemFormatter.cs : some parameter renaming.
+	* SyndicationFeedFormatter.cs, Rss20FeedFormatter.cs : implemented,
+	  based on item formatter.
+	* SyndicationItemFormatter.cs : implemented syndication element
+	  creation methods. Added null argument checks.
+
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Rss20ItemFormatter.cs : write remaining properties in item.
 	* UrlSyndicationContent.cs : implemented.
 	* XmlSyndicationContent.cs, SyndicationContent.cs,

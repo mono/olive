@@ -40,46 +40,53 @@ namespace System.ServiceModel.Syndication
 	{
 		#region static members
 
-		[MonoTODO]
 		protected internal static SyndicationCategory CreateCategory (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.CreateCategory ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationCategory CreateCategory (SyndicationItem item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.CreateCategory ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationItem CreateItem (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.CreateItem ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationLink CreateLink (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.CreateLink ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationLink CreateLink (SyndicationItem item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.CreateLink ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationPerson CreatePerson (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.CreatePerson ();
 		}
 
-		[MonoTODO]
 		protected internal static SyndicationPerson CreatePerson (SyndicationItem item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.CreatePerson ();
 		}
 
 		[MonoTODO]
@@ -112,170 +119,189 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			if (category == null)
+				throw new ArgumentNullException ("category");
+			return category.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationFeed feed, string version)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			if (link == null)
+				throw new ArgumentNullException ("link");
+			return link.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			if (person == null)
+				throw new ArgumentNullException ("person");
+			return person.TryParseAttribute (name, ns, value, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseContent (XmlReader reader, SyndicationItem item, string contentType, string version, out SyndicationContent content)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.TryParseContent (reader, contentType, version, out content);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			if (category == null)
+				throw new ArgumentNullException ("category");
+			return category.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationFeed feed, string version)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			return feed.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			return item.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			if (link == null)
+				throw new ArgumentNullException ("link");
+			return link.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static bool TryParseElement (XmlReader reader, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			if (person == null)
+				throw new ArgumentNullException ("person");
+			return person.TryParseElement (reader, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			if (category == null)
+				throw new ArgumentNullException ("category");
+			category.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
-		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationFeed feed, string version)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			item.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			if (link == null)
+				throw new ArgumentNullException ("link");
+			link.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			if (person == null)
+				throw new ArgumentNullException ("person");
+			person.WriteAttributeExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationCategory category, string version)
 		{
-			throw new NotImplementedException ();
+			if (category == null)
+				throw new ArgumentNullException ("category");
+			category.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
+		protected internal static void WriteAttributeExtensions (XmlWriter writer, SyndicationFeed feed, string version)
+		{
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			feed.WriteElementExtensions (writer, version);
+		}
+
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationFeed feed, string version)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			feed.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationItem item, string version)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			item.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationLink link, string version)
 		{
-			throw new NotImplementedException ();
+			if (link == null)
+				throw new ArgumentNullException ("link");
+			link.WriteElementExtensions (writer, version);
 		}
 
-		[MonoTODO]
 		protected internal static void WriteElementExtensions (XmlWriter writer, SyndicationPerson person, string version)
 		{
-			throw new NotImplementedException ();
+			if (person == null)
+				throw new ArgumentNullException ("person");
+			person.WriteElementExtensions (writer, version);
 		}
 
 		#endregion
 
 		#region instance members
 
-		[MonoTODO]
+		SyndicationFeed feed;
+
 		protected SyndicationFeedFormatter ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected SyndicationFeedFormatter (SyndicationFeed feedToWrite)
 		{
-			throw new NotImplementedException ();
+			if (feedToWrite == null)
+				throw new ArgumentNullException ("feedToWrite");
+			SetFeed (feedToWrite);
 		}
 
-		[MonoTODO]
 		protected internal virtual void SetFeed (SyndicationFeed feed)
 		{
-			throw new NotImplementedException ();
+			if (feed == null)
+				throw new ArgumentNullException ("feed");
+			this.feed = feed;
 		}
 
-		[MonoTODO]
 		public SyndicationFeed Feed { 
-			get { throw new NotImplementedException (); }
+			get { return feed; }
 		}
 
-		[MonoTODO]
 		public abstract string Version { get; }
 
-		[MonoTODO]
 		protected abstract SyndicationFeed CreateFeedInstance ();
 
 		public abstract bool CanRead (XmlReader reader);
 
 		public abstract void ReadFrom (XmlReader reader);
 
-		[MonoTODO]
 		public abstract void WriteTo (XmlWriter writer);
 
 		[MonoTODO]
