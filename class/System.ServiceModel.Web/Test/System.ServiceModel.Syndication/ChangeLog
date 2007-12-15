@@ -1,5 +1,10 @@
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20ItemFormatterTest.cs : added test for writing properties.
+	* XmlSyndicationContentTest.cs, UrlSyndicationContentTest.cs : new.
+
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationElementExtensionTest.cs : new test.
 	* TextSyndicationContentTest.cs : was missing in the previous commit.
 

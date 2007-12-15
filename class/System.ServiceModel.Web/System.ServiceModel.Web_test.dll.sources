@@ -8,3 +8,5 @@ System.ServiceModel.Syndication/SyndicationFeedTest.cs
 System.ServiceModel.Syndication/SyndicationItemTest.cs
 System.ServiceModel.Syndication/SyndicationLinkTest.cs
 System.ServiceModel.Syndication/TextSyndicationContentTest.cs
+System.ServiceModel.Syndication/UrlSyndicationContentTest.cs
+System.ServiceModel.Syndication/XmlSyndicationContentTest.cs

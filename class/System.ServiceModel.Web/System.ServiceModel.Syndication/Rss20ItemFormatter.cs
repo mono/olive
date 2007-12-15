@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -131,7 +132,6 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		// FIXME: output every non-ISyndicationElement properties (id, pubDate, etc.)
 		void WriteXml (XmlWriter writer, bool writeRoot)
 		{
 			if (writer == null)
@@ -141,6 +141,15 @@ namespace System.ServiceModel.Syndication
 
 			if (writeRoot)
 				writer.WriteStartElement ("item");
+
+			if (Item.BaseUri != null)
+				writer.WriteAttributeString ("xml:base", Item.BaseUri.ToString ());
+			if (Item.Id != null) {
+				writer.WriteStartElement ("guid");
+				writer.WriteAttributeString ("isPermaLink", "false");
+				writer.WriteString (Item.Id);
+				writer.WriteEndElement ();
+			}
 
 			if (Item.Title != null) {
 				writer.WriteStartElement ("title");
@@ -172,7 +181,7 @@ namespace System.ServiceModel.Syndication
 				writer.WriteStartElement ("description");
 				writer.WriteEndElement ();
 			}
-			// FIXME; what to do for Contributors?
+
 			foreach (SyndicationLink link in Item.Links)
 				if (link != null) {
 					writer.WriteStartElement ("link");
@@ -182,8 +191,16 @@ namespace System.ServiceModel.Syndication
 					writer.WriteEndElement ();
 				}
 
-			// Contributors are part of Atom extension
-			if (SerializeExtensionsAsAtom)
+			if (Item.SourceFeed != null)
+				Item.SourceFeed.SaveAsRss20 (writer);
+
+			if (!Item.PublishDate.Equals (default (DateTimeOffset))) {
+				writer.WriteStartElement ("pubDate");
+				writer.WriteString (ToRFC822DateString (Item.PublishDate));
+				writer.WriteEndElement ();
+			}
+
+			if (SerializeExtensionsAsAtom) {
 				foreach (SyndicationPerson contributor in Item.Contributors) {
 					if (contributor != null) {
 						writer.WriteStartElement ("contributor", AtomNamespace);
@@ -196,8 +213,38 @@ namespace System.ServiceModel.Syndication
 					}
 				}
 
+				if (!Item.LastUpdatedTime.Equals (default (DateTimeOffset))) {
+					writer.WriteStartElement ("updated", AtomNamespace);
+					// FIXME: how to handle offset part?
+					writer.WriteString (XmlConvert.ToString (Item.LastUpdatedTime.DateTime, XmlDateTimeSerializationMode.RoundtripKind));
+					writer.WriteEndElement ();
+				}
+
+				if (Item.Copyright != null)
+					Item.Copyright.WriteTo (writer, "rights", AtomNamespace);
+
+				if (Item.Content != null)
+					Item.Content.WriteTo (writer, "content", AtomNamespace);
+			}
+
 			if (writeRoot)
 				writer.WriteEndElement ();
+		}
+
+		// FIXME: DateTimeOffset.ToString() needs another overload.
+		// When it is implemented, just remove ".DateTime" parts below.
+		string ToRFC822DateString (DateTimeOffset date)
+		{
+			switch (date.DateTime.Kind) {
+			case DateTimeKind.Utc:
+				return date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss 'Z'", DateTimeFormatInfo.InvariantInfo);
+			case DateTimeKind.Local:
+				StringBuilder sb = new StringBuilder (date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss zzz", DateTimeFormatInfo.InvariantInfo));
+				sb.Remove (sb.Length - 3, 1);
+				return sb.ToString (); // remove ':' from +hh:mm
+			default:
+				return date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
+			}
 		}
 	}
 }

@@ -37,38 +37,45 @@ namespace System.ServiceModel.Syndication
 {
 	public class UrlSyndicationContent : SyndicationContent
 	{
-		[MonoTODO]
+		Uri url;
+		string media_type;
+
 		public UrlSyndicationContent (Uri url, string mediaType)
 		{
-			throw new NotImplementedException ();
+			if (url == null)
+				throw new ArgumentNullException ("url");
+			this.url = url;
+			this.media_type = mediaType;
 		}
 
-		[MonoTODO]
 		protected UrlSyndicationContent (UrlSyndicationContent source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			url = source.url;
+			media_type = source.media_type;
 		}
 
-		[MonoTODO]
 		public override SyndicationContent Clone ()
 		{
-			throw new NotImplementedException ();
+			return new UrlSyndicationContent (this);
 		}
 
-		[MonoTODO]
 		protected override void WriteContentsTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (media_type != null)
+				writer.WriteAttributeString ("type", media_type);
+			writer.WriteAttributeString ("src", url.ToString ());
 		}
 
-		[MonoTODO]
 		public Uri Url {
-			get { throw new NotImplementedException (); }
+			get { return url; }
 		}
 
-		[MonoTODO]
 		public override string Type {
-			get { throw new NotImplementedException (); }
+			get { return media_type; }
 		}
 	}
 }

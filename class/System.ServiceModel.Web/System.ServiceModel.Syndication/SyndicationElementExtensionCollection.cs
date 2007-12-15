@@ -50,46 +50,40 @@ namespace System.ServiceModel.Syndication
 				Add (item);
 		}
 
-		[MonoTODO]
 		public void Add (object extension)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (extension));
 		}
 
-		[MonoTODO]
 		public void Add (object dataContractExtension, DataContractSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (dataContractExtension, serializer));
 		}
 
-		[MonoTODO]
 		public void Add (object xmlSerializerExtension, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (xmlSerializerExtension, serializer));
 		}
 
-		[MonoTODO]
 		public void Add (string outerName, string outerNamespace, object dataContractExtension)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (outerName, outerNamespace, dataContractExtension));
 		}
 
-		[MonoTODO]
 		public void Add (string outerName, string outerNamespace, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (outerName, outerNamespace, dataContractExtension, dataContractSerializer));
 		}
 
-		[MonoTODO]
 		public void Add (XmlReader xmlReader)
 		{
-			throw new NotImplementedException ();
+			Add (new SyndicationElementExtension (xmlReader));
 		}
 
-		[MonoTODO]
+		[MonoTODO ("Find out what is expected here")]
 		protected override void ClearItems ()
 		{
-			throw new NotImplementedException ();
+			base.ClearItems ();
 		}
 
 		[MonoTODO]
@@ -98,40 +92,57 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected override void InsertItem (int index, SyndicationElementExtension item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			base.InsertItem (index, item);
 		}
 
-		[MonoTODO]
 		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace)
 		{
-			throw new NotImplementedException ();
+			Collection<TExtension> c = new Collection<TExtension> ();
+			foreach (SyndicationElementExtension e in this)
+				if (e.OuterName == extensionName && e.OuterNamespace == extensionNamespace)
+					c.Add (e.GetObject<TExtension> ());
+			return c;
 		}
 
-		[MonoTODO]
 		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace, XmlObjectSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			if (serializer == null)
+				throw new ArgumentNullException ("serializer");
+
+			Collection<TExtension> c = new Collection<TExtension> ();
+			foreach (SyndicationElementExtension e in this)
+				if (e.OuterName == extensionName && e.OuterNamespace == extensionNamespace)
+					c.Add (e.GetObject<TExtension> (serializer));
+			return c;
 		}
 
-		[MonoTODO]
 		public Collection<TExtension> ReadElementExtensions<TExtension> (string extensionName, string extensionNamespace, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			if (serializer == null)
+				throw new ArgumentNullException ("serializer");
+
+			Collection<TExtension> c = new Collection<TExtension> ();
+			foreach (SyndicationElementExtension e in this)
+				if (e.OuterName == extensionName && e.OuterNamespace == extensionNamespace)
+					c.Add (e.GetObject<TExtension> (serializer));
+			return c;
 		}
 
-		[MonoTODO]
+		[MonoTODO ("Find out what is expected here")]
 		protected override void RemoveItem (int index)
 		{
-			throw new NotImplementedException ();
+			base.RemoveItem (index);
 		}
 
-		[MonoTODO]
 		protected override void SetItem (int index, SyndicationElementExtension item)
 		{
-			throw new NotImplementedException ();
+			if (item == null)
+				throw new ArgumentNullException ("item");
+			base.SetItem (index, item);
 		}
 	}
 }

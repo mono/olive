@@ -38,80 +38,81 @@ namespace System.ServiceModel.Syndication
 {
 	public class XmlSyndicationContent : SyndicationContent
 	{
-		[MonoTODO]
+		SyndicationElementExtension extension;
+		string type;
+
 		public XmlSyndicationContent (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			extension = new SyndicationElementExtension (reader);
 		}
 
-		[MonoTODO]
 		public XmlSyndicationContent (string type, object dataContractExtension, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			extension = new SyndicationElementExtension (dataContractExtension, dataContractSerializer);
 		}
 
-		[MonoTODO]
 		public XmlSyndicationContent (string type, object xmlSerializerExtension, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			extension = new SyndicationElementExtension (xmlSerializerExtension, serializer);
 		}
 
-		[MonoTODO]
 		public XmlSyndicationContent (string type, SyndicationElementExtension extension)
 		{
-			throw new NotImplementedException ();
+			this.type = type;
+			if (extension == null)
+				throw new ArgumentNullException ("extension");
+			this.extension = extension;
 		}
 
-		[MonoTODO]
 		protected XmlSyndicationContent (XmlSyndicationContent source)
 		{
-			throw new NotImplementedException ();
+			if (source == null)
+				throw new ArgumentNullException ("source");
+			type = source.type;
+			extension = source.extension;
 		}
 
-		[MonoTODO]
 		public override SyndicationContent Clone ()
 		{
-			throw new NotImplementedException ();
+			return new XmlSyndicationContent (this);
 		}
 
-		[MonoTODO]
 		public XmlDictionaryReader GetReaderAtContent ()
 		{
-			throw new NotImplementedException ();
+			XmlReader r = extension.GetReader ();
+			if (!(r is XmlDictionaryReader))
+				r = XmlDictionaryReader.CreateDictionaryReader (r);
+			return (XmlDictionaryReader) r;
 		}
 
-		[MonoTODO]
 		public TContent ReadContent<TContent> ()
 		{
-			throw new NotImplementedException ();
+			return extension.GetObject<TContent> ();
 		}
 
-		[MonoTODO]
 		public TContent ReadContent<TContent> (XmlObjectSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			return extension.GetObject<TContent> (serializer);
 		}
 
-		[MonoTODO]
 		public TContent ReadContent<TContent> (XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			return extension.GetObject<TContent> (serializer);
 		}
 
-		[MonoTODO]
 		protected override void WriteContentsTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			extension.WriteTo (writer);
 		}
 
-		[MonoTODO]
 		public SyndicationElementExtension Extension {
-			get { throw new NotImplementedException (); }
+			get { return extension; }
 		}
 
-		[MonoTODO]
 		public override string Type {
-			get { throw new NotImplementedException (); }
+			get { return type ?? "text/xml"; }
 		}
 	}
 }

@@ -1,5 +1,14 @@
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20ItemFormatter.cs : write remaining properties in item.
+	* UrlSyndicationContent.cs : implemented.
+	* XmlSyndicationContent.cs, SyndicationContent.cs,
+	  SyndicationElementExtensionCollection.cs : mostly implemented; now
+	  I mostly found that those unimplemented stuff were bound to
+	  SyndicationElementExtension constructors.
+
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationFeed.cs : do not try to set null items in .ctor() (null
 	  items are allowed in .ctor, while not allowed in set_Items()).
 	  Remove extra NotImplementedException.

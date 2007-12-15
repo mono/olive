@@ -60,28 +60,24 @@ namespace System.ServiceModel.Syndication
 			return new UrlSyndicationContent (url, mediaType);
 		}
 
-		[MonoTODO]
 		public static XmlSyndicationContent CreateXmlContent (object dataContractObject)
 		{
-			throw new NotImplementedException ();
+			return new XmlSyndicationContent (null, dataContractObject, (XmlObjectSerializer) null);
 		}
 
-		[MonoTODO]
 		public static XmlSyndicationContent CreateXmlContent (object dataContractObject, XmlObjectSerializer dataContractSerializer)
 		{
-			throw new NotImplementedException ();
+			return new XmlSyndicationContent (null, dataContractObject, dataContractSerializer);
 		}
 
-		[MonoTODO]
 		public static XmlSyndicationContent CreateXmlContent (object xmlSerializerObject, XmlSerializer serializer)
 		{
-			throw new NotImplementedException ();
+			return new XmlSyndicationContent (null, xmlSerializerObject, serializer);
 		}
 
-		[MonoTODO]
 		public static XmlSyndicationContent CreateXmlContent (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			return new XmlSyndicationContent (reader);
 		}
 
 		#endregion

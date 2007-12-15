@@ -122,7 +122,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
-		public void WriteTo_Category ()
+		public void WriteTo_CategoryAuthorsContributors ()
 		{
 			SyndicationItem item = new SyndicationItem ();
 			item.Categories.Add (new SyndicationCategory ("myname", "myscheme", "mylabel"));
@@ -133,6 +133,24 @@ namespace MonoTests.System.ServiceModel.Syndication
 				new Rss20ItemFormatter (item).WriteTo (w);
 			// contributors are serialized as Atom extension
 			Assert.AreEqual ("<item><author>john@doe.com</author><category domain=\"myscheme\">myname</category><description /><contributor xmlns=\"http://www.w3.org/2005/Atom\"><name>Jane Doe</name><uri>http://jane.doe.name</uri><email>jane@doe.com</email></contributor></item>", sw.ToString ());
+		}
+
+		[Test]
+		public void WriteTo ()
+		{
+			SyndicationItem item = new SyndicationItem ();
+			item.BaseUri = new Uri ("http://mono-project.com");
+			item.Copyright = new TextSyndicationContent ("No rights reserved");
+			item.Content = new XmlSyndicationContent (null, 5, (XmlObjectSerializer) null);
+			item.Id = "urn:myid";
+			item.PublishDate = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2000, 1, 1), DateTimeKind.Utc));
+			item.LastUpdatedTime = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2008, 1, 1), DateTimeKind.Utc));
+			//item.SourceFeed = new SyndicationFeed ();
+
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Rss20ItemFormatter (item).WriteTo (w);
+			Assert.AreEqual ("<item xml:base=\"http://mono-project.com/\"><guid isPermaLink=\"false\">urn:myid</guid><description />" + /* "<source></source>" + */ "<pubDate>Sat, 01 Jan 2000 00:00:00 Z</pubDate><updated xmlns=\"http://www.w3.org/2005/Atom\">2008-01-01T00:00:00Z</updated><rights type=\"text\" xmlns=\"http://www.w3.org/2005/Atom\">No rights reserved</rights><content type=\"text/xml\" xmlns=\"http://www.w3.org/2005/Atom\"><int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">5</int></content></item>", sw.ToString ());
 		}
 
 		[Test]
