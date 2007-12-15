@@ -1,6 +1,6 @@
 thisdir := .
 
-SUBDIRS := build class tools data scripts
+SUBDIRS := build class tools data scripts nunit20
 
 net_3_0_SUBDIRS := build class tools data scripts nunit20
 net_2_1_SUBDIRS := build class data

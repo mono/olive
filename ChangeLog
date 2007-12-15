@@ -1,3 +1,7 @@
+2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : oops, nunit20 should be also included in SUBDIRS.
+
 2007-12-10  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : include nunit20 to the build for 3.0 and 3.5.
