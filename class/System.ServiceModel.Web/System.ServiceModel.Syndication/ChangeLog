@@ -1,3 +1,8 @@
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Rss20ItemFormatter.cs : enclose SourceFeed with <source>.
+	* Atom10ItemFormatter.cs : implemented WriteTo() and WriteXml().
+
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Rss20ItemFormatter.cs : some parameter renaming.

@@ -1,3 +1,7 @@
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Atom10ItemFormatterTest.cs : added test for WriteTo and WriteXml.
+
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Rss20FeedFormatterTest.cs : new, mostly copied from item formatter.

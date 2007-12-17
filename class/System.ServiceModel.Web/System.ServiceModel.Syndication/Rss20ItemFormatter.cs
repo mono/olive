@@ -191,8 +191,11 @@ namespace System.ServiceModel.Syndication
 					writer.WriteEndElement ();
 				}
 
-			if (Item.SourceFeed != null)
+			if (Item.SourceFeed != null) {
+				writer.WriteStartElement ("source");
 				Item.SourceFeed.SaveAsRss20 (writer);
+				writer.WriteEndElement ();
+			}
 
 			if (!Item.PublishDate.Equals (default (DateTimeOffset))) {
 				writer.WriteStartElement ("pubDate");
