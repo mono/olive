@@ -1,5 +1,10 @@
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatterTest.cs : test for spec violation i.e. to prove
+	  that this class is not trustworthy for valid output.
+
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatterTest.cs : added test for WriteTo and WriteXml.
 
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>

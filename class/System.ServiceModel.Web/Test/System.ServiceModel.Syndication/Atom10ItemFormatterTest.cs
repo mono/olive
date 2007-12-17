@@ -188,6 +188,19 @@ namespace MonoTests.System.ServiceModel.Syndication
 			Assert.AreEqual ("<dummy><id>XXX</id><title type=\"text\" xmlns=\"http://www.w3.org/2005/Atom\">title text</title><updated>XXX</updated></dummy>", DummyUpdated2 (DummyId2 (sw.ToString ())));
 		}
 
+		[Test]
+		public void WriteTo_IllegalDuplicateAltLinks ()
+		{
+			// ... and it passes.
+			SyndicationItem item = new SyndicationItem ();
+			item.Links.Add (new SyndicationLink (new Uri ("http://mono-project.com/Page1"), "alternate", "Page 1", "text/html", 0));
+			item.Links.Add (new SyndicationLink (new Uri ("http://mono-project.com/Page2"), "alternate", "Page 2", "text/html", 0));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = CreateWriter (sw))
+				new Atom10ItemFormatter (item).WriteTo (w);
+			Assert.AreEqual ("<entry xmlns=\"http://www.w3.org/2005/Atom\"><id>XXX</id><title type=\"text\"></title><updated>XXX</updated><link rel=\"alternate\" type=\"text/html\" title=\"Page 1\" href=\"http://mono-project.com/Page1\" /><link rel=\"alternate\" type=\"text/html\" title=\"Page 2\" href=\"http://mono-project.com/Page2\" /></entry>", DummyUpdated (DummyId (sw.ToString ())));
+		}
+
 		XmlWriter CreateWriter (StringWriter sw)
 		{
 			XmlWriterSettings s = new XmlWriterSettings ();

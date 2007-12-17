@@ -31,6 +31,9 @@
 // This class is not for outputting ATOM 1.0 conformant XML. For example
 // it does not report errors with related to the following constraints:
 
+// - atom:entry elements MUST NOT contain more than one atom:link
+//   element with a rel attribute value of "alternate" that has the
+//   same combination of type and hreflang attribute values.
 // - atom:entry elements that contain no child atom:content element
 //   MUST contain at least one atom:link element with a rel attribute
 //   value of "alternate".
@@ -206,7 +209,6 @@ namespace System.ServiceModel.Syndication
 			foreach (SyndicationLink link in Item.Links)
 				if (link != null) {
 					writer.WriteStartElement ("link");
-					writer.WriteAttributeString ("href", link.Uri != null ? link.Uri.ToString () : String.Empty);
 					if (link.RelationshipType != null)
 						writer.WriteAttributeString ("rel", link.RelationshipType);
 					if (link.MediaType != null)
@@ -215,6 +217,7 @@ namespace System.ServiceModel.Syndication
 						writer.WriteAttributeString ("title", link.Title);
 					if (link.Length != 0)
 						writer.WriteAttributeString ("length", link.Length.ToString (CultureInfo.InvariantCulture));
+					writer.WriteAttributeString ("href", link.Uri != null ? link.Uri.ToString () : String.Empty);
 					WriteAttributeExtensions (writer, link, Version);
 					WriteElementExtensions (writer, link, Version);
 					writer.WriteEndElement ();
