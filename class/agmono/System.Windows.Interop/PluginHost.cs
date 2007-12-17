@@ -28,6 +28,18 @@
 
 namespace System.Windows.Interop {
 
+	/// <summary>
+	///   This class is used to keep track of the Mozilla plugin handle
+	/// </summary>
+	/// <remarks>
+	///   A number of methods that interact with the browser host require
+	///   the plugin handle that was used to create the plugin on the Mozilla
+	///   side.   We keep this information here.
+	///
+	///   This class is static, but since we create a new AppDomain for each
+	///   Silverlight surface created on the plugin, the plugin_handle is
+	///   actually a per-Silverlight instance variable. 
+	/// </remarks>
 	public static class PluginHost {
 		static IntPtr plugin_handle;
 
