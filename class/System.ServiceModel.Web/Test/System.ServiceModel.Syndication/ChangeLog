@@ -1,5 +1,9 @@
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20FeedFormatterTest.cs : they are feed, not item :)
+
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatterTest.cs : test for spec violation i.e. to prove
 	  that this class is not trustworthy for valid output.
 

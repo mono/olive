@@ -95,17 +95,17 @@ namespace MonoTests.System.ServiceModel.Syndication
 		[ExpectedException (typeof (ArgumentNullException))]
 		public void WriteToNull ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			new Rss20FeedFormatter (item).WriteTo (null);
+			SyndicationFeed feed = new SyndicationFeed ();
+			new Rss20FeedFormatter (feed).WriteTo (null);
 		}
 
 		[Test]
 		public void WriteTo_EmptyFeed ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
+			SyndicationFeed feed = new SyndicationFeed ();
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
-				new Rss20FeedFormatter (item).WriteTo (w);
+				new Rss20FeedFormatter (feed).WriteTo (w);
 			// either title or description must exist (RSS 2.0 spec)
 			Assert.AreEqual ("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\"><channel><title /><description /></channel></rss>", sw.ToString ());
 		}
@@ -113,24 +113,24 @@ namespace MonoTests.System.ServiceModel.Syndication
 		[Test]
 		public void WriteTo_TitleOnlyFeed ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			item.Title = new TextSyndicationContent ("title text");
+			SyndicationFeed feed = new SyndicationFeed ();
+			feed.Title = new TextSyndicationContent ("title text");
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
-				new Rss20FeedFormatter (item).WriteTo (w);
+				new Rss20FeedFormatter (feed).WriteTo (w);
 			Assert.AreEqual ("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\"><channel><title>title text</title><description /></channel></rss>", sw.ToString ());
 		}
 
 		[Test]
 		public void WriteTo_CategoryAuthorsContributors ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			item.Categories.Add (new SyndicationCategory ("myname", "myscheme", "mylabel"));
-			item.Authors.Add (new SyndicationPerson ("john@doe.com", "John Doe", "http://john.doe.name"));
-			item.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
+			SyndicationFeed feed = new SyndicationFeed ();
+			feed.Categories.Add (new SyndicationCategory ("myname", "myscheme", "mylabel"));
+			feed.Authors.Add (new SyndicationPerson ("john@doe.com", "John Doe", "http://john.doe.name"));
+			feed.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
-				new Rss20FeedFormatter (item).WriteTo (w);
+				new Rss20FeedFormatter (feed).WriteTo (w);
 			// contributors are serialized as Atom extension
 			Assert.AreEqual ("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\"><channel><title /><description /><managingEditor>john@doe.com</managingEditor><category domain=\"myscheme\">myname</category><a10:contributor><a10:name>Jane Doe</a10:name><a10:uri>http://jane.doe.name</a10:uri><a10:email>jane@doe.com</a10:email></a10:contributor></channel></rss>", sw.ToString ());
 		}
@@ -138,28 +138,28 @@ namespace MonoTests.System.ServiceModel.Syndication
 		[Test]
 		public void WriteTo ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			item.BaseUri = new Uri ("http://mono-project.com");
-			item.Copyright = new TextSyndicationContent ("No rights reserved");
-			item.Generator = "mono test generator";
-			item.Id = "urn:myid";
-			item.ImageUrl = new Uri ("http://mono-project.com/images/mono.png");
-			item.LastUpdatedTime = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2008, 1, 1), DateTimeKind.Utc));
+			SyndicationFeed feed = new SyndicationFeed ();
+			feed.BaseUri = new Uri ("http://mono-project.com");
+			feed.Copyright = new TextSyndicationContent ("No rights reserved");
+			feed.Generator = "mono test generator";
+			feed.Id = "urn:myid";
+			feed.ImageUrl = new Uri ("http://mono-project.com/images/mono.png");
+			feed.LastUpdatedTime = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2008, 1, 1), DateTimeKind.Utc));
 
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
-				new Rss20FeedFormatter (item).WriteTo (w);
+				new Rss20FeedFormatter (feed).WriteTo (w);
 			Assert.AreEqual ("<rss xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\"><channel xml:base=\"http://mono-project.com/\"><title /><description /><copyright>No rights reserved</copyright><lastBuildDate>Tue, 01 Jan 2008 00:00:00 Z</lastBuildDate><generator>mono test generator</generator><image><url>http://mono-project.com/images/mono.png</url><title /><link /></image><a10:id>urn:myid</a10:id></channel></rss>", sw.ToString ());
 		}
 
 		[Test]
 		public void SerializeExtensionsAsAtomFalse ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			item.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
+			SyndicationFeed feed = new SyndicationFeed ();
+			feed.Contributors.Add (new SyndicationPerson ("jane@doe.com", "Jane Doe", "http://jane.doe.name"));
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
-				new Rss20FeedFormatter (item, false).WriteTo (w);
+				new Rss20FeedFormatter (feed, false).WriteTo (w);
 			// skip contributors
 			Assert.AreEqual ("<rss version=\"2.0\"><channel><title /><description /></channel></rss>", sw.ToString ());
 		}
@@ -167,12 +167,12 @@ namespace MonoTests.System.ServiceModel.Syndication
 		[Test]
 		public void ISerializableWriteXml ()
 		{
-			SyndicationFeed item = new SyndicationFeed ();
-			item.Title = new TextSyndicationContent ("title text");
+			SyndicationFeed feed = new SyndicationFeed ();
+			feed.Title = new TextSyndicationContent ("title text");
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw)) {
 				w.WriteStartElement ("dummy");
-				((IXmlSerializable) new Rss20FeedFormatter (item)).WriteXml (w);
+				((IXmlSerializable) new Rss20FeedFormatter (feed)).WriteXml (w);
 				w.WriteEndElement ();
 			}
 			Assert.AreEqual ("<dummy xmlns:a10=\"http://www.w3.org/2005/Atom\" version=\"2.0\"><channel><title>title text</title><description /></channel></dummy>", sw.ToString ());
