@@ -1,3 +1,7 @@
+2007-12-17  Jb Evain  <jbevain@novell.com>
+
+	* Kind.cs: update after the last changes (Matrix is now a DO).
+
 2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* NativeMethods.cs: Removed uielement_is_loaded() and
