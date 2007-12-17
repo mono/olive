@@ -107,13 +107,13 @@ namespace Mono.Xaml
 //			this.filename = filename;
 //			this.contents = contents;
 
-			callbacks.load_managed_object = new LoadObjectCallback (load_object);
-			callbacks.set_custom_attribute = new SetAttributeCallback (set_custom_attribute);
-			callbacks.hookup_event = new HookupEventCallback (hookup_event);
-			callbacks.insert_mapping = new InsertMappingCallback (insert_mapping);
-			callbacks.get_mapping = new GetMappingCallback (get_mapping);
-			callbacks.load_code = new LoadCodeCallback (load_code);
-			callbacks.set_name_attribute = new SetNameAttributeCallback (set_name_attribute);
+			callbacks.load_managed_object = new LoadObjectCallback (cb_load_object);
+			callbacks.set_custom_attribute = new SetAttributeCallback (cb_set_custom_attribute);
+			callbacks.hookup_event = new HookupEventCallback (cb_hookup_event);
+			callbacks.insert_mapping = new InsertMappingCallback (cb_insert_mapping);
+			callbacks.get_mapping = new GetMappingCallback (cb_get_mapping);
+			callbacks.load_code = new LoadCodeCallback (cb_load_code);
+			callbacks.set_name_attribute = new SetNameAttributeCallback (cb_set_name_attribute);
 
 			NativeMethods.xaml_loader_set_callbacks (native_loader, callbacks);
 			
@@ -127,30 +127,11 @@ namespace Mono.Xaml
 			
 		}
 
-		private string get_mapping (string key)
-		{
-			try {
-				return GetMapping (key);
-			} catch (Exception ex) {
-				Console.Error.WriteLine ("ManagedXamlLoader::GetMapping ({0}) failed: {1}.", key, ex.Message);
-				return null;
-			}
-		}
-		
 		public string GetMapping (string key)
 		{
 			if (!mappings.ContainsKey (key))
 				return null;
 			return mappings [key];
-		}
-		
-		private void insert_mapping (string key, string name)
-		{
-			try {
-				InsertMapping (key, name);
-			} catch (Exception ex) {
-				Console.Error.WriteLine ("ManagedXamlLoader::InsertMapping ({0}, {1}) failed: {2}.", key, name, ex.Message);
-			}
 		}
 		
 		public void InsertMapping (string key, string name)
@@ -273,20 +254,6 @@ namespace Mono.Xaml
 			return AssemblyLoadResult.Success;
 		}
 		
-		//
-		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
-		// genereting an exception and unwinding the stack.
-		//
-		private IntPtr load_object (string asm_name, string asm_path, string ns, string type_name)
-		{
-			try {
-				return LoadObject (asm_name, asm_path, ns, type_name);
-			} catch (Exception ex) {
-				Console.Error.WriteLine ("ManagedXamlLoader::LoadObject ({0}, {1}, {2}, {3}) failed: {4} ({5}).", asm_name, asm_path, ns, type_name, ex.Message, ex.GetType ().FullName);
-				return IntPtr.Zero;
-			}
-		}
-		
 		private IntPtr LoadObject (string asm_name, string asm_path, string ns, string type_name)
 		{
 			AssemblyLoadResult load_result;
@@ -337,20 +304,6 @@ namespace Mono.Xaml
 			return dob.native;
 		}
 		
-		//
-		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
-		// genreating an exception and unwinding the stack.
-		//
-		private bool set_custom_attribute (IntPtr target_ptr, string name, string value)
-		{
-			try {
-				return SetCustomAttribute (target_ptr, name, value);
-			} catch (Exception ex) {
-				Console.Error.WriteLine ("ManagedXamlLoader::SetCustomAttribute ({0}, {1}, {2}) threw an exception: {3}.", target_ptr, name, value, ex.Message);
-				return false;
-			}
-		}
-		
 		private bool SetCustomAttribute (IntPtr target_ptr, string name, string value)
 		{
 			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr); 
@@ -378,62 +331,6 @@ namespace Mono.Xaml
 			}
 
 			return true;
-		}
-
-		private bool hookup_event (IntPtr target_ptr, string name, string value)
-		{
-			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr);
-			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
-
-			if (target == null) {
-				//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to create target object.", target_ptr, name, value);
-				return false;
-			}
-
-			EventInfo src = target.GetType ().GetEvent (name);
-			if (src == null) {
-				//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to find event name.", target_ptr, name, value);
-				return false;
-			}
-
-#if WITH_DLR
-			if (dlr_host != null) {
-				try {
-					dlr_host.HookupEvent (target, name, value);
-				}
-				catch (Exception ex) {
-					Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to hookup event: {3}", target_ptr, name, value, ex);
-					return false;
-				}
-			} else {
-				RememberEvent (target, name, value);
-			}
-#endif
-
-			try {
-				Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
-				if (d == null) {
-					//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to create delegate (src={3} target={4}).", target_ptr, name, value, src.EventHandlerType, target);
-					return false;
-				}
-
-				src.AddEventHandler (target, d);
-				return true;
-			}
-			catch {
-				return false;
-			}
-		}
-
-		private bool load_code (string source, string type)
-		{
-			try {
-				return LoadCode (source, type);
-			}
-			catch (Exception ex) {
-				Console.WriteLine ("ManagedXamlLoader::LoadCode ({0}, {1}): {2}", source, type, ex);
-				return false;
-			}
 		}
 
 		private bool LoadCode (string source, string type)
@@ -501,17 +398,8 @@ namespace Mono.Xaml
 			}
 		}
 
-		private void set_name_attribute (IntPtr target_ptr, string name)
+		private void SetNameAttribute (IntPtr target_ptr, string name)
 		{
-			try {
-				SetNameAttribute (target_ptr, name);
-			}
-			catch (Exception ex) {
-				Console.WriteLine ("ManagedXamlLoader::SetNameAttribute () threw an exception: " + ex);
-			}
-		}
-
-		private void SetNameAttribute (IntPtr target_ptr, string name) {
 #if WITH_DLR
 			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr); 
 			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
@@ -572,7 +460,8 @@ namespace Mono.Xaml
 		//
 		// Load a dependency file synchronously using the plugin
 		//
-		private byte[] LoadDependency (string path) {
+		private byte[] LoadDependency (string path)
+		{
 			IntPtr plugin_handle = System.Windows.Interop.PluginHost.Handle;
 			if (plugin_handle == IntPtr.Zero)
 				return null;
@@ -590,5 +479,126 @@ namespace Mono.Xaml
 
 			return arr;;
 		}
+
+#region Callbacks from xaml.cpp
+	
+		///
+		/// Callbacks invoked by the xaml.cpp C++ parser
+		///
+
+		private string cb_get_mapping (string key)
+		{
+			try {
+				return GetMapping (key);
+			} catch (Exception ex) {
+				Console.Error.WriteLine ("ManagedXamlLoader::GetMapping ({0}) failed: {1}.", key, ex.Message);
+				return null;
+			}
+		}
+		
+		private void cb_insert_mapping (string key, string name)
+		{
+			try {
+				InsertMapping (key, name);
+			} catch (Exception ex) {
+				Console.Error.WriteLine ("ManagedXamlLoader::InsertMapping ({0}, {1}) failed: {2}.", key, name, ex.Message);
+			}
+		}
+		
+		//
+		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
+		// genereting an exception and unwinding the stack.
+		//
+		private IntPtr cb_load_object (string asm_name, string asm_path, string ns, string type_name)
+		{
+			try {
+				return LoadObject (asm_name, asm_path, ns, type_name);
+			} catch (Exception ex) {
+				Console.Error.WriteLine ("ManagedXamlLoader::LoadObject ({0}, {1}, {2}, {3}) failed: {4} ({5}).", asm_name, asm_path, ns, type_name, ex.Message, ex.GetType ().FullName);
+				return IntPtr.Zero;
+			}
+		}
+		
+		//
+		// Proxy so that we return IntPtr.Zero in case of any failures, instead of
+		// genreating an exception and unwinding the stack.
+		//
+		private bool cb_set_custom_attribute (IntPtr target_ptr, string name, string value)
+		{
+			try {
+				return SetCustomAttribute (target_ptr, name, value);
+			} catch (Exception ex) {
+				Console.Error.WriteLine ("ManagedXamlLoader::SetCustomAttribute ({0}, {1}, {2}) threw an exception: {3}.", target_ptr, name, value, ex.Message);
+				return false;
+			}
+		}
+		
+		private bool cb_hookup_event (IntPtr target_ptr, string name, string value)
+		{
+			Kind k = NativeMethods.dependency_object_get_object_type (target_ptr);
+			DependencyObject target = DependencyObject.Lookup (k, target_ptr);
+
+			if (target == null) {
+				//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to create target object.", target_ptr, name, value);
+				return false;
+			}
+
+			EventInfo src = target.GetType ().GetEvent (name);
+			if (src == null) {
+				//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to find event name.", target_ptr, name, value);
+				return false;
+			}
+
+#if WITH_DLR
+			if (dlr_host != null) {
+				try {
+					dlr_host.HookupEvent (target, name, value);
+				}
+				catch (Exception ex) {
+					Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to hookup event: {3}", target_ptr, name, value, ex);
+					return false;
+				}
+			} else {
+				RememberEvent (target, name, value);
+			}
+#endif
+
+			try {
+				Delegate d = Delegate.CreateDelegate (src.EventHandlerType, target, value);
+				if (d == null) {
+					//Console.WriteLine ("ManagedXamlLoader::HookupEvent ({0}, {1}, {2}): unable to create delegate (src={3} target={4}).", target_ptr, name, value, src.EventHandlerType, target);
+					return false;
+				}
+
+				src.AddEventHandler (target, d);
+				return true;
+			}
+			catch {
+				return false;
+			}
+		}
+
+		private bool cb_load_code (string source, string type)
+		{
+			try {
+				return LoadCode (source, type);
+			}
+			catch (Exception ex) {
+				Console.WriteLine ("ManagedXamlLoader::LoadCode ({0}, {1}): {2}", source, type, ex);
+				return false;
+			}
+		}
+
+		private void cb_set_name_attribute (IntPtr target_ptr, string name)
+		{
+			try {
+				SetNameAttribute (target_ptr, name);
+			}
+			catch (Exception ex) {
+				Console.WriteLine ("ManagedXamlLoader::SetNameAttribute () threw an exception: " + ex);
+			}
+		}
+
+#endregion
 	}
 }

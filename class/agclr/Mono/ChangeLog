@@ -1,3 +1,8 @@
+2007-12-17  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: Reorganization, no relevant changes: move
+	all the callback code to a region, prefix it.
+
 2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* Events.cs (loaded_callback): call BrowserHost.InvokeResize().
