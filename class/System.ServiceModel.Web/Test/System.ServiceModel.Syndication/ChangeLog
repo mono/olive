@@ -1,5 +1,9 @@
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10FeedFormatterTest.cs : new, test for WriteTo and WriteXml.
+
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Rss20FeedFormatterTest.cs : they are feed, not item :)
 
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>

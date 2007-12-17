@@ -25,9 +25,14 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
+// WARNING: this class is not for ensuring valid ATOM 1.0 document output
+// (as well as Atom10ItemFormatter).
+
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.IO;
 using System.Runtime.Serialization;
 using System.Text;
@@ -40,44 +45,43 @@ namespace System.ServiceModel.Syndication
 	[XmlRoot ("feed", Namespace = "http://www.w3.org/2005/Atom")]
 	public class Atom10FeedFormatter : SyndicationFeedFormatter, IXmlSerializable
 	{
-		[MonoTODO]
+		const string AtomNamespace ="http://www.w3.org/2005/Atom";
+
+		bool preserve_att_ext, preserve_elem_ext;
+		Type feed_type;
+
 		public Atom10FeedFormatter ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Atom10FeedFormatter (SyndicationFeed feedToWrite)
+			: base (feedToWrite)
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Atom10FeedFormatter (Type feedTypeToCreate)
 		{
-			throw new NotImplementedException ();
+			if (feedTypeToCreate == null)
+				throw new ArgumentNullException ("feedTypeToCreate");
+			feed_type = feedTypeToCreate;
 		}
 
-		[MonoTODO]
 		protected Type FeedType {
-			get { throw new NotImplementedException (); }
+			get { return feed_type; }
 		}
 
-		[MonoTODO]
 		public bool PreserveAttributeExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_att_ext; }
+			set { preserve_att_ext = value; }
 		}
 
-		[MonoTODO]
 		public bool PreserveElementExtensions {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return preserve_elem_ext; }
+			set { preserve_elem_ext = value; }
 		}
 
-		[MonoTODO]
 		public override string Version {
-			get { throw new NotImplementedException (); }
+			get { return "Atom10"; }
 		}
 
 		[MonoTODO]
@@ -110,22 +114,24 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
+
+		[MonoTODO ("Find out how feedBaseUri is used")]
 		protected virtual void WriteItem (XmlWriter writer, SyndicationItem item, Uri feedBaseUri)
 		{
-			throw new NotImplementedException ();
+			item.SaveAsAtom10 (writer);
 		}
 
-		[MonoTODO]
 		protected virtual void WriteItems (XmlWriter writer, IEnumerable<SyndicationItem> items, Uri feedBaseUri)
 		{
-			throw new NotImplementedException ();
+			if (items == null)
+				throw new ArgumentNullException ("items");
+			foreach (SyndicationItem item in items)
+				WriteItem (writer, item, feedBaseUri);
 		}
 
-		[MonoTODO]
 		public override void WriteTo (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, true);
 		}
 
 		[MonoTODO]
@@ -134,16 +140,115 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		void IXmlSerializable.WriteXml (XmlWriter writer)
 		{
-			throw new NotImplementedException ();
+			WriteXml (writer, false);
 		}
 
 		[MonoTODO]
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		void WriteXml (XmlWriter writer, bool writeRoot)
+		{
+			if (writer == null)
+				throw new ArgumentNullException ("writer");
+			if (Feed == null)
+				throw new InvalidOperationException ("Syndication item must be set before writing");
+
+			if (writeRoot)
+				writer.WriteStartElement ("feed", AtomNamespace);
+
+			if (Feed.BaseUri != null)
+				writer.WriteAttributeString ("xml:base", Feed.BaseUri.ToString ());
+
+			if (Feed.Language != null)
+				writer.WriteAttributeString ("xml:lang", Feed.Language);
+
+			// atom:feed elements MUST contain exactly one atom:title element.
+			(Feed.Title ?? new TextSyndicationContent (String.Empty)).WriteTo (writer, "title", AtomNamespace);
+
+			// atom:feed elements MUST contain exactly one atom:id element.
+			writer.WriteElementString ("id", AtomNamespace, Feed.Id ?? new UniqueId ().ToString ());
+
+			if (Feed.Copyright != null)
+				Feed.Copyright.WriteTo (writer, "rights", AtomNamespace);
+
+			// atom:feed elements MUST contain exactly one atom:updated element.
+			writer.WriteStartElement ("updated", AtomNamespace);
+			// FIXME: use DateTimeOffset itself once it is implemented.
+			writer.WriteString (XmlConvert.ToString (Feed.LastUpdatedTime.UtcDateTime, XmlDateTimeSerializationMode.RoundtripKind));
+			writer.WriteEndElement ();
+
+			foreach (SyndicationCategory category in Feed.Categories)
+				if (category != null) {
+					writer.WriteStartElement ("category", AtomNamespace);
+					if (category.Name != null)
+						writer.WriteAttributeString ("term", category.Name);
+					if (category.Label != null)
+						writer.WriteAttributeString ("label", category.Label);
+					if (category.Scheme != null)
+						writer.WriteAttributeString ("scheme", category.Scheme);
+					WriteAttributeExtensions (writer, category, Version);
+					WriteElementExtensions (writer, category, Version);
+					writer.WriteEndElement ();
+				}
+
+			foreach (SyndicationPerson author in Feed.Authors)
+				if (author != null) {
+					writer.WriteStartElement ("author", AtomNamespace);
+					WriteAttributeExtensions (writer, author, Version);
+					writer.WriteElementString ("name", AtomNamespace, author.Name);
+					writer.WriteElementString ("uri", AtomNamespace, author.Uri);
+					writer.WriteElementString ("email", AtomNamespace, author.Email);
+					WriteElementExtensions (writer, author, Version);
+					writer.WriteEndElement ();
+				}
+
+			foreach (SyndicationPerson contributor in Feed.Contributors) {
+				if (contributor != null) {
+					writer.WriteStartElement ("contributor", AtomNamespace);
+					WriteAttributeExtensions (writer, contributor, Version);
+					writer.WriteElementString ("name", AtomNamespace, contributor.Name);
+					writer.WriteElementString ("uri", AtomNamespace, contributor.Uri);
+					writer.WriteElementString ("email", AtomNamespace, contributor.Email);
+					WriteElementExtensions (writer, contributor, Version);
+					writer.WriteEndElement ();
+				}
+			}
+
+			foreach (SyndicationLink link in Feed.Links)
+				if (link != null) {
+					writer.WriteStartElement ("link");
+					if (link.RelationshipType != null)
+						writer.WriteAttributeString ("rel", link.RelationshipType);
+					if (link.MediaType != null)
+						writer.WriteAttributeString ("type", link.MediaType);
+					if (link.Title != null)
+						writer.WriteAttributeString ("title", link.Title);
+					if (link.Length != 0)
+						writer.WriteAttributeString ("length", link.Length.ToString (CultureInfo.InvariantCulture));
+					writer.WriteAttributeString ("href", link.Uri != null ? link.Uri.ToString () : String.Empty);
+					WriteAttributeExtensions (writer, link, Version);
+					WriteElementExtensions (writer, link, Version);
+					writer.WriteEndElement ();
+				}
+
+			if (Feed.Description != null)
+				Feed.Description.WriteTo (writer, "description", AtomNamespace);
+
+			if (Feed.ImageUrl != null)
+				writer.WriteElementString ("logo", AtomNamespace, Feed.ImageUrl.ToString ());
+
+			if (Feed.Generator != null)
+				writer.WriteElementString ("generator", AtomNamespace, Feed.Generator);
+
+			WriteItems (writer, Feed.Items, Feed.BaseUri);
+
+			if (writeRoot)
+				writer.WriteEndElement ();
 		}
 	}
 }

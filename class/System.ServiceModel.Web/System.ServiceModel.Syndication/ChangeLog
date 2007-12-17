@@ -1,5 +1,10 @@
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20FeedFormatter.cs : s:/item/feed/ in the error message.
+	* Atom10FeedFormatter.cs : implemented WriteTo() and WriteXml().
+
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatter.cs : some more notes on its spec violation.
 
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>

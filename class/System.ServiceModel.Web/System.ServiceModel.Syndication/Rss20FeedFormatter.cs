@@ -169,7 +169,7 @@ namespace System.ServiceModel.Syndication
 			if (writer == null)
 				throw new ArgumentNullException ("writer");
 			if (Feed == null)
-				throw new InvalidOperationException ("Syndication item must be set before writing");
+				throw new InvalidOperationException ("Syndication feed must be set before writing");
 
 			if (writeRoot)
 				writer.WriteStartElement ("rss");
