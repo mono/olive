@@ -40,28 +40,27 @@ namespace System.ServiceModel.Syndication
 	public class Rss20ItemFormatter<TSyndicationItem> : Rss20ItemFormatter
 			where TSyndicationItem : SyndicationItem, new ()
 	{
-		[MonoTODO]
 		public Rss20ItemFormatter ()
+			: base (typeof (TSyndicationItem))
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public Rss20ItemFormatter (TSyndicationItem feedToWrite)
+		public Rss20ItemFormatter (TSyndicationItem itemToWrite)
+			: base (typeof (TSyndicationItem))
 		{
-			throw new NotImplementedException ();
+			SetItem (itemToWrite);
 		}
 
-		[MonoTODO]
-		public Rss20ItemFormatter (TSyndicationItem feedToWrite, bool serializeExtensionsAsAtom)
+		public Rss20ItemFormatter (TSyndicationItem itemToWrite, bool serializeExtensionsAsAtom)
+			: base (typeof (TSyndicationItem))
 		{
-			throw new NotImplementedException ();
+			SetItem (itemToWrite);
+			SerializeExtensionsAsAtom = serializeExtensionsAsAtom;
 		}
 
-		[MonoTODO]
 		protected override SyndicationItem CreateItemInstance ()
 		{
-			throw new NotImplementedException ();
+			return Activator.CreateInstance<TSyndicationItem> ();
 		}
 	}
 }

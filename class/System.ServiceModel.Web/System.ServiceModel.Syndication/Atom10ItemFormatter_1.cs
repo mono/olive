@@ -40,22 +40,20 @@ namespace System.ServiceModel.Syndication
 	public class Atom10ItemFormatter<TSyndicationItem> : Atom10ItemFormatter
 			where TSyndicationItem : SyndicationItem, new ()
 	{
-		[MonoTODO]
 		public Atom10ItemFormatter ()
+			: base (typeof (TSyndicationItem))
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
-		public Atom10ItemFormatter (TSyndicationItem feedToWrite)
+		public Atom10ItemFormatter (TSyndicationItem itemToWrite)
+			: base (typeof (TSyndicationItem))
 		{
-			throw new NotImplementedException ();
+			SetItem (itemToWrite);
 		}
 
-		[MonoTODO]
 		protected override SyndicationItem CreateItemInstance ()
 		{
-			throw new NotImplementedException ();
+			return Activator.CreateInstance<TSyndicationItem> ();
 		}
 	}
 }

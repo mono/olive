@@ -92,10 +92,9 @@ namespace System.ServiceModel.Syndication
 			get { return "Rss20"; }
 		}
 
-		[MonoTODO]
 		protected override SyndicationItem CreateItemInstance ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationItem ();
 		}
 
 		[MonoTODO]

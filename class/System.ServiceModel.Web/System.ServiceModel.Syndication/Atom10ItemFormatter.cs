@@ -94,10 +94,9 @@ namespace System.ServiceModel.Syndication
 			get { return "Atom10"; }
 		}
 
-		[MonoTODO]
 		protected override SyndicationItem CreateItemInstance ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationItem ();
 		}
 
 		[MonoTODO]

@@ -84,10 +84,9 @@ namespace System.ServiceModel.Syndication
 			get { return "Atom10"; }
 		}
 
-		[MonoTODO]
 		protected override SyndicationFeed CreateFeedInstance ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationFeed ();
 		}
 
 		[MonoTODO]

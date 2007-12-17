@@ -1,5 +1,13 @@
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10FeedFormatter_1.cs, Atom10ItemFormatter_1.cs,
+	  Rss20FeedFormatter_1.cs, Rss20ItemFormatter_1.cs : implemented.
+	* Atom10FeedFormatter.cs, Atom10ItemFormatter.cs,
+	  Rss20FeedFormatter.cs, Rss20ItemFormatter.cs :
+	  implemented instance creation. Some parameter renaming.
+
+2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Rss20FeedFormatter.cs : s:/item/feed/ in the error message.
 	* Atom10FeedFormatter.cs : implemented WriteTo() and WriteXml().
 

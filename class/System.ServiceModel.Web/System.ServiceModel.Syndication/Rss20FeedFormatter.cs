@@ -92,13 +92,12 @@ namespace System.ServiceModel.Syndication
 			get { return "Rss20"; }
 		}
 
-		[MonoTODO]
 		protected override SyndicationFeed CreateFeedInstance ()
 		{
-			throw new NotImplementedException ();
+			return new SyndicationFeed ();
 		}
 
-		[MonoTODO ("Find out what is expected here")]
+		// hmm, why is it overriden? probably failed API cleanup.
 		protected internal override void SetFeed (SyndicationFeed feed)
 		{
 			base.SetFeed (feed);

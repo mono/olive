@@ -40,22 +40,20 @@ namespace System.ServiceModel.Syndication
 	public class Atom10FeedFormatter<TSyndicationFeed> : Atom10FeedFormatter
 			where TSyndicationFeed : SyndicationFeed, new ()
 	{
-		[MonoTODO]
 		public Atom10FeedFormatter ()
+			: base (typeof (TSyndicationFeed))
 		{
-			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Atom10FeedFormatter (TSyndicationFeed feedToWrite)
+			: base (typeof (TSyndicationFeed))
 		{
-			throw new NotImplementedException ();
+			SetFeed (feedToWrite);
 		}
 
-		[MonoTODO]
 		protected override SyndicationFeed CreateFeedInstance ()
 		{
-			throw new NotImplementedException ();
+			return Activator.CreateInstance<TSyndicationFeed> ();
 		}
 	}
 }
