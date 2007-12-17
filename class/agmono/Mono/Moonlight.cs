@@ -31,20 +31,54 @@ using System.IO;
 
 namespace Mono {
 
+	/// <summary>
+	///    This helper class used to configure Moonlight's backend
+	/// </summary>
+	/// <remarks>
+	///    Applications might want to configure Moonlight's backend,
+	///    this class is the public API that might be used to do so.
+	///
+	///    This class exists in agmono, so it is possible to configure
+	///    desktop usage of Moonlight without having to expose other
+	///    entry points in agclr, or resorting to reflection hacks. 
+	/// </remarks>
 	public static class Moonlight {
 		static LoaderCallback loader_callback;
 		static ResourceLoaderCallback resource_loader_callback;
-		
+
+		/// <summary>
+		///    Signature for clients providing custom assembly loading.
+		/// </summary>
+		/// <remarks>
+		///    This method should return an assembly or null on failure.
+		/// </remarks>
 		public delegate Assembly LoaderCallback (string asm_path);
 
+		/// <summary>
+		///    Signature for clients providing custom resource loading.
+		/// </summary>
+		/// <remarks>
+		///    This method should return a Stream or null on failure.
+		/// </remarks>
 		public delegate Stream ResourceLoaderCallback (string path);
+
 		
+		/// <summary>
+		///    Registers assembly and resource loaders. 
+		/// </summary>
+		/// <remarks>
+		///    If you want to customize the way assemblies or resources are loaded, invoke
+		///    this method providing your own implementations. 
+		/// </remarks>
 		static public void RegisterLoader (LoaderCallback cb, ResourceLoaderCallback rcb)
 		{
 			loader_callback = cb;
 			resource_loader_callback = rcb;
 		}
-		
+
+		//
+		// Documentation pending until we resolve why this code no longer calls Assembly.LoadFile
+		//
 		static public Assembly LoadFile (string asm_path)
 		{
 			if (loader_callback != null)
