@@ -89,34 +89,34 @@ namespace System.ServiceModel.Syndication
 			return item.CreatePerson ();
 		}
 
-		[MonoTODO]
+		[MonoTODO ("use maxExtensionsSize parameter")]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationCategory category, int maxExtensionSize)
 		{
-			throw new NotImplementedException ();
+			category.ElementExtensions.Add (reader);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("use maxExtensionsSize parameter")]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationFeed feed, int maxExtensionSize)
 		{
-			throw new NotImplementedException ();
+			feed.ElementExtensions.Add (reader);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("use maxExtensionsSize parameter")]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationItem item, int maxExtensionSize)
 		{
-			throw new NotImplementedException ();
+			item.ElementExtensions.Add (reader);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("use maxExtensionsSize parameter")]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationLink link, int maxExtensionSize)
 		{
-			throw new NotImplementedException ();
+			link.ElementExtensions.Add (reader);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("use maxExtensionsSize parameter")]
 		protected internal static void LoadElementExtensions (XmlReader reader, SyndicationPerson person, int maxExtensionSize)
 		{
-			throw new NotImplementedException ();
+			person.ElementExtensions.Add (reader);
 		}
 
 		protected internal static bool TryParseAttribute (string name, string ns, string value, SyndicationCategory category, string version)

@@ -221,8 +221,11 @@ namespace MonoTests.System.ServiceModel.Syndication
 			Rss20ItemFormatter f = new Rss20ItemFormatter ();
 			Assert.IsNull (f.Item, "#1");
 			f.ReadFrom (CreateReader ("<item><title>test</title></item>"));
+			SyndicationItem item1 = f.Item;
 			Assert.IsNotNull (f.Item.Title, "#2");
 			Assert.AreEqual ("test", f.Item.Title.Text, "#3");
+			f.ReadFrom (CreateReader ("<item><title>test</title></item>"));
+			Assert.IsFalse (object.ReferenceEquals (item1, f.Item), "#4");
 		}
 
 		[Test]

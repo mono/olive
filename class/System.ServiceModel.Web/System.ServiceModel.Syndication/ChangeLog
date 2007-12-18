@@ -1,5 +1,13 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SyndicationFeedFormatter.cs : implemented LoadElementExtensions().
+	* Rss20FeedFormatter.cs : implemented read methods and GetSchema().
+	  PreserveElementExtensions and PreserveAttributeExtensions are
+	  true by default.
+	* Rss20ItemFormatter.cs : filter xmlns attributes out.
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationElementExtensionCollection.cs :
 	  every Add() caused infinite loop.
 	* SyndicationFeed.cs, SyndicationItem.cs : Implemented Load() and [*1]

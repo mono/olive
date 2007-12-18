@@ -1,5 +1,11 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20FeedFormatterTest.cs : some tests for ReadFrom() and ReadXml().
+	* Rss20ItemFormatterTest.cs : assure that Item instance is
+	  instantiated every time read methods are invoked.
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Rss20ItemFormatterTest.cs : some tests for ReadFrom() and ReadXml().
 	* SyndicationItemTest.cs : Test Load() with non-Atom/non-RSS xml.
 

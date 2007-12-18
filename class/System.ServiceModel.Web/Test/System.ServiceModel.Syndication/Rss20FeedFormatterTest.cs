@@ -184,5 +184,156 @@ namespace MonoTests.System.ServiceModel.Syndication
 			s.OmitXmlDeclaration = true;
 			return XmlWriter.Create (sw, s);
 		}
+
+		XmlReader CreateReader (string xml)
+		{
+			return XmlReader.Create (new StringReader (xml));
+		}
+
+		[Test]
+		public void CanRead ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			Assert.IsTrue (f.CanRead (CreateReader ("<rss>")), "#1");
+			Assert.IsFalse (f.CanRead (CreateReader ("<item>")), "#2");
+			Assert.IsFalse (f.CanRead (CreateReader ("<rss xmlns='urn:foo'>")), "#3");
+			Assert.IsFalse (f.CanRead (CreateReader ("<feed xmlns='http://www.w3.org/2005/Atom'>")), "#4");
+			Assert.IsFalse (f.CanRead (CreateReader ("<hoge>")), "#5");
+			XmlReader r = CreateReader ("<rss></rss>");
+			r.Read (); // element
+			r.Read (); // endelement
+			Assert.IsFalse (f.CanRead (r), "#6");
+
+			r = CreateReader ("<rss><channel><title>test</title></channel></rss>");
+			r.Read (); // feed
+			r.Read (); // channel
+			Assert.IsFalse (f.CanRead (r), "#7");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFromInvalid ()
+		{
+			new Rss20FeedFormatter ().ReadFrom (CreateReader ("<item>"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotSupportedException))]
+		public void ReadFrom_Versionless ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			Assert.IsNull (f.Feed, "#1");
+			f.ReadFrom (CreateReader ("<rss>"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (NotSupportedException))]
+		public void ReadXml_Versionless ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			((IXmlSerializable) f).ReadXml (CreateReader ("<dummy></dummy>"));
+		}
+
+		[Test]
+		public void ReadFrom1 ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			Assert.IsNull (f.Feed, "#1");
+			f.ReadFrom (CreateReader ("<rss version='2.0'><channel><title>test</title></channel></rss>"));
+			SyndicationFeed feed1 = f.Feed;
+			Assert.IsNotNull (f.Feed.Title, "#2");
+			Assert.AreEqual ("test", f.Feed.Title.Text, "#3");
+			f.ReadFrom (CreateReader ("<rss version='2.0'><channel><title>test</title></channel></rss>"));
+			Assert.IsFalse (object.ReferenceEquals (feed1, f.Feed), "#4");
+		}
+
+		[Test]
+		public void ReadXml_TitleOnly ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			((IXmlSerializable) f).ReadXml (CreateReader ("<rss version='2.0'><channel><title>test</title></channel></rss>"));
+			Assert.IsNotNull (f.Feed.Title, "#1");
+			Assert.AreEqual ("test", f.Feed.Title.Text, "#2");
+
+			((IXmlSerializable) f).ReadXml (CreateReader ("<dummy version='2.0'><channel><title>test</title></channel></dummy>")); // it is ok
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadXmlFromContent ()
+		{
+			((IXmlSerializable) new Rss20FeedFormatter ()).ReadXml (CreateReader ("<channel version='2.0'><title>test</title></channel>"));
+		}
+
+		[Test]
+		public void ReadXml_Extension ()
+		{
+			new Rss20FeedFormatter<MySyndicationFeed1> ().ReadFrom (CreateReader ("<rss version='2.0'><channel><foo>test</foo></channel></rss>"));
+			new Rss20FeedFormatter<MySyndicationFeed2> ().ReadFrom (CreateReader ("<rss version='2.0'><channel><foo>test</foo></channel></rss>"));
+			try {
+				new Rss20FeedFormatter<MySyndicationFeed3> ().ReadFrom (CreateReader ("<rss version='2.0'><channel><foo>test</foo></channel></rss>"));
+				Assert.Fail ("should trigger TryParseElement");
+			} catch (ApplicationException) {
+			}
+		}
+
+		class MySyndicationFeed1 : SyndicationFeed
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				Assert.AreEqual ("Rss20", version, "#1");
+				Assert.IsFalse (base.TryParseElement (reader, version), "#2");
+				return false;
+			}
+		}
+
+		class MySyndicationFeed2 : SyndicationFeed
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				reader.Skip (); // without it, the caller expects that the reader did not proceed.
+				return true;
+			}
+		}
+
+		class MySyndicationFeed3 : SyndicationFeed
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				throw new ApplicationException ();
+			}
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFrom_WrongDate1 ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			f.ReadFrom (CreateReader ("<rss version='2.0'><channel><lastBuildDate /></channel></rss>"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFrom_WrongDate2 ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			f.ReadFrom (CreateReader ("<rss version='2.0'><channel><lastBuildDate>2000-01-01T00:00:00</lastBuildDate></rss></channel>"));
+		}
+
+		[Test]
+		public void ReadFrom_Docs ()
+		{
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			f.ReadFrom (CreateReader ("<rss version='2.0'><channel><docs>documents</docs></channel></rss>"));
+			Assert.IsNotNull (f.Feed, "#1");
+			// 'docs' is treated as extensions ...
+			Assert.AreEqual (1, f.Feed.ElementExtensions.Count, "#2");
+		}
+
+		[Test]
+		public void GetSchema ()
+		{
+			Assert.IsNull (((IXmlSerializable) new Rss20FeedFormatter ()).GetSchema ());
+		}
 	}
 }

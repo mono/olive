@@ -138,8 +138,9 @@ namespace System.ServiceModel.Syndication
 		{
 			if (reader == null)
 				throw new ArgumentNullException ("reader");
-			if (Item == null)
-				SetItem (CreateItemInstance ());
+			SetItem (CreateItemInstance ());
+
+			reader.MoveToContent ();
 
 			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
 				do {
@@ -229,6 +230,8 @@ namespace System.ServiceModel.Syndication
 		{
 			if (reader.MoveToFirstAttribute ()) {
 				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
 					if (reader.NamespaceURI == String.Empty) {
 						switch (reader.LocalName) {
 						case "domain":
@@ -270,6 +273,8 @@ namespace System.ServiceModel.Syndication
 
 			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
 				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
 					if (reader.NamespaceURI == String.Empty) {
 						switch (reader.LocalName) {
 						case "url":
@@ -309,6 +314,8 @@ namespace System.ServiceModel.Syndication
 		{
 			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
 				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
 					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, link, Version))
 						link.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
@@ -338,6 +345,8 @@ namespace System.ServiceModel.Syndication
 		{
 			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
 				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
 					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, person, Version))
 						person.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
@@ -366,6 +375,8 @@ namespace System.ServiceModel.Syndication
 		{
 			if (reader.MoveToFirstAttribute ()) {
 				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
 					if (reader.NamespaceURI == String.Empty) {
 						switch (reader.LocalName) {
 						case "url":
