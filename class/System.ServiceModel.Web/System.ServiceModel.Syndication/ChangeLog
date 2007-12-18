@@ -1,3 +1,19 @@
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* SyndicationElementExtensionCollection.cs :
+	  every Add() caused infinite loop.
+	* SyndicationFeed.cs, SyndicationItem.cs : Implemented Load() and [*1]
+	* SyndicationLink.cs : int set_Length() argument check was wrong. [*1]
+	* SyndicationCategory.cs, SyndicationPerson.cs : [*1]
+	* SyndicationItemFormatter.cs : Implemented LoadElementExtensions().
+	* SyndicationVersions.cs : added SyndicationItem.Load<T>() and
+	  SyndicationFeed<T>() implementation.
+	* Atom10ItemFormatter.cs : [*2]
+	* Rss20ItemFormatter.cs : implemented read methods. [*2]
+	[*1] Implemented TryParseElement and TryParseAttribute.
+	[*2] PreserveElementExtensions and PreserveAttributeExtensions are
+	     true by default.
+
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Atom10FeedFormatter_1.cs, Atom10ItemFormatter_1.cs,

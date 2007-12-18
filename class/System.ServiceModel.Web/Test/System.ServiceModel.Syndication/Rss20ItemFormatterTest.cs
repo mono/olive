@@ -182,5 +182,156 @@ namespace MonoTests.System.ServiceModel.Syndication
 			s.OmitXmlDeclaration = true;
 			return XmlWriter.Create (sw, s);
 		}
+
+		XmlReader CreateReader (string xml)
+		{
+			return XmlReader.Create (new StringReader (xml));
+		}
+
+		[Test]
+		public void CanRead ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			Assert.IsFalse (f.CanRead (CreateReader ("<rss>")), "#1");
+			Assert.IsTrue (f.CanRead (CreateReader ("<item>")), "#2");
+			Assert.IsFalse (f.CanRead (CreateReader ("<item xmlns='urn:foo'>")), "#3");
+			Assert.IsFalse (f.CanRead (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'>")), "#4");
+			Assert.IsFalse (f.CanRead (CreateReader ("<hoge>")), "#5");
+			XmlReader r = CreateReader ("<item></item>");
+			r.Read (); // element
+			r.Read (); // endelement
+			Assert.IsFalse (f.CanRead (r), "#6");
+
+			r = CreateReader ("<item><title>test</title></item>");
+			r.Read (); // item
+			r.Read (); // title
+			Assert.IsFalse (f.CanRead (r), "#7");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFromInvalid ()
+		{
+			new Rss20ItemFormatter ().ReadFrom (CreateReader ("<rss>"));
+		}
+
+		[Test]
+		public void ReadFrom1 ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			Assert.IsNull (f.Item, "#1");
+			f.ReadFrom (CreateReader ("<item><title>test</title></item>"));
+			Assert.IsNotNull (f.Item.Title, "#2");
+			Assert.AreEqual ("test", f.Item.Title.Text, "#3");
+		}
+
+		[Test]
+		public void ReadXml_TitleOnly ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			((IXmlSerializable) f).ReadXml (CreateReader ("<item><title>test</title></item>"));
+			Assert.IsNotNull (f.Item.Title, "#1");
+			Assert.AreEqual ("test", f.Item.Title.Text, "#2");
+
+			((IXmlSerializable) f).ReadXml (CreateReader ("<dummy><title>test</title></dummy>")); // it is ok
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadXmlFromContent ()
+		{
+			((IXmlSerializable) new Rss20ItemFormatter ()).ReadXml (CreateReader ("<title>test</title>"));
+		}
+
+		[Test]
+		public void ReadXml_Extension ()
+		{
+			new Rss20ItemFormatter<MySyndicationItem1> ().ReadFrom (CreateReader ("<item><foo>test</foo></item>"));
+			new Rss20ItemFormatter<MySyndicationItem2> ().ReadFrom (CreateReader ("<item><foo>test</foo></item>"));
+			try {
+				new Rss20ItemFormatter<MySyndicationItem3> ().ReadFrom (CreateReader ("<item><foo>test</foo></item>"));
+				Assert.Fail ("should trigger TryParseElement");
+			} catch (ApplicationException) {
+			}
+		}
+
+		class MySyndicationItem1 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				Assert.AreEqual ("Rss20", version, "#1");
+				Assert.IsFalse (base.TryParseElement (reader, version), "#2");
+				return false;
+			}
+		}
+
+		class MySyndicationItem2 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				reader.Skip (); // without it, the caller expects that the reader did not proceed.
+				return true;
+			}
+		}
+
+		class MySyndicationItem3 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				throw new ApplicationException ();
+			}
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFrom_WrongDate1 ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			f.ReadFrom (CreateReader ("<item><pubDate /></item>"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFrom_WrongDate2 ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			f.ReadFrom (CreateReader ("<item><pubDate>2000-01-01T00:00:00</pubDate></item>"));
+		}
+
+		[Test]
+		public void ReadFrom_Comments ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+			f.ReadFrom (CreateReader ("<item><comments>comment</comments></item>"));
+			Assert.IsNotNull (f.Item, "#1");
+			// 'comments' is treated as extensions ...
+			Assert.AreEqual (1, f.Item.ElementExtensions.Count, "#2");
+		}
+
+		[Test]
+		public void ReadFrom_Enclosure ()
+		{
+			Rss20ItemFormatter f = new Rss20ItemFormatter ();
+
+			// .NET bug: it allows extension attributes, but rejects extension elements.
+//			f.ReadFrom (CreateReader ("<item><enclosure url='urn:foo' length='50' type='text/html' wcf='wtf'><extended /></enclosure></item>"));
+			f.ReadFrom (CreateReader ("<item><enclosure url='urn:foo' length='50' type='text/html' wcf='wtf'></enclosure></item>"));
+
+			// 'enclosure' is treated as SyndicationLink
+			Assert.AreEqual (1, f.Item.Links.Count, "#1");
+			SyndicationLink link = f.Item.Links [0];
+			Assert.AreEqual (50, link.Length, "#2");
+			Assert.AreEqual ("urn:foo", link.Uri.ToString (), "#3");
+			Assert.AreEqual ("text/html", link.MediaType, "#4");
+			Assert.AreEqual ("enclosure", link.RelationshipType, "#5");
+			Assert.AreEqual (1, link.AttributeExtensions.Count, "#6");
+			//Assert.AreEqual (1, link.ElementExtensions.Count, "#7");
+		}
+
+		[Test]
+		public void GetSchema ()
+		{
+			Assert.IsNull (((IXmlSerializable) new Rss20ItemFormatter ()).GetSchema ());
+		}
 	}
 }

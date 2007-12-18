@@ -37,6 +37,16 @@ namespace System.ServiceModel.Syndication
 {
 	public class SyndicationItem : ISyndicationElement
 	{
+		public static SyndicationItem Load (XmlReader reader)
+		{
+			return Load<SyndicationItem> (reader);
+		}
+
+		public static TSyndicationItem Load<TSyndicationItem> (XmlReader reader) where TSyndicationItem : SyndicationItem, new()
+		{
+			return SyndicationVersions.LoadItem<TSyndicationItem> (reader);
+		}
+
 		SyndicationExtensions extensions = new SyndicationExtensions ();
 		Collection<SyndicationCategory> categories;
 		Collection<SyndicationPerson> authors, contributors;
@@ -242,18 +252,6 @@ namespace System.ServiceModel.Syndication
 			return new Rss20ItemFormatter (this, serializeExtensionsAsAtom);
 		}
 
-		[MonoTODO]
-		public static SyndicationItem Load (XmlReader reader)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		public static TSyndicationItem Load<TSyndicationItem> (XmlReader reader) where TSyndicationItem : SyndicationItem
-		{
-			throw new NotImplementedException ();
-		}
-
 		public void SaveAsAtom10 (XmlWriter writer)
 		{
 			if (writer == null)
@@ -274,16 +272,14 @@ namespace System.ServiceModel.Syndication
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseElement (XmlReader reader, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
 		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)

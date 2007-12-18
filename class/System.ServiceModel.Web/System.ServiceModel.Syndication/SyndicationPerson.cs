@@ -94,16 +94,14 @@ namespace System.ServiceModel.Syndication
 			return new SyndicationPerson (this);
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseElement (XmlReader reader, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
 		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)

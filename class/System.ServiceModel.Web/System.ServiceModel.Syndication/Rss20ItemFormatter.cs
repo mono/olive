@@ -43,7 +43,7 @@ namespace System.ServiceModel.Syndication
 	{
 		const string AtomNamespace ="http://www.w3.org/2005/Atom";
 
-		bool ext_atom_serialization, preserve_att_ext, preserve_elem_ext;
+		bool ext_atom_serialization, preserve_att_ext = true, preserve_elem_ext = true;
 		Type item_type;
 
 		public Rss20ItemFormatter ()
@@ -97,16 +97,19 @@ namespace System.ServiceModel.Syndication
 			return new SyndicationItem ();
 		}
 
-		[MonoTODO]
 		public override bool CanRead (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			if (reader == null)
+				throw new ArgumentNullException ("reader");
+			reader.MoveToContent ();
+			return reader.IsStartElement ("item", String.Empty);
 		}
 
-		[MonoTODO]
 		public override void ReadFrom (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			if (!CanRead (reader))
+				throw new XmlException (String.Format ("Element '{0}' in namespace '{1}' is not accepted by this syndication formatter", reader.LocalName, reader.NamespaceURI));
+			ReadXml (reader, true);
 		}
 
 		public override void WriteTo (XmlWriter writer)
@@ -114,10 +117,9 @@ namespace System.ServiceModel.Syndication
 			WriteXml (writer, true);
 		}
 
-		[MonoTODO]
 		void IXmlSerializable.ReadXml (XmlReader reader)
 		{
-			throw new NotImplementedException ();
+			ReadXml (reader, false);
 		}
 
 		void IXmlSerializable.WriteXml (XmlWriter writer)
@@ -125,11 +127,273 @@ namespace System.ServiceModel.Syndication
 			WriteXml (writer, false);
 		}
 
-		[MonoTODO]
 		XmlSchema IXmlSerializable.GetSchema ()
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
+
+		// read
+
+		void ReadXml (XmlReader reader, bool fromSerializable)
+		{
+			if (reader == null)
+				throw new ArgumentNullException ("reader");
+			if (Item == null)
+				SetItem (CreateItemInstance ());
+
+			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, Item, Version))
+						Item.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+			}
+
+			reader.ReadStartElement ();
+
+			for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+				if (reader.NodeType != XmlNodeType.Element)
+					throw new XmlException ("Only element node is expected under 'item' element");
+				if (reader.NamespaceURI == String.Empty)
+					switch (reader.LocalName) {
+					case "title":
+						Item.Title = ReadTextSyndicationContent (reader);
+						continue;
+					case "link":
+						SyndicationLink l = Item.CreateLink ();
+						ReadLink (reader, l);
+						Item.Links.Add (l);
+						continue;
+					case "description":
+						Item.Summary = ReadTextSyndicationContent (reader);
+						continue;
+					case "author":
+						SyndicationPerson p = Item.CreatePerson ();
+						ReadPerson (reader, p);
+						Item.Authors.Add (p);
+						continue;
+					case "category":
+						SyndicationCategory c = Item.CreateCategory ();
+						ReadCategory (reader, c);
+						Item.Categories.Add (c);
+						continue;
+					// case "comments": // treated as extension ...
+					case "enclosure":
+						l = Item.CreateLink ();
+						ReadEnclosure (reader, l);
+						Item.Links.Add (l);
+						continue;
+					case "guid":
+						Item.AddPermalink (CreateUri (reader.ReadElementContentAsString ()));
+						continue;
+					case "pubDate":
+						// FIXME: somehow DateTimeOffset causes the runtime crash.
+						reader.ReadElementContentAsString ();
+						// Item.PublishDate = FromRFC822DateString (reader.ReadElementContentAsString ());
+						continue;
+					case "source":
+						Item.SourceFeed = new SyndicationFeed ();
+						ReadSourceFeed (reader, Item.SourceFeed);
+						continue;
+					}
+				if (!TryParseElement (reader, Item, Version)) {
+					if (PreserveElementExtensions)
+						// FIXME: what to specify for maxExtensionSize
+						LoadElementExtensions (reader, Item, int.MaxValue);
+					else
+						reader.Skip ();
+				}
+			}
+
+			reader.ReadEndElement (); // </item>
+		}
+
+		TextSyndicationContent ReadTextSyndicationContent (XmlReader reader)
+		{
+			TextSyndicationContentKind kind = TextSyndicationContentKind.Plaintext;
+			switch (reader.GetAttribute ("type")) {
+			case "html":
+				kind = TextSyndicationContentKind.Html;
+				break;
+			case "xhtml":
+				kind = TextSyndicationContentKind.XHtml;
+				break;
+			}
+			string text = reader.ReadElementContentAsString ();
+			TextSyndicationContent t = new TextSyndicationContent (text, kind);
+			return t;
+		}
+
+		void ReadCategory (XmlReader reader, SyndicationCategory category)
+		{
+			if (reader.MoveToFirstAttribute ()) {
+				do {
+					if (reader.NamespaceURI == String.Empty) {
+						switch (reader.LocalName) {
+						case "domain":
+							category.Scheme = reader.Value;
+							continue;
+						}
+					}
+					if (PreserveAttributeExtensions)
+						if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, category, Version))
+							category.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			if (!reader.IsEmptyElement) {
+				reader.Read ();
+				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+					if (reader.NodeType == XmlNodeType.Text)
+						category.Name += reader.Value;
+					else if (!TryParseElement (reader, category, Version)) {
+						if (PreserveElementExtensions)
+							// FIXME: what should be used for maxExtenswionSize
+							LoadElementExtensions (reader, category, int.MaxValue);
+						else
+							reader.Skip ();
+					}
+				}
+			}
+			reader.Read (); // </category> or <category ... />
+		}
+
+		// SyndicationLink.CreateMediaEnclosureLink() is almost
+		// useless here since it cannot handle extension attributes
+		// in straightforward way (it I use it, I have to iterate
+		// attributes twice just to read extensions).
+		void ReadEnclosure (XmlReader reader, SyndicationLink link)
+		{
+			link.RelationshipType = "enclosure";
+
+			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+				do {
+					if (reader.NamespaceURI == String.Empty) {
+						switch (reader.LocalName) {
+						case "url":
+							link.Uri = CreateUri (reader.Value);
+							continue;
+						case "type":
+							link.MediaType = reader.Value;
+							continue;
+						case "length":
+							link.Length = XmlConvert.ToInt64 (reader.Value);
+							continue;
+						}
+					}
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, link, Version))
+						link.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			// Actually .NET fails to read extension here.
+			if (!reader.IsEmptyElement) {
+				reader.Read ();
+				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+					if (!TryParseElement (reader, link, Version)) {
+						if (PreserveElementExtensions)
+							// FIXME: what should be used for maxExtenswionSize
+							LoadElementExtensions (reader, link, int.MaxValue);
+						else
+							reader.Skip ();
+					}
+				}
+			}
+			reader.Read (); // </enclosure> or <enclosure ... />
+		}
+
+		void ReadLink (XmlReader reader, SyndicationLink link)
+		{
+			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+				do {
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, link, Version))
+						link.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			if (!reader.IsEmptyElement) {
+				string url = null;
+				reader.Read ();
+				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+					if (reader.NodeType == XmlNodeType.Text)
+						url += reader.Value;
+					else if (!TryParseElement (reader, link, Version)) {
+						if (PreserveElementExtensions)
+							// FIXME: what should be used for maxExtenswionSize
+							LoadElementExtensions (reader, link, int.MaxValue);
+						else
+							reader.Skip ();
+					}
+				}
+				link.Uri = CreateUri (url);
+			}
+			reader.Read (); // </link> or <link ... />
+		}
+
+		void ReadPerson (XmlReader reader, SyndicationPerson person)
+		{
+			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+				do {
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, person, Version))
+						person.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			if (!reader.IsEmptyElement) {
+				string email = null;
+				reader.Read ();
+				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+					if (reader.NodeType == XmlNodeType.Text)
+						person.Email += reader.Value;
+					else if (!TryParseElement (reader, person, Version)) {
+						if (PreserveElementExtensions)
+							// FIXME: what should be used for maxExtenswionSize
+							LoadElementExtensions (reader, person, int.MaxValue);
+						else
+							reader.Skip ();
+					}
+				}
+			}
+			reader.Read (); // end element or empty element
+		}
+
+		void ReadSourceFeed (XmlReader reader, SyndicationFeed feed)
+		{
+			if (reader.MoveToFirstAttribute ()) {
+				do {
+					if (reader.NamespaceURI == String.Empty) {
+						switch (reader.LocalName) {
+						case "url":
+							feed.Links.Add (new SyndicationLink (CreateUri (reader.Value)));
+							continue;
+						}
+					}
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			if (!reader.IsEmptyElement) {
+				reader.Read ();
+				string title = null;
+				while (reader.NodeType != XmlNodeType.EndElement)
+					if (reader.NodeType == XmlNodeType.Text)
+						title += reader.Value;
+				feed.Title = new TextSyndicationContent (title);
+			}
+			reader.Read (); // </source> or <source ... />
+		}
+
+		Uri CreateUri (string uri)
+		{
+			return new Uri (uri, UriKind.RelativeOrAbsolute);
+		}
+
+		// write
 
 		void WriteXml (XmlWriter writer, bool writeRoot)
 		{
@@ -143,6 +407,9 @@ namespace System.ServiceModel.Syndication
 
 			if (Item.BaseUri != null)
 				writer.WriteAttributeString ("xml:base", Item.BaseUri.ToString ());
+
+			WriteAttributeExtensions (writer, Item, Version);
+
 			if (Item.Id != null) {
 				writer.WriteStartElement ("guid");
 				writer.WriteAttributeString ("isPermaLink", "false");
@@ -182,12 +449,26 @@ namespace System.ServiceModel.Syndication
 			}
 
 			foreach (SyndicationLink link in Item.Links)
-				if (link != null) {
+				switch (link.RelationshipType) {
+				case "enclosure":
+					writer.WriteStartElement ("enclosure");
+					if (link.Uri != null)
+						writer.WriteAttributeString ("uri", link.Uri.ToString ());
+					if (link.Length != 0)
+						writer.WriteAttributeString ("length", XmlConvert.ToString (link.Length));
+					if (link.MediaType != null)
+						writer.WriteAttributeString ("type", link.MediaType);
+					WriteAttributeExtensions (writer, link, Version);
+					WriteElementExtensions (writer, link, Version);
+					writer.WriteEndElement ();
+					break;
+				default:
 					writer.WriteStartElement ("link");
 					WriteAttributeExtensions (writer, link, Version);
 					writer.WriteString (link.Uri != null ? link.Uri.ToString () : String.Empty);
 					WriteElementExtensions (writer, link, Version);
 					writer.WriteEndElement ();
+					break;
 				}
 
 			if (Item.SourceFeed != null) {
@@ -229,6 +510,8 @@ namespace System.ServiceModel.Syndication
 					Item.Content.WriteTo (writer, "content", AtomNamespace);
 			}
 
+			WriteElementExtensions (writer, Item, Version);
+
 			if (writeRoot)
 				writer.WriteEndElement ();
 		}
@@ -247,6 +530,18 @@ namespace System.ServiceModel.Syndication
 			default:
 				return date.DateTime.ToString ("ddd, dd MMM yyyy HH:mm:ss", DateTimeFormatInfo.InvariantInfo);
 			}
+		}
+
+		string [] rfc822formats = new string [] {
+			"ddd, dd MMM yyyy HH:mm:ss 'Z'",
+			"ddd, dd MMM yyyy HH:mm:ss zzz",
+			"ddd, dd MMM yyyy HH:mm:ss"};
+
+		// FIXME: DateTimeOffset is still incomplete. When it is done,
+		// simplify the code.
+		DateTimeOffset FromRFC822DateString (string s)
+		{
+			return XmlConvert.ToDateTimeOffset (s, rfc822formats);
 		}
 	}
 }

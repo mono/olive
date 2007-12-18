@@ -1,3 +1,8 @@
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Rss20ItemFormatterTest.cs : some tests for ReadFrom() and ReadXml().
+	* SyndicationItemTest.cs : Test Load() with non-Atom/non-RSS xml.
+
 2007-12-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Atom10FeedFormatterTest.cs : new, test for WriteTo and WriteXml.

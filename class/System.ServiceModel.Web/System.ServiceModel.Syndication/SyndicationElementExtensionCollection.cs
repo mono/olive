@@ -80,6 +80,11 @@ namespace System.ServiceModel.Syndication
 			Add (new SyndicationElementExtension (xmlReader));
 		}
 
+		void Add (SyndicationElementExtension item)
+		{
+			base.Add (item);
+		}
+
 		[MonoTODO ("Find out what is expected here")]
 		protected override void ClearItems ()
 		{

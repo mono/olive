@@ -121,5 +121,12 @@ namespace MonoTests.System.ServiceModel.Syndication
 			Rss20ItemFormatter f = item.GetRss20Formatter ();
 			Assert.AreEqual (true, f.SerializeExtensionsAsAtom, "#1");
 		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void LoadNonAtomRss ()
+		{
+			SyndicationItem.Load (XmlReader.Create (new StringReader ("<dummy />")));
+		}
 	}
 }

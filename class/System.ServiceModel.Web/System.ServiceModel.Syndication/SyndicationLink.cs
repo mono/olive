@@ -125,8 +125,8 @@ namespace System.ServiceModel.Syndication
 		public long Length {
 			get { return length; }
 			set {
-				if (length < 0)
-					throw new ArgumentOutOfRangeException ("length");
+				if (value < 0)
+					throw new ArgumentOutOfRangeException ("value");
 				length = value;
 			}
 		}
@@ -156,16 +156,14 @@ namespace System.ServiceModel.Syndication
 			return new SyndicationLink (this);
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseElement (XmlReader reader, string version)
 		{
-			throw new NotImplementedException ();
+			return false;
 		}
 
 		protected internal virtual void WriteAttributeExtensions (XmlWriter writer, string version)

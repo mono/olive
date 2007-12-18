@@ -39,5 +39,52 @@ namespace System.ServiceModel.Syndication
 	{
 		public const string Atom10 = "Atom10";
 		public const string Rss20 = "Rss20";
+
+		const string AtomNamespace ="http://www.w3.org/2005/Atom";
+
+		static string DetectVersion (XmlReader reader)
+		{
+			if (reader == null)
+				throw new ArgumentNullException ("reader");
+			reader.MoveToContent ();
+			if (reader.NodeType != XmlNodeType.Element)
+				throw new XmlException ("An element is expected for syndication item");
+			if (reader.IsStartElement ("entry", AtomNamespace))
+				return SyndicationVersions.Atom10;
+			else if (reader.IsStartElement ("item", String.Empty))
+				return SyndicationVersions.Rss20;
+			else
+				throw new XmlException (String.Format ("Unexpected syndication item element: name is '{0}' and namespace is '{1}'", reader.LocalName, reader.NamespaceURI));
+		}
+
+		internal static TSyndicationFeed LoadFeed<TSyndicationFeed> (XmlReader reader) where TSyndicationFeed : SyndicationFeed, new()
+		{
+			switch (DetectVersion (reader)) {
+			case SyndicationVersions.Atom10:
+				Atom10FeedFormatter af = new Atom10FeedFormatter<TSyndicationFeed> ();
+				af.ReadFrom (reader);
+				return (TSyndicationFeed) af.Feed;
+			case SyndicationVersions.Rss20:
+			default: // anything else are rejected by DetectVersion
+				Rss20FeedFormatter rf = new Rss20FeedFormatter<TSyndicationFeed> ();
+				rf.ReadFrom (reader);
+				return (TSyndicationFeed) rf.Feed;
+			}
+		}
+
+		internal static TSyndicationItem LoadItem<TSyndicationItem> (XmlReader reader) where TSyndicationItem : SyndicationItem, new()
+		{
+			switch (DetectVersion (reader)) {
+			case SyndicationVersions.Atom10:
+				Atom10ItemFormatter af = new Atom10ItemFormatter<TSyndicationItem> ();
+				af.ReadFrom (reader);
+				return (TSyndicationItem) af.Item;
+			case SyndicationVersions.Rss20:
+			default: // anything else are rejected by DetectVersion
+				Rss20ItemFormatter rf = new Rss20ItemFormatter<TSyndicationItem> ();
+				rf.ReadFrom (reader);
+				return (TSyndicationItem) rf.Item;
+			}
+		}
 	}
 }

@@ -57,7 +57,7 @@ namespace System.ServiceModel.Syndication
 	{
 		const string AtomNamespace ="http://www.w3.org/2005/Atom";
 
-		bool preserve_att_ext, preserve_elem_ext;
+		bool preserve_att_ext = true, preserve_elem_ext = true;
 		Type item_type;
 
 		public Atom10ItemFormatter ()
