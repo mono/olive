@@ -198,6 +198,41 @@ namespace System.ServiceModel.Syndication
 						ReadSourceFeed (reader, Item.SourceFeed);
 						continue;
 					}
+				else if (SerializeExtensionsAsAtom && reader.NamespaceURI == AtomNamespace) {
+					switch (reader.LocalName) {
+					case "contributor":
+						SyndicationPerson p = Item.CreatePerson ();
+						ReadPersonAtom10 (reader, p);
+						Item.Contributors.Add (p);
+						continue;
+					case "updated":
+						// FIXME: somehow DateTimeOffset causes the runtime crash.
+						reader.ReadElementContentAsString ();
+						// Item.LastUpdatedTime = XmlConvert.ToDateTimeOffset (reader.ReadElementContentAsString ());
+						continue;
+					case "rights":
+						Item.Copyright = ReadTextSyndicationContent (reader);
+						continue;
+					case "content":
+						if (reader.GetAttribute ("src") != null) {
+							Item.Content = new UrlSyndicationContent (CreateUri (reader.GetAttribute ("src")), reader.GetAttribute ("type"));
+							reader.Skip ();
+							continue;
+						}
+						switch (reader.GetAttribute ("type")) {
+						case "text":
+						case "html":
+						case "xhtml":
+							Item.Content = ReadTextSyndicationContent (reader);
+							continue;
+						default:
+							SyndicationContent content;
+							if (!TryParseContent (reader, Item, reader.GetAttribute ("type"), Version, out content))
+								Item.Content = new XmlSyndicationContent (reader);
+							continue;
+						}
+					}
+				}
 				if (!TryParseElement (reader, Item, Version)) {
 					if (PreserveElementExtensions)
 						// FIXME: what to specify for maxExtensionSize
@@ -354,12 +389,52 @@ namespace System.ServiceModel.Syndication
 			}
 
 			if (!reader.IsEmptyElement) {
-				string email = null;
 				reader.Read ();
 				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 					if (reader.NodeType == XmlNodeType.Text)
 						person.Email += reader.Value;
 					else if (!TryParseElement (reader, person, Version)) {
+						if (PreserveElementExtensions)
+							// FIXME: what should be used for maxExtenswionSize
+							LoadElementExtensions (reader, person, int.MaxValue);
+						else
+							reader.Skip ();
+					}
+				}
+			}
+			reader.Read (); // end element or empty element
+		}
+
+		// copied from Atom10ItemFormatter
+		void ReadPersonAtom10 (XmlReader reader, SyndicationPerson person)
+		{
+			if (reader.MoveToFirstAttribute ()) {
+				do {
+					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
+						continue;
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, person, Version) && PreserveAttributeExtensions)
+						person.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+				} while (reader.MoveToNextAttribute ());
+				reader.MoveToElement ();
+			}
+
+			if (!reader.IsEmptyElement) {
+				reader.Read ();
+				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+					if (reader.NodeType == XmlNodeType.Element && reader.NamespaceURI == AtomNamespace) {
+						switch (reader.LocalName) {
+						case "name":
+							person.Name = reader.ReadElementContentAsString ();
+							continue;
+						case "uri":
+							person.Uri = reader.ReadElementContentAsString ();
+							continue;
+						case "email":
+							person.Email = reader.ReadElementContentAsString ();
+							continue;
+						}
+					}
+					if (!TryParseElement (reader, person, Version)) {
 						if (PreserveElementExtensions)
 							// FIXME: what should be used for maxExtenswionSize
 							LoadElementExtensions (reader, person, int.MaxValue);
@@ -484,7 +559,11 @@ namespace System.ServiceModel.Syndication
 
 			if (Item.SourceFeed != null) {
 				writer.WriteStartElement ("source");
-				Item.SourceFeed.SaveAsRss20 (writer);
+				if (Item.SourceFeed.Links.Count > 0) {
+					Uri u = Item.SourceFeed.Links [0].Uri;
+					writer.WriteAttributeString ("url", u != null ? u.ToString () : String.Empty);
+				}
+				writer.WriteString (Item.SourceFeed.Title != null ? Item.SourceFeed.Title.Text : String.Empty);
 				writer.WriteEndElement ();
 			}
 

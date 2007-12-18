@@ -1,5 +1,14 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* SyndicationElementExtensionCollection.cs, Atom10FeedFormatter.cs,
+	  Atom10ItemFormatter.cs, Rss20FeedFormatter.cs : warning cleanup.
+	* SyndicationItem.cs : implemented TryParseContent().
+	* Atom10ItemFormatter.cs : read Content.
+	* Rss20ItemFormatter.cs : Handle Atom 1.0 extension elements.
+	  Fixed ReadSourceFeed() that should read <source> in its own way.
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatter.cs : changes in extension attribute handling:
 	  TryParseAttribute() should be called regardless of
 	  PreserveExtensionAttributes.

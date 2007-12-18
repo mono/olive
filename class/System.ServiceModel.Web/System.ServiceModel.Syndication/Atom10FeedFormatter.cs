@@ -366,7 +366,6 @@ namespace System.ServiceModel.Syndication
 			}
 
 			if (!reader.IsEmptyElement) {
-				string email = null;
 				reader.Read ();
 				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 					if (reader.NodeType == XmlNodeType.Element && reader.NamespaceURI == AtomNamespace) {

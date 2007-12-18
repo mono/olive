@@ -266,10 +266,10 @@ namespace System.ServiceModel.Syndication
 			GetRss20Formatter ().WriteTo (writer);
 		}
 
-		[MonoTODO]
 		protected internal virtual bool TryParseContent (XmlReader reader, string contentType, string version, out SyndicationContent content)
 		{
-			throw new NotImplementedException ();
+			content = null;
+			return false;
 		}
 
 		protected internal virtual bool TryParseAttribute (string name, string ns, string value, string version)

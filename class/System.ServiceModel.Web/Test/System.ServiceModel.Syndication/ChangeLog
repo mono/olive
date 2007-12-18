@@ -1,5 +1,9 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Rss20ItemFormatterTest.cs : test (enable) SourceFeed output too.
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10FeedFormatterTest.cs : tests for ReadFrom() and ReadXml().
 	* Atom10ItemFormatterTest.cs : test for ToString().
 

@@ -145,12 +145,13 @@ namespace MonoTests.System.ServiceModel.Syndication
 			item.Id = "urn:myid";
 			item.PublishDate = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2000, 1, 1), DateTimeKind.Utc));
 			item.LastUpdatedTime = new DateTimeOffset (DateTime.SpecifyKind (new DateTime (2008, 1, 1), DateTimeKind.Utc));
-			//item.SourceFeed = new SyndicationFeed ();
+			item.SourceFeed = new SyndicationFeed ();
+			item.SourceFeed.Title = new TextSyndicationContent ("source title");
 
 			StringWriter sw = new StringWriter ();
 			using (XmlWriter w = CreateWriter (sw))
 				new Rss20ItemFormatter (item).WriteTo (w);
-			Assert.AreEqual ("<item xml:base=\"http://mono-project.com/\"><guid isPermaLink=\"false\">urn:myid</guid><description />" + /* "<source></source>" + */ "<pubDate>Sat, 01 Jan 2000 00:00:00 Z</pubDate><updated xmlns=\"http://www.w3.org/2005/Atom\">2008-01-01T00:00:00Z</updated><rights type=\"text\" xmlns=\"http://www.w3.org/2005/Atom\">No rights reserved</rights><content type=\"text/xml\" xmlns=\"http://www.w3.org/2005/Atom\"><int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">5</int></content></item>", sw.ToString ());
+			Assert.AreEqual ("<item xml:base=\"http://mono-project.com/\"><guid isPermaLink=\"false\">urn:myid</guid><description /><source>source title</source><pubDate>Sat, 01 Jan 2000 00:00:00 Z</pubDate><updated xmlns=\"http://www.w3.org/2005/Atom\">2008-01-01T00:00:00Z</updated><rights type=\"text\" xmlns=\"http://www.w3.org/2005/Atom\">No rights reserved</rights><content type=\"text/xml\" xmlns=\"http://www.w3.org/2005/Atom\"><int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">5</int></content></item>", sw.ToString ());
 		}
 
 		[Test]

@@ -205,6 +205,26 @@ namespace System.ServiceModel.Syndication
 						reader.ReadElementContentAsString ();
 						// Item.LastUpdatedTime = XmlConvert.ToDateTimeOffset (reader.ReadElementContentAsString ());
 						continue;
+
+					// Atom 1.0 does not specify "content" element, but it is required to distinguish Content property from extension elements.
+					case "content":
+						if (reader.GetAttribute ("src") != null) {
+							Item.Content = new UrlSyndicationContent (CreateUri (reader.GetAttribute ("src")), reader.GetAttribute ("type"));
+							reader.Skip ();
+							continue;
+						}
+						switch (reader.GetAttribute ("type")) {
+						case "text":
+						case "html":
+						case "xhtml":
+							Item.Content = ReadTextSyndicationContent (reader);
+							continue;
+						default:
+							SyndicationContent content;
+							if (!TryParseContent (reader, Item, reader.GetAttribute ("type"), Version, out content))
+								Item.Content = new XmlSyndicationContent (reader);
+							continue;
+						}
 					}
 				if (!TryParseElement (reader, Item, Version)) {
 					if (PreserveElementExtensions)
@@ -333,7 +353,6 @@ namespace System.ServiceModel.Syndication
 			}
 
 			if (!reader.IsEmptyElement) {
-				string email = null;
 				reader.Read ();
 				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 					if (reader.NodeType == XmlNodeType.Element && reader.NamespaceURI == AtomNamespace) {
