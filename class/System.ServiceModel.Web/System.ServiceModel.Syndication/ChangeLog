@@ -1,5 +1,14 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatter.cs : changes in extension attribute handling:
+	  TryParseAttribute() should be called regardless of
+	  PreserveExtensionAttributes.
+	* SyndicationFeedFormatter.cs, SyndicationItemFormatter.cs :
+	  implemented ToString().
+	* Rss20FeedFormatter.cs : strictly require <channel> under <rss>.
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatter.cs : implemented read methods and GetSchema().
 
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>

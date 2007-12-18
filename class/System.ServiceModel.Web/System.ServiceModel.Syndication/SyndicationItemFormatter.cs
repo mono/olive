@@ -248,10 +248,9 @@ namespace System.ServiceModel.Syndication
 
 		public abstract void WriteTo (XmlWriter writer);
 
-		[MonoTODO]
 		public override string ToString ()
 		{
-			return base.ToString ();
+			return String.Concat (GetType ().FullName, ", SyndicationVersion=", Version);
 		}
 		#endregion
 	}

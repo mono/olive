@@ -366,5 +366,11 @@ namespace MonoTests.System.ServiceModel.Syndication
 		{
 			Assert.IsNull (((IXmlSerializable) new Atom10ItemFormatter ()).GetSchema ());
 		}
+
+		[Test]
+		public void TestToString ()
+		{
+			Assert.AreEqual (typeof (Atom10ItemFormatter).FullName + ", SyndicationVersion=Atom10", new Atom10ItemFormatter (new SyndicationItem ()).ToString ());
+		}
 	}
 }

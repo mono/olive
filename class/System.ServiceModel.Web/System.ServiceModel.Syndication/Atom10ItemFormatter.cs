@@ -144,11 +144,11 @@ namespace System.ServiceModel.Syndication
 
 			reader.MoveToContent ();
 
-			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+			if (reader.MoveToFirstAttribute ()) {
 				do {
 					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
 						continue;
-					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, Item, Version))
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, Item, Version) && PreserveAttributeExtensions)
 						Item.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
 			}
@@ -186,7 +186,7 @@ namespace System.ServiceModel.Syndication
 					case "published":
 						// FIXME: somehow DateTimeOffset causes the runtime crash.
 						reader.ReadElementContentAsString ();
-						// Item.PublishDate = FromRFC822DateString (reader.ReadElementContentAsString ());
+						// Item.PublishDate = XmlConvert.ToDateTimeOffset (reader.ReadElementContentAsString ());
 						continue;
 					case "rights":
 						Item.Copyright = ReadTextSyndicationContent (reader);
@@ -203,7 +203,7 @@ namespace System.ServiceModel.Syndication
 					case "updated":
 						// FIXME: somehow DateTimeOffset causes the runtime crash.
 						reader.ReadElementContentAsString ();
-						// Item.LastUpdatedTime = FromRFC822DateString (reader.ReadElementContentAsString ());
+						// Item.LastUpdatedTime = XmlConvert.ToDateTimeOffset (reader.ReadElementContentAsString ());
 						continue;
 					}
 				if (!TryParseElement (reader, Item, Version)) {
@@ -253,9 +253,8 @@ namespace System.ServiceModel.Syndication
 							continue;
 						}
 					}
-					if (PreserveAttributeExtensions)
-						if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, category, Version))
-							category.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, category, Version) && PreserveAttributeExtensions)
+						category.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
 				reader.MoveToElement ();
 			}
@@ -300,9 +299,8 @@ namespace System.ServiceModel.Syndication
 							continue;
 						}
 					}
-					if (PreserveAttributeExtensions)
-						if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, link, Version))
-							link.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, link, Version) && PreserveAttributeExtensions)
+						link.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
 				reader.MoveToElement ();
 			}
@@ -324,11 +322,11 @@ namespace System.ServiceModel.Syndication
 
 		void ReadPerson (XmlReader reader, SyndicationPerson person)
 		{
-			if (PreserveAttributeExtensions && reader.MoveToFirstAttribute ()) {
+			if (reader.MoveToFirstAttribute ()) {
 				do {
 					if (reader.NamespaceURI == "http://www.w3.org/2000/xmlns/")
 						continue;
-					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, person, Version))
+					if (!TryParseAttribute (reader.LocalName, reader.NamespaceURI, reader.Value, person, Version) && PreserveAttributeExtensions)
 						person.AttributeExtensions.Add (new XmlQualifiedName (reader.LocalName, reader.NamespaceURI), reader.Value);
 				} while (reader.MoveToNextAttribute ());
 				reader.MoveToElement ();

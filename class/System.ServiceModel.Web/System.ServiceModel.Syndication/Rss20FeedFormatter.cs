@@ -196,13 +196,13 @@ namespace System.ServiceModel.Syndication
 
 			reader.ReadStartElement (); // <rss> => <channel>
 			reader.MoveToContent ();
-			reader.ReadStartElement (); // <channel> => *
+			reader.ReadStartElement ("channel", String.Empty); // <channel> => *
 
 			Collection<SyndicationItem> items = null;
 
 			for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 				if (reader.NodeType != XmlNodeType.Element)
-					throw new XmlException ("Only element node is expected under 'item' element");
+					throw new XmlException ("Only element node is expected under 'channel' element");
 				if (reader.NamespaceURI == String.Empty)
 					switch (reader.LocalName) {
 					case "title":

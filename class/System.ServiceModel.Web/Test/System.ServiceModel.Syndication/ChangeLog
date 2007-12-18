@@ -1,5 +1,10 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10FeedFormatterTest.cs : tests for ReadFrom() and ReadXml().
+	* Atom10ItemFormatterTest.cs : test for ToString().
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Atom10ItemFormatterTest.cs : tests for ReadFrom() and ReadXml().
 
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
