@@ -1,3 +1,12 @@
+2007-12-18  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: Support assembly dependency downloading
+	correctly.   This still does not support the Sync case, waiting
+	for a sample test case to fix that case (it would be a lot cleaner
+	to plug now). 
+
+	Fixes starting up http://fluxtools.net/emailphotos/
+
 2007-12-17  Miguel de Icaza  <miguel@novell.com>
 
 	* ManagedXamlLoader.cs: Reorganization, no relevant changes: move

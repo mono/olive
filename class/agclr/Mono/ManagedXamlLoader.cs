@@ -147,111 +147,55 @@ namespace Mono.Xaml
 		
 		public void RequestFile (string asm_path)
 		{
-			//Console.WriteLine ("ManagedXamlLoader::RequestFile ({0}).", asm_path);
+			Console.WriteLine ("ManagedXamlLoader::RequestFile ({0}).", asm_path);
 			NativeMethods.xaml_loader_add_missing (native_loader, asm_path);
 		}
-	
+
 		//
 		// Tries to load the assembly.
 		// Requests any referenced assemblies if necessary.
 		//
 		public AssemblyLoadResult LoadAssembly (string asm_path, string asm_name, out Assembly clientlib)
 		{
-			//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
+			Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
 			
 			clientlib = null;
 
+			//
+			// NOTE: Moonlight.LoadFile is only used for loading assemblies
+			// for the desktop case (if Moonlight.RegisterLoader has been
+			// called).   For browser use, the following block is a
+			// no-op.
+			//
 			try {
 				clientlib = Moonlight.LoadFile (asm_path);
+				if (clientlib != null)
+					return AssemblyLoadResult.Success;
+				
 			} catch (System.IO.FileNotFoundException) {
 				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): client library not found.", asm_path, asm_name);
 				RequestFile (asm_path);
 				return AssemblyLoadResult.MissingAssembly;
 			}
 
-			if (clientlib == null) {
-				if (load_deps_synch) {
-					byte[] arr = LoadDependency (asm_path);
-					if (arr != null)
-						clientlib = Assembly.Load (arr);
-					if (clientlib == null) {
-						Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
-						return AssemblyLoadResult.LoadFailure;
-					}
-					// FIXME: Load dependencies
-				} else {
-					string mapped = GetMapping (asm_path);
-
-					if (mapped != null) {
-						clientlib = Helper.LoadFile (mapped);
-						if (clientlib == null) {
-							Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
-							return AssemblyLoadResult.LoadFailure;
-						}
-					} else {
-						RequestFile (asm_path);
-						return AssemblyLoadResult.MissingAssembly;
-					}
-				}
-			}
-
-			//
-			// If this assembly depends on other assemblies, we need to request them
-			//
-			bool missing_any = false;
-			string dirname = ""; 
-			int p = asm_name.LastIndexOf ('/');
-			if (p != -1)
-				dirname = asm_name.Substring (0, p + 1);
-			
-			foreach (AssemblyName an in Helper.GetReferencedAssemblies (clientlib)){
-
-				if (an.Name == "agclr" || an.Name == "mscorlib" ||
-				    an.Name == "System.Xml.Core" || an.Name == "System" ||
-				    an.Name == "Microsoft.Scripting" ||
-				    an.Name == "System.SilverLight" ||
-				    an.Name == "System.Core")
-					continue;
+			if (load_deps_synch) {
 				//
-				// This is not the best probing mechanism.
-				// I do not like depending on an.Name and adding .dll
-				// to figure out if we have already the assembly downloaded
-				// from a previous iteration
+				// FIXME: Move this support into the DependencyLoader
 				//
-				string req = dirname + an.Name + ".dll";
-				string local = GetMapping (req);
-
-				if (local != null){
-					// Ensure we load it.
-					try {
-						Helper.LoadFile (local);
-					} catch (Exception ex) {
-						Console.Error.WriteLine ("ManagedXamlLoader::LoadAssembly ({0}, {1}): failed to load {2} (from {3}): {4}", asm_path, asm_name, local, req, ex.Message);
-						return AssemblyLoadResult.LoadFailure;
-					}
-					continue;
+				Console.WriteLine ("WARNING: ManagedXamlLoader Sync Assembly Loader has not been ported to use DependencyLoader");
+				byte[] arr = LoadDependency (asm_path);
+				if (arr != null)
+					clientlib = Assembly.Load (arr);
+				if (clientlib == null) {
+					Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
+					return AssemblyLoadResult.LoadFailure;
 				}
-
-				try {
-					Assembly.Load (an);
-				} catch (Exception ex) {
-					//
-					// If we fail, it means that the given assembly has
-					// not been downloaded, request it
-					//
-					Console.Error.WriteLine ("ManagedXamlLoader::LoadAssembly ({0}, {1}): requesting download of '{2}' (exception: {3}).", asm_path, asm_name, req, ex.Message);
-					RequestFile (req);
-				}
+				return AssemblyLoadResult.Success;
+			} else {
+				DependencyLoader dl = new DependencyLoader (this, asm_path);
+				
+				return dl.Load (ref clientlib);
 			}
-			
-			if (missing_any) {
-				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly ({0}, {1}): failed to load (MissingAssembly).", asm_path, asm_name);
-				return AssemblyLoadResult.MissingAssembly;
-			}
-			
-			//Console.WriteLine ("ManagedXamlLoader::LoadAssembly ({0}, {1}): successfully loaded.", asm_path, asm_name);
-			
-			return AssemblyLoadResult.Success;
 		}
 		
 		private IntPtr LoadObject (string asm_name, string asm_path, string ns, string type_name)
@@ -480,11 +424,13 @@ namespace Mono.Xaml
 			return arr;;
 		}
 
-#region Callbacks from xaml.cpp
-	
+		///
 		///
 		/// Callbacks invoked by the xaml.cpp C++ parser
 		///
+		///
+
+#region Callbacks from xaml.cpp
 
 		private string cb_get_mapping (string key)
 		{
@@ -600,5 +546,151 @@ namespace Mono.Xaml
 		}
 
 #endregion
+	}
+
+	//
+	// This class is a helper routine used to load an assembly and
+	// its dependencies;  If a dependnecy is missing, it requests that
+	// it be downloaded, if the dependency can not be met, it errors out.
+	//
+	// Handles recursive and multiple requests
+	//
+	internal class DependencyLoader {
+		Assembly main;
+		ManagedXamlLoader loader;
+		int missing;
+		string dirname;
+		string asm_path;
+		
+		//
+		// The hashtable is indexed by assembly name, and can contain:
+		//   * An Assembly (for resolved references).
+		//   * An AssemblyName (for unresolved references).
+		//
+		Hashtable deps;
+
+		public DependencyLoader (ManagedXamlLoader parent, string asm_path)
+		{
+			loader = parent;
+			this.asm_path = asm_path;
+			
+			dirname = ""; 
+			int p = asm_path.LastIndexOf ('/');
+			if (p != -1)
+				dirname = asm_path.Substring (0, p + 1);
+		}
+		
+		//
+		// Loads the entry point
+		//
+		AssemblyLoadResult LoadMain ()
+		{
+			string mapped = loader.GetMapping (asm_path);
+			if (mapped == null){
+				loader.RequestFile (asm_path);
+				return AssemblyLoadResult.MissingAssembly;
+			}
+			
+			main = Helper.LoadFile (mapped);
+			if (main == null){
+				Console.WriteLine ("DependencyLoader: LoadMain (\"{0}\") failed to load client library", asm_path);
+				return AssemblyLoadResult.LoadFailure;
+			}
+			return AssemblyLoadResult.Success;
+		}
+		
+		void UpdateDeps (Assembly a)
+		{
+			AssemblyName [] list = Helper.GetReferencedAssemblies (a);
+			
+			foreach (AssemblyName an in list){
+				if (an.Name == "agclr" || an.Name == "mscorlib" ||
+				    an.Name == "System.Xml.Core" || an.Name == "System" ||
+				    an.Name == "Microsoft.Scripting" ||
+				    an.Name == "System.SilverLight" ||
+				    an.Name == "System.Core")
+					continue;
+				
+				if (deps == null){
+					deps = new Hashtable ();
+					deps [a.GetName ().Name] = a;
+				}
+				if (deps.Contains (an.Name))
+					continue;
+				deps [an.Name] = an;
+				missing++;
+			}
+		}
+
+		Assembly LoadDependency (string key, string file)
+		{
+			try {
+				Assembly a = Helper.LoadFile (file);
+
+				// enter it into the loaded deps
+				deps [key] = a;
+				missing--;
+
+				return a;
+			} catch (Exception ex){
+				Console.WriteLine ("DependencyLoader.LoadDependency, error loading file {0}: {1}", file, ex.Message);
+				throw;
+			}
+		}
+
+		//
+		// Triggers the assembly loading
+		//
+		public AssemblyLoadResult Load (ref Assembly clientlib)
+		{
+			AssemblyLoadResult result;
+			
+			// Load the initial assembly
+			if (main == null){
+				result = LoadMain ();
+				if (result != AssemblyLoadResult.Success)
+					return result;
+				
+				UpdateDeps (main);
+				
+				if (missing == 0){
+					clientlib = main;
+					return AssemblyLoadResult.Success;
+				}
+			}
+			
+			while (missing > 0){
+				Console.WriteLine ("Missing: {0}", missing);
+				foreach (string name in deps.Keys){
+					object v = deps [name];
+
+					Console.WriteLine ("    {0}", v);
+					// If its already loaded, ignore
+					if (v is Assembly)
+						continue;
+					
+					AssemblyName an = (AssemblyName) v;
+					string request = dirname + an.Name + ".dll";
+					string mapped = loader.GetMapping (request);
+					
+					// Try first to detect a downloaded dependency
+					if (mapped == null){
+						loader.RequestFile (request);
+						return AssemblyLoadResult.MissingAssembly;
+					}
+
+					try {
+						Assembly a = LoadDependency (name, mapped);
+						UpdateDeps (a);
+						break;
+					} catch {
+						return AssemblyLoadResult.LoadFailure;
+					}
+				}
+			}
+
+			clientlib = main;
+			return AssemblyLoadResult.Success;
+		}
 	}
 }
