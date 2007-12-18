@@ -207,5 +207,164 @@ namespace MonoTests.System.ServiceModel.Syndication
 			s.OmitXmlDeclaration = true;
 			return XmlWriter.Create (sw, s);
 		}
+
+		XmlReader CreateReader (string xml)
+		{
+			return XmlReader.Create (new StringReader (xml));
+		}
+
+		[Test]
+		public void CanRead ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			Assert.IsFalse (f.CanRead (CreateReader ("<feed xmlns='http://www.w3.org/2005/Atom'>")), "#1");
+			Assert.IsTrue (f.CanRead (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'>")), "#2");
+			Assert.IsFalse (f.CanRead (CreateReader ("<entry>")), "#3");
+			Assert.IsFalse (f.CanRead (CreateReader ("<item>")), "#4");
+			Assert.IsFalse (f.CanRead (CreateReader ("<hoge xmlns='http://www.w3.org/2005/Atom'>")), "#5");
+			XmlReader r = CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'></entry>");
+			r.Read (); // element
+			r.Read (); // endelement
+			Assert.IsFalse (f.CanRead (r), "#6");
+
+			r = CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><title>test</title></entry>");
+			r.Read (); // item
+			r.Read (); // title
+			Assert.IsFalse (f.CanRead (r), "#7");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFromInvalid ()
+		{
+			new Atom10ItemFormatter ().ReadFrom (CreateReader ("<feed xmlns='http://www.w3.org/2005/Atom' />"));
+		}
+
+		[Test]
+		public void ReadFrom1 ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			Assert.IsNull (f.Item, "#1");
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><title>test</title></entry>"));
+			SyndicationItem item1 = f.Item;
+			Assert.IsNotNull (f.Item.Title, "#2");
+			Assert.AreEqual ("test", f.Item.Title.Text, "#3");
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><title>test</title></entry>"));
+			Assert.IsFalse (object.ReferenceEquals (item1, f.Item), "#4");
+		}
+
+		[Test]
+		public void ReadXml_TitleOnly ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			((IXmlSerializable) f).ReadXml (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><title>test</title></entry>"));
+			Assert.IsNotNull (f.Item.Title, "#1");
+			Assert.AreEqual ("test", f.Item.Title.Text, "#2");
+
+			((IXmlSerializable) f).ReadXml (CreateReader ("<dummy><title>test</title></dummy>")); // it is ok
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadXmlFromContent ()
+		{
+			((IXmlSerializable) new Atom10ItemFormatter ()).ReadXml (CreateReader ("<title xmlns='http://www.w3.org/2005/Atom'>test</title>"));
+		}
+
+		[Test]
+		public void ReadXml_Extension ()
+		{
+			new Atom10ItemFormatter<MySyndicationItem1> ().ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><foo>test</foo></entry>"));
+			new Atom10ItemFormatter<MySyndicationItem2> ().ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><foo>test</foo></entry>"));
+			try {
+				new Atom10ItemFormatter<MySyndicationItem3> ().ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><foo>test</foo></entry>"));
+				Assert.Fail ("should trigger TryParseElement");
+			} catch (ApplicationException) {
+			}
+		}
+
+		class MySyndicationItem1 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				Assert.AreEqual ("Atom10", version, "#1");
+				Assert.IsFalse (base.TryParseElement (reader, version), "#2");
+				return false;
+			}
+		}
+
+		class MySyndicationItem2 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				reader.Skip (); // without it, the caller expects that the reader did not proceed.
+				return true;
+			}
+		}
+
+		class MySyndicationItem3 : SyndicationItem
+		{
+			protected override bool TryParseElement (XmlReader reader, string version)
+			{
+				throw new ApplicationException ();
+			}
+		}
+
+		[Test]
+		// It is not rejected. Though I think it is .NET bug.
+		public void ReadFrom_EmptyDate ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><pubDate /></entry>"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadFrom_WrongDate ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><published>Sat, 01 Jan 2000 00:00:00 Z</pubDate></entry>"));
+		}
+
+		[Test]
+		public void ReadFrom_Extension ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><ext>external</ext></entry>"));
+			Assert.IsNotNull (f.Item, "#1");
+			Assert.AreEqual (1, f.Item.ElementExtensions.Count, "#2");
+		}
+
+		[Test]
+		public void ReadFrom_Id ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><id>urn:myid</id></entry>"));
+			Assert.IsNotNull (f.Item, "#1");
+			Assert.AreEqual ("urn:myid", f.Item.Id, "#2");
+		}
+
+		[Test]
+		public void ReadFrom_Link ()
+		{
+			Atom10ItemFormatter f = new Atom10ItemFormatter ();
+
+			f.ReadFrom (CreateReader ("<entry xmlns='http://www.w3.org/2005/Atom'><link href='urn:foo' rel='enclosure' length='50' type='text/html' wcf='wtf'><extended /></link></entry>"));
+
+			Assert.AreEqual (1, f.Item.Links.Count, "#1");
+			SyndicationLink link = f.Item.Links [0];
+			Assert.AreEqual (50, link.Length, "#2");
+			Assert.AreEqual ("urn:foo", link.Uri.ToString (), "#3");
+			Assert.AreEqual ("text/html", link.MediaType, "#4");
+			Assert.AreEqual ("enclosure", link.RelationshipType, "#5");
+			Assert.AreEqual (1, link.AttributeExtensions.Count, "#6");
+			Assert.AreEqual (1, link.ElementExtensions.Count, "#7");
+		}
+
+		[Test]
+		public void GetSchema ()
+		{
+			Assert.IsNull (((IXmlSerializable) new Atom10ItemFormatter ()).GetSchema ());
+		}
 	}
 }

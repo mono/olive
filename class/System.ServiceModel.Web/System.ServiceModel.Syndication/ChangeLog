@@ -1,5 +1,9 @@
 2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Atom10ItemFormatter.cs : implemented read methods and GetSchema().
+
+2007-12-18  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* SyndicationFeedFormatter.cs : implemented LoadElementExtensions().
 	* Rss20FeedFormatter.cs : implemented read methods and GetSchema().
 	  PreserveElementExtensions and PreserveAttributeExtensions are
