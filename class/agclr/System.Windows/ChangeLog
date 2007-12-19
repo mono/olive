@@ -1,3 +1,8 @@
+2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
+
+	 * DependencyObject.cs: ad a case for RADIALGRADIENTBRUSH in 
+	 CreateObject method. Fix http://www.vectorlight.net/default.aspx?page=22
+
 2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* UIElement.cs: Pass null instead of EventArgs.Empty for some of

@@ -180,6 +180,7 @@ namespace System.Windows {
 			case Kind.POLYLINESEGMENT: return new PolyLineSegment (raw);
 			case Kind.POLYQUADRATICBEZIERSEGMENT: return new PolyQuadraticBezierSegment (raw);
 			case Kind.QUADRATICBEZIERSEGMENT: return new QuadraticBezierSegment (raw);
+			case Kind.RADIALGRADIENTBRUSH: return new RadialGradientBrush (raw);
 			case Kind.RECTANGLEGEOMETRY: return new RectangleGeometry (raw);
 			case Kind.RECTANGLE: return new Rectangle (raw);
 			case Kind.RESOURCE_DICTIONARY: return new ResourceDictionary (raw);
