@@ -1,6 +1,11 @@
 2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
 
-	 * DependencyObject.cs: ad a case for RADIALGRADIENTBRUSH in 
+	 * DependencyObject.cs: adding LINEARGRADIENTBRUSH and 
+	 TRANSFORMGROUP too, reauired by some component-one demos.
+
+2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
+
+	 * DependencyObject.cs: add a case for RADIALGRADIENTBRUSH in 
 	 CreateObject method. Fix http://www.vectorlight.net/default.aspx?page=22
 
 2007-11-20  Jeffrey Stedfast  <fejj@novell.com>

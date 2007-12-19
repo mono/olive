@@ -158,6 +158,7 @@ namespace System.Windows {
 			case Kind.IMAGE: return new Image (raw);
 			case Kind.INLINES: return new Inlines (raw);
 			case Kind.KEYSPLINE: return new KeySpline(raw);
+			case Kind.LINEARGRADIENTBRUSH: return new LinearGradientBrush (raw);
 			case Kind.LINEBREAK: return new LineBreak (raw);
 			case Kind.LINEGEOMETRY: return new LineGeometry (raw);
 			case Kind.LINE: return new Line (raw);
@@ -200,6 +201,7 @@ namespace System.Windows {
 			case Kind.TIMELINE_COLLECTION: return new TimelineCollection (raw);
 			case Kind.TIMELINEMARKER_COLLECTION: return new TimelineMarkerCollection (raw);
 			case Kind.TRANSFORM_COLLECTION: return new TransformCollection (raw);
+			case Kind.TRANSFORMGROUP: return new TransformGroup (raw);
 			case Kind.TRANSLATETRANSFORM: return new TranslateTransform (raw);
 			case Kind.TRIGGERACTION_COLLECTION: return new TriggerActionCollection (raw);
 			case Kind.TRIGGER_COLLECTION: return new TriggerCollection (raw);
