@@ -157,7 +157,7 @@ namespace Mono.Xaml
 		//
 		public AssemblyLoadResult LoadAssembly (string asm_path, string asm_name, out Assembly clientlib)
 		{
-			Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
+			//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
 			
 			clientlib = null;
 
@@ -187,7 +187,7 @@ namespace Mono.Xaml
 				if (arr != null)
 					clientlib = Assembly.Load (arr);
 				if (clientlib == null) {
-					Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
+					//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
 					return AssemblyLoadResult.LoadFailure;
 				}
 				return AssemblyLoadResult.Success;
@@ -660,11 +660,9 @@ namespace Mono.Xaml
 			}
 			
 			while (missing > 0){
-				Console.WriteLine ("Missing: {0}", missing);
 				foreach (string name in deps.Keys){
 					object v = deps [name];
 
-					Console.WriteLine ("    {0}", v);
 					// If its already loaded, ignore
 					if (v is Assembly)
 						continue;
