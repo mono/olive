@@ -1,6 +1,7 @@
 # -*- makefile -*-
 
-MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" gmcs
+MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$(topdir)/class/lib/net_3_0$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" gmcs
+TEST_MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$(topdir)/class/lib/net_3_0$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH"
 # nuttzing!
 
 profile-check:

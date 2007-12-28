@@ -204,9 +204,14 @@ run-test-local: run-test-lib
 run-test-ondotnet-local: run-test-ondotnet-lib
 
 ## FIXME: i18n problem in the 'sed' command below
+
+ifndef TEST_MONO_PATH
+TEST_MONO_PATH=$(topdir)/class/lib/$(PROFILE)
+endif
+
 run-test-lib: test-local
 	ok=:; \
-	MONO_PATH=$(topdir)/class/lib/$(PROFILE) nunit-console2 $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) /output:TestResult-$(PROFILE).log /exclude:NotWorking,ValueAdd,CAS,InetAccess /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	MONO_PATH=$(TEST_MONO_PATH) mono $(RUNTIME_FLAGS) $(topdir)/class/lib/$(PROFILE)/nunit-console.exe $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) /output:TestResult-$(PROFILE).log /exclude:NotWorking,ValueAdd,CAS,InetAccess /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
 	sed '1,/^Tests run: /d' TestResult-$(PROFILE).log; \
 	$$ok
 
