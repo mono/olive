@@ -1,3 +1,9 @@
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* Events.cs: no longer marshal the UnmanagedMouseEventArgs -
+	MouseEventArgs now takes an IntPtr in its ctor which corresponds
+	to the calldata passed in on the mouse events.
+
 2007-12-18  Miguel de Icaza  <miguel@novell.com>
 
 	* ManagedXamlLoader.cs: Support assembly dependency downloading

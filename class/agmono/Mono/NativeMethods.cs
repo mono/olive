@@ -676,6 +676,20 @@ namespace Mono {
 		public extern static void event_object_remove_event_handler (IntPtr handle, string eventName, UnmanagedEventHandler handler, GCHandle closure);
 #endregion
 
+#region MouseEventArgs
+		[DllImport("moon")]
+		public extern static int mouse_event_args_get_state (IntPtr handle);
+
+		[DllImport("moon")]
+		public extern static void mouse_event_args_get_position (IntPtr handle, IntPtr uielement_handle, out double x, out double y);
+
+		[DllImport("moon")]
+		public extern static IntPtr mouse_event_args_get_stylus_info (IntPtr handle);
+
+		[DllImport("moon")]
+		public extern static IntPtr mouse_event_args_get_stylus_points (IntPtr handle, IntPtr uielement_handle);
+#endregion
+
 #region plugin
 		[DllImport("moonplugin")]
 		public extern static int plugin_instance_get_actual_height (IntPtr plugin_handle);

@@ -1,3 +1,8 @@
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* MouseEventArgs.cs: wrap the IntPtr passed in to the ctor.  make
+	use of all the new mouse_event_args_* native methods.
+
 2007-09-27  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* StylusPoint.cs, StylusInfo.cs, StylusPointCollection.cs: Don't ref ourself

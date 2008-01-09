@@ -35,13 +35,6 @@ using System.Runtime.InteropServices;
 namespace Mono {
 
 	[StructLayout(LayoutKind.Sequential)]
-	struct UnmanagedMouseEventArgs {
-		public int state;
-		public double x;
-		public double y;
-	}
-
-	[StructLayout(LayoutKind.Sequential)]
 	struct UnmanagedKeyboardEventArgs {
 		public int state;
 		public int platformcode;
@@ -156,18 +149,11 @@ namespace Mono {
 			}
 		}
 
-		static MouseEventArgs MarshalMouseEventArgs (IntPtr calldata)
-		{
-			UnmanagedMouseEventArgs args =
-				(UnmanagedMouseEventArgs)Marshal.PtrToStructure (calldata, typeof (UnmanagedMouseEventArgs));
-			return new MouseEventArgs (args.state, args.x, args.y);
-		}
-		
 		static void mouse_motion_notify_callback (IntPtr target, IntPtr calldata, IntPtr closure)
 		{
 			try {
 				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-				e.InvokeMouseMove (MarshalMouseEventArgs (calldata));
+				e.InvokeMouseMove (new MouseEventArgs (calldata));
 			}
 			catch (Exception ex) {
 				if (IsPlugin ())
@@ -181,7 +167,7 @@ namespace Mono {
 		{
 			try {
 				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-				e.InvokeMouseButtonDown (MarshalMouseEventArgs (calldata));
+				e.InvokeMouseButtonDown (new MouseEventArgs (calldata));
 			}
 			catch (Exception ex) {
 				if (IsPlugin ())
@@ -195,7 +181,7 @@ namespace Mono {
 		{
 			try {
 				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-				e.InvokeMouseButtonUp (MarshalMouseEventArgs (calldata));
+				e.InvokeMouseButtonUp (new MouseEventArgs (calldata));
 			}
 			catch (Exception ex) {
 				if (IsPlugin ())
@@ -209,7 +195,7 @@ namespace Mono {
 		{
 			try {
 				UIElement e = (UIElement) Helper.GCHandleFromIntPtr (closure).Target;
-				e.InvokeMouseEnter (MarshalMouseEventArgs (calldata));
+				e.InvokeMouseEnter (new MouseEventArgs (calldata));
 			}
 			catch (Exception ex) {
 				if (IsPlugin ())

@@ -30,42 +30,51 @@ namespace System.Windows.Input {
 	
 	public sealed class MouseEventArgs : EventArgs {
 		int state;
-		double x, y;
 		
-		internal MouseEventArgs (int state, double x, double y)
+		IntPtr native;
+
+		internal MouseEventArgs (IntPtr raw)
 		{
-			this.state = state;
-			this.x = x;
-			this.y = y;
+			native = raw;
+			NativeMethods.base_ref (native);
+			state = NativeMethods.mouse_event_args_get_state (native);
 		}
 		
-		public MouseEventArgs ()
+		~MouseEventArgs ()
 		{
+			if (this.native != IntPtr.Zero) {
+				NativeMethods.base_unref_delayed (this.native);
+				this.native = IntPtr.Zero;
+			}
 		}
 
 		public Point GetPosition (UIElement uiElement)
 		{
-			double nx = x;
-			double ny = y;
+			double nx;
+			double ny;
 
-			// from the samples it seems null is a valid value
-			if (uiElement != null)
-				NativeMethods.uielement_transform_point (uiElement.native, ref nx, ref ny);
+			NativeMethods.mouse_event_args_get_position (native, uiElement == null ? IntPtr.Zero : uiElement.native, out nx, out ny);
 
 			return new Point (nx, ny);
 		}
 
-#if not_yet_done
 		public StylusInfo GetStylusInfo ()
 		{
-			return null;
+			IntPtr info = NativeMethods.mouse_event_args_get_stylus_info (native);
+			if (info == IntPtr.Zero)
+				return null;
+
+			return (StylusInfo)DependencyObject.Lookup (Kind.STYLUSINFO, info);
 		}
 		
 		public StylusPointCollection GetStylusPoints (UIElement uiElement)
 		{
-			return null;
+			IntPtr col = NativeMethods.mouse_event_args_get_stylus_points (native, uiElement == null ? IntPtr.Zero : uiElement.native);
+			if (col == IntPtr.Zero)
+				return null;
+
+			return (StylusPointCollection)DependencyObject.Lookup (Kind.STYLUSPOINT_COLLECTION, col);
 		}
-#endif
 		
 		public bool Ctrl {
 			get { return (state & 4) != 0; }

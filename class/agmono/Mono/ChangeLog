@@ -1,3 +1,7 @@
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
+	* NativeMethods.cs: add mouse_event_args_* native methods.
+
 2007-12-17  Jb Evain  <jbevain@novell.com>
 
 	* Kind.cs: update after the last changes (Matrix is now a DO).
