@@ -282,6 +282,12 @@ namespace Mono {
 		
 		[DllImport("moon")]
 		public extern static IntPtr stroke_collection_new ();
+
+		[DllImport("mono")]
+		public extern static IntPtr stroke_collection_hit_test (IntPtr native, IntPtr stylusPointCollection);
+
+		[DllImport("mono")]
+		public extern static bool stroke_hit_test (IntPtr native, IntPtr stylusPointCollection);
 #endregion
 		
 #region MediaElement

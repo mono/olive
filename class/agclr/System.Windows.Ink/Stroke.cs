@@ -66,7 +66,19 @@ namespace System.Windows.Ink
 				SetValue (StylusPointsProperty, value);
 			}
 		}
-		
+
+		[MonoTODO]
+		public Rect GetBounds ()
+		{
+			// XXX
+			return new Rect (0,0);
+		}
+
+		public bool HitTest (StylusPointCollection stylusPointCollection)
+		{
+			return NativeMethods.stroke_hit_test (stylusPointCollection.native);
+		}
+
 		internal override Kind GetKind ()
 		{
 			return Kind.STROKE;
@@ -74,6 +86,3 @@ namespace System.Windows.Ink
 		                                          
 	}
 }
-
-
- 

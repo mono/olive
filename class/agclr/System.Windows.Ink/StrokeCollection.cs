@@ -41,6 +41,22 @@ namespace System.Windows.Ink
 		internal StrokeCollection (IntPtr raw) : base (raw)
 		{
 		}
+
+		[MonoTODO]
+		public Rect GetBounds ()
+		{
+			// XXX
+			return new Rect (0,0);
+		}
+
+		public StrokeCollection HitTest (StylusPointCollection stylusPointCollection)
+		{
+			IntPtr col = NativeMethods.stroke_collection_hit_test (stylusPointCollection.native);
+			if (col == IntPtr.Zero)
+				return null;
+
+			return (StrokeCollection)DependencyObject.Lookup (Kind.STROKE_COLLECTION, col);
+		}
 		
 		internal override Kind GetKind ()
 		{
