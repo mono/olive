@@ -67,16 +67,16 @@ namespace System.Windows.Ink
 			}
 		}
 
-		[MonoTODO]
 		public Rect GetBounds ()
 		{
-			// XXX
-			return new Rect (0,0);
+			UnmanagedRect urect = new UnmanagedRect();
+			NativeMethods.stroke_get_bounds (native, ref urect);
+			return new Rect (urect.left, urect.top, urect.width, urect.height);
 		}
 
 		public bool HitTest (StylusPointCollection stylusPointCollection)
 		{
-			return NativeMethods.stroke_hit_test (stylusPointCollection.native);
+			return NativeMethods.stroke_hit_test (native, stylusPointCollection.native);
 		}
 
 		internal override Kind GetKind ()

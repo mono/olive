@@ -42,16 +42,16 @@ namespace System.Windows.Ink
 		{
 		}
 
-		[MonoTODO]
 		public Rect GetBounds ()
 		{
-			// XXX
-			return new Rect (0,0);
+			UnmanagedRect urect = new UnmanagedRect();
+			NativeMethods.stroke_collection_get_bounds (native, ref urect);
+			return new Rect (urect.left, urect.top, urect.width, urect.height);
 		}
 
 		public StrokeCollection HitTest (StylusPointCollection stylusPointCollection)
 		{
-			IntPtr col = NativeMethods.stroke_collection_hit_test (stylusPointCollection.native);
+			IntPtr col = NativeMethods.stroke_collection_hit_test (native, stylusPointCollection.native);
 			if (col == IntPtr.Zero)
 				return null;
 

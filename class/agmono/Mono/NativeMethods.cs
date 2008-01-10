@@ -287,7 +287,13 @@ namespace Mono {
 		public extern static IntPtr stroke_collection_hit_test (IntPtr native, IntPtr stylusPointCollection);
 
 		[DllImport("mono")]
+		public extern static void stroke_collection_get_bounds (IntPtr native, ref UnmanagedRect urect);
+
+		[DllImport("mono")]
 		public extern static bool stroke_hit_test (IntPtr native, IntPtr stylusPointCollection);
+
+		[DllImport("mono")]
+		public extern static void stroke_get_bounds (IntPtr native, ref UnmanagedRect urect);
 #endregion
 		
 #region MediaElement

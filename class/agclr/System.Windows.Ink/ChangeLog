@@ -1,5 +1,11 @@
 2008-01-09  Chris Toshok  <toshok@ximian.com>
 
+	* StrokeCollection.cs: implement GetBounds.
+
+	* Stroke.cs: implement GetBounds.
+
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
 	* StrokeCollection.cs: add HitTest and GetBounds.
 
 	* Stroke.cs: add HitTest and GetBounds.

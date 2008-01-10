@@ -1,5 +1,10 @@
 2008-01-09  Chris Toshok  <toshok@ximian.com>
 
+	* NativeMethods.cs: add stroke_get_bounds and
+	stroke_collection_get_bounds.
+
+2008-01-09  Chris Toshok  <toshok@ximian.com>
+
 	* NativeMethods.cs: add stroke_hit_test and
 	stroke_collection_hit_test.
 
