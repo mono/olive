@@ -143,6 +143,7 @@ namespace System.Windows.Media {
 		}
 
 
+#if NET_3_5
 		public static bool operator == (Matrix matrix1,
 						Matrix matrix2)
 		{
@@ -162,6 +163,7 @@ namespace System.Windows.Media {
 			result.Append (trans2);
 			return result;
 		}
+#endif
 
 		public static Matrix Parse (string source)
 		{
@@ -314,7 +316,7 @@ namespace System.Windows.Media {
 
 		public Point Transform (Point point)
 		{
-			return point * this;
+			return Point.Multiply (point, this);
 		}
 
 		public void Transform (Point[] points)
@@ -325,7 +327,7 @@ namespace System.Windows.Media {
 
 		public Vector Transform (Vector vector)
 		{
-			return vector * this;
+			return Vector.Multiply (vector, this);
 		}
 
 		public void Transform (Vector[] vectors)

@@ -103,6 +103,8 @@ namespace System.Windows {
 		}
 
 		/* operators */
+
+#if NET_3_5
 		public static Vector operator -(Point point1, Point point2)
 		{
 			return Subtract (point1, point2);
@@ -113,9 +115,9 @@ namespace System.Windows {
 			return Subtract (point, vector);
 		}
 
-		public static bool operator != (Point point1, Point point2)
+		public static Point operator + (Point point, Vector vector)
 		{
-			return !point1.Equals(point2);
+			return Add (point, vector);
 		}
 
 		public static Point operator * (Point point, Matrix matrix)
@@ -123,9 +125,9 @@ namespace System.Windows {
 			return Multiply (point, matrix);
 		}
 
-		public static Point operator + (Point point, Vector vector)
+		public static bool operator != (Point point1, Point point2)
 		{
-			return Add (point, vector);
+			return !point1.Equals(point2);
 		}
 
 		public static bool operator == (Point point1, Point point2)
@@ -142,6 +144,7 @@ namespace System.Windows {
 		{
 			return new Vector (point.X, point.Y);
 		}
+#endif
 
 		public static Point Parse (string source)
 		{
