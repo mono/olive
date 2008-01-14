@@ -17,7 +17,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
@@ -25,10 +25,16 @@
 
 using System;
 
-namespace System.Windows.Media.Animation {
+namespace System.Windows.Media.Imaging {
 
-	public enum HandoffBehavior {
-		SnapshotAndReplace,
-		Compose
+	public enum TiffCompressOption {
+		Default,
+		None,
+		Ccitt3,
+		Ccitt4,
+		Lzw,
+		Rle,
+		Zip
 	}
+
 }

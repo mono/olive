@@ -38,7 +38,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static Color operator * (Color color1, Color color2)
+		public static Color operator * (Color color1, float coefficient)
 		{
 			throw new NotImplementedException ();
 		}
@@ -107,6 +107,11 @@ namespace System.Windows.Media {
 			return color1 + color2;
 		}
 
+		public static Color Subtract (Color color1, Color color2)
+		{
+			return color1 + color2;
+		}
+
 		public static bool AreClose (Color color1, Color color2)
 		{
 			throw new NotImplementedException ();
@@ -161,12 +166,12 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public float[] GetNativeValues ()
+		public float[] GetNativeColorValues ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static Color Multiply (Color color1, Color color2)
+		public static Color Multiply (Color color1, float coefficient)
 		{
 			throw new NotImplementedException ();
 		}

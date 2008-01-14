@@ -183,7 +183,7 @@ namespace System.Windows.Media {
 			Insert (index, (Transform)value);
 		}
 
-		public void Remove (Transform value)
+		void Remove (Transform value)
 		{
 			throw new NotImplementedException ();
 		}

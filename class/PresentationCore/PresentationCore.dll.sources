@@ -64,6 +64,13 @@ System.Windows/TextTrimming.cs
 System.Windows/TextWrapping.cs
 System.Windows/UIElement.cs
 System.Windows/Visibility.cs
+System.Windows.Automation.Peers/AutomationControlType.cs
+System.Windows.Automation.Peers/AutomationEvents.cs
+System.Windows.Automation.Peers/AutomationOrientation.cs
+System.Windows.Automation.Peers/PatternInterface.cs
+System.Windows.Ink/ApplicationGesture.cs
+System.Windows.Ink/RecognitionConfidence.cs
+System.Windows.Ink/StylusTip.cs
 System.Windows.Input/AccessKeyEventArgs.cs
 System.Windows.Input/AccessKeyManager.cs
 System.Windows.Input/AccessKeyPressedEventArgs.cs
@@ -160,6 +167,7 @@ System.Windows.Input/TextCompositionEventHandler.cs
 System.Windows.Input/TextCompositionManager.cs
 System.Windows.Input.X11/X11KeyboardDevice.cs
 System.Windows.Input.X11/X11MouseDevice.cs
+System.Windows.Interop/RenderMode.cs
 System.Windows.Markup/IAddChild.cs
 System.Windows.Markup/IUriContext.cs
 System.Windows.Media.Animation/AnimationClock.cs
@@ -230,6 +238,7 @@ System.Windows.Media.Animation/ObjectAnimationBase.cs
 System.Windows.Media.Animation/ObjectAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/ObjectKeyFrameCollection.cs
 System.Windows.Media.Animation/ObjectKeyFrame.cs
+System.Windows.Media.Animation/PathAnimationSource.cs
 System.Windows.Media.Animation/PointAnimationBase.cs
 System.Windows.Media.Animation/PointAnimation.cs
 System.Windows.Media.Animation/PointAnimationUsingKeyFrames.cs
@@ -250,6 +259,7 @@ System.Windows.Media.Animation/SizeAnimation.cs
 System.Windows.Media.Animation/SizeAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/SizeKeyFrameCollection.cs
 System.Windows.Media.Animation/SizeKeyFrame.cs
+System.Windows.Media.Animation/SlipBehavior.cs
 System.Windows.Media.Animation/StringAnimationBase.cs
 System.Windows.Media.Animation/StringAnimationUsingKeyFrames.cs
 System.Windows.Media.Animation/StringKeyFrameCollection.cs
@@ -300,6 +310,14 @@ System.Windows.Media.Animation/SplineRectKeyFrame.cs
 System.Windows.Media.Animation/SplineSingleKeyFrame.cs
 System.Windows.Media.Animation/SplineSizeKeyFrame.cs
 System.Windows.Media.Animation/SplineVectorKeyFrame.cs
+System.Windows.Media.Effects/BitmapEffect.cs
+System.Windows.Media.Effects/EdgeProfile.cs
+System.Windows.Media.Effects/KernelType.cs
+System.Windows.Media.Imaging/BitmapCacheOptions.cs
+System.Windows.Media.Imaging/BitmapCreateOptions.cs
+System.Windows.Media.Imaging/PngInterlaceOption.cs
+System.Windows.Media.Imaging/Rotation.cs
+System.Windows.Media.Imaging/TiffCompressOption.cs
 System.Windows.Media/AlignmentX.cs
 System.Windows.Media/AlignmentY.cs
 System.Windows.Media/BitmapScalingMode.cs

@@ -17,18 +17,18 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
+namespace System.Windows.Automation.Peers {
 
-namespace System.Windows.Media.Animation {
-
-	public enum HandoffBehavior {
-		SnapshotAndReplace,
-		Compose
+	public enum AutomationOrientation {
+		None,
+		Horizontal,
+		Vertical
 	}
+
 }

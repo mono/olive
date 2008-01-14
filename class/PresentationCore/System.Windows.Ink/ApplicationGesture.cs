@@ -17,18 +17,68 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
+namespace System.Windows.Ink {
 
-namespace System.Windows.Media.Animation {
+	public enum ApplicationGesture {
+		AllGestures = 0,
 
-	public enum HandoffBehavior {
-		SnapshotAndReplace,
-		Compose
+		NoGesture = 61440,
+		ScratchOut = 61441,
+		Triangle = 61442,
+		Square = 61443,
+		Star = 61444,
+		Check = 61445,
+		Curlicue = 61456,
+		DoubleCurlicue = 61457,
+
+		Circle = 61472,
+		DoubleCircle = 61473,
+
+		SemicircleLeft = 61480,
+		SemicircleRight = 61481,
+
+		ChevronUp = 61488,
+		ChevronDown = 61489,
+		ChevronLeft = 61490,
+		ChevronRight = 61491,
+
+		ArrowUp = 61496,
+		ArrowDown = 61497,
+		ArrowLeft = 61498,
+		ArrowRight = 61499,
+
+		Up = 61528,
+		Down = 61529,
+		Left = 61530,
+		Right = 61531,
+
+		UpDown = 61536,
+		DownUp = 61537,
+		LeftRight = 61538,
+		RightLeft = 61539,
+		UpLeftLong = 61540,
+		UpRightLong = 61541,
+		DownLeftLong = 61542,
+		DownRightLong = 61543,
+		UpLeft = 61544,
+		UpRight = 61545,
+		DownLeft = 61546,
+		DownRight = 61547,
+		LeftUp = 61548,
+		LeftDown = 61549,
+		RightUp = 61550,
+		RightDown = 61551,
+
+		Exclamation = 61604,
+
+		Tap = 61680,
+		DoubleTap = 61681
 	}
 }
+

@@ -25,6 +25,7 @@
 
 using System.Windows.Input;
 using System.Windows.Media.Animation;
+using System.Security;
 
 namespace System.Windows {
 
@@ -75,127 +76,128 @@ namespace System.Windows {
 		public static readonly RoutedEvent PreviewQueryContinueDragEvent;
 		public static readonly RoutedEvent QueryContinueDragEvent;
 
-		public static void AddDragEnterEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddDragEnterHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, DragEnterEvent, handler);
 		}
 
-		public static void AddDragLeaveEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddDragLeaveHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, DragLeaveEvent, handler);
 		}
 
-		public static void AddDragOverEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddDragOverHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, DragOverEvent, handler);
 		}
 
-		public static void AddDropEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddDropHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, DropEvent, handler);
 		}
 
-		public static void AddGiveFeedbackEventHandler (DependencyObject element, GiveFeedbackEventHandler handler)
+		public static void AddGiveFeedbackHandler (DependencyObject element, GiveFeedbackEventHandler handler)
 		{
 			UIElement.AddHandler (element, GiveFeedbackEvent, handler);
 		}
 
-		public static void AddPreviewDragEnterEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddPreviewDragEnterHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewDragEnterEvent, handler);
 		}
 
-		public static void AddPreviewDragLeaveEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddPreviewDragLeaveHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewDragLeaveEvent, handler);
 		}
 
-		public static void AddPreviewDragOverEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddPreviewDragOverHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewDragOverEvent, handler);
 		}
 
-		public static void AddPreviewDropEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void AddPreviewDropHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewDropEvent, handler);
 		}
 
-		public static void AddPreviewGiveFeedbackEventHandler (DependencyObject element, GiveFeedbackEventHandler handler)
+		public static void AddPreviewGiveFeedbackHandler (DependencyObject element, GiveFeedbackEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewGiveFeedbackEvent, handler);
 		}
 
-		public static void AddPreviewQueryContinueDragEventHandler (DependencyObject element, QueryContinueDragEventHandler handler)
+		public static void AddPreviewQueryContinueDragHandler (DependencyObject element, QueryContinueDragEventHandler handler)
 		{
 			UIElement.AddHandler (element, PreviewQueryContinueDragEvent, handler);
 		}
 
-		public static void AddQueryContinueDragEventHandler (DependencyObject element, QueryContinueDragEventHandler handler)
+		public static void AddQueryContinueDragHandler (DependencyObject element, QueryContinueDragEventHandler handler)
 		{
 			UIElement.AddHandler (element, QueryContinueDragEvent, handler);
 		}
 
 
-		public static void RemoveDragEnterEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemoveDragEnterHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, DragEnterEvent, handler);
 		}
 
-		public static void RemoveDragLeaveEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemoveDragLeaveHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, DragLeaveEvent, handler);
 		}
 
-		public static void RemoveDragOverEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemoveDragOverHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, DragOverEvent, handler);
 		}
 
-		public static void RemoveDropEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemoveDropHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, DropEvent, handler);
 		}
 
-		public static void RemoveGiveFeedbackEventHandler (DependencyObject element, GiveFeedbackEventHandler handler)
+		public static void RemoveGiveFeedbackHandler (DependencyObject element, GiveFeedbackEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, GiveFeedbackEvent, handler);
 		}
 
-		public static void RemovePreviewDragEnterEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemovePreviewDragEnterHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewDragEnterEvent, handler);
 		}
 
-		public static void RemovePreviewDragLeaveEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemovePreviewDragLeaveHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewDragLeaveEvent, handler);
 		}
 
-		public static void RemovePreviewDragOverEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemovePreviewDragOverHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewDragOverEvent, handler);
 		}
 
-		public static void RemovePreviewDropEventHandler (DependencyObject element, DragEventHandler handler)
+		public static void RemovePreviewDropHandler (DependencyObject element, DragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewDropEvent, handler);
 		}
 
-		public static void RemovePreviewGiveFeedbackEventHandler (DependencyObject element, GiveFeedbackEventHandler handler)
+		public static void RemovePreviewGiveFeedbackHandler (DependencyObject element, GiveFeedbackEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewGiveFeedbackEvent, handler);
 		}
 
-		public static void RemovePreviewQueryContinueDragEventHandler (DependencyObject element, QueryContinueDragEventHandler handler)
+		public static void RemovePreviewQueryContinueDragHandler (DependencyObject element, QueryContinueDragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, PreviewQueryContinueDragEvent, handler);
 		}
 
-		public static void RemoveQueryContinueDragEventHandler (DependencyObject element, QueryContinueDragEventHandler handler)
+		public static void RemoveQueryContinueDragHandler (DependencyObject element, QueryContinueDragEventHandler handler)
 		{
 			UIElement.RemoveHandler (element, QueryContinueDragEvent, handler);
 		}
 
+		[SecurityCritical]
 		public static DragDropEffects DoDragDrop (DependencyObject dragSource, object data, DragDropEffects allowedEffects)
 		{
 			throw new NotImplementedException ();
