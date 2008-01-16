@@ -17,26 +17,24 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System;
-using System.Security;
-using System.Windows.Input;
 
-namespace System.Windows.Interop {
+namespace System.ComponentModel {
 
-	public interface IKeyboardInputSite
-	{
-		IKeyboardInputSink Sink { get; }
-
-		bool OnNoMoreTabStops (TraversalRequest request);
-
-		[SecurityCritical]
-		void Unregister ();
+	[Flags]
+	public enum PropertyFilterOptions {
+		None = 0,
+		Invalid = 1,
+		SetValues = 2,
+		UnsetValues = 4,
+		Valid = 8,
+		All = 15
 	}
-
 }
+

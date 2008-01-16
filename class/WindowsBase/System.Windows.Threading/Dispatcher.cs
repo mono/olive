@@ -51,6 +51,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security;
 using System.Threading;
 
 namespace System.Windows.Threading {
@@ -99,11 +100,13 @@ namespace System.Windows.Threading {
 			hooks = new DispatcherHooks (this);
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool CheckAccess ()
 		{
 			return Thread.CurrentThread == base_thread;
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void VerifyAccess ()
 		{
 			if (Thread.CurrentThread != base_thread)
@@ -265,11 +268,13 @@ namespace System.Windows.Threading {
 			}
 		}
 
+		[SecurityCritical]
 		public static void Run ()
 		{
 			PushFrame (main_execution_frame);
 		}
 		
+		[SecurityCritical]
 		public static void PushFrame (DispatcherFrame frame)
 		{
 			if (frame == null)
@@ -383,11 +388,13 @@ namespace System.Windows.Threading {
 		//
 		// Do no work here, so that any events are thrown on the owning thread
 		//
+		[SecurityCritical]
 		public void InvokeShutdown ()
 		{
 			flags |= Flags.ShutdownStarted;
 		}
 
+		[SecurityCritical]
 		public static void ExitAllFrames ()
 		{
 			Dispatcher dis = CurrentDispatcher;

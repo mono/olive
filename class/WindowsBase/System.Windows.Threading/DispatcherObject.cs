@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Threading;
 
 namespace System.Windows.Threading {
@@ -36,16 +37,19 @@ namespace System.Windows.Threading {
 			base_thread = Thread.CurrentThread;
 		}
 		
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool CheckAccess ()
 		{
 			return Thread.CurrentThread == base_thread;
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public void VerifyAccess ()
 		{
 			throw new InvalidOperationException ("The calling thread is not the same as the creation thread");
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public Dispatcher Dispatcher {
 			get {
 				return Dispatcher.FromThread (base_thread);

@@ -104,7 +104,6 @@ namespace System.Windows {
 
 		/* operators */
 
-#if NET_3_5
 		public static Vector operator -(Point point1, Point point2)
 		{
 			return Subtract (point1, point2);
@@ -144,7 +143,6 @@ namespace System.Windows {
 		{
 			return new Vector (point.X, point.Y);
 		}
-#endif
 
 		public static Point Parse (string source)
 		{

@@ -130,7 +130,6 @@ namespace System.Windows {
 		}
 
 		/* operators */
-#if NET_3_5
 		public static explicit operator Point (Size size)
 		{
 			return new Point (size.Width, size.Height);
@@ -150,7 +149,6 @@ namespace System.Windows {
 		{
 			return !size1.Equals (size2);
 		}
-#endif
 
 		double width;
 		double height;

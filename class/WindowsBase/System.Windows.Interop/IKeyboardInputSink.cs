@@ -24,19 +24,32 @@
 //
 
 using System;
+using System.Security;
 using System.Windows.Input;
 
 namespace System.Windows.Interop {
 
 	public interface IKeyboardInputSink
 	{
-		IKeyboardInputSite KeyboardInputSite { get; set; }
+		IKeyboardInputSite KeyboardInputSite {
+			get;
+			[SecurityCritical]
+			set;
+		}
 
-		bool HasFocusWithin ();
-		bool OnMnemonic (ref MSG msg, ModifierKeys modifiers);
-		IKeyboardInputSite RegisterKeyboardInputSink (IKeyboardInputSink sink);
 		bool TabInto (TraversalRequest request);
+		bool HasFocusWithin ();
+
+		[SecurityCritical]
+		bool OnMnemonic (ref MSG msg, ModifierKeys modifiers);
+
+		[SecurityCritical]
+		IKeyboardInputSite RegisterKeyboardInputSink (IKeyboardInputSink sink);
+
+		[SecurityCritical]
 		bool TranslateAccelerator (ref MSG msg, ModifierKeys modifiers);
+
+		[SecurityCritical]
 		bool TranslateChar (ref MSG msg, ModifierKeys modifiers);
 	}
 }

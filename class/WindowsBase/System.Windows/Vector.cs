@@ -180,7 +180,6 @@ namespace System.Windows {
 			set { y = value; }
 		}
 
-#if NET_3_5
 		/* operators */
 		public static explicit operator Point (Vector vector)
 		{
@@ -248,7 +247,6 @@ namespace System.Windows {
 		{
 			return Add (vector1, vector2);
 		}
-#endif
 
 		double x;
 		double y;

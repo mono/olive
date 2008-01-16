@@ -17,26 +17,21 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System;
-using System.Security;
-using System.Windows.Input;
+using System.ComponentModel;
 
-namespace System.Windows.Interop {
+namespace System.Windows.Markup {
 
-	public interface IKeyboardInputSite
-	{
-		IKeyboardInputSink Sink { get; }
-
-		bool OnNoMoreTabStops (TraversalRequest request);
-
-		[SecurityCritical]
-		void Unregister ();
+	public interface IValueSerializerContext : ITypeDescriptorContext, IServiceProvider {
+#if notyet
+		ValueSerializer GetValueSerializerFor (PropertyDescriptor descriptor);
+		ValueSerializer GetValueSerializerFor (Type type);
+#endif
 	}
-
 }

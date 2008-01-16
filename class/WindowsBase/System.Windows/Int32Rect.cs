@@ -48,7 +48,6 @@ namespace System.Windows {
 			this.height = height;
 		}
 
-#if NET_3_5
 		public static bool operator != (Int32Rect int32Rect1, Int32Rect int32Rect2)
 		{
 			throw new NotImplementedException ();
@@ -58,7 +57,6 @@ namespace System.Windows {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		public static Int32Rect Empty {
 			get { return new Int32Rect (0, 0, 0, 0); }

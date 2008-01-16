@@ -27,6 +27,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Security;
 using System.Threading;
 
 namespace System.Windows.Threading {
@@ -133,6 +134,7 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public DispatcherOperationStatus Wait (TimeSpan timeout)
 		{
 			if (status == DispatcherOperationStatus.Executing)

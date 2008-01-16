@@ -63,8 +63,8 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		protected internal static bool Freeze (Freezable freezable,
-						       bool isChecking)
+		protected static bool Freeze (Freezable freezable,
+					      bool isChecking)
 		{
 			throw new NotImplementedException ();
 		}

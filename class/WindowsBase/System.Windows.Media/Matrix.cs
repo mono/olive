@@ -142,8 +142,6 @@ namespace System.Windows.Media {
 			return m;
 		}
 
-
-#if NET_3_5
 		public static bool operator == (Matrix matrix1,
 						Matrix matrix2)
 		{
@@ -163,7 +161,6 @@ namespace System.Windows.Media {
 			result.Append (trans2);
 			return result;
 		}
-#endif
 
 		public static Matrix Parse (string source)
 		{

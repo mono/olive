@@ -65,12 +65,12 @@ namespace System.Windows {
 				pm.CoerceValueCallback (this, GetValue (dp));
 		}
 
-		public override bool Equals (object obj)
+		public sealed override bool Equals (object obj)
 		{
 			throw new NotImplementedException("Equals");
 		}
 
-		public override int GetHashCode ()
+		public sealed override int GetHashCode ()
 		{
 			throw new NotImplementedException("GetHashCode");
 		}

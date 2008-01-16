@@ -24,19 +24,32 @@
 //
 
 using System;
-using System.Security;
-using System.Windows.Input;
 
-namespace System.Windows.Interop {
+namespace System.IO.Packaging {
 
-	public interface IKeyboardInputSite
+	public abstract class Package : IDisposable
 	{
-		IKeyboardInputSink Sink { get; }
+		protected Package (FileAccess openFileAccess)
+		{
+		}
 
-		bool OnNoMoreTabStops (TraversalRequest request);
+		protected Package (FileAccess openfileAccess, bool streaming)
+		{
+		}
 
-		[SecurityCritical]
-		void Unregister ();
+		public FileAccess FileOpenAccess {
+			get { throw new NotImplementedException (); }
+		}
+
+		public PackageProperties PackageProperties {
+			get { throw new NotImplementedException (); }
+		}
+
+		public void Close ()
+		{
+		}
+
+		public PackagePart CreatePart (
 	}
-
 }
+

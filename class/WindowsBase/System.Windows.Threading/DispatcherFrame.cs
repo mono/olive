@@ -26,6 +26,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Security;
 using System.Threading;
 
 namespace System.Windows.Threading {
@@ -54,6 +55,7 @@ namespace System.Windows.Threading {
 				return cont;
 			}
 
+			[SecurityCritical]
 			set {
 				cont = value;
 			}

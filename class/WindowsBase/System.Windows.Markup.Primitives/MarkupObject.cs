@@ -24,19 +24,27 @@
 //
 
 using System;
-using System.Security;
-using System.Windows.Input;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Windows;
+using System.Windows.Markup;
 
-namespace System.Windows.Interop {
+namespace System.Windows.Markup.Primitives {
 
-	public interface IKeyboardInputSite
-	{
-		IKeyboardInputSink Sink { get; }
+	public abstract class MarkupObject {
+		internal MarkupObject ()
+		{
+		}
 
-		bool OnNoMoreTabStops (TraversalRequest request);
+		public abstract AttributeCollection Attributes { get; }
+		public abstract object Instance { get; }
+		public abstract Type ObjectType { get; }
 
-		[SecurityCritical]
-		void Unregister ();
+		public virtual IEnumerable<MarkupProperty> Properties {
+			get { throw new NotImplementedException (); }
+		}
+
+		public abstract void AssignRootContext (IValueSerializerContext context);
 	}
-
 }
+
