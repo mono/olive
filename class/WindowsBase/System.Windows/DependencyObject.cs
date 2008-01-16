@@ -126,6 +126,11 @@ namespace System.Windows {
 			SetValue (key.DependencyProperty, value);
 		}
 
+		protected virtual bool ShouldSerializeProperty (DependencyProperty dp)
+		{
+			throw new NotImplementedException ();
+		}
+
 		internal static void register(Type t, DependencyProperty dp)
 		{
 			if (!propertyDeclarations.ContainsKey (t))

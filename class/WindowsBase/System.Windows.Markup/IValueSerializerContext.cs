@@ -29,9 +29,7 @@ using System.ComponentModel;
 namespace System.Windows.Markup {
 
 	public interface IValueSerializerContext : ITypeDescriptorContext, IServiceProvider {
-#if notyet
 		ValueSerializer GetValueSerializerFor (PropertyDescriptor descriptor);
 		ValueSerializer GetValueSerializerFor (Type type);
-#endif
 	}
 }

@@ -159,7 +159,17 @@ namespace System.Windows {
 			typeMetadata.DoMerge (DefaultMetadata, this, forType);
 			metadataByType.Add (forType, typeMetadata);
 		}
-		
+
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override int GetHashCode ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static DependencyProperty Register(string name, Type propertyType, Type ownerType)
 		{
 			return Register(name, propertyType, ownerType, null, null);

@@ -80,5 +80,10 @@ namespace System.Windows {
 		{
 			return systemType.IsSubclassOf (dependencyObjectType.SystemType);
 		}
+
+		public override int GetHashCode ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

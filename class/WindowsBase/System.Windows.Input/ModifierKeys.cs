@@ -24,14 +24,14 @@
 //
 
 using System;
+using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace System.Windows.Input {
 
 	[Flags]
-#if notyet
 	[ValueSerializer (typeof (ModifierKeysValueSerializer))]
 	[TypeConverter (typeof (ModifierKeysConverter))]
-#endif
 	public enum ModifierKeys {
 		None = 0,
 		Alt = 1,

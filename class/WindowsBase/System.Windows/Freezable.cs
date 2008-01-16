@@ -23,8 +23,6 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System.Windows;
-
 namespace System.Windows {
 
 	public abstract class Freezable : DependencyObject {

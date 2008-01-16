@@ -24,16 +24,16 @@
 //
 
 using System;
-
+using System.ComponentModel;
+using System.Windows.Converters;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace System.Windows {
 
 	[Serializable]
-#if notyet
 	[ValueSerializer (typeof (VectorValueSerializer))]
 	[TypeConverter (typeof (VectorConverter))]
-#endif
 	public struct Vector : IFormattable
 	{
 		public Vector (double x, double y)

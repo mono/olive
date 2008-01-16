@@ -24,14 +24,15 @@
 //
 
 using System;
+using System.ComponentModel;
+using System.Windows.Converters;
+using System.Windows.Markup;
 
 namespace System.Windows {
 
 	[Serializable]
-#if notyet
 	[ValueSerializer (typeof (SizeValueSerializer))]
 	[TypeConverter (typeof (SizeConverter))]
-#endif
 	public struct Size : IFormattable
 	{
 		public Size (double width, double height)

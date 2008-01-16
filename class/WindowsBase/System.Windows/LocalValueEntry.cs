@@ -30,6 +30,12 @@ namespace System.Windows {
 	public struct LocalValueEntry {
 		private DependencyProperty property;
 		private object value;
+
+		internal LocalValueEntry(DependencyProperty property, object value)
+		{
+			this.property = property;
+			this.value = value;
+		}
 		
 		public DependencyProperty Property {
 			get { return property; }
@@ -39,10 +45,24 @@ namespace System.Windows {
 			get { return value; }
 		}
 
-		internal LocalValueEntry(DependencyProperty property, object value)
+		public static bool operator != (LocalValueEntry obj1, LocalValueEntry obj2)
 		{
-			this.property = property;
-			this.value = value;
+			throw new NotImplementedException ();
+		}
+
+		public static bool operator == (LocalValueEntry obj1, LocalValueEntry obj2)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override bool Equals (object obj)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override int GetHashCode ()
+		{
+			throw new NotImplementedException ();
 		}
 	}
 }

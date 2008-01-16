@@ -24,13 +24,13 @@
 //
 
 using System;
+using System.ComponentModel;
+using System.Windows.Markup;
 
 namespace System.Windows.Input {
 
-#if notyet
 	[ValueSerializer (typeof (KeyValueSerializer))]
 	[TypeConverter (typeof (KeyConverter))]
-#endif
 	public enum Key
 	{
 		None,

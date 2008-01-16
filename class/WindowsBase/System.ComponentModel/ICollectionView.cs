@@ -40,22 +40,16 @@ namespace System.ComponentModel {
 		object CurrentItem { get; }
 		int CurrentPosition { get; }
 		Predicate<object> Filter {get; set; }
-#if notyet
 		ObservableCollection<GroupDescription> GroupDescriptions { get; }
-#endif
 		ReadOnlyObservableCollection<object> Groups { get; }
 		bool IsCurrentAfterLast { get; }
 		bool IsCurrentBeforeFirst { get; }
 		bool IsEmpty { get; }
-#if notyet
 		SortDescriptionCollection SortDescriptions { get; }
-#endif
 		IEnumerable SourceCollection { get; }
 
 		event EventHandler CurrentChanged;
-#if notyet
 		event CurrentChangingEventHandler CurrentChanging;
-#endif
 
 		bool Contains (object item);
 		IDisposable DeferRefresh ();

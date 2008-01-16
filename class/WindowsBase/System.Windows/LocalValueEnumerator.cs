@@ -64,5 +64,25 @@ namespace System.Windows {
 		{
 			propertyEnumerator.Reset();
 		}
+
+		public static bool operator != (LocalValueEnumerator obj1, LocalValueEnumerator obj2)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static bool operator == (LocalValueEnumerator obj1, LocalValueEnumerator obj2)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override bool Equals (object obj)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override int GetHashCode ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

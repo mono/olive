@@ -25,16 +25,16 @@
 //
 
 using System;
-
+using System.ComponentModel;
+using System.Windows.Converters;
+using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace System.Windows {
 
 	[Serializable]
-#if notyet
 	[ValueSerializer (typeof (RectValueSerializer))]
 	[TypeConverter (typeof (RectConverter))]
-#endif
 	public struct Rect : IFormattable
 	{
 		public Rect (Size size)
@@ -92,6 +92,16 @@ namespace System.Windows {
 				y == rect.Y &&
 				width == rect.Width &&
 				height == rect.Height);
+		}
+
+		public static bool operator != (Rect rect1, Rect rect2)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static bool operator == (Rect rect1, Rect rect2)
+		{
+			throw new NotImplementedException ();
 		}
 
 		public override bool Equals (object o)

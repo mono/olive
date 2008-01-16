@@ -28,14 +28,14 @@
 
 using System;
 using System.ComponentModel;
+using System.Windows.Converters;
+using System.Windows.Markup;
 
 namespace System.Windows {
 
 	[Serializable]
-#if notyet
 	[TypeConverter (typeof(Int32RectConverter))]
 	[ValueSerializer (typeof(Int32RectValueSerializer))]
-#endif
 	public struct Int32Rect : IFormattable
 	{
 		int x, y, width, height;

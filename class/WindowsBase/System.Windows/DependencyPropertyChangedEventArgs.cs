@@ -67,6 +67,16 @@ namespace System.Windows {
 				oldValue == args.OldValue);
 		}
 
+		public static bool operator != (DependencyPropertyChangedEventArgs left, DependencyPropertyChangedEventArgs right)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static bool operator == (DependencyPropertyChangedEventArgs left, DependencyPropertyChangedEventArgs right)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public override int GetHashCode()
 		{
 			throw new NotImplementedException ();
