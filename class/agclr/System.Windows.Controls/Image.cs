@@ -92,8 +92,8 @@ namespace System.Windows.Controls {
 
 		private void InvokeImageFailed (/* XXX ErrorEventArgs args */)
 		{
-			EventHandler h = (EventHandler)events[ImageFailedEvent]; // XXX should be ErrorEventHandler
-			if (h != null) h (this, EventArgs.Empty); // XXX pass args here
+			ErrorEventHandler h = (ErrorEventHandler)events[ImageFailedEvent];
+			if (h != null) h (this, new ErrorEventArgs ()); // XXX pass args here
 		}
 
 		internal override Kind GetKind ()
