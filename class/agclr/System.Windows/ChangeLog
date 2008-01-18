@@ -1,3 +1,11 @@
+2008-01-17  Chris Toshok  <toshok@ximian.com>
+
+	* Rect.cs: fix the Union/Intersect methods -- they were updating
+	x/y and then accessing them implicitly through Right/Bottom.
+	Also, in the intersect case, if the rectangle ends up being empty,
+	clear it out so that Rect.Equals (Rect.Empty) returns true.  this
+	gets DestroyAllInvaders working (woop!)
+
 2007-12-19  Stephane Delcroix  <sdelcroix@novell.com>
 
 	 * DependencyObject.cs: adding LINEARGRADIENTBRUSH and 

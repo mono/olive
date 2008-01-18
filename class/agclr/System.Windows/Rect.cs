@@ -186,10 +186,19 @@ namespace System.Windows {
 		
 		public void Intersect(Rect rect)
 		{
-			x = Math.Max (x, rect.x);
-			y = Math.Max (y, rect.y);
-			w = Math.Min (Right, rect.Right) - x;
-			h = Math.Min (Bottom, rect.Bottom) - y; 
+			double new_x = Math.Max (x, rect.x);
+			double new_y = Math.Max (y, rect.y);
+			double new_w = Math.Min (Right, rect.Right) - new_x;
+			double new_h = Math.Min (Bottom, rect.Bottom) - new_y; 
+
+			x = new_x;
+			y = new_y;
+			w = new_w;
+			h = new_h;
+
+			if (w < 0 || h < 0) {
+				x = y = w = h = 0;
+			}
 		}
 		
 		public static Rect Intersect(Rect rect1, Rect rect2)
@@ -215,10 +224,15 @@ namespace System.Windows {
 		
 		public void Union(Rect rect)
 		{
-			x = Math.Min (x, rect.x);
-			y = Math.Min (y, rect.y);
-			w = Math.Max (Right, rect.Right) - x;
-			h = Math.Max (Bottom, rect.Bottom) - y;
+			double new_x = Math.Min (x, rect.x);
+			double new_y = Math.Min (y, rect.y);
+			double new_w = Math.Max (Right, rect.Right) - x;
+			double new_h = Math.Max (Bottom, rect.Bottom) - y;
+
+			x = new_x;
+			y = new_y;
+			w = new_w;
+			h = new_h;
 		}
 		
 		public void Union(Point point)
