@@ -208,6 +208,21 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 
+		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method, object arg)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method, object arg, params object [] args)
+		{
+			throw new NotImplementedException ();
+		}
+
 		void Queue (DispatcherPriority priority, DispatcherOperation x)
 		{
 			int p = ((int) priority);
@@ -372,7 +387,13 @@ namespace System.Windows.Threading {
 				wait.Reset ();
 			} while (frame.Continue);
 		}
-		
+
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public DispatcherHooks Hooks {
+			[SecurityCritical]
+			get { throw new NotImplementedException (); }
+		}
+
 		public bool HasShutdownStarted {
 			get {
 				return (flags & Flags.ShutdownStarted) != 0;
@@ -395,6 +416,12 @@ namespace System.Windows.Threading {
 		}
 
 		[SecurityCritical]
+		public void BeginInvokeShutdown (DispatcherPriority priority)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SecurityCritical]
 		public static void ExitAllFrames ()
 		{
 			Dispatcher dis = CurrentDispatcher;
@@ -411,8 +438,15 @@ namespace System.Windows.Threading {
 			}
 		}
 
+		public DispatcherProcessingDisabled DisableProcessing ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public event EventHandler ShutdownStarted;
 		public event EventHandler ShutdownFinished;
+		public event DispatcherUnhandledExceptionEventHandler UnhandledException;
+		public event DispatcherUnhandledExceptionFilterEventHandler UnhandledExceptionFilter;
 	}
 
 	internal class PokableQueue {

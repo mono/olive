@@ -25,93 +25,97 @@
 
 using System;
 using System.IO;
-using System.Security.RightsManagement;
 
 namespace System.IO.Packaging {
 
-	public class EncryptedPackageEnvelope : IDisposable
+	public abstract class PackagePart
 	{
-		internal EncryptedPackageEnvelope ()
+		protected PackagePart (Package package, Uri partUri)
 		{
+			throw new NotImplementedException ();
 		}
 
-		public FileAccess FileOpenAccess {
+		protected PackagePart (Package package, Uri partUri, string contentType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected PackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public CompressionOption CompressionOption {
 			get { throw new NotImplementedException (); }
 		}
 
-		public PackageProperties PackageProperties {
+		public string ContentType {
 			get { throw new NotImplementedException (); }
 		}
 
-		public RightsManagementInformation RightsManagementInformation {
+		public Package Package {
 			get { throw new NotImplementedException (); }
 		}
 
-		public StorageInfo StorageInfo {
+		public Uri Uri {
 			get { throw new NotImplementedException (); }
 		}
 
-		public void Close ()
-		{
-			throw new NotImplementedException ();
-		}
-		public void Dispose ()
-		{
-			throw new NotImplementedException ();
-		}
-		public void Flush ()
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Package GetPackage ()
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationship, string id)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static bool IsEncryptedPackageEnvelope (Stream stream)
-		{
-			throw new NotImplementedException ();
-		}
-		public static bool IsEncryptedPackageEnvelope (string fileName)
+		public void DeleteRelationship (string id)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static EncryptedPackageEnvelope Create (Stream envelopeStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope Create (string envelopeFileName, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope CreateFromPackage (Stream envelopeStream, Stream packageStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope CreateFromPackage (string envelopeFileName, Stream packageStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
+		public bool RelationshipExists (string id)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static EncryptedPackageEnvelope Open (Stream envelopeStream)
+		public PackageRelationship GetRelationship (string id)
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName)
+
+		public PackageRelationshipCollection GetRelationships ()
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName, FileAccess access)
+
+		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName, FileAccess access, FileShare sharing)
+
+		public Stream GetStream ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Stream GetStream (FileMode mode)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Stream GetStream (FileMode mode, FileAccess access)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected abstract Stream GetStreamCore (FileMode mode, FileAccess access);
+
+		protected virtual string GetContentTypeCore ()
 		{
 			throw new NotImplementedException ();
 		}
 	}
-
 }
-

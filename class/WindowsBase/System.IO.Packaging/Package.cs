@@ -31,10 +31,21 @@ namespace System.IO.Packaging {
 	{
 		protected Package (FileAccess openFileAccess)
 		{
+			throw new NotImplementedException ();
 		}
 
 		protected Package (FileAccess openfileAccess, bool streaming)
 		{
+			throw new NotImplementedException ();
+		}
+
+		void IDisposable.Dispose ()
+		{
+		}
+
+		protected virtual void Dispose (bool disposing)
+		{
+			throw new NotImplementedException ();
 		}
 
 		public FileAccess FileOpenAccess {
@@ -47,9 +58,123 @@ namespace System.IO.Packaging {
 
 		public void Close ()
 		{
+			throw new NotImplementedException ();
 		}
 
-		public PackagePart CreatePart (
+		public void Flush ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected abstract void FlushCore ();
+
+		public PackagePart CreatePart (Uri partUri, string contentType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackagePart CreatePart (Uri partUri, string contentType, CompressionOption compressionOption)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void DeletePart (Uri partUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected abstract PackagePart CreatePartCore (Uri parentUri, string contentType, CompressionOption compressionOption);
+		protected abstract void DeletePartCore (Uri partUri);
+
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void DeleteRelationship (string id)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackagePart GetPart (Uri partUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected abstract PackagePart GetPartCore (Uri partUri);
+
+		public PackagePartCollection GetParts ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected abstract PackagePart[] GetPartsCore ();
+
+
+		public virtual bool PartExists (Uri partUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackageRelationship GetRelationship (string id)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackageRelationshipCollection GetRelationships ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public bool RelationshipExists (string id)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (Stream stream)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (string path)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (Stream stream, FileMode packageMode)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (string path, FileMode packageMode)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (Stream stream, FileMode packageMode, FileAccess packageAccess)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (string path, FileMode packageMode, FileAccess packageAccess)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Package Open (string path, FileMode packageMode, FileAccess packageAccess, FileShare packageShare)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }
 

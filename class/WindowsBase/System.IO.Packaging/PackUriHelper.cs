@@ -24,94 +24,84 @@
 //
 
 using System;
-using System.IO;
-using System.Security.RightsManagement;
 
 namespace System.IO.Packaging {
 
-	public class EncryptedPackageEnvelope : IDisposable
+	public static class PackUriHelper
 	{
-		internal EncryptedPackageEnvelope ()
-		{
-		}
+		public static readonly string UriSchemePack;
 
-		public FileAccess FileOpenAccess {
-			get { throw new NotImplementedException (); }
-		}
-
-		public PackageProperties PackageProperties {
-			get { throw new NotImplementedException (); }
-		}
-
-		public RightsManagementInformation RightsManagementInformation {
-			get { throw new NotImplementedException (); }
-		}
-
-		public StorageInfo StorageInfo {
-			get { throw new NotImplementedException (); }
-		}
-
-		public void Close ()
-		{
-			throw new NotImplementedException ();
-		}
-		public void Dispose ()
-		{
-			throw new NotImplementedException ();
-		}
-		public void Flush ()
+		public static int ComparePackUri (Uri firstPackUri, Uri secondPackUri)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Package GetPackage ()
+		public static int ComparePartUri (Uri firstPartUri, Uri secondPartUri)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static bool IsEncryptedPackageEnvelope (Stream stream)
-		{
-			throw new NotImplementedException ();
-		}
-		public static bool IsEncryptedPackageEnvelope (string fileName)
+		public static Uri Create (Uri packageUri)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static EncryptedPackageEnvelope Create (Stream envelopeStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope Create (string envelopeFileName, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope CreateFromPackage (Stream envelopeStream, Stream packageStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
-		{
-			throw new NotImplementedException ();
-		}
-		public static EncryptedPackageEnvelope CreateFromPackage (string envelopeFileName, Stream packageStream, PublishLicense publishLicense, CryptoProvider cryptoProvider)
+		public static Uri Create (Uri packageUri, Uri partUri)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static EncryptedPackageEnvelope Open (Stream envelopeStream)
+		public static Uri Create (Uri packageUri, Uri partUri, string fragment)
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName)
+
+		public static Uri CreatePartUri (Uri partUri)
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName, FileAccess access)
+
+		public static Uri GetNormalizedPartUri (Uri partUri)
 		{
 			throw new NotImplementedException ();
 		}
-		public static EncryptedPackageEnvelope Open (string envelopeFileName, FileAccess access, FileShare sharing)
+
+		public static Uri GetPackageUri (Uri packUri)
 		{
 			throw new NotImplementedException ();
 		}
+
+		public static Uri GetPartUri (Uri packUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Uri GetRelationshipPartUri (Uri partUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Uri GetRelativeUri (Uri sourcePartUri, Uri targetPartUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Uri GetSourcePartUriFromRelationshipPartUri (Uri relationshipPartUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static bool IsRelationshipPartUri (Uri partUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Uri ResolvePartUri (Uri sourcePartUri, Uri targetUri)
+		{
+			throw new NotImplementedException ();
+		}
+
+
 	}
 
 }
-
