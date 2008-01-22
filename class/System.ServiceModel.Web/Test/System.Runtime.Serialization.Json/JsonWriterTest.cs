@@ -468,7 +468,17 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			w.WriteAttributeString ("type", "object");
 			w.WriteStartElement (String.Empty);
 			// It is regarded as invalid name in JSON. However,
-			// I don't think there is such specification in JSON.
+			// I don't think there is such limitation in JSON specification.
+		}
+
+		[Test]
+		public void WriteStartElementWithRuntimeTypeName ()
+		{
+			w.WriteStartElement ("root");
+			w.WriteAttributeString ("type", "object");
+			w.WriteAttributeString ("__type", "FooType:#FooNamespace");
+			w.Close ();
+			Assert.AreEqual (@"{""__type"":""FooType:#FooNamespace""}", ResultString);
 		}
 
 		[Test]

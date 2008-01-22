@@ -51,7 +51,7 @@ namespace System.Runtime.Serialization.Json
 		WriteState state;
 		Stack<ElementType> element_kinds = new Stack<ElementType> ();
 		Stack<bool> first_content_flags = new Stack<bool> ();
-		string attr_value;
+		string attr_name, attr_value, runtime_type;
 
 		public JsonWriter (Stream stream, Encoding encoding, bool closeOutput)
 		{
@@ -249,12 +249,13 @@ namespace System.Runtime.Serialization.Json
 			if (!String.IsNullOrEmpty (prefix))
 				throw new ArgumentException ("Non-empty prefix is not allowed in this XmlDictionaryWriter");
 
-			if (localName != "type")
-				throw new ArgumentException ("Only 'type' attribute is allowed in this XmlDictionaryWriter");
+			if (localName != "type" && localName != "__type")
+				throw new ArgumentException ("Only 'type' and '__type' are allowed as an attribute name in this XmlDictionaryWriter");
 
 			if (state != WriteState.Element)
 				throw new InvalidOperationException (String.Format ("Attribute cannot be written in {0} mode", state));
 
+			attr_name = localName;
 			state = WriteState.Attribute;
 		}
 
@@ -265,32 +266,36 @@ namespace System.Runtime.Serialization.Json
 			if (state != WriteState.Attribute)
 				throw new XmlException ("Cannot close attribute, as this XmlDictionaryWriter is not at attribute state");
 
-			switch (attr_value) {
-			case "object":
-				element_kinds.Pop ();
-				element_kinds.Push (ElementType.Object);
-				output.Write ('{');
-				break;
-			case "array":
-				element_kinds.Pop ();
-				element_kinds.Push (ElementType.Array);
-				output.Write ('[');
-				break;
-			case "number":
-				element_kinds.Pop ();
-				element_kinds.Push (ElementType.Number);
-				break;
-			case "boolean":
-				element_kinds.Pop ();
-				element_kinds.Push (ElementType.Boolean);
-				break;
-			case "string":
-				element_kinds.Pop ();
-				element_kinds.Push (ElementType.String);
-				break;
-			default:
-				throw new XmlException (String.Format ("Unexpected type attribute value '{0}'", attr_value));
+			if (attr_name == "type") {
+				switch (attr_value) {
+				case "object":
+					element_kinds.Pop ();
+					element_kinds.Push (ElementType.Object);
+					output.Write ('{');
+					break;
+				case "array":
+					element_kinds.Pop ();
+					element_kinds.Push (ElementType.Array);
+					output.Write ('[');
+					break;
+				case "number":
+					element_kinds.Pop ();
+					element_kinds.Push (ElementType.Number);
+					break;
+				case "boolean":
+					element_kinds.Pop ();
+					element_kinds.Push (ElementType.Boolean);
+					break;
+				case "string":
+					element_kinds.Pop ();
+					element_kinds.Push (ElementType.String);
+					break;
+				default:
+					throw new XmlException (String.Format ("Unexpected type attribute value '{0}'", attr_value));
+				}
 			}
+			else
+				runtime_type = attr_value;
 
 			state = WriteState.Element;
 			attr_value = null;
@@ -307,6 +312,15 @@ namespace System.Runtime.Serialization.Json
 				output.Write ('"');
 
 			first_content_flags.Push (true);
+
+			if (runtime_type != null) {
+				output.Write ("\"__type\":\"");
+				output.Write (runtime_type);
+				output.Write ('\"');
+				runtime_type = null;
+				first_content_flags.Pop ();
+				first_content_flags.Push (false);
+			}
 		}
 
 		public override void WriteString (string text)

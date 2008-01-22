@@ -906,6 +906,23 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		}
 
 		[Test]
+		public void MaxItemsInObjectGraph1 ()
+		{
+			// object count == maximum
+			DataContractJsonSerializer s = new DataContractJsonSerializer (typeof (DCEmpty), null, 1, false, null, false);
+			s.WriteObject (XmlWriter.Create (TextWriter.Null), new DCEmpty ());
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void MaxItemsInObjectGraph2 ()
+		{
+			// object count > maximum
+			DataContractJsonSerializer s = new DataContractJsonSerializer (typeof (DCSimple1), null, 1, false, null, false);
+			s.WriteObject (XmlWriter.Create (TextWriter.Null), new DCSimple1 ());
+		}
+
+		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEnumByName ()
 		{
@@ -974,11 +991,34 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		}
 
 		[Test]
-		public void ReadObjectVerifyObjectName ()
+		public void ReadObjectVerifyObjectNameFalse ()
 		{
-			string xml = @"<any><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</Member1></any>";
-			new DataContractJsonSerializer (typeof (VerifyObjectNameTestData))
+			string xml = @"<any><Member1>bar</Member1></any>";
+			object o = new DataContractJsonSerializer (typeof (VerifyObjectNameTestData))
 				.ReadObject (XmlReader.Create (new StringReader (xml)), false);
+			Assert.IsTrue (o is VerifyObjectNameTestData, "#1");
+
+			string xml2 = @"<any><x:Member1 xmlns:x=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</x:Member1></any>";
+			o = new DataContractJsonSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml2)), false);
+			Assert.IsTrue (o is VerifyObjectNameTestData, "#2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void ReadObjectVerifyObjectNameTrue ()
+		{
+			string xml = @"<any><Member1>bar</Member1></any>";
+			new DataContractJsonSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml)), true);
+		}
+
+		[Test] // member name is out of scope
+		public void ReadObjectVerifyObjectNameTrue2 ()
+		{
+			string xml = @"<root><Member2>bar</Member2></root>";
+			new DataContractJsonSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml)), true);
 		}
 
 		private object Deserialize (string xml, Type type)
@@ -988,6 +1028,15 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			return ser.ReadObject (xr);
 		}
 
+		[Test]
+		public void IsStartObject ()
+		{
+			DataContractJsonSerializer s = new DataContractJsonSerializer (typeof (DCSimple1));
+			Assert.IsTrue (s.IsStartObject (XmlReader.Create (new StringReader ("<root></root>"))), "#1");
+			Assert.IsFalse (s.IsStartObject (XmlReader.Create (new StringReader ("<dummy></dummy>"))), "#2");
+			Assert.IsFalse (s.IsStartObject (XmlReader.Create (new StringReader ("<Foo></Foo>"))), "#3");
+			Assert.IsFalse (s.IsStartObject (XmlReader.Create (new StringReader ("<root xmlns='urn:foo'></root>"))), "#4");
+		}
  	}
  
 	public enum Colors {

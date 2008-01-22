@@ -1,3 +1,10 @@
+2008-01-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JsonWriter.cs : allow __type attribute. It required couple of
+	  changes all around the class.
+	* DataContractJsonSerializer.cs : implemented large part of
+	  serialization support (deserialization is not done yet).
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DataContractJsonSerializer.cs :
