@@ -124,6 +124,34 @@ namespace System.Runtime.Serialization.Json
 				outputter.Writer.WriteEndElement ();
 			}
 		}
+
+		public object Deserialize (JsonSerializationReader jsr)
+		{
+			XmlReader reader = jsr.Reader;
+
+			object ret = Activator.CreateInstance (type, true);
+			Dictionary<TypeMapMember,bool> filled = new Dictionary<TypeMapMember,bool> ();
+
+			reader.ReadStartElement ();
+			for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
+				bool consumed = false;
+				for (int i = 0; i < members.Length; i++) {
+					TypeMapMember mm = members [i];
+					if (mm.Name == reader.LocalName && reader.NamespaceURI == String.Empty) {
+						if (filled.ContainsKey (mm))
+							throw new SerializationException (String.Format ("Object content '{0}' for '{1}' already appeared in the reader", reader.LocalName, type));
+						mm.SetMemberValue (ret, jsr.ReadObject (mm.Type));
+						filled [mm] = true;
+						consumed = true;
+						break;
+					}
+				}
+				if (!consumed)
+					reader.Skip ();
+			}
+			reader.ReadEndElement ();
+			return ret;
+		}
 	}
 
 	abstract class TypeMapMember
@@ -154,7 +182,11 @@ namespace System.Runtime.Serialization.Json
 			get { return dma != null ? dma.Order : -1; }
 		}
 
+		public abstract Type Type { get; }
+
 		public abstract object GetMemberOf (object owner);
+
+		public abstract void SetMemberValue (object owner, object value);
 	}
 
 	class TypeMapField : TypeMapMember
@@ -167,9 +199,18 @@ namespace System.Runtime.Serialization.Json
 			this.field = fi;
 		}
 
+		public override Type Type {
+			get { return field.FieldType; }
+		}
+
 		public override object GetMemberOf (object owner)
 		{
 			return field.GetValue (owner);
+		}
+
+		public override void SetMemberValue (object owner, object value)
+		{
+			field.SetValue (owner, value);
 		}
 	}
 
@@ -183,9 +224,18 @@ namespace System.Runtime.Serialization.Json
 			this.property = pi;
 		}
 
+		public override Type Type {
+			get { return property.PropertyType; }
+		}
+
 		public override object GetMemberOf (object owner)
 		{
 			return property.GetValue (owner, null);
+		}
+
+		public override void SetMemberValue (object owner, object value)
+		{
+			property.SetValue (owner, value, null);
 		}
 	}
 }

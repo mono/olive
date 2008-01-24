@@ -1,5 +1,11 @@
 2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JsonSerializationReader.cs : new, for JSON deserialization support.
+	* DataContractJsonSerializer.cs, TypeMap.cs :
+	  basic support for deserialization.
+
+2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DataContractJsonSerializer.cs,
 	  TypeMap.cs,
 	  JsonSerializationWriter.cs : split the first to those three files.

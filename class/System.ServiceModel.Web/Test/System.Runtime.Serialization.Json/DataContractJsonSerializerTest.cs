@@ -923,6 +923,75 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		}
 
 		[Test]
+		public void DeserializeString ()
+		{
+			Assert.AreEqual ("ABC", Deserialize ("\"ABC\"", typeof (string)));
+		}
+
+		[Test]
+		public void DeserializeInt ()
+		{
+			Assert.AreEqual (5, Deserialize ("5", typeof (int)));
+		}
+
+		[Test]
+		public void DeserializeArray ()
+		{
+			int [] ret = (int []) Deserialize ("[5,6,7]", typeof (int []));
+			Assert.AreEqual (5, ret [0], "#1");
+			Assert.AreEqual (6, ret [1], "#2");
+			Assert.AreEqual (7, ret [2], "#3");
+		}
+
+		[Test]
+		public void DeserializeArrayUntyped ()
+		{
+			object [] ret = (object []) Deserialize ("[5,6,7]", typeof (object []));
+			Assert.AreEqual (5, ret [0], "#1");
+			Assert.AreEqual (6, ret [1], "#2");
+			Assert.AreEqual (7, ret [2], "#3");
+		}
+
+		[Test]
+		public void DeserializeMixedArray ()
+		{
+			object [] ret = (object []) Deserialize ("[5,\"6\",false]", typeof (object []));
+			Assert.AreEqual (5, ret [0], "#1");
+			Assert.AreEqual ("6", ret [1], "#2");
+			Assert.AreEqual (false, ret [2], "#3");
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void DeserializeEmptyAsString ()
+		{
+			// it somehow expects "root" which should have been already consumed.
+			Deserialize ("", typeof (string));
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void DeserializeEmptyAsInt ()
+		{
+			// it somehow expects "root" which should have been already consumed.
+			Deserialize ("", typeof (int));
+		}
+
+		[Test]
+		public void DeserializeEmptyObjectAsString ()
+		{
+			// looks like it is converted to ""
+			Assert.AreEqual (String.Empty, Deserialize ("{}", typeof (string)));
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void DeserializeEmptyObjectAsInt ()
+		{
+			Assert.AreEqual (0, Deserialize ("{}", typeof (int)));
+		}
+
+		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEnumByName ()
 		{

@@ -78,7 +78,6 @@ namespace System.Runtime.Serialization.Json
 		{
 		}
 
-		[MonoTODO]
 		public DataContractJsonSerializer (Type type, string rootName, IEnumerable<Type> knownTypes, int maxItemsInObjectGraph, bool ignoreExtensionDataObject, IDataContractSurrogate dataContractSurrogate, bool alwaysEmitTypeInformation)
 		{
 			if (type == null)
@@ -169,7 +168,6 @@ namespace System.Runtime.Serialization.Json
 			return ReadObject ((XmlReader) reader, verifyObjectName);
 		}
 
-		[MonoTODO]
 		public override object ReadObject (XmlReader reader, bool verifyObjectName)
 		{
 			if (reader == null)
@@ -177,7 +175,13 @@ namespace System.Runtime.Serialization.Json
 			if (verifyObjectName && !IsStartObject (reader))
 				throw new SerializationException (String.Format ("Expected element was '{0}', but the actual input element was '{1}' in namespace '{2}'", root, reader.LocalName, reader.NamespaceURI));
 
-			throw new NotImplementedException ();
+			try {
+				return new JsonSerializationReader (this, reader, type, verifyObjectName).ReadRoot ();
+			} catch (SerializationException) {
+				throw;
+			} catch (Exception ex) {
+				throw new SerializationException ("Deserialization has failed", ex);
+			}
 		}
 
 		public override void WriteObject (Stream stream, object graph)
@@ -222,7 +226,6 @@ namespace System.Runtime.Serialization.Json
 			WriteObjectContent ((XmlWriter) writer, graph);
 		}
 
-		[MonoTODO]
 		public override void WriteObjectContent (XmlWriter writer, object graph)
 		{
 			new JsonSerializationWriter (this, writer, type, always_emit_type).WriteObjectContent (graph, true, false);
