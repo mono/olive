@@ -1,5 +1,11 @@
 2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DataContractJsonSerializer.cs,
+	  TypeMap.cs,
+	  JsonSerializationWriter.cs : split the first to those three files.
+
+2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DataContractJsonSerializer.cs : Uri and Guid are serialized as
 	  string. XmlQualifiedName is serialized as local:ns.
 
