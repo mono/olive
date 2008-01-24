@@ -1,3 +1,8 @@
+2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DataContractJsonSerializer.cs : Uri and Guid are serialized as
+	  string. XmlQualifiedName is serialized as local:ns.
+
 2008-01-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JsonWriter.cs : allow __type attribute. It required couple of

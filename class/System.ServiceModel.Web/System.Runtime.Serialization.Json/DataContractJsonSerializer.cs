@@ -275,7 +275,7 @@ namespace System.Runtime.Serialization.Json
 
 			switch (Type.GetTypeCode (graph.GetType ())) {
 			case TypeCode.String:
-				writer.WriteString ((string) graph);
+				writer.WriteString (graph.ToString ());
 				break;
 			case TypeCode.Single:
 			case TypeCode.Double:
@@ -305,7 +305,16 @@ namespace System.Runtime.Serialization.Json
 					writer.WriteString ("false");
 				break;
 			default:
-				if (graph is ICollection) { // array
+				if (graph is Guid) {
+					goto case TypeCode.String;
+				} else if (graph is Uri) {
+					goto case TypeCode.String;
+				} else if (graph is XmlQualifiedName) {
+					XmlQualifiedName qn = (XmlQualifiedName) graph;
+					writer.WriteString (qn.Name);
+					writer.WriteString (":");
+					writer.WriteString (qn.Namespace);
+				} else if (graph is ICollection) { // array
 					writer.WriteAttributeString ("type", "array");
 					foreach (object o in (ICollection) graph) {
 						writer.WriteStartElement ("item");
