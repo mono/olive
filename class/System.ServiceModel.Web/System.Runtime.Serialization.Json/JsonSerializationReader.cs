@@ -69,7 +69,7 @@ namespace System.Runtime.Serialization.Json
 		public object ReadObject (Type type)
 		{
 			if (serialized_object_count ++ == serializer.MaxItemsInObjectGraph)
-				throw new SerializationException (String.Format ("The object graph exceeded the maximum object count '{0}' specified in the serializer", serializer.MaxItemsInObjectGraph));
+				throw SerializationError (String.Format ("The object graph exceeded the maximum object count '{0}' specified in the serializer", serializer.MaxItemsInObjectGraph));
 
 			switch (Type.GetTypeCode (type)) {
 			case TypeCode.String:
@@ -132,38 +132,44 @@ namespace System.Runtime.Serialization.Json
 
 		object ReadInstanceDrivenObject ()
 		{
+			string type = reader.GetAttribute ("type");
 			string v = reader.ReadElementContentAsString ();
-			if (v.Length == 0)
-				return String.Empty;
-			if (v [0] == '"') {
-				if (v [v.Length - 1] != '"')
-					throw new SerializationException ("JSON string should terminate with '\"'");
-				return v.Substring (1, v.Length - 2);
-			}
-			switch (v) {
-			case "true":
-				return true;
-			case "false":
-				return false;
+			switch (type) {
+			case "boolean":
+				switch (v) {
+				case "true":
+					return true;
+				case "false":
+					return false;
+				default:
+					throw SerializationError (String.Format ("Invalid JSON boolean value: {0}", v));
+				}
+			case "string":
+				return v;
 			case "null":
+				if (v != "null")
+					throw SerializationError (String.Format ("Invalid JSON null value: {0}", v));
 				return null;
+			case "number":
+				int i;
+				if (int.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out i))
+					return i;
+				long l;
+				if (long.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out l))
+					return l;
+				ulong ul;
+				if (ulong.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out ul))
+					return ul;
+				double dbl;
+				if (double.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out dbl))
+					return dbl;
+				decimal dec;
+				if (decimal.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out dec))
+					return dec;
+				throw SerializationError (String.Format ("Invalid JSON input: {0}", v));
+			default:
+				throw SerializationError (String.Format ("Unexpected type: {0}", type));
 			}
-			int i;
-			if (int.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out i))
-				return i;
-			long l;
-			if (long.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out l))
-				return l;
-			ulong ul;
-			if (ulong.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out ul))
-				return ul;
-			double dbl;
-			if (double.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out dbl))
-				return dbl;
-			decimal dec;
-			if (decimal.TryParse (v, NumberStyles.None, CultureInfo.InvariantCulture, out dec))
-				return dec;
-			throw new SerializationException (String.Format ("Invalid JSON input: {0}", v));
 		}
 
 		string FormatTypeName (Type type)
@@ -204,7 +210,7 @@ namespace System.Runtime.Serialization.Json
 					(IList) Activator.CreateInstance (collectionType);
 				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 					if (!reader.IsStartElement ("item"))
-						throw new SerializationException (String.Format ("Expected element 'item', but found '{0}' in namespace '{1}'", reader.LocalName, reader.NamespaceURI));
+						throw SerializationError (String.Format ("Expected element 'item', but found '{0}' in namespace '{1}'", reader.LocalName, reader.NamespaceURI));
 					Type et = elementType == typeof (object) || elementType.IsAbstract ? null : elementType;
 					if (et == null) {
 						string typeName = reader.GetAttribute ("__type");
@@ -220,7 +226,7 @@ namespace System.Runtime.Serialization.Json
 				MethodInfo add = collectionType.GetMethod ("Add", new Type [] {elementType});
 				for (reader.MoveToContent (); reader.NodeType != XmlNodeType.EndElement; reader.MoveToContent ()) {
 					if (!reader.IsStartElement ("item"))
-						throw new SerializationException (String.Format ("Expected element 'item', but found '{0}' in namespace '{1}'", reader.LocalName, reader.NamespaceURI));
+						throw SerializationError (String.Format ("Expected element 'item', but found '{0}' in namespace '{1}'", reader.LocalName, reader.NamespaceURI));
 					object elem = ReadObject (elementType);
 					add.Invoke (c, new object [] {elem});
 				}
@@ -239,6 +245,15 @@ namespace System.Runtime.Serialization.Json
 				typemaps [type] = map;
 			}
 			return map;
+		}
+
+		Exception SerializationError (string basemsg)
+		{
+			IXmlLineInfo li = reader as IXmlLineInfo;
+			if (li == null || !li.HasLineInfo ())
+				return new SerializationException (basemsg);
+			else
+				return new SerializationException (String.Format ("{0}. Error at {1} ({2},{3})", basemsg, reader.BaseURI, li.LineNumber, li.LinePosition));
 		}
 	}
 }

@@ -35,7 +35,7 @@ using System.Xml;
 namespace System.Runtime.Serialization.Json
 {
 	// FIXME: quotas check
-	class JsonReader : XmlDictionaryReader, IXmlJsonReaderInitializer
+	class JsonReader : XmlDictionaryReader, IXmlJsonReaderInitializer, IXmlLineInfo
 	{
 		class ElementInfo
 		{
@@ -77,6 +77,21 @@ namespace System.Runtime.Serialization.Json
 		public JsonReader (Stream stream, Encoding encoding, XmlDictionaryReaderQuotas quotas, OnXmlDictionaryReaderClose onClose)
 		{
 			SetInput (stream, encoding, quotas, onClose);
+		}
+
+		// IXmlLineInfo
+
+		public bool HasLineInfo ()
+		{
+			return true;
+		}
+
+		public int LineNumber {
+			get { return line; }
+		}
+
+		public int LinePosition {
+			get { return column; }
 		}
 
 		// IXmlJsonReaderInitializer

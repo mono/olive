@@ -1,5 +1,12 @@
 2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JsonSerializationReader.cs : when deserializing primitive strings,
+	  make use of "type" attribute (they are supposed to exist).
+	  Output source reader location if available.
+	* JsonReader.cs : implement IXmlLineInfo.
+
+2008-01-24  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* JsonSerializationReader.cs : new, for JSON deserialization support.
 	* DataContractJsonSerializer.cs, TypeMap.cs :
 	  basic support for deserialization.

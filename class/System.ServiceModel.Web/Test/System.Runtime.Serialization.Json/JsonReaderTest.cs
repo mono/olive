@@ -201,6 +201,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			Assert.AreEqual (ReadState.Interactive, reader.ReadState, "#2");
 			Assert.AreEqual (XmlNodeType.Element, reader.NodeType, "#2-1");
 			Assert.AreEqual ("root", reader.LocalName, "#2-2");
+			Assert.AreEqual ("boolean", reader.GetAttribute ("type"), "#2-3");
 			reader.Read (); // content (boolean)
 			Assert.AreEqual (ReadState.Interactive, reader.ReadState, "#3");
 			Assert.AreEqual (XmlNodeType.Text, reader.NodeType, "#3-1");
@@ -242,6 +243,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			Assert.AreEqual (ReadState.Interactive, reader.ReadState, "#2");
 			Assert.AreEqual (XmlNodeType.Element, reader.NodeType, "#2-1");
 			Assert.AreEqual ("root", reader.LocalName, "#2-2");
+			Assert.AreEqual ("string", reader.GetAttribute ("type"), "#2-3");
 			reader.Read (); // content (number)
 			Assert.AreEqual (ReadState.Interactive, reader.ReadState, "#3");
 			Assert.AreEqual (XmlNodeType.Text, reader.NodeType, "#3-1");
@@ -368,6 +370,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			AssertNode (0, "root", XmlNodeType.Element, String.Empty, "array", reader, "#1");
 
 			reader.Read (); // 123 - element
+			Assert.AreEqual ("number", reader.GetAttribute ("type"), "#2-0");
 			AssertNode (1, "item", XmlNodeType.Element, String.Empty, "number", reader, "#2");
 			reader.Read (); // 123 - text
 			AssertNode (2, String.Empty, XmlNodeType.Text, "123", null, reader, "#3");
@@ -376,6 +379,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 
 			// string value #1
 			reader.Read (); // "123" - element
+			Assert.AreEqual ("string", reader.GetAttribute ("type"), "#5-0");
 			AssertNode (1, "item", XmlNodeType.Element, String.Empty, "string", reader, "#5");
 			reader.Read (); // "123" - text
 			AssertNode (2, String.Empty, XmlNodeType.Text, "123", null, reader, "#6");
@@ -383,6 +387,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			AssertNode (1, "item", XmlNodeType.EndElement, String.Empty, null, reader, "#7");
 
 			reader.Read (); // true - element
+			Assert.AreEqual ("boolean", reader.GetAttribute ("type"), "#8-0");
 			AssertNode (1, "item", XmlNodeType.Element, String.Empty, "boolean", reader, "#8");
 			reader.Read (); // true - text
 			AssertNode (2, String.Empty, XmlNodeType.Text, "true", null, reader, "#9");
@@ -391,6 +396,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 
 			// string value #2
 			reader.Read (); // "true" - element
+			Assert.AreEqual ("string", reader.GetAttribute ("type"), "#11-0");
 			AssertNode (1, "item", XmlNodeType.Element, String.Empty, "string", reader, "#11");
 			reader.Read (); // "true" - text
 			AssertNode (2, String.Empty, XmlNodeType.Text, "true", null, reader, "#12");
