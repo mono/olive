@@ -180,12 +180,27 @@ namespace System.Windows.Browser.Net
 			return request;
 		}
 
+		static Uri GetBaseUri ()
+		{
+			//FIXME: there's most probably a better way to do this.
+
+			string uri = HtmlPage.DocumentUri.AbsoluteUri;
+			return new Uri (uri.Substring (0, uri.LastIndexOf ("/") + 1));
+		}
+
+		static Uri GetAbsoluteUri (Uri uri)
+		{
+			return new Uri (GetBaseUri (), uri);
+		}
+
 		void InitializeNativeRequest ()
 		{
 			if (native != IntPtr.Zero)
 				return;
 
-			native = NativeMethods.browser_http_request_new (method, uri.AbsoluteUri);
+			Uri request_uri = uri.IsAbsoluteUri ? uri : GetAbsoluteUri (uri);
+
+			native = NativeMethods.browser_http_request_new (method, request_uri.AbsoluteUri);
 
 			foreach (string header in headers.Headers)
 				NativeMethods.browser_http_request_set_header (native, header, headers [header]);

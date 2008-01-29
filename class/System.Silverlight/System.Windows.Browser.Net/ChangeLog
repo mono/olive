@@ -1,3 +1,8 @@
+2008-01-29  Jb Evain  <jbevain@novell.com>
+
+	* BrowserHttpWebRequest.cs: build a full url from the page
+	url if the uri passed to the request is not absolute.
+
 2007-11-09  Jb Evain  <jbevain@novell.com>
 
 	* BrowserHttpWebAsyncResult.cs
