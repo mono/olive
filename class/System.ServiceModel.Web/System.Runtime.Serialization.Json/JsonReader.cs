@@ -35,6 +35,7 @@ using System.Xml;
 namespace System.Runtime.Serialization.Json
 {
 	// FIXME: quotas check
+	// FIXME: parse object content and handle __type as attribute.
 	class JsonReader : XmlDictionaryReader, IXmlJsonReaderInitializer, IXmlLineInfo
 	{
 		class ElementInfo
@@ -58,6 +59,7 @@ namespace System.Runtime.Serialization.Json
 		XmlNodeType current_node, attr_state; // Attribute(type)/Text(value)/None
 		string simple_value;
 		string next_element;
+		string current_runtime_type, next_object_content_name;
 		ReadState read_state = ReadState.Initial;
 		bool content_stored;
 		bool finished;
@@ -365,6 +367,15 @@ namespace System.Runtime.Serialization.Json
 
 			if (elements.Count > 0 && elements.Peek ().Type == "array")
 				next_element = "item";
+			else if (next_object_content_name != null) {
+				next_element = next_object_content_name;
+				next_object_content_name = null;
+				if (ch != ':')
+					throw XmlError ("':' is expected after a name of an object content");
+				SkipWhitespaces ();
+				ReadContent (true);
+				return true;
+			}
 
 			switch (ch) {
 			case '{':
@@ -390,8 +401,7 @@ namespace System.Runtime.Serialization.Json
 			case '"':
 				string s = ReadStringLiteral ();
 				if (!objectValue && elements.Count > 0 && elements.Peek ().Type == "object") {
-					string name = s;
-					next_element = name;
+					next_element = s;
 					SkipWhitespaces ();
 					Expect (':');
 					SkipWhitespaces ();
@@ -439,7 +449,25 @@ namespace System.Runtime.Serialization.Json
 
 		void ReadStartObject ()
 		{
-			elements.Push (new ElementInfo (next_element, "object"));
+			ElementInfo ei = new ElementInfo (next_element, "object");
+			elements.Push (ei);
+
+			SkipWhitespaces ();
+			if (PeekChar () == '"') { // it isn't premise: the object might be empty
+				ReadChar ();
+				string s = ReadStringLiteral ();
+				if (s == "__type") {
+					SkipWhitespaces ();
+					Expect (':');
+					SkipWhitespaces ();
+					Expect ('"');
+					current_runtime_type = ReadStringLiteral ();
+					SkipWhitespaces ();
+					ei.HasContent = true;
+				}
+				else
+					next_object_content_name = s;
+			}
 		}
 
 		void ReadStartArray ()
@@ -549,6 +577,13 @@ namespace System.Runtime.Serialization.Json
 			} while (true);
 		}
 
+		int PeekChar ()
+		{
+			if (saved_char < 0)
+				saved_char = reader.Read ();
+			return saved_char;
+		}
+
 		int ReadChar ()
 		{
 			int v = saved_char >= 0 ? saved_char : reader.Read ();
@@ -565,12 +600,12 @@ namespace System.Runtime.Serialization.Json
 		void SkipWhitespaces ()
 		{
 			do {
-				switch (reader.Peek ()) {
+				switch (PeekChar ()) {
 				case ' ':
 				case '\t':
 				case '\r':
 				case '\n':
-					reader.Read ();
+					ReadChar ();
 					continue;
 				default:
 					return;

@@ -741,5 +741,51 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		{
 			ReadToEnd (CreateReader ("[123,456,]"));
 		}
+
+		[Test]
+		public void ReadObjectRuntimeTypeAsAttribute ()
+		{
+			XmlDictionaryReader r = CreateReader ("{\"__type\":\"System.Int32\"}");
+			r.Read ();
+			AssertNode (0, "root", XmlNodeType.Element, String.Empty, "object", r, "#1");
+			Assert.IsTrue (r.MoveToAttribute ("type"), "#2");
+			AssertNode (0, "type", XmlNodeType.Attribute, "object", "object", r, "#3");
+			Assert.IsTrue (r.MoveToAttribute ("__type"), "#4");
+			AssertNode (0, "__type", XmlNodeType.Attribute, "System.Int32", "object", r, "#5");
+			r.Read ();
+			Assert.AreEqual (XmlNodeType.EndElement, r.NodeType, "#6");
+		}
+
+		[Test]
+		public void ReadObjectRuntimeType ()
+		{
+			XmlDictionaryReader r = CreateReader ("{\"__type\":\"System.Int32\", \"foo\":true}");
+			r.Read ();
+			AssertNode (0, "root", XmlNodeType.Element, String.Empty, "object", r, "#1");
+			Assert.IsTrue (r.MoveToAttribute ("type"), "#2");
+			AssertNode (0, "type", XmlNodeType.Attribute, "object", "object", r, "#3");
+			Assert.IsTrue (r.MoveToAttribute ("__type"), "#4");
+			AssertNode (0, "__type", XmlNodeType.Attribute, "System.Int32", "object", r, "#5");
+			r.Read ();
+			Assert.AreEqual (XmlNodeType.Element, r.NodeType, "#6");
+			Assert.AreEqual ("foo", r.LocalName, "#7");
+		}
+
+		[Test]
+		[ExpectedException (typeof (XmlException))]
+		public void ReadInvalidObjectRuntimeTypeValue ()
+		{
+			ReadToEnd (CreateReader ("{\"__type\":true}"));
+		}
+
+		[Test]
+		public void ReadObjectRuntimeTypeIncorrectPosition ()
+		{
+			XmlReader r = CreateReader ("{\"foo\" : false, \"__type\" : \"System.Int32\"}");
+			r.Read ();
+			// When __type is not at the first content, it is not regarded as an attribute. Note that it is not treated as an error.
+			Assert.IsFalse (r.MoveToAttribute ("__type"));
+			r.Skip ();
+		}
 	}
 }
