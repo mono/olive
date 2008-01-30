@@ -1,5 +1,10 @@
 2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JsonReader.cs : now __type is fully supported in every methods and
+	  properties in correct shape.
+
+2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* JsonReader.cs : Do not consume "__type" (which is the first content
 	  of an object) as an element content. It must be handled as an
 	  attribute (it needs more changes).

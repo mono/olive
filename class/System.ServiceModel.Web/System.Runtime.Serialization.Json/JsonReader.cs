@@ -51,12 +51,22 @@ namespace System.Runtime.Serialization.Json
 			}
 		}
 
+		enum AttributeState
+		{
+			None,
+			Type,
+			TypeValue,
+			RuntimeType,
+			RuntimeTypeValue
+		}
+
 		TextReader reader;
 		XmlDictionaryReaderQuotas quotas;
 		OnXmlDictionaryReaderClose on_close;
 		XmlNameTable name_table = new NameTable ();
 
-		XmlNodeType current_node, attr_state; // Attribute(type)/Text(value)/None
+		XmlNodeType current_node;
+		AttributeState attr_state;
 		string simple_value;
 		string next_element;
 		string current_runtime_type, next_object_content_name;
@@ -115,7 +125,7 @@ namespace System.Runtime.Serialization.Json
 		// XmlDictionaryReader
 
 		public override int AttributeCount {
-			get { return current_node == XmlNodeType.Element ? 1 : 0; }
+			get { return current_node != XmlNodeType.Element ? 0 : current_runtime_type != null ? 2 : 1; }
 		}
 
 		public override string BaseURI {
@@ -124,10 +134,17 @@ namespace System.Runtime.Serialization.Json
 
 		public override int Depth {
 			get {
-				int mod =
-					attr_state == XmlNodeType.Attribute ? 1 :
-					attr_state == XmlNodeType.Text ? 2 :
-					0;
+				int mod = 0;
+				switch (attr_state) {
+				case AttributeState.Type:
+				case AttributeState.RuntimeType:
+					mod++;
+					break;
+				case AttributeState.TypeValue:
+				case AttributeState.RuntimeTypeValue:
+					mod += 2;
+					break;
+				}
 				return read_state != ReadState.Interactive ? 0 : elements.Count - 1 + mod;
 			}
 		}
@@ -162,9 +179,13 @@ namespace System.Runtime.Serialization.Json
 
 		public override string LocalName {
 			get {
-				switch (NodeType) {
-				case XmlNodeType.Attribute:
+				switch (attr_state) {
+				case AttributeState.Type:
 					return "type";
+				case AttributeState.RuntimeType:
+					return "__type";
+				}
+				switch (NodeType) {
 				case XmlNodeType.Element:
 				case XmlNodeType.EndElement:
 					return elements.Peek ().Name;
@@ -183,7 +204,18 @@ namespace System.Runtime.Serialization.Json
 		}
 
 		public override XmlNodeType NodeType {
-			get { return attr_state != XmlNodeType.None ? attr_state : current_node; }
+			get {
+				switch (attr_state) {
+				case AttributeState.Type:
+				case AttributeState.RuntimeType:
+					return XmlNodeType.Attribute;
+				case AttributeState.TypeValue:
+				case AttributeState.RuntimeTypeValue:
+					return XmlNodeType.Text;
+				default:
+					return current_node;
+				}
+			}
 		}
 
 		public override string Prefix {
@@ -195,7 +227,18 @@ namespace System.Runtime.Serialization.Json
 		}
 
 		public override string Value {
-			get { return attr_state != XmlNodeType.None ? elements.Peek ().Type : current_node == XmlNodeType.Text ? simple_value : String.Empty; }
+			get {
+				switch (attr_state) {
+				case AttributeState.Type:
+				case AttributeState.TypeValue:
+					return elements.Peek ().Type;
+				case AttributeState.RuntimeType:
+				case AttributeState.RuntimeTypeValue:
+					return current_runtime_type;
+				default:
+					return current_node == XmlNodeType.Text ? simple_value : String.Empty;
+				}
+			}
 		}
 
 		public override void Close ()
@@ -239,25 +282,34 @@ namespace System.Runtime.Serialization.Json
 
 		public override bool MoveToAttribute (string name)
 		{
-			if (current_node != XmlNodeType.Element || name != "type")
+			if (current_node != XmlNodeType.Element)
 				return false;
-			attr_state = XmlNodeType.Attribute;
-			return true;
+			switch (name) {
+			case "type":
+				attr_state = AttributeState.Type;
+				return true;
+			case "__type":
+				if (current_runtime_type == null)
+					return false;
+				attr_state = AttributeState.RuntimeType;
+				return true;
+			default:
+				return false;
+			}
 		}
 
 		public override bool MoveToAttribute (string localName, string ns)
 		{
-			if (current_node != XmlNodeType.Element || localName != "type" || ns != String.Empty)
+			if (ns != String.Empty)
 				return false;
-			attr_state = XmlNodeType.Attribute;
-			return true;
+			return MoveToAttribute (localName);
 		}
 
 		public override bool MoveToElement ()
 		{
-			if (attr_state == XmlNodeType.None)
+			if (attr_state == AttributeState.None)
 				return false;
-			attr_state = XmlNodeType.None;
+			attr_state = AttributeState.None;
 			return true;
 		}
 
@@ -265,23 +317,29 @@ namespace System.Runtime.Serialization.Json
 		{
 			if (current_node != XmlNodeType.Element)
 				return false;
-			attr_state = XmlNodeType.Attribute;
+			attr_state = AttributeState.Type;
 			return true;
 		}
 
 		public override bool MoveToNextAttribute ()
 		{
-			if (attr_state != XmlNodeType.None)
-				return false;
-			return MoveToFirstAttribute ();
+			if (attr_state == AttributeState.None)
+				return MoveToFirstAttribute ();
+			else
+				return MoveToAttribute ("__type");
 		}
 
 		public override bool ReadAttributeValue ()
 		{
-			if (attr_state != XmlNodeType.Attribute)
-				return false;
-			attr_state = XmlNodeType.Text;
-			return true;
+			switch (attr_state) {
+			case AttributeState.Type:
+				attr_state = AttributeState.TypeValue;
+				return true;
+			case AttributeState.RuntimeType:
+				attr_state = AttributeState.RuntimeTypeValue;
+				return true;
+			}
+			return false;
 		}
 
 		public override void ResolveEntity ()
@@ -330,6 +388,7 @@ namespace System.Runtime.Serialization.Json
 
 			SkipWhitespaces ();
 
+			attr_state = AttributeState.None;
 			// Default. May be overriden only as EndElement or None.
 			current_node = XmlNodeType.Element;
 
