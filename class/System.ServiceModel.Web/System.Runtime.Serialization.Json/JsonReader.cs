@@ -252,23 +252,33 @@ namespace System.Runtime.Serialization.Json
 
 		public override string GetAttribute (int index)
 		{
-			if (index == 0 && AttributeCount == 1)
+			if (index == 0 && current_node == XmlNodeType.Element)
 				return elements.Peek ().Type;
-			throw new ArgumentOutOfRangeException ("index", "Index is must be 0 and only valid on an element on this XmlDictionaryReader");
+			else if (index == 1 && current_runtime_type != null)
+				return current_runtime_type;
+			throw new ArgumentOutOfRangeException ("index", "Index is must be either 0 or 1 when there is an explicit __type in the object, and only valid on an element on this XmlDictionaryReader");
 		}
 
 		public override string GetAttribute (string name)
 		{
-			if (current_node == XmlNodeType.Element && name == "type")
+			if (current_node != XmlNodeType.Element)
+				return null;
+			switch (name) {
+			case "type":
 				return elements.Peek ().Type;
-			return null;
+			case "__type":
+				return current_runtime_type;
+			default:
+				return null;
+			}
 		}
 
 		public override string GetAttribute (string localName, string ns)
 		{
-			if (current_node == XmlNodeType.Element && localName == "type" && ns == String.Empty)
-				return elements.Peek ().Type;
-			return null;
+			if (ns == String.Empty)
+				return GetAttribute (localName);
+			else
+				return null;
 		}
 
 		public override string LookupNamespace (string prefix)

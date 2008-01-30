@@ -787,5 +787,19 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			Assert.IsFalse (r.MoveToAttribute ("__type"));
 			r.Skip ();
 		}
+
+		[Test]
+		public void ReadObjectRuntimeTypeInArray ()
+		{
+			XmlReader r = CreateReader (@"[{""__type"":""DCWithEnum:#MonoTests.System.Runtime.Serialization.Json"",""_colors"":0}]");
+			r.Read ();
+			Assert.AreEqual ("root", r.LocalName, "#1-1");
+			Assert.AreEqual ("array", r.GetAttribute ("type"), "#1-2");
+			r.Read ();
+			Assert.AreEqual ("item", r.LocalName, "#2-1");
+			Assert.AreEqual ("object", r.GetAttribute ("type"), "#2-2");
+			Assert.IsNotNull (r.GetAttribute ("__type"), "#2-3");
+			r.Read ();
+		}
 	}
 }

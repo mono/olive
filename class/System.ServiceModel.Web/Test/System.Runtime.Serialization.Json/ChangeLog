@@ -1,5 +1,9 @@
 2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JsonReaderTest.cs : test GetAttribute() for "__type".
+
+2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* JsonReaderTest.cs : added tests for "__type" attributes (some of
 	  them are not working yet).
 

@@ -1,5 +1,10 @@
 2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* JsonReader.cs : GetAttribute() was not still missing support for
+	  __type.
+
+2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* JsonReader.cs : now __type is fully supported in every methods and
 	  properties in correct shape.
 
