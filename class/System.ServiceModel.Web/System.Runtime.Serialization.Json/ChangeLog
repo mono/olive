@@ -1,5 +1,12 @@
 2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DataContractJsonSerializer.cs : fixed .ctor(type, knonwTypes) that
+	  missed to delegate knownTypes correctly.
+	* JsonSerializationReader.cs : consider KnownTypes correctly.
+	  Take "__type" fully into consideration, not just for arrays.
+
+2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* JsonReader.cs : GetAttribute() was not still missing support for
 	  __type.
 

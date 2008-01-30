@@ -49,7 +49,7 @@ namespace System.Runtime.Serialization.Json
 		}
 
 		public DataContractJsonSerializer (Type type, IEnumerable<Type> knownTypes)
-			: this (type, default_root_name, Type.EmptyTypes)
+			: this (type, default_root_name, knownTypes)
 		{
 		}
 

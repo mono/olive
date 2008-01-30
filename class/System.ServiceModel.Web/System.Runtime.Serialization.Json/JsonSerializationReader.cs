@@ -130,9 +130,28 @@ namespace System.Runtime.Serialization.Json
 			}
 		}
 
+		Type GetRuntimeType (string name)
+		{
+			name = ToRuntimeTypeName (name);
+			if (serializer.KnownTypes != null)
+				foreach (Type t in serializer.KnownTypes)
+					if (t.FullName == name)
+						return t;
+			return Type.GetType (name, false);
+		}
+
 		object ReadInstanceDrivenObject ()
 		{
 			string type = reader.GetAttribute ("type");
+			if (type == "object") {
+				string runtimeType = reader.GetAttribute ("__type");
+				if (runtimeType != null) {
+					Type t = GetRuntimeType (runtimeType);
+					if (t == null)
+						throw SerializationError (String.Format ("Cannot load type '{0}'", runtimeType));
+					return ReadObject (t);
+				}
+			}
 			string v = reader.ReadElementContentAsString ();
 			switch (type) {
 			case "boolean":
@@ -212,11 +231,6 @@ namespace System.Runtime.Serialization.Json
 					if (!reader.IsStartElement ("item"))
 						throw SerializationError (String.Format ("Expected element 'item', but found '{0}' in namespace '{1}'", reader.LocalName, reader.NamespaceURI));
 					Type et = elementType == typeof (object) || elementType.IsAbstract ? null : elementType;
-					if (et == null) {
-						string typeName = reader.GetAttribute ("__type");
-						if (typeName != null)
-							et = Type.GetType (ToRuntimeTypeName (typeName), false);
-					}
 					object elem = ReadObject (et ?? typeof (object));
 					c.Add (elem);
 				}

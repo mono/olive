@@ -1090,9 +1090,37 @@ namespace MonoTests.System.Runtime.Serialization.Json
 				.ReadObject (XmlReader.Create (new StringReader (xml)), true);
 		}
 
-		private object Deserialize (string xml, Type type)
+		[Test]
+		public void ReadTypedObjectJson ()
 		{
-			DataContractJsonSerializer ser = new DataContractJsonSerializer (type);
+			object o = Deserialize (@"{""__type"":""DCWithEnum:#MonoTests.System.Runtime.Serialization.Json"",""_colors"":0}", typeof (DCWithEnum));
+			Assert.AreEqual (typeof (DCWithEnum), o.GetType ());
+		}
+
+		[Test]
+		public void ReadObjectDCArrayJson ()
+		{
+			object o = Deserialize (@"[{""__type"":""DCWithEnum:#MonoTests.System.Runtime.Serialization.Json"",""_colors"":0}]",
+				typeof (object []), typeof (DCWithEnum));
+			Assert.AreEqual (typeof (object []), o.GetType (), "#1");
+			object [] arr = (object []) o;
+			Assert.AreEqual (typeof (DCWithEnum), arr [0].GetType (), "#2");
+		}
+
+		[Test]
+		public void ReadObjectDCArray2Json ()
+		{
+			object o = Deserialize (@"[{""__type"":""DCWithEnum:#MonoTests.System.Runtime.Serialization.Json"",""_colors"":0},{""__type"":""DCSimple1:#MonoTests.System.Runtime.Serialization.Json"",""Foo"":""hello""}]",
+				typeof (object []), typeof (DCWithEnum), typeof (DCSimple1));
+			Assert.AreEqual (typeof (object []), o.GetType (), "#1");
+			object [] arr = (object []) o;
+			Assert.AreEqual (typeof (DCWithEnum), arr [0].GetType (), "#2");
+			Assert.AreEqual (typeof (DCSimple1), arr [1].GetType (), "#3");
+		}
+
+		private object Deserialize (string xml, Type type, params Type [] knownTypes)
+		{
+			DataContractJsonSerializer ser = new DataContractJsonSerializer (type, knownTypes);
 			XmlReader xr = JsonReaderWriterFactory.CreateJsonReader (Encoding.UTF8.GetBytes (xml), new XmlDictionaryReaderQuotas ());
 			return ser.ReadObject (xr);
 		}
