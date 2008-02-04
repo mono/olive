@@ -28,6 +28,7 @@
 //
 
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,7 +48,18 @@ namespace Mono.Xaml
 		IntPtr native_loader;
 //		string filename;
 //		string contents;
+
+		//
+		// Maps the assembly path to the location where the browser stored
+		// the downloaded file on its cache (ClientBin/Dingus.dll -> /home/xxx/.mozilla/cache/...)
+		// 
 		static Dictionary<string, string> mappings = new Dictionary <string, string> ();
+
+		//
+		// Maps a loaded assembly to the originating path
+		//
+		internal static Dictionary<Assembly, string> assembly_to_source = new Dictionary<Assembly, string>();
+		
 		XamlLoaderCallbacks callbacks;
 		bool load_deps_synch = false;
 
@@ -107,6 +119,10 @@ namespace Mono.Xaml
 //			this.filename = filename;
 //			this.contents = contents;
 
+			//
+			// Registers callbacks that are invoked from the
+			// unmanaged code. 
+			//
 			callbacks.load_managed_object = new LoadObjectCallback (cb_load_object);
 			callbacks.set_custom_attribute = new SetAttributeCallback (cb_set_custom_attribute);
 			callbacks.hookup_event = new HookupEventCallback (cb_hookup_event);
@@ -124,16 +140,93 @@ namespace Mono.Xaml
 
 			PluginInDomain = plugin;
 			SurfaceInDomain = surface;
-			
+
+			//
+			// Sets default handler for loading assemblies, this allows
+			// code to call Assemly.Load ("relative") and trigger a
+			// download (Phalanger.NET first exposed this). 
+			//
+
+			AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolver;
 		}
 
+		//
+		// Our assembly resolver, invoked by Assembly.Load if it fails
+		// to find an assembly locally.    This happens if the managed code
+		// tries to call Assembly.Load ("file.dll") as it expects the
+		// runtime to download the file.dll that is relative to the assembly
+		// that invoked Assembly.Load
+		//
+		internal Assembly AssemblyResolver (object sender, ResolveEventArgs args)
+		{
+			AssemblyName an = new AssemblyName (args.Name);
+			Assembly result = null;
+
+			//
+			// Find the caller that called Load, to use that as the base for 
+			// lookig up assemblies
+			//
+
+			// Skip agclr (this frame)
+			StackFrame [] frames = new StackTrace (1).GetFrames ();
+			Assembly mscorlib = typeof (object).Assembly;
+			Assembly caller = null;
+			foreach (StackFrame f in frames){
+				MethodBase m = f.GetMethod ();
+				Assembly mass = m.DeclaringType.Assembly;
+				if (mass != mscorlib){
+					caller = m.DeclaringType.Assembly;
+					break;
+				}
+			}
+
+			if (caller == null){
+				Console.WriteLine ("AssemblyResolver: failed to find caller assembly to mscorlib");
+				return null;
+			}
+
+			// We always do sync loads from here
+			string path = null;
+			foreach (KeyValuePair<Assembly,string> pair in assembly_to_source){
+				if (pair.Key != caller)
+					continue;
+				
+				// Found it, lookup the base dir
+				foreach (KeyValuePair<string,string> ab in mappings){
+					if (ab.Value == pair.Value){
+						string apath = ab.Key;
+						if (apath.IndexOf ('/') == -1)
+							path = an.Name;
+						else {
+							path = apath.Substring (0, apath.LastIndexOf ('/')) + "/" + an.Name + ".dll";
+						}
+					}
+				}
+			}
+			if (path == null){
+				Console.WriteLine ("AssemblyResolver: Never found the calling assembly and its path");
+				return null;
+			}
+
+			AssemblyLoadResult r = LoadAssemblyPlugin (path, path, true, ref result);
+			return result;
+		}
+			
+		public static void AssemblyToSource (Assembly k, string path)
+		{
+			if (assembly_to_source.ContainsKey (k))
+				return;
+			
+			assembly_to_source.Add (k, path);
+		}
+		
 		public string GetMapping (string key)
 		{
 			if (!mappings.ContainsKey (key))
 				return null;
 			return mappings [key];
 		}
-		
+
 		public void InsertMapping (string key, string name)
 		{
 			//Console.WriteLine ("ManagedXamlLoader::InsertMapping ({0}, {1}).", key, name);
@@ -158,7 +251,7 @@ namespace Mono.Xaml
 		public AssemblyLoadResult LoadAssembly (string asm_path, string asm_name, out Assembly clientlib)
 		{
 			//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1})", asm_path, asm_name);
-			
+
 			clientlib = null;
 
 			//
@@ -169,33 +262,43 @@ namespace Mono.Xaml
 			//
 			try {
 				clientlib = Moonlight.LoadFile (asm_path);
-				if (clientlib != null)
+				if (clientlib != null){
+					AssemblyToSource (clientlib, asm_path);
 					return AssemblyLoadResult.Success;
-				
+				}
 			} catch (System.IO.FileNotFoundException) {
 				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): client library not found.", asm_path, asm_name);
 				RequestFile (asm_path);
 				return AssemblyLoadResult.MissingAssembly;
 			}
 
-			if (load_deps_synch) {
-				//
-				// FIXME: Move this support into the DependencyLoader
-				//
-				Console.WriteLine ("WARNING: ManagedXamlLoader Sync Assembly Loader has not been ported to use DependencyLoader");
-				byte[] arr = LoadDependency (asm_path);
-				if (arr != null)
-					clientlib = Assembly.Load (arr);
-				if (clientlib == null) {
-					//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
-					return AssemblyLoadResult.LoadFailure;
-				}
-				return AssemblyLoadResult.Success;
-			} else {
+			return LoadAssemblyPlugin (asm_path, asm_name, load_deps_synch, ref clientlib);
+		}
+
+		//
+		// Tries to load an assembly, this is called only from the plugin
+		// 
+		AssemblyLoadResult LoadAssemblyPlugin (string asm_path, string asm_name, bool synchronous, ref Assembly clientlib)
+		{
+			if (!synchronous) {
 				DependencyLoader dl = new DependencyLoader (this, asm_path);
 				
 				return dl.Load (ref clientlib);
 			}
+			
+			//
+			// FIXME: Move this support into the DependencyLoader
+			//
+			Console.WriteLine ("WARNING: ManagedXamlLoader Sync Assembly Loader has not been ported to use DependencyLoader");
+			byte[] arr = LoadDependency (asm_path);
+			if (arr != null)
+				clientlib = Assembly.Load (arr);
+			if (clientlib == null) {
+				//Console.WriteLine ("ManagedXamlLoader::LoadAssembly (asm_path={0} asm_name={1}): could not load client library: {2}", asm_path, asm_name, asm_path);
+				return AssemblyLoadResult.LoadFailure;
+			}
+			AssemblyToSource (clientlib, asm_path);
+			return AssemblyLoadResult.Success;
 		}
 		
 		private IntPtr LoadObject (string asm_name, string asm_path, string ns, string type_name)
@@ -596,6 +699,7 @@ namespace Mono.Xaml
 				Console.WriteLine ("DependencyLoader: LoadMain (\"{0}\") failed to load client library", asm_path);
 				return AssemblyLoadResult.LoadFailure;
 			}
+			ManagedXamlLoader.AssemblyToSource (main, mapped);
 			return AssemblyLoadResult.Success;
 		}
 		
@@ -629,6 +733,7 @@ namespace Mono.Xaml
 
 				// enter it into the loaded deps
 				deps [key] = a;
+				ManagedXamlLoader.AssemblyToSource (a, file);
 				missing--;
 
 				return a;

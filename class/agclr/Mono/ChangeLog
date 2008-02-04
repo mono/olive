@@ -1,3 +1,37 @@
+2008-02-04  Miguel de Icaza  <miguel@novell.com>
+
+	Fixes for Phalanger.NET on Silverlight:
+	
+	http://tomasp.net/files/copter/default.html
+	
+	* ManagedXamlLoader.cs (assembly_to_source): Add new hashtable to
+	track the mapping of loaded assemblies to the location on the file
+	system.
+
+	(AssemblyToSource): New helper method that is used to track all
+	assemblies loaded and their mapping to the cache in the
+	filesystem. 
+
+	(Setup): Setup an Assembly resolver event for the appdomain.
+
+	(AssemblyResolve): Used to resolve assemblies that are loaded
+	implicitly from a Silverlight application.   If user code calls
+	Assembly.Load ("file.dll") it expects the file.dll to be loaded
+	from the same directory from which the originating assembly
+	called. 
+
+	If that is ClientBin/Dingus.dll calling Load ("Blah.dll") we need
+	to request ClientBin/Blah.dll.
+
+	We walk the stack to find the calling assembly and we map that to
+	the actual directory where the data was loaded from.
+
+	(LoadAssembly): Refactored to allow the synchronous parameter to
+	be used (independently of the global property). 
+
+	Everywhere: when an assembly is successfully loaded, we add it to
+	the AssemblyToSource mapping. 
+
 2008-01-09  Chris Toshok  <toshok@ximian.com>
 
 	* Events.cs: no longer marshal the UnmanagedMouseEventArgs -
