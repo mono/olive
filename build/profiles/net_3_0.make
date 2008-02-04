@@ -6,6 +6,7 @@ MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_
 # nuttzing!
 
 profile-check:
+	mkdir -p $(topdir)/class/lib/$(PROFILE)
 	@:
 
 PROFILE_MCS_FLAGS = -d:NET_1_1 -d:NET_2_0

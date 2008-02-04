@@ -1,3 +1,10 @@
+2008-02-04  Michael Dominic K.  <mdk@mdk.am>
+
+	* profiles/net_2_1.make:
+	* profiles/net_3_0.make:
+	* profiles/net_3_5.make: make sure we have the profile build
+	directories (class/lib/*) before proceeding.
+
 2008-01-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* profiles/net_3_5.make : remove /langversion:linq.

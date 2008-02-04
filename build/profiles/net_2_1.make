@@ -12,6 +12,7 @@ profile-check:
 		echo "in the same prefix you're building olive." ; \
 		exit 1; \
 	fi
+	mkdir -p $(topdir)/class/lib/$(PROFILE)
 	cp $(mono_libdir)/mono/2.1/smcs.exe $(topdir)/class/lib/$(PROFILE)/smcs.exe
 
 PROFILE_MCS_FLAGS = -d:NET_1_1 -d:NET_2_0 -d:NET_2_1
