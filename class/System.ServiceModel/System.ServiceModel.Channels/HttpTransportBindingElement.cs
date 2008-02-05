@@ -51,6 +51,7 @@ namespace System.ServiceModel.Channels
 		string realm = String.Empty;
 		TransferMode transfer_mode;
 		IDefaultCommunicationTimeouts timeouts;
+		// If you add fields, do not forget them in copy constructor.
 
 		public HttpTransportBindingElement ()
 		{
@@ -60,7 +61,20 @@ namespace System.ServiceModel.Channels
 			HttpTransportBindingElement other)
 			: base (other)
 		{
-			throw new NotImplementedException ();
+			allow_cookies = other.allow_cookies;
+			bypass_proxy_on_local = other.bypass_proxy_on_local;
+			unsafe_ntlm_auth = other.unsafe_ntlm_auth;
+			use_default_proxy = other.use_default_proxy;
+			keep_alive_enabled = other.keep_alive_enabled;
+			max_buffer_size = other.max_buffer_size;
+			auth_scheme = other.auth_scheme;
+			proxy_auth_scheme = other.proxy_auth_scheme;
+			host_cmp_mode = other.host_cmp_mode;
+			proxy_address = other.proxy_address;
+			realm = other.realm;
+			transfer_mode = other.transfer_mode;
+			// FIXME: it does not look safe
+			timeouts = other.timeouts;
 		}
 
 		public bool AllowCookies {

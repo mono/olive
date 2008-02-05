@@ -1,3 +1,7 @@
+2008-02-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* HttpTransportBindingElement.cs : implemented copy constructor.
+
 2007-08-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* HttpRequestChannel.cs, HttpReplyChannel.cs : treat SOAPAction HTTP
