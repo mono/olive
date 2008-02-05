@@ -14,6 +14,8 @@ System.Runtime.Serialization.Json/TypeMap.cs
 System.ServiceModel.Channels/WebBodyFormatMessageProperty.cs
 System.ServiceModel.Channels/WebContentFormat.cs
 System.ServiceModel.Channels/WebContentTypeMapper.cs
+System.ServiceModel.Channels/WebMessageEncoder.cs
+System.ServiceModel.Channels/WebMessageEncoderFactory.cs
 System.ServiceModel.Channels/WebMessageEncodingBindingElement.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter_1.cs

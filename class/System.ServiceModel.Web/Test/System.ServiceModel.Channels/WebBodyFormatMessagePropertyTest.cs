@@ -15,7 +15,7 @@ namespace MonoTests.System.ServiceModel.Channels
 			WebBodyFormatMessageProperty p = new WebBodyFormatMessageProperty (WebContentFormat.Json);
 			Assert.AreEqual ("WebBodyFormatMessageProperty", WebBodyFormatMessageProperty.Name, "#1");
 			Assert.AreEqual (WebContentFormat.Json, p.Format, "#2");
-			Assert.AreEqual ("Json", p.ToString (), "#3");
+			Assert.AreEqual ("WebBodyFormatMessageProperty: WebContentFormat=Json", p.ToString (), "#3");
 		}
 	}
 }

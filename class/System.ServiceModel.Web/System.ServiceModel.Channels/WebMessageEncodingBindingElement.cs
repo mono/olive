@@ -102,7 +102,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override MessageEncoderFactory CreateMessageEncoderFactory ()
 		{
-			throw new NotImplementedException ();
+			return new WebMessageEncoderFactory (this);
 		}
 
 		[MonoTODO]

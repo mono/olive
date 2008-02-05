@@ -24,7 +24,7 @@ namespace System.ServiceModel.Channels
 
 		public override string ToString ()
 		{
-			return format.ToString ();
+			return String.Concat (Name, ": WebContentFormat=", format.ToString ());
 		}
 	}
 }
