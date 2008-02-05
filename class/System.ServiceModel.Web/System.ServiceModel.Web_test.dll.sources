@@ -1,6 +1,8 @@
 System.Runtime.Serialization.Json/DataContractJsonSerializerTest.cs
 System.Runtime.Serialization.Json/JsonReaderTest.cs
 System.Runtime.Serialization.Json/JsonWriterTest.cs
+System.ServiceModel.Channels/WebBodyFormatMessagePropertyTest.cs
+System.ServiceModel.Channels/WebMessageEncodingBindingElementTest.cs
 System.ServiceModel.Syndication/Atom10FeedFormatterTest.cs
 System.ServiceModel.Syndication/Atom10ItemFormatterTest.cs
 System.ServiceModel.Syndication/Rss20FeedFormatterTest.cs
@@ -12,3 +14,4 @@ System.ServiceModel.Syndication/SyndicationLinkTest.cs
 System.ServiceModel.Syndication/TextSyndicationContentTest.cs
 System.ServiceModel.Syndication/UrlSyndicationContentTest.cs
 System.ServiceModel.Syndication/XmlSyndicationContentTest.cs
+System.ServiceModel/WebHttpBindingTest.cs

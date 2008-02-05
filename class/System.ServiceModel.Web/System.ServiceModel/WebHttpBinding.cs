@@ -24,72 +24,56 @@ namespace System.ServiceModel
 		{
 		}
 
-		int max_buffer_size = 0x40000;
-		long max_buffer_pool_size = 0x10000,
-		     max_received_msg_size = 0x40000;
-		Uri proxy_address;
 		XmlDictionaryReaderQuotas quotas;
 		WebHttpSecurity security = new WebHttpSecurity ();
-		TransferMode transfer_mode;
-		bool allow_cookies, bypass_proxy_on_local,
-		     use_default_web_proxy;
-		Encoding write_encoding;
-		HostNameComparisonMode cmp_mode;
+		Encoding write_encoding = Encoding.UTF8;
 
-		[MonoTODO]
+		HttpTransportBindingElement t = new HttpTransportBindingElement ();
+
 		public bool AllowCookies {
-			get { return allow_cookies; }
-			set { allow_cookies = value; }
+			get { return t.AllowCookies; }
+			set { t.AllowCookies = value; }
 		}
 
-		[MonoTODO]
 		public bool BypassProxyOnLocal {
-			get { return bypass_proxy_on_local; }
-			set { bypass_proxy_on_local = value; }
+			get { return t.BypassProxyOnLocal; }
+			set { t.BypassProxyOnLocal = value; }
 		}
 
-		[MonoTODO]
 		public EnvelopeVersion EnvelopeVersion {
-			get { return EnvelopeVersion.Soap12; }
+			get { return EnvelopeVersion.None; }
 		}
 
-		[MonoTODO]
 		public HostNameComparisonMode HostNameComparisonMode {
-			get { return cmp_mode; }
-			set { cmp_mode = value; }
+			get { return t.HostNameComparisonMode; }
+			set { t.HostNameComparisonMode = value; }
 		}
 
-		[MonoTODO]
 		public long MaxBufferPoolSize {
-			get { return max_buffer_pool_size; }
-			set { max_buffer_pool_size = value; }
+			get { return t.MaxBufferPoolSize; }
+			set { t.MaxBufferPoolSize = value; }
 		}
 
-		[MonoTODO]
 		public int MaxBufferSize {
-			get { return max_buffer_size; }
-			set { max_buffer_size = value; }
+			get { return t.MaxBufferSize; }
+			set { t.MaxBufferSize = value; }
 		}
 
-		[MonoTODO]
 		public long MaxReceivedMessageSize {
-			get { return max_received_msg_size; }
-			set { max_received_msg_size = value; }
+			get { return t.MaxReceivedMessageSize; }
+			set { t.MaxReceivedMessageSize = value; }
 		}
 
-		[MonoTODO]
 		public Uri ProxyAddress {
-			get { return proxy_address; }
-			set { proxy_address = value; }
+			get { return t.ProxyAddress; }
+			set { t.ProxyAddress = value; }
 		}
 
-		[MonoTODO]
 		public XmlDictionaryReaderQuotas ReaderQuotas {
 			get { return quotas; }
 			set { quotas = value; }
 		}
 
-		[MonoTODO]
 		public override string Scheme {
 			get { return Uri.UriSchemeHttp; }
 		}
@@ -99,28 +83,35 @@ namespace System.ServiceModel
 			get { return security; }
 		}
 
-		[MonoTODO]
 		public TransferMode TransferMode {
-			get { return transfer_mode; }
-			set { transfer_mode = value; }
+			get { return t.TransferMode; }
+			set { t.TransferMode = value; }
 		}
 
-		[MonoTODO]
 		public bool UseDefaultWebProxy {
-			get { return use_default_web_proxy; }
-			set { use_default_web_proxy = value; }
+			get { return t.UseDefaultWebProxy; }
+			set { t.UseDefaultWebProxy = value; }
 		}
 
-		[MonoTODO]
 		public Encoding WriteEncoding {
 			get { return write_encoding; }
-			set { write_encoding = value; }
+			set {
+				if (value == null)
+					throw new ArgumentNullException ("value");
+				write_encoding = value; 
+			}
 		}
 
 		[MonoTODO]
 		public override BindingElementCollection CreateBindingElements ()
 		{
-			throw new NotImplementedException ();
+			// FIXME: apply Security
+
+			WebMessageEncodingBindingElement m = new WebMessageEncodingBindingElement (WriteEncoding);
+			if (ReaderQuotas != null)
+				ReaderQuotas.CopyTo (m.ReaderQuotas);
+
+			return new BindingElementCollection (m, t.Clone ());
 		}
 	}
 }

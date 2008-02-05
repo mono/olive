@@ -1,3 +1,8 @@
+2008-02-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpBinding.cs : rewrote most of properties to reuse
+	  HttpTransportBindingElement. Implemented couple more of members.
+
 2007-12-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBinding.cs WebHttpSecurity.cs WebHttpSecurityMode.cs:

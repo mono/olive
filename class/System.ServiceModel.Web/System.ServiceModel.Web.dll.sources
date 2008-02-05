@@ -11,6 +11,10 @@ System.Runtime.Serialization.Json/JsonSerializationReader.cs
 System.Runtime.Serialization.Json/JsonSerializationWriter.cs
 System.Runtime.Serialization.Json/JsonWriter.cs
 System.Runtime.Serialization.Json/TypeMap.cs
+System.ServiceModel.Channels/WebBodyFormatMessageProperty.cs
+System.ServiceModel.Channels/WebContentFormat.cs
+System.ServiceModel.Channels/WebContentTypeMapper.cs
+System.ServiceModel.Channels/WebMessageEncodingBindingElement.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter.cs
 System.ServiceModel.Syndication/Atom10FeedFormatter_1.cs
 System.ServiceModel.Syndication/Atom10ItemFormatter.cs

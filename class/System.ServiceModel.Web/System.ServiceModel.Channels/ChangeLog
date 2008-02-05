@@ -1,0 +1,5 @@
+2008-02-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebBodyFormatMessageProperty.cs, WebContentTypeMapper.cs,
+	  WebContentFormat.cs, WebMessageEncodingBindingElement.cs :
+	  new files.
