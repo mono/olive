@@ -1,3 +1,10 @@
+2008-02-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebBodyFormatMessageProperty.cs, WebContentTypeMapper.cs,
+	  WebMessageEncodingBindingElement.cs, WebContentFormat.cs,
+	  WebMessageEncoder.cs, WebMessageEncoderFactory.cs :
+	  added missing file headers.
+
 2008-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebMessageEncodingBindingElement.cs :
