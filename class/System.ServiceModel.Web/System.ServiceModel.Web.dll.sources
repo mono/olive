@@ -42,6 +42,8 @@ System.ServiceModel.Syndication/TextSyndicationContent.cs
 System.ServiceModel.Syndication/TextSyndicationContentKind.cs
 System.ServiceModel.Syndication/UrlSyndicationContent.cs
 System.ServiceModel.Syndication/XmlSyndicationContent.cs
+System.ServiceModel.Web/WebMessageBodyStyle.cs
+System.ServiceModel.Web/WebMessageFormat.cs
 System.ServiceModel/WebHttpBinding.cs
 System.ServiceModel/WebHttpSecurity.cs
 System.ServiceModel/WebHttpSecurityMode.cs
