@@ -1,0 +1,4 @@
+2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JsonQueryStringConverter.cs, QueryStringConverter.cs,
+	  WebHttpDispatchOperationSelector.cs : mostly stubs.
