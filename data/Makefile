@@ -7,7 +7,7 @@ ifeq ($(PLATFORM), win32)
 	olive35dir := $(shell cygpath -m '$(prefix)/lib/mono/3.5')
 else
 	olivedir   = $(prefix)/lib/mono/3.0
-	olive35dir   = $(prefix)/lib/mono/3.5
+	olive35dir = $(prefix)/lib/mono/3.5
 	silverdir  = $(prefix)/lib/mono/2.1
 endif
 
@@ -18,7 +18,9 @@ DISTFILES = olive.pc.in silver.pc.in silverdesktop.pc.in agmono.pc.in agmonosilv
 REWRITE=
 olive.pc: olive.pc.in Makefile
 	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < olive.pc.in > $@.tmp
-	mv $@.tmp $@
+	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
+	mv $@.tmp2 $@
+	rm $@.tmp
 
 silver.pc: silver.pc.in Makefile
 	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
@@ -30,11 +32,15 @@ agmonosilver.pc: agmonosilver.pc.in Makefile
 
 silverdesktop.pc: silverdesktop.pc.in Makefile
 	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silverdesktop.pc.in > $@.tmp
-	mv $@.tmp $@
+	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
+	mv $@.tmp2 $@
+	rm $@.tmp
 
 agmono.pc: agmono.pc.in Makefile
 	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < agmono.pc.in > $@.tmp
-	mv $@.tmp $@
+	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
+	mv $@.tmp2 $@
+	rm $@.tmp
 
 install-local: olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
