@@ -1,0 +1,4 @@
+2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : new.
+	* samplesvc.cs, samplecli.cs : new sample (runs on .net, not mono yet).
