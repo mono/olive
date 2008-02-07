@@ -1,3 +1,8 @@
+2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added olive35dir
+	* olive.pc.in : added -r:System.ServiceModel.Web.dll.
+
 2007-08-23  Jb Evain  <jbevain@novell.com>
 
 	* Makefile, silver.pc.in, agmonosilver.pc.in: don't locate the
