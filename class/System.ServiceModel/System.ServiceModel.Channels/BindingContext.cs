@@ -41,6 +41,7 @@ namespace System.ServiceModel.Channels
 		CustomBinding binding;
 		BindingParameterCollection parameters;
 		BindingElementCollection elements = empty_collection;
+		BindingElementCollection remaining_elements;
 		Uri listen_uri_base;
 		string listen_uri_relative;
 		ListenUriMode listen_uri_mode;
@@ -102,7 +103,11 @@ namespace System.ServiceModel.Channels
 		}
 
 		public BindingElementCollection RemainingBindingElements {
-			get { return new BindingElementCollection (elements); }
+			get {
+				if (remaining_elements == null)
+					remaining_elements = new BindingElementCollection ();
+				return remaining_elements;
+			}
 		}
 
 		internal BindingElement DequeueBindingElement ()

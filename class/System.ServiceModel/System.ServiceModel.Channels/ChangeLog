@@ -1,5 +1,10 @@
 2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* BindingContext.cs : RemainingBindingElements is not just a dummy
+	  collection but is actually user-controlled.
+
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TcpChannelFactory.cs, TcpChannelListener.cs, 
 	  HttpChannelFactory.cs, HttpChannelListener.cs,
 	  MsmqChannelFactory.cs, MsmqChannelListener.cs,
