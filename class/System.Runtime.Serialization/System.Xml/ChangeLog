@@ -1,5 +1,10 @@
 2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* XmlDictionaryWriter.cs : Even with UTF8 (marked) .net does not
+	  output BOMs, so use always unmarked utf8 for any UTF8 encodings.
+
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* XmlDictionaryWriter.cs : Since it does not support XML declaration
 	  its encoding is limited to utf16 and utf8. Null argument check.
 

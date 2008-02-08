@@ -34,6 +34,8 @@ namespace System.Xml
 {
 	public abstract partial class XmlDictionaryWriter : XmlWriter
 	{
+		static readonly Encoding utf8_unmarked = new UTF8Encoding (false);
+
 		int depth;
 
 		protected XmlDictionaryWriter ()
@@ -111,6 +113,8 @@ namespace System.Xml
 			return CreateTextWriter (stream, encoding, false);
 		}
 
+		// BTW looks like it creates an instance of different
+		// implementation than those from XmlWriter.Create().
 		public static XmlDictionaryWriter CreateTextWriter (
 			Stream stream, Encoding encoding, bool ownsStream)
 		{
@@ -123,6 +127,7 @@ namespace System.Xml
 			case 1200:
 			case 1201: // utf-16
 			case 65001: // utf-8
+				encoding = utf8_unmarked;
 				break;
 			default:
 				throw new XmlException (String.Format ("XML declaration is required for encoding code page {0} but this XmlWriter does not support XML declaration.", encoding.CodePage));
