@@ -225,8 +225,7 @@ namespace System.ServiceModel
 				// Find a Base address with matching scheme,
 				// and build new absolute address
 				if (!base_addresses.Contains (binding.Scheme))
-					throw new InvalidOperationException ("Could not find base address "
-						+ "that matches Scheme " + binding.Scheme + " for endpoint " + binding.Name);
+					throw new InvalidOperationException (String.Format ("Could not find base address that matches Scheme {0} for endpoint {1}", binding.Scheme, binding.Name));
 
 				Uri baseaddr = base_addresses [binding.Scheme];
 
@@ -244,7 +243,7 @@ namespace System.ServiceModel
 				if (e.Contract == cd)
 					return e;
 			ServiceEndpoint se = new ServiceEndpoint (cd, binding, address);
-			se.ListenUri = listenUri;
+			se.ListenUri = listenUri.IsAbsoluteUri ? listenUri : new Uri (address.Uri, listenUri);
 			Description.Endpoints.Add (se);
 			return se;
 		}
