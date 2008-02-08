@@ -17,7 +17,9 @@ net_3_0_dirs = \
 	System.ServiceModel 		\
 	agmono				\
 	System.Silverlight		\
-	agclr
+	agclr				\
+	UIAutomationTypes		\
+	UIAutomationProvider
 
 net_2_1_dirs = \
 	agmono		\

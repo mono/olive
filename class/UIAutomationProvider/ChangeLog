@@ -1,4 +1,10 @@
 2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
 
+	* Assembly/AssemblyInfo.cs : added AssmeblyInfo
+	* Makefile: added for build
+	* UIAutomationProvider.dll.sources: added for build
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
 	(started to log)
 	* System.Windows.Automation.Provider : added UI Automation

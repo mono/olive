@@ -1,5 +1,9 @@
 2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
 
+	* Makefile: Added UIAutomationTypes, UIAutomationProvider to build
+
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
 	* UIAutomationTypes: Added new directory/code for Automation assmebly
 	* UIAutomationProvider: Added new directory/code for Automation assmebly
 
