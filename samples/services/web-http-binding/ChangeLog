@@ -1,3 +1,7 @@
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli.cs : typo in url :(
+
 2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : new.
