@@ -102,10 +102,7 @@ namespace System.Xml
 		public static XmlDictionaryWriter CreateTextWriter (
 			Stream stream)
 		{
-			XmlWriterSettings s = new XmlWriterSettings ();
-			s.OmitXmlDeclaration = true;
-			s.Encoding = new UTF8Encoding (false);
-			return CreateDictionaryWriter (XmlWriter.Create (stream, s));
+			return CreateTextWriter (stream, Encoding.UTF8);
 		}
 
 		public static XmlDictionaryWriter CreateTextWriter (
@@ -117,6 +114,20 @@ namespace System.Xml
 		public static XmlDictionaryWriter CreateTextWriter (
 			Stream stream, Encoding encoding, bool ownsStream)
 		{
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+			if (encoding == null)
+				throw new ArgumentNullException ("encoding");
+
+			switch (encoding.CodePage) {
+			case 1200:
+			case 1201: // utf-16
+			case 65001: // utf-8
+				break;
+			default:
+				throw new XmlException (String.Format ("XML declaration is required for encoding code page {0} but this XmlWriter does not support XML declaration.", encoding.CodePage));
+			}
+
 			XmlWriterSettings s = new XmlWriterSettings ();
 			s.Encoding = encoding;
 			s.CloseOutput = ownsStream;

@@ -1,3 +1,8 @@
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlDictionaryWriter.cs : Since it does not support XML declaration
+	  its encoding is limited to utf16 and utf8. Null argument check.
+
 2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlDictionaryWriter.cs : WriteNode() is override, not new.
