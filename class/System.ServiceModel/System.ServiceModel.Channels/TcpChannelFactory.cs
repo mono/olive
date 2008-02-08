@@ -28,7 +28,13 @@ namespace System.ServiceModel.Channels
 		public TcpChannelFactory (TcpTransportBindingElement source, BindingContext ctx)
 		{
 			this.source = source;
-			encoder = ctx.MessageEncoder;
+			foreach (BindingElement be in ctx.RemainingBindingElements) {
+				MessageEncodingBindingElement mbe = be as MessageEncodingBindingElement;
+				if (mbe != null) {
+					encoder = mbe.CreateMessageEncoderFactory ().Encoder;
+					break;
+				}
+			}
 			if (encoder == null)
 				encoder = new TextMessageEncoder (MessageVersion.Default, Encoding.UTF8);
 		}

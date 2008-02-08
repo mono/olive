@@ -45,11 +45,6 @@ namespace System.ServiceModel.Channels
 		string listen_uri_relative;
 		ListenUriMode listen_uri_mode;
 
-		// My guess is that BuildChannelFactory/Listener in
-		// MessageEncodingBindingElements contributes information to
-		// here.
-		MessageEncoder message_encoder;
-
 		public BindingContext (CustomBinding binding,
 			BindingParameterCollection parameters)
 		{
@@ -108,11 +103,6 @@ namespace System.ServiceModel.Channels
 
 		public BindingElementCollection RemainingBindingElements {
 			get { return new BindingElementCollection (elements); }
-		}
-
-		internal MessageEncoder MessageEncoder {
-			get { return message_encoder; }
-			set { message_encoder = value; }
 		}
 
 		internal BindingElement DequeueBindingElement ()

@@ -54,7 +54,13 @@ namespace System.ServiceModel.Channels
 			// FIXME: consider ListenUriMode
 			listen_uri = new Uri (context.ListenUriBaseAddress,
 				context.ListenUriRelativeAddress);
-			encoder = context.MessageEncoder;
+			foreach (BindingElement be in context.RemainingBindingElements) {
+				MessageEncodingBindingElement mbe = be as MessageEncodingBindingElement;
+				if (mbe != null) {
+					encoder = mbe.CreateMessageEncoderFactory ().Encoder;
+					break;
+				}
+			}
 			if (encoder == null)
 				encoder = new TextMessageEncoder (MessageVersion.Default, Encoding.UTF8);
 		}

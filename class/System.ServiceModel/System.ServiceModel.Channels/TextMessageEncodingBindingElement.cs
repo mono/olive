@@ -100,9 +100,8 @@ namespace System.ServiceModel.Channels
 		{
 			if (context == null)
 				throw new ArgumentNullException ("context");
-			context.MessageEncoder =
-				CreateMessageEncoderFactory ().Encoder;
-			return context.BuildInnerChannelFactory<TChannel> ();
+			context.RemainingBindingElements.Add (this);
+			return base.BuildChannelFactory<TChannel> (context);
 		}
 
 		public override IChannelListener<TChannel> BuildChannelListener<TChannel> (
@@ -110,9 +109,8 @@ namespace System.ServiceModel.Channels
 		{
 			if (context == null)
 				throw new ArgumentNullException ("context");
-			context.MessageEncoder =
-				CreateMessageEncoderFactory ().Encoder;
-			return context.BuildInnerChannelListener<TChannel> ();
+			context.RemainingBindingElements.Add (this);
+			return base.BuildChannelListener<TChannel> (context);
 		}
 
 		public override bool CanBuildChannelListener<TChannel> (

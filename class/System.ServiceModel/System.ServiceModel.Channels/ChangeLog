@@ -1,3 +1,16 @@
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TcpChannelFactory.cs, TcpChannelListener.cs, 
+	  HttpChannelFactory.cs, HttpChannelListener.cs,
+	  MsmqChannelFactory.cs, MsmqChannelListener.cs,
+	  TextMessageEncodingBindingElement.cs,
+	  BinaryMessageEncodingBindingElement.cs,
+	  MtomMessageEncodingBindingElement.cs :
+	  message encoder should be retrieved only through public API.
+	* BindingContext.cs : so my old guess was wrong.
+
+	See also: http://blogs.msdn.com/drnick/archive/2006/05/10/594134.aspx
+
 2008-02-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* HttpTransportBindingElement.cs : implemented copy constructor.
