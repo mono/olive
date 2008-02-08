@@ -1,3 +1,8 @@
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	* UIAutomationTypes: Added new directory/code for Automation assmebly
+	* UIAutomationProvider: Added new directory/code for Automation assmebly
+
 2007-11-29  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : System.Xml.Linq is moved to mcs/class.

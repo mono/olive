@@ -1,0 +1,5 @@
+2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
+
+	(started to log)
+	* System.Windows.Automation : added UI Automation code
+	* System.Windows.Automation.Text : added UI Automation code
