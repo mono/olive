@@ -106,19 +106,27 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			context.RemainingBindingElements.Add (this);
+			return base.BuildChannelFactory<TChannel> (context);
 		}
 
-		[MonoTODO]
+		[MonoTODO ("Why is it overriden?")]
 		public override bool CanBuildChannelListener<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			return context.CanBuildInnerChannelListener<TChannel> ();
 		}
 
 		[MonoTODO]
 		public override IChannelListener<TChannel> BuildChannelListener<TChannel> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			if (context == null)
+				throw new ArgumentNullException ("context");
+			context.RemainingBindingElements.Add (this);
+			return base.BuildChannelListener<TChannel> (context);
 		}
 
 		public override BindingElement Clone ()
