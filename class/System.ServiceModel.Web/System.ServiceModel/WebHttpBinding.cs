@@ -33,7 +33,7 @@ using System.Xml;
 namespace System.ServiceModel
 {
 	[MonoTODO]
-	public class WebHttpBinding : Binding
+	public class WebHttpBinding : Binding, IBindingRuntimePreferences
 	{
 		[MonoTODO]
 		public WebHttpBinding ()
@@ -102,7 +102,7 @@ namespace System.ServiceModel
 		}
 
 		public override string Scheme {
-			get { return Uri.UriSchemeHttp; }
+			get { return Security.Mode != WebHttpSecurityMode.None ? Uri.UriSchemeHttps : Uri.UriSchemeHttp; }
 		}
 
 		[MonoTODO]
@@ -139,6 +139,11 @@ namespace System.ServiceModel
 				ReaderQuotas.CopyTo (m.ReaderQuotas);
 
 			return new BindingElementCollection (m, t.Clone ());
+		}
+
+		[MonoTODO]
+		bool IBindingRuntimePreferences.ReceiveSynchronously {
+			get { throw new NotImplementedException (); }
 		}
 	}
 }

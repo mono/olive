@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.Text;
@@ -23,13 +24,39 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (Encoding.UTF8, be.WriteEncoding, "#1");
 		}
 
+		MessageEncoder CreateEncoder ()
+		{
+			WebMessageEncodingBindingElement m = new WebMessageEncodingBindingElement ();
+			return m.CreateMessageEncoderFactory ().Encoder;
+		}
+
 		[Test]
 		public void MessageEncoder ()
 		{
-			WebMessageEncodingBindingElement m = new WebMessageEncodingBindingElement ();
-			MessageEncoder e = m.CreateMessageEncoderFactory ().Encoder;
+			var e = CreateEncoder ();
 			Assert.AreEqual ("application/xml", e.MediaType, "#1");
 			Assert.AreEqual ("application/xml; charset=utf-8", e.ContentType, "#2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (ProtocolException))]
+		public void MessageEncoderWriteMessageSoap12 ()
+		{
+			var e = CreateEncoder ();
+			e.WriteMessage (Message.CreateMessage (MessageVersion.Soap12, "urn:foo"), Stream.Null);
+		}
+
+		[Test]
+		public void MessageEncoderWriteMessageXml ()
+		{
+			var e = CreateEncoder ();
+			MemoryStream ms = new MemoryStream ();
+			// FIXME: nothing -> "" (right now it outputs <anyType xsi:nil='true' ... />)
+			//e.WriteMessage (Message.CreateMessage (MessageVersion.None, "urn:foo"), ms);
+			//Assert.AreEqual ("", Encoding.UTF8.GetString (ms.ToArray ()));
+
+			e.WriteMessage (Message.CreateMessage (MessageVersion.None, "urn:foo", 135), ms);
+			Assert.AreEqual ("<int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">135</int>", Encoding.UTF8.GetString (ms.ToArray ()));
 		}
 
 		BindingContext CreateBindingContext ()

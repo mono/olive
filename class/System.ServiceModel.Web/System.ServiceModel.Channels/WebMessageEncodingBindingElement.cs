@@ -103,7 +103,6 @@ namespace System.ServiceModel.Channels
 
 		// Methods
 
-		[MonoTODO]
 		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (BindingContext context)
 		{
 			if (context == null)
@@ -120,7 +119,6 @@ namespace System.ServiceModel.Channels
 			return context.CanBuildInnerChannelListener<TChannel> ();
 		}
 
-		[MonoTODO]
 		public override IChannelListener<TChannel> BuildChannelListener<TChannel> (BindingContext context)
 		{
 			if (context == null)

@@ -27,7 +27,9 @@
 //
 using System;
 using System.IO;
+using System.Runtime.Serialization.Json;
 using System.ServiceModel;
+using System.Xml;
 
 namespace System.ServiceModel.Channels
 {
@@ -63,9 +65,47 @@ namespace System.ServiceModel.Channels
 			throw new NotImplementedException ();
 		}
 
+		WebContentFormat GetContentFormat ()
+		{
+			if (source.ContentTypeMapper != null)
+				return source.ContentTypeMapper.GetMessageFormatForContentType (ContentType);
+			switch (MediaType) {
+			case "application/xml":
+			case "text/xml":
+				return WebContentFormat.Xml;
+			case "application/json":
+			case "text/json":
+				return WebContentFormat.Json;
+			case "application/octet-stream":
+				return WebContentFormat.Raw;
+			default:
+				return WebContentFormat.Default;
+			}
+		}
+
 		public override void WriteMessage (Message message, Stream stream)
 		{
-			throw new NotImplementedException ();
+			if (message == null)
+				throw new ArgumentNullException ("message");
+			if (!MessageVersion.Equals (message.Version))
+				throw new ProtocolException (String.Format ("MessageVersion {0} is not supported", message.Version));
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+
+			switch (GetContentFormat ()) {
+			case WebContentFormat.Xml:
+				using (XmlWriter w = XmlDictionaryWriter.CreateTextWriter (stream, source.WriteEncoding))
+					message.WriteMessage (w);
+				break;
+			case WebContentFormat.Json:
+				using (XmlWriter w = JsonReaderWriterFactory.CreateJsonWriter (stream, source.WriteEncoding))
+					message.WriteMessage (w);
+				break;
+			case WebContentFormat.Raw:
+				throw new NotImplementedException ();
+			case WebContentFormat.Default:
+				throw new SystemException ("INTERNAL ERROR: cannot determine content format");
+			}
 		}
 
 		public override ArraySegment<byte> WriteMessage (Message message, int maxMessageSize, BufferManager bufferManager,

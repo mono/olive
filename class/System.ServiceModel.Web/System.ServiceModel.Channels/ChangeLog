@@ -1,5 +1,11 @@
 2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageEncodingBindingElement.cs : removed some todos.
+	* WebMessageEncoder.cs : implement WriteMessage(). (Though I have no
+	  idea how non-xml formats can be specified.)
+
+2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageEncodingBindingElement.cs : implemented
 	  BuildChannelFactory() and BuildChannelListener().
 
