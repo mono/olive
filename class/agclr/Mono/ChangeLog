@@ -1,3 +1,7 @@
+2008-02-11  Miguel de Icaza  <miguel@novell.com>
+
+	* ManagedXamlLoader.cs: 
+
 2008-02-04  Miguel de Icaza  <miguel@novell.com>
 
 	Fixes for Phalanger.NET on Silverlight:

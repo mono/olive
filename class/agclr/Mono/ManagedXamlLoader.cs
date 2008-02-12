@@ -208,7 +208,8 @@ namespace Mono.Xaml
 				return null;
 			}
 
-			AssemblyLoadResult r = LoadAssemblyPlugin (path, path, true, ref result);
+			//AssemblyLoadResult r =
+			LoadAssemblyPlugin (path, path, true, ref result);
 			return result;
 		}
 			

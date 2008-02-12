@@ -29,7 +29,8 @@ using System.Windows;
 using Mono;
 
 namespace System.Windows.Controls {
-	public class Canvas : Panel {
+
+	public partial class Canvas : Panel {
 		public static readonly DependencyProperty LeftProperty;
 		public static readonly DependencyProperty TopProperty;
 
