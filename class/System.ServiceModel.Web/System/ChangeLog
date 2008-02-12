@@ -1,3 +1,6 @@
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
-	* UriTemplate.cs, UriTemplateMatch.cs : new stubs.
+	* UriTemplateTable.cs, UriTemplateEquivalenceComparer.cs : new stubs.
+	* UriTemplateMatchException.cs : new.
+	* UriTemplate.cs : implemented .ctor(), BindByName() and
+	  BindByPosition().

@@ -1,5 +1,5 @@
 //
-// WebHttpDispatchOperationSelector.cs
+// UriTemplateEquivalenceComparer.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -26,33 +26,24 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
+using System.Collections.Generic;
 
-namespace System.ServiceModel.Dispatcher
+namespace System
 {
-	public class WebHttpDispatchOperationSelector : IDispatchOperationSelector
+	public class UriTemplateEquivalenceComparer : IEqualityComparer<UriTemplate>
 	{
-		public const string HttpOperationSelectorUriMatchedPropertyName = "UriMatched";
-
-		protected WebHttpDispatchOperationSelector ()
-		{
-		}
-
-		public WebHttpDispatchOperationSelector (ServiceEndpoint endpoint)
+		public UriTemplateEquivalenceComparer ()
 		{
 		}
 
 		[MonoTODO]
-		public string SelectOperation (ref Message message)
+		public bool Equals (UriTemplate x, UriTemplate y)
 		{
-			bool dummy;
-			return SelectOperation (ref message, out dummy);
+			throw new NotImplementedException ();
 		}
 
 		[MonoTODO]
-		protected virtual string SelectOperation (ref Message message, out bool uriMatched)
+		public int GetHashCode (UriTemplate obj)
 		{
 			throw new NotImplementedException ();
 		}

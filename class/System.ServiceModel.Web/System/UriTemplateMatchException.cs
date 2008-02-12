@@ -1,8 +1,7 @@
 //
-// WebHttpDispatchOperationSelector.cs
+// UriTemplateMatchException.cs
 //
-// Author:
-//	Atsushi Enomoto  <atsushi@ximian.com>
+// Author: Atsushi Enomoto <atsushi@ximian.com>
 //
 // Copyright (C) 2008 Novell, Inc (http://www.novell.com)
 //
@@ -25,36 +24,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
+using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 
-namespace System.ServiceModel.Dispatcher
+namespace System
 {
-	public class WebHttpDispatchOperationSelector : IDispatchOperationSelector
+	[Serializable]
+	public class UriTemplateMatchException : SystemException
 	{
-		public const string HttpOperationSelectorUriMatchedPropertyName = "UriMatched";
-
-		protected WebHttpDispatchOperationSelector ()
-		{
-		}
-
-		public WebHttpDispatchOperationSelector (ServiceEndpoint endpoint)
-		{
-		}
-
-		[MonoTODO]
-		public string SelectOperation (ref Message message)
-		{
-			bool dummy;
-			return SelectOperation (ref message, out dummy);
-		}
-
-		[MonoTODO]
-		protected virtual string SelectOperation (ref Message message, out bool uriMatched)
-		{
-			throw new NotImplementedException ();
-		}
+		public UriTemplateMatchException () : base () {}
+		public UriTemplateMatchException (string msg) : base (msg) {}
+		public UriTemplateMatchException (string msg, Exception inner) : base (msg, inner) {}
+		protected UriTemplateMatchException (SerializationInfo info, StreamingContext context) :
+			base (info, context) {}
 	}
 }

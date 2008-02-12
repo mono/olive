@@ -29,6 +29,7 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
+using System.ServiceModel.Web;
 
 namespace System.ServiceModel.Description
 {
@@ -38,9 +39,30 @@ namespace System.ServiceModel.Description
 		{
 		}
 
+		WebMessageFormat default_request_format, default_response_format;
+		WebMessageBodyStyle default_body_style;
+
 		[MonoTODO]
+		public virtual WebMessageBodyStyle DefaultBodyStyle {
+			get { return default_body_style; }
+			set { default_body_style = value; }
+		}
+
+		[MonoTODO]
+		public virtual WebMessageFormat DefaultOutgoingRequestFormat {
+			get { return default_request_format; }
+			set { default_request_format = value; }
+		}
+
+		[MonoTODO]
+		public virtual WebMessageFormat DefaultOutgoingResponseFormat {
+			get { return default_response_format; }
+			set { default_response_format = value; }
+		}
+
 		public virtual void AddBindingParameters (ServiceEndpoint endpoint, BindingParameterCollection bindingParameters)
 		{
+			// nothing
 		}
 
 		[MonoTODO]
@@ -56,17 +78,27 @@ namespace System.ServiceModel.Description
 		[MonoTODO]
 		public virtual void ApplyClientBehavior (ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
+			foreach (ClientOperation oper in clientRuntime.Operations) {
+				// GetClientRequestFormatter/GetClientReplyFormatter
+				oper.Formatter = GetRequestClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+				oper.Formatter = GetReplyClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+			}
 		}
 
-		[MonoTODO]
 		public virtual void ApplyDispatchBehavior (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
+			endpointDispatcher.DispatchRuntime.OperationSelector = GetOperationSelector (endpoint);
+
+			foreach (DispatchOperation oper in endpointDispatcher.DispatchRuntime.Operations) {
+				// GetClientRequestFormatter/GetClientReplyFormatter
+				oper.Formatter = GetRequestDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+				oper.Formatter = GetReplyDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+			}
 		}
 
-		[MonoTODO]
 		protected virtual WebHttpDispatchOperationSelector GetOperationSelector (ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
+			return new WebHttpDispatchOperationSelector (endpoint);
 		}
 
 		[MonoTODO]

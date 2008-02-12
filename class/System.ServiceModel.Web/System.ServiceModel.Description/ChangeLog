@@ -1,3 +1,7 @@
+2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpBehavior.cs : some implementation (sorta wrong).
+
 2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBehavior.cs : stub.

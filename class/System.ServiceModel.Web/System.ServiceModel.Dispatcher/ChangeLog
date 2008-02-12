@@ -1,3 +1,7 @@
+2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpDispatchOperationSelector.cs : stubbed members.
+
 2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* JsonQueryStringConverter.cs, QueryStringConverter.cs,
