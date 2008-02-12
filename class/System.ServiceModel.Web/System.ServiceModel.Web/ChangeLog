@@ -1,3 +1,10 @@
+2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebChannelFactory.cs : added more constructors.
+	* IncomingWebRequestContext.cs, IncomingWebResponseContext.cs,
+	  OutgoingWebResponseContext.cs, OutgoingWebRequestContext.cs,
+	  WebOperationContext.cs : new stubs.
+
 2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebServiceHost.cs, WebChannelFactory.cs,

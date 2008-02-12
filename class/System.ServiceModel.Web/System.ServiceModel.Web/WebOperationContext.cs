@@ -1,5 +1,5 @@
 //
-// WebChannelFactory.cs
+// WebOperationContext.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -30,67 +30,54 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 
-// This class does:
-// - manual addressing support (with ChannelFactory, client will fail with
-//   InvalidOperationException that claims missing manual addressing) in every
-//   messages.
-
 namespace System.ServiceModel.Web
 {
-	public class WebChannelFactory<TChannel> : ChannelFactory<TChannel>
+	public class WebOperationContext : IExtension<OperationContext>
 	{
+		public static WebOperationContext Current {
+			get { return OperationContext.Current != null ? OperationContext.Current.Extensions.Find<WebOperationContext> () : null; }
+		}
+
+		OperationContext operation;
+		IncomingWebRequestContext incoming_request = new IncomingWebRequestContext ();
+		IncomingWebResponseContext incoming_response = new IncomingWebResponseContext ();
+		OutgoingWebRequestContext outgoing_request = new OutgoingWebRequestContext ();
+		OutgoingWebResponseContext outgoing_response = new OutgoingWebResponseContext ();
+
+		public WebOperationContext (OperationContext operation)
+		{
+			if (operation == null)
+				throw new ArgumentNullException ("operation");
+			this.operation = operation;
+		}
+
 		[MonoTODO]
-		public WebChannelFactory ()
-			: base ()
+		public IncomingWebRequestContext IncomingRequest {
+			get { return incoming_request; }
+		}
+
+		[MonoTODO]
+		public IncomingWebResponseContext IncomingResponse {
+			get { return incoming_response; }
+		}
+
+		[MonoTODO]
+		public OutgoingWebRequestContext OutgoingRequest {
+			get { return outgoing_request; }
+		}
+
+		[MonoTODO]
+		public OutgoingWebResponseContext OutgoingResponse {
+			get { return outgoing_response; }
+		}
+
+		[MonoTODO]
+		public void Attach (OperationContext context)
 		{
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Type serviceType)
-			: base (serviceType)
-		{
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (string configurationName)
-			: base (configurationName)
-		{
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (Binding binding)
-			: base (binding)
-		{
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (Uri remoteAddress)
-			: base ()
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (string configurationName, Uri remoteAddress)
-			: this (configurationName)
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (Binding binding, Uri remoteAddress)
-			: this (new ServiceEndpoint (ContractDescription.GetContract (typeof (TChannel)), binding, new EndpointAddress (remoteAddress)))
-		{
-		}
-
-		[MonoTODO]
-		public WebChannelFactory (ServiceEndpoint endpoint)
-			: base (endpoint)
-		{
-		}
-
-		[MonoTODO]
-		protected override void OnOpening ()
+		public void Detach (OperationContext context)
 		{
 		}
 	}

@@ -1,5 +1,5 @@
 //
-// WebChannelFactory.cs
+// OutgoingWebResponseContext.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -26,72 +26,63 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
-
-// This class does:
-// - manual addressing support (with ChannelFactory, client will fail with
-//   InvalidOperationException that claims missing manual addressing) in every
-//   messages.
+using System.Net;
 
 namespace System.ServiceModel.Web
 {
-	public class WebChannelFactory<TChannel> : ChannelFactory<TChannel>
+	public class OutgoingWebResponseContext
 	{
 		[MonoTODO]
-		public WebChannelFactory ()
-			: base ()
-		{
+		public long ContentLength {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Type serviceType)
-			: base (serviceType)
-		{
+		public string ContentType {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (string configurationName)
-			: base (configurationName)
-		{
+		public string ETag {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Binding binding)
-			: base (binding)
-		{
+		public WebHeaderCollection Headers {
+			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Uri remoteAddress)
-			: base ()
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
+		public DateTime LastModified {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (string configurationName, Uri remoteAddress)
-			: this (configurationName)
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
+		public string Location {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Binding binding, Uri remoteAddress)
-			: this (new ServiceEndpoint (ContractDescription.GetContract (typeof (TChannel)), binding, new EndpointAddress (remoteAddress)))
-		{
+		public HttpStatusCode StatusCode {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (ServiceEndpoint endpoint)
-			: base (endpoint)
-		{
+		public string StatusDescription {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		protected override void OnOpening ()
-		{
+		public bool SuppressEntityBody {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 	}
 }

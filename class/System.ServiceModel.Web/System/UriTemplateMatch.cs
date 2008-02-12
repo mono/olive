@@ -1,5 +1,5 @@
 //
-// WebChannelFactory.cs
+// UriTemplateMatch.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -26,72 +26,57 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.ServiceModel;
-using System.ServiceModel.Channels;
-using System.ServiceModel.Description;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 
-// This class does:
-// - manual addressing support (with ChannelFactory, client will fail with
-//   InvalidOperationException that claims missing manual addressing) in every
-//   messages.
-
-namespace System.ServiceModel.Web
+namespace System
 {
-	public class WebChannelFactory<TChannel> : ChannelFactory<TChannel>
+	public class UriTemplateMatch
 	{
-		[MonoTODO]
-		public WebChannelFactory ()
-			: base ()
+		public UriTemplateMatch ()
 		{
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Type serviceType)
-			: base (serviceType)
-		{
+		public Uri BaseUri {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (string configurationName)
-			: base (configurationName)
-		{
+		public NameValueCollection BoundVariables {
+			get { throw new NotImplementedException (); }
+		}
+
+		public object Data {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Binding binding)
-			: base (binding)
-		{
+		public NameValueCollection QueryParameters {
+			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Uri remoteAddress)
-			: base ()
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
+		public Collection<string> RelativePathSegments { 
+			get { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (string configurationName, Uri remoteAddress)
-			: this (configurationName)
-		{
-			Endpoint.Address = new EndpointAddress (remoteAddress);
+		public Uri RequestUri {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		[MonoTODO]
-		public WebChannelFactory (Binding binding, Uri remoteAddress)
-			: this (new ServiceEndpoint (ContractDescription.GetContract (typeof (TChannel)), binding, new EndpointAddress (remoteAddress)))
-		{
+		public UriTemplate Template {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
-		public WebChannelFactory (ServiceEndpoint endpoint)
-			: base (endpoint)
-		{
-		}
-
-		[MonoTODO]
-		protected override void OnOpening ()
-		{
+		public Collection<string> WildcardPathSegments {
+			get { throw new NotImplementedException (); }
 		}
 	}
 }

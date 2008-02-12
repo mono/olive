@@ -55,7 +55,7 @@ namespace System.ServiceModel
 		WebHttpSecurity security = new WebHttpSecurity ();
 		Encoding write_encoding = Encoding.UTF8;
 
-		HttpTransportBindingElement t = new HttpTransportBindingElement ();
+		HttpTransportBindingElement t = new HttpTransportBindingElement () { ManualAddressing = true };
 
 		public bool AllowCookies {
 			get { return t.AllowCookies; }
