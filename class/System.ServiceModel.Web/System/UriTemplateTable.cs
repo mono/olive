@@ -93,13 +93,26 @@ namespace System
 		[MonoTODO]
 		public Collection<UriTemplateMatch> Match (Uri uri)
 		{
-			throw new NotImplementedException ();
+			var c = new Collection<UriTemplateMatch> ();
+			UriTemplateMatch ret = null;
+			foreach (Pair p in key_value_pairs) {
+				ret = p.Key.Match (base_address, uri);
+				if (ret != null)
+					c.Add (ret);
+			}
+			return c;
 		}
 
 		[MonoTODO]
 		public UriTemplateMatch MatchSingle (Uri uri)
 		{
-			throw new NotImplementedException ();
+			UriTemplateMatch ret = null;
+			foreach (Pair p in key_value_pairs) {
+				ret = p.Key.Match (base_address, uri);
+				if (ret != null)
+					return ret;
+			}
+			throw new UriTemplateMatchException (String.Format ("No template matched for Uri '{0}'", uri));
 		}
 	}
 }

@@ -1,5 +1,12 @@
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* UriTemplateMatch.cs : implemented some members.
+	* UriTemplateTable.cs : implemented Match() and MatchSingle().
+	* UriTemplate.cs : Do not expand template in non-path-query area.
+	  Implemented Match().
+
+2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UriTemplateTable.cs, UriTemplateEquivalenceComparer.cs : new stubs.
 	* UriTemplateMatchException.cs : new.
 	* UriTemplate.cs : implemented .ctor(), BindByName() and

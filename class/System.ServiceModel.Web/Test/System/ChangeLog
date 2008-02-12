@@ -1,4 +1,8 @@
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* UriTemplateTest.cs : Added tests for Match() and more Binding tests.
+
+2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UriTemplateTest.cs : new. Test .ctor(), BindByName() and 
 	  BindByPosition().

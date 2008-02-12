@@ -37,20 +37,27 @@ namespace System
 		{
 		}
 
-		[MonoTODO]
+		Uri base_uri;
+		NameValueCollection nvc;
+		object data;
+		UriTemplate template;
+
 		public Uri BaseUri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return base_uri; }
+			set { base_uri = value; }
 		}
 
-		[MonoTODO]
 		public NameValueCollection BoundVariables {
-			get { throw new NotImplementedException (); }
+			get {
+				if (nvc == null)
+					nvc = new NameValueCollection ();
+				return nvc;
+			}
 		}
 
 		public object Data {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return data; }
+			set { data = value; }
 		}
 
 		[MonoTODO]
@@ -69,10 +76,9 @@ namespace System
 			set { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public UriTemplate Template {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return template; }
+			set { template = value; }
 		}
 
 		public Collection<string> WildcardPathSegments {

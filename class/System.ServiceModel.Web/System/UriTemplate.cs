@@ -39,19 +39,26 @@ namespace System
 		static readonly ReadOnlyCollection<string> empty_strings = new ReadOnlyCollection<string> (new string [0]);
 
 		string template;
-		Uri uri;
 		ReadOnlyCollection<string> path, query;
 
+		[MonoTODO ("It needs some rewrite: template bindings should be available only one per segment")]
 		public UriTemplate (string template)
 		{
 			if (template == null)
 				throw new ArgumentNullException ("template");
 			this.template = template;
 
-			int q = template.IndexOf ('?');
-			path = ParseTemplate (template, 0, q >= 0 ? q : template.Length);
+			string p = template;
+			// Trim scheme, host name and port if exist.
+			if (CultureInfo.InvariantCulture.CompareInfo.IsPrefix (template, "http")) {
+				int idx = template.IndexOf ('/', 8); // after "http://x" or "https://"
+				if (idx > 0)
+					p = template.Substring (idx);
+			}
+			int q = p.IndexOf ('?');
+			path = ParseTemplate (p, 0, q >= 0 ? q : p.Length);
 			if (q >= 0)
-				query = ParseTemplate (template, q, template.Length);
+				query = ParseTemplate (p, q, p.Length);
 			else
 				query = empty_strings;
 		}
@@ -63,6 +70,13 @@ namespace System
 		public ReadOnlyCollection<string> QueryValueVariableNames {
 			get { return query; }
 		}
+
+		public override string ToString ()
+		{
+			return template;
+		}
+
+		// Bind
 
 		public Uri BindByName (Uri baseAddress, NameValueCollection parameters)
 		{
@@ -107,7 +121,7 @@ namespace System
 
 		void BindByPosition (ref int src, StringBuilder sb, ReadOnlyCollection<string> names, string [] values, ref int index)
 		{
-			foreach (string name in names) {
+			for (int i = 0; i < names.Count; i++) {
 				int s = template.IndexOf ('{', src);
 				int e = template.IndexOf ('}', s + 1);
 				sb.Append (template.Substring (src, s - src));
@@ -119,29 +133,80 @@ namespace System
 			}
 		}
 
+		// Compare
+
 		[MonoTODO]
 		public bool IsEquivalentTo (UriTemplate other)
 		{
-			throw new NotImplementedException ();
+			if (other == null)
+				throw new ArgumentNullException ("other");
+			return new UriTemplateEquivalenceComparer ().Equals (this, other);
 		}
 
-		[MonoTODO]
+		// Match
+
 		public UriTemplateMatch Match (Uri baseAddress, Uri candidate)
 		{
-			throw new NotImplementedException ();
+			CheckBaseAddress (baseAddress);
+			if (candidate == null)
+				throw new ArgumentNullException ("candidate");
+
+			if (Uri.Compare (baseAddress, candidate, UriComponents.StrongAuthority, UriFormat.SafeUnescaped, StringComparison.Ordinal) != 0)
+				return null;
+
+			int i = 0, c = 0;
+			UriTemplateMatch m = new UriTemplateMatch ();
+			m.BaseUri = baseAddress;
+			m.Template = this;
+			var vc = m.BoundVariables;
+
+			string cp = candidate.PathAndQuery;
+			foreach (string name in path) {
+				int n = StringIndexOf (template, '{' + name + '}', i);
+				if (String.CompareOrdinal (cp, c, template, i, n - i) != 0)
+					return null; // doesn't match before current template part.
+				c += n - i;
+				i = n + 2 + name.Length;
+				int ce = cp.IndexOf ('/', c);
+				if (ce < 0)
+					ce = cp.Length;
+				string value = cp.Substring (c, ce - c);
+				vc [name] = value;
+				c += value.Length;
+			}
+			foreach (string name in query) {
+				int n = StringIndexOf (template, '{' + name + '}', i);
+				if (String.CompareOrdinal (cp, c, template, i, n - i) != 0)
+					return null; // doesn't match before current template part.
+				c += n - i;
+				i = n + 2 + name.Length;
+				int ce = cp.IndexOf ('&', c);
+				if (ce < 0)
+					ce = cp.Length;
+				string value = cp.Substring (c, ce - c);
+				vc [name] = value;
+				c += value.Length;
+			}
+			if ((cp.Length - c) != (template.Length - i) ||
+			    String.CompareOrdinal (cp, c, template, i, template.Length - i) != 0)
+				return null; // suffix doesn't match
+
+			return m;
 		}
 
-		public override string ToString ()
+		int StringIndexOf (string s, string pattern, int idx)
 		{
-			return template;
+			return CultureInfo.InvariantCulture.CompareInfo.IndexOf (s, pattern, idx, CompareOptions.OrdinalIgnoreCase);
 		}
+
+		// Helpers
 
 		void CheckBaseAddress (Uri baseAddress)
 		{
 			if (baseAddress == null)
 				throw new ArgumentNullException ("baseAddress");
 			if (!baseAddress.IsAbsoluteUri)
-			throw new ArgumentException ("baseAddress must be an absolute URI.");
+				throw new ArgumentException ("baseAddress must be an absolute URI.");
 			if (baseAddress.Scheme == Uri.UriSchemeHttp ||
 			    baseAddress.Scheme == Uri.UriSchemeHttps)
 				return;

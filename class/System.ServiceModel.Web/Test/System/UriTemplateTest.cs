@@ -69,25 +69,49 @@ namespace MonoTests.System
 			var t = new UriTemplate ("urn:foo");
 			Assert.AreEqual (0, t.PathSegmentVariableNames.Count, "#1a");
 			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#1b");
+
 			t = new UriTemplate ("http://localhost:8080/");
 			Assert.AreEqual (0, t.PathSegmentVariableNames.Count, "#2a");
 			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#2b");
+
 			t = new UriTemplate ("http://localhost:8080/foo/");
 			Assert.AreEqual (0, t.PathSegmentVariableNames.Count, "#3a");
 			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#3b");
+
 			t = new UriTemplate ("http://localhost:8080/{foo}");
 			Assert.AreEqual (1, t.PathSegmentVariableNames.Count, "#4a");
 			Assert.AreEqual ("FOO", t.PathSegmentVariableNames [0], "#4b");
 			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#4c");
+
 			t = new UriTemplate ("http://localhost:8080/{foo}/{");
 			Assert.AreEqual (1, t.PathSegmentVariableNames.Count, "#5a");
 			Assert.AreEqual ("FOO", t.PathSegmentVariableNames [0], "#5b");
 			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#5c");
+
 			t = new UriTemplate ("http://localhost:8080/hoge?test={foo}&test2={bar}");
 			Assert.AreEqual (0, t.PathSegmentVariableNames.Count, "#6a");
 			Assert.AreEqual (2, t.QueryValueVariableNames.Count, "#6b");
 			Assert.AreEqual ("FOO", t.QueryValueVariableNames [0], "#6c");
 			Assert.AreEqual ("BAR", t.QueryValueVariableNames [1], "#6d");
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void VariablesInSameSegment ()
+		{
+			var t = new UriTemplate ("http://localhost:8080/{foo}{bar}");
+			Assert.AreEqual (1, t.PathSegmentVariableNames.Count, "#7a");
+			// wow.
+			Assert.AreEqual ("FOO}{BAR", t.PathSegmentVariableNames [0], "#7b");
+			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#7c");
+		}
+
+		[Test]
+		public void VariablesInNonPathQuery ()
+		{
+			var t = new UriTemplate ("http://localhost:{foo}/");
+			Assert.AreEqual (0, t.PathSegmentVariableNames.Count, "#8a");
+			Assert.AreEqual (0, t.QueryValueVariableNames.Count, "#8b");
 		}
 
 		[Test]
@@ -148,6 +172,12 @@ namespace MonoTests.System
 		}
 
 		[Test]
+		public void BindInSameSegment ()
+		{
+			new UriTemplate ("/hoo/{foo}{bar}");
+		}
+
+		[Test]
 		public void BindByName ()
 		{
 			var t = new UriTemplate ("/{foo}/{bar}/");
@@ -204,6 +234,44 @@ namespace MonoTests.System
 			var t = new UriTemplate ("/{foo}/{bar}/");
 			var u = t.BindByPosition (new Uri ("http://localhost/"), "value1", "value2");
 			Assert.AreEqual ("http://localhost/value1/value2/", u.ToString ());
+		}
+
+		[Test]
+		public void MatchNoTemplateItem ()
+		{
+			var t = new UriTemplate ("/hooray");
+			var n = new NameValueCollection ();
+			Assert.IsNotNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray")), "#1");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/foobar")), "#2");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray/foobar")), "#3");
+		}
+
+		[Test]
+		public void MatchWrongTemplate ()
+		{
+			var t = new UriTemplate ("/hoo{foo}");
+			var n = new NameValueCollection ();
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray")), "#1");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/foobar")), "#2");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray/foobar")), "#3");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hoo/ray")), "#4");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hoo")), "#5");
+			// this matches (as if there were no template).
+			Assert.IsNotNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hoo{foo}")), "#6");
+		}
+
+		[Test]
+		public void Match ()
+		{
+			var t = new UriTemplate ("/{foo}/{bar}");
+			var n = new NameValueCollection ();
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray")), "#1");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/v1/v2/extra")), "#2");
+			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/1/2/")), "#3");
+			UriTemplateMatch m = t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/foooo/baaar"));
+			Assert.IsNotNull (m, "#4");
+			Assert.AreEqual ("foooo", m.BoundVariables ["foo"], "#5");
+			Assert.AreEqual ("baaar", m.BoundVariables ["bar"], "#6");
 		}
 	}
 }
