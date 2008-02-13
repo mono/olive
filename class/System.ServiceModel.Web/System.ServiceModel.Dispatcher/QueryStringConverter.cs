@@ -68,39 +68,37 @@ namespace System.ServiceModel.Dispatcher
 			if (!CanConvert (parameterType))
 				throw new NotSupportedException (String.Format ("Conversion from the argument parameterType '{0}' is not supported", parameterType));
 
-			// FIXME: implement null string to default value conversion.
-
 			switch (Type.GetTypeCode (parameterType)) {
 			case TypeCode.String:
 				return parameter;
 			case TypeCode.Char:
-				return Char.Parse (parameter);
+				return parameter != null ? Char.Parse (parameter): default (char);
 			case TypeCode.SByte:
-				return SByte.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? SByte.Parse (parameter, CultureInfo.InvariantCulture): default (sbyte);
 			case TypeCode.Byte:
-				return Byte.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Byte.Parse (parameter, CultureInfo.InvariantCulture): default (byte);
 			case TypeCode.Int16:
-				return Int16.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Int16.Parse (parameter, CultureInfo.InvariantCulture): default (short);
 			case TypeCode.Int32:
-				return Int32.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Int32.Parse (parameter, CultureInfo.InvariantCulture): default (int);
 			case TypeCode.Int64:
-				return Int64.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Int64.Parse (parameter, CultureInfo.InvariantCulture): default (long);
 			case TypeCode.UInt16:
-				return UInt16.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? UInt16.Parse (parameter, CultureInfo.InvariantCulture): default (ushort);
 			case TypeCode.UInt32:
-				return UInt32.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? UInt32.Parse (parameter, CultureInfo.InvariantCulture): default (uint);
 			case TypeCode.UInt64:
-				return UInt64.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? UInt64.Parse (parameter, CultureInfo.InvariantCulture): default (ulong);
 			case TypeCode.DateTime:
-				return DateTime.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? DateTime.Parse (parameter, CultureInfo.InvariantCulture): default (DateTime);
 			case TypeCode.Boolean:
-				return Boolean.Parse (parameter);
+				return parameter != null ? Boolean.Parse (parameter): default (bool);
 			case TypeCode.Single:
-				return Single.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Single.Parse (parameter, CultureInfo.InvariantCulture): default (float);
 			case TypeCode.Double:
-				return Double.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Double.Parse (parameter, CultureInfo.InvariantCulture): default (double);
 			case TypeCode.Decimal:
-				return Decimal.Parse (parameter, CultureInfo.InvariantCulture);
+				return parameter != null ? Decimal.Parse (parameter, CultureInfo.InvariantCulture): default (decimal);
 			case TypeCode.Object:
 				if (parameterType == typeof (TimeSpan))
 					return TimeSpan.Parse (parameter);

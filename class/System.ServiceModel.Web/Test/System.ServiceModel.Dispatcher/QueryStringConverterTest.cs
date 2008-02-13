@@ -164,7 +164,6 @@ namespace MonoTests.System.ServiceModel.Description
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void ConvertStringToValueNullToValueType ()
 		{
 			// hmm, it passes.

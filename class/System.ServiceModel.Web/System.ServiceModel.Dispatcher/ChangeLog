@@ -1,5 +1,9 @@
 2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* QueryStringConverter.cs : I could just check null parameter.
+
+2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* QueryStringConverter.cs: CanConvert() supports cpl more types.
 	  Implemented ConvertStringToValue() and ConvertValueToString().
 

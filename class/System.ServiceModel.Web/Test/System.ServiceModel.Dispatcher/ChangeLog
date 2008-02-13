@@ -1,3 +1,7 @@
 2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* QueryStringConverterTest.cs : enable null-to-char conversion test.
+
+2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* QueryStringConverterTest.cs : new test.
