@@ -4,6 +4,7 @@ System.Runtime.Serialization.Json/JsonWriterTest.cs
 System.ServiceModel.Channels/WebBodyFormatMessagePropertyTest.cs
 System.ServiceModel.Channels/WebMessageEncodingBindingElementTest.cs
 System.ServiceModel.Description/WebHttpBehaviorTest.cs
+System.ServiceModel.Dispatcher/QueryStringConverterTest.cs
 System.ServiceModel.Syndication/Atom10FeedFormatterTest.cs
 System.ServiceModel.Syndication/Atom10ItemFormatterTest.cs
 System.ServiceModel.Syndication/Rss20FeedFormatterTest.cs

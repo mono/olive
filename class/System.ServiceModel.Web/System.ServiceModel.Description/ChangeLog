@@ -1,3 +1,7 @@
+2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebScriptEnablingBehavior.cs : new stub.
+
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBehavior.cs : some implementation (sorta wrong).

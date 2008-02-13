@@ -1,0 +1,3 @@
+2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* QueryStringConverterTest.cs : new test.

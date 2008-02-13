@@ -27,6 +27,7 @@
 //
 using System;
 using System.ComponentModel;
+using System.Globalization;
 using System.ServiceModel;
 using System.ServiceModel.Description;
 
@@ -43,26 +44,94 @@ namespace System.ServiceModel.Dispatcher
 			case TypeCode.Empty:
 				return false;
 			case TypeCode.Object:
+				if (type == typeof (TimeSpan))
+					return true;
+				if (type == typeof (DateTimeOffset))
+					return true;
 				if (type == typeof (Guid))
 					return true;
-				if (type.GetCustomAttributes (typeof (TypeConverterAttribute), true).Length > 0)
+				if (type == typeof (object))
 					return true;
+//				if (type.GetCustomAttributes (typeof (TypeConverterAttribute), true).Length > 0)
+//					return true;
 				return false;
 			default:
 				return true;
 			}
 		}
 
-		[MonoTODO]
 		public virtual object ConvertStringToValue (string parameter, Type parameterType)
 		{
-			throw new NotImplementedException ();
+			if (parameterType == null)
+				throw new ArgumentNullException ("parameterType");
+
+			if (!CanConvert (parameterType))
+				throw new NotSupportedException (String.Format ("Conversion from the argument parameterType '{0}' is not supported", parameterType));
+
+			// FIXME: implement null string to default value conversion.
+
+			switch (Type.GetTypeCode (parameterType)) {
+			case TypeCode.String:
+				return parameter;
+			case TypeCode.Char:
+				return Char.Parse (parameter);
+			case TypeCode.SByte:
+				return SByte.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Byte:
+				return Byte.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Int16:
+				return Int16.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Int32:
+				return Int32.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Int64:
+				return Int64.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.UInt16:
+				return UInt16.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.UInt32:
+				return UInt32.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.UInt64:
+				return UInt64.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.DateTime:
+				return DateTime.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Boolean:
+				return Boolean.Parse (parameter);
+			case TypeCode.Single:
+				return Single.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Double:
+				return Double.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Decimal:
+				return Decimal.Parse (parameter, CultureInfo.InvariantCulture);
+			case TypeCode.Object:
+				if (parameterType == typeof (TimeSpan))
+					return TimeSpan.Parse (parameter);
+				if (parameterType == typeof (DateTimeOffset))
+					return DateTimeOffset.Parse (parameter, CultureInfo.InvariantCulture);
+				if (parameterType == typeof (Guid))
+					return new Guid (parameter);
+				break;
+			}
+			throw new NotSupportedException (String.Format ("Cannot convert parameter string '{0}' to parameter type '{1}'", parameter, parameterType));
 		}
 
-		[MonoTODO]
 		public virtual string ConvertValueToString (object parameter, Type parameterType)
 		{
-			throw new NotImplementedException ();
+			if (parameterType == null)
+				throw new ArgumentNullException ("parameterType");
+			if (parameterType.IsValueType && parameter == null)
+				throw new ArgumentNullException ("parameter");
+
+			if (parameter == null)
+				return null;
+
+			if (parameter.GetType () != parameterType)
+				throw new InvalidCastException (String.Format ("This QueryStringConverter does not support cast from {0} to {1}", parameter.GetType (), parameterType));
+
+			if (!CanConvert (parameterType))
+				throw new NotSupportedException (String.Format ("Conversion from the argument parameterType '{0}' is not supported", parameterType));
+
+			if (parameter is IFormattable)
+				((IFormattable) parameter).ToString (null, CultureInfo.InvariantCulture);
+			return parameter.ToString ();
 		}
 	}
 }

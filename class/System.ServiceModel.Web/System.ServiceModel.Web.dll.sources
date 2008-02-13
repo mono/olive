@@ -18,6 +18,7 @@ System.ServiceModel.Channels/WebMessageEncoder.cs
 System.ServiceModel.Channels/WebMessageEncoderFactory.cs
 System.ServiceModel.Channels/WebMessageEncodingBindingElement.cs
 System.ServiceModel.Description/WebHttpBehavior.cs
+System.ServiceModel.Description/WebScriptEnablingBehavior.cs
 System.ServiceModel.Dispatcher/JsonQueryStringConverter.cs
 System.ServiceModel.Dispatcher/QueryStringConverter.cs
 System.ServiceModel.Dispatcher/WebHttpDispatchOperationSelector.cs
