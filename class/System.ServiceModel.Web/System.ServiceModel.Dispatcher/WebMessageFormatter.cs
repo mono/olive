@@ -42,13 +42,16 @@ namespace System.ServiceModel.Description
 		MessageDescription message_desc;
 		ServiceEndpoint endpoint;
 		QueryStringConverter converter;
+		WebHttpBehavior behavior;
 		UriTemplate template;
+		WebAttributeInfo info = null;
 
-		public WebMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+		public WebMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
 		{
 			this.operation = operation;
 			this.endpoint = endpoint;
 			this.converter = converter;
+			this.behavior = behavior;
 			ApplyWebAttribute ();
 		}
 
@@ -57,7 +60,6 @@ namespace System.ServiceModel.Description
 			MethodInfo mi = operation.SyncMethod ?? operation.BeginMethod;
 
 			object [] atts = mi.GetCustomAttributes (typeof (WebGetAttribute), false);
-			WebAttributeInfo info = null;
 			if (atts.Length > 0)
 				info = ((WebGetAttribute) atts [0]).Info;
 			atts = mi.GetCustomAttributes (typeof (WebInvokeAttribute), false);
@@ -68,6 +70,10 @@ namespace System.ServiceModel.Description
 
 			template = new UriTemplate (info.UriTemplate ?? BuildUriTemplate ());
 			message_desc = GetMessageDescription ();
+		}
+
+		public WebAttributeInfo Info {
+			get { return info; }
 		}
 
 		public OperationDescription Operation {
@@ -127,40 +133,40 @@ namespace System.ServiceModel.Description
 
 		internal class RequestClientFormatter : WebClientMessageFormatter
 		{
-			public RequestClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			public RequestClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 		}
 
 		internal class ReplyClientFormatter : WebClientMessageFormatter
 		{
-			public ReplyClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			public ReplyClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 		}
 
 		internal class RequestDispatchFormatter : WebDispatchMessageFormatter
 		{
-			public RequestDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			public RequestDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 		}
 
 		internal class ReplyDispatchFormatter : WebDispatchMessageFormatter
 		{
-			public ReplyDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			public ReplyDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 		}
 
 		internal abstract class WebClientMessageFormatter : WebMessageFormatter, IClientMessageFormatter
 		{
-			protected WebClientMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			protected WebClientMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 
@@ -210,8 +216,8 @@ namespace System.ServiceModel.Description
 
 		internal abstract class WebDispatchMessageFormatter : WebMessageFormatter, IDispatchMessageFormatter
 		{
-			protected WebDispatchMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
-				: base (operation, endpoint, converter)
+			protected WebDispatchMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter, WebHttpBehavior behavior)
+				: base (operation, endpoint, converter, behavior)
 			{
 			}
 
