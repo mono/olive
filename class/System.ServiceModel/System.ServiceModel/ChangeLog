@@ -5,6 +5,10 @@
 
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ClientRuntimeChannel.cs : build fix.
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ClientBase.cs, ClientProxyGenerator.cs : the client proxy does not
 	  have to be generic, so removed the type argument.
 	* ChannelFactory_1.cs : ditto.

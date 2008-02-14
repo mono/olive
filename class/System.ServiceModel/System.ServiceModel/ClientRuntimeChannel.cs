@@ -173,6 +173,7 @@ namespace System.ServiceModel
 		protected override IAsyncResult OnBeginOpen (
 			TimeSpan timeout, AsyncCallback callback, object state)
 		{
+			throw new SystemException ("INTERNAL ERROR: this should not be called (or not supported yet)");
 		}
 
 		protected override void OnEndOpen (IAsyncResult result)
