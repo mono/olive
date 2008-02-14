@@ -34,7 +34,7 @@ using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
-	internal class ClientRuntimeChannel<TContract>
+	internal class ClientRuntimeChannel
 		: CommunicationObject, IClientChannel
 	{
 		ClientRuntime runtime;
@@ -173,17 +173,14 @@ namespace System.ServiceModel
 		protected override IAsyncResult OnBeginOpen (
 			TimeSpan timeout, AsyncCallback callback, object state)
 		{
-			return factory.BeginOpen (timeout, callback, state);
 		}
 
 		protected override void OnEndOpen (IAsyncResult result)
 		{
-			factory.EndOpen (result);
 		}
 
 		protected override void OnOpen (TimeSpan timeout)
 		{
-			factory.Open (timeout);
 		}
 
 		// IChannel

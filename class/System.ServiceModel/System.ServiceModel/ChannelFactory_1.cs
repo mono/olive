@@ -114,7 +114,8 @@ namespace System.ServiceModel
 		[MonoTODO]
 		public virtual TChannel CreateChannel (EndpointAddress address, Uri via)
 		{
-			Type type = ClientProxyGenerator.CreateProxyType<TChannel> (Endpoint.Contract);
+			EnsureOpened ();
+			Type type = ClientProxyGenerator.CreateProxyType (Endpoint.Contract);
 			object proxy = Activator.CreateInstance (type,
 				new object [] {CreateRuntime (Endpoint), this});
 			return (TChannel) proxy;

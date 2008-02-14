@@ -38,19 +38,19 @@ namespace System.ServiceModel
 {
 	internal class ClientProxyGenerator
 	{
-		public static Type CreateProxyType<TContract> (ContractDescription cd)
+		public static Type CreateProxyType (ContractDescription cd)
 		{
 			string modname = "dummy";
 
-			// public class __clientproxy_MyContract : ClientRuntimeChannel<[TContract]>, TContract
+			// public class __clientproxy_MyContract : ClientRuntimeChannel, [ContractType]
 			CodeClass c = new CodeModule (modname).CreateClass (
 				"__clientproxy_" + cd.Name,
-				typeof (ClientRuntimeChannel<TContract>),
+				typeof (ClientRuntimeChannel),
 				new Type [] {cd.ContractType});
 
 			//
 			// public __clientproxy_MyContract (
-			//	ClientRuntime arg1, ClientBase<[TContract]> arg2)
+			//	ClientRuntime arg1, ChannelFactory arg2)
 			//	: base (arg1, arg2)
 			// {
 			// }
@@ -60,8 +60,8 @@ namespace System.ServiceModel
 			CodeMethod ctor = c.CreateConstructor (
 				MethodAttributes.Public, ctorargs);
 			CodeBuilder b = ctor.CodeBuilder;
-			MethodBase baseCtor = typeof (ClientRuntimeChannel<TContract>).GetConstructor (ctorargs);
-			if (baseCtor == null) throw new Exception ("INTERNAL ERROR: ClientRuntimeChannel<TContract>#.ctor(ClientRuntime,ChannelFactory) does not exist.");
+			MethodBase baseCtor = typeof (ClientRuntimeChannel).GetConstructor (ctorargs);
+			if (baseCtor == null) throw new Exception ("INTERNAL ERROR: ClientRuntimeChannel#.ctor(ClientRuntime,ChannelFactory) does not exist.");
 			b.Call (
 				ctor.GetThis (),
 				baseCtor,
@@ -69,8 +69,8 @@ namespace System.ServiceModel
 				new CodeArgumentReference (typeof (ChannelFactory), 2, "arg1"));
 
 			// member implementation
-			MethodInfo processMethod = typeof (ClientRuntimeChannel<TContract>).GetMethod ("Process");
-			if (processMethod == null) throw new Exception ("INTERNAL ERROR: ClientRuntimeChannel<TContract>.Process() does not exist.");
+			MethodInfo processMethod = typeof (ClientRuntimeChannel).GetMethod ("Process");
+			if (processMethod == null) throw new Exception ("INTERNAL ERROR: ClientRuntimeChannel.Process() does not exist.");
 			foreach (OperationDescription od in cd.Operations) {
 				// FIXME: handle properties and events.
 				if (od.SyncMethod != null)

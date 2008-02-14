@@ -42,7 +42,7 @@ namespace System.ServiceModel
 		: IDisposable, ICommunicationObject
 	{
 		ChannelFactory<TChannel> factory;
-		ClientRuntimeChannel<TChannel> inner_channel;
+		ClientRuntimeChannel inner_channel;
 		CommunicationState state;
 
 		protected ClientBase ()
@@ -167,7 +167,7 @@ namespace System.ServiceModel
 		public IClientChannel InnerChannel {
 			get {
 				if (inner_channel == null)
-					inner_channel = (ClientRuntimeChannel<TChannel>) (object) factory.CreateChannel ();
+					inner_channel = (ClientRuntimeChannel) (object) factory.CreateChannel ();
 				return inner_channel;
 			}
 		}
@@ -208,7 +208,6 @@ namespace System.ServiceModel
 			return ChannelFactory.CreateChannel ();
 		}
 
-		[MonoTODO]
 		public void Open ()
 		{
 			InnerChannel.Open ();
