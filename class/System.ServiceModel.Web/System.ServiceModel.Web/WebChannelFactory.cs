@@ -39,51 +39,43 @@ namespace System.ServiceModel.Web
 {
 	public class WebChannelFactory<TChannel> : ChannelFactory<TChannel>
 	{
-		[MonoTODO]
 		public WebChannelFactory ()
 			: base ()
 		{
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (Type serviceType)
 			: base (serviceType)
 		{
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (string configurationName)
 			: base (configurationName)
 		{
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (Binding binding)
 			: base (binding)
 		{
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (Uri remoteAddress)
 			: base ()
 		{
 			Endpoint.Address = new EndpointAddress (remoteAddress);
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (string configurationName, Uri remoteAddress)
 			: this (configurationName)
 		{
 			Endpoint.Address = new EndpointAddress (remoteAddress);
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (Binding binding, Uri remoteAddress)
 			: this (new ServiceEndpoint (ContractDescription.GetContract (typeof (TChannel)), binding, new EndpointAddress (remoteAddress)))
 		{
 		}
 
-		[MonoTODO]
 		public WebChannelFactory (ServiceEndpoint endpoint)
 			: base (endpoint)
 		{

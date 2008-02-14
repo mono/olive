@@ -110,25 +110,25 @@ namespace System.ServiceModel.Description
 		[MonoTODO]
 		protected virtual IClientMessageFormatter GetReplyClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
+			return new WebMessageFormatter.ReplyClientFormatter (operationDescription, endpoint);
 		}
 
 		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetReplyDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
+			return new WebMessageFormatter.ReplyDispatchFormatter (operationDescription, endpoint);
 		}
 
 		[MonoTODO]
 		protected virtual IClientMessageFormatter GetRequestClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
+			return new WebMessageFormatter.RequestClientFormatter (operationDescription, endpoint);
 		}
 
 		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetRequestDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
+			return new WebMessageFormatter.RequestDispatchFormatter (operationDescription, endpoint);
 		}
 
 		[MonoTODO]

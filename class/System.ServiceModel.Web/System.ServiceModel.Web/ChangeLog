@@ -1,5 +1,11 @@
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebAttributeInfo.cs : new class to unify WebGet and WebInvoke.
+	* WebInvokeAttribute.cs, WebGetAttribute.cs : rewrote to use above.
+	* WebChannelFactory.cs : removed couple of MonoTODOs.
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebGetAttribute.cs, WebInvokeAttribute.cs : they are "passive"
 	  operation behaviors and do nothing.
 	* WebChannelFactory.cs : if no Binding is set, set default

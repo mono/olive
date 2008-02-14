@@ -36,56 +36,47 @@ namespace System.ServiceModel.Web
 	[AttributeUsage (AttributeTargets.Method)]
 	public sealed class WebInvokeAttribute : Attribute, IOperationBehavior
 	{
-		string uri_template;
-		WebMessageFormat request_format, response_format;
-		WebMessageBodyStyle body_style;
-		bool has_body_style, has_request_format, has_response_format;
-		string method = "POST";
+		WebAttributeInfo info = new WebAttributeInfo ();
+
+		internal WebAttributeInfo Info {
+			get { return info; }
+		}
 
 		public WebMessageBodyStyle BodyStyle {
-			get { return body_style; }
-			set {
-				body_style = value;
-				has_body_style = true;
-			}
+			get { return info.BodyStyle; }
+			set { info.BodyStyle = value; }
 		}
 
 		public bool IsBodyStyleSetExplicitly {
-			get { return has_body_style; }
+			get { return info.IsBodyStyleSetExplicitly; }
 		}
 
 		public bool IsRequestFormatSetExplicitly {
-			get { return has_request_format; }
+			get { return info.IsRequestFormatSetExplicitly; }
 		}
 
 		public bool IsResponseFormatSetExplicitly {
-			get { return has_response_format; }
+			get { return info.IsResponseFormatSetExplicitly; }
 		}
 
 		public WebMessageFormat RequestFormat {
-			get { return request_format; }
-			set {
-				request_format = value;
-				has_request_format = true;
-			}
+			get { return info.RequestFormat; }
+			set { info.RequestFormat = value; }
 		}
 
 		public WebMessageFormat ResponseFormat {
-			get { return response_format; }
-			set {
-				response_format = value;
-				has_response_format = true;
-			}
+			get { return info.ResponseFormat ; }
+			set { info.ResponseFormat = value; }
 		}
 
 		public string Method {
-			get { return method; }
-			set { method = value; }
+			get { return info.Method; }
+			set { info.Method = value; }
 		}
 
 		public string UriTemplate {
-			get { return uri_template; }
-			set { uri_template = value; }
+			get { return info.UriTemplate; }
+			set { info.UriTemplate = value; }
 		}
 
 		void IOperationBehavior.AddBindingParameters (OperationDescription operation, BindingParameterCollection parameters)

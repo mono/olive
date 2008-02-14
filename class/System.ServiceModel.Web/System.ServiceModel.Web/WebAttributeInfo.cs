@@ -1,5 +1,5 @@
 //
-// WebGetAttribute.cs
+// WebAttributeInfo.cs
 //
 // Author:
 //	Atsushi Enomoto  <atsushi@ximian.com>
@@ -33,70 +33,59 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel.Web
 {
-	[AttributeUsage (AttributeTargets.Method)]
-	public sealed class WebGetAttribute : Attribute, IOperationBehavior
+	internal class WebAttributeInfo
 	{
-		WebAttributeInfo info = new WebAttributeInfo () { Method = "GET" };
-
-		internal WebAttributeInfo Info {
-			get { return info; }
-		}
+		string uri_template;
+		WebMessageFormat request_format, response_format;
+		WebMessageBodyStyle body_style;
+		bool has_body_style, has_request_format, has_response_format;
+		string method = "POST";
 
 		public WebMessageBodyStyle BodyStyle {
-			get { return info.BodyStyle; }
-			set { info.BodyStyle = value; }
+			get { return body_style; }
+			set {
+				body_style = value;
+				has_body_style = true;
+			}
 		}
 
 		public bool IsBodyStyleSetExplicitly {
-			get { return info.IsBodyStyleSetExplicitly; }
+			get { return has_body_style; }
 		}
 
 		public bool IsRequestFormatSetExplicitly {
-			get { return info.IsRequestFormatSetExplicitly; }
+			get { return has_request_format; }
 		}
 
 		public bool IsResponseFormatSetExplicitly {
-			get { return info.IsResponseFormatSetExplicitly; }
+			get { return has_response_format; }
 		}
 
 		public WebMessageFormat RequestFormat {
-			get { return info.RequestFormat; }
-			set { info.RequestFormat = value; }
+			get { return request_format; }
+			set {
+				request_format = value;
+				has_request_format = true;
+			}
 		}
 
 		public WebMessageFormat ResponseFormat {
-			get { return info.ResponseFormat ; }
-			set { info.ResponseFormat = value; }
+			get { return response_format; }
+			set {
+				response_format = value;
+				has_response_format = true;
+			}
 		}
 
+		// only meaningful for WebInvokeAttribute.
 		public string Method {
-			get { return info.Method; }
-			set { info.Method = value; }
+			get { return method; }
+			set { method = value; }
 		}
 
 		public string UriTemplate {
-			get { return info.UriTemplate; }
-			set { info.UriTemplate = value; }
-		}
-
-		void IOperationBehavior.AddBindingParameters (OperationDescription operation, BindingParameterCollection parameters)
-		{
-			// "it is a passive operation behavior"
-		}
-
-		void IOperationBehavior.ApplyClientBehavior (OperationDescription operation, ClientOperation client)
-		{
-			// "it is a passive operation behavior"
-		}
-
-		void IOperationBehavior.ApplyDispatchBehavior (OperationDescription operation, DispatchOperation service)
-		{
-			// "it is a passive operation behavior"
-		}
-
-		void IOperationBehavior.Validate (OperationDescription operation)
-		{
-			// "it is a passive operation behavior"
+			get { return uri_template; }
+			set { uri_template = value; }
 		}
 	}
 }
