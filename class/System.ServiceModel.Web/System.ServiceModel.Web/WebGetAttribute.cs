@@ -69,11 +69,6 @@ namespace System.ServiceModel.Web
 			set { info.ResponseFormat = value; }
 		}
 
-		public string Method {
-			get { return info.Method; }
-			set { info.Method = value; }
-		}
-
 		public string UriTemplate {
 			get { return info.UriTemplate; }
 			set { info.UriTemplate = value; }

@@ -1,5 +1,9 @@
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebGetAttribute.cs : oops, Method is extraneous.
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebChannelFactory.cs : call base.OnOpening().
 
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
