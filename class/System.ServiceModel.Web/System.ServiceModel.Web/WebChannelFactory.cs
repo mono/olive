@@ -93,6 +93,9 @@ namespace System.ServiceModel.Web
 		{
 			if (Endpoint.Behaviors.Find<WebHttpBehavior> () == null)
 				Endpoint.Behaviors.Add (new WebHttpBehavior ());
+
+			if (Endpoint.Binding == null)
+				Endpoint.Binding = new WebHttpBinding ();
 		}
 	}
 }

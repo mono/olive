@@ -88,24 +88,24 @@ namespace System.ServiceModel.Web
 			set { uri_template = value; }
 		}
 
-		[MonoTODO]
 		void IOperationBehavior.AddBindingParameters (OperationDescription operation, BindingParameterCollection parameters)
 		{
+			// "it is a passive operation behavior"
 		}
 
-		[MonoTODO]
 		void IOperationBehavior.ApplyClientBehavior (OperationDescription operation, ClientOperation client)
 		{
+			// "it is a passive operation behavior"
 		}
 
-		[MonoTODO]
 		void IOperationBehavior.ApplyDispatchBehavior (OperationDescription operation, DispatchOperation service)
 		{
+			// "it is a passive operation behavior"
 		}
 
-		[MonoTODO]
 		void IOperationBehavior.Validate (OperationDescription operation)
 		{
+			// "it is a passive operation behavior"
 		}
 	}
 }

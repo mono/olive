@@ -1,5 +1,12 @@
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebGetAttribute.cs, WebInvokeAttribute.cs : they are "passive"
+	  operation behaviors and do nothing.
+	* WebChannelFactory.cs : if no Binding is set, set default
+	  WebHttpBinding.
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebChannelFactory.cs, WebServiceHost.cs : their role is to supply
 	  WebHttpBehavior.
 

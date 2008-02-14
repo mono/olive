@@ -16,5 +16,7 @@ System.ServiceModel.Syndication/SyndicationLinkTest.cs
 System.ServiceModel.Syndication/TextSyndicationContentTest.cs
 System.ServiceModel.Syndication/UrlSyndicationContentTest.cs
 System.ServiceModel.Syndication/XmlSyndicationContentTest.cs
+System.ServiceModel.Web/WebGetAttributeTest.cs
+System.ServiceModel.Web/WebInvokeAttributeTest.cs
 System.ServiceModel/WebHttpBindingTest.cs
 System/UriTemplateTest.cs
