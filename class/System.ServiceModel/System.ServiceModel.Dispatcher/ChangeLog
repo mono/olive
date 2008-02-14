@@ -1,3 +1,8 @@
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointDispatcher.cs : moved AddressFilter application only when
+	  DispatchOperation was not selected (it is sort of workaround).
+
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DefaultMessageOperationFormatter.cs : Fixed SerializeReply() for

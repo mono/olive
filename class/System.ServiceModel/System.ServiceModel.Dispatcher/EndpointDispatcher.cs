@@ -159,8 +159,6 @@ Console.WriteLine (ex);
 		void ProcessRequestCore (IReplyChannel reply, IServiceChannel cch, RequestContext rc)
 		{
 			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
-			if (IsMessageFilteredOut (rc.RequestMessage))
-				throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
 
 			Message req = rc.RequestMessage;
 			Message res = null;
@@ -179,8 +177,22 @@ Console.WriteLine (ex);
 				if (res == null)
 					op = DispatchRuntime.UnhandledDispatchOperation;
 			}
-			if (res == null)
+
+			if (res == null) {
+				// FIXME: AddressFilter is likely applied before
+				// an input is delivered to EndpointDispatcher. 
+				// This means, we likely have to make some
+				// conceptual changes to channel dispatcher and
+				// endpoint dispatcher.
+				// For now I moved AddressFilter here so that
+				// WebHttpDispatchOperationSelector to select 
+				// operation before the Message is filtered out.
+				if (IsMessageFilteredOut (req))
+					throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
+
 				res = op.ProcessRequest (req);
+			}
+
 			if (res == null)
 				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
 
