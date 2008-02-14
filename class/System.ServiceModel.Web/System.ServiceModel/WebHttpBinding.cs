@@ -32,30 +32,35 @@ using System.Xml;
 
 namespace System.ServiceModel
 {
-	[MonoTODO]
 	public class WebHttpBinding : Binding, IBindingRuntimePreferences
 	{
-		[MonoTODO]
 		public WebHttpBinding ()
+			: this (WebHttpSecurityMode.None)
 		{
 		}
 
-		[MonoTODO]
 		public WebHttpBinding (WebHttpSecurityMode mode)
 		{
 			security.Mode = mode;
+			// MSDN says that this security mode can be set only
+			// at .ctor(), so there is no problem on depending on
+			// this value here.
+			t = mode == WebHttpSecurityMode.Transport ? new HttpsTransportBindingElement () : new HttpTransportBindingElement ();
+			t.ManualAddressing = true;
 		}
 
 		[MonoTODO]
 		public WebHttpBinding (string configurationName)
 		{
+			throw new NotImplementedException ();
 		}
 
 		XmlDictionaryReaderQuotas quotas;
 		WebHttpSecurity security = new WebHttpSecurity ();
 		Encoding write_encoding = Encoding.UTF8;
-
-		HttpTransportBindingElement t = new HttpTransportBindingElement () { ManualAddressing = true };
+		HttpTransportBindingElement t;
+		// This can be changed only using <synchronousReceive> configuration element.
+		bool receive_synchronously;
 
 		public bool AllowCookies {
 			get { return t.AllowCookies; }
@@ -105,7 +110,6 @@ namespace System.ServiceModel
 			get { return Security.Mode != WebHttpSecurityMode.None ? Uri.UriSchemeHttps : Uri.UriSchemeHttp; }
 		}
 
-		[MonoTODO]
 		public WebHttpSecurity Security {
 			get { return security; }
 		}
@@ -129,11 +133,8 @@ namespace System.ServiceModel
 			}
 		}
 
-		[MonoTODO]
 		public override BindingElementCollection CreateBindingElements ()
 		{
-			// FIXME: apply Security
-
 			WebMessageEncodingBindingElement m = new WebMessageEncodingBindingElement (WriteEncoding);
 			if (ReaderQuotas != null)
 				ReaderQuotas.CopyTo (m.ReaderQuotas);
@@ -141,9 +142,8 @@ namespace System.ServiceModel
 			return new BindingElementCollection (m, t.Clone ());
 		}
 
-		[MonoTODO]
 		bool IBindingRuntimePreferences.ReceiveSynchronously {
-			get { throw new NotImplementedException (); }
+			get { return receive_synchronously; }
 		}
 	}
 }

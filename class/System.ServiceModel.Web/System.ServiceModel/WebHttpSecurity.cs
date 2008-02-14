@@ -34,15 +34,16 @@ namespace System.ServiceModel
 		}
 
 		WebHttpSecurityMode mode;
+		// there is no publicly exposed constructor for transport ...
+		HttpTransportSecurity transport = new BasicHttpBinding ().Security.Transport;
 
 		public WebHttpSecurityMode Mode {
 			get { return mode; }
 			set { mode = value; }
 		}
 
-		[MonoTODO] // how can I instantiate it?
 		public HttpTransportSecurity Transport {
-			get { throw new NotImplementedException (); }
+			get { return transport; }
 		}
 	}
 }

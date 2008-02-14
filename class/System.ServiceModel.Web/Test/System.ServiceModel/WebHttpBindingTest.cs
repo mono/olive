@@ -18,6 +18,7 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (0x10000, b.MaxBufferSize, "#3");
 			Assert.AreEqual (0x80000, b.MaxBufferPoolSize, "#4");
 			Assert.AreEqual (0x10000, b.MaxReceivedMessageSize, "#5");
+			Assert.IsFalse (((IBindingRuntimePreferences) b).ReceiveSynchronously, "#6");
 		}
 
 		[Test]

@@ -1,3 +1,9 @@
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpBinding.cs : implemented every remaining member but
+	  configuration support.
+	* WebHttpSecurity.cs : implement Transport.
+
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBinding.cs : use ManualAddressing.
