@@ -1,3 +1,8 @@
+2008-02-14  Igor Zelmanovich  <igorz@mainsoft.com>
+
+	* ServiceContractAttribute.cs: fixed public API
+	added property "ConfigurationName"	
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientBase.cs, ClientProxyGenerator.cs : the client proxy does not

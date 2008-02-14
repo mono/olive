@@ -38,6 +38,7 @@ namespace System.ServiceModel
 		SessionMode session;
 		ProtectionLevel protection_level;
 		bool has_protection_level;
+		string _configurationName;
 
 		public Type CallbackContract {
 			get { return callback_contract; }
@@ -69,6 +70,11 @@ namespace System.ServiceModel
 		public SessionMode SessionMode {
 			get { return session; }
 			set { session = value; }
+		}
+
+		public string ConfigurationName {
+			get { return _configurationName; }
+			set { _configurationName = value; }
 		}
 	}
 }
