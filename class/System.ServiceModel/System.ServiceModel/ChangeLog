@@ -1,3 +1,9 @@
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ChannelFactory_1.cs : populate ClientOperations before applying
+	  IEndpointBehavior and IContractBehavior so that they can access to
+	  ClientOperations.
+
 2008-02-14  Igor Zelmanovich  <igorz@mainsoft.com>
 
 	* ServiceContractAttribute.cs: fixed public API

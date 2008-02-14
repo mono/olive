@@ -139,17 +139,18 @@ namespace System.ServiceModel
 			ClientRuntime proxy = new ClientRuntime (se);
 			proxy.ContractClientType = typeof (TChannel);
 
+			foreach (OperationDescription od in se.Contract.Operations)
+				if (!proxy.Operations.Contains (od.Name))
+					PopulateClientOperation (proxy, od);
+
 			foreach (IEndpointBehavior b in se.Behaviors)
 				b.ApplyClientBehavior (se, proxy);
 
 			foreach (IContractBehavior b in se.Contract.Behaviors)
 				b.ApplyClientBehavior (se.Contract, se, proxy);
-			foreach (OperationDescription od in se.Contract.Operations) {
-				if (!proxy.Operations.Contains (od.Name))
-					PopulateClientOperation (proxy, od);
+			foreach (OperationDescription od in se.Contract.Operations)
 				foreach (IOperationBehavior ob in od.Behaviors)
 					ob.ApplyClientBehavior (od, proxy.Operations [od.Name]);
-			}
 
 			return proxy;
 		}
