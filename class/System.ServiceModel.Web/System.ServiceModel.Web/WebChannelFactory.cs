@@ -88,6 +88,8 @@ namespace System.ServiceModel.Web
 
 			if (Endpoint.Binding == null)
 				Endpoint.Binding = new WebHttpBinding ();
+
+			base.OnOpening ();
 		}
 	}
 }

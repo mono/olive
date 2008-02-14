@@ -1,5 +1,9 @@
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebChannelFactory.cs : call base.OnOpening().
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebAttributeInfo.cs : new class to unify WebGet and WebInvoke.
 	* WebInvokeAttribute.cs, WebGetAttribute.cs : rewrote to use above.
 	* WebChannelFactory.cs : removed couple of MonoTODOs.

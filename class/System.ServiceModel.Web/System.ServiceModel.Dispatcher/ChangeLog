@@ -1,5 +1,10 @@
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageFormatter.cs : pass QueryStringConverter which is used to
+	  convert parameter objects to the components of the request URI.
+
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageFormatter.cs : new message formatter that is created
 	  from WebHttpBehavior and handles [WebGet] or [WebInvoke]. Not done.
 

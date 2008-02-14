@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Collections.Specialized;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
@@ -40,12 +41,14 @@ namespace System.ServiceModel.Description
 		OperationDescription operation;
 		MessageDescription message_desc;
 		ServiceEndpoint endpoint;
+		QueryStringConverter converter;
 		UriTemplate template;
 
-		public WebMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint)
+		public WebMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
 		{
 			this.operation = operation;
 			this.endpoint = endpoint;
+			this.converter = converter;
 			ApplyWebAttribute ();
 		}
 
@@ -71,8 +74,12 @@ namespace System.ServiceModel.Description
 			get { return operation; }
 		}
 
-		public MessageDescription Message {
+		public MessageDescription MessageDescription {
 			get { return message_desc; }
+		}
+
+		public QueryStringConverter Converter {
+			get { return converter; }
 		}
 
 		public ServiceEndpoint Endpoint {
@@ -84,6 +91,15 @@ namespace System.ServiceModel.Description
 		}
 
 		public abstract MessageDirection MessageDirection { get; }
+
+		protected void CheckMessageVersion (MessageVersion messageVersion)
+		{
+			if (messageVersion == null)
+				throw new ArgumentNullException ("messageVersion");
+
+			if (!MessageVersion.None.Equals (messageVersion))
+				throw new ArgumentException ("Only MessageVersion.None is supported");
+		}
 
 		string BuildUriTemplate ()
 		{
@@ -109,10 +125,42 @@ namespace System.ServiceModel.Description
 			throw new SystemException ("INTERNAL ERROR: no corresponding message description for the specified direction: " + MessageDirection);
 		}
 
-		internal class RequestClientFormatter : WebMessageFormatter, IClientMessageFormatter
+		internal class RequestClientFormatter : WebClientMessageFormatter
 		{
-			public RequestClientFormatter (OperationDescription operation, ServiceEndpoint endpoint)
-				: base (operation, endpoint)
+			public RequestClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
+			{
+			}
+		}
+
+		internal class ReplyClientFormatter : WebClientMessageFormatter
+		{
+			public ReplyClientFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
+			{
+			}
+		}
+
+		internal class RequestDispatchFormatter : WebDispatchMessageFormatter
+		{
+			public RequestDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
+			{
+			}
+		}
+
+		internal class ReplyDispatchFormatter : WebDispatchMessageFormatter
+		{
+			public ReplyDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
+			{
+			}
+		}
+
+		internal abstract class WebClientMessageFormatter : WebMessageFormatter, IClientMessageFormatter
+		{
+			protected WebClientMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
 			{
 			}
 
@@ -122,41 +170,48 @@ namespace System.ServiceModel.Description
 
 			public Message SerializeRequest (MessageVersion messageVersion, object [] parameters)
 			{
-				throw new NotImplementedException ();
+				if (parameters == null)
+					throw new ArgumentNullException ("parameters");
+				CheckMessageVersion (messageVersion);
+
+				var c = new NameValueCollection ();
+
+				if (parameters.Length != MessageDescription.Body.Parts.Count)
+					throw new ArgumentException ("Parameter array length does not match the number of message body parts");
+
+				for (int i = 0; i < parameters.Length; i++) {
+					var p = MessageDescription.Body.Parts [i];
+					string name = p.Name.ToUpperInvariant ();
+					if (UriTemplate.PathSegmentVariableNames.Contains (name) ||
+					    UriTemplate.QueryValueVariableNames.Contains (name))
+						c.Add (name, parameters [i] != null ? Converter.ConvertValueToString (parameters [i], parameters [i].GetType ()) : null);
+					else
+						// FIXME: bind as a message part
+						throw new NotImplementedException (String.Format ("parameter {0} is not contained in the URI template {1} {2} {3}", p.Name, UriTemplate, UriTemplate.PathSegmentVariableNames.Count, UriTemplate.QueryValueVariableNames.Count));
+				}
+
+				Uri to = UriTemplate.BindByName (Endpoint.Address.Uri, c);
+
+				Message ret = Message.CreateMessage (messageVersion, null);
+				ret.Headers.To = to;
+
+				return ret;
 			}
 
 			public object DeserializeReply (Message message, object [] parameters)
 			{
+				if (parameters == null)
+					throw new ArgumentNullException ("parameters");
+				CheckMessageVersion (message.Version);
+
 				throw new NotImplementedException ();
 			}
 		}
 
-		internal class ReplyClientFormatter : WebMessageFormatter, IClientMessageFormatter
+		internal abstract class WebDispatchMessageFormatter : WebMessageFormatter, IDispatchMessageFormatter
 		{
-			public ReplyClientFormatter (OperationDescription operation, ServiceEndpoint endpoint)
-				: base (operation, endpoint)
-			{
-			}
-
-			public override MessageDirection MessageDirection {
-				get { return MessageDirection.Output; }
-			}
-
-			public Message SerializeRequest (MessageVersion messageVersion, object [] parameters)
-			{
-				throw new NotImplementedException ();
-			}
-
-			public object DeserializeReply (Message message, object [] parameters)
-			{
-				throw new NotImplementedException ();
-			}
-		}
-
-		internal class RequestDispatchFormatter : WebMessageFormatter, IDispatchMessageFormatter
-		{
-			public RequestDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint)
-				: base (operation, endpoint)
+			protected WebDispatchMessageFormatter (OperationDescription operation, ServiceEndpoint endpoint, QueryStringConverter converter)
+				: base (operation, endpoint, converter)
 			{
 			}
 
@@ -166,33 +221,19 @@ namespace System.ServiceModel.Description
 
 			public Message SerializeReply (MessageVersion messageVersion, object [] parameters, object result)
 			{
+				if (parameters == null)
+					throw new ArgumentNullException ("parameters");
+				CheckMessageVersion (messageVersion);
+
 				throw new NotImplementedException ();
 			}
 
 			public void DeserializeRequest (Message message, object [] parameters)
 			{
-				throw new NotImplementedException ();
-			}
-		}
+				if (parameters == null)
+					throw new ArgumentNullException ("parameters");
+				CheckMessageVersion (message.Version);
 
-		internal class ReplyDispatchFormatter : WebMessageFormatter, IDispatchMessageFormatter
-		{
-			public ReplyDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint)
-				: base (operation, endpoint)
-			{
-			}
-
-			public override MessageDirection MessageDirection {
-				get { return MessageDirection.Output; }
-			}
-
-			public Message SerializeReply (MessageVersion messageVersion, object [] parameters, object result)
-			{
-				throw new NotImplementedException ();
-			}
-
-			public void DeserializeRequest (Message message, object [] parameters)
-			{
 				throw new NotImplementedException ();
 			}
 		}

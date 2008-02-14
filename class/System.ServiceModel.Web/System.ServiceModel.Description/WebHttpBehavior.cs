@@ -75,24 +75,23 @@ namespace System.ServiceModel.Description
 		{
 		}
 
-		[MonoTODO]
+		[MonoTODO ("where should I set reply client formatter?")]
 		public virtual void ApplyClientBehavior (ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
 			foreach (ClientOperation oper in clientRuntime.Operations) {
-				// GetClientRequestFormatter/GetClientReplyFormatter
 				oper.Formatter = GetRequestClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
-				oper.Formatter = GetReplyClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+				//oper.Formatter = GetReplyClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint); // FIXME: see MonoTODO.
 			}
 		}
 
+		[MonoTODO ("where should I set reply dispatch formatter?")]
 		public virtual void ApplyDispatchBehavior (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
 			endpointDispatcher.DispatchRuntime.OperationSelector = GetOperationSelector (endpoint);
 
 			foreach (DispatchOperation oper in endpointDispatcher.DispatchRuntime.Operations) {
-				// GetClientRequestFormatter/GetClientReplyFormatter
 				oper.Formatter = GetRequestDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
-				oper.Formatter = GetReplyDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
+				//oper.Formatter = GetReplyDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint); // FIXME: see MonoTODO.
 			}
 		}
 
@@ -101,34 +100,33 @@ namespace System.ServiceModel.Description
 			return new WebHttpDispatchOperationSelector (endpoint);
 		}
 
-		[MonoTODO]
 		protected virtual QueryStringConverter GetQueryStringConverter (OperationDescription operationDescription)
 		{
-			throw new NotImplementedException ();
+			return new QueryStringConverter ();
 		}
 
 		[MonoTODO]
 		protected virtual IClientMessageFormatter GetReplyClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			return new WebMessageFormatter.ReplyClientFormatter (operationDescription, endpoint);
+			return new WebMessageFormatter.ReplyClientFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription));
 		}
 
 		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetReplyDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			return new WebMessageFormatter.ReplyDispatchFormatter (operationDescription, endpoint);
+			return new WebMessageFormatter.ReplyDispatchFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription));
 		}
 
 		[MonoTODO]
 		protected virtual IClientMessageFormatter GetRequestClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			return new WebMessageFormatter.RequestClientFormatter (operationDescription, endpoint);
+			return new WebMessageFormatter.RequestClientFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription));
 		}
 
 		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetRequestDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
-			return new WebMessageFormatter.RequestDispatchFormatter (operationDescription, endpoint);
+			return new WebMessageFormatter.RequestDispatchFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription));
 		}
 
 		[MonoTODO]
