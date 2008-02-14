@@ -89,9 +89,10 @@ namespace System.ServiceModel.Web
 		{
 		}
 
-		[MonoTODO]
 		protected override void OnOpening ()
 		{
+			if (Endpoint.Behaviors.Find<WebHttpBehavior> () == null)
+				Endpoint.Behaviors.Add (new WebHttpBehavior ());
 		}
 	}
 }

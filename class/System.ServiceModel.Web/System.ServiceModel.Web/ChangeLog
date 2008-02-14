@@ -1,3 +1,8 @@
+2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebChannelFactory.cs, WebServiceHost.cs : their role is to supply
+	  WebHttpBehavior.
+
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebChannelFactory.cs : added more constructors.

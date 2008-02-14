@@ -56,6 +56,10 @@ namespace System.ServiceModel.Web
 
 		protected override void OnOpening ()
 		{
+			foreach (ServiceEndpoint se in Description.Endpoints)
+				if (se.Binding is WebHttpBinding)
+					if (se.Behaviors.Find<WebHttpBehavior> () == null)
+						se.Behaviors.Add (new WebHttpBehavior ());
 		}
 	}
 }
