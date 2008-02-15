@@ -52,8 +52,9 @@ namespace System.ServiceModel.Channels
 			: base (context.Binding)
 		{
 			// FIXME: consider ListenUriMode
-			listen_uri = new Uri (context.ListenUriBaseAddress,
-				context.ListenUriRelativeAddress);
+			// FIXME: there should be some way to post-provide Uri in case of null listenerUri in context.
+			listen_uri = context.ListenUriBaseAddress != null ?
+				new Uri (context.ListenUriBaseAddress, context.ListenUriRelativeAddress) : null;
 			foreach (BindingElement be in context.RemainingBindingElements) {
 				MessageEncodingBindingElement mbe = be as MessageEncodingBindingElement;
 				if (mbe != null) {

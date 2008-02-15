@@ -198,6 +198,12 @@ namespace MonoTests.System.ServiceModel.Channels
 			f.CreateChannel (new EndpointAddress ("stream:dummy"));
 		}
 
+		[Test]
+		public void BuildChannelListenerWithoutListenUri ()
+		{
+			new BasicHttpBinding ().BuildChannelListener<IReplyChannel> (new BindingParameterCollection ());
+		}
+
 		#region connection test
 
 		string svcret;
