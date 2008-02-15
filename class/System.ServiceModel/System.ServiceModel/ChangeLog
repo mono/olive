@@ -1,3 +1,7 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddress.cs : reject relative Uri.
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ChannelFactory_1.cs : populate ClientOperations before applying

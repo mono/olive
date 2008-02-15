@@ -84,6 +84,13 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void ConstructorRelativeUri ()
+		{
+			new EndpointAddress (new Uri (String.Empty, UriKind.RelativeOrAbsolute));
+		}
+
+		[Test]
 		public void Headers ()
 		{
 			EndpointAddress e = new EndpointAddress ("urn:foo");

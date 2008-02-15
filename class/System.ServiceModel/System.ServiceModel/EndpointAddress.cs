@@ -64,14 +64,8 @@ namespace System.ServiceModel
 		static XmlSchema schema;
 
 		public EndpointAddress (string uri)
-			: this (new Uri (uri)) {}
-
-		EndpointAddress (Uri uri)
+			: this (new Uri (uri), new AddressHeader [0])
 		{
-			if (uri == null)
-				throw new ArgumentNullException ();
-			this.address = uri;
-			headers = new AddressHeaderCollection (new AddressHeader [0]);
 		}
 
 		public EndpointAddress (Uri uri, params AddressHeader [] headers)
@@ -90,7 +84,9 @@ namespace System.ServiceModel
 			XmlDictionaryReader extensionReader)
 		{	
 			if (uri == null)
-				throw new ArgumentNullException ();
+				throw new ArgumentNullException ("uri");
+			if (!uri.IsAbsoluteUri)
+				throw new ArgumentException ("The argument uri must be absolute");
 			this.address = uri;
 			this.identity = identity;
 			this.headers = headers;

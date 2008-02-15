@@ -1,3 +1,7 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddressTest.cs : test for rejecting relative Uri.
+
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ClientCredentialsSecurityTokenManagerTest.cs
