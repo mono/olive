@@ -92,6 +92,8 @@ namespace System.ServiceModel.Description
 		public virtual void ApplyDispatchBehavior (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
 			endpointDispatcher.DispatchRuntime.OperationSelector = GetOperationSelector (endpoint);
+			// FIXME: get HostNameComparisonMode from WebHttpBinding by some means.
+			endpointDispatcher.AddressFilter = new PrefixEndpointAddressMessageFilter (endpoint.Address);
 			AddServerErrorHandlers (endpoint, endpointDispatcher);
 
 			foreach (DispatchOperation oper in endpointDispatcher.DispatchRuntime.Operations) {

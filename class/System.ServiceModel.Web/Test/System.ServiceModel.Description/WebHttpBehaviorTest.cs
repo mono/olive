@@ -57,6 +57,8 @@ namespace MonoTests.System.ServiceModel.Description
 			Assert.AreEqual (initCB, se.Contract.Behaviors.Count, "#1-3-2");
 			Assert.AreEqual (initOB, od.Behaviors.Count, "#1-3-3");
 
+			Assert.IsTrue (ed.AddressFilter is EndpointAddressMessageFilter, "#1-4");
+
 			b.ApplyDispatchBehavior (se, ed);
 			// FIXME: implement and enable it later
 			//Assert.AreEqual (1, cd.ErrorHandlers.Count, "#2-1");
@@ -66,6 +68,8 @@ namespace MonoTests.System.ServiceModel.Description
 			Assert.AreEqual (initCB, se.Contract.Behaviors.Count, "#3-2");
 			Assert.AreEqual (initOB, od.Behaviors.Count, "#3-3");
 			// ... i.e. nothing is added.
+
+			Assert.IsTrue (ed.AddressFilter is PrefixEndpointAddressMessageFilter, "#3-4");
 
 			Assert.AreEqual (0, ed.DispatchRuntime.Operations.Count, "#4-0"); // hmm... really?
 		}
