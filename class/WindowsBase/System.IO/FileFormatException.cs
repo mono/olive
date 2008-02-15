@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Miguel de Icaza (miguel@ximian.com)
 //
 
 using System;
@@ -32,59 +33,62 @@ namespace System.IO {
 	[Serializable]
 	public class FileFormatException : FormatException, ISerializable
 	{
+		Uri source_uri;
+		
 		public FileFormatException () : base ()
 		{
-			throw new NotImplementedException ();			
 		}
 
 		public FileFormatException (string message) : base (message)
 		{
-			throw new NotImplementedException ();			
 		}
 
 		public FileFormatException (Uri sourceUri)
 		{
-			throw new NotImplementedException ();			
+			this.source_uri = sourceUri;
 		}
 
 		protected FileFormatException (SerializationInfo info, StreamingContext context)
 			: base (info, context)
 		{
-			throw new NotImplementedException ();			
+			if (info == null)
+				throw new ArgumentNullException ("info");
+			
+			info.GetValue ("sourceUri", typeof (Uri));
 		}
 
 		public FileFormatException (string message, Exception innerException)
 			: base (message, innerException)
 		{
-			throw new NotImplementedException ();			
 		}
 
 		public FileFormatException (Uri sourceUri, Exception innerException)
 			: base ("", innerException)
 		{
-			throw new NotImplementedException ();			
+			source_uri = sourceUri;
 		}
 
 		public FileFormatException (Uri sourceUri, string message)
 			: base (message)
 		{
-			throw new NotImplementedException ();			
+			source_uri = sourceUri;
 		}
 
 		public FileFormatException (Uri sourceUri, string message, Exception innerException)
 			: base (message, innerException)
 		{
-			throw new NotImplementedException ();			
+			source_uri = sourceUri;
 		}
 
 		public Uri SourceUri {
-			get { throw new NotImplementedException (); }
+			get { return source_uri; }
 		}
 
 		[SecurityCritical]
 		public override void GetObjectData (SerializationInfo info, StreamingContext context)
 		{
-			throw new NotImplementedException ();			
+			base.GetObjectData (info, context);
+			info.AddValue ("sourceUri", source_uri);
 		}
 	}
 }
