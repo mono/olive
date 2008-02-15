@@ -1,3 +1,7 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebAttributeInfo.cs : added BuildUriTemplate().
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebGetAttribute.cs : oops, Method is extraneous.

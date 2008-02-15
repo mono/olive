@@ -1,3 +1,9 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* UriTemplateTable.cs : key_value_pair was not set.
+	* UriTemplate.cs : in Match(), template and candidate could start
+	  from '/' which should not be compared.
+
 2008-02-12  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* UriTemplateMatch.cs : implemented some members.

@@ -43,13 +43,14 @@ namespace System
 		public UriTemplateTable (Uri baseAddress)
 		{
 			BaseAddress = baseAddress;
+			key_value_pairs = new List<Pair> ();
 		}
 
 		public UriTemplateTable (IEnumerable<Pair> keyValuePairs)
 		{
-			IList<Pair> l = keyValuePairs as IList<Pair>;
-			if (l == null)
-				l = new List<Pair> (keyValuePairs);
+			key_value_pairs = keyValuePairs as IList<Pair>;
+			if (key_value_pairs == null)
+				key_value_pairs = new List<Pair> (keyValuePairs);
 		}
 
 		public UriTemplateTable (Uri baseAddress, IEnumerable<Pair> keyValuePairs)

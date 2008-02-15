@@ -1,3 +1,8 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpDispatchOperationSelector.cs : implemented large part of it.
+	* WebMessageFormatter.cs : moved BuildUriTemplate to WebAttributeInfo.
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebMessageFormatter.cs : pass WebHttpBehavior too.

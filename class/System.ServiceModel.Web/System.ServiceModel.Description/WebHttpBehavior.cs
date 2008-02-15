@@ -68,16 +68,20 @@ namespace System.ServiceModel.Description
 		[MonoTODO]
 		protected virtual void AddClientErrorInspector (ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
+			// clientRuntime.MessageInspectors.Add (something);
 		}
 
 		[MonoTODO]
 		protected virtual void AddServerErrorHandlers (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
+			// endpointDispatcher.ChannelDispatcher.ErrorHandlers.Add (something);
 		}
 
 		[MonoTODO ("where should I set reply client formatter?")]
 		public virtual void ApplyClientBehavior (ServiceEndpoint endpoint, ClientRuntime clientRuntime)
 		{
+			AddClientErrorInspector (endpoint, clientRuntime);
+
 			foreach (ClientOperation oper in clientRuntime.Operations) {
 				oper.Formatter = GetRequestClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);
 				//oper.Formatter = GetReplyClientFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint); // FIXME: see MonoTODO.
@@ -88,6 +92,7 @@ namespace System.ServiceModel.Description
 		public virtual void ApplyDispatchBehavior (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher)
 		{
 			endpointDispatcher.DispatchRuntime.OperationSelector = GetOperationSelector (endpoint);
+			AddServerErrorHandlers (endpoint, endpointDispatcher);
 
 			foreach (DispatchOperation oper in endpointDispatcher.DispatchRuntime.Operations) {
 				oper.Formatter = GetRequestDispatchFormatter (endpoint.Contract.Operations.Find (oper.Name), endpoint);

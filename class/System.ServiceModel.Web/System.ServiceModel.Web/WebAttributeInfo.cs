@@ -30,6 +30,7 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using System.Text;
 
 namespace System.ServiceModel.Web
 {
@@ -87,5 +88,28 @@ namespace System.ServiceModel.Web
 			get { return uri_template; }
 			set { uri_template = value; }
 		}
+
+		public UriTemplate BuildUriTemplate (OperationDescription od, MessageDescription md)
+		{
+			if (uri_template != null)
+				return new UriTemplate (uri_template);
+			if (md == null)
+				foreach (MessageDescription mm in od.Messages)
+					if (mm.Direction == MessageDirection.Input)
+						md = mm;
+
+			StringBuilder sb = new StringBuilder ();
+			sb.Append (od.Name);
+			for (int i = 0; i < md.Body.Parts.Count; i++) {
+				MessagePartDescription mp = md.Body.Parts [i];
+				sb.Append (i == 0 ? '?' : '&');
+				sb.Append (mp.Name);
+				sb.Append ("={");
+				sb.Append (mp.Name);
+				sb.Append ('}');
+			}
+			return new UriTemplate (sb.ToString ());
+		}
+
 	}
 }

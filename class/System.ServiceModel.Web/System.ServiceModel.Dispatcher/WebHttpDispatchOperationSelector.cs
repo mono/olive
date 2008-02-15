@@ -29,6 +29,9 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
+using System.ServiceModel.Web;
+
+using TemplateTablePair = System.Collections.Generic.KeyValuePair<System.UriTemplate, object>;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -36,12 +39,26 @@ namespace System.ServiceModel.Dispatcher
 	{
 		public const string HttpOperationSelectorUriMatchedPropertyName = "UriMatched";
 
+		UriTemplateTable table;
+
 		protected WebHttpDispatchOperationSelector ()
 		{
 		}
 
 		public WebHttpDispatchOperationSelector (ServiceEndpoint endpoint)
 		{
+			if (endpoint == null)
+				throw new ArgumentNullException ("endpoint");
+			if (endpoint.Address == null)
+				throw new InvalidOperationException ("EndpointAddress must be set in the argument ServiceEndpoint");
+
+			table = new UriTemplateTable (endpoint.Address.Uri);
+
+			foreach (OperationDescription od in endpoint.Contract.Operations) {
+				WebAttributeInfo info = GetWebAttributeInfo (od);
+				if (info != null)
+					table.KeyValuePairs.Add (new TemplateTablePair (info.BuildUriTemplate (od, null), od));
+			}
 		}
 
 		[MonoTODO]
@@ -54,7 +71,42 @@ namespace System.ServiceModel.Dispatcher
 		[MonoTODO]
 		protected virtual string SelectOperation (ref Message message, out bool uriMatched)
 		{
-			throw new NotImplementedException ();
+			if (message == null)
+				throw new ArgumentNullException ("message");
+			if (message.Properties.ContainsKey (WebBodyFormatMessageProperty.Name))
+				throw new ArgumentException ("There is already message property for Web body format");
+			uriMatched = false;
+			Uri to = message.Headers.To;
+			if (to == null)
+				return String.Empty;
+
+			UriTemplateMatch match = table.MatchSingle (to);
+			OperationDescription od = null;
+			if (match != null) {
+				uriMatched = true;
+				foreach (TemplateTablePair p in table.KeyValuePairs)
+					if (p.Key == match.Template) {
+						od = p.Value as OperationDescription;
+						WebAttributeInfo info = GetWebAttributeInfo (od);
+						// FIXME: I doubt this content format assumption is correct ...
+						var prop = new WebBodyFormatMessageProperty (info.RequestFormat == WebMessageFormat.Xml ?WebContentFormat.Xml : WebContentFormat.Json);
+					}
+			}
+			return od != null ? od.Name : String.Empty;
+		}
+
+		WebAttributeInfo GetWebAttributeInfo (OperationDescription od)
+		{
+			foreach (IOperationBehavior ob in od.Behaviors) {
+				WebAttributeInfo info = null;
+				var wg = ob as WebGetAttribute;
+				if (wg != null)
+					return wg.Info;
+				var wi = ob as WebInvokeAttribute;
+				if (wi != null)
+					return wi.Info;
+			}
+			return null;
 		}
 	}
 }

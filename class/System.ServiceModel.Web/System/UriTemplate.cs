@@ -161,6 +161,12 @@ namespace System
 			var vc = m.BoundVariables;
 
 			string cp = candidate.PathAndQuery;
+
+			if (template.Length > 0 && template [0] == '/')
+				i++;
+			if (cp.Length > 0 && cp [0] == '/')
+				c++;
+
 			foreach (string name in path) {
 				int n = StringIndexOf (template, '{' + name + '}', i);
 				if (String.CompareOrdinal (cp, c, template, i, n - i) != 0)

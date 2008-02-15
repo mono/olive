@@ -68,7 +68,7 @@ namespace System.ServiceModel.Description
 			if (info == null)
 				info = new WebAttributeInfo ();
 
-			template = new UriTemplate (info.UriTemplate ?? BuildUriTemplate ());
+			template = info.BuildUriTemplate (Operation, GetMessageDescription ());
 			message_desc = GetMessageDescription ();
 		}
 
@@ -105,22 +105,6 @@ namespace System.ServiceModel.Description
 
 			if (!MessageVersion.None.Equals (messageVersion))
 				throw new ArgumentException ("Only MessageVersion.None is supported");
-		}
-
-		string BuildUriTemplate ()
-		{
-			StringBuilder sb = new StringBuilder ();
-			MessageDescription md = GetMessageDescription ();
-			sb.Append (Operation.Name);
-			for (int i = 0; i < md.Body.Parts.Count; i++) {
-				MessagePartDescription mp = md.Body.Parts [i];
-				sb.Append (i == 0 ? '?' : '&');
-				sb.Append (mp.Name);
-				sb.Append ("={");
-				sb.Append (mp.Name);
-				sb.Append ('}');
-			}
-			return sb.ToString ();
 		}
 
 		MessageDescription GetMessageDescription ()

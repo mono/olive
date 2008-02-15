@@ -1,3 +1,9 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebHttpBehavior.cs :
+	  Call AddClientErrorInspector() in ApplyClientBehavior().
+	  Call AddServerErrorHandlers() in ApplyDispatchBehavior().
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBehavior.cs : pass itself to WebMessageFormatter too.
