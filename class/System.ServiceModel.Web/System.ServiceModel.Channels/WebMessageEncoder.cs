@@ -65,8 +65,12 @@ namespace System.ServiceModel.Channels
 			throw new NotImplementedException ();
 		}
 
-		WebContentFormat GetContentFormat ()
+		WebContentFormat GetContentFormat (Message message)
 		{
+			string name = WebBodyFormatMessageProperty.Name;
+			if (message.Properties.ContainsKey (name))
+				return ((WebBodyFormatMessageProperty) message.Properties [name]).Format;
+
 			if (source.ContentTypeMapper != null)
 				return source.ContentTypeMapper.GetMessageFormatForContentType (ContentType);
 			switch (MediaType) {
@@ -92,7 +96,7 @@ namespace System.ServiceModel.Channels
 			if (stream == null)
 				throw new ArgumentNullException ("stream");
 
-			switch (GetContentFormat ()) {
+			switch (GetContentFormat (message)) {
 			case WebContentFormat.Xml:
 				using (XmlWriter w = XmlDictionaryWriter.CreateTextWriter (stream, source.WriteEncoding))
 					message.WriteMessage (w);

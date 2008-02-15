@@ -28,6 +28,8 @@
 using System;
 using System.Collections.Specialized;
 using System.Reflection;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Json;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Dispatcher;
@@ -72,6 +74,10 @@ namespace System.ServiceModel.Description
 			message_desc = GetMessageDescription ();
 		}
 
+		public WebHttpBehavior Behavior {
+			get { return behavior; }
+		}
+
 		public WebAttributeInfo Info {
 			get { return info; }
 		}
@@ -97,6 +103,17 @@ namespace System.ServiceModel.Description
 		}
 
 		public abstract MessageDirection MessageDirection { get; }
+
+		protected WebContentFormat ToContentFormat (WebMessageFormat src)
+		{
+			switch (src) {
+			case WebMessageFormat.Xml:
+				return WebContentFormat.Xml;
+			case WebMessageFormat.Json:
+				return WebContentFormat.Json;
+			}
+			throw new SystemException ("INTERNAL ERROR: should not happen");
+		}
 
 		protected void CheckMessageVersion (MessageVersion messageVersion)
 		{
@@ -190,6 +207,9 @@ namespace System.ServiceModel.Description
 				// FIXME: set hp.SuppressEntityBody for some cases.
 				ret.Properties.Add (HttpRequestMessageProperty.Name, hp);
 
+				var wp = new WebBodyFormatMessageProperty (ToContentFormat (Info.IsRequestFormatSetExplicitly ? Info.RequestFormat : Behavior.DefaultOutgoingRequestFormat));
+				ret.Properties.Add (WebBodyFormatMessageProperty.Name, wp);
+
 				return ret;
 			}
 
@@ -220,7 +240,45 @@ namespace System.ServiceModel.Description
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (messageVersion);
 
-				throw new NotImplementedException ();
+				// FIXME: use them.
+				// var dcob = Operation.Behaviors.Find<DataContractSerializerOperationBehavior> ();
+				// XmlObjectSerializer xos = dcob.CreateSerializer (result.GetType (), MessageDescription.Body.WrapperName, MessageDescription.Body.WrapperNamespace, null);
+				// var xsob = Operation.Behaviors.Find<XmlSerializerOperationBehavior> ();
+				// XmlSerializer [] serializers = XmlSerializer.FromMappings (xsob.GetXmlMappings ().ToArray ());
+
+				WebMessageFormat msgfmt = Info.IsResponseFormatSetExplicitly ? Info.ResponseFormat : Behavior.DefaultOutgoingResponseFormat;
+
+				string mediaType = null;
+				XmlObjectSerializer serializer = null;
+				if (result != null) {
+					switch (msgfmt) {
+					case WebMessageFormat.Xml:
+						serializer = new DataContractSerializer (result.GetType ());
+						mediaType = "application/xml";
+						break;
+					case WebMessageFormat.Json:
+						serializer = new DataContractJsonSerializer (result.GetType ());
+						mediaType = "appllication/json";
+						break;
+					}
+				}
+
+				// FIXME: serialize ref/out parameters as well.
+
+				Message ret = Message.CreateMessage (MessageVersion.None, null, result, serializer);
+
+				// Message properties
+
+				var hp = new HttpResponseMessageProperty ();
+				// FIXME: get encoding from somewhere
+				hp.Headers ["Content-Type"] = mediaType + "; encoding=utf-8";
+				// FIXME: fill some properties if required.
+				ret.Properties.Add (HttpResponseMessageProperty.Name, hp);
+
+				var wp = new WebBodyFormatMessageProperty (ToContentFormat (msgfmt));
+				ret.Properties.Add (WebBodyFormatMessageProperty.Name, wp);
+
+				return ret;
 			}
 
 			public void DeserializeRequest (Message message, object [] parameters)

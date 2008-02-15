@@ -1,5 +1,10 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageFormatter.cs : hack SerializeReply().
+	  Add WebBodyFormat property 
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageFormatter.cs : implement DeserializeRequest().
 
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>

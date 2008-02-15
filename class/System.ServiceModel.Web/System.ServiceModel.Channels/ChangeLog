@@ -1,3 +1,7 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebMessageEncoder.cs : consider WebBodyFormatMessageProperty.
+
 2008-02-08  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebMessageEncodingBindingElement.cs : removed some todos.
