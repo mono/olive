@@ -1,5 +1,11 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* ChannelDispatcher.cs : populate DispatchOperations before applying
+	  IEndpointBehaviors so that those behaviors can modify dispatch
+	  operations.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* DispatchOperation.cs : Action may be null. For such cases, use 
 	  MessageDirection to determine the message description.
 

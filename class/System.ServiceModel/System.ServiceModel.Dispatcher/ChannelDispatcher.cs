@@ -190,19 +190,20 @@ namespace System.ServiceModel.Dispatcher
 			endpoint_dispatcher.ChannelDispatcher = this;
 			host.ChannelDispatchers.Add (this);
 
-			foreach (IEndpointBehavior b in se.Behaviors)
-				b.ApplyDispatchBehavior (se, endpoint_dispatcher);
-
-			// apply behaviors
 			DispatchRuntime db = endpoint_dispatcher.DispatchRuntime;
-			foreach (IContractBehavior b in se.Contract.Behaviors)
-				b.ApplyDispatchBehavior (se.Contract, se, db);
-			foreach (OperationDescription od in se.Contract.Operations) {
+
+			foreach (OperationDescription od in se.Contract.Operations)
 				if (!db.Operations.Contains (od.Name))
 					PopulateDispatchOperation (db, od);
+
+			// apply behaviors
+			foreach (IEndpointBehavior b in se.Behaviors)
+				b.ApplyDispatchBehavior (se, endpoint_dispatcher);
+			foreach (IContractBehavior b in se.Contract.Behaviors)
+				b.ApplyDispatchBehavior (se.Contract, se, db);
+			foreach (OperationDescription od in se.Contract.Operations)
 				foreach (IOperationBehavior ob in od.Behaviors)
 					ob.ApplyDispatchBehavior (od, db.Operations [od.Name]);
-			}
 		}
 
 		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od)
