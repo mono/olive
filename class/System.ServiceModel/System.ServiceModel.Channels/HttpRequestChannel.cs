@@ -84,6 +84,13 @@ namespace System.ServiceModel.Channels
 
 		Message ProcessRequest (Message message, TimeSpan timeout)
 		{
+			// FIXME: is distination really like this?
+			Uri destination = message.Headers.To ?? Via ?? RemoteAddress.Uri;
+
+			web_request = HttpWebRequest.Create (destination);
+			web_request.Method = "POST";
+			web_request.ContentType = Encoder.ContentType;
+
 			web_request.Timeout = (int) timeout.TotalMilliseconds;
 
 			// There is no SOAP Action/To header when AddressingVersion is None.
@@ -93,22 +100,32 @@ namespace System.ServiceModel.Channels
 					message.Headers.RemoveAll ("Action", message.Version.Addressing.Namespace);
 					if (message.Headers.Action != null) throw new Exception (message.Headers.Action);
 				}
-
-				// FIXME: "To" header might also need special
-				// processing, but am not sure if it is fine
-				// to create a new WebRequest.
 			}
 
-			MemoryStream buffer = new MemoryStream ();
-			Encoder.WriteMessage (message, buffer);
+			// apply HttpRequestMessageProperty if exists.
+			bool suppressEntityBody = false;
+			string pname = HttpRequestMessageProperty.Name;
+			if (message.Properties.ContainsKey (pname)) {
+				HttpRequestMessageProperty hp = (HttpRequestMessageProperty) message.Properties [pname];
+				web_request.Headers.Add (hp.Headers);
+				web_request.Method = hp.Method;
+				// FIXME: do we have to handle hp.QueryString ?
+				if (hp.SuppressEntityBody)
+					suppressEntityBody = true;
+			}
 
-			if (buffer.Length > int.MaxValue)
-				throw new InvalidOperationException ("The argument message is too large.");
+			if (!suppressEntityBody && String.Compare (web_request.Method, "GET", StringComparison.OrdinalIgnoreCase) != 0) {
+				MemoryStream buffer = new MemoryStream ();
+				Encoder.WriteMessage (message, buffer);
 
-			web_request.ContentLength = (int) buffer.Length;
-			Stream requestStream = web_request.GetRequestStream ();
-			requestStream.Write (buffer.GetBuffer (), 0, (int) buffer.Length);
-			requestStream.Close ();
+				if (buffer.Length > int.MaxValue)
+					throw new InvalidOperationException ("The argument message is too large.");
+
+				web_request.ContentLength = (int) buffer.Length;
+				Stream requestStream = web_request.GetRequestStream ();
+				requestStream.Write (buffer.GetBuffer (), 0, (int) buffer.Length);
+				requestStream.Close ();
+			}
 
 			WebResponse res = web_request.GetResponse ();
 			try {
@@ -191,12 +208,6 @@ w.Close ();
 
 		protected override void OnOpen (TimeSpan timeout)
 		{
-			// FIXME: is distination really like this?
-			Uri destination = Via != null ? Via : RemoteAddress.Uri;
-
-			web_request = HttpWebRequest.Create (destination);
-			web_request.Method = "POST";
-			web_request.ContentType = Encoder.ContentType;
 		}
 
 		protected override IAsyncResult OnBeginOpen (TimeSpan timeout, AsyncCallback callback, object state)

@@ -1,5 +1,12 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* HttpRequestChannel.cs : create WebRequest against To message header
+	  item (if exists).
+	  Consider HttpRequestMessageProperty.
+	  Do not output body when suppressed or the method is GET.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* HttpChannelListener.cs : BindingContext may not have listenUri
 	  at its .ctor() step.
 
