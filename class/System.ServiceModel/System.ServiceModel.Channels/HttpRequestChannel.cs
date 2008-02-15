@@ -144,7 +144,7 @@ namespace System.ServiceModel.Channels
 
 					Message ret = Encoder.ReadMessage (
 						//responseStream, MaxSizeOfHeaders);
-						ms, MaxSizeOfHeaders);
+						ms, MaxSizeOfHeaders, res.ContentType);
 /*
 MessageBuffer buf = ret.CreateBufferedCopy (0x10000);
 ret = buf.CreateMessage ();

@@ -1,5 +1,9 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* HttpRequestChannel.cs : pass response ContentType to ReadMessage().
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* HttpRequestChannel.cs : create WebRequest against To message header
 	  item (if exists).
 	  Consider HttpRequestMessageProperty.
