@@ -169,9 +169,26 @@ namespace System.ServiceModel.Channels
 			MemoryStream ms = new MemoryStream ();
 			channel.Encoder.WriteMessage (msg, ms);
 			ctx.Response.ContentType = channel.Encoder.ContentType;
-			ctx.Response.ContentLength64 = ms.Length;
-			ctx.Response.OutputStream.Write (ms.GetBuffer (), 0, (int) ms.Length);
-			ctx.Response.OutputStream.Flush ();
+
+			string pname = HttpResponseMessageProperty.Name;
+			bool suppressEntityBody = false;
+			if (msg.Properties.ContainsKey (pname)) {
+				HttpResponseMessageProperty hp = (HttpResponseMessageProperty) msg.Properties [pname];
+				string contentType = hp.Headers ["Content-Type"];
+				if (contentType != null)
+					ctx.Response.ContentType = contentType;
+				ctx.Response.Headers.Add (hp.Headers);
+				if (hp.StatusCode != default (HttpStatusCode))
+					ctx.Response.StatusCode = (int) hp.StatusCode;
+				ctx.Response.StatusDescription = hp.StatusDescription;
+				if (hp.SuppressEntityBody)
+					suppressEntityBody = true;
+			}
+			if (!suppressEntityBody) {
+				ctx.Response.ContentLength64 = ms.Length;
+				ctx.Response.OutputStream.Write (ms.GetBuffer (), 0, (int) ms.Length);
+				ctx.Response.OutputStream.Flush ();
+			}
 		}
 
 		public override void Close ()
