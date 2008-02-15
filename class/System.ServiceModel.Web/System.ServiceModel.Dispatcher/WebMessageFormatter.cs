@@ -185,6 +185,11 @@ namespace System.ServiceModel.Description
 				Message ret = Message.CreateMessage (messageVersion, null);
 				ret.Headers.To = to;
 
+				var hp = new HttpRequestMessageProperty ();
+				hp.Method = Info.Method;
+				// FIXME: set hp.SuppressEntityBody for some cases.
+				ret.Properties.Add (HttpRequestMessageProperty.Name, hp);
+
 				return ret;
 			}
 

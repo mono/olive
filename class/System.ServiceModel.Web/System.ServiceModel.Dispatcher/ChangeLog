@@ -1,5 +1,10 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageFormatter.cs : attach a HttpRequestMessageProperty when
+	  creating a request Message.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebHttpDispatchOperationSelector.cs : implemented large part of it.
 	* WebMessageFormatter.cs : moved BuildUriTemplate to WebAttributeInfo.
 
