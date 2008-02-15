@@ -1,5 +1,10 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DispatchOperation.cs : Action may be null. For such cases, use 
+	  MessageDirection to determine the message description.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* EndpointAddressMessageFilter.cs : implement Match(MessageBuffer).
 	  Use ordinal string comparison.
 	* PrefixEndpointAddressMessageFilter.cs : implement Match() (both).

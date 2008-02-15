@@ -260,7 +260,14 @@ Console.WriteLine (ex);
 					/*if (!Parent.EndpointDispatcher.ContractFilter.Match (req))
 						return CreateActionNotSupported (req);*/
 
-					MessageDescription md = Description.Messages.Find (req.Headers.Action);
+					MessageDescription md = null;
+					if (req.Headers.Action != null)
+						md = Description.Messages.Find (req.Headers.Action);
+					else {
+						foreach (MessageDescription mi in Description.Messages)
+							if (mi.Direction == MessageDirection.Input)
+								md = mi;
+					}
 					if (md == null)
 						return CreateActionNotSupported (req);
 					inputs = new object [md.Body.Parts.Count];
