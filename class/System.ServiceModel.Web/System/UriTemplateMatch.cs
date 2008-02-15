@@ -37,10 +37,11 @@ namespace System
 		{
 		}
 
-		Uri base_uri;
-		NameValueCollection nvc;
+		Uri base_uri, request_uri;
+		NameValueCollection nvc, query_params;
 		object data;
 		UriTemplate template;
+		Collection<string> path_segments;
 
 		public Uri BaseUri {
 			get { return base_uri; }
@@ -60,20 +61,25 @@ namespace System
 			set { data = value; }
 		}
 
-		[MonoTODO]
 		public NameValueCollection QueryParameters {
-			get { throw new NotImplementedException (); }
+			get {
+				if (query_params == null)
+					query_params = new NameValueCollection ();
+				return query_params;
+			}
 		}
 
-		[MonoTODO]
 		public Collection<string> RelativePathSegments { 
-			get { throw new NotImplementedException (); }
+			get {
+				if (path_segments == null)
+					path_segments = new Collection<string> ();
+				return path_segments;
+			}
 		}
 
-		[MonoTODO]
 		public Uri RequestUri {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return request_uri; }
+			set { request_uri = value; }
 		}
 
 		public UriTemplate Template {
@@ -81,6 +87,7 @@ namespace System
 			set { template = value; }
 		}
 
+		[MonoTODO]
 		public Collection<string> WildcardPathSegments {
 			get { throw new NotImplementedException (); }
 		}

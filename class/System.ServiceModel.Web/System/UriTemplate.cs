@@ -158,6 +158,7 @@ namespace System
 			UriTemplateMatch m = new UriTemplateMatch ();
 			m.BaseUri = baseAddress;
 			m.Template = this;
+			m.RequestUri = candidate;
 			var vc = m.BoundVariables;
 
 			string cp = candidate.PathAndQuery;
@@ -178,6 +179,7 @@ namespace System
 					ce = cp.Length;
 				string value = cp.Substring (c, ce - c);
 				vc [name] = value;
+				m.RelativePathSegments.Add (value);
 				c += value.Length;
 			}
 			foreach (string name in query) {
@@ -191,6 +193,7 @@ namespace System
 					ce = cp.Length;
 				string value = cp.Substring (c, ce - c);
 				vc [name] = value;
+				m.QueryParameters.Add (name, value);
 				c += value.Length;
 			}
 			if ((cp.Length - c) != (template.Length - i) ||

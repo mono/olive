@@ -265,13 +265,24 @@ namespace MonoTests.System
 		{
 			var t = new UriTemplate ("/{foo}/{bar}");
 			var n = new NameValueCollection ();
-			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/hooray")), "#1");
-			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/v1/v2/extra")), "#2");
-			Assert.IsNull (t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/1/2/")), "#3");
-			UriTemplateMatch m = t.Match (new Uri ("http://localhost/"), new Uri ("http://localhost/foooo/baaar"));
+			Uri baseUri = new Uri ("http://localhost/");
+			Assert.IsNull (t.Match (baseUri, new Uri ("http://localhost/hooray")), "#1");
+			Assert.IsNull (t.Match (baseUri, new Uri ("http://localhost/v1/v2/extra")), "#2");
+			Assert.IsNull (t.Match (baseUri, new Uri ("http://localhost/1/2/")), "#3");
+			UriTemplateMatch m = t.Match (baseUri, new Uri ("http://localhost/foooo/baaar"));
 			Assert.IsNotNull (m, "#4");
 			Assert.AreEqual ("foooo", m.BoundVariables ["foo"], "#5");
 			Assert.AreEqual ("baaar", m.BoundVariables ["bar"], "#6");
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void Match2 ()
+		{
+			var t = new UriTemplate ("/{foo}/{bar}?p1={baz}");
+			var n = new NameValueCollection ();
+			Uri baseUri = new Uri ("http://localhost/");
+			Assert.IsNotNull (t.Match (baseUri, new Uri ("http://localhost/X/Y")));
 		}
 	}
 }
