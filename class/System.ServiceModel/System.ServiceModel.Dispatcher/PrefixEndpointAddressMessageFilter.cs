@@ -26,6 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Globalization;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
 
@@ -66,13 +67,21 @@ namespace System.ServiceModel.Dispatcher
 		[MonoTODO]
 		public override bool Match (Message message)
 		{
-			throw new NotImplementedException ();
+			Uri to = message.Headers.To;
+			bool path = ((CultureInfo.InvariantCulture.CompareInfo.IsPrefix (to.AbsolutePath, address.Uri.AbsolutePath, CompareOptions.Ordinal)) && 
+					(to.Port == address.Uri.Port));
+			bool host = IncludeHostNameInComparison
+					? (String.CompareOrdinal (to.Host, address.Uri.Host) == 0)
+					: true;
+
+			return path && host;
 		}
 
-		[MonoTODO]
 		public override bool Match (MessageBuffer messageBuffer)
 		{
-			throw new NotImplementedException ();
+			if (messageBuffer == null)
+				throw new ArgumentNullException ("messageBuffer");
+			return Match (messageBuffer.CreateMessage ());
 		}
 	}
 }

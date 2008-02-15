@@ -1,3 +1,9 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointAddressMessageFilter.cs : implement Match(MessageBuffer).
+	  Use ordinal string comparison.
+	* PrefixEndpointAddressMessageFilter.cs : implement Match() (both).
+
 2008-02-14  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointDispatcher.cs : moved AddressFilter application only when

@@ -67,19 +67,20 @@ namespace System.ServiceModel.Dispatcher
 		public override bool Match (Message message)
 		{
 			Uri to = message.Headers.To;
-			bool path = ((String.Compare (to.AbsolutePath, address.Uri.AbsolutePath) == 0) && 
+			bool path = ((String.CompareOrdinal (to.AbsolutePath, address.Uri.AbsolutePath) == 0) && 
 					(to.Port == address.Uri.Port));
 			bool host = IncludeHostNameInComparison
-					? (String.Compare (to.Host, address.Uri.Host) == 0)
+					? (String.CompareOrdinal (to.Host, address.Uri.Host) == 0)
 					: true;
 
 			return path && host;
 		}
 
-		[MonoTODO]
 		public override bool Match (MessageBuffer messageBuffer)
 		{
-			throw new NotImplementedException ();
+			if (messageBuffer == null)
+				throw new ArgumentNullException ("messageBuffer");
+			return Match (messageBuffer.CreateMessage ());
 		}
 	}
 }

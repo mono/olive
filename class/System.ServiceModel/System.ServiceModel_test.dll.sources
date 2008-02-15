@@ -54,6 +54,7 @@ System.ServiceModel.Dispatcher/EndpointDispatcherTest.cs
 System.ServiceModel.Dispatcher/ExceptionHandlerTest.cs
 System.ServiceModel.Dispatcher/FilterTableTest.cs
 System.ServiceModel.Dispatcher/InvalidBodyAccessExceptionTest.cs
+System.ServiceModel.Dispatcher/PrefixEndpointAddressMessageFilterTest.cs
 System.ServiceModel.PeerResolvers/CustomPeerResolverServiceTest.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenParametersTest.cs
 System.ServiceModel.Security.Tokens/IssuedSecurityTokenProviderTest.cs

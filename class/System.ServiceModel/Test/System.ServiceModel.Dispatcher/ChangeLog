@@ -1,3 +1,7 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* PrefixEndpointAddressMessageFilterTest.cs : new test (not working).
+
 2006-10-18  Ankit Jain  <jankit@novell.com>
 
 	* EndpointAddressMessageFilterTest.cs (Match): Add more tests.
