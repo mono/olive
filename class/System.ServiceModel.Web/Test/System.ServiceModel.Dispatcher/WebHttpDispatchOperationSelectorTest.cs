@@ -60,8 +60,28 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 		[Test]
 		public void SelectOperation ()
 		{
+			SelectOperationCore (Create ());
+		}
+
+		[Test]
+		public void SelectOperation2 ()
+		{
+			SelectOperationCore (Create2 ());
+		}
+
+		[Test]
+		public void SelectOperation3 ()
+		{
+			ContractDescription cd = ContractDescription.GetContract (typeof (MyService2));
+			Assert.IsNotNull (cd.Operations [0].Behaviors.Find<WebGetAttribute> (), "#1");
+
+			cd = ContractDescription.GetContract (typeof (MyService));
+			Assert.IsNull (cd.Operations [0].Behaviors.Find<WebGetAttribute> (), "#2");
+		}
+
+		void SelectOperationCore (MySelector d)
+		{
 			string name;
-			var d = Create ();
 			var msg = Message.CreateMessage (MessageVersion.Soap12, "http://temuri.org/MyService/Echo"); // looks like Version is not checked
 			Assert.IsNull (msg.Headers.To, "#1-0");
 			Assert.IsFalse (d.SelectOperation (ref msg, out name), "#1");
@@ -97,7 +117,7 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 
 		[Test]
 		[Category ("NotWorking")]
-		public void SelectOperation2 ()
+		public void SelectOperationOnlyMessage ()
 		{
 			// This test shows strange result ... it adds UriMatched property while it does not really match the URI.
 
@@ -165,7 +185,8 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 		public interface MyService2
 		{
 			[OperationContract (Name = "Echo")]
-			string Echo (string intput);
+			[WebGet] // UriTemplate = "Echo?input={input}"
+			string Echo (string input);
 		}
 
 		MySelector Create ()
@@ -177,6 +198,14 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 			//var b = new MyBehavior ();
 			//se.Behaviors.Add (b);
 			//return (MySelector) b.GetPublicOperationSelector (se);
+		}
+
+		MySelector Create2 ()
+		{
+			ServiceEndpoint se = new ServiceEndpoint (ContractDescription.GetContract (typeof (MyService2)));
+			se.Address = new EndpointAddress ("http://localhost:8080");
+			//se.Contract.Operations [0].Behaviors.Add (new WebGetAttribute ());
+			return new MySelector (se);
 		}
 	}
 }

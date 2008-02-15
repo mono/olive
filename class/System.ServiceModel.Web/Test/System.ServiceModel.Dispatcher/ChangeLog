@@ -1,5 +1,10 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebHttpDispatchOperationSelectorTest.cs : added couple more tests
+	  with different contract contract case.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebHttpDispatchOperationSelectorTest.cs : new test.
 
 2008-02-13  Atsushi Enomoto  <atsushi@ximian.com>
