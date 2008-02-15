@@ -192,6 +192,10 @@ namespace System.ServiceModel.Description
 			od.IsInitiating = oca.IsInitiating;
 			od.IsTerminating = oca.IsTerminating;
 
+			foreach (object obj in mi.GetCustomAttributes (true))
+				if (obj is IOperationBehavior)
+					od.Behaviors.Add ((IOperationBehavior) obj);
+
 			// FIXME: fill KnownTypes, Behaviors and Faults.
 
 			return od;

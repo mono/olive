@@ -1,3 +1,9 @@
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ContractDescriptionGenerator.cs : When reflecting a method,
+	  iterate attributes and added such attribute that implements
+	  IOperationBehavior to operation's Behaviors.
+
 2007-08-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TypedMessageConverter.cs, ServiceModelInternalConverter.cs,
