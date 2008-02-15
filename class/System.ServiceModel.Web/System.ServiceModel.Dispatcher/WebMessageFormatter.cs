@@ -229,7 +229,16 @@ namespace System.ServiceModel.Description
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (message.Version);
 
-				throw new NotImplementedException ();
+				Uri to = message.Headers.To;
+				UriTemplateMatch match = UriTemplate.Match (Endpoint.Address.Uri, to);
+				if (match == null)
+					// not sure if it could happen
+					throw new SystemException (String.Format ("INTERNAL ERROR: UriTemplate does not match with the request: {0} / {1}", UriTemplate, to));
+				for (int i = 0; i < parameters.Length; i++) {
+					var p = MessageDescription.Body.Parts [i];
+					string name = p.Name.ToUpperInvariant ();
+					parameters [i] = match.BoundVariables [name];
+				}
 			}
 		}
 	}

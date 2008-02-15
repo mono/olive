@@ -1,5 +1,9 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageFormatter.cs : implement DeserializeRequest().
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageFormatter.cs : attach a HttpRequestMessageProperty when
 	  creating a request Message.
 
