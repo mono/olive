@@ -69,15 +69,27 @@ namespace System.ServiceModel.Channels
 			if (contentType == null)
 				throw new ArgumentNullException ("contentType");
 
-			WebContentFormat fmt = WebContentFormat.Xml;
-			if (source.ContentTypeMapper != null)
-				fmt = source.ContentTypeMapper.GetMessageFormatForContentType (ContentType);
-
 			Encoding enc = Encoding.UTF8;
-Console.WriteLine (contentType);
 			ContentType ct = new ContentType (contentType);
 			if (ct.CharSet != null)
 				enc = Encoding.GetEncoding (ct.CharSet);
+
+			WebContentFormat fmt = WebContentFormat.Xml;
+			if (source.ContentTypeMapper != null)
+				fmt = source.ContentTypeMapper.GetMessageFormatForContentType (contentType);
+			else {
+				switch (ct.MediaType) {
+				case "application/json":
+					fmt = WebContentFormat.Json;
+					break;
+				case "application/xml":
+					fmt = WebContentFormat.Xml;
+					break;
+				case "application/octet-stream":
+					fmt = WebContentFormat.Raw;
+					break;
+				}
+			}
 
 			Message msg = null;
 			WebBodyFormatMessageProperty wp = null;

@@ -266,7 +266,7 @@ namespace System.ServiceModel.Description
 					break;
 				case WebMessageFormat.Json:
 					serializer = new DataContractJsonSerializer (md.Body.ReturnValue.Type);
-					mediaType = "appllication/json";
+					mediaType = "application/json";
 					break;
 				}
 
