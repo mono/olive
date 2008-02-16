@@ -91,7 +91,6 @@ namespace System
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		public Collection<UriTemplateMatch> Match (Uri uri)
 		{
 			var c = new Collection<UriTemplateMatch> ();
@@ -104,7 +103,6 @@ namespace System
 			return c;
 		}
 
-		[MonoTODO]
 		public UriTemplateMatch MatchSingle (Uri uri)
 		{
 			UriTemplateMatch ret = null;
