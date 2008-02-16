@@ -1,5 +1,11 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageFormatter.cs : implemented DeserializeReply().
+	  It was wrong to have one MessageDescription in a formatter, as
+	  they are different between serialization and deserialization.
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageFormatter.cs : oops oops. not "encoding" but "charset".
 
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>

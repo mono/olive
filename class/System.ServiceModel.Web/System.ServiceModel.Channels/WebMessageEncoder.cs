@@ -79,18 +79,27 @@ Console.WriteLine (contentType);
 			if (ct.CharSet != null)
 				enc = Encoding.GetEncoding (ct.CharSet);
 
+			Message msg = null;
+			WebBodyFormatMessageProperty wp = null;
 			switch (fmt) {
 			case WebContentFormat.Xml:
 				// FIXME: is it safe/unsafe/required to keep XmlReader open?
-				return Message.CreateMessage (MessageVersion.None, null, XmlReader.Create (new StreamReader (stream, enc)));
+				msg = Message.CreateMessage (MessageVersion.None, null, XmlReader.Create (new StreamReader (stream, enc)));
+				wp = new WebBodyFormatMessageProperty (WebContentFormat.Xml);
+				break;
 			case WebContentFormat.Json:
 				// FIXME: is it safe/unsafe/required to keep XmlReader open?
-				return Message.CreateMessage (MessageVersion.None, null, JsonReaderWriterFactory.CreateJsonReader (stream, enc, source.ReaderQuotas, null));
+				msg = Message.CreateMessage (MessageVersion.None, null, JsonReaderWriterFactory.CreateJsonReader (stream, enc, source.ReaderQuotas, null));
+				wp = new WebBodyFormatMessageProperty (WebContentFormat.Json);
+				break;
 			case WebContentFormat.Raw:
 				throw new NotImplementedException ();
 			default:
 				throw new SystemException ("INTERNAL ERROR: cannot determine content format");
 			}
+			if (wp != null)
+				msg.Properties.Add (WebBodyFormatMessageProperty.Name, wp);
+			return msg;
 		}
 
 		WebContentFormat GetContentFormat (Message message)

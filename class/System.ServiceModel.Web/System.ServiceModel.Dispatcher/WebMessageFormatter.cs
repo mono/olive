@@ -41,7 +41,6 @@ namespace System.ServiceModel.Description
 	internal abstract class WebMessageFormatter
 	{
 		OperationDescription operation;
-		MessageDescription message_desc;
 		ServiceEndpoint endpoint;
 		QueryStringConverter converter;
 		WebHttpBehavior behavior;
@@ -70,8 +69,7 @@ namespace System.ServiceModel.Description
 			if (info == null)
 				info = new WebAttributeInfo ();
 
-			template = info.BuildUriTemplate (Operation, GetMessageDescription ());
-			message_desc = GetMessageDescription ();
+			template = info.BuildUriTemplate (Operation, GetMessageDescription (MessageDirection.Input));
 		}
 
 		public WebHttpBehavior Behavior {
@@ -86,10 +84,6 @@ namespace System.ServiceModel.Description
 			get { return operation; }
 		}
 
-		public MessageDescription MessageDescription {
-			get { return message_desc; }
-		}
-
 		public QueryStringConverter Converter {
 			get { return converter; }
 		}
@@ -101,8 +95,6 @@ namespace System.ServiceModel.Description
 		public UriTemplate UriTemplate {
 			get { return template; }
 		}
-
-		public abstract MessageDirection MessageDirection { get; }
 
 		protected WebContentFormat ToContentFormat (WebMessageFormat src)
 		{
@@ -124,12 +116,12 @@ namespace System.ServiceModel.Description
 				throw new ArgumentException ("Only MessageVersion.None is supported");
 		}
 
-		MessageDescription GetMessageDescription ()
+		protected MessageDescription GetMessageDescription (MessageDirection dir)
 		{
 			foreach (MessageDescription md in operation.Messages)
-				if (md.Direction == this.MessageDirection)
+				if (md.Direction == dir)
 					return md;
-			throw new SystemException ("INTERNAL ERROR: no corresponding message description for the specified direction: " + MessageDirection);
+			throw new SystemException ("INTERNAL ERROR: no corresponding message description for the specified direction: " + dir);
 		}
 
 		internal class RequestClientFormatter : WebClientMessageFormatter
@@ -171,10 +163,6 @@ namespace System.ServiceModel.Description
 			{
 			}
 
-			public override MessageDirection MessageDirection {
-				get { return MessageDirection.Input; }
-			}
-
 			public Message SerializeRequest (MessageVersion messageVersion, object [] parameters)
 			{
 				if (parameters == null)
@@ -183,11 +171,13 @@ namespace System.ServiceModel.Description
 
 				var c = new NameValueCollection ();
 
-				if (parameters.Length != MessageDescription.Body.Parts.Count)
+				MessageDescription md = GetMessageDescription (MessageDirection.Input);
+
+				if (parameters.Length != md.Body.Parts.Count)
 					throw new ArgumentException ("Parameter array length does not match the number of message body parts");
 
 				for (int i = 0; i < parameters.Length; i++) {
-					var p = MessageDescription.Body.Parts [i];
+					var p = md.Body.Parts [i];
 					string name = p.Name.ToUpperInvariant ();
 					if (UriTemplate.PathSegmentVariableNames.Contains (name) ||
 					    UriTemplate.QueryValueVariableNames.Contains (name))
@@ -219,7 +209,28 @@ namespace System.ServiceModel.Description
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (message.Version);
 
-				throw new NotImplementedException ();
+				string pname = WebBodyFormatMessageProperty.Name;
+				if (!message.Properties.ContainsKey (pname))
+					throw new SystemException ("INTERNAL ERROR: it expects WebBodyFormatMessageProperty existence");
+				var wp = (WebBodyFormatMessageProperty) message.Properties [pname];
+				MessageDescription md = GetMessageDescription (MessageDirection.Output);
+
+				XmlObjectSerializer serializer = null;
+				switch (wp.Format) {
+				case WebContentFormat.Xml:
+					serializer = new DataContractSerializer (md.Body.ReturnValue.Type);
+					break;
+				case WebContentFormat.Json:
+					serializer = new DataContractJsonSerializer (md.Body.ReturnValue.Type);
+					break;
+				case WebContentFormat.Raw:
+				default:
+					throw new NotImplementedException ();
+				}
+
+				// FIXME: handle ref/out parameters
+
+				return serializer.ReadObject (message.GetReaderAtBodyContents ());
 			}
 		}
 
@@ -230,19 +241,17 @@ namespace System.ServiceModel.Description
 			{
 			}
 
-			public override MessageDirection MessageDirection {
-				get { return MessageDirection.Input; }
-			}
-
 			public Message SerializeReply (MessageVersion messageVersion, object [] parameters, object result)
 			{
 				if (parameters == null)
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (messageVersion);
 
+				MessageDescription md = GetMessageDescription (MessageDirection.Output);
+
 				// FIXME: use them.
 				// var dcob = Operation.Behaviors.Find<DataContractSerializerOperationBehavior> ();
-				// XmlObjectSerializer xos = dcob.CreateSerializer (result.GetType (), MessageDescription.Body.WrapperName, MessageDescription.Body.WrapperNamespace, null);
+				// XmlObjectSerializer xos = dcob.CreateSerializer (result.GetType (), md.Body.WrapperName, md.Body.WrapperNamespace, null);
 				// var xsob = Operation.Behaviors.Find<XmlSerializerOperationBehavior> ();
 				// XmlSerializer [] serializers = XmlSerializer.FromMappings (xsob.GetXmlMappings ().ToArray ());
 
@@ -250,17 +259,15 @@ namespace System.ServiceModel.Description
 
 				string mediaType = null;
 				XmlObjectSerializer serializer = null;
-				if (result != null) {
-					switch (msgfmt) {
-					case WebMessageFormat.Xml:
-						serializer = new DataContractSerializer (result.GetType ());
-						mediaType = "application/xml";
-						break;
-					case WebMessageFormat.Json:
-						serializer = new DataContractJsonSerializer (result.GetType ());
-						mediaType = "appllication/json";
-						break;
-					}
+				switch (msgfmt) {
+				case WebMessageFormat.Xml:
+					serializer = new DataContractSerializer (md.Body.ReturnValue.Type);
+					mediaType = "application/xml";
+					break;
+				case WebMessageFormat.Json:
+					serializer = new DataContractJsonSerializer (md.Body.ReturnValue.Type);
+					mediaType = "appllication/json";
+					break;
 				}
 
 				// FIXME: serialize ref/out parameters as well.
@@ -292,8 +299,11 @@ namespace System.ServiceModel.Description
 				if (match == null)
 					// not sure if it could happen
 					throw new SystemException (String.Format ("INTERNAL ERROR: UriTemplate does not match with the request: {0} / {1}", UriTemplate, to));
+
+				MessageDescription md = GetMessageDescription (MessageDirection.Input);
+
 				for (int i = 0; i < parameters.Length; i++) {
-					var p = MessageDescription.Body.Parts [i];
+					var p = md.Body.Parts [i];
 					string name = p.Name.ToUpperInvariant ();
 					parameters [i] = match.BoundVariables [name];
 				}

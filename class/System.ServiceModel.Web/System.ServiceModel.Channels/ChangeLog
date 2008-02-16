@@ -1,5 +1,10 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageEncoder.cs : attach WebBodyFormatMessageProperty in
+	  ReadMessage() too.
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageEncoder.cs : implement ReadMessage(Stream,...). Use
 	  ContentTypeMapper here, not in WriteMessage().
 
