@@ -27,8 +27,10 @@
 //
 using System;
 using System.IO;
+using System.Net.Mime;
 using System.Runtime.Serialization.Json;
 using System.ServiceModel;
+using System.Text;
 using System.Xml;
 
 namespace System.ServiceModel.Channels
@@ -62,7 +64,33 @@ namespace System.ServiceModel.Channels
 
 		public override Message ReadMessage (Stream stream, int maxSizeOfHeaders, string contentType)
 		{
-			throw new NotImplementedException ();
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+			if (contentType == null)
+				throw new ArgumentNullException ("contentType");
+
+			WebContentFormat fmt = WebContentFormat.Xml;
+			if (source.ContentTypeMapper != null)
+				fmt = source.ContentTypeMapper.GetMessageFormatForContentType (ContentType);
+
+			Encoding enc = Encoding.UTF8;
+Console.WriteLine (contentType);
+			ContentType ct = new ContentType (contentType);
+			if (ct.CharSet != null)
+				enc = Encoding.GetEncoding (ct.CharSet);
+
+			switch (fmt) {
+			case WebContentFormat.Xml:
+				// FIXME: is it safe/unsafe/required to keep XmlReader open?
+				return Message.CreateMessage (MessageVersion.None, null, XmlReader.Create (new StreamReader (stream, enc)));
+			case WebContentFormat.Json:
+				// FIXME: is it safe/unsafe/required to keep XmlReader open?
+				return Message.CreateMessage (MessageVersion.None, null, JsonReaderWriterFactory.CreateJsonReader (stream, enc, source.ReaderQuotas, null));
+			case WebContentFormat.Raw:
+				throw new NotImplementedException ();
+			default:
+				throw new SystemException ("INTERNAL ERROR: cannot determine content format");
+			}
 		}
 
 		WebContentFormat GetContentFormat (Message message)
@@ -71,8 +99,6 @@ namespace System.ServiceModel.Channels
 			if (message.Properties.ContainsKey (name))
 				return ((WebBodyFormatMessageProperty) message.Properties [name]).Format;
 
-			if (source.ContentTypeMapper != null)
-				return source.ContentTypeMapper.GetMessageFormatForContentType (ContentType);
 			switch (MediaType) {
 			case "application/xml":
 			case "text/xml":
