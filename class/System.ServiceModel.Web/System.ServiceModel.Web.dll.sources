@@ -19,6 +19,12 @@ System.ServiceModel.Channels/WebContentTypeMapper.cs
 System.ServiceModel.Channels/WebMessageEncoder.cs
 System.ServiceModel.Channels/WebMessageEncoderFactory.cs
 System.ServiceModel.Channels/WebMessageEncodingBindingElement.cs
+System.ServiceModel.Configuration/WebHttpBindingCollectionElement.cs
+System.ServiceModel.Configuration/WebHttpBindingElement.cs
+System.ServiceModel.Configuration/WebHttpElement.cs
+System.ServiceModel.Configuration/WebHttpSecurityElement.cs
+System.ServiceModel.Configuration/WebMessageEncodingElement.cs
+System.ServiceModel.Configuration/WebScriptEnablingElement.cs
 System.ServiceModel.Description/WebHttpBehavior.cs
 System.ServiceModel.Description/WebScriptEnablingBehavior.cs
 System.ServiceModel.Dispatcher/JsonQueryStringConverter.cs
