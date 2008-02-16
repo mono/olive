@@ -276,13 +276,18 @@ namespace MonoTests.System
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void Match2 ()
 		{
 			var t = new UriTemplate ("/{foo}/{bar}?p1={baz}");
 			var n = new NameValueCollection ();
 			Uri baseUri = new Uri ("http://localhost/");
-			Assert.IsNotNull (t.Match (baseUri, new Uri ("http://localhost/X/Y")));
+			Assert.IsNotNull (t.Match (baseUri, new Uri ("http://localhost/X/Y")), "#1");
+			UriTemplateMatch m = t.Match (baseUri, new Uri ("http://localhost/X/Y?p2=v&p1=vv"));
+			Assert.IsNotNull (m, "#2");
+			// QueryParameters must contain non-template query parameters.
+			Assert.AreEqual (2, m.QueryParameters.Count, "#3");
+			Assert.AreEqual ("v", m.QueryParameters ["p2"], "#4");
+			Assert.AreEqual ("vv", m.QueryParameters ["p1"], "#5");
 		}
 	}
 }

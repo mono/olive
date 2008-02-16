@@ -40,6 +40,7 @@ namespace System
 
 		string template;
 		ReadOnlyCollection<string> path, query;
+		Dictionary<string,string> query_params = new Dictionary<string,string> ();
 
 		[MonoTODO ("It needs some rewrite: template bindings should be available only one per segment")]
 		public UriTemplate (string template)
@@ -56,9 +57,9 @@ namespace System
 					p = template.Substring (idx);
 			}
 			int q = p.IndexOf ('?');
-			path = ParseTemplate (p, 0, q >= 0 ? q : p.Length);
+			path = ParsePathTemplate (p, 0, q >= 0 ? q : p.Length);
 			if (q >= 0)
-				query = ParseTemplate (p, q, p.Length);
+				ParseQueryTemplate (p, q, p.Length);
 			else
 				query = empty_strings;
 		}
@@ -161,7 +162,7 @@ namespace System
 			m.RequestUri = candidate;
 			var vc = m.BoundVariables;
 
-			string cp = candidate.PathAndQuery;
+			string cp = candidate.AbsolutePath;
 
 			if (template.Length > 0 && template [0] == '/')
 				i++;
@@ -182,23 +183,25 @@ namespace System
 				m.RelativePathSegments.Add (value);
 				c += value.Length;
 			}
-			foreach (string name in query) {
-				int n = StringIndexOf (template, '{' + name + '}', i);
-				if (String.CompareOrdinal (cp, c, template, i, n - i) != 0)
-					return null; // doesn't match before current template part.
-				c += n - i;
-				i = n + 2 + name.Length;
-				int ce = cp.IndexOf ('&', c);
-				if (ce < 0)
-					ce = cp.Length;
-				string value = cp.Substring (c, ce - c);
-				vc [name] = value;
-				m.QueryParameters.Add (name, value);
-				c += value.Length;
-			}
-			if ((cp.Length - c) != (template.Length - i) ||
-			    String.CompareOrdinal (cp, c, template, i, template.Length - i) != 0)
+			int tEnd = template.IndexOf ('?');
+			if (tEnd < 0)
+				tEnd = template.Length;
+			if ((cp.Length - c) != (tEnd - i) ||
+			    String.CompareOrdinal (cp, c, template, i, tEnd - i) != 0)
 				return null; // suffix doesn't match
+			
+			if (candidate.Query.Length == 0)
+				return m;
+
+
+			string [] parameters = candidate.Query.Substring (1).Split ('&'); // chop first '?'
+			foreach (string parameter in parameters) {
+				string [] pair = parameter.Split ('=');
+				m.QueryParameters.Add (pair [0], pair [1]);
+				if (!query.Contains (pair [0]))
+					continue;
+				vc.Add (pair [0], pair [1]);
+			}
 
 			return m;
 		}
@@ -222,7 +225,7 @@ namespace System
 			throw new ArgumentException ("baseAddress scheme must be either http or https.");
 		}
 
-		ReadOnlyCollection<string> ParseTemplate (string template, int index, int end)
+		ReadOnlyCollection<string> ParsePathTemplate (string template, int index, int end)
 		{
 			List<string> list = null;
 			for (int i = index; i <= end; ) {
@@ -243,6 +246,30 @@ namespace System
 				i = e + 1;
 			}
 			return list != null ? new ReadOnlyCollection<string> (list) : empty_strings;
+		}
+
+		void ParseQueryTemplate (string template, int index, int end)
+		{
+			// template starts with '?'
+			string [] parameters = template.Substring (index + 1, end - index - 1).Split ('&');
+			List<string> list = null;
+			foreach (string parameter in parameters) {
+				string [] pair = parameter.Split ('=');
+				if (pair.Length != 2)
+					throw new FormatException ("Invalid URI query string format");
+				string pname = pair [0];
+				string pvalue = pair [1];
+				if (pvalue.Length >= 2 && pvalue [0] == '{' && pvalue [pvalue.Length - 1] == '}') {
+					string ptemplate = pvalue.Substring (1, pvalue.Length - 2).ToUpperInvariant ();
+					query_params.Add (pname, ptemplate);
+					if (list == null)
+						list = new List<string> ();
+					if (list.Contains (ptemplate) || (path != null && path.Contains (ptemplate)))
+						throw new InvalidOperationException (String.Format ("The URI template string contains duplicate template item {{'{0}'}}", pvalue));
+					list.Add (ptemplate);
+				}
+			}
+			query = list != null ? new ReadOnlyCollection<string> (list.ToArray ()) : empty_strings;
 		}
 	}
 }
