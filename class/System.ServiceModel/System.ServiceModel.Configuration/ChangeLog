@@ -1,3 +1,7 @@
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* MethodStubs.cs : Added CreateBehavior() method in couple of elements.
+
 2007-03-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceModelSectionGroup.cs :

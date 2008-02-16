@@ -284,6 +284,12 @@ Console.WriteLine (reader.LocalName);
 		{
 			base.DeserializeElement (r, serializeCollectionKey);
 		}
+
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
 
 // ServiceMetadataPublishingElement 
@@ -294,7 +300,7 @@ Console.WriteLine (reader.LocalName);
 			base.DeserializeElement (r, serializeCollectionKey);
 		}
 
-		public object CreateBehavior ()
+		protected internal override object CreateBehavior ()
 		{
 			ServiceMetadataBehavior b = new ServiceMetadataBehavior ();
 			b.HttpGetEnabled = HttpGetEnabled;
@@ -412,6 +418,47 @@ Console.WriteLine (reader.LocalName);
 
 		// Properties
 		public abstract Type BehaviorType { get;  }
+
+		protected internal abstract object CreateBehavior ();
+	}
+
+// CallbackBehaviorElement
+	public partial class CallbackDebugElement
+	{
+		protected internal override object CreateBehavior ()
+		{
+			return new CallbackDebugBehavior (IncludeExceptionDetailInFaults);
+		}
+	}
+
+// CallbackTimeoutsElement
+	public partial class CallbackTimeoutsElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ClientCredentialsElement
+	public partial class ClientCredentialsElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ClientViaElement
+	public partial class ClientViaElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
 
 // CustomBindingCollectionElement
@@ -432,6 +479,16 @@ Console.WriteLine (reader.LocalName);
 		}
 	}
 
+// DataContractSerializerElement
+	public partial class DataContractSerializerElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
 // StandardBindingCollectionElement
 	public partial class StandardBindingCollectionElement<TStandardBinding,TBindingConfiguration>
 	{
@@ -445,6 +502,76 @@ Console.WriteLine (reader.LocalName);
 	{
 		[MonoTODO]
 		public void ApplyConfiguration (Binding binding)
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ServiceAuthorizationElement
+	public partial class ServiceAuthorizationElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ServiceCredentialsElement
+	public partial class ServiceCredentialsElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ServiceSecurityAuditElement
+	public partial class ServiceSecurityAuditElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ServiceThrottlingElement
+	public partial class ServiceThrottlingElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// ServiceTimeoutsElement
+	public partial class ServiceTimeoutsElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// SynchronousReceiveElement
+	public partial class SynchronousReceiveElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
+		{
+			throw new NotImplementedException ();
+		}
+	}
+
+// TransactedBatchingElement
+	public partial class TransactedBatchingElement
+	{
+		[MonoTODO]
+		protected internal override object CreateBehavior ()
 		{
 			throw new NotImplementedException ();
 		}

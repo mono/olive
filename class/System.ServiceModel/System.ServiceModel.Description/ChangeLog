@@ -1,3 +1,7 @@
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* CallbackDebugBehavior.cs : new class.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ContractDescriptionGenerator.cs : When reflecting a method,

@@ -496,6 +496,7 @@ System.ServiceModel.Configuration/XPathMessageFilterElementComparer.cs
 System.ServiceModel.Configuration/XmlDictionaryReaderQuotasElement.cs
 System.ServiceModel.Configuration/XmlElementElement.cs
 System.ServiceModel.Configuration/XmlElementElementCollection.cs
+System.ServiceModel.Description/CallbackDebugBehavior.cs
 System.ServiceModel.Description/ClientCredentials.cs
 System.ServiceModel.Description/ClientViaBehavior.cs
 System.ServiceModel.Description/ContractDescription.cs
