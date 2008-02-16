@@ -271,7 +271,7 @@ namespace System.ServiceModel.Description
 
 				var hp = new HttpResponseMessageProperty ();
 				// FIXME: get encoding from somewhere
-				hp.Headers ["Content-Type"] = mediaType + "; encoding=utf-8";
+				hp.Headers ["Content-Type"] = mediaType + "; charset=utf-8";
 				// FIXME: fill some properties if required.
 				ret.Properties.Add (HttpResponseMessageProperty.Name, hp);
 
