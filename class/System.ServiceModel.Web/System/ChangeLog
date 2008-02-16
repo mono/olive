@@ -1,5 +1,10 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* UriTemplate.cs : the rewrite broke query parameter matching.
+	  param name -> stored param name -> template name -> QueryVariable!
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UriTemplateTable.cs : remove some MonoTODOs.
 
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>

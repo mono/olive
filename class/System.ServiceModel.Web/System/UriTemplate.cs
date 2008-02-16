@@ -198,9 +198,10 @@ namespace System
 			foreach (string parameter in parameters) {
 				string [] pair = parameter.Split ('=');
 				m.QueryParameters.Add (pair [0], pair [1]);
-				if (!query.Contains (pair [0]))
+				if (!query_params.ContainsKey (pair [0]))
 					continue;
-				vc.Add (pair [0], pair [1]);
+				string templateName = query_params [pair [0]];
+				vc.Add (templateName, pair [1]);
 			}
 
 			return m;
