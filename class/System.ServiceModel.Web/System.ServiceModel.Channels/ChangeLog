@@ -1,5 +1,9 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebMessageEncodingBindingElement.cs : some TODO cleanup.
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageEncoder.cs : use content-type correctly.
 
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>

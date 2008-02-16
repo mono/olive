@@ -1,5 +1,9 @@
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebHttpBehavior.cs : removed couple of MonoTODOs.
+
+2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebHttpBehavior.cs : ApplyDispatchBehavior() sets address filter.
 
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>

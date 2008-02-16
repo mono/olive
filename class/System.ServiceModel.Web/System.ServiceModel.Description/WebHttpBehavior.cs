@@ -48,13 +48,11 @@ namespace System.ServiceModel.Description
 			set { default_body_style = value; }
 		}
 
-		[MonoTODO]
 		public virtual WebMessageFormat DefaultOutgoingRequestFormat {
 			get { return default_request_format; }
 			set { default_request_format = value; }
 		}
 
-		[MonoTODO]
 		public virtual WebMessageFormat DefaultOutgoingResponseFormat {
 			get { return default_response_format; }
 			set { default_response_format = value; }
@@ -112,25 +110,21 @@ namespace System.ServiceModel.Description
 			return new QueryStringConverter ();
 		}
 
-		[MonoTODO]
 		protected virtual IClientMessageFormatter GetReplyClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
 			return new WebMessageFormatter.ReplyClientFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription), this);
 		}
 
-		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetReplyDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
 			return new WebMessageFormatter.ReplyDispatchFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription), this);
 		}
 
-		[MonoTODO]
 		protected virtual IClientMessageFormatter GetRequestClientFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
 			return new WebMessageFormatter.RequestClientFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription), this);
 		}
 
-		[MonoTODO]
 		protected virtual IDispatchMessageFormatter GetRequestDispatchFormatter (OperationDescription operationDescription, ServiceEndpoint endpoint)
 		{
 			return new WebMessageFormatter.RequestDispatchFormatter (operationDescription, endpoint, GetQueryStringConverter (operationDescription), this);

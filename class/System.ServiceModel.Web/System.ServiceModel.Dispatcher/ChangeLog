@@ -1,5 +1,9 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebHttpDispatchOperationSelector.cs : some code cleanup.
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* WebMessageFormatter.cs : fixed content-type typo.
 
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>

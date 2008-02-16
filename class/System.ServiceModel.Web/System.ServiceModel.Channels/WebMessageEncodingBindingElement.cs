@@ -58,7 +58,6 @@ namespace System.ServiceModel.Channels
 
 		// Properties
 
-		[MonoTODO]
 		public WebContentTypeMapper ContentTypeMapper {
 			get { return content_type_mapper; }
 			set { content_type_mapper = value; }
@@ -86,12 +85,10 @@ namespace System.ServiceModel.Channels
 			}
 		}
 
-		[MonoTODO]
 		public XmlDictionaryReaderQuotas ReaderQuotas {
 			get { return reader_quotas; }
 		}
 
-		[MonoTODO]
 		public Encoding WriteEncoding {
 			get { return write_encoding; }
 			set {
@@ -132,7 +129,6 @@ namespace System.ServiceModel.Channels
 			return (WebMessageEncodingBindingElement) MemberwiseClone ();
 		}
 
-		[MonoTODO]
 		public override MessageEncoderFactory CreateMessageEncoderFactory ()
 		{
 			return new WebMessageEncoderFactory (this);

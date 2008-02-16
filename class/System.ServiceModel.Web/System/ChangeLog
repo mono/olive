@@ -1,5 +1,9 @@
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* UriTemplateTable.cs : remove some MonoTODOs.
+
+2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* UriTemplate.cs : rewrote query parameter retrieval part. It did
 	  not match order-independent input and lack of parameters.
 

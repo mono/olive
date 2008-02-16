@@ -61,14 +61,12 @@ namespace System.ServiceModel.Dispatcher
 			}
 		}
 
-		[MonoTODO]
 		public string SelectOperation (ref Message message)
 		{
 			bool dummy;
 			return SelectOperation (ref message, out dummy);
 		}
 
-		[MonoTODO]
 		protected virtual string SelectOperation (ref Message message, out bool uriMatched)
 		{
 			if (message == null)
@@ -85,12 +83,8 @@ namespace System.ServiceModel.Dispatcher
 			if (match != null) {
 				uriMatched = true;
 				foreach (TemplateTablePair p in table.KeyValuePairs)
-					if (p.Key == match.Template) {
+					if (p.Key == match.Template)
 						od = p.Value as OperationDescription;
-						WebAttributeInfo info = GetWebAttributeInfo (od);
-						// FIXME: I doubt this content format assumption is correct ...
-						var prop = new WebBodyFormatMessageProperty (info.RequestFormat == WebMessageFormat.Xml ?WebContentFormat.Xml : WebContentFormat.Json);
-					}
 			}
 			return od != null ? od.Name : String.Empty;
 		}
