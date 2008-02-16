@@ -128,8 +128,8 @@ System.Collections.Generic/SynchronizedCollection.cs
 System.Collections.Generic/SynchronizedKeyedCollection.cs
 System.Collections.Generic/SynchronizedReadOnlyCollection.cs
 System.ServiceModel.Activation/AspNetIntegrationRequirementsAttribute.cs
-System.ServiceModel.Activation/IServiceHostFactory.cs
 System.ServiceModel.Activation/ServiceHostFactory.cs
+System.ServiceModel.Activation/ServiceHostFactoryBase.cs
 System.ServiceModel.Channels/AddressHeader.cs
 System.ServiceModel.Channels/AddressHeaderCollection.cs
 System.ServiceModel.Channels/AddressingVersion.cs

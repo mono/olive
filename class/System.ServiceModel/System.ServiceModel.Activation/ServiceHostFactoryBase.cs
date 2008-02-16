@@ -1,10 +1,10 @@
 //
-// ServiceHostFactory.cs
+// ServiceHostFactoryBase.cs
 //
 // Author:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2006 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2008 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -30,20 +30,9 @@ using System.ServiceModel;
 
 namespace System.ServiceModel.Activation
 {
-	public class ServiceHostFactory : ServiceHostFactoryBase
+	public abstract class ServiceHostFactoryBase
 	{
-		[MonoTODO]
-		public override ServiceHostBase CreateServiceHost (
-			string constructorString, Uri [] baseAddresses)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO ("untested")]
-		protected virtual ServiceHost CreateServiceHost (
-			Type serviceType, Uri [] baseAddresses)
-		{
-			return new ServiceHost (serviceType, baseAddresses);
-		}
+		public abstract ServiceHostBase CreateServiceHost (
+			string constructorString, Uri [] baseAddresses);
 	}
 }
