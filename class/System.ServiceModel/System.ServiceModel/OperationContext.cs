@@ -48,6 +48,8 @@ namespace System.ServiceModel
 		IContextChannel channel;
 		RequestContext request_ctx;
 		ExtensionCollection<OperationContext> extensions;
+		MessageHeaders outgoing_headers;
+		MessageProperties outgoing_properties;
 
 		public OperationContext (IContextChannel channel)
 		{
@@ -127,14 +129,20 @@ namespace System.ServiceModel
 			get { throw new NotImplementedException (); }
 		}
 
-		[MonoTODO]
 		public MessageHeaders OutgoingMessageHeaders {
-			get { throw new NotImplementedException (); }
+			get {
+				if (outgoing_headers == null)
+					outgoing_headers = new MessageHeaders (MessageVersion.Default);
+				return outgoing_headers;
+			}
 		}
 
-		[MonoTODO]
 		public MessageProperties OutgoingMessageProperties {
-			get { throw new NotImplementedException (); }
+			get {
+				if (outgoing_properties == null)
+					outgoing_properties = new MessageProperties ();
+				return outgoing_properties;
+			}
 		}
 
 		public RequestContext RequestContext {

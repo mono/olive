@@ -132,7 +132,8 @@ Console.WriteLine (ex);
 		{
 			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
 			IServiceChannel cch = new ServiceRuntimeChannel (se, reply);
-			using (OperationContextScope scope = new OperationContextScope (cch)) {
+			OperationContext octx = new OperationContext (cch);
+			using (OperationContextScope scope = new OperationContextScope (octx)) {
 				OperationContext.Current.EndpointDispatcher = this;
 				RequestContext rc = reply.ReceiveRequest (se.Binding.ReceiveTimeout);
 				if (rc == null)
@@ -144,7 +145,7 @@ Console.WriteLine (ex);
 				// to not raise errors instead of replying
 				// fault at Reply() though ...
 				try {
-					ProcessRequestCore (reply, cch, rc);
+					ProcessRequestCore (reply, cch, octx);
 				} catch (Exception ex) {
 					FaultConverter fc = FaultConverter.GetDefaultFaultConverter (channel_dispatcher.MessageVersion);
 					Message fault;
@@ -156,8 +157,9 @@ Console.WriteLine (ex);
 			}
 		}
 
-		void ProcessRequestCore (IReplyChannel reply, IServiceChannel cch, RequestContext rc)
+		void ProcessRequestCore (IReplyChannel reply, IServiceChannel cch, OperationContext octx)
 		{
+			RequestContext rc = octx.RequestContext;
 			ServiceEndpoint se = channel_dispatcher.ServiceEndpoint;
 
 			Message req = rc.RequestMessage;
@@ -195,6 +197,9 @@ Console.WriteLine (ex);
 
 			if (res == null)
 				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
+
+			res.Headers.CopyHeadersFrom (octx.OutgoingMessageHeaders);
+			res.Properties.CopyProperties (octx.OutgoingMessageProperties);
 
 			rc.Reply (res, se.Binding.SendTimeout);
 		}

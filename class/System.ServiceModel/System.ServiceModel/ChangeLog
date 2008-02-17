@@ -1,3 +1,10 @@
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* OperationContext.cs : implemented OutgoingMessageHeaders and
+	  OutgoingMessageProperties.
+	* ExtensionCollection.cs : Pass syncRoot to base.
+	  Implemented Find(), FindAll() and IsReadOnly.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointAddress.cs : reject relative Uri.

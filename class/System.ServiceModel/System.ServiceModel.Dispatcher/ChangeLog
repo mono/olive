@@ -1,3 +1,8 @@
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* EndpointDispatcher.cs : after service method call, apply outgoing
+	  headers and properties to the returned message.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ChannelDispatcher.cs : populate DispatchOperations before applying

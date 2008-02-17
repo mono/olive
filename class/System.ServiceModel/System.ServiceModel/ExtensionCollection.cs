@@ -37,7 +37,6 @@ namespace System.ServiceModel
 		IEnumerable<IExtension<T>>, IEnumerable
 		where T : IExtensibleObject<T>
 	{
-		object sync_root;
 		T owner;
 
 		public ExtensionCollection (T owner)
@@ -46,26 +45,30 @@ namespace System.ServiceModel
 		}
 
 		public ExtensionCollection (T owner, object syncRoot)
+			: base (syncRoot)
 		{
 			this.owner = owner;
-			this.sync_root = syncRoot;
 		}
 
-		[MonoTODO]
 		public E Find<E> ()
 		{
-			throw new NotImplementedException ();
+			foreach (IExtension<T> item in this)
+				if (item is E)
+					return (E) (object) item;
+			return default (E);
 		}
 
-		[MonoTODO]
 		public Collection<E> FindAll<E> ()
 		{
-			throw new NotImplementedException ();
+			Collection<E> c = new Collection<E> ();
+			foreach (IExtension<T> item in this)
+				if (item is E)
+					c.Add ((E) (object) item);
+			return c;
 		}
 
-		[MonoTODO]
 		bool ICollection<IExtension<T>>.IsReadOnly {
-			get { throw new NotImplementedException (); }
+			get { return false; }
 		}
 
 		[MonoTODO]
