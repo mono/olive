@@ -66,6 +66,10 @@ namespace System.ServiceModel.Configuration
 		static ConfigurationProperty receive_timeout;
 		static ConfigurationProperty send_timeout;
 
+		protected static ConfigurationPropertyCollection PropertiesInternal {
+			get { return properties; }
+		}
+
 		static StandardBindingElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();

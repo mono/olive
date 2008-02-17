@@ -37,6 +37,7 @@ System.ServiceModel.Channels/SymmetricSecurityBindingElementTest.cs
 System.ServiceModel.Channels/TextMessageEncodingBindingElementTest.cs
 System.ServiceModel.Channels/TransactionFlowBindingElementTest.cs
 System.ServiceModel.Configuration/ServiceModelSectionGroupTest.cs
+System.ServiceModel.Configuration/StandardBindingElementCollectionTest.cs
 System.ServiceModel.Description/ClientCredentialsTest.cs
 System.ServiceModel.Description/ContractDescriptionTest.cs
 System.ServiceModel.Description/MetadataResolverTest.cs

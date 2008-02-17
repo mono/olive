@@ -38,7 +38,7 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public ConfigurationElementType this [int index] {
-			get { throw new NotImplementedException (); }
+			get { return (ConfigurationElementType) base.BaseGet (index); }
 			set { throw new NotImplementedException (); }
 		}
 
@@ -62,13 +62,12 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public override ConfigurationElementCollectionType CollectionType {
-			get { return ConfigurationElementCollectionType.BasicMap; }
+			get { return ConfigurationElementCollectionType.AddRemoveClearMap; }
 		}
 
 		protected override string ElementName {
 			get {
-				Type attrType = typeof (ConfigurationCollectionAttribute);
-				return ((ConfigurationCollectionAttribute) Attribute.GetCustomAttribute (GetType (), attrType, true)).AddItemName; 
+				return AddElementName;
 			}
 		}
 

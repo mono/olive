@@ -77,7 +77,7 @@ namespace System.ServiceModel.Configuration
 
 		static BasicHttpBindingElement ()
 		{
-			properties = new ConfigurationPropertyCollection ();
+			properties = PropertiesInternal;
 			allow_cookies = new ConfigurationProperty ("allowCookies",
 				typeof (bool), "false", new BooleanConverter (), null,
 				ConfigurationPropertyOptions.None);
@@ -123,7 +123,7 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			text_encoding = new ConfigurationProperty ("textEncoding",
-				typeof (Encoding), "utf-8", null/* FIXME: get converter for Encoding*/, null,
+				typeof (Encoding), "utf-8", EncodingConverter.Instance, null,
 				ConfigurationPropertyOptions.None);
 
 			transfer_mode = new ConfigurationProperty ("transferMode",

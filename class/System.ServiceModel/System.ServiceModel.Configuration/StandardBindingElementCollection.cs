@@ -69,6 +69,7 @@ namespace System.ServiceModel.Configuration
 
 		public StandardBindingElementCollection ()
 		{
+			AddElementName = "binding";
 		}
 
 

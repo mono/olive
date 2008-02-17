@@ -1,4 +1,12 @@
-2008-02-17  Igor Zelmanovich <igorx@mainsoft.com>
+2008-02-17  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* BasicHttpBindingElement.cs:
+	* ServiceModelConfigurationElementCollection.cs:
+	* StandardBindingElement.cs: 
+	* StandardBindingElementCollection.cs:
+	fixed several bugs, make relevant tests pass.		
+	
+2008-02-17  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* EncodingConverter.cs: added internal class.
 	* SecurityAlgorithmSuiteConverter.cs: added internal class.

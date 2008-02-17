@@ -1,3 +1,7 @@
+2008-02-17  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* StandardBindingElementCollectionTest.cs new test.
+	
 2006-06-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceModelSectionGroupTest.cs : commented out Endpoints().
