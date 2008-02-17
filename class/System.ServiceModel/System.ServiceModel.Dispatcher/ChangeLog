@@ -1,5 +1,10 @@
 2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* EndpointDispatcher.cs : we don't need AddressFilter workaround
+	  from Feb. 14 anymore.
+
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* EndpointDispatcher.cs : after service method call, apply outgoing
 	  headers and properties to the returned message.
 

@@ -165,6 +165,17 @@ Console.WriteLine (ex);
 			Message req = rc.RequestMessage;
 			Message res = null;
 
+			// FIXME: AddressFilter is likely applied before
+			// an input is delivered to EndpointDispatcher. 
+			// This means, we likely have to make some
+			// conceptual changes to channel dispatcher and
+			// endpoint dispatcher.
+			// For now I moved AddressFilter here so that
+			// WebHttpDispatchOperationSelector to select 
+			// operation before the Message is filtered out.
+			if (IsMessageFilteredOut (req))
+				throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", req.Headers.To));
+
 			DispatchOperation op = GetOperation (req);
 			if (op == null) {
 				// process WS-Trust based negotiation
@@ -180,20 +191,8 @@ Console.WriteLine (ex);
 					op = DispatchRuntime.UnhandledDispatchOperation;
 			}
 
-			if (res == null) {
-				// FIXME: AddressFilter is likely applied before
-				// an input is delivered to EndpointDispatcher. 
-				// This means, we likely have to make some
-				// conceptual changes to channel dispatcher and
-				// endpoint dispatcher.
-				// For now I moved AddressFilter here so that
-				// WebHttpDispatchOperationSelector to select 
-				// operation before the Message is filtered out.
-				if (IsMessageFilteredOut (req))
-					throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
-
+			if (res == null)
 				res = op.ProcessRequest (req);
-			}
 
 			if (res == null)
 				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
