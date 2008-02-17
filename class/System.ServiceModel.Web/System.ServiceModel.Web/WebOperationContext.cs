@@ -69,14 +69,14 @@ namespace System.ServiceModel.Web
 			get { return outgoing_response; }
 		}
 
-		[MonoTODO]
 		public void Attach (OperationContext context)
 		{
+			// do nothing
 		}
 
-		[MonoTODO]
 		public void Detach (OperationContext context)
 		{
+			// do nothing
 		}
 	}
 }

@@ -1,5 +1,9 @@
 2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* WebOperationContext.cs : remove extra TODOs.
+
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* IncomingWebRequestContext.cs, IncomingWebResponseContext.cs,
 	  OutgoingWebRequestContext.cs, OutgoingWebResponseContext.cs,
 	  WebOperationContext.cs : implemented large chunk of them. Still
