@@ -26,46 +26,52 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Globalization;
 using System.Net;
+using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Web
 {
 	public class IncomingWebRequestContext
 	{
-		[MonoTODO]
+		HttpRequestMessageProperty hp;
+		UriTemplateMatch match;
+
+		internal IncomingWebRequestContext (OperationContext context)
+		{
+			hp = (HttpRequestMessageProperty) context.IncomingMessageProperties [HttpRequestMessageProperty.Name];
+		}
+
 		public string Accept {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("Accept"); }
 		}
 
-		[MonoTODO]
 		public long ContentLength {
-			get { throw new NotImplementedException (); }
+			get {
+				string s = hp.Headers.Get ("Content-Length");
+				return s != null ? long.Parse (s, CultureInfo.InvariantCulture) : 0;
+			}
 		}
 
-		[MonoTODO]
 		public string ContentType {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("Content-Type"); }
 		}
 
-		[MonoTODO]
 		public WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers; }
 		}
 
-		[MonoTODO]
 		public string Method {
-			get { throw new NotImplementedException (); }
+			get { return hp.Method; }
 		}
 
-		[MonoTODO]
 		public UriTemplateMatch UriTemplateMatch {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return match; }
+			set { match = value; }
 		}
 
-		[MonoTODO]
 		public string UserAgent {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("User-Agent"); }
 		}
 	}
 }

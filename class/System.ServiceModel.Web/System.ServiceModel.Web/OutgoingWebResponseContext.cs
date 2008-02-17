@@ -26,63 +26,92 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Globalization;
 using System.Net;
+using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Web
 {
 	public class OutgoingWebResponseContext
 	{
-		[MonoTODO]
+		WebHeaderCollection headers;
+		long content_length;
+		string content_type, etag, location, status_desc;
+		DateTime last_modified;
+		HttpStatusCode status_code;
+		bool suppress_body;
+
+		internal OutgoingWebResponseContext ()
+		{
+		}
+
+		internal void Apply (HttpResponseMessageProperty hp)
+		{
+			if (headers != null)
+				hp.Headers.Add (headers);
+			if (content_length != 0)
+				hp.Headers ["Content-Length"] = content_length.ToString (NumberFormatInfo.InvariantInfo);
+			if (content_type != null)
+				hp.Headers ["Content-Type"] = content_type;
+			if (etag != null)
+				hp.Headers ["ETag"] = etag;
+			if (location != null)
+				hp.Headers ["Location"] = location;
+			if (last_modified != default (DateTime))
+				hp.Headers ["Last-Modified"] = last_modified.ToString ("R");
+			if (status_code != default (HttpStatusCode))
+				hp.StatusCode = status_code;
+			if (status_desc != null)
+				hp.StatusDescription = status_desc;
+			hp.SuppressEntityBody = suppress_body;
+		}
+
 		public long ContentLength {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return content_length; }
+			set { content_length = value; }
 		}
 
-		[MonoTODO]
 		public string ContentType {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return content_type; }
+			set { content_type = value; }
 		}
 
-		[MonoTODO]
 		public string ETag {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return etag; }
+			set { etag = value; }
 		}
 
-		[MonoTODO]
 		public WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
+			get {
+				if (headers == null)
+					headers = new WebHeaderCollection ();
+				return headers;
+			}
 		}
 
-		[MonoTODO]
 		public DateTime LastModified {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return last_modified; }
+			set { last_modified = value; }
 		}
 
-		[MonoTODO]
 		public string Location {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return location; }
+			set { location = value; }
 		}
 
-		[MonoTODO]
 		public HttpStatusCode StatusCode {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return status_code; }
+			set { status_code = value; }
 		}
 
-		[MonoTODO]
 		public string StatusDescription {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return status_desc; }
+			set { status_desc = value; }
 		}
 
-		[MonoTODO]
 		public bool SuppressEntityBody {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return suppress_body; }
+			set { suppress_body = value; }
 		}
 	}
 }

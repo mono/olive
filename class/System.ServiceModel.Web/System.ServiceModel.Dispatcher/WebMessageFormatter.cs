@@ -243,6 +243,16 @@ namespace System.ServiceModel.Description
 
 			public Message SerializeReply (MessageVersion messageVersion, object [] parameters, object result)
 			{
+				try {
+					return SerializeReplyCore (messageVersion, parameters, result);
+				} finally {
+					if (WebOperationContext.Current != null)
+						OperationContext.Current.Extensions.Remove (WebOperationContext.Current);
+				}
+			}
+
+			Message SerializeReplyCore (MessageVersion messageVersion, object [] parameters, object result)
+			{
 				if (parameters == null)
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (messageVersion);
@@ -279,6 +289,10 @@ namespace System.ServiceModel.Description
 				var hp = new HttpResponseMessageProperty ();
 				// FIXME: get encoding from somewhere
 				hp.Headers ["Content-Type"] = mediaType + "; charset=utf-8";
+
+				// apply user-customized HTTP results via WebOperationContext.
+				WebOperationContext.Current.OutgoingResponse.Apply (hp);
+
 				// FIXME: fill some properties if required.
 				ret.Properties.Add (HttpResponseMessageProperty.Name, hp);
 
@@ -294,11 +308,16 @@ namespace System.ServiceModel.Description
 					throw new ArgumentNullException ("parameters");
 				CheckMessageVersion (message.Version);
 
+				OperationContext.Current.Extensions.Add (new WebOperationContext (OperationContext.Current));
+
+				IncomingWebRequestContext iwc = WebOperationContext.Current.IncomingRequest;
+
 				Uri to = message.Headers.To;
 				UriTemplateMatch match = UriTemplate.Match (Endpoint.Address.Uri, to);
 				if (match == null)
 					// not sure if it could happen
 					throw new SystemException (String.Format ("INTERNAL ERROR: UriTemplate does not match with the request: {0} / {1}", UriTemplate, to));
+				iwc.UriTemplateMatch = match;
 
 				MessageDescription md = GetMessageDescription (MessageDirection.Input);
 

@@ -1,3 +1,10 @@
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* IncomingWebRequestContext.cs, IncomingWebResponseContext.cs,
+	  OutgoingWebRequestContext.cs, OutgoingWebResponseContext.cs,
+	  WebOperationContext.cs : implemented large chunk of them. Still
+	  not sure how outgoing request and incoming response are used.
+
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebServiceHost.cs : Binding could be custom.

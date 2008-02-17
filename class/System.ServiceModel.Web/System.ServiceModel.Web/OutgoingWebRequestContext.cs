@@ -32,6 +32,10 @@ namespace System.ServiceModel.Web
 {
 	public class OutgoingWebRequestContext
 	{
+		internal OutgoingWebRequestContext ()
+		{
+		}
+
 		[MonoTODO]
 		public string Accept {
 			get { throw new NotImplementedException (); }

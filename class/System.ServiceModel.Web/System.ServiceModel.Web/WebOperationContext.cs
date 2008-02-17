@@ -38,35 +38,33 @@ namespace System.ServiceModel.Web
 			get { return OperationContext.Current != null ? OperationContext.Current.Extensions.Find<WebOperationContext> () : null; }
 		}
 
-		OperationContext operation;
-		IncomingWebRequestContext incoming_request = new IncomingWebRequestContext ();
-		IncomingWebResponseContext incoming_response = new IncomingWebResponseContext ();
-		OutgoingWebRequestContext outgoing_request = new OutgoingWebRequestContext ();
-		OutgoingWebResponseContext outgoing_response = new OutgoingWebResponseContext ();
+		IncomingWebRequestContext incoming_request;
+		IncomingWebResponseContext incoming_response;
+		OutgoingWebRequestContext outgoing_request;
+		OutgoingWebResponseContext outgoing_response;
 
 		public WebOperationContext (OperationContext operation)
 		{
 			if (operation == null)
 				throw new ArgumentNullException ("operation");
-			this.operation = operation;
+			incoming_request = new IncomingWebRequestContext (operation);
+			incoming_response = new IncomingWebResponseContext (operation);
+			outgoing_request = new OutgoingWebRequestContext ();
+			outgoing_response = new OutgoingWebResponseContext ();
 		}
 
-		[MonoTODO]
 		public IncomingWebRequestContext IncomingRequest {
 			get { return incoming_request; }
 		}
 
-		[MonoTODO]
 		public IncomingWebResponseContext IncomingResponse {
 			get { return incoming_response; }
 		}
 
-		[MonoTODO]
 		public OutgoingWebRequestContext OutgoingRequest {
 			get { return outgoing_request; }
 		}
 
-		[MonoTODO]
 		public OutgoingWebResponseContext OutgoingResponse {
 			get { return outgoing_response; }
 		}

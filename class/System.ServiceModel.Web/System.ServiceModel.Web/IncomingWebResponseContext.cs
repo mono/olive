@@ -26,45 +26,50 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
+using System.Globalization;
 using System.Net;
+using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Web
 {
 	public class IncomingWebResponseContext
 	{
-		[MonoTODO]
+		HttpResponseMessageProperty hp;
+
+		internal IncomingWebResponseContext (OperationContext context)
+		{
+			hp = (HttpResponseMessageProperty) context.IncomingMessageProperties [HttpResponseMessageProperty.Name];
+		}
+
 		public long ContentLength {
-			get { throw new NotImplementedException (); }
+			get {
+				string s = hp.Headers.Get ("Content-Length");
+				return s != null ? long.Parse (s, CultureInfo.InvariantCulture) : 0;
+			}
 		}
 
-		[MonoTODO]
 		public string ContentType {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("Content-Type"); }
 		}
 
-		[MonoTODO]
 		public string ETag {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("ETag"); }
 		}
 
-		[MonoTODO]
 		public WebHeaderCollection Headers {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers; }
 		}
 
-		[MonoTODO]
 		public string Location {
-			get { throw new NotImplementedException (); }
+			get { return hp.Headers.Get ("Location"); }
 		}
 
-		[MonoTODO]
 		public HttpStatusCode StatusCode {
-			get { throw new NotImplementedException (); }
+			get { return hp.StatusCode; }
 		}
 
-		[MonoTODO]
 		public string StatusDescription {
-			get { throw new NotImplementedException (); }
+			get { return hp.StatusDescription; }
 		}
 	}
 }

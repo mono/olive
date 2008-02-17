@@ -1,3 +1,7 @@
+2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WebMessageFormatter.cs : implement WebOperationContext support.
+
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpDispatchOperationSelector.cs : some code cleanup.
