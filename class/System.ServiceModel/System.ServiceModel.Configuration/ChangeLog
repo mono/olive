@@ -1,3 +1,10 @@
+2008-02-17  Igor Zelmanovich <igorx@mainsoft.com>
+
+	* EncodingConverter.cs: added internal class.
+	* SecurityAlgorithmSuiteConverter.cs: added internal class.
+	* BasicHttpMessageSecurityElement.cs: 
+	use SecurityAlgorithmSuiteConverter for "algorithmSuite" property.
+	
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* MethodStubs.cs : Added CreateBehavior() method in couple of elements.

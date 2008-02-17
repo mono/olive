@@ -340,6 +340,7 @@ System.ServiceModel.Configuration/CustomBindingElementCollection.cs
 System.ServiceModel.Configuration/DataContractSerializerElement.cs
 System.ServiceModel.Configuration/DiagnosticSection.cs
 System.ServiceModel.Configuration/DnsElement.cs
+System.ServiceModel.Configuration/EncodingConverter.cs
 System.ServiceModel.Configuration/EndpointAddressElementBase.cs
 System.ServiceModel.Configuration/EndpointBehaviorElement.cs
 System.ServiceModel.Configuration/EndpointBehaviorElementCollection.cs
@@ -418,6 +419,7 @@ System.ServiceModel.Configuration/PrivacyNoticeElement.cs
 System.ServiceModel.Configuration/ReliableSessionElement.cs
 System.ServiceModel.Configuration/RsaElement.cs
 System.ServiceModel.Configuration/SecureConversationServiceElement.cs
+System.ServiceModel.Configuration/SecurityAlgorithmSuiteConverter.cs
 System.ServiceModel.Configuration/SecurityElement.cs
 System.ServiceModel.Configuration/SecurityElementBase.cs
 System.ServiceModel.Configuration/ServiceAuthorizationElement.cs
