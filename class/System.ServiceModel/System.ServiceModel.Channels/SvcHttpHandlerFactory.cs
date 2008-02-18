@@ -42,6 +42,7 @@ namespace System.ServiceModel.Channels {
 	{
 		static Dictionary<string, SvcHttpHandler> handlers = new Dictionary<string, SvcHttpHandler> ();
 		string privateBinPath;
+		Type service_type, factory_type;
 
 		public SvcHttpHandlerFactory ()
 		{
@@ -53,12 +54,12 @@ namespace System.ServiceModel.Channels {
 			if (handlers.ContainsKey (url))
 				return handlers [url];
 			
-			Type type = GetTypeFromSvc (pathTranslated, url, context);
-			if (type == null)
+			LoadTypeFromSvc (pathTranslated, url, context);
+			if (service_type == null)
 				throw new Exception (String.Format (
 					"Could not find service for url : '{0}'", url));
 			
-			SvcHttpHandler handler = new SvcHttpHandler (type, url);
+			SvcHttpHandler handler = new SvcHttpHandler (service_type, factory_type, url);
 			handlers [url] = handler;
 
 			return handler;
@@ -75,11 +76,10 @@ namespace System.ServiceModel.Channels {
 			return handlers [path];
 		}
 
-		Type GetTypeFromSvc (string path, string url, HttpContext context)
+		void LoadTypeFromSvc (string path, string url, HttpContext context)
 		{
-			Type type = CachingCompiler.GetTypeFromCache (path);
-			if (type != null)
-				return type;
+			if (CachingCompiler.GetTypeFromCache (path) != null)
+				return;
 			
 			ServiceHostParser parser = new ServiceHostParser (path, url, context);
 			
@@ -87,17 +87,22 @@ namespace System.ServiceModel.Channels {
 			if (parser.Program == null) {
 				//FIXME: Not caching, as parser.TypeName could be
 				//just typename or fully qualified name
-				type = GetTypeFromBin (parser.TypeName);
+				service_type = GetTypeFromBin (parser.TypeName);
 				/*CachingCompiler.InsertType (
-					type, type.Assembly.Location, url, 
+					service_type, service_type.Assembly.Location, url, 
 					new CacheItemRemovedCallback (RemovedCallback));*/
 			} else {
-				type = CachingCompiler.CompileAndGetType (
+				service_type = CachingCompiler.CompileAndGetType (
 					parser, url,
 					new CacheItemRemovedCallback (RemovedCallback));
 			}
 
-			return type;
+			if (parser.Factory != null) {
+				factory_type = GetTypeFromBin (parser.Factory);
+				/*CachingCompiler.InsertType (
+					factory_type, factory_type.Assembly.Location, url, 
+					new CacheItemRemovedCallback (RemovedCallback));*/
+			}
 		}
 		
 		string PrivateBinPath {

@@ -30,6 +30,7 @@ using System.Web;
 using System.Threading;
 
 using System.ServiceModel;
+using System.ServiceModel.Activation;
 using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 
@@ -38,17 +39,19 @@ namespace System.ServiceModel.Channels {
 	internal class SvcHttpHandler : IHttpHandler
 	{
 		Type type;
+		Type factory_type;
 		internal string path;
 		Uri request_url;
-		ServiceHost host;
+		ServiceHostBase host;
 
 		AspNetReplyChannel reply_channel;
 		AutoResetEvent wait = new AutoResetEvent (false);
 		AutoResetEvent listening = new AutoResetEvent (false);
 
-		public SvcHttpHandler (Type type, string path)
+		public SvcHttpHandler (Type type, Type factoryType, string path)
 		{
 			this.type = type;
+			this.factory_type = factoryType;
 			this.path = path;
 		}
 
@@ -119,7 +122,10 @@ namespace System.ServiceModel.Channels {
 				return;
 
 			//ServiceHost for this not created yet
-			host = new ServiceHost (type);
+			if (factory_type != null)
+				host = ((ServiceHostFactory) Activator.CreateInstance (factory_type)).CreateServiceHost (type, new Uri [0]);
+			else
+				host = new ServiceHost (type);
 
 #if true
 			//FIXME: Binding: Get from web.config.

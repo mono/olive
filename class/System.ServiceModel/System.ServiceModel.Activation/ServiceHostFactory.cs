@@ -40,7 +40,7 @@ namespace System.ServiceModel.Activation
 		}
 
 		[MonoTODO ("untested")]
-		protected virtual ServiceHost CreateServiceHost (
+		protected internal virtual ServiceHost CreateServiceHost (
 			Type serviceType, Uri [] baseAddresses)
 		{
 			return new ServiceHost (serviceType, baseAddresses);

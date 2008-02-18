@@ -43,6 +43,7 @@ namespace System.ServiceModel.Channels {
 		string url;
 		string type_name;
 		string language;
+		string factory;
 		bool debug;
 		bool got_default_directive;
 		string program; // If program == null, we have to get the requested 'type_name' from the assemblies in bin
@@ -82,6 +83,10 @@ namespace System.ServiceModel.Channels {
 
 		public ArrayList Assemblies {
 			get { return assemblies; }
+		}
+
+		public string Factory {
+			get { return factory; }
 		}
 
 		public string Language {
@@ -137,6 +142,9 @@ namespace System.ServiceModel.Channels {
 
 				if (attributes.ContainsKey ("LANGUAGE"))
 					language = attributes ["LANGUAGE"];
+
+				if (attributes.ContainsKey ("FACTORY"))
+					factory = attributes ["FACTORY"];
 
 				if (attributes.ContainsKey ("DEBUG")) {
 					if (String.Compare (attributes ["DEBUG"], "TRUE", true) == 0)

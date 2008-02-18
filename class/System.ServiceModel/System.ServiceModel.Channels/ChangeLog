@@ -1,3 +1,8 @@
+2008-02-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ServiceHostParser.cs, SvcHttpHandlerFactory.cs, SvcHttpHandler.cs:
+	  added support for "factory" attribute.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* HttpRequestContent.cs : consider HttpResponseMessageProperty.
