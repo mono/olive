@@ -1,3 +1,10 @@
+2008-02-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DataContractJsonSerializer.cs : IsStartObject() could raise
+	  an arbitrary exception, so wrap it inside try-catch too to enclose
+	  with SerializationException.
+	* JsonSerializationReader.cs : support DBNull.
+
 2008-01-30  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DataContractJsonSerializer.cs : fixed .ctor(type, knonwTypes) that

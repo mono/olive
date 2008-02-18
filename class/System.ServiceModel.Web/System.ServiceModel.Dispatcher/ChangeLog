@@ -1,3 +1,7 @@
+2008-02-18  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* JsonQueryStringConverter.cs : implemented.
+
 2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebMessageFormatter.cs : implement WebOperationContext support.

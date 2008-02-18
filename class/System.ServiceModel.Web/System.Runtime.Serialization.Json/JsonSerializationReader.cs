@@ -72,6 +72,11 @@ namespace System.Runtime.Serialization.Json
 				throw SerializationError (String.Format ("The object graph exceeded the maximum object count '{0}' specified in the serializer", serializer.MaxItemsInObjectGraph));
 
 			switch (Type.GetTypeCode (type)) {
+			case TypeCode.DBNull:
+				string dbn = reader.ReadElementContentAsString ();
+				if (dbn != String.Empty)
+					throw new SerializationException (String.Format ("The only expected DBNull value string is '{{}}'. Tha actual input was '{0}'.", dbn));
+				return DBNull.Value;
 			case TypeCode.String:
 				return reader.ReadElementContentAsString ();
 			case TypeCode.Single:

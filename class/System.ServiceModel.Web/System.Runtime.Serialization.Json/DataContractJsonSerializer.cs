@@ -172,10 +172,10 @@ namespace System.Runtime.Serialization.Json
 		{
 			if (reader == null)
 				throw new ArgumentNullException ("reader");
-			if (verifyObjectName && !IsStartObject (reader))
-				throw new SerializationException (String.Format ("Expected element was '{0}', but the actual input element was '{1}' in namespace '{2}'", root, reader.LocalName, reader.NamespaceURI));
-
 			try {
+				if (verifyObjectName && !IsStartObject (reader))
+					throw new SerializationException (String.Format ("Expected element was '{0}', but the actual input element was '{1}' in namespace '{2}'", root, reader.LocalName, reader.NamespaceURI));
+
 				return new JsonSerializationReader (this, reader, type, verifyObjectName).ReadRoot ();
 			} catch (SerializationException) {
 				throw;

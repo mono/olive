@@ -305,6 +305,37 @@ namespace MonoTests.System.Runtime.Serialization.Json
 			}
 		}
 
+		// DBNull (primitive)
+
+		[Test]
+		public void SerializeDBNullXml ()
+		{
+			StringWriter sw = new StringWriter ();
+			SerializeDBNull (XmlWriter.Create (sw, settings));
+			Assert.AreEqual (
+				@"<root type=""object"" />",
+				sw.ToString ());
+		}
+
+		[Test]
+		public void SerializeDBNullJson ()
+		{
+			MemoryStream ms = new MemoryStream ();
+			SerializeDBNull (JsonReaderWriterFactory.CreateJsonWriter (ms));
+			Assert.AreEqual (
+				"{}",
+				Encoding.UTF8.GetString (ms.ToArray ()));
+		}
+
+		void SerializeDBNull (XmlWriter writer)
+		{
+			DataContractJsonSerializer ser =
+				new DataContractJsonSerializer (typeof (DBNull));
+			using (XmlWriter w = writer) {
+				ser.WriteObject (w, DBNull.Value);
+			}
+		}
+
 		// DCSimple1
 
 		[Test]
@@ -978,6 +1009,14 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		}
 
 		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void DeserializeEmptyAsDBNull ()
+		{
+			// it somehow expects "root" which should have been already consumed.
+			Deserialize ("", typeof (DBNull));
+		}
+
+		[Test]
 		public void DeserializeEmptyObjectAsString ()
 		{
 			// looks like it is converted to ""
@@ -988,7 +1027,13 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEmptyObjectAsInt ()
 		{
-			Assert.AreEqual (0, Deserialize ("{}", typeof (int)));
+			Deserialize ("{}", typeof (int));
+		}
+
+		[Test]
+		public void DeserializeEmptyObjectAsDBNull ()
+		{
+			Assert.AreEqual (DBNull.Value, Deserialize ("{}", typeof (DBNull)));
 		}
 
 		[Test]
