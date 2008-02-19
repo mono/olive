@@ -33,6 +33,7 @@ using NUnit.Framework;
 using System.ServiceModel.Configuration;
 using System.ServiceModel;
 using System.Configuration;
+using System.Collections.ObjectModel;
 
 namespace MonoTests.System.ServiceModel.Configuration
 {
@@ -55,6 +56,18 @@ namespace MonoTests.System.ServiceModel.Configuration
 			foreach (ConfigurationProperty prop in coll) {
 				Assert.AreEqual ("", prop.Name);
 			}
+		}
+
+		[Test]
+		public void ConfiguredBindings () {
+			Poker poker = new Poker ();
+			Assert.AreEqual (0, poker.ConfiguredBindings.Count, "Count #1");
+
+			BasicHttpBindingElement elem = new BasicHttpBindingElement ("my_binding");
+			poker.Bindings.Add (elem);
+			Assert.AreEqual (1, poker.ConfiguredBindings.Count, "Count #2");
+
+			Assert.AreEqual (elem, poker.ConfiguredBindings [0], "Instance");
 		}
 	}
 }

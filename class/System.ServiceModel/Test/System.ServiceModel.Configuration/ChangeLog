@@ -1,3 +1,7 @@
+2008-02-19  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* StandardBindingCollectionElementTest.cs: add test
+
 2008-02-17  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* BasicHttpBindingElementTest.cs:
