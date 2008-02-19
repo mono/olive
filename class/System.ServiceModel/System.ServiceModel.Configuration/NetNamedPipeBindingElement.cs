@@ -60,7 +60,6 @@ namespace System.ServiceModel.Configuration
 	{
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
 		static ConfigurationProperty host_name_comparison_mode;
 		static ConfigurationProperty max_buffer_pool_size;
 		static ConfigurationProperty max_buffer_size;
@@ -74,10 +73,7 @@ namespace System.ServiceModel.Configuration
 
 		static NetNamedPipeBindingElement ()
 		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
+			properties = PropertiesInternal;
 
 			host_name_comparison_mode = new ConfigurationProperty ("hostNameComparisonMode",
 				typeof (HostNameComparisonMode), "StrongWildcard", null/* FIXME: get converter for HostNameComparisonMode*/, null,
@@ -112,14 +108,13 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			transaction_protocol = new ConfigurationProperty ("transactionProtocol",
-				typeof (TransactionProtocol), "OleTransactions", null/* FIXME: get converter for TransactionProtocol*/, null,
+				typeof (TransactionProtocol), "OleTransactions", TransactionProtocolConverter.Instance, null,
 				ConfigurationPropertyOptions.None);
 
 			transfer_mode = new ConfigurationProperty ("transferMode",
 				typeof (TransferMode), "Buffered", null/* FIXME: get converter for TransferMode*/, null,
 				ConfigurationPropertyOptions.None);
 
-			properties.Add (binding_element_type);
 			properties.Add (host_name_comparison_mode);
 			properties.Add (max_buffer_pool_size);
 			properties.Add (max_buffer_size);
@@ -136,11 +131,12 @@ namespace System.ServiceModel.Configuration
 		{
 		}
 
+		public NetNamedPipeBindingElement (string name) : base (name) { }
 
 		// Properties
 
-		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+		protected override Type BindingElementType {
+			get { return typeof (NetNamedPipeBinding); }
 		}
 
 		[ConfigurationProperty ("hostNameComparisonMode",

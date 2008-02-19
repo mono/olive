@@ -60,7 +60,6 @@ namespace System.ServiceModel.Configuration
 	{
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
 		static ConfigurationProperty listen_i_p_address;
 		static ConfigurationProperty max_buffer_pool_size;
 		static ConfigurationProperty max_received_message_size;
@@ -71,10 +70,7 @@ namespace System.ServiceModel.Configuration
 
 		static NetPeerTcpBindingElement ()
 		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
+			properties = PropertiesInternal;
 
 			listen_i_p_address = new ConfigurationProperty ("listenIPAddress",
 				typeof (IPAddress), null, null/* FIXME: get converter for IPAddress*/, null,
@@ -104,7 +100,6 @@ namespace System.ServiceModel.Configuration
 				typeof (PeerSecurityElement), null, null/* FIXME: get converter for PeerSecurityElement*/, null,
 				ConfigurationPropertyOptions.None);
 
-			properties.Add (binding_element_type);
 			properties.Add (listen_i_p_address);
 			properties.Add (max_buffer_pool_size);
 			properties.Add (max_received_message_size);
@@ -118,11 +113,12 @@ namespace System.ServiceModel.Configuration
 		{
 		}
 
+		public NetPeerTcpBindingElement (string name) : base (name) { }
 
 		// Properties
 
-		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+		protected override Type BindingElementType {
+			get { return typeof (NetPeerTcpBinding); }
 		}
 
 		[TypeConverter ()]

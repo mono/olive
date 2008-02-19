@@ -1,3 +1,30 @@
+2008-02-19  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* BasicHttpBindingElement.cs:
+	* BindingCollectionElement.cs:
+	* BindingsSection.cs:
+	* ChannelEndpointElementCollection.cs:
+	* MethodStubs.cs:
+	* MexBindingElement.cs:
+	* MexHttpBindingElement.cs:
+	* MexHttpsBindingElement.cs:
+	* MexNamedPipeBindingElement.cs:
+	* MexTcpBindingElement.cs:
+	* MsmqIntegrationBindingElement.cs:
+	* NetMsmqBindingElement.cs:
+	* NetNamedPipeBindingElement.cs:
+	* NetPeerTcpBindingElement.cs:
+	* NetTcpBindingElement.cs:
+	* PolicyImporterElementCollection.cs:
+	* TransactionProtocolConverter.cs	
+	* StandardBindingCollectionElement.cs:
+	* StandardBindingElement.cs:
+	* WsdlImporterElementCollection.cs:
+	* WSDualHttpBindingElement.cs:
+	* WSFederationHttpBindingElement.cs:
+	* WSHttpBindingElement.cs:
+	fix apis and implementation, make corresponding tests pass																							
+
 2008-02-17  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* BasicHttpBindingElement.cs:

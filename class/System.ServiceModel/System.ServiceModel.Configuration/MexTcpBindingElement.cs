@@ -54,20 +54,15 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class MexTcpBindingElement
 		 : MexBindingElement<CustomBinding>,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static MexTcpBindingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		public MexTcpBindingElement ()
+			: this (String.Empty) {
 		}
 
-		public MexTcpBindingElement ()
-		{
+		public MexTcpBindingElement (string name)
+			: base (name) {
 		}
 
 

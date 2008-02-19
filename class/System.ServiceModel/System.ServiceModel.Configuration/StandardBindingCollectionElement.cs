@@ -63,7 +63,6 @@ namespace System.ServiceModel.Configuration
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty bindings;
-		static ConfigurationProperty configured_bindings;
 
 		static StandardBindingCollectionElement ()
 		{
@@ -72,12 +71,7 @@ namespace System.ServiceModel.Configuration
 				typeof (StandardBindingElementCollection<TBindingConfiguration>), null, null/* FIXME: get converter for StandardBindingElementCollection<TBindingConfiguration>*/, null,
 				ConfigurationPropertyOptions.IsDefaultCollection);
 
-			configured_bindings = new ConfigurationProperty ("",
-				typeof (ReadOnlyCollection<IBindingConfigurationElement>), null, null/* FIXME: get converter for ReadOnlyCollection<IBindingConfigurationElement>*/, null,
-				ConfigurationPropertyOptions.None);
-
 			properties.Add (bindings);
-			properties.Add (configured_bindings);
 		}
 
 		public StandardBindingCollectionElement ()
@@ -95,7 +89,13 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public override ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings {
-			get { return (ReadOnlyCollection<IBindingConfigurationElement>) base [configured_bindings]; }
+			get {
+				List<IBindingConfigurationElement> list = new List<IBindingConfigurationElement> ();
+				StandardBindingElementCollection<TBindingConfiguration> bindings = Bindings;
+				for (int i = 0; i < bindings.Count; i++)
+					list.Add (bindings [i]);
+				return new ReadOnlyCollection<IBindingConfigurationElement> (list);
+			}
 		}
 
 		protected override ConfigurationPropertyCollection Properties {

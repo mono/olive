@@ -73,6 +73,7 @@ namespace System.ServiceModel.Configuration
 
 		public WsdlImporterElementCollection ()
 		{
+			AddElementName = "extension";
 		}
 
 

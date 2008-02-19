@@ -456,6 +456,7 @@ System.ServiceModel.Configuration/TcpTransportSecurityElement.cs
 System.ServiceModel.Configuration/TextMessageEncodingElement.cs
 System.ServiceModel.Configuration/TransactedBatchingElement.cs
 System.ServiceModel.Configuration/TransactionFlowElement.cs
+System.ServiceModel.Configuration/TransactionProtocolConverter.cs
 System.ServiceModel.Configuration/TransportConfigurationTypeElement.cs
 System.ServiceModel.Configuration/TransportConfigurationTypeElementCollection.cs
 System.ServiceModel.Configuration/TransportElement.cs

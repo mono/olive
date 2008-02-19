@@ -58,19 +58,6 @@ namespace System.ServiceModel.Configuration
 	public abstract partial class BindingCollectionElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_name;
-
-		static BindingCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_name = new ConfigurationProperty ("",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_name);
-		}
 
 		protected BindingCollectionElement ()
 		{
@@ -78,9 +65,9 @@ namespace System.ServiceModel.Configuration
 
 
 		// Properties
-
+		[MonoTODO("not implemented")]
 		public string BindingName {
-			get { return (string) base [binding_name]; }
+			get { throw new NotImplementedException (); }
 		}
 		public abstract Type BindingType { get;  }
 		public abstract ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings { get;  }

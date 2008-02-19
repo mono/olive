@@ -63,16 +63,10 @@ namespace System.ServiceModel.Configuration
 	public sealed partial class ChannelEndpointElementCollection
 		 : ServiceModelEnhancedConfigurationElementCollection<ChannelEndpointElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ChannelEndpointElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
 
 		public ChannelEndpointElementCollection ()
 		{
+			AddElementName = "endpoint";
 		}
 
 

@@ -54,20 +54,16 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class MexNamedPipeBindingElement
 		 : MexBindingElement<CustomBinding>,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static MexNamedPipeBindingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
 
 		public MexNamedPipeBindingElement ()
-		{
+			: this (String.Empty) {
+		}
+
+		public MexNamedPipeBindingElement (string name)
+			: base (name) {
 		}
 
 

@@ -66,7 +66,7 @@ namespace System.ServiceModel.Configuration
 		static ConfigurationProperty receive_timeout;
 		static ConfigurationProperty send_timeout;
 
-		protected static ConfigurationPropertyCollection PropertiesInternal {
+		internal static ConfigurationPropertyCollection PropertiesInternal {
 			get { return properties; }
 		}
 
@@ -103,10 +103,14 @@ namespace System.ServiceModel.Configuration
 		protected StandardBindingElement ()
 		{
 		}
+		
+		protected StandardBindingElement (string name) {
+			Name = name;
+		}
 
 
 		// Properties
-		public abstract Type BindingElementType { get;  }
+		protected abstract Type BindingElementType { get;  }
 
 		[ConfigurationProperty ("closeTimeout",
 			 Options = ConfigurationPropertyOptions.None,

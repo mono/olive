@@ -157,7 +157,7 @@ namespace System.ServiceModel.Configuration
 
 		// Properties
 
-		public override Type BindingElementType {
+		protected override Type BindingElementType {
 			get { return (Type) base [binding_element_type]; }
 		}
 

@@ -61,7 +61,6 @@ namespace System.ServiceModel.Configuration
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty allow_cookies;
-		static ConfigurationProperty binding_element_type;
 		static ConfigurationProperty bypass_proxy_on_local;
 		static ConfigurationProperty host_name_comparison_mode;
 		static ConfigurationProperty max_buffer_pool_size;
@@ -80,10 +79,6 @@ namespace System.ServiceModel.Configuration
 			properties = PropertiesInternal;
 			allow_cookies = new ConfigurationProperty ("allowCookies",
 				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
 				ConfigurationPropertyOptions.None);
 
 			bypass_proxy_on_local = new ConfigurationProperty ("bypassProxyOnLocal",
@@ -135,7 +130,6 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			properties.Add (allow_cookies);
-			properties.Add (binding_element_type);
 			properties.Add (bypass_proxy_on_local);
 			properties.Add (host_name_comparison_mode);
 			properties.Add (max_buffer_pool_size);
@@ -154,6 +148,7 @@ namespace System.ServiceModel.Configuration
 		{
 		}
 
+		public BasicHttpBindingElement (string name) : base (name) { }
 
 		// Properties
 
@@ -165,8 +160,8 @@ namespace System.ServiceModel.Configuration
 			set { base [allow_cookies] = value; }
 		}
 
-		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+		protected override Type BindingElementType {
+			get { return typeof (BasicHttpBinding); }
 		}
 
 		[ConfigurationProperty ("bypassProxyOnLocal",

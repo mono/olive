@@ -73,6 +73,7 @@ namespace System.ServiceModel.Configuration
 
 		public PolicyImporterElementCollection ()
 		{
+			AddElementName = "extension";
 		}
 
 

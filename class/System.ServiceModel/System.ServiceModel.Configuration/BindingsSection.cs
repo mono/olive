@@ -61,7 +61,6 @@ namespace System.ServiceModel.Configuration
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty basic_http_binding;
-		static ConfigurationProperty binding_collections;
 		static ConfigurationProperty custom_binding;
 		static ConfigurationProperty msmq_integration_binding;
 		static ConfigurationProperty net_msmq_binding;
@@ -77,10 +76,6 @@ namespace System.ServiceModel.Configuration
 			properties = new ConfigurationPropertyCollection ();
 			basic_http_binding = new ConfigurationProperty ("basicHttpBinding",
 				typeof (BasicHttpBindingCollectionElement), null, null/* FIXME: get converter for BasicHttpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			binding_collections = new ConfigurationProperty ("",
-				typeof (List<BindingCollectionElement>), null, null/* FIXME: get converter for List<BindingCollectionElement>*/, null,
 				ConfigurationPropertyOptions.None);
 
 			custom_binding = new ConfigurationProperty ("customBinding",
@@ -120,7 +115,6 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			properties.Add (basic_http_binding);
-			properties.Add (binding_collections);
 			properties.Add (custom_binding);
 			properties.Add (msmq_integration_binding);
 			properties.Add (net_msmq_binding);
@@ -145,8 +139,9 @@ namespace System.ServiceModel.Configuration
 			get { return (BasicHttpBindingCollectionElement) base [basic_http_binding]; }
 		}
 
+		[MonoTODO ("Not Implemented")]
 		public List<BindingCollectionElement> BindingCollections {
-			get { return (List<BindingCollectionElement>) base [binding_collections]; }
+			get { throw new NotImplementedException(); }
 		}
 
 		[ConfigurationProperty ("customBinding",

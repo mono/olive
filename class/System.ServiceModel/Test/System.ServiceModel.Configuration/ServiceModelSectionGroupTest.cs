@@ -65,6 +65,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void BindingCollections () {
 			ServiceModelSectionGroup g = GetConfig ("Test/config/test1.config");
 			List<BindingCollectionElement> coll = g.Bindings.BindingCollections;

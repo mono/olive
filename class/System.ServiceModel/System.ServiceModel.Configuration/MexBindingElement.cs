@@ -54,34 +54,20 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public abstract partial class MexBindingElement<TStandardBinding>
 		 : StandardBindingElement,  IBindingConfigurationElement
 		where TStandardBinding : Binding
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
 
-		static MexBindingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-		}
-
-		protected MexBindingElement ()
-		{
+		protected MexBindingElement (string name)
+			: base (name) {
 		}
 
 
 		// Properties
 
-		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+		protected override Type BindingElementType {
+			get { return typeof (TStandardBinding); }
 		}
 
 

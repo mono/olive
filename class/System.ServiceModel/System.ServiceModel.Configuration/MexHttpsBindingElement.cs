@@ -54,20 +54,16 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class MexHttpsBindingElement
 		 : MexBindingElement<WSHttpBinding>,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static MexHttpsBindingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
 
 		public MexHttpsBindingElement ()
-		{
+			: this (String.Empty) {
+		}
+
+		public MexHttpsBindingElement (string name)
+			: base (name) {
 		}
 
 
