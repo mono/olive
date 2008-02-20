@@ -1,3 +1,8 @@
+2008-02-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* BrowserInformation.cs: Fix pinvoke to avoid crashes in monotone
+	* HtmlPage.cs: Remove bandaid (added 2 weeks ago).
+
 2007-10-22  Chris Toshok  <toshok@ximian.com>
 
 	* ScriptableAttribute.cs: sealed.

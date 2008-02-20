@@ -51,8 +51,7 @@ namespace System.Windows.Browser {
 		public static BrowserInformation BrowserInformation {
 			get {
 				if (browser_info == null)
-					browser_info = new BrowserInformation (String.Empty, String.Empty, String.Empty, String.Empty, true);
-//					browser_info = new BrowserInformation ();
+					browser_info = new BrowserInformation ();
 				return browser_info;
 			}
 		}
