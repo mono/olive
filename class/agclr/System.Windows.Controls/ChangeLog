@@ -1,3 +1,9 @@
+2008-02-20  Jeffrey Stedfast  <fejj@novell.com>
+
+	* TextBlock.cs (SetFontSource): It would appear that you can
+	actually set null as a downloader (equivalent to unsetting it)
+	according to the MS test suite.
+
 2007-11-09  Jeffrey Stedfast  <fejj@novell.com>
 
 	* MediaElement.cs (InvokeMediaOpened): Always pass null as the

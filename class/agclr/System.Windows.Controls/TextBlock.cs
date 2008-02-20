@@ -126,12 +126,12 @@ namespace System.Windows.Controls {
 
 		public void SetFontSource (DependencyObject Downloader)
 		{
-			if (Downloader == null)
-				throw new ArgumentNullException ("Downloader");
-
-			Downloader dl = (Downloader as Downloader);
-			if (dl != null)
+			if (Downloader != null) {
+				Downloader dl = (Downloader as Downloader);
 				NativeMethods.text_block_set_font_source (native, dl.native);
+			} else {
+				NativeMethods.text_block_set_font_source (native, IntPtr.Zero);
+			}
 		}
 
 		internal override Kind GetKind ()
