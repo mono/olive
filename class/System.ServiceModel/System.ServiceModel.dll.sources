@@ -235,6 +235,7 @@ System.ServiceModel.Channels/MsmqTransportBindingElement.cs
 System.ServiceModel.Channels/MtomMessageEncoder.cs
 System.ServiceModel.Channels/MtomMessageEncoderFactory.cs
 System.ServiceModel.Channels/MtomMessageEncodingBindingElement.cs
+System.ServiceModel.Channels/NamedPipeConnectionPoolSettings.cs
 System.ServiceModel.Channels/NamedPipetransportBindingElement.cs
 System.ServiceModel.Channels/OneWayBindingElement.cs
 System.ServiceModel.Channels/OneWayBindingElementImporter.cs

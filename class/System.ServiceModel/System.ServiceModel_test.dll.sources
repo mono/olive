@@ -26,6 +26,7 @@ System.ServiceModel.Channels/MessageHeadersTest.cs
 System.ServiceModel.Channels/MessageTest.cs
 System.ServiceModel.Channels/MessageVersionTest.cs
 System.ServiceModel.Channels/MsmqTransportBindingElementTest.cs
+System.ServiceModel.Channels/NamedPipeTransportBindingElementTest.cs
 System.ServiceModel.Channels/OneWayBindingElementTest.cs
 System.ServiceModel.Channels/OutputChannelBase.cs
 System.ServiceModel.Channels/ReplyChannelBase.cs

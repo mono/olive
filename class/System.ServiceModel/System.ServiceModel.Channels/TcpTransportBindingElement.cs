@@ -44,8 +44,7 @@ namespace System.ServiceModel.Channels
 		int listen_backlog = 10;
 		bool port_sharing_enabled = false;
 		bool teredo_enabled = false;
-		TcpConnectionPoolSettings connection_pool_settings =
-			new TcpConnectionPoolSettings ();
+		TcpConnectionPoolSettings pool = new TcpConnectionPoolSettings ();
 
 		public TcpTransportBindingElement ()
 		{
@@ -57,10 +56,11 @@ namespace System.ServiceModel.Channels
 		{
 			listen_backlog = other.listen_backlog;
 			port_sharing_enabled = other.port_sharing_enabled;
+			pool.CopyPropertiesFrom (other.pool);
 		}
 		
 		public TcpConnectionPoolSettings ConnectionPoolSettings {
-			get { return connection_pool_settings; }
+			get { return pool; }
 		}
 
 		public int ListenBacklog {

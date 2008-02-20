@@ -1,5 +1,9 @@
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* NetNamedPipeTransportBindingElementTest.cs : new test.
+
+2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* EnvelopeVersionTest.cs : updated to work with .NET 3.0 SP1.
 	* TcpTransportBindingElementTest.cs : new test.
 

@@ -1,5 +1,13 @@
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* TcpTransportBindingElement.cs, TcpConnectionPoolSettings.cs :
+	  clone connection pool settings too.
+	* NamedPipetransportBindingElement.cs,
+	  NamedPipeConnectionPoolSettings.cs : let's clean them up too (not
+	  being likely implemented though).
+
+2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* ConnectionOrientedTransportBindingElement.cs, 
 	  TcpTransportBindingElement.cs : some API updates.
 	  Initialize default values.

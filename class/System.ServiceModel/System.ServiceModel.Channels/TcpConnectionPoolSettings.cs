@@ -45,6 +45,14 @@ namespace System.ServiceModel.Channels
 		TimeSpan lease_timeout = TimeSpan.FromSeconds (300);
 		int max_conn = 10;
 
+		internal void CopyPropertiesFrom (TcpConnectionPoolSettings other)
+		{
+			group_name = other.group_name;
+			idle_timeout = other.idle_timeout;
+			lease_timeout = other.lease_timeout;
+			max_conn = other.max_conn;
+		}
+
 		[MonoTODO]
 		public string GroupName {
 			get { return group_name; }

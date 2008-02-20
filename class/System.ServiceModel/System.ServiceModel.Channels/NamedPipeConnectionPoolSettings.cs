@@ -1,10 +1,10 @@
 //
-// NamedPipeTransportBindingElement.cs
+// NamedPipeConnectionPoolSettings.cs
 //
-// Author:
+// Authors:
 //	Atsushi Enomoto <atsushi@ximian.com>
 //
-// Copyright (C) 2005 Novell, Inc.  http://www.novell.com
+// Copyright (C) 2008 Novell, Inc.  http://www.novell.com
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -25,6 +25,7 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
+
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -33,55 +34,39 @@ using System.ServiceModel.Description;
 
 namespace System.ServiceModel.Channels
 {
-	[MonoTODO]
-	public class NamedPipeTransportBindingElement
-		: ConnectionOrientedTransportBindingElement
+	public sealed class NamedPipeConnectionPoolSettings
 	{
-		public NamedPipeTransportBindingElement ()
+		internal NamedPipeConnectionPoolSettings ()
 		{
 		}
 
-		protected NamedPipeTransportBindingElement (
-			NamedPipeTransportBindingElement other)
-			: base (other)
+		string group_name = "default";
+		TimeSpan idle_timeout = TimeSpan.FromSeconds (120);
+		int max_conn = 10;
+
+		internal void CopyPropertiesFrom (NamedPipeConnectionPoolSettings other)
 		{
-			pool.CopyPropertiesFrom (other.pool);
+			group_name = other.group_name;
+			idle_timeout = other.idle_timeout;
+			max_conn = other.max_conn;
 		}
 
-		NamedPipeConnectionPoolSettings pool = new NamedPipeConnectionPoolSettings ();
-
-		public NamedPipeConnectionPoolSettings ConnectionPoolSettings {
-			get { return pool; }
-		}
-
-		public override string Scheme {
-			get { return "net.pipe"; }
-		}
-
-		public override IChannelFactory<TChannel> BuildChannelFactory<TChannel> (
-			BindingContext context)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override IChannelListener<TChannel>
-			BuildChannelListener<TChannel> (
-			BindingContext context)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override BindingElement Clone ()
-		{
-			return new NamedPipeTransportBindingElement (this);
-		}
-
-		// FIXME: IT should not be required, but gmcs borks here.
 		[MonoTODO]
-		public override T GetProperty<T> (BindingContext context)
-		{
-			throw new NotImplementedException ();
+		public string GroupName {
+			get { return group_name; }
+			set { group_name = value; }
 		}
 
+		[MonoTODO]
+		public TimeSpan IdleTimeout {
+			get { return idle_timeout; }
+			set { idle_timeout = value; }
+		}
+
+		[MonoTODO]
+		public int MaxOutboundConnectionsPerEndpoint {
+			get { return max_conn; }
+			set { max_conn = value; }
+		}
 	}
 }
