@@ -40,19 +40,18 @@ namespace System.ServiceModel
 	public class NetTcpBinding : Binding, IBindingRuntimePreferences
 	{
 		HostNameComparisonMode comparison_mode;
-		int listen_backlog;
 		long max_pool_size;
 		int max_buf_size;
 		int max_conn;
 		long max_msg_size;
 		OptionalReliableSession reliable_session;
 		NetTcpSecurity security;
-		bool port_sharing_enabled;
 		XmlDictionaryReaderQuotas reader_quotas;
 		EnvelopeVersion soap_version;
 		bool transaction_flow;
 		TransactionProtocol transaction_protocol;
 		TransferMode transfer_mode;
+		TcpTransportBindingElement transport = new TcpTransportBindingElement ();
 
 		public NetTcpBinding ()
 			: this (SecurityMode.Message)
@@ -76,8 +75,8 @@ namespace System.ServiceModel
 		}
 
 		public int ListenBacklog {
-			get { return listen_backlog; }
-			set { listen_backlog = value; }
+			get { return transport.ListenBacklog; }
+			set { transport.ListenBacklog = value; }
 		}
 
 		public long MaxBufferPoolSize {
@@ -101,8 +100,8 @@ namespace System.ServiceModel
 		}
 
 		public bool PortSharingEnabled {
-			get { return port_sharing_enabled; }
-			set { port_sharing_enabled = value; }
+			get { return transport.PortSharingEnabled; }
+			set { transport.PortSharingEnabled = value; }
 		}
 
 		public OptionalReliableSession ReliableSession {
@@ -161,7 +160,7 @@ namespace System.ServiceModel
 
 		BindingElement GetTransport ()
 		{
-			return new TcpTransportBindingElement ();
+			return transport.Clone ();
 		}
 
 		// based on WSHttpBinding.CreateMessageSecurity()

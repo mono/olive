@@ -44,7 +44,9 @@ namespace System.ServiceModel.Channels
 		int listen_backlog = 10;
 		bool port_sharing_enabled = false;
 		bool teredo_enabled = false;
-		
+		TcpConnectionPoolSettings connection_pool_settings =
+			new TcpConnectionPoolSettings ();
+
 		public TcpTransportBindingElement ()
 		{
 		}
@@ -57,7 +59,9 @@ namespace System.ServiceModel.Channels
 			port_sharing_enabled = other.port_sharing_enabled;
 		}
 		
-		//public TcpConnectionPoolSettings ConnectionPoolSettings { get; }
+		public TcpConnectionPoolSettings ConnectionPoolSettings {
+			get { return connection_pool_settings; }
+		}
 
 		public int ListenBacklog {
 			get { return listen_backlog; }
@@ -93,33 +97,17 @@ namespace System.ServiceModel.Channels
 		{
 			return new TcpChannelListener<TChannel> (this, context);
 		}
-		
-		[MonoTODO]
-		public override bool CanBuildChannelFactory<TChannel> (
-			BindingContext context)
-		{
-			return typeof (TChannel) == typeof (IDuplexSessionChannel);
-		}
-
-		[MonoTODO]
-		public override bool CanBuildChannelListener<TChannel> (
-			BindingContext context)
-		{
-			return typeof (TChannel) == typeof (IDuplexSessionChannel);
-		}
 
 		public override BindingElement Clone ()
 		{
 			return new TcpTransportBindingElement (this);
 		}
 
-		// FIXME: it should not be required but gmcs borks here.
-		/*
 		[MonoTODO]
 		public override T GetProperty<T> (BindingContext context)
 		{
-			throw new NotImplementedException ();
+			// FIXME: ... or return ISecurityCapabilities?
+			return context.GetInnerProperty<T> ();
 		}
-		*/
 	}
 }

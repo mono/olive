@@ -34,6 +34,7 @@ System.ServiceModel.Channels/SecurityAssert.cs
 System.ServiceModel.Channels/SecurityBindingElementTest.cs
 System.ServiceModel.Channels/SslStreamSecurityBindingElementTest.cs
 System.ServiceModel.Channels/SymmetricSecurityBindingElementTest.cs
+System.ServiceModel.Channels/TcpTransportBindingElementTest.cs
 System.ServiceModel.Channels/TextMessageEncodingBindingElementTest.cs
 System.ServiceModel.Channels/TransactionFlowBindingElementTest.cs
 System.ServiceModel.Configuration/BasicHttpBindingElementTest.cs

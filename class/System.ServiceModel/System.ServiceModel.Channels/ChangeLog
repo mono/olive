@@ -1,3 +1,10 @@
+2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ConnectionOrientedTransportBindingElement.cs, 
+	  TcpTransportBindingElement.cs : some API updates.
+	  Initialize default values.
+	* TcpConnectionPoolSettings.cs : new file.
+
 2008-02-18  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ServiceHostParser.cs, SvcHttpHandlerFactory.cs, SvcHttpHandler.cs:

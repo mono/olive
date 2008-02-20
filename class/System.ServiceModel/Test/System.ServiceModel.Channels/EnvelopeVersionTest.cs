@@ -42,16 +42,19 @@ namespace MonoTests.System.ServiceModel.Channels
 		[Test]
 		public void GetUltimateDestinationActorValuesTest ()
 		{
-			// SOAP 1.1 consists of just (String.Empty)
-			Assert.AreEqual (1, EnvelopeVersion.Soap11.GetUltimateDestinationActorValues ().Length);
-			Assert.AreEqual (String.Empty, EnvelopeVersion.Soap11.GetUltimateDestinationActorValues () [0]);
+			// SOAP 1.1
+			Assert.AreEqual (2, EnvelopeVersion.Soap11.GetUltimateDestinationActorValues ().Length, "#1");
+			Assert.AreEqual (String.Empty, EnvelopeVersion.Soap11.GetUltimateDestinationActorValues () [0], "#2");
+			Assert.AreEqual ("http://schemas.xmlsoap.org/soap/actor/next", EnvelopeVersion.Soap11.GetUltimateDestinationActorValues () [1], "#3");
 
-			// SOAP 1.2 consists of (String.Empty, special URI) 
-			Assert.AreEqual (2, EnvelopeVersion.Soap12.GetUltimateDestinationActorValues ().Length);
+			// SOAP 1.2
+			Assert.AreEqual (3, EnvelopeVersion.Soap12.GetUltimateDestinationActorValues ().Length, "#4");
 			Assert.AreEqual (String.Empty,
-			    EnvelopeVersion.Soap12.GetUltimateDestinationActorValues () [0]);
+			    EnvelopeVersion.Soap12.GetUltimateDestinationActorValues () [0], "#5");
 			Assert.AreEqual ("http://www.w3.org/2003/05/soap-envelope/role/ultimateReceiver",
-			    EnvelopeVersion.Soap12.GetUltimateDestinationActorValues () [1]);
+					 EnvelopeVersion.Soap12.GetUltimateDestinationActorValues () [1], "#6");
+			Assert.AreEqual ("http://www.w3.org/2003/05/soap-envelope/role/next",
+					 EnvelopeVersion.Soap12.GetUltimateDestinationActorValues () [2], "#7");
 		}
 
 		[Test]

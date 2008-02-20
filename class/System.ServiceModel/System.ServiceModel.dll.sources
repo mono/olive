@@ -128,6 +128,7 @@ System.Collections.Generic/SynchronizedCollection.cs
 System.Collections.Generic/SynchronizedKeyedCollection.cs
 System.Collections.Generic/SynchronizedReadOnlyCollection.cs
 System.ServiceModel.Activation/AspNetIntegrationRequirementsAttribute.cs
+System.ServiceModel.Activation/IServiceHostFactory.cs
 System.ServiceModel.Activation/ServiceHostFactory.cs
 System.ServiceModel.Activation/ServiceHostFactoryBase.cs
 System.ServiceModel.Channels/AddressHeader.cs
@@ -271,6 +272,7 @@ System.ServiceModel.Channels/SvcHttpHandlerFactory.cs
 System.ServiceModel.Channels/SymmetricSecurityBindingElement.cs
 System.ServiceModel.Channels/TcpChannelFactory.cs
 System.ServiceModel.Channels/TcpChannelListener.cs
+System.ServiceModel.Channels/TcpConnectionPoolSettings.cs
 System.ServiceModel.Channels/TcpDuplexSessionChannel.cs
 System.ServiceModel.Channels/TcpTransportBindingElement.cs
 System.ServiceModel.Channels/TextMessageEncoder.cs

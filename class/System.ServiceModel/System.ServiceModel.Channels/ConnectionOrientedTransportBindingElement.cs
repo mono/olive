@@ -37,13 +37,12 @@ namespace System.ServiceModel.Channels
 	public abstract class ConnectionOrientedTransportBindingElement
 		: TransportBindingElement
 	{
-		int connection_buf_size, max_buf_size,
-			max_inbound_connections, max_outbound,
-			max_pending_accepts;
-		string connection_pool_group_name;
-		HostNameComparisonMode host_cmp_mode;
-		TimeSpan idle_timeout, max_output_delay;
-		TransferMode transfer_mode;
+		int connection_buf_size = 0x2000, max_buf_size = 0x10000,
+			max_pending_conn = 10, max_pending_accepts = 1;
+		HostNameComparisonMode host_cmp_mode = HostNameComparisonMode.StrongWildcard;
+		TimeSpan max_output_delay = TimeSpan.FromMilliseconds (200);
+		TimeSpan ch_init_timeout = TimeSpan.FromSeconds (5);
+		TransferMode transfer_mode = TransferMode.Buffered;
 
 		internal ConnectionOrientedTransportBindingElement ()
 		{
@@ -55,15 +54,16 @@ namespace System.ServiceModel.Channels
 		{
 			connection_buf_size = other.connection_buf_size;
 			max_buf_size = other.max_buf_size;
-			max_inbound_connections = other.max_inbound_connections;
-			max_outbound = other.max_outbound;
+			max_pending_conn = other.max_pending_conn;
 			max_pending_accepts = other.max_pending_accepts;
-			connection_pool_group_name =
-				other.connection_pool_group_name;
 			host_cmp_mode = other.host_cmp_mode;
-			idle_timeout = other.idle_timeout;
 			max_output_delay = other.max_output_delay;
 			transfer_mode = other.transfer_mode;
+		}
+
+		public TimeSpan ChannelInitializationTimeout {
+			get { return ch_init_timeout; }
+			set { ch_init_timeout = value; }
 		}
 
 		public int ConnectionBufferSize {
@@ -71,19 +71,9 @@ namespace System.ServiceModel.Channels
 			set { connection_buf_size = value; }
 		}
 
-		public string ConnectionPoolGroupName {
-			get { return connection_pool_group_name; }
-			set { connection_pool_group_name = value; }
-		}
-
 		public HostNameComparisonMode HostNameComparisonMode {
 			get { return host_cmp_mode; }
 			set { host_cmp_mode = value; }
-		}
-
-		public TimeSpan IdleTimeout {
-			get { return idle_timeout; }
-			set { idle_timeout = value; }
 		}
 
 		public int MaxBufferSize {
@@ -91,14 +81,9 @@ namespace System.ServiceModel.Channels
 			set { max_buf_size = value; }
 		}
 
-		public int MaxInboundConnections {
-			get { return max_inbound_connections; }
-			set { max_inbound_connections = value; }
-		}
-
-		public int MaxOutboundConnectionsPerEndpoint {
-			get { return max_outbound; }
-			set { max_outbound = value; }
+		public int MaxPendingConnections {
+			get { return max_pending_conn; }
+			set { max_pending_conn = value; }
 		}
 
 		public TimeSpan MaxOutputDelay {
@@ -114,6 +99,20 @@ namespace System.ServiceModel.Channels
 		public TransferMode TransferMode {
 			get { return transfer_mode; }
 			set { transfer_mode = value; }
+		}
+		
+		[MonoTODO]
+		public override bool CanBuildChannelFactory<TChannel> (
+			BindingContext context)
+		{
+			return typeof (TChannel) == typeof (IDuplexSessionChannel);
+		}
+
+		[MonoTODO]
+		public override bool CanBuildChannelListener<TChannel> (
+			BindingContext context)
+		{
+			return typeof (TChannel) == typeof (IDuplexSessionChannel);
 		}
 	}
 }
