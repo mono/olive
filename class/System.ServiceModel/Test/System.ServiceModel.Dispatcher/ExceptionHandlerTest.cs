@@ -48,6 +48,7 @@ namespace MonoTests.System.ServiceModel.Dispatcher {
 		}
 
 		[Test]
+		[Ignore ("Wrong. Also, we don't have CER")]
 		public void AsynchronousThreadExceptionHandler ()
 		{
 			PropertyInfo p = typeof (ExceptionHandler).GetProperty ("AsynchronousThreadExceptionHandler");

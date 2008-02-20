@@ -1,3 +1,7 @@
+2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ExceptionHandlerTest.cs : disabled a test that is not in effect.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* PrefixEndpointAddressMessageFilterTest.cs : new test (not working).
