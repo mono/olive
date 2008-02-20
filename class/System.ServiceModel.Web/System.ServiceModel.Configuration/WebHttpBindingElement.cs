@@ -151,7 +151,7 @@ namespace System.ServiceModel.Configuration
 			set { base [allow_cookies] = value; }
 		}
 
-		public override Type BindingElementType {
+		protected override Type BindingElementType {
 			get { return (Type) base [binding_element_type]; }
 		}
 
