@@ -18,44 +18,56 @@ using System.Xml;
 
 namespace System.ServiceModel.Channels
 {
-	internal class TcpDuplexSessionChannel : DuplexSessionChannelBase
+	internal class TcpDuplexSessionChannel : DuplexChannelBase, IDuplexSessionChannel
 	{
-		TcpChannelFactory<IDuplexSessionChannel> channel_factory;
-		TcpChannelListener<IDuplexSessionChannel> channel_listener;
+
+		TcpChannelInfo info;
 		TcpClient client;
 		bool is_service_side;
 		EndpointAddress local_address;
 		EndpointAddress remote_address;
-		Stream s;
-		IDuplexSession session;
 		TcpListener tcp_listener;
 		TimeSpan timeout;
 		Uri via;
 		
-		public TcpDuplexSessionChannel (TcpChannelFactory<IDuplexSessionChannel> factory, 
-		                                EndpointAddress address, Uri via) : base (factory)
+		public TcpDuplexSessionChannel (ChannelFactoryBase factory, TcpChannelInfo info, EndpointAddress address, Uri via)
+			: base (factory)
 		{
 			is_service_side = false;
-			channel_factory = factory;
+			this.info = info;
 			remote_address = address;
 			this.via = via;
 		}
 		
-		public TcpDuplexSessionChannel (TcpChannelListener<IDuplexSessionChannel> listener, 
-		                                TimeSpan timeout) : base (listener)
+		public TcpDuplexSessionChannel (ChannelListenerBase listener, TcpChannelInfo info, TcpClient acceptedRequest, TimeSpan timeout)
+			: base (listener)
 		{
 			is_service_side = true;
-			channel_listener = listener;
+			this.info = info;
+			this.client = acceptedRequest;
 			this.timeout = timeout;
+
+			Stream s = client.GetStream ();
+
+			//while (s.CanRead)
+			//	Console.Write ("{0:X02} ", s.ReadByte ());
+			
+			for (int i = 0; i < 6; i++)
+				s.ReadByte ();
+			
+			int size = s.ReadByte ();
+			
+			for (int i = 0; i < size; i++)
+				s.ReadByte (); // URI
+			
+			s.ReadByte ();
+			s.ReadByte ();
+			s.ReadByte ();
+			s.WriteByte (0x0B);
 		}
 		
 		public MessageEncoder Encoder {
-			get {
-				if (! is_service_side)
-					return channel_factory.MessageEncoder;
-				else
-					return channel_listener.MessageEncoder;
-			}
+			get { return info.MessageEncoder; }
 		}
 
 		public override EndpointAddress LocalAddress {
@@ -66,8 +78,9 @@ namespace System.ServiceModel.Channels
 			get { return remote_address; }
 		}
 		
-		public override IDuplexSession Session {
-			get { return session; }
+		// FIXME: implement
+		public IDuplexSession Session {
+			get { throw new NotImplementedException (); }
 		}
 		
 		public override Uri Via {
@@ -109,8 +122,6 @@ namespace System.ServiceModel.Channels
 				bw.Flush ();
 
 				stream.ReadByte (); // 7
-
-				stream.Close ();
 			}
 			catch (Exception e)
 			{
@@ -169,7 +180,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public override Message Receive ()
 		{
-			s = channel_listener.ClientStream;
+			Stream s = client.GetStream ();
 			s.ReadByte (); // 6
 			MyBinaryReader br = new MyBinaryReader (s);
 //			string msg = br.ReadString ();
@@ -189,8 +200,8 @@ namespace System.ServiceModel.Channels
 			s.ReadByte (); // 7
 //			Console.WriteLine (msg);
 			s.WriteByte (7);
-			ms.Close ();
-			
+			s.Flush ();
+
 			return msg;
 		}
 		
@@ -237,10 +248,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override void OnClose (TimeSpan timeout)
 		{
-			if (! is_service_side)
-				client.Close ();
-			else
-				s.Close ();
+			client.Close ();
 		}
 		
 		[MonoTODO]

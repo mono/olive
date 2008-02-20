@@ -1,5 +1,18 @@
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* DuplexSessionChannelBase.cs : made it non-session (more reusable).
+	* TcpChannelFactory.cs, TcpChannelListener.cs :
+	  unify factory and listener into TcpChannelInfo for use in
+	  TCP channel implementation. Do not store stream in the listener.
+	  Factory now uses BinaryMessageEncoder.
+	* TcpDuplexSessionChannel.cs : changes explained above, and now it
+	  holds TcpClient that the listener has accepted.
+
+	  tcp-transport-binding-element sample now communicates (though
+	  only when both sides are mono: there seems binary mismatch).
+
+2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* TcpTransportBindingElement.cs, TcpConnectionPoolSettings.cs :
 	  clone connection pool settings too.
 	* NamedPipetransportBindingElement.cs,

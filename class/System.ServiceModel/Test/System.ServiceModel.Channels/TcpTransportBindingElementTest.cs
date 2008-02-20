@@ -92,7 +92,7 @@ namespace MonoTests.System.ServiceModel.Channels
 			Assert.IsFalse (be.CanBuildChannelFactory<IServiceChannel> (ctx), "#9");
 			Assert.IsFalse (be.CanBuildChannelFactory<IClientChannel> (ctx), "#10");
 
-			Assert.IsTrue (be.CanBuildChannelFactory<IDuplexSessionChannel> (ctx), "#11");
+			Assert.IsFalse (be.CanBuildChannelFactory<IDuplexChannel> (ctx), "#11");
 			Assert.IsTrue (be.CanBuildChannelFactory<IDuplexSessionChannel> (ctx), "#12");
 		}
 

@@ -22,10 +22,8 @@ namespace System.ServiceModel.Channels
 	{
 		List<IChannel> channels = new List<IChannel> ();
 		BindingContext context;
-		MessageEncoder encoder;
-		Stream s;
-		IDuplexSession session;		
-		TcpTransportBindingElement source;
+		TcpChannelInfo info;
+		IDuplexSession session;
 		Uri listen_uri;
 		TcpListener tcp_listener;
 		
@@ -33,8 +31,7 @@ namespace System.ServiceModel.Channels
 		public TcpChannelListener (TcpTransportBindingElement source, 
 		                           BindingContext context) : base (context.Binding)
 		{
-			this.source = source;
-			
+			MessageEncoder encoder = null;
 			if (context.ListenUriMode == ListenUriMode.Explicit)
 				listen_uri =
 					context.ListenUriRelativeAddress != null ?
@@ -53,16 +50,10 @@ namespace System.ServiceModel.Channels
 			
 			if (encoder == null)
 				encoder = new BinaryMessageEncoder ();
-		}
-		
-		public MessageEncoder MessageEncoder {
-			get { return encoder; }
-		}
-		
-		public Stream ClientStream {
-			get { return s; }
-		}
 
+			info = new TcpChannelInfo (source, encoder);
+		}
+		
 		public override Uri Uri {
 			get { return listen_uri; }
 		}
@@ -70,35 +61,18 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		protected override TChannel OnAcceptChannel (TimeSpan timeout)
 		{
-			TcpClient cli = tcp_listener.AcceptTcpClient ();
-			s = cli.GetStream ();
-
-			//while (s.CanRead)
-			//	Console.Write ("{0:X02} ", s.ReadByte ());
-			
-			for (int i = 0; i < 6; i++)
-				s.ReadByte ();
-			
-			int size = s.ReadByte ();
-			
-			for (int i = 0; i < size; i++)
-				s.ReadByte (); // URI
-			
-			s.ReadByte ();
-			s.ReadByte ();
-			s.ReadByte ();
-			s.WriteByte (0x0B);
-			TChannel channel = PopulateChannel (timeout);			
+			TChannel channel = PopulateChannel (timeout);
 			channels.Add (channel);
-			
 			return channel;
 		}
 		
 		TChannel PopulateChannel (TimeSpan timeout)
 		{
+			TcpClient cli = tcp_listener.AcceptTcpClient ();
+
+			// FIXME: pass delegate or something to remove the channel instance from "channels" when it is closed.
 			if (typeof (TChannel) == typeof (IDuplexSessionChannel))
-				return (TChannel) (object) new TcpDuplexSessionChannel (
-					(TcpChannelListener<IDuplexSessionChannel>) (object) this, timeout);
+				return (TChannel) (object) new TcpDuplexSessionChannel (this, info, cli, timeout);
 
 			// FIXME: To implement more.
 			throw new NotImplementedException ();

@@ -12,21 +12,20 @@ using System.ServiceModel.Channels;
 
 namespace System.ServiceModel.Channels
 {
-	internal abstract class DuplexSessionChannelBase : ChannelBase, IDuplexSessionChannel
+	internal abstract class DuplexChannelBase : ChannelBase, IDuplexChannel
 	{
 		ChannelFactoryBase channel_factory_base;
 		ChannelListenerBase channel_listener_base;
 		EndpointAddress local_address;
 		EndpointAddress remote_address;
-		IDuplexSession session;
 		Uri via;
 		
-		public DuplexSessionChannelBase (ChannelFactoryBase factory) : base (factory)
+		public DuplexChannelBase (ChannelFactoryBase factory) : base (factory)
 		{
 			channel_factory_base = factory;
 		}
 		
-		public DuplexSessionChannelBase (ChannelListenerBase listener) : base (listener)
+		public DuplexChannelBase (ChannelListenerBase listener) : base (listener)
 		{
 			channel_listener_base = listener;
 		}
@@ -34,8 +33,6 @@ namespace System.ServiceModel.Channels
 		public abstract EndpointAddress LocalAddress { get; }
 		
 		public abstract EndpointAddress RemoteAddress { get; }
-		
-		public abstract IDuplexSession Session { get; }
 		
 		public abstract Uri Via { get; }
 		

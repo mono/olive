@@ -18,16 +18,34 @@ using System.Text;
 
 namespace System.ServiceModel.Channels
 {
+	internal class TcpChannelInfo
+	{
+		public TcpChannelInfo (TcpTransportBindingElement element, MessageEncoder encoder)
+		{
+			this.element = element;
+			this.encoder = encoder;
+		}
+
+		TcpTransportBindingElement element;
+		MessageEncoder encoder;
+
+		public TcpTransportBindingElement BindingElement {
+			get { return element; }
+		}
+
+		public MessageEncoder MessageEncoder {
+			get { return encoder; }
+		}
+	}
+
 	internal class TcpChannelFactory<TChannel> : ChannelFactoryBase<TChannel>
 	{
-		// not sure if they are required.
-		TcpTransportBindingElement source;
-		MessageEncoder encoder;
+		TcpChannelInfo info;
 
 		[MonoTODO]
 		public TcpChannelFactory (TcpTransportBindingElement source, BindingContext ctx)
 		{
-			this.source = source;
+			MessageEncoder encoder = null;
 			foreach (BindingElement be in ctx.RemainingBindingElements) {
 				MessageEncodingBindingElement mbe = be as MessageEncodingBindingElement;
 				if (mbe != null) {
@@ -36,11 +54,8 @@ namespace System.ServiceModel.Channels
 				}
 			}
 			if (encoder == null)
-				encoder = new TextMessageEncoder (MessageVersion.Default, Encoding.UTF8);
-		}
-
-		public MessageEncoder MessageEncoder {
-			get { return encoder; }
+				encoder = new BinaryMessageEncoder ();
+			info = new TcpChannelInfo (source, encoder);
 		}
 
 		[MonoTODO]
@@ -49,13 +64,13 @@ namespace System.ServiceModel.Channels
 		{			
 			ThrowIfDisposedOrNotOpen ();
 
-			if (source.Scheme != address.Uri.Scheme)
+			if (info.BindingElement.Scheme != address.Uri.Scheme)
 				throw new ArgumentException (String.Format ("Argument EndpointAddress has unsupported URI scheme: {0}", address.Uri.Scheme));
 
 			Type t = typeof (TChannel);
 			
 			if (t == typeof (IDuplexSessionChannel))
-				return (TChannel) (object) new TcpDuplexSessionChannel ((TcpChannelFactory<IDuplexSessionChannel>) (object) this, address, via);
+				return (TChannel) (object) new TcpDuplexSessionChannel (this, info, address, via);
 			
 			throw new InvalidOperationException (String.Format ("Channel type {0} is not supported.", typeof (TChannel).Name));
 		}
