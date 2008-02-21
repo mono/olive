@@ -96,23 +96,26 @@ namespace System.Windows {
 
 		public string GetResponseText (string PartName)
 		{
-			IntPtr n;
 			long size;
-			
-			n = NativeMethods.downloader_get_response_text (native, PartName, out size);
+			IntPtr n = NativeMethods.downloader_get_response_text (native, PartName, out size);
 
-			//
-			// This returns the contents as string, but the data is a binary blob
-			//
-			string s;
-			unsafe {
-				using (Stream u = new SimpleUnmanagedMemoryStream ((byte *) n, (int) size)){
-					using (StreamReader sr = new StreamReader (u)){
-						s = sr.ReadToEnd ();
+			string s = String.Empty;
+			try {
+				//
+				// This returns the contents as string, but the data is a binary blob
+				//
+				unsafe {
+					using (Stream u = new SimpleUnmanagedMemoryStream ((byte *) n, (int) size)){
+						using (StreamReader sr = new StreamReader (u)){
+							s = sr.ReadToEnd ();
+						}
 					}
 				}
 			}
-			Helper.FreeHGlobal (n);
+			finally {
+				if (n != IntPtr.Zero)
+					Helper.FreeHGlobal (n);
+			}
 			
 			return s;
 		}
