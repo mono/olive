@@ -616,6 +616,9 @@ namespace Mono {
 		public extern static IntPtr surface_new (int w, int h);
 		
 		[DllImport ("moon")]
+		public extern static IntPtr surface_get_widget (IntPtr surface);
+
+		[DllImport ("moon")]
 		public extern static void surface_set_trans (IntPtr surface, bool trans);
 		
 		[DllImport ("moon")]
