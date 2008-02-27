@@ -47,18 +47,5 @@ namespace System.ServiceModel.Security.Tokens
 				return false;
 			return Matches (kic.GetRawBuffer ());
 		}
-
-		public bool Matches (byte [] otherHash)
-		{
-			byte [] hash = GetRawBuffer ();
-			if (otherHash == null)
-				throw new ArgumentNullException ("otherHash");
-			if (hash.Length != otherHash.Length)
-				return false;
-			for (int i = 0; i < hash.Length; i++)
-				if (hash [i] != otherHash [i])
-					return false;
-			return true;
-		}
 	}
 }

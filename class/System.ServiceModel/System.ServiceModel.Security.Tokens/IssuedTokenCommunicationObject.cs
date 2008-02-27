@@ -55,8 +55,6 @@ namespace System.ServiceModel.Security.Tokens
 					return rstr.RequestedSecurityToken;
 				throw new NotImplementedException ("IssuedSecurityTokenProvider did not see RequestedSecurityToken in the response.");
 			}
-
-			throw new NotImplementedException ();
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {
