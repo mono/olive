@@ -1,3 +1,9 @@
+2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProvider.mdp, UIAutomationProvider.mds: Added MonoDevelop
+	  solution/project for UIAutomationProvider.  Also set 'svn:ignore'
+	  property on this directory for MD-generated user files.
+
 2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
 
 	* Assembly/AssemblyInfo.cs : added AssmeblyInfo
