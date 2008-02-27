@@ -1,3 +1,9 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* Makefile: Filter out some warnings.
+	* System.Runtime.Serialization_test.dll.sources: Added tests for
+	  System.Runtime.Serialization attributes.
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : add net_3_5 profile as a target profile.

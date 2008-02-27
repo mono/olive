@@ -1,5 +1,12 @@
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
+	* XmlObjectSerializerTest.cs: Added tests for Read/WriteObject
+	* AttributesTest.cs: Added tests for new Serialization attributes.
+	* XsdDataContractImporterTest.cs: Added null arguments tests to the
+	  Import methods. marked ImportTest as not working.
+
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
 	* one.xml: Indentation change
 
 2007-12-05  Atsushi Enomoto  <atushi@ximian.com>

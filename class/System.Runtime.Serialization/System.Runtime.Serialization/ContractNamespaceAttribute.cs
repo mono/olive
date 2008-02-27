@@ -38,7 +38,6 @@ namespace System.Runtime.Serialization
 
 		public ContractNamespaceAttribute (string ns)
 		{
-			clr_ns = ns;
 			contract_ns = ns;
 		}
 

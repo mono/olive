@@ -9,3 +9,4 @@ System.Xml/XmlDictionaryReaderAbstractTest.cs
 System.Xml/XmlDictionaryReaderQuotasTest.cs
 System.Xml/XmlDictionaryTest.cs
 System.Xml/XmlSimpleDictionaryWriterTest.cs
+System.Runtime.Serialization/AttributesTest.cs

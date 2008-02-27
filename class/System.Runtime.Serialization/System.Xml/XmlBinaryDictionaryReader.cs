@@ -170,7 +170,7 @@ namespace System.Xml
 					case BF.Double:
 						return XmlConvert.ToString ((double) TypedValue);
 					case BF.DateTime:
-						return XmlConvert.ToString ((DateTime) TypedValue);
+						return XmlConvert.ToString ((DateTime) TypedValue, XmlDateTimeSerializationMode.RoundtripKind);
 					case BF.TimeSpan:
 						return XmlConvert.ToString ((TimeSpan) TypedValue);
 					case BF.Guid:
@@ -279,14 +279,10 @@ namespace System.Xml
 			this.session = session;
 
 			on_close = onClose;
-
-			if (context == null) {
-				NameTable nt = new NameTable ();
-				context = new XmlParserContext (nt,
-					new XmlNamespaceManager (nt),
-					null, XmlSpace.None);
-			}
-			this.context = context;
+			NameTable nt = new NameTable ();
+			this.context = new XmlParserContext (nt,
+				new XmlNamespaceManager (nt),
+				null, XmlSpace.None);
 
 			current = node = new NodeInfo ();
 			current.Reset ();

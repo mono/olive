@@ -11,16 +11,24 @@ namespace System.Xml
 		XmlReader reader;
 		XmlDictionaryReader as_dict_reader;
 		IXmlLineInfo as_line_info;
+		OnXmlDictionaryReaderClose onClose;
 
 		public XmlSimpleDictionaryReader (XmlReader reader)
 			: this (reader, null)
 		{
 		}
 
-		public XmlSimpleDictionaryReader (XmlReader reader, 
+		public XmlSimpleDictionaryReader (XmlReader reader,
 			XmlDictionary dictionary)
+			: this (reader, dictionary, null)
+		{
+		}
+
+		public XmlSimpleDictionaryReader (XmlReader reader,
+			XmlDictionary dictionary, OnXmlDictionaryReaderClose onClose)
 		{
 			this.reader = reader;
+			this.onClose = onClose;
 			as_line_info = reader as IXmlLineInfo;
 			as_dict_reader = reader as XmlDictionaryReader;
 
@@ -236,6 +244,8 @@ namespace System.Xml
 		public override void Close ()
 		{
 			reader.Close ();
+			if (onClose != null)
+				onClose (this);
 		}
 
 		public override bool Read ()

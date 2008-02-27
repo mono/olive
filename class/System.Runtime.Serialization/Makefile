@@ -7,6 +7,7 @@ RESOURCE_FILES = \
 
 LIBRARY = System.Runtime.Serialization.dll
 LIB_MCS_FLAGS = \
+			/nowarn:168,169,219,414 \
 	        /r:System.dll \
 	        /r:System.Xml.dll \
 		/r:System.Configuration.dll \

@@ -89,7 +89,9 @@ namespace System.Runtime.Serialization
 
 		public virtual void WriteObject (Stream stream, object graph)
 		{
-			WriteObject (XmlWriter.Create (stream), graph);
+			using (XmlWriter xw = XmlDictionaryWriter.CreateTextWriter (stream)) {
+				WriteObject (xw, graph);
+			}
 		}
 
 		public virtual void WriteObject (XmlWriter writer, object graph)

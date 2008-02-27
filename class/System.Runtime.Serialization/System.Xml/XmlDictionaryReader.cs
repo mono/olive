@@ -568,7 +568,7 @@ namespace System.Xml
 			XmlDictionaryReaderQuotas quotas,
 			OnXmlDictionaryReaderClose onClose)
 		{
-			throw new NotImplementedException ();
+			return CreateTextReader (new MemoryStream (buffer, offset, count), encoding, quotas, onClose);
 		}
 
 		public static XmlDictionaryReader CreateTextReader (
@@ -583,7 +583,12 @@ namespace System.Xml
 			XmlDictionaryReaderQuotas quotas,
 			OnXmlDictionaryReaderClose onClose)
 		{
-			throw new NotImplementedException ();
+			XmlReaderSettings s = new XmlReaderSettings ();
+			XmlNameTable nt = new NameTable ();
+			XmlParserContext c = new XmlParserContext (nt, new XmlNamespaceManager (nt), String.Empty, XmlSpace.None, encoding);
+			XmlDictionaryReader res = new XmlSimpleDictionaryReader (XmlReader.Create (stream, s, c), null, onClose);
+			res.quotas = quotas;
+			return res;
 		}
 
 		#endregion

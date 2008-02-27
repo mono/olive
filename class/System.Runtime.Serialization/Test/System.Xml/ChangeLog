@@ -1,3 +1,7 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* XmlBinaryDictionaryReaderTest.cs: UseCase1 test fails also on .Net
+
 2007-11-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlBinaryDictionaryReaderTest.cs : added [NotWorking]

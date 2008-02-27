@@ -207,7 +207,7 @@ namespace System.Runtime.Serialization
 			case TypeCode.Char:
 				return XmlConvert.ToString ((char) obj);
 			case TypeCode.DateTime:
-				return XmlConvert.ToString ((DateTime) obj);
+				return XmlConvert.ToString ((DateTime) obj, XmlDateTimeSerializationMode.RoundtripKind);
 			case TypeCode.Decimal:
 				return XmlConvert.ToString ((decimal) obj);
 			case TypeCode.Double:
@@ -275,7 +275,7 @@ namespace System.Runtime.Serialization
 			case "base64Binary":
 				return Convert.FromBase64String (s);
 			case "dateTime":
-				return XmlConvert.ToDateTime (s);
+				return XmlConvert.ToDateTime (s, XmlDateTimeSerializationMode.RoundtripKind);
 			case "duration":
 				return XmlConvert.ToTimeSpan (s);
 			case "QName":

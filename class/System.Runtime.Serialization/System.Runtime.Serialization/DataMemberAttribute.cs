@@ -35,11 +35,17 @@ namespace System.Runtime.Serialization
 	public sealed class DataMemberAttribute : Attribute
 	{
 		bool is_required;
+		bool emit_default = true;
 		string name;
 		int order = -1;
 
 		public DataMemberAttribute ()
 		{
+		}
+
+		public bool EmitDefaultValue {
+			get { return emit_default; }
+			set { emit_default = value; }
 		}
 
 		public bool IsRequired {

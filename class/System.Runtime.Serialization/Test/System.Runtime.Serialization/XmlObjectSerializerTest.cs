@@ -122,6 +122,30 @@ namespace MonoTests.System.Runtime.Serialization
 				sw.ToString ());
 		}
 
+		[Test]
+		public void WriteObjectToStream ()
+		{
+			DataContractSerializer ser =
+				new DataContractSerializer (typeof (int));
+			MemoryStream sw = new MemoryStream ();
+			ser.WriteObject (sw, 1);
+			string expected = "<int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">1</int>";
+			byte[] buf = sw.ToArray ();
+			Assert.AreEqual (expected, Encoding.UTF8.GetString (buf, 0, buf.Length));
+		}
+
+		[Test]
+		public void ReadObjectFromStream ()
+		{
+			DataContractSerializer ser =
+				new DataContractSerializer (typeof (int));
+			string expected = "<int xmlns=\"http://schemas.microsoft.com/2003/10/Serialization/\">1</int>";
+			byte[] buf = Encoding.UTF8.GetBytes (expected);
+			MemoryStream sw = new MemoryStream (buf);
+			object res = ser.ReadObject (sw);
+			Assert.AreEqual (1, res);
+		}
+
 		// int
 
 		[Test]
@@ -757,11 +781,31 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		public void ReadObjectNoVerifyObjectName ()
+		{
+			string xml = @"<any><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization1"">bar1</Member1><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization2"">bar2</Member1><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</Member1></any>";
+			VerifyObjectNameTestData res = (VerifyObjectNameTestData)new DataContractSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml)), false);
+			Assert.AreEqual ("bar", res.GetMember());
+		}
+
+		[Test]
 		public void ReadObjectVerifyObjectName ()
 		{
-			string xml = @"<any><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</Member1></any>";
+			string xml = @"<VerifyObjectNameTestData xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Member1>bar</Member1></VerifyObjectNameTestData>";
+			VerifyObjectNameTestData res = (VerifyObjectNameTestData)new DataContractSerializer (typeof (VerifyObjectNameTestData))
+				.ReadObject (XmlReader.Create (new StringReader (xml)));
+			Assert.AreEqual ("bar", res.GetMember());
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		[Category ("NotWorking")]
+		public void ReadObjectWrongNamespace ()
+		{
+			string xml = @"<VerifyObjectNameTestData xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization2""><Member1>bar</Member1></VerifyObjectNameTestData>";
 			new DataContractSerializer (typeof (VerifyObjectNameTestData))
-				.ReadObject (XmlReader.Create (new StringReader (xml)), false);
+				.ReadObject (XmlReader.Create (new StringReader (xml)));
 		}
 
 		private object Deserialize (string xml, Type type)
@@ -910,6 +954,8 @@ namespace MonoTests.System.Runtime.Serialization
 	{
 		[DataMember]
 		string Member1 = "foo";
+
+		public string GetMember() { return Member1; }
 	}
 }
 

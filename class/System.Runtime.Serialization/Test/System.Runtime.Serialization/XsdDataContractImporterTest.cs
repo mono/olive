@@ -54,15 +54,11 @@ namespace MonoTests.System.Runtime.Serialization
 		MetadataSet metadata;
 		XmlSchemaSet xss;
 
-		public XsdContractImporterTest ()
-		{
-			XmlReader xr = XmlTextReader.Create ("Test/System.Runtime.Serialization/one.xml");
-			metadata = MetadataSet.ReadFrom (xr);
-		}
-		
 		[SetUp]
 		public void Setup ()
 		{
+			XmlReader xr = XmlTextReader.Create ("Test/System.Runtime.Serialization/one.xml");
+			metadata = MetadataSet.ReadFrom (xr);
 			NewXmlSchemaSet ();
 		}
 
@@ -200,7 +196,23 @@ namespace MonoTests.System.Runtime.Serialization
 		public void ImportTestNullSchemas ()
 		{
 			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullSchemas2 ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
 			xsdi.Import (null, new XmlQualifiedName ("foo"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullSchemas3 ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (null, new List<XmlQualifiedName> ());
 		}
 
 		[Test]
@@ -220,7 +232,15 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		//[Category ("NotWorking")]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ImportTestNullCollection ()
+		{
+			XsdDataContractImporter xsdi = GetImporter ();
+			xsdi.Import (new XmlSchemaSet (), (ICollection<XmlQualifiedName>) null);
+		}
+
+		[Test]
+		[Category ("NotWorking")]
 		public void ImportTest ()
 		{
 			XsdDataContractImporter xsdi = GetImporter ();

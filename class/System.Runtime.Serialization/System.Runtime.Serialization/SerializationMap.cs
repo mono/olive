@@ -422,10 +422,9 @@ namespace System.Runtime.Serialization
 					/* Move to next DataMember */
 					continue;
 
-				if (reader.NamespaceURI != dmi.XmlNamespace) {
-					/* FIXME: hack, see test Serialize6
-					   and SerDeser6 */
-					reader.Skip ();
+				if (reader.NamespaceURI != XmlName.Namespace) {
+					reader.Skip();
+					i--;
 					continue;
 				}
 

@@ -120,6 +120,9 @@ namespace System.Runtime.Serialization
 		[MonoTODO]
 		public void Import (XmlSchemaSet schemas)
 		{
+			if (schemas == null)
+				throw new ArgumentNullException ("schemas");
+
 			schemas.Compile ();
 			foreach (XmlSchemaElement e in schemas.GlobalElements.Values)
 				ImportInternal (schemas, e.QualifiedName);
@@ -128,6 +131,11 @@ namespace System.Runtime.Serialization
 		public void Import (XmlSchemaSet schemas,
 			ICollection<QName> typeNames)
 		{
+			if (schemas == null)
+				throw new ArgumentNullException ("schemas");
+			if (typeNames == null)
+				throw new ArgumentNullException ("typeNames");
+
 			schemas.Compile ();
 			foreach (QName name in typeNames)
 				ImportInternal (schemas, name);
@@ -135,6 +143,11 @@ namespace System.Runtime.Serialization
 
 		public void Import (XmlSchemaSet schemas, QName name)
 		{
+			if (schemas == null)
+				throw new ArgumentNullException ("schemas");
+			if (name == null)
+				throw new ArgumentNullException ("name");
+
 			schemas.Compile ();
 			
 			if (schemas.GlobalTypes [name] == null)
@@ -148,6 +161,11 @@ namespace System.Runtime.Serialization
 		[MonoTODO]
 		public QName Import (XmlSchemaSet schemas, XmlSchemaElement element)
 		{
+			if (schemas == null)
+				throw new ArgumentNullException ("schemas");
+			if (element == null)
+				throw new ArgumentNullException ("element");
+
 			schemas.Compile ();
 			QName ret = ImportInternal (schemas, element.QualifiedName);
 

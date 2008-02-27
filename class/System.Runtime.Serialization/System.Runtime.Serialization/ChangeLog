@@ -1,3 +1,14 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* SerializationMap.cs: Fix namespace logic at least in simple case where
+	  there are several unknown elements before the current element.
+	* ContractNamespaceAttribute.cs: The ClrNamespace is not set by the ctor.
+	* XmlObjectSerializer.cs: Dispose the XmlWriter created in WriteObject
+	  to a stream.
+	* DataMemberAttribute.cs: Added the EmitDefaultValue property.
+	* XsdDataContractImporter.cs: Handle null arguments in Import methods.
+	* KnownTypeCollection.cs: Use XmlConvert.ToDateTime with roundtrip style.
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* XmlObjectSerializer.cs : some methods became virtual (in Redbits).
