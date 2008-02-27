@@ -1,3 +1,13 @@
+2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources,
+	  System.Windows.Automation/AutomationElementIdentifiers.cs: Added
+	  mostly-unimplemented version of the AutomationElementIdentifiers static
+	  class.
+	* UIAutomationTypes.mdp, UIAutomationTypes.mds: Added MonoDevelop
+	  solution/project for UIAutomationTypes.  Also set 'svn:ignore' property
+	  on this directory for MD-generated user files.
+
 2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
 
 	* Assembly/AssemblyInfo.cs : added for AssemblyInfo
