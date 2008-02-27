@@ -1,3 +1,8 @@
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
+
+	* library.make: Added NotDotNet to exclude list for marking tests that
+	  do not work on .Net
+
 2008-02-04  Michael Dominic K.  <mdk@mdk.am>
 
 	* profiles/net_2_1.make:
