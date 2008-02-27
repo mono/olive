@@ -1,3 +1,7 @@
+2008-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* DuplexChannelFactory.cs : CreateChannel() is extra.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Handle case where contract configuration name is set
