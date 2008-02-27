@@ -113,13 +113,13 @@ namespace System.ServiceModel
 		}
 		
 		[MonoTODO]
-		public TChannel CreateChannel ()
+		new public TChannel CreateChannel ()
 		{
 			throw new NotImplementedException ();
 		}
 		
 		[MonoTODO]
-		public static TChannel CreateChannel (InstanceContext callbackInstance, 
+		new public static TChannel CreateChannel (InstanceContext callbackInstance, 
 		                                      Binding binding, 
 		                                      EndpointAddress endpointAddress)
 		{

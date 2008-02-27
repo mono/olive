@@ -83,11 +83,11 @@ namespace System.ServiceModel
 			MessageEncoding = config.MessageEncoding;
 			ProxyAddress = config.ProxyAddress;
 			// ReaderQuotas = config.ReaderQuotas;
-			throw new NotImplementedException ();
 
 			TextEncoding = config.TextEncoding;
 			TransactionFlow = config.TransactionFlow;
 			UseDefaultWebProxy = config.UseDefaultWebProxy;
+			throw new NotImplementedException ();
 		}
 
 		public bool BypassProxyOnLocal {

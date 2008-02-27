@@ -1,3 +1,7 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* WSHttpBindingBase.cs DuplexChannelFactory.cs: Fix compilation warnings.
+
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* NetTcpBinding.cs : store transport and use it for some properties.
