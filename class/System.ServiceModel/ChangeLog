@@ -1,3 +1,8 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* Makefile: Ignore common warnings including use of obsolete API (since
+	  Mono.Security.* has several such warnings).
+
 2007-12-05  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : added net_3_5 profile as a valid target.
