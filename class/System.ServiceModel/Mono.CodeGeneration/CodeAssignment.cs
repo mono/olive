@@ -29,7 +29,7 @@ namespace Mono.CodeGeneration
 {
 	public class CodeAssignment: CodeExpression
 	{
-		CodeValueReference var;
+		new CodeValueReference var;
 		CodeExpression exp;
 		
 		public CodeAssignment (CodeValueReference var, CodeExpression exp)

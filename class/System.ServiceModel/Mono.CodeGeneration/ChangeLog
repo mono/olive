@@ -1,3 +1,7 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* CodeCustomAttribute.cs CodeAssignment.cs: Fix compilation warnings.
+
 2006-06-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* CodeArrayItem.cs, CodeAssignment.cs : some more ArgumentNull check.
