@@ -1,5 +1,10 @@
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
+	* ChannelBase.cs: Handle case where contract configuration name is set
+	  in the 'TChannel' type custom attributes.
+
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
 	* WSHttpBindingBase.cs DuplexChannelFactory.cs: Fix compilation warnings.
 
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>

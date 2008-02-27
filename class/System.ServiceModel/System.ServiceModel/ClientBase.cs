@@ -80,7 +80,7 @@ namespace System.ServiceModel
 		}
 
 		protected ClientBase (InstanceContext instance)
-			: this (instance, String.Empty)
+			: this (instance, ConfigNameOf (typeof (TChannel)))
 		{
 		}
 
@@ -120,6 +120,16 @@ namespace System.ServiceModel
 			Initialize (instance, binding, remoteAddress);
 		}
 
+		// FIXME: handle interface inheritance scenarios and add tests.
+		private static string ConfigNameOf (Type t)
+		{
+			Attribute[] attrs = (Attribute[])t.GetCustomAttributes (typeof(ServiceContractAttribute), false);
+			if (attrs.Length == 0)
+				return String.Empty;
+			ServiceContractAttribute attr = (ServiceContractAttribute)attrs [0];
+			return attr.ConfigurationName;
+		}
+
 		static ChannelEndpointElement GetEndpointConfig (string name)
 		{
 			if (name == null)
@@ -128,7 +138,7 @@ namespace System.ServiceModel
 			// FIXME: the above should work here.
 			ClientSection client = (ClientSection) ConfigurationManager.GetSection ("system.serviceModel/client");
 			foreach (ChannelEndpointElement el in client.Endpoints)
-				if (el.Name == name || el.Name == null && name.Length == 0)
+				if (el.Contract == name || el.Contract == null && name.Length == 0)
 					return el;
 			throw new ArgumentException (String.Format ("Client endpoint configuration '{0}' was not found in {1} endpoints.", name, client.Endpoints.Count));
 		}
