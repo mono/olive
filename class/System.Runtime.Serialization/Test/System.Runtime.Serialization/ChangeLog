@@ -1,3 +1,7 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* one.xml: Indentation change
+
 2007-12-05  Atsushi Enomoto  <atushi@ximian.com>
 
 	* XmlObjectSerializerTest.cs : test for .ctor() with null knownTypes.
