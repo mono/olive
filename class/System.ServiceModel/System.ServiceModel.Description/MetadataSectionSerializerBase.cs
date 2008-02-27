@@ -1154,7 +1154,7 @@ namespace System.ServiceModel.Description
 				}
 			}
 		}
-		public bool CanSerialize (System.Type type) {
+		public override bool CanSerialize (System.Type type) {
 			if (type == typeof(System.ServiceModel.Description.MetadataSection)) return true;
 			return false;
 		}

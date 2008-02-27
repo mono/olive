@@ -280,7 +280,6 @@ namespace System.ServiceModel.Description
 					reader.ReadEndElement ();
 					reader.ReadEndElement ();// EncryptedKey
 					reader.ReadEndElement ();// RPT
-					return;
 #else
 					reader.Read ();
 					reader.MoveToContent ();
@@ -342,10 +341,10 @@ namespace System.ServiceModel.Description
 				if (reader.NamespaceURI == Constants.WsuNamespace) {
 					switch (reader.LocalName) {
 					case "Created":
-						lt.Created = XmlConvert.ToDateTime (reader.ReadElementContentAsString ());
+						lt.Created = XmlConvert.ToDateTime (reader.ReadElementContentAsString (), XmlDateTimeSerializationMode.RoundtripKind);
 						continue;
 					case "Expires":
-						lt.Expires = XmlConvert.ToDateTime (reader.ReadElementContentAsString ());
+						lt.Expires = XmlConvert.ToDateTime (reader.ReadElementContentAsString (), XmlDateTimeSerializationMode.RoundtripKind);
 						continue;
 					}
 				}

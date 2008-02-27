@@ -1,3 +1,8 @@
+2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+
+	* MetadataSectionSerializerBase.cs WSTrustMessageConverters.cs:
+	  Fix compilation warnings.
+
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* CallbackDebugBehavior.cs : new class.
