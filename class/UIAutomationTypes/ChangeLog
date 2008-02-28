@@ -1,3 +1,12 @@
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile, Test, Test/System.Windows.Automation,
+	  UIAutomationTypes_test.dll.sources: Support for automated unit testing
+	  in UIAutomationTypes.
+	* UIAutomationTypes.mdp, UIAutomationTypes.mds, UIAutomationTypesTests.mdp:
+	  Add unit test project to MonoDevelop solution.  Tweaked project settings
+	  to reconcile nunit and other MD integration with Makefile integration.
+
 2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationTypes.dll.sources,

@@ -1,0 +1,6 @@
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ChangeLog: Support for automated unit testing in UIAutomationTypes.
+	* AutomationElementIdentifiersTest.cs: Mostly incomplete unit test for
+	  AutomationElementIdentifiers class.
+
