@@ -1,3 +1,10 @@
+2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+
+	* ChannelBase.cs: Handle better configuration lookup and contract
+	  attributes.
+	  Add argument null checks.
+	* ChannelFactory_1.cs: Indentation chnges.
+
 2008-02-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DuplexChannelFactory.cs : CreateChannel() is extra.

@@ -80,12 +80,12 @@ namespace System.ServiceModel
 		{
 		}
 
-		public ChannelFactory (Binding binding,
-			EndpointAddress remoteAddress)
+		public ChannelFactory (Binding binding, EndpointAddress remoteAddress)
 			: this (typeof (TChannel))
 		{
 			if (binding == null)
 				throw new ArgumentNullException ();
+
 			Endpoint.Binding = binding;
 			Endpoint.Address = remoteAddress;
 		}

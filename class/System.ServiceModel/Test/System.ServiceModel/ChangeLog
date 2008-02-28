@@ -1,3 +1,8 @@
+2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+
+	* ServiceHostTest.cs: Marjed test as not working since it caused a crash(!)
+	* ClientBaseTest.cs: Add tests for ClientBase<T> constructors.
+
 2008-02-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointAddressTest.cs : test for rejecting relative Uri.

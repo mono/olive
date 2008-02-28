@@ -669,7 +669,7 @@ namespace MonoTests.System.ServiceModel.Security
 			using (XmlWriter w = XmlWriter.Create (sw, GetWriterSettings ())) {
 				serializer.WriteToken (w, token);
 			}
-			Assert.AreEqual (derived_key_token1.Replace ('\'', '"').Replace ("  ", "").Replace ("\n", ""), sw.ToString ());
+			Assert.AreEqual (derived_key_token1.Replace ('\'', '"').Replace ("  ", "").Replace ("\n", "").Replace ("\r", ""), sw.ToString ());
 		}
 
 		[Test]

@@ -1,3 +1,8 @@
+2008-02-28  Eyal Alaluf <eyala@mainsoft.com>
+
+	* WSSecurityTokenSerializerTest.cs: Fixed test run on Windows (failed also
+	  on .Net).
+
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WSSecurityTokenSerializerTest.cs

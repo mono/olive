@@ -130,6 +130,74 @@ namespace MonoTests.System.ServiceModel
 		ServiceHost host;
 
 		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ClientBaseCtorArgsTest1 ()
+		{
+			new CtorUseCase1 (null, new BasicHttpBinding (), new EndpointAddress ("http://test"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ClientBaseCtorArgsTest2 ()
+		{
+			new CtorUseCase1 (null, new EndpointAddress ("http://test"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ClientBaseCtorArgsTest3 ()
+		{
+			new CtorUseCase1 (null, "http://test");
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ClientBaseCtorArgsTest4 ()
+		{
+			new CtorUseCase1 ("CtorUseCase1_1", null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ClientBaseCtorArgsTest5 ()
+		{
+			new CtorUseCase1 (new BasicHttpBinding (), null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ClientBaseCtorArgsTest6 ()
+		{
+			new CtorUseCase1 ("CtorUseCase1_Incorrect");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ClientBaseCtorArgsTest7 ()
+		{
+			new CtorUseCase3 ();
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ClientBaseCtorConfigAmbiguityTest ()
+		{
+			new CtorUseCase2 ();
+		}
+
+		[Test]
+		public void ClientBaseConfigEmptyCtor ()
+		{
+			new CtorUseCase1 ();
+		}
+
+		[Test]
+		public void ClientBaseConfigCtor ()
+		{
+			new CtorUseCase1 ("CtorUseCase1_1");
+		}
+
+		[Test]
 		[Ignore ("With Orcas it does not work fine")]
 		public void UseCase1Test ()
 		{
@@ -137,8 +205,7 @@ namespace MonoTests.System.ServiceModel
 			using (host = new ServiceHost (typeof (UseCase1))) {
 				Binding binding = new BasicHttpBinding ();
 				binding.ReceiveTimeout = TimeSpan.FromSeconds (15);
-				host.AddServiceEndpoint (typeof (IUseCase1).FullName,
-				binding, new Uri ("http://localhost:37564"));
+				host.AddServiceEndpoint (typeof (IUseCase1).FullName, binding, new Uri ("http://localhost:37564"));
 
 				host.Open ();
 				// almost equivalent to samples/clientbase/samplecli.cs
@@ -182,6 +249,104 @@ namespace MonoTests.System.ServiceModel
 			{
 			}
 
+			public string Echo (string msg)
+			{
+				return Channel.Echo (msg);
+			}
+		}
+
+		[ServiceContract]
+		public interface ICtorUseCase1
+		{
+			[OperationContract]
+			string Echo (string msg);
+		}
+
+		[ServiceContract(ConfigurationName = "CtorUseCase2")]
+		public interface ICtorUseCase2
+		{
+			[OperationContract]
+			string Echo (string msg);
+		}
+
+		[ServiceContract(ConfigurationName = "CtorUseCase2")]
+		public interface ICtorUseCase3
+		{
+			[OperationContract]
+			string Echo (string msg);
+		}
+
+		// Use case with one endpoint configuration.
+		public class CtorUseCase1 : ClientBase<ICtorUseCase1>, ICtorUseCase1
+		{
+			public CtorUseCase1 ()
+				: base ()
+			{
+			}
+
+			public CtorUseCase1 (string configName)
+				: base (configName)
+			{
+			}
+
+			public CtorUseCase1 (string configName, string address)
+				: base (configName, address)
+			{
+			}
+
+			public CtorUseCase1 (Binding binding, EndpointAddress address)
+				: base (binding, address)
+			{
+			}
+
+			public CtorUseCase1 (InstanceContext i, Binding binding, EndpointAddress address)
+				: base (i, binding, address)
+			{
+			}
+
+			public string Echo (string msg)
+			{
+				return Channel.Echo (msg);
+			}
+		}
+
+		// Use case with multiple endpoint configurations.
+		public class CtorUseCase2 : ClientBase<ICtorUseCase2>, ICtorUseCase2
+		{
+			public CtorUseCase2 ()
+				: base ()
+			{
+			}
+
+			public CtorUseCase2 (string configName)
+				: base (configName)
+			{
+			}
+
+			public CtorUseCase2 (string configName, string address)
+				: base (configName, address)
+			{
+			}
+
+			public CtorUseCase2 (Binding binding, EndpointAddress address)
+				: base (binding, address)
+			{
+			}
+
+			public CtorUseCase2 (InstanceContext i, Binding binding, EndpointAddress address)
+				: base (i, binding, address)
+			{
+			}
+
+			public string Echo (string msg)
+			{
+				return Channel.Echo (msg);
+			}
+		}
+
+		// Use case without endpoint configuration.
+		public class CtorUseCase3 : ClientBase<ICtorUseCase3>, ICtorUseCase3
+		{
 			public string Echo (string msg)
 			{
 				return Channel.Echo (msg);

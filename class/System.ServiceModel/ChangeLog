@@ -1,3 +1,8 @@
+2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+
+	* System.ServiceModel_test_net_3_0.dll.config: Add configurations for
+	  testing ClientBase<T> ctors.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* Makefile: Ignore common warnings including use of obsolete API (since

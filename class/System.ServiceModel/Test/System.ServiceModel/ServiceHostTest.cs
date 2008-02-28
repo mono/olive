@@ -230,6 +230,7 @@ namespace MonoTests.System.ServiceModel
 
 
 		[Test]
+		[Category ("NotWorking")] // Actually crashes the NUnit console on Mono
 		public void InstanceWithSingletonMode ()
 		{
 			SingletonService instance = new SingletonService ();
