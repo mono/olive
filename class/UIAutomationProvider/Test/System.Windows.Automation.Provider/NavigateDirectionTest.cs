@@ -28,8 +28,8 @@ using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 
-namespace MonoTests.System.Windows.Automation.Provider
-{
+namespace MonoTests.System.Windows.Automation.Provider {
+	
 	[TestFixture]
 	public class NavigateDirectionTest {
 		

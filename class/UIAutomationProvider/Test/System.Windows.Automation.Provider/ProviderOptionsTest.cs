@@ -30,8 +30,8 @@ using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 
-namespace MonoTest.System.Windows.Automation.Provider
-{
+namespace MonoTest.System.Windows.Automation.Provider {
+	
 	[TestFixture]
 	public class ProviderOptionsTest {
 		

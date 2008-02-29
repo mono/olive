@@ -5,6 +5,11 @@
 
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* AutomationInteropProviderTest.cs, NavigateDirectionTest.cs,
+	  ProviderOptionsTest.cs: Style fix.
+
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* AutomationInteropProviderTest.cs, NavigateDirectionTest.cs: Added tests
 	  for NavigateDirection and AutomationInteropProvider.
 	* ProviderOptionsTest.cs: Cleanup.

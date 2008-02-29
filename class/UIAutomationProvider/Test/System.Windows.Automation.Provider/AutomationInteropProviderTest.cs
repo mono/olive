@@ -28,8 +28,8 @@ using System.Windows.Automation.Provider;
 
 using NUnit.Framework;
 
-namespace MonoTests.System.Windows.Automation
-{
+namespace MonoTests.System.Windows.Automation {
+	
 	[TestFixture]
 	public class AutomationInteropProviderTest {
 		
