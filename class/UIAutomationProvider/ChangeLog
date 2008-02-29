@@ -1,3 +1,13 @@
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Test, Test/System.Windows.Automation.Provider,
+	  UIAutomationProvider_test.dll.sources, Makefile: Support for automated
+	  unit testing in UIAutomationProvider.
+	* UIAutomationProvider.mdp, UIAutomationProvider.mds,
+	  UIAutomationProviderTests.mdp: Add unit test project to MonoDevelop
+	  solution.  Tweaked project settings to reconcile nunit and other MD
+	  integration with Makefile integration.
+
 2008-02-27  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationProvider.mdp, UIAutomationProvider.mds: Added MonoDevelop

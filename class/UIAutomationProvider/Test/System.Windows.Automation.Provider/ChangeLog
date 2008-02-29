@@ -1,0 +1,5 @@
+2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ChangeLog: Support for automated unit testing in UIAutomationProvider.
+	* ProviderOptionsTest.cs: Unit test for ProviderOptions enumeration.
+
