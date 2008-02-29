@@ -38,12 +38,11 @@ namespace MonoTest.System.Windows.Automation.Provider
 		[Test]
 		public void ValuesTest ()
 		{
-			// TODO: Verify these values
-			Assert.AreEqual (1, (int)ProviderOptions.ClientSideProvider);
-			Assert.AreEqual (2, (int)ProviderOptions.ServerSideProvider);
-			Assert.AreEqual (4, (int)ProviderOptions.NonClientAreaProvider);
-			Assert.AreEqual (8, (int)ProviderOptions.OverrideProvider);
-			Assert.AreEqual (16, (int)ProviderOptions.ProviderOwnsSetFocus);
+			Assert.AreEqual (1, (int)ProviderOptions.ClientSideProvider, "ClientSideProvider");
+			Assert.AreEqual (2, (int)ProviderOptions.ServerSideProvider, "ServerSideProvider");
+			Assert.AreEqual (4, (int)ProviderOptions.NonClientAreaProvider, "NonClientAreaProvider");
+			Assert.AreEqual (8, (int)ProviderOptions.OverrideProvider, "OverrideProvider");
+			Assert.AreEqual (16, (int)ProviderOptions.ProviderOwnsSetFocus, "ProviderOwnsSetFocus");
 		}
 	}
 }

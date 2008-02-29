@@ -1,3 +1,11 @@
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProvider_test.dll.sources: Added tests for NavigateDirection
+	  and AutomationInteropProvider.
+	* UIAutomationProvider.mdp, UIAutomationProviderTests.mdp: Added
+	  *.dll.sources to MonoDevelop projects for easier editing.  Fixed default
+	  namespace.
+
 2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Test, Test/System.Windows.Automation.Provider,
