@@ -33,8 +33,8 @@ using NUnit.Framework;
 namespace MonoTest.System.Windows.Automation.Provider
 {
 	[TestFixture]
-	public class ProviderOptionsTest
-	{
+	public class ProviderOptionsTest {
+		
 		[Test]
 		public void ValuesTest ()
 		{

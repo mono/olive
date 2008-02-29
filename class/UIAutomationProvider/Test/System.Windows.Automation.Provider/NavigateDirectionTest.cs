@@ -31,8 +31,8 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation.Provider
 {
 	[TestFixture]
-	public class NavigateDirectionTest
-	{
+	public class NavigateDirectionTest {
+		
 		[Test]
 		public void ValuesTest ()
 		{

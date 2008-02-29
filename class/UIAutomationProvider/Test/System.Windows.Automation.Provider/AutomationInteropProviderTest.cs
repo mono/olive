@@ -31,8 +31,8 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation
 {
 	[TestFixture]
-	public class AutomationInteropProviderTest
-	{
+	public class AutomationInteropProviderTest {
+		
 		[Test]
 		public void ConstantsTest ()
 		{
