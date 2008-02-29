@@ -1,5 +1,9 @@
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* AutomationInteropProviderTest.cs, NavigateDirectionTest.cs: Fixed headers.
+
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* AutomationInteropProviderTest.cs, NavigateDirectionTest.cs,
 	  ProviderOptionsTest.cs: Style fix.
 
