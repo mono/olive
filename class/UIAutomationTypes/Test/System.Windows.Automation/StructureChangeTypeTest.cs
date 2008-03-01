@@ -31,13 +31,17 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class StructureChangeTypeTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) StructureChangeType.ChildAdded, "ChildAdded");
+			Assert.AreEqual (1, (int) StructureChangeType.ChildRemoved, "ChildRemoved");
+			Assert.AreEqual (2, (int) StructureChangeType.ChildrenInvalidated, "ChildrenInvalidated");
+			Assert.AreEqual (3, (int) StructureChangeType.ChildrenBulkAdded, "ChildrenBulkAdded");
+			Assert.AreEqual (4, (int) StructureChangeType.ChildrenBulkRemoved, "ChildrenBulkRemoved");
+			Assert.AreEqual (5, (int) StructureChangeType.ChildrenReordered, "ChildrenReordered");
 		}
-			
 	}
 }

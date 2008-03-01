@@ -1,3 +1,11 @@
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowVisualStateTest.cs, RowOrColumnMajorTest.cs,
+	  AutomationElementIdentifiersTest.cs, SupportedTextSelectionTest.cs,
+	  ScrollAmountTest.cs, ToggleStateTest.cs, ExpandCollapseStateTest.cs,
+	  DockPositionTest.cs, StructureChangeTypeTest.cs,
+	  WindowInteractionStateTest.cs: Added remaining enum type tests.
+
 2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ChangeLog: Support for automated unit testing in UIAutomationTypes.

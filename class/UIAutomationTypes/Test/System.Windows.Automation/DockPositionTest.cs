@@ -31,13 +31,17 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class DockPositionTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) DockPosition.Top, "Top");
+			Assert.AreEqual (1, (int) DockPosition.Left, "Left");
+			Assert.AreEqual (2, (int) DockPosition.Bottom, "Bottom");
+			Assert.AreEqual (3, (int) DockPosition.Right, "Right");
+			Assert.AreEqual (4, (int) DockPosition.Fill, "Fill");
+			Assert.AreEqual (5, (int) DockPosition.None, "None");
 		}
-			
 	}
 }

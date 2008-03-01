@@ -24,20 +24,20 @@
 // 
 
 using System;
-using System.Windows.Automation;
+using System.Windows.Automation.Text;
 
 using NUnit.Framework;
 
-namespace MonoTests.System.Windows.Automation {
+namespace MonoTests.System.Windows.Automation.Text {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class TextPatternRangeEndpointTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) TextPatternRangeEndpoint.Start, "Start");
+			Assert.AreEqual (1, (int) TextPatternRangeEndpoint.End, "End");
 		}
-			
 	}
 }

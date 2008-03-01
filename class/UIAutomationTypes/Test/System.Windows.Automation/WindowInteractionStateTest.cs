@@ -31,13 +31,16 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class WindowInteractionStateTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) WindowInteractionState.Running, "Running");
+			Assert.AreEqual (1, (int) WindowInteractionState.Closing, "Closing");
+			Assert.AreEqual (2, (int) WindowInteractionState.ReadyForUserInteraction, "ReadyForUserInteraction");
+			Assert.AreEqual (3, (int) WindowInteractionState.BlockedByModalWindow, "BlockedByModalWindow");
+			Assert.AreEqual (4, (int) WindowInteractionState.NotResponding, "NotResponding");
 		}
-			
 	}
 }

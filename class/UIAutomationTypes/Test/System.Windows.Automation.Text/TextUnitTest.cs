@@ -24,20 +24,25 @@
 // 
 
 using System;
-using System.Windows.Automation;
+using System.Windows.Automation.Text;
 
 using NUnit.Framework;
 
-namespace MonoTests.System.Windows.Automation {
+namespace MonoTests.System.Windows.Automation.Text {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class TextUnitTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) TextUnit.Character, "Character");
+			Assert.AreEqual (1, (int) TextUnit.Format, "Format");
+			Assert.AreEqual (2, (int) TextUnit.Word, "Word");
+			Assert.AreEqual (3, (int) TextUnit.Line, "Line");
+			Assert.AreEqual (4, (int) TextUnit.Paragraph, "Paragraph");
+			Assert.AreEqual (5, (int) TextUnit.Page, "Page");
+			Assert.AreEqual (6, (int) TextUnit.Document, "Document");
 		}
-			
 	}
 }

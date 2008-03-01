@@ -1,3 +1,11 @@
+2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Test/System.Windows.Automation.Text,
+	  Test/System.Windows.Automation.Text/TextPatternRangeEndpointTest.cs,
+	  Test/System.Windows.Automation.Text/TextUnitTest.cs,
+	  UIAutomationTypes.mdp, UIAutomationTypesTests.mdp,
+	  UIAutomationTypes_test.dll.sources: Added remaining enum type tests.
+
 2008-02-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile, Test, Test/System.Windows.Automation,

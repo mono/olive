@@ -31,13 +31,16 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class ScrollAmountTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) ScrollAmount.LargeDecrement, "LargeDecrement");
+			Assert.AreEqual (1, (int) ScrollAmount.SmallDecrement, "SmallDecrement");
+			Assert.AreEqual (2, (int) ScrollAmount.NoAmount, "NoAmount");
+			Assert.AreEqual (3, (int) ScrollAmount.LargeIncrement, "LargeIncrement");
+			Assert.AreEqual (4, (int) ScrollAmount.SmallIncrement, "SmallIncrement");
 		}
-			
 	}
 }

@@ -31,13 +31,14 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class ToggleStateTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) ToggleState.Off, "Off");
+			Assert.AreEqual (1, (int) ToggleState.On, "On");
+			Assert.AreEqual (2, (int) ToggleState.Indeterminate, "Indeterminate");
 		}
-			
 	}
 }

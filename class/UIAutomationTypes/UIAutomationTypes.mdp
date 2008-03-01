@@ -33,6 +33,7 @@
     <File name="System.Windows.Automation.Text/TextPatternRangeEndpoint.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Text/TextUnit.cs" subtype="Code" buildaction="Compile" />
     <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
+    <File name="UIAutomationTypes.dll.sources" subtype="Code" buildaction="Nothing" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />

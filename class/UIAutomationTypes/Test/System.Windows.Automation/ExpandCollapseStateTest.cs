@@ -31,13 +31,15 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class ExpandCollapseStateTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) ExpandCollapseState.Collapsed, "Collapsed");
+			Assert.AreEqual (1, (int) ExpandCollapseState.Expanded, "Expanded");
+			Assert.AreEqual (2, (int) ExpandCollapseState.PartiallyExpanded, "PartiallyExpanded");
+			Assert.AreEqual (3, (int) ExpandCollapseState.LeafNode, "LeafNode");
 		}
-			
 	}
 }

@@ -31,13 +31,14 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class SupportedTextSelectionTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) SupportedTextSelection.None, "None");
+			Assert.AreEqual (1, (int) SupportedTextSelection.Single, "Single");
+			Assert.AreEqual (2, (int) SupportedTextSelection.Multiple, "Multiple");
 		}
-			
 	}
 }

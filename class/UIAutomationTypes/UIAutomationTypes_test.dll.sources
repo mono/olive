@@ -1,1 +1,12 @@
 System.Windows.Automation/AutomationElementIdentifiersTest.cs
+System.Windows.Automation/DockPositionTest.cs
+System.Windows.Automation/ExpandCollapseStateTest.cs
+System.Windows.Automation/RowOrColumnMajorTest.cs
+System.Windows.Automation/ScrollAmountTest.cs
+System.Windows.Automation/StructureChangeTypeTest.cs
+System.Windows.Automation/SupportedTextSelectionTest.cs
+System.Windows.Automation/ToggleStateTest.cs
+System.Windows.Automation/WindowInteractionStateTest.cs
+System.Windows.Automation/WindowVisualStateTest.cs
+System.Windows.Automation.Text/TextPatternRangeEndpointTest.cs
+System.Windows.Automation.Text/TextUnitTest.cs

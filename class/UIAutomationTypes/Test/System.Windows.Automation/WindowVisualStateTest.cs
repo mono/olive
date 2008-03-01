@@ -31,13 +31,14 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class WindowVisualStateTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) WindowVisualState.Normal, "Normal");
+			Assert.AreEqual (1, (int) WindowVisualState.Maximized, "Maximized");
+			Assert.AreEqual (2, (int) WindowVisualState.Minimized, "Minimized");
 		}
-			
 	}
 }

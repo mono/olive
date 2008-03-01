@@ -31,13 +31,14 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	
 	[TestFixture]
-	public class AutomationElementIdentifiersTest {
+	public class RowOrColumnMajorTest {
+		
 		[Test]
-		[Ignore ("Incomplete Test")]
-		public void NotSupportedTest ()
+		public void ValuesTest ()
 		{
-			Assert.IsNotNull (AutomationElementIdentifiers.NotSupported);
+			Assert.AreEqual (0, (int) RowOrColumnMajor.RowMajor, "RowMajor");
+			Assert.AreEqual (1, (int) RowOrColumnMajor.ColumnMajor, "ColumnMajor");			
+			Assert.AreEqual (2, (int) RowOrColumnMajor.Indeterminate, "Indeterminate");
 		}
-			
 	}
 }
