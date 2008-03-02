@@ -1,3 +1,8 @@
+2008-03-02  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* MessageSecurityOverTcpElement.cs:
+	fix properties collection initialization.	
+
 2008-02-19  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* BasicHttpBindingElement.cs:
