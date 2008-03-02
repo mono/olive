@@ -70,7 +70,7 @@ namespace System.ServiceModel.Configuration
 
 		static NetPeerTcpBindingElement ()
 		{
-			properties = PropertiesInternal;
+			properties = StandardBindingElement.CreateBaseProperties ();
 
 			listen_i_p_address = new ConfigurationProperty ("listenIPAddress",
 				typeof (IPAddress), null, null/* FIXME: get converter for IPAddress*/, null,

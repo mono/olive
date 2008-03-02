@@ -107,6 +107,13 @@ namespace System.ServiceModel
 
 		[MonoTODO]
 		public DuplexChannelFactory (InstanceContext callbackInstance,
+			string endpointConfigurationName)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[MonoTODO]
+		public DuplexChannelFactory (InstanceContext callbackInstance,
 			ServiceEndpoint endpoint)
 		{
 			throw new NotImplementedException ();

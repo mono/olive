@@ -88,7 +88,7 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("algorithmSuite",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Default")]
-		[TypeConverter ()]
+		[TypeConverter (typeof (SecurityAlgorithmSuiteConverter))]
 		public SecurityAlgorithmSuite AlgorithmSuite {
 			get { return (SecurityAlgorithmSuite) base [algorithm_suite]; }
 			set { base [algorithm_suite] = value; }

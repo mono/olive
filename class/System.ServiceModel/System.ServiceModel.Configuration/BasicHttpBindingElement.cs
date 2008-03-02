@@ -76,7 +76,7 @@ namespace System.ServiceModel.Configuration
 
 		static BasicHttpBindingElement ()
 		{
-			properties = PropertiesInternal;
+			properties = StandardBindingElement.CreateBaseProperties ();
 			allow_cookies = new ConfigurationProperty ("allowCookies",
 				typeof (bool), "false", new BooleanConverter (), null,
 				ConfigurationPropertyOptions.None);
@@ -245,7 +245,7 @@ namespace System.ServiceModel.Configuration
 			get { return (BasicHttpSecurityElement) base [security]; }
 		}
 
-		[TypeConverter ()]
+		[TypeConverter (typeof (EncodingConverter))]
 		[ConfigurationProperty ("textEncoding",
 			 DefaultValue = "utf-8",
 			 Options = ConfigurationPropertyOptions.None)]

@@ -76,7 +76,7 @@ namespace System.ServiceModel.Configuration
 
 		static NetTcpBindingElement ()
 		{
-			properties = PropertiesInternal;
+			properties = StandardBindingElement.CreateBaseProperties ();
 
 			host_name_comparison_mode = new ConfigurationProperty ("hostNameComparisonMode",
 				typeof (HostNameComparisonMode), "StrongWildcard", null/* FIXME: get converter for HostNameComparisonMode*/, null,
