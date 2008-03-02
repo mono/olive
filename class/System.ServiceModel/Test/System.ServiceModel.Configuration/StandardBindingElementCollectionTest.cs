@@ -32,6 +32,8 @@ using System.Configuration;
 using System.ServiceModel.Configuration;
 using System.Text;
 using System.ServiceModel.Security;
+using System.ServiceModel;
+using System.Net.Security;
 
 namespace MonoTests.System.ServiceModel.Configuration
 {
@@ -49,6 +51,22 @@ namespace MonoTests.System.ServiceModel.Configuration
 			Assert.AreEqual ("BasicHttpBinding_Service", binding.Name, "Name");
 			Assert.AreEqual (Encoding.UTF8, binding.TextEncoding, "Name");
 			Assert.AreEqual (SecurityAlgorithmSuite.Default, binding.Security.Message.AlgorithmSuite, "Name");
+		}
+
+		[Test]
+		public void NetTcpBinding () {
+			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/netTcpBinding").GetSectionGroup ("system.serviceModel");
+
+			NetTcpBindingCollectionElement netTcpBinding = config.Bindings.NetTcpBinding;
+			Assert.AreEqual (1, netTcpBinding.Bindings.Count, "count");
+
+			NetTcpBindingElement binding = netTcpBinding.Bindings [0];
+			Assert.AreEqual ("NetTcpBinding_IHelloWorldService", binding.Name, "Name");
+			Assert.AreEqual (TransactionProtocol.OleTransactions, binding.TransactionProtocol, "TransactionProtocol");
+			Assert.AreEqual (SecurityMode.Transport, binding.Security.Mode, "Security.Mode");
+			Assert.AreEqual (MessageCredentialType.Windows, binding.Security.Message.ClientCredentialType, "Security.Message.ClientCredentialType");
+			Assert.AreEqual (ProtectionLevel.EncryptAndSign, binding.Security.Transport.ProtectionLevel, "Security.Transport.ProtectionLevel");
+			Assert.AreEqual (TcpClientCredentialType.Windows, binding.Security.Transport.ClientCredentialType, "Security.Transport.ProtectionLevel");
 		}
 
 		[Test]
