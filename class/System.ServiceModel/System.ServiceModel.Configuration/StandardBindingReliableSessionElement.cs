@@ -63,6 +63,10 @@ namespace System.ServiceModel.Configuration
 		static ConfigurationProperty inactivity_timeout;
 		static ConfigurationProperty ordered;
 
+		internal static ConfigurationPropertyCollection PropertiesInternal {
+			get { return properties; }
+		}
+
 		static StandardBindingReliableSessionElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();

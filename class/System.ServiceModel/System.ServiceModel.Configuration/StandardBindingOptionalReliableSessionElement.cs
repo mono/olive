@@ -64,7 +64,7 @@ namespace System.ServiceModel.Configuration
 
 		static StandardBindingOptionalReliableSessionElement ()
 		{
-			properties = new ConfigurationPropertyCollection ();
+			properties = StandardBindingReliableSessionElement.PropertiesInternal;
 			enabled = new ConfigurationProperty ("enabled",
 				typeof (bool), "false", new BooleanConverter (), null,
 				ConfigurationPropertyOptions.None);

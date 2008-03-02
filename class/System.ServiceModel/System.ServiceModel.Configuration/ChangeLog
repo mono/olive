@@ -1,5 +1,11 @@
 2008-03-02  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* StandardBindingOptionalReliableSessionElement.cs:
+	* StandardBindingReliableSessionElement.cs:	
+	fix properties collection initialization.	
+
+2008-03-02  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* MessageSecurityOverTcpElement.cs:
 	fix properties collection initialization.	
 
