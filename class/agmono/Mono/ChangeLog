@@ -1,3 +1,12 @@
+2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Helper.cs: Added GetAgclr and LookupDependencyObject.
+	* XamlLoaderCallbacks.cs: Moved surface and plugin fields from
+	  ManagedXamlLoader to XamlLoader. Introduced an
+	  AllowMultipleSurfacesPerDomain field. Added an abstract method to create
+	  a dependency object from a string (to be overridden by ManagedXamlLoader
+	  in agclr).
+
 2008-01-09  Chris Toshok  <toshok@ximian.com>
 
 	* NativeMethods.cs: add stroke_get_bounds and

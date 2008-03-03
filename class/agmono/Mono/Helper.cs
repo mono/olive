@@ -197,5 +197,22 @@ namespace Mono {
 		{
 			Thread.MemoryBarrier ();
 		}
+		
+		internal static Assembly GetAgclr ()
+		{
+			return LoadFile ("agclr.dll");
+		}
+		
+		/// <summary>
+		/// Looks up a dependency object given the native pointer.
+		/// The calling code must free the native pointer when it's finished with it.
+		/// </summary>
+		public static object LookupDependencyObject (Kind k, IntPtr ptr)
+		{
+			Assembly agclr = GetAgclr ();
+			Type depobj = agclr.GetType ("System.Windows.DependencyObject");
+			MethodInfo lookup = depobj.GetMethod ("Lookup", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] {typeof (Kind), typeof (IntPtr)}, null);
+			return lookup.Invoke (null, new object [] {k, ptr});
+		}
 	}
 }

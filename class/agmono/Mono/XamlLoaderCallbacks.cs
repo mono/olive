@@ -58,17 +58,84 @@ namespace Mono.Xaml
 	
 	public abstract class XamlLoader : MarshalByRefObject
 	{
-		 // Contains any surface/plugins already loaded in the current domain.
+		// Contains any surface/plugins already loaded in the current domain.
+		// This is required form System.Windows.XamlReader.Load to work.
 		private static IntPtr surface_in_domain;
 		private static IntPtr plugin_in_domain;
+		private static bool allow_multiple_surfaces_per_domain;
 		
-		public abstract void Setup (IntPtr native_loader, IntPtr plugin, IntPtr surface, string filename, string contents);
+		protected IntPtr native_loader;
+		
+		// We keep an instance copy of the surface and plugin here,
+		// since we have to support multiple surfaces for the non-browser case.
+		protected IntPtr surface;
+		protected IntPtr plugin;
+		
+		public static XamlLoader CreateManagedXamlLoader (IntPtr surface, IntPtr plugin)
+		{
+			System.Reflection.Assembly assembly = Helper.LoadFile ("agclr.dll");
+			XamlLoader loader = (XamlLoader) Helper.CreateInstance (assembly.GetType ("Mono.Xaml.ManagedXamlLoader"), true);
+			loader.surface = surface;
+			loader.plugin = plugin;
+			return loader;
+		}
+		
+		public XamlLoader ()
+		{
+		}
+		
+		public XamlLoader (IntPtr surface, IntPtr plugin)
+		{
+			this.surface = surface;
+			this.plugin = plugin;
+		}
 				
+		public virtual void Setup (IntPtr native_loader, IntPtr plugin, IntPtr surface, string filename, string contents)
+		{
+			this.native_loader = native_loader;
+			this.plugin = plugin;
+			this.surface = surface;
+		}
+				
+		public IntPtr PluginHandle {
+			get {
+				return plugin;
+			}
+		}
+		
+		public IntPtr NativeLoader {
+			get {
+				return native_loader;
+			}
+		}
+		
+		public IntPtr Surface {
+			get {
+				return surface;
+			}
+		}
+		
+		public static bool AllowMultipleSurfacesPerDomain {
+			get {
+				
+				return allow_multiple_surfaces_per_domain;
+			}
+			set {
+				allow_multiple_surfaces_per_domain = value;
+			}
+		}
+		
 		public static IntPtr SurfaceInDomain {
 			get {
+				if (allow_multiple_surfaces_per_domain)
+					throw new ArgumentException ("Multiple surfaces per domain is enabled, so calling SurfaceInDomain/PluginInDomain is wrong.");
+				
 				return surface_in_domain;
 			}
 			set {
+				if (allow_multiple_surfaces_per_domain)
+					throw new ArgumentException ("Multiple surfaces per domain is enabled, so calling SurfaceInDomain/PluginInDomain is wrong.");
+				
 				if (value == IntPtr.Zero || (value == surface_in_domain && value != IntPtr.Zero))
 					return;
 				
@@ -82,9 +149,15 @@ namespace Mono.Xaml
 		
 		public static IntPtr PluginInDomain {
 			get {
+				if (allow_multiple_surfaces_per_domain)
+					throw new ArgumentException ("Multiple surfaces per domain is enabled, so calling SurfaceInDomain/PluginInDomain is wrong.");
+				
 				return plugin_in_domain;
 			}
 			set {
+				if (allow_multiple_surfaces_per_domain)
+					throw new ArgumentException ("Multiple surfaces per domain is enabled, so calling SurfaceInDomain/PluginInDomain is wrong.");
+				
 				if (value == IntPtr.Zero || (value == plugin_in_domain && value != IntPtr.Zero))
 					return;
 				
@@ -95,5 +168,56 @@ namespace Mono.Xaml
 				}
 			}			 
 		}
+		
+		public void CreateNativeLoader (string filename, string contents)
+		{
+			if (!AllowMultipleSurfacesPerDomain) {
+				if (surface == IntPtr.Zero)
+					surface = SurfaceInDomain;
+				if (plugin == IntPtr.Zero)
+					plugin = PluginInDomain;
+			}
+			
+			if (surface == IntPtr.Zero)
+				throw new Exception ("The surface where the xaml should be loaded is not set.");
+			
+			//Console.WriteLine ("ManagedXamlLoader::CreateNativeLoader (): surface: {0}", surface);
+			native_loader = NativeMethods.xaml_loader_new (filename, contents, surface);
+			
+			if (native_loader == IntPtr.Zero)
+				throw new Exception ("Unable to create native loader.");
+			
+			Setup (native_loader, plugin, surface, filename, contents);
+		}
+		
+		public void FreeNativeLoader ()
+		{
+			NativeMethods.xaml_loader_free (native_loader);
+			native_loader = IntPtr.Zero;
+		}
+		
+		//
+		// Creates a native object for the given xaml.
+		// 
+		public IntPtr CreateFromString (string xaml, bool createNamescope, out Kind kind)
+		{
+			if (xaml == null)
+				throw new ArgumentNullException ("xaml");
+
+			IntPtr top;
+			
+			CreateNativeLoader (null, xaml);
+			top = NativeMethods.xaml_create_from_str (NativeLoader, xaml, createNamescope, out kind);
+			FreeNativeLoader ();
+			
+			return top;
+		}
+
+		// 
+		// Creates a managed dependency object from the xaml.
+		// Must always return a DependencyObject (since we don't reference agclr, we can't 
+		// declare the return type as DependencyObject)
+		// 
+		public abstract object CreateDependencyObjectFromString (string xaml, bool createNamescope);
 	}
 }
