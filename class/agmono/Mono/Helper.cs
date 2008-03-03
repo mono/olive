@@ -41,6 +41,7 @@ using System.Threading;
 namespace Mono {
 
 	public class Helper {
+		public static Assembly Agclr;
 
 		private static TypeConverter GetConverterFor (PropertyInfo info)
 		{
@@ -200,7 +201,7 @@ namespace Mono {
 		
 		internal static Assembly GetAgclr ()
 		{
-			return LoadFile ("agclr.dll");
+			return Agclr;
 		}
 		
 		/// <summary>

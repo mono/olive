@@ -1,3 +1,9 @@
+2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* Helper.cs: Fixed GetAgclr to actually work.
+	* XamlLoaderCallbacks.cs: Use Helper.GetAgclr instead of loading the
+	  assembly manually.
+
 2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Helper.cs: Added GetAgclr and LookupDependencyObject.

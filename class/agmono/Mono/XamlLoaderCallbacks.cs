@@ -73,7 +73,7 @@ namespace Mono.Xaml
 		
 		public static XamlLoader CreateManagedXamlLoader (IntPtr surface, IntPtr plugin)
 		{
-			System.Reflection.Assembly assembly = Helper.LoadFile ("agclr.dll");
+			System.Reflection.Assembly assembly = Helper.GetAgclr ();
 			XamlLoader loader = (XamlLoader) Helper.CreateInstance (assembly.GetType ("Mono.Xaml.ManagedXamlLoader"), true);
 			loader.surface = surface;
 			loader.plugin = plugin;
