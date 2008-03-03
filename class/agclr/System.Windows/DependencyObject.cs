@@ -82,6 +82,7 @@ namespace System.Windows {
 		{
 			NativeMethods.runtime_init (0);
 			moonlight_thread = Thread.CurrentThread;
+			Helper.Agclr = typeof (DependencyObject).Assembly;
 		}
 
 		internal DependencyObject (IntPtr raw)

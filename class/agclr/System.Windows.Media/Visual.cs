@@ -33,12 +33,14 @@ namespace System.Windows.Media {
 
 		internal Visual (IntPtr raw) : base (raw)
 		{
-			NativeMethods.visual_set_surface (raw, XamlLoader.SurfaceInDomain);
+			if (!Mono.AllowMultipleSurfacesPerDomain)
+				NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
 		}
 		
 		public Visual () : base (NativeMethods.visual_new ())
 		{
-			NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
+			if (!Mono.AllowMultipleSurfacesPerDomain)
+				NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
 		}
 
 		public bool CaptureMouse ()

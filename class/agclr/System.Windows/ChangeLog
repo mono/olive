@@ -1,3 +1,7 @@
+2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: Inform agmono about our own assembly.
+
 2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* XamlReader.cs: If multiple surfaces per appdomain is allowed, throw an
