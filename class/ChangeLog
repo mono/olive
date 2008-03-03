@@ -1,3 +1,7 @@
+2008-03-03  Marek Safar  <marek.safar@gmail.com>
+
+	* Makefile: Moved System.Data.Linq to mcs.
+
 2008-02-08  Calvin Gaisford <calvinrg@gmail.com>
 
 	* Makefile: Added UIAutomationTypes, UIAutomationProvider to build
