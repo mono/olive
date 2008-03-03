@@ -1,3 +1,8 @@
+2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* XamlReader.cs: If multiple surfaces per appdomain is allowed, throw an
+	  exception (since we don't know which surface to attach the xaml to).
+
 2008-02-21  Sebastien Pouliot  <sebastien@ximian.com> 
 
 	* Downloader.cs: In GetResponseText make sure we free the native 

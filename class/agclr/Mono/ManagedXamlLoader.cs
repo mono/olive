@@ -34,21 +34,11 @@ using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
-using System.Windows.Controls;
 using Mono;
 
 namespace Mono.Xaml
 {
-	internal class ManagedXamlLoader : XamlLoader	{
-		// We keep an instance copy of the surface and plugin here,
-		// since we're not ensuring that there can be only one of each
-		// in each AppDomain.
-		IntPtr surface;
-		IntPtr plugin;
-		IntPtr native_loader;
-//		string filename;
-//		string contents;
-
+	internal class ManagedXamlLoader : XamlLoader {
 		//
 		// Maps the assembly path to the location where the browser stored
 		// the downloaded file on its cache (ClientBin/Dingus.dll -> /home/xxx/.mozilla/cache/...)
@@ -66,18 +56,6 @@ namespace Mono.Xaml
 #if WITH_DLR
 		DLRHost dlr_host;
 #endif
-				
-		public IntPtr PluginHandle {
-			get {
-				return plugin;
-			}
-		}
-		
-		public IntPtr NativeLoader {
-			get {
-				return native_loader;
-			}
-		}
 
 		//
 		// Set whenever the loader will load dependencies synchronously using the browser
@@ -94,31 +72,14 @@ namespace Mono.Xaml
 		{
 		}
 		
-		public void CreateNativeLoader (string filename, string contents)
+		public ManagedXamlLoader (IntPtr surface, IntPtr plugin) : base (surface, plugin)
 		{
-			//Console.WriteLine ("ManagedXamlLoader::CreateNativeLoader (): SurfaceInDomain: {0}", SurfaceInDomain);
-			native_loader = NativeMethods.xaml_loader_new (filename, contents, SurfaceInDomain);
-			
-			if (native_loader == IntPtr.Zero)
-				throw new Exception ("Unable to create native loader.");
-			
-			Setup (native_loader, PluginInDomain, SurfaceInDomain, filename, contents);
-		}
-		
-		public void FreeNativeLoader ()
-		{
-			NativeMethods.xaml_loader_free (native_loader);
-			native_loader = IntPtr.Zero;
 		}
 		
 		public override void Setup (IntPtr native_loader, IntPtr plugin, IntPtr surface, string filename, string contents)
 		{
-			this.native_loader = native_loader;
-			this.plugin = plugin;
-			this.surface = surface;
-//			this.filename = filename;
-//			this.contents = contents;
-
+			base.Setup (native_loader, plugin, surface, filename, contents);
+			
 			//
 			// Registers callbacks that are invoked from the
 			// unmanaged code. 
@@ -138,9 +99,11 @@ namespace Mono.Xaml
 				System.Windows.Interop.PluginHost.SetPluginHandle (plugin);
 			}
 
-			PluginInDomain = plugin;
-			SurfaceInDomain = surface;
-
+			if (!AllowMultipleSurfacesPerDomain) {
+				PluginInDomain = plugin;
+				SurfaceInDomain = surface;
+			}
+			
 			//
 			// Sets default handler for loading assemblies, this allows
 			// code to call Assemly.Load ("relative") and trigger a
@@ -149,7 +112,39 @@ namespace Mono.Xaml
 
 			AppDomain.CurrentDomain.AssemblyResolve += AssemblyResolver;
 		}
+		
+		// 
+		// Creates a managed dependency object from the xaml.
+		// Must always return a DependencyObject (the abstract declaration in agmono
+		// cannot be declared with a return value of type DependencyObject since agmono
+		// can't reference agclr, it would cause a circular dependency).
+		// 
+		public override object CreateDependencyObjectFromString (string xaml, bool createNamescope)
+		{
+			if (xaml == null)
+				throw new ArgumentNullException ("xaml");
 
+			IntPtr top;
+			DependencyObject result;
+			Kind kind;
+			
+			DependencyObject.Ping ();
+			
+			top = CreateFromString (xaml, createNamescope, out kind);
+			
+			if (top == IntPtr.Zero)
+				return null;
+
+			result = DependencyObject.Lookup (kind, top);
+			
+			if (result != null) {
+				// Delete our reference, result already has one.
+				NativeMethods.base_unref_delayed (top);
+			}
+			
+			return result;
+		}
+		
 		//
 		// Our assembly resolver, invoked by Assembly.Load if it fails
 		// to find an assembly locally.    This happens if the managed code

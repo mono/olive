@@ -1,3 +1,9 @@
+2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Implement xaml loading with more than one surface
+	  per appdomain. Moved surface and plugin fields to XamlLoader.
+	  Implemented a method to create a dependency object from a string.
+
 2008-02-11  Miguel de Icaza  <miguel@novell.com>
 
 	* ManagedXamlLoader.cs: 

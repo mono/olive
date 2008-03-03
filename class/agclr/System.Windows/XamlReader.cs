@@ -52,24 +52,11 @@ namespace System.Windows {
 			if (xaml == null)
 				throw new ArgumentNullException ("xaml");
 
-			DependencyObject.Ping ();
-			Kind kind;
+			if (XamlLoader.AllowMultipleSurfacesPerDomain)
+				throw new ArgumentException ("Multiple surfaces per domain is enabled, you cannot load xaml without specifying the surface in which the xaml is to be loaded.");
+			
 			ManagedXamlLoader loader = new ManagedXamlLoader ();
-			loader.CreateNativeLoader (null, xaml);
-			IntPtr top = NativeMethods.xaml_create_from_str (loader.NativeLoader, xaml, createNamescope, out kind);
-			loader.FreeNativeLoader ();
-			
-			if (top == IntPtr.Zero)
-				return null;
-
-			DependencyObject result = DependencyObject.Lookup (kind, top);
-			
-			if (result != null) {
-				// Delete our reference, result already has one.
-				NativeMethods.base_unref_delayed (top);
-			}
-			
-			return result;
+			return (DependencyObject) loader.CreateDependencyObjectFromString (xaml, createNamescope);
 		}
 	}
 }
