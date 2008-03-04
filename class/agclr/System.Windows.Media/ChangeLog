@@ -1,5 +1,9 @@
 2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Visual.cs: Fix another breakage.
+
+2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* Visual.cs: Guard against accessing SurfaceInDomain when multiple surfaces
 	  per domain is allowed.
 

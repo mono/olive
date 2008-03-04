@@ -33,13 +33,13 @@ namespace System.Windows.Media {
 
 		internal Visual (IntPtr raw) : base (raw)
 		{
-			if (!Mono.AllowMultipleSurfacesPerDomain)
+			if (!Mono.Xaml.XamlLoader.AllowMultipleSurfacesPerDomain)
 				NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
 		}
 		
 		public Visual () : base (NativeMethods.visual_new ())
 		{
-			if (!Mono.AllowMultipleSurfacesPerDomain)
+			if (!Mono.Xaml.XamlLoader.AllowMultipleSurfacesPerDomain)
 				NativeMethods.visual_set_surface (native, XamlLoader.SurfaceInDomain);
 		}
 
