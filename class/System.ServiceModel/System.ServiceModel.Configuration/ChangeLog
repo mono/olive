@@ -1,3 +1,12 @@
+2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
+
+	* EndpointBehaviorElement.cs: Add "callbackDebug" behavior element.
+	* MethodStubs.cs: Fix key calculcation of ChannelEndpointElementCollection.
+	* NamedServiceModelExtensionCollectionElement.cs: Allow derived classes
+	  to extend the properties of this configuration element.
+    * ServiceModelExtensionCollectionElement.cs: Implement GetEnumerator.
+	* ServiceModelConfigurationElementCollection.cs: Implement collection.
+
 2008-03-02  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* StandardBindingOptionalReliableSessionElement.cs:

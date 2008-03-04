@@ -26,14 +26,10 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 using System;
-using System.Configuration;
 using System.Collections.Generic;
 using System.ServiceModel.Channels;
-using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
-
-using ConfigurationType = System.Configuration.Configuration;
 
 namespace System.ServiceModel
 {
@@ -73,14 +69,8 @@ namespace System.ServiceModel
 		}
 
 		protected ClientBase (InstanceContext instance)
+			: this (instance, "*")
 		{
-			if (instance == null)
-				throw new ArgumentNullException ("instanceContext");
-
-			ChannelEndpointElement el = GetEndpointConfig (null);
-			Initialize (instance,
-				ConfigUtil.CreateBinding (el.Binding, el.BindingConfiguration),
-				new EndpointAddress (el.Address));
 		}
 
 		protected ClientBase (InstanceContext instance, string configname)
@@ -90,10 +80,7 @@ namespace System.ServiceModel
 			if (configname == null)
 				throw new ArgumentNullException ("configurationName");
 
-			ChannelEndpointElement el = GetEndpointConfig (configname);
-			Initialize (instance,
-				ConfigUtil.CreateBinding (el.Binding, el.BindingConfiguration),
-				new EndpointAddress (el.Address));
+			Initialize (instance, configname, null);
 		}
 
 		protected ClientBase (InstanceContext instance,
@@ -106,7 +93,7 @@ namespace System.ServiceModel
 			if (remoteAddress == null)
 				throw new ArgumentNullException ("remoteAddress");
 
-			Initialize (instance, GetBindingFromConfig (configname), remoteAddress);
+			Initialize (instance, configname, remoteAddress);
 		}
 
 		protected ClientBase (InstanceContext instance,
@@ -119,7 +106,7 @@ namespace System.ServiceModel
 			if (configname == null)
 				throw new ArgumentNullException ("configurationname");
 
-			Initialize (instance, GetBindingFromConfig (configname), new EndpointAddress (remoteAddress));
+			Initialize (instance, configname, new EndpointAddress (remoteAddress));
 		}
 
 		protected ClientBase (InstanceContext instance,
@@ -135,38 +122,10 @@ namespace System.ServiceModel
 			Initialize (instance, binding, remoteAddress);
 		}
 
-		// FIXME: handle interface inheritance scenarios and add tests.
-		private static string GetContractName (Type t)
+		void Initialize (InstanceContext instance,
+			string configName, EndpointAddress remoteAddress)
 		{
-			Attribute[] attrs = (Attribute[])t.GetCustomAttributes (typeof(ServiceContractAttribute), false);
-			if (attrs.Length == 0)
-				return String.Empty;
-
-			ServiceContractAttribute attr = (ServiceContractAttribute)attrs [0];
-			return attr.ConfigurationName ?? t.FullName;
-		}
-
-		// FIXME: This logic should actually be in ChannelFactory<T>.
-		static ChannelEndpointElement GetEndpointConfig (string name)
-		{
-			string contractName = GetContractName (typeof (TChannel));
-			ClientSection client = (ClientSection) ConfigurationManager.GetSection ("system.serviceModel/client");
-			ChannelEndpointElement res = null;
-			foreach (ChannelEndpointElement el in client.Endpoints)
-				if (el.Contract == contractName && (el.Name == name || name == null)) {
-					if (res != null)
-						throw new InvalidOperationException (String.Format ("More then one endpoint matching contract {0} was found.", contractName));
-					res = el;
-				}
-			if (res == null)
-				throw new InvalidOperationException (String.Format ("Client endpoint configuration '{0}' was not found in {1} endpoints.", name, client.Endpoints.Count));
-			return res;
-		}
-
-		static Binding GetBindingFromConfig (string endpointConfigurationName)
-		{
-			ChannelEndpointElement el = GetEndpointConfig (endpointConfigurationName);
-			return ConfigUtil.CreateBinding (el.Binding, el.BindingConfiguration);
+			factory = new ChannelFactory<TChannel> (configName, remoteAddress);
 		}
 
 		void Initialize (InstanceContext instance,

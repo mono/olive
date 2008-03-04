@@ -39,7 +39,7 @@ namespace System.ServiceModel
 		: ChannelFactory, IChannelFactory<TChannel>
 	{
 		public ChannelFactory ()
-			: this (String.Empty)
+			: this ("*")
 		{
 		}
 
@@ -49,29 +49,37 @@ namespace System.ServiceModel
 				throw new ArgumentNullException ("type");
 			if (!type.IsInterface)
 				throw new InvalidOperationException ("The type argument to the generic ChannelFactory constructor must be an interface type.");
+
 			InitializeEndpoint (CreateDescription ());
 		}
 
 		public ChannelFactory (string endpointConfigurationName)
 		{
+			if (endpointConfigurationName == null)
+				throw new ArgumentNullException ("endpointConfigurationName");
+
 			InitializeEndpoint (endpointConfigurationName, null);
 		}
 
 		public ChannelFactory (string endpointConfigurationName,
 			EndpointAddress remoteAddress)
 		{
+			if (endpointConfigurationName == null)
+				throw new ArgumentNullException ("endpointConfigurationName");
+
 			InitializeEndpoint (endpointConfigurationName, remoteAddress);
 		}
 
 		public ChannelFactory (ServiceEndpoint endpoint)
 		{
 			if (endpoint == null)
-				throw new ArgumentNullException ();
+				throw new ArgumentNullException ("serviceEndpoint");
+
 			InitializeEndpoint (endpoint);
 		}
 
 		public ChannelFactory (Binding binding, string remoteAddress)
-			: this (binding, remoteAddress == null ? null : new EndpointAddress (remoteAddress))
+			: this (binding, new EndpointAddress (remoteAddress))
 		{
 		}
 

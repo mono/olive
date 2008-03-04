@@ -110,7 +110,7 @@ namespace System.ServiceModel.Description
 		public static ContractDescription GetContract (
 			Type contractType, Type serviceType)
 		{
-			// FIXME: how serviceType is used?
+			// FIXME: serviceType should be used for specifying attributes like OperationBehavior.
 
 			ServiceContractAttribute sca = GetServiceContractAttribute (ref contractType);
 
@@ -122,6 +122,10 @@ namespace System.ServiceModel.Description
 			cd.ContractType = contractType;
 			cd.CallbackContractType = sca.CallbackContract;
 			cd.SessionMode = sca.SessionMode;
+			if (sca.ConfigurationName != null)
+				cd.ConfigurationName = sca.ConfigurationName;
+			else
+				cd.ConfigurationName = contractType.FullName;
 			if (sca.HasProtectionLevel)
 				cd.ProtectionLevel = sca.ProtectionLevel;
 

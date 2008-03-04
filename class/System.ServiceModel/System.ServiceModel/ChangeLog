@@ -1,3 +1,9 @@
+2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+
+	* ChannelBase.cs: Move configuration handling to ChannelFactory.
+	* ChannelFactory_1.cs: Add arguments checks.
+	* ChannelFactory.cs: Implement ApplyConfiguration.
+
 2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Handle better configuration lookup and contract

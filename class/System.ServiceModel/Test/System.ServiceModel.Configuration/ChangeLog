@@ -1,3 +1,8 @@
+2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ServiceModelConfigurationElementCollectionTest.cs: Created file.
+	* ChannelEndpointElementTest.cs: Created file.
+
 2008-02-19  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* MexBindingElementTest.cs: new test

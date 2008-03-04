@@ -30,6 +30,8 @@ using System.Collections.ObjectModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
+using System.Configuration;
+using System.ServiceModel.Configuration;
 
 namespace System.ServiceModel
 {
@@ -61,11 +63,44 @@ namespace System.ServiceModel
 			get { return Endpoint.Binding.OpenTimeout; }
 		}
 
-		[MonoTODO]
-		protected virtual void ApplyConfiguration (
-			string endpointConfigurationName)
+		protected virtual void ApplyConfiguration (string endpointConfig)
 		{
-			throw new NotImplementedException ();
+			if (endpointConfig == null)
+				return;
+
+			string contractName = Endpoint.Contract.ConfigurationName;
+			ClientSection client = (ClientSection) ConfigurationManager.GetSection ("system.serviceModel/client");
+			ChannelEndpointElement res = null;
+			foreach (ChannelEndpointElement el in client.Endpoints) {
+				if (el.Contract == contractName && (endpointConfig == el.Name || endpointConfig == "*")) {
+					if (res != null)
+						throw new InvalidOperationException (String.Format ("More then one endpoint matching contract {0} was found.", contractName));
+					res = el;
+				}
+			}
+
+			if (res == null)
+				throw new InvalidOperationException (String.Format ("Client endpoint configuration '{0}' was not found in {1} endpoints.", endpointConfig, client.Endpoints.Count));
+
+			if (Endpoint.Binding == null)
+				Endpoint.Binding = ConfigUtil.CreateBinding (res.Binding, res.BindingConfiguration);
+			if (Endpoint.Address == null)
+				Endpoint.Address = new EndpointAddress (res.Address);
+
+			if (res.BehaviorConfiguration != "")
+				ApplyBehavior (res.BehaviorConfiguration);
+		}
+
+		private void ApplyBehavior (string behaviorConfig)
+		{
+			BehaviorsSection behaviorsSection = (BehaviorsSection) ConfigurationManager.GetSection ("system.serviceModel/behaviors");
+			EndpointBehaviorElement behaviorElement = behaviorsSection.EndpointBehaviors [behaviorConfig];
+			int i = 0;
+			foreach (BehaviorExtensionElement el in behaviorElement) {
+				IEndpointBehavior behavior = (IEndpointBehavior) el.CreateBehavior ();
+				Endpoint.Behaviors.Remove (behavior.GetType ());
+				Endpoint.Behaviors.Add (behavior);
+			}
 		}
 
 		[MonoTODO]
@@ -93,24 +128,23 @@ namespace System.ServiceModel
 				Open ();
 		}
 
-		[MonoTODO]
 		protected void InitializeEndpoint (
 			string endpointConfigurationName,
 			EndpointAddress remoteAddress)
 		{
+			InitializeEndpoint (CreateDescription ());
+			service_endpoint.Address = remoteAddress;
 			ApplyConfiguration (endpointConfigurationName);
 		}
 
 		protected void InitializeEndpoint (Binding binding,
 			EndpointAddress remoteAddress)
 		{
-			// MS BUG: Under this contructor ContractDescription holds crappy type info.
-			InitializeEndpoint (new ServiceEndpoint (
-				ContractDescription.GetContract (typeof (UninitializedContract)),
-				binding, remoteAddress));
+			InitializeEndpoint (CreateDescription ());
+			service_endpoint.Binding = binding;
+			service_endpoint.Address = remoteAddress;
 		}
 
-		[MonoTODO]
 		protected void InitializeEndpoint (ServiceEndpoint endpoint)
 		{
 			service_endpoint = endpoint;

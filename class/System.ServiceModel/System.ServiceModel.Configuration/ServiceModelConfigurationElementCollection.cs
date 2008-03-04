@@ -34,6 +34,7 @@ namespace System.ServiceModel.Configuration
 		where ConfigurationElementType : ConfigurationElement, new()
 	{
 		internal ServiceModelConfigurationElementCollection ()
+			: base (StringComparer.Ordinal)
 		{
 		}
 
@@ -44,20 +45,12 @@ namespace System.ServiceModel.Configuration
 
 		public virtual ConfigurationElementType this [object key] {
 			get {
-				if (key is ConfigurationProperty)
-					return (ConfigurationElementType) base [(ConfigurationProperty) key];
-				if (key is string)
-					return (ConfigurationElementType) base [(string) key];
-				else
-					throw new NotImplementedException ();
+				return (ConfigurationElementType) BaseGet (key);
 			}
 			set {
-				if (key is ConfigurationProperty)
-					base [(ConfigurationProperty) key] = value;
-				if (key is string)
-					base [(string) key] = value;
-				else
-					throw new NotImplementedException ();
+				if (!GetElementKey(value).Equals (key))
+					throw new ArgumentException (String.Format ("The key '{0}' does not match the element key '{1}'", key, GetElementKey(value)));
+				Add (value);
 			}
 		}
 
@@ -76,58 +69,49 @@ namespace System.ServiceModel.Configuration
 			BaseAdd (element);
 		}
 
-		[MonoTODO]
 		protected override void BaseAdd (ConfigurationElement element)
 		{
-			base.BaseAdd (element);
+			BaseAdd (element, false);
 		}
 
-		[MonoTODO]
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			BaseClear ();
 		}
 
-		[MonoTODO]
-		public virtual bool ContainsKey (object o)
+		public virtual bool ContainsKey (object key)
 		{
-			throw new NotImplementedException ();
+			return BaseGet (key) != null;
 		}
 
-		[MonoTODO]
 		protected override ConfigurationElement CreateNewElement ()
 		{
 			return (ConfigurationElement) Activator.CreateInstance (typeof (ConfigurationElementType), new object [0]);
 		}
 
-		[MonoTODO]
 		public void CopyTo (ConfigurationElementType [] array, int index)
 		{
-			throw new NotImplementedException ();
+			base.CopyTo (array, index);
 		}
 
-		[MonoTODO]
 		public int IndexOf (ConfigurationElementType item)
 		{
-			throw new NotImplementedException ();
+			return BaseIndexOf (item);
 		}
 
-		[MonoTODO]
 		public void Remove (ConfigurationElementType item)
 		{
-			throw new NotImplementedException ();
+			BaseRemove (GetElementKey (item));
 		}
 
-		[MonoTODO]
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			BaseRemoveAt (index);
 		}
 
-		[MonoTODO]
 		public void RemoveAt (object index)
 		{
-			throw new NotImplementedException ();
+			BaseRemove (index);
 		}
 	}
 }

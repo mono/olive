@@ -32,8 +32,8 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Xml;
-using NUnit.Framework;
 using MonoTests.System.ServiceModel.Channels;
+using NUnit.Framework;
 
 namespace MonoTests.System.ServiceModel
 {
@@ -61,6 +61,77 @@ namespace MonoTests.System.ServiceModel
 				new ChannelFactory<TestService> (
 					new BasicHttpBinding (),
 					new EndpointAddress ("http://localhost:37564"));
+		}
+
+		[Test]
+		public void CtorNullArgsAllowed ()
+		{
+			ChannelFactory<ICtorUseCase1> f1;
+			f1 = new ChannelFactory<ICtorUseCase1> ("CtorUseCase1_1", null);
+			Assert.AreEqual (new EndpointAddress ("http://test1_1"), f1.Endpoint.Address, "#01");
+			f1 = new ChannelFactory<ICtorUseCase1> (new BasicHttpBinding (), (EndpointAddress)null);
+			Assert.AreEqual (null, f1.Endpoint.Address, "#01");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void CreateChannelFromDefaultConfigWithTwoConfigs ()
+		{
+			new ChannelFactory<ICtorUseCase2> ("*");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void CreateChannelFromDefaultConfigWithNoConfigs ()
+		{
+			new ChannelFactory<ICtorUseCase3> ("*");
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void CtorArgsTest1 ()
+		{
+			new ChannelFactory<ICtorUseCase1> (new BasicHttpBinding (), (string)null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void CtorArgsTest2 ()
+		{
+			new ChannelFactory<ICtorUseCase1> ("CtorUseCase1_Incorrect");
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void CtorArgsTest3 ()
+		{
+			new ChannelFactory<ICtorUseCase1> ((string)null, new EndpointAddress ("http://test"));
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ConstructorNullServiceEndpoint ()
+		{
+			new ChannelFactory<IFoo> ((ServiceEndpoint) null);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentNullException))]
+		public void ConstructorNullBinding ()
+		{
+			new ChannelFactory<IFoo> ((Binding) null);
+		}
+
+		[Test]
+		public void ConfigEmptyCtor ()
+		{
+			new ChannelFactory<ICtorUseCase1> ();
+		}
+
+		[Test]
+		public void ConfigCtor ()
+		{
+			new ChannelFactory<ICtorUseCase1> ("CtorUseCase1_1");
 		}
 
 		[Test]
@@ -125,7 +196,7 @@ namespace MonoTests.System.ServiceModel
 				new ChannelFactory<ITestService> (
 					b, new EndpointAddress ("urn:dummy"));
 			ITestService ts = f.CreateChannel ();
-			Assert.AreEqual ("", ts.Foo ("il offre sa confiance et son amour"));
+			Assert.AreEqual (null, ts.Foo ("il offre sa confiance et son amour"));
 		}
 
 		[ServiceContract]

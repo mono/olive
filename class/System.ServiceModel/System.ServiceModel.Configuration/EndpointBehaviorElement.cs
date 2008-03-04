@@ -63,17 +63,21 @@ namespace System.ServiceModel.Configuration
 
 		static EndpointBehaviorElement ()
 		{
-			properties = new ConfigurationPropertyCollection ();
+			properties = NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>.CreateBaseProperties ();
+
+			properties.Add (new ConfigurationProperty ("callbackDebug",
+				typeof (CallbackDebugElement), null, null/* FIXME: get converter for CallbackDebugElement */, null,
+				ConfigurationPropertyOptions.None));
 		}
 
 		public EndpointBehaviorElement ()
 		{
 		}
 
-
 		// Properties
-
-
+		protected override ConfigurationPropertyCollection Properties {
+			get { return properties; }
+		}
 	}
 
 }

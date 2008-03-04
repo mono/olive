@@ -55,6 +55,17 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		public void GetContractConfigName ()
+		{
+			ContractDescription cd = ContractDescription.GetContract (typeof (ICtorUseCase2));
+			Assert.AreEqual("CtorUseCase2", cd.ConfigurationName);
+			Assert.AreEqual("ICtorUseCase2", cd.Name);
+			cd = ContractDescription.GetContract (typeof (ICtorUseCase1));
+			Assert.AreEqual("MonoTests.System.ServiceModel.ICtorUseCase1", cd.ConfigurationName);
+			Assert.AreEqual("ICtorUseCase1", cd.Name);
+		}
+
+		[Test]
 		public void GetContract2 ()
 		{
 			InternalTestGetContract (

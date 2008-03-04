@@ -37,10 +37,10 @@ namespace MonoTests.System.ServiceModel
 	[TestFixture]
 	public class ChannelFactoryTest
 	{
-		class NullChannelFactory
+		class SimpleChannelFactory
 			: ChannelFactory
 		{
-			public NullChannelFactory ()
+			public SimpleChannelFactory ()
 				: base ()
 			{
 			}
@@ -55,22 +55,85 @@ namespace MonoTests.System.ServiceModel
 
 			protected override ServiceEndpoint CreateDescription ()
 			{
-				throw new NotSupportedException ();
+				return new ServiceEndpoint (ContractDescription.GetContract (typeof(ICtorUseCase2)));
+			}
+
+			public void InitEndpoint (Binding b, EndpointAddress addr)
+			{
+				base.InitializeEndpoint (b, addr);
+			}
+
+			public void InitEndpoint (string configName, EndpointAddress addr)
+			{
+				base.InitializeEndpoint (configName, addr);
+			}
+
+			public void ApplyConfig (string configName)
+			{
+				base.ApplyConfiguration (configName);
 			}
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentNullException))]
-		public void ConstructorNullServiceEndpoint ()
+		public void InitializeEndpointTest1 ()
 		{
-			new ChannelFactory<IFoo> ((ServiceEndpoint) null);
+			SimpleChannelFactory factory = new SimpleChannelFactory ();
+			Assert.AreEqual (null, factory.Endpoint, "#01");
+			Binding b = new WSHttpBinding ();
+			factory.InitEndpoint (b, null);
+			Assert.AreEqual (b, factory.Endpoint.Binding, "#02");
+			Assert.AreEqual (null, factory.Endpoint.Address, "#03");
+			Assert.AreEqual (typeof (ICtorUseCase2), factory.Endpoint.Contract.ContractType, "#04");
 		}
 
 		[Test]
-		[ExpectedException (typeof (ArgumentNullException))]
-		public void ConstructorNullBinding ()
+		public void InitializeEndpointTest2 ()
 		{
-			new ChannelFactory<IFoo> ((Binding) null);
+			SimpleChannelFactory factory = new SimpleChannelFactory ();
+			Assert.AreEqual (null, factory.Endpoint, "#01");
+			factory.InitEndpoint ("CtorUseCase2_1", null);
+			Assert.AreEqual (typeof (BasicHttpBinding), factory.Endpoint.Binding.GetType (), "#02");
+			Assert.AreEqual (new EndpointAddress ("http://test2_1"), factory.Endpoint.Address, "#03");
+			Assert.AreEqual (typeof (ICtorUseCase2), factory.Endpoint.Contract.ContractType, "#04");
+		}
+
+		[Test]
+		public void InitializeEndpointTest3 ()
+		{
+			SimpleChannelFactory factory = new SimpleChannelFactory ();
+			Assert.AreEqual (null, factory.Endpoint, "#01");
+			factory.InitEndpoint ("CtorUseCase2_1", null);
+			Binding b = new WSHttpBinding ();
+			factory.InitEndpoint (b, null);
+			Assert.AreEqual (b, factory.Endpoint.Binding, "#02");
+			Assert.AreEqual (null, factory.Endpoint.Address, "#03");
+		}
+
+		[Test]
+		public void ApplyConfigurationTest1 ()
+		{
+			SimpleChannelFactory factory = new SimpleChannelFactory ();
+			Binding b = new WSHttpBinding ();
+			factory.InitEndpoint (b, null);
+			factory.ApplyConfig ("CtorUseCase2_1");
+			Assert.AreEqual (new EndpointAddress ("http://test2_1"), factory.Endpoint.Address, "#03");
+			Assert.AreEqual (b, factory.Endpoint.Binding, "#02");
+		}
+
+		[Test]
+		[Category("CurrentTest")]
+		public void ApplyConfigurationTest2 ()
+		{
+			SimpleChannelFactory factory = new SimpleChannelFactory ();
+			Binding b = new WSHttpBinding ();
+			factory.InitEndpoint (b, new EndpointAddress ("http://test"));
+			factory.ApplyConfig ("CtorUseCase2_2");
+			Assert.AreEqual (new EndpointAddress ("http://test"), factory.Endpoint.Address, "#03");
+			Assert.IsNotNull (factory.Endpoint.Behaviors.Find <CallbackDebugBehavior> (), "#04");
+			Assert.AreEqual (true, factory.Endpoint.Behaviors.Find <CallbackDebugBehavior> ().IncludeExceptionDetailInFaults, "#04");
+			factory.ApplyConfig ("CtorUseCase2_3");
+			Assert.IsNotNull (factory.Endpoint.Behaviors.Find <CallbackDebugBehavior> (), "#04");
+			Assert.AreEqual (false, factory.Endpoint.Behaviors.Find <CallbackDebugBehavior> ().IncludeExceptionDetailInFaults, "#04");
 		}
 
 		[Test]

@@ -63,6 +63,14 @@ namespace System.ServiceModel.Configuration
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty name;
 
+		internal static ConfigurationPropertyCollection CreateBaseProperties ()
+		{
+			ConfigurationPropertyCollection baseProperties = new ConfigurationPropertyCollection ();
+			foreach (ConfigurationProperty prop in properties)
+				baseProperties.Add (prop);
+			return baseProperties;
+		}
+
 		static NamedServiceModelExtensionCollectionElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();

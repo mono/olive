@@ -186,6 +186,13 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ClientBaseCtorConfigAmbiguityTest2 ()
+		{
+			new CtorUseCase2 ("*");
+		}
+
+		[Test]
 		public void ClientBaseConfigEmptyCtor ()
 		{
 			new CtorUseCase1 ();
@@ -195,6 +202,12 @@ namespace MonoTests.System.ServiceModel
 		public void ClientBaseConfigCtor ()
 		{
 			new CtorUseCase1 ("CtorUseCase1_1");
+		}
+
+		[Test]
+		public void ClientBaseConfigCtorUsingDefault ()
+		{
+			new CtorUseCase1 ("*");
 		}
 
 		[Test]
@@ -255,28 +268,6 @@ namespace MonoTests.System.ServiceModel
 			}
 		}
 
-		[ServiceContract]
-		public interface ICtorUseCase1
-		{
-			[OperationContract]
-			string Echo (string msg);
-		}
-
-		[ServiceContract(ConfigurationName = "CtorUseCase2")]
-		public interface ICtorUseCase2
-		{
-			[OperationContract]
-			string Echo (string msg);
-		}
-
-		[ServiceContract(ConfigurationName = "CtorUseCase2")]
-		public interface ICtorUseCase3
-		{
-			[OperationContract]
-			string Echo (string msg);
-		}
-
-		// Use case with one endpoint configuration.
 		public class CtorUseCase1 : ClientBase<ICtorUseCase1>, ICtorUseCase1
 		{
 			public CtorUseCase1 ()
@@ -310,7 +301,6 @@ namespace MonoTests.System.ServiceModel
 			}
 		}
 
-		// Use case with multiple endpoint configurations.
 		public class CtorUseCase2 : ClientBase<ICtorUseCase2>, ICtorUseCase2
 		{
 			public CtorUseCase2 ()
@@ -344,7 +334,6 @@ namespace MonoTests.System.ServiceModel
 			}
 		}
 
-		// Use case without endpoint configuration.
 		public class CtorUseCase3 : ClientBase<ICtorUseCase3>, ICtorUseCase3
 		{
 			public string Echo (string msg)

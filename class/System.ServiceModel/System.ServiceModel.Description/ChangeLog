@@ -1,3 +1,7 @@
+2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+
+	* ContractDescriptionGenerator.cs: Init ConfigurationName from attribute.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* MetadataSectionSerializerBase.cs WSTrustMessageConverters.cs:

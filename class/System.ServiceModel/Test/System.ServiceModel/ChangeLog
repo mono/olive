@@ -1,3 +1,14 @@
+2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+
+	* ChannelFactory_1Test.cs: Add tests for different ctors.
+	* CommonUseCases.cs: Move common intefaces that are also configured by the
+	  test dll config file.
+	* ChannelFactoryTest.cs: Add tests for the protected methods
+	  InitializeEndpoint and ApplyConfiguration.
+	* ClientBaseTest.cs: Add test cases with default ("*") configuration. Moved
+	  interfaces to CommonUseCases.cs.
+
+
 2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ServiceHostTest.cs: Marjed test as not working since it caused a crash(!)

@@ -39,10 +39,12 @@ System.ServiceModel.Channels/TcpTransportBindingElementTest.cs
 System.ServiceModel.Channels/TextMessageEncodingBindingElementTest.cs
 System.ServiceModel.Channels/TransactionFlowBindingElementTest.cs
 System.ServiceModel.Configuration/BasicHttpBindingElementTest.cs
+System.ServiceModel.Configuration/ChannelEndpointElementTest.cs
 System.ServiceModel.Configuration/MexBindingElementTest.cs
 System.ServiceModel.Configuration/NetNamedPipeBindingElementTest.cs
 System.ServiceModel.Configuration/NetPeerTcpBindingElementTest.cs
 System.ServiceModel.Configuration/NetTcpBindingElementTest.cs
+System.ServiceModel.Configuration/ServiceModelConfigurationElementCollectionTest.cs
 System.ServiceModel.Configuration/ServiceModelSectionGroupTest.cs
 System.ServiceModel.Configuration/StandardBindingCollectionElementTest.cs
 System.ServiceModel.Configuration/StandardBindingElementCollectionTest.cs
@@ -93,6 +95,7 @@ System.ServiceModel/ChannelFactoryTest.cs
 System.ServiceModel/ChannelFactory_1Test.cs
 System.ServiceModel/ClientBaseTest.cs
 System.ServiceModel/ClientCredentialsSecurityTokenManagerTest.cs
+System.ServiceModel/CommonUseCases.cs
 System.ServiceModel/EndpointAddress10Test.cs
 System.ServiceModel/EndpointAddressBuilderTest.cs
 System.ServiceModel/EndpointAddressTest.cs

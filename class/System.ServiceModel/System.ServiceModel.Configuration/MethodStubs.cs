@@ -96,7 +96,7 @@ namespace System.ServiceModel.Configuration
 		protected override object GetElementKey (ConfigurationElement element)
 		{
 			ChannelEndpointElement el = (ChannelEndpointElement) element;
-			return (el.Name ?? String.Empty).GetHashCode () ^ (el.Contract ?? String.Empty).GetHashCode ();	
+			return el.Name + ";" + el.Contract;
 		}
 	}
 

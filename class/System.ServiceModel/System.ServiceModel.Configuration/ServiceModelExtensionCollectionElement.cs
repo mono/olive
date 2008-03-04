@@ -38,6 +38,7 @@ namespace System.ServiceModel.Configuration
 		ICollection<TServiceModelExtensionElement>,
 		IEnumerable<TServiceModelExtensionElement>, 
 		IEnumerable
+		where TServiceModelExtensionElement : ServiceModelExtensionElement
 	{
 		public virtual void Add (TServiceModelExtensionElement element)
 		{
@@ -72,7 +73,11 @@ namespace System.ServiceModel.Configuration
 
 		public IEnumerator<TServiceModelExtensionElement> GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			foreach (PropertyInformation pi in ElementInformation.Properties) {
+				TServiceModelExtensionElement val = pi.Value as TServiceModelExtensionElement;
+				if (val != null)
+					yield return val;
+			}
 		}
 
 		public bool Remove (TServiceModelExtensionElement element)
@@ -82,7 +87,7 @@ namespace System.ServiceModel.Configuration
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator ();
 		}
 
 		bool ICollection<TServiceModelExtensionElement>.IsReadOnly {
