@@ -1,3 +1,7 @@
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Added master solution for UIAutomation.
+
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationProvider_test.dll.sources: Added tests for NavigateDirection
