@@ -1,5 +1,9 @@
 2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* UIAutomationProvider.mdp: Add project reference to UIAutomationTypes.
+
+2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomation.mds: Fixing errors in solution file.
 
 2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
