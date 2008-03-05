@@ -70,6 +70,22 @@ namespace MonoTests.System.ServiceModel.Configuration
 		}
 
 		[Test]
+		public void WSHttpBinding () {
+			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/wsHttpBinding").GetSectionGroup ("system.serviceModel");
+
+			WSHttpBindingCollectionElement wsHttpBinding = config.Bindings.WSHttpBinding;
+			Assert.AreEqual (1, wsHttpBinding.Bindings.Count, "count");
+
+			WSHttpBindingElement binding = wsHttpBinding.Bindings [0];
+			Assert.AreEqual ("WSHttpBinding_IHelloWorldService", binding.Name, "Name");
+			Assert.AreEqual (HostNameComparisonMode.StrongWildcard, binding.HostNameComparisonMode, "HostNameComparisonMode");
+			Assert.AreEqual (SecurityMode.Message, binding.Security.Mode, "Security.Mode");
+			Assert.AreEqual (MessageCredentialType.Windows, binding.Security.Message.ClientCredentialType, "Security.Message.ClientCredentialType");
+			Assert.AreEqual (HttpProxyCredentialType.None, binding.Security.Transport.ProxyCredentialType, "Security.Transport.ProtectionLevel");
+			Assert.AreEqual (HttpClientCredentialType.Windows, binding.Security.Transport.ClientCredentialType, "Security.Transport.ProtectionLevel");
+		}
+
+		[Test]
 		public void CollectionType () {
 			StandardBindingElementCollection<BasicHttpBindingElement> coll = new StandardBindingElementCollection<BasicHttpBindingElement> ();
 			Assert.AreEqual (ConfigurationElementCollectionType.AddRemoveClearMap, coll.CollectionType, "CollectionType");
