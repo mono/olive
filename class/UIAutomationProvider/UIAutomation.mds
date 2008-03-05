@@ -11,9 +11,9 @@
   </Configurations>
   <StartMode startupentry="UIAutomationProvider" single="True">
     <Execute type="None" entry="UIAutomationProvider" />
-    <Execute type="None" entry="UIAutomationProvider" />
     <Execute type="None" entry="UIAutomationTypes" />
   </StartMode>
+  <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
   <Entries>
     <Entry filename="UIAutomationProvider.mds" />
     <Entry filename="../UIAutomationTypes/UIAutomationTypes.mds" />
