@@ -48,6 +48,7 @@ System.ServiceModel.Configuration/ServiceModelConfigurationElementCollectionTest
 System.ServiceModel.Configuration/ServiceModelSectionGroupTest.cs
 System.ServiceModel.Configuration/StandardBindingCollectionElementTest.cs
 System.ServiceModel.Configuration/StandardBindingElementCollectionTest.cs
+System.ServiceModel.Configuration/StandardBindingElementTest.cs
 System.ServiceModel.Description/ClientCredentialsTest.cs
 System.ServiceModel.Description/ContractDescriptionTest.cs
 System.ServiceModel.Description/MetadataResolverTest.cs
