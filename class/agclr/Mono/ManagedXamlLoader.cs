@@ -51,22 +51,11 @@ namespace Mono.Xaml
 		internal static Dictionary<Assembly, string> assembly_to_source = new Dictionary<Assembly, string>();
 		
 		XamlLoaderCallbacks callbacks;
-		bool load_deps_synch = false;
 
 #if WITH_DLR
 		DLRHost dlr_host;
 #endif
 
-		//
-		// Set whenever the loader will load dependencies synchronously using the browser
-		// This is used in cases where the user of the loader can't operate in async mode
-		// such as Control:InitializeFromXaml ()
-		//
-		public bool LoadDepsSynch {
-			set {
-				load_deps_synch = value;
-			}
-		}
 		
 		public ManagedXamlLoader ()
 		{
@@ -268,7 +257,7 @@ namespace Mono.Xaml
 				return AssemblyLoadResult.MissingAssembly;
 			}
 
-			return LoadAssemblyPlugin (asm_path, asm_name, load_deps_synch, ref clientlib);
+			return LoadAssemblyPlugin (asm_path, asm_name, LoadDepsSynch, ref clientlib);
 		}
 
 		//

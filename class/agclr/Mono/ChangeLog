@@ -1,3 +1,7 @@
+2008-03-06  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Move LoadDepsSynch to XamlLoader in agmono.
+
 2008-03-03  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Implement xaml loading with more than one surface
