@@ -28,7 +28,9 @@
 using System;
 using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
+#if !TARGET_DOTNET
 using Mono.Math;
+#endif
 
 namespace System.IdentityModel.Tokens
 {
@@ -49,7 +51,11 @@ namespace System.IdentityModel.Tokens
 
 		static string ToDecimalString (string hexString)
 		{
+#if TARGET_DOTNET
+			throw new NotImplementedException ();
+#else			
 			return new BigInteger (FromBinHex (hexString)).ToString ();
+#endif
 		}
 
 		public X509IssuerSerialKeyIdentifierClause (X509Certificate2 certificate)
