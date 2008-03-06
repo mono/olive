@@ -59,6 +59,13 @@ namespace System.ServiceModel.Configuration
 	{
 		ConfigurationPropertyCollection _properties;
 
+		public WSHttpBindingElement () {
+		}
+
+		public WSHttpBindingElement (string name) :
+			base (name) {
+		}
+
 		// Properties
 
 		[ConfigurationProperty ("allowCookies",

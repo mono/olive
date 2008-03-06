@@ -59,10 +59,12 @@ namespace System.ServiceModel.Configuration
 	{
 		ConfigurationPropertyCollection _properties;
 
-		protected WSHttpBindingBaseElement ()
-		{
+		protected WSHttpBindingBaseElement () {
 		}
 
+		protected WSHttpBindingBaseElement (string name)
+			: base (name) {
+		}
 
 		// Properties
 
