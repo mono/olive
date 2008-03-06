@@ -54,78 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class NetNamedPipeBindingElement
 		 : StandardBindingElement,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty host_name_comparison_mode;
-		static ConfigurationProperty max_buffer_pool_size;
-		static ConfigurationProperty max_buffer_size;
-		static ConfigurationProperty max_connections;
-		static ConfigurationProperty max_received_message_size;
-		static ConfigurationProperty reader_quotas;
-		static ConfigurationProperty security;
-		static ConfigurationProperty transaction_flow;
-		static ConfigurationProperty transaction_protocol;
-		static ConfigurationProperty transfer_mode;
-
-		static NetNamedPipeBindingElement ()
-		{
-			properties = StandardBindingElement.CreateBaseProperties ();
-
-			host_name_comparison_mode = new ConfigurationProperty ("hostNameComparisonMode",
-				typeof (HostNameComparisonMode), "StrongWildcard", null/* FIXME: get converter for HostNameComparisonMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
-				typeof (long), "524288", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_size = new ConfigurationProperty ("maxBufferSize",
-				typeof (int), "65536", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_connections = new ConfigurationProperty ("maxConnections",
-				typeof (int), "10", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_received_message_size = new ConfigurationProperty ("maxReceivedMessageSize",
-				typeof (long), "65536", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			reader_quotas = new ConfigurationProperty ("readerQuotas",
-				typeof (XmlDictionaryReaderQuotasElement), null, null/* FIXME: get converter for XmlDictionaryReaderQuotasElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			security = new ConfigurationProperty ("security",
-				typeof (NetNamedPipeSecurityElement), null, null/* FIXME: get converter for NetNamedPipeSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			transaction_flow = new ConfigurationProperty ("transactionFlow",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			transaction_protocol = new ConfigurationProperty ("transactionProtocol",
-				typeof (TransactionProtocol), "OleTransactions", TransactionProtocolConverter.Instance, null,
-				ConfigurationPropertyOptions.None);
-
-			transfer_mode = new ConfigurationProperty ("transferMode",
-				typeof (TransferMode), "Buffered", null/* FIXME: get converter for TransferMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (host_name_comparison_mode);
-			properties.Add (max_buffer_pool_size);
-			properties.Add (max_buffer_size);
-			properties.Add (max_connections);
-			properties.Add (max_received_message_size);
-			properties.Add (reader_quotas);
-			properties.Add (security);
-			properties.Add (transaction_flow);
-			properties.Add (transaction_protocol);
-			properties.Add (transfer_mode);
-		}
+		ConfigurationPropertyCollection _properties;
 
 		public NetNamedPipeBindingElement ()
 		{
@@ -143,8 +75,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "StrongWildcard")]
 		public HostNameComparisonMode HostNameComparisonMode {
-			get { return (HostNameComparisonMode) base [host_name_comparison_mode]; }
-			set { base [host_name_comparison_mode] = value; }
+			get { return (HostNameComparisonMode) this ["hostNameComparisonMode"]; }
+			set { this ["hostNameComparisonMode"] = value; }
 		}
 
 		[ConfigurationProperty ("maxBufferPoolSize",
@@ -154,8 +86,8 @@ namespace System.ServiceModel.Configuration
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		public long MaxBufferPoolSize {
-			get { return (long) base [max_buffer_pool_size]; }
-			set { base [max_buffer_pool_size] = value; }
+			get { return (long) this ["maxBufferPoolSize"]; }
+			set { this ["maxBufferPoolSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxBufferSize",
@@ -165,8 +97,8 @@ namespace System.ServiceModel.Configuration
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxBufferSize {
-			get { return (int) base [max_buffer_size]; }
-			set { base [max_buffer_size] = value; }
+			get { return (int) this ["maxBufferSize"]; }
+			set { this ["maxBufferSize"] = value; }
 		}
 
 		[IntegerValidator ( MinValue = 1,
@@ -176,8 +108,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10")]
 		public int MaxConnections {
-			get { return (int) base [max_connections]; }
-			set { base [max_connections] = value; }
+			get { return (int) this ["maxConnections"]; }
+			set { this ["maxConnections"] = value; }
 		}
 
 		[ConfigurationProperty ("maxReceivedMessageSize",
@@ -187,49 +119,64 @@ namespace System.ServiceModel.Configuration
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		public long MaxReceivedMessageSize {
-			get { return (long) base [max_received_message_size]; }
-			set { base [max_received_message_size] = value; }
+			get { return (long) this ["maxReceivedMessageSize"]; }
+			set { this ["maxReceivedMessageSize"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("hostNameComparisonMode", typeof (HostNameComparisonMode), "StrongWildcard", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferPoolSize", typeof (long), "524288", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferSize", typeof (int), "65536", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxConnections", typeof (int), "10", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxReceivedMessageSize", typeof (long), "65536", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("readerQuotas", typeof (XmlDictionaryReaderQuotasElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("security", typeof (NetNamedPipeSecurityElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("transactionFlow", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("transactionProtocol", typeof (TransactionProtocol), "OleTransactions", TransactionProtocolConverter.Instance, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("transferMode", typeof (TransferMode), "Buffered", null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("readerQuotas",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlDictionaryReaderQuotasElement ReaderQuotas {
-			get { return (XmlDictionaryReaderQuotasElement) base [reader_quotas]; }
+			get { return (XmlDictionaryReaderQuotasElement) this ["readerQuotas"]; }
 		}
 
 		[ConfigurationProperty ("security",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NetNamedPipeSecurityElement Security {
-			get { return (NetNamedPipeSecurityElement) base [security]; }
+			get { return (NetNamedPipeSecurityElement) this ["security"]; }
 		}
 
 		[ConfigurationProperty ("transactionFlow",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool TransactionFlow {
-			get { return (bool) base [transaction_flow]; }
-			set { base [transaction_flow] = value; }
+			get { return (bool) this ["transactionFlow"]; }
+			set { this ["transactionFlow"] = value; }
 		}
 
 		[ConfigurationProperty ("transactionProtocol",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "OleTransactions")]
-		[TypeConverter ()]
+		[TypeConverter (typeof (TransactionProtocolConverter))]
 		public TransactionProtocol TransactionProtocol {
-			get { return (TransactionProtocol) base [transaction_protocol]; }
-			set { base [transaction_protocol] = value; }
+			get { return (TransactionProtocol) this ["transactionProtocol"]; }
+			set { this ["transactionProtocol"] = value; }
 		}
 
 		[ConfigurationProperty ("transferMode",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Buffered")]
 		public TransferMode TransferMode {
-			get { return (TransferMode) base [transfer_mode]; }
-			set { base [transfer_mode] = value; }
+			get { return (TransferMode) this ["transferMode"]; }
+			set { this ["transferMode"] = value; }
 		}
 
 

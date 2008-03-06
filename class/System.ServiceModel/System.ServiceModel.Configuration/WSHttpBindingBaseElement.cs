@@ -54,83 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public abstract partial class WSHttpBindingBaseElement
 		 : StandardBindingElement,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty bypass_proxy_on_local;
-		static ConfigurationProperty host_name_comparison_mode;
-		static ConfigurationProperty max_buffer_pool_size;
-		static ConfigurationProperty max_received_message_size;
-		static ConfigurationProperty message_encoding;
-		static ConfigurationProperty proxy_address;
-		static ConfigurationProperty reader_quotas;
-		static ConfigurationProperty reliable_session;
-		static ConfigurationProperty text_encoding;
-		static ConfigurationProperty transaction_flow;
-		static ConfigurationProperty use_default_web_proxy;
-
-		static WSHttpBindingBaseElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			bypass_proxy_on_local = new ConfigurationProperty ("bypassProxyOnLocal",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			host_name_comparison_mode = new ConfigurationProperty ("hostNameComparisonMode",
-				typeof (HostNameComparisonMode), "StrongWildcard", null/* FIXME: get converter for HostNameComparisonMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
-				typeof (long), "524288", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_received_message_size = new ConfigurationProperty ("maxReceivedMessageSize",
-				typeof (long), "65536", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			message_encoding = new ConfigurationProperty ("messageEncoding",
-				typeof (WSMessageEncoding), "Text", null/* FIXME: get converter for WSMessageEncoding*/, null,
-				ConfigurationPropertyOptions.None);
-
-			proxy_address = new ConfigurationProperty ("proxyAddress",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			reader_quotas = new ConfigurationProperty ("readerQuotas",
-				typeof (XmlDictionaryReaderQuotasElement), null, null/* FIXME: get converter for XmlDictionaryReaderQuotasElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			reliable_session = new ConfigurationProperty ("reliableSession",
-				typeof (StandardBindingOptionalReliableSessionElement), null, null/* FIXME: get converter for StandardBindingOptionalReliableSessionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			text_encoding = new ConfigurationProperty ("textEncoding",
-				typeof (Encoding), "utf-8", null/* FIXME: get converter for Encoding*/, null,
-				ConfigurationPropertyOptions.None);
-
-			transaction_flow = new ConfigurationProperty ("transactionFlow",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			use_default_web_proxy = new ConfigurationProperty ("useDefaultWebProxy",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (bypass_proxy_on_local);
-			properties.Add (host_name_comparison_mode);
-			properties.Add (max_buffer_pool_size);
-			properties.Add (max_received_message_size);
-			properties.Add (message_encoding);
-			properties.Add (proxy_address);
-			properties.Add (reader_quotas);
-			properties.Add (reliable_session);
-			properties.Add (text_encoding);
-			properties.Add (transaction_flow);
-			properties.Add (use_default_web_proxy);
-		}
+		ConfigurationPropertyCollection _properties;
 
 		protected WSHttpBindingBaseElement ()
 		{
@@ -143,16 +70,16 @@ namespace System.ServiceModel.Configuration
 			DefaultValue = false,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool BypassProxyOnLocal {
-			get { return (bool) base [bypass_proxy_on_local]; }
-			set { base [bypass_proxy_on_local] = value; }
+			get { return (bool) this ["bypassProxyOnLocal"]; }
+			set { this ["bypassProxyOnLocal"] = value; }
 		}
 
 		[ConfigurationProperty ("hostNameComparisonMode",
 			 DefaultValue = "StrongWildcard",
 			 Options = ConfigurationPropertyOptions.None)]
 		public HostNameComparisonMode HostNameComparisonMode {
-			get { return (HostNameComparisonMode) base [host_name_comparison_mode]; }
-			set { base [host_name_comparison_mode] = value; }
+			get { return (HostNameComparisonMode) this ["hostNameComparisonMode"]; }
+			set { this ["hostNameComparisonMode"] = value; }
 		}
 
 		[LongValidator ( MinValue = 0,
@@ -162,8 +89,8 @@ namespace System.ServiceModel.Configuration
 			 DefaultValue = "524288",
 			 Options = ConfigurationPropertyOptions.None)]
 		public long MaxBufferPoolSize {
-			get { return (long) base [max_buffer_pool_size]; }
-			set { base [max_buffer_pool_size] = value; }
+			get { return (long) this ["maxBufferPoolSize"]; }
+			set { this ["maxBufferPoolSize"] = value; }
 		}
 
 		[LongValidator ( MinValue = 1,
@@ -173,65 +100,81 @@ namespace System.ServiceModel.Configuration
 			 DefaultValue = "65536",
 			 Options = ConfigurationPropertyOptions.None)]
 		public long MaxReceivedMessageSize {
-			get { return (long) base [max_received_message_size]; }
-			set { base [max_received_message_size] = value; }
+			get { return (long) this ["maxReceivedMessageSize"]; }
+			set { this ["maxReceivedMessageSize"] = value; }
 		}
 
 		[ConfigurationProperty ("messageEncoding",
 			 DefaultValue = "Text",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WSMessageEncoding MessageEncoding {
-			get { return (WSMessageEncoding) base [message_encoding]; }
-			set { base [message_encoding] = value; }
+			get { return (WSMessageEncoding) this ["messageEncoding"]; }
+			set { this ["messageEncoding"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("bypassProxyOnLocal", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("hostNameComparisonMode", typeof (HostNameComparisonMode), "StrongWildcard", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferPoolSize", typeof (long), "524288", null, new LongValidator (0, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxReceivedMessageSize", typeof (long), "65536", null, new LongValidator (1, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("messageEncoding", typeof (WSMessageEncoding), "Text", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("proxyAddress", typeof (Uri), null, new UriTypeConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("readerQuotas", typeof (XmlDictionaryReaderQuotasElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("reliableSession", typeof (StandardBindingOptionalReliableSessionElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("textEncoding", typeof (Encoding), "utf-8", EncodingConverter.Instance, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("transactionFlow", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("useDefaultWebProxy", typeof (bool), "true", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("proxyAddress",
 			 DefaultValue = null,
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri ProxyAddress {
-			get { return (Uri) base [proxy_address]; }
-			set { base [proxy_address] = value; }
+			get { return (Uri) this ["proxyAddress"]; }
+			set { this ["proxyAddress"] = value; }
 		}
 
 		[ConfigurationProperty ("readerQuotas",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlDictionaryReaderQuotasElement ReaderQuotas {
-			get { return (XmlDictionaryReaderQuotasElement) base [reader_quotas]; }
+			get { return (XmlDictionaryReaderQuotasElement) this ["readerQuotas"]; }
 		}
 
 		[ConfigurationProperty ("reliableSession",
 			 Options = ConfigurationPropertyOptions.None)]
 		public StandardBindingOptionalReliableSessionElement ReliableSession {
-			get { return (StandardBindingOptionalReliableSessionElement) base [reliable_session]; }
+			get { return (StandardBindingOptionalReliableSessionElement) this ["reliableSession"]; }
 		}
 
-		[TypeConverter ()]
+		[TypeConverter (typeof (EncodingConverter))]
 		[ConfigurationProperty ("textEncoding",
 			 DefaultValue = "utf-8",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Encoding TextEncoding {
-			get { return (Encoding) base [text_encoding]; }
-			set { base [text_encoding] = value; }
+			get { return (Encoding) this ["textEncoding"]; }
+			set { this ["textEncoding"] = value; }
 		}
 
 		[ConfigurationProperty ("transactionFlow",
 			DefaultValue = false,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool TransactionFlow {
-			get { return (bool) base [transaction_flow]; }
-			set { base [transaction_flow] = value; }
+			get { return (bool) this ["transactionFlow"]; }
+			set { this ["transactionFlow"] = value; }
 		}
 
 		[ConfigurationProperty ("useDefaultWebProxy",
 			DefaultValue = true,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool UseDefaultWebProxy {
-			get { return (bool) base [use_default_web_proxy]; }
-			set { base [use_default_web_proxy] = value; }
+			get { return (bool) this ["useDefaultWebProxy"]; }
+			set { this ["useDefaultWebProxy"] = value; }
 		}
 
 

@@ -54,41 +54,21 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public sealed partial class NonDualMessageSecurityOverHttpElement
 		 : MessageSecurityOverHttpElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty establish_security_context;
-
-		static NonDualMessageSecurityOverHttpElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			establish_security_context = new ConfigurationProperty ("establishSecurityContext",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (establish_security_context);
-		}
-
-		public NonDualMessageSecurityOverHttpElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("establishSecurityContext",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool EstablishSecurityContext {
-			get { return (bool) base [establish_security_context]; }
-			set { base [establish_security_context] = value; }
+			get { return (bool) base ["establishSecurityContext"]; }
+			set { base ["establishSecurityContext"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 

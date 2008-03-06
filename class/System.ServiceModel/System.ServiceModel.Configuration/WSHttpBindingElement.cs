@@ -54,40 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class WSHttpBindingElement
 		 : WSHttpBindingBaseElement,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty allow_cookies;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty security;
-
-		static WSHttpBindingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			allow_cookies = new ConfigurationProperty ("allowCookies",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			security = new ConfigurationProperty ("security",
-				typeof (WSHttpSecurityElement), null, null/* FIXME: get converter for WSHttpSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (allow_cookies);
-			properties.Add (binding_element_type);
-			properties.Add (security);
-		}
-
-		public WSHttpBindingElement ()
-		{
-		}
-
+		ConfigurationPropertyCollection _properties;
 
 		// Properties
 
@@ -95,22 +65,29 @@ namespace System.ServiceModel.Configuration
 			DefaultValue = false,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool AllowCookies {
-			get { return (bool) base [allow_cookies]; }
-			set { base [allow_cookies] = value; }
+			get { return (bool)this ["allowCookies"]; }
+			set {this ["allowCookies"] = value; }
 		}
 
 		protected override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (WSHttpBinding); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("allowCookies", typeof (bool), "false", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("security", typeof (WSHttpSecurityElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("security",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WSHttpSecurityElement Security {
-			get { return (WSHttpSecurityElement) base [security]; }
+			get { return (WSHttpSecurityElement)this ["security"]; }
 		}
 
 

@@ -54,15 +54,11 @@ namespace System.ServiceModel.Configuration
 			return sm.Bindings;
 		}
 
-		[MonoTODO]
 		public new BindingCollectionElement this [string name] {
 			get {
-				switch (name) {
-				case "basicHttpBinding":
-					return BasicHttpBinding;
-				case "customBinding":
-					return CustomBinding;
-				}
+				object element = base [name];
+				if (element is BindingCollectionElement)
+					return (BindingCollectionElement) element;
 				throw new NotImplementedException (String.Format ("Could not find {0}", name));
 			}
 		}

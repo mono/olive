@@ -54,60 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class NetPeerTcpBindingElement
 		 : StandardBindingElement,  IBindingConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty listen_i_p_address;
-		static ConfigurationProperty max_buffer_pool_size;
-		static ConfigurationProperty max_received_message_size;
-		static ConfigurationProperty port;
-		static ConfigurationProperty reader_quotas;
-		static ConfigurationProperty resolver;
-		static ConfigurationProperty security;
-
-		static NetPeerTcpBindingElement ()
-		{
-			properties = StandardBindingElement.CreateBaseProperties ();
-
-			listen_i_p_address = new ConfigurationProperty ("listenIPAddress",
-				typeof (IPAddress), null, null/* FIXME: get converter for IPAddress*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
-				typeof (long), "524288", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_received_message_size = new ConfigurationProperty ("maxReceivedMessageSize",
-				typeof (long), "65536", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			port = new ConfigurationProperty ("port",
-				typeof (int), "0", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			reader_quotas = new ConfigurationProperty ("readerQuotas",
-				typeof (XmlDictionaryReaderQuotasElement), null, null/* FIXME: get converter for XmlDictionaryReaderQuotasElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			resolver = new ConfigurationProperty ("resolver",
-				typeof (PeerResolverElement), null, null/* FIXME: get converter for PeerResolverElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			security = new ConfigurationProperty ("security",
-				typeof (PeerSecurityElement), null, null/* FIXME: get converter for PeerSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (listen_i_p_address);
-			properties.Add (max_buffer_pool_size);
-			properties.Add (max_received_message_size);
-			properties.Add (port);
-			properties.Add (reader_quotas);
-			properties.Add (resolver);
-			properties.Add (security);
-		}
+		ConfigurationPropertyCollection _properties;
 
 		public NetPeerTcpBindingElement ()
 		{
@@ -121,13 +71,14 @@ namespace System.ServiceModel.Configuration
 			get { return typeof (NetPeerTcpBinding); }
 		}
 
+		[MonoTODO ("get converter for IPAddress")]
 		[TypeConverter ()]
 		[ConfigurationProperty ("listenIPAddress",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = null)]
 		public IPAddress ListenIPAddress {
-			get { return (IPAddress) base [listen_i_p_address]; }
-			set { base [listen_i_p_address] = value; }
+			get { return (IPAddress) this ["listenIPAddress"]; }
+			set { this ["listenIPAddress"] = value; }
 		}
 
 		[ConfigurationProperty ("maxBufferPoolSize",
@@ -137,8 +88,8 @@ namespace System.ServiceModel.Configuration
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		public long MaxBufferPoolSize {
-			get { return (long) base [max_buffer_pool_size]; }
-			set { base [max_buffer_pool_size] = value; }
+			get { return (long) this ["maxBufferPoolSize"]; }
+			set { this ["maxBufferPoolSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxReceivedMessageSize",
@@ -148,8 +99,8 @@ namespace System.ServiceModel.Configuration
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		public long MaxReceivedMessageSize {
-			get { return (long) base [max_received_message_size]; }
-			set { base [max_received_message_size] = value; }
+			get { return (long) this ["maxReceivedMessageSize"]; }
+			set { this ["maxReceivedMessageSize"] = value; }
 		}
 
 		[IntegerValidator ( MinValue = 0,
@@ -159,31 +110,43 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "0")]
 		public int Port {
-			get { return (int) base [port]; }
-			set { base [port] = value; }
+			get { return (int) this ["port"]; }
+			set { this ["port"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("listenIPAddress", typeof (IPAddress), null, null/* FIXME: get converter for IPAddress*/, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferPoolSize", typeof (long), "524288", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxReceivedMessageSize", typeof (long), "65536", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("port", typeof (int), "0", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("readerQuotas", typeof (XmlDictionaryReaderQuotasElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("resolver", typeof (PeerResolverElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("security", typeof (PeerSecurityElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("readerQuotas",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlDictionaryReaderQuotasElement ReaderQuotas {
-			get { return (XmlDictionaryReaderQuotasElement) base [reader_quotas]; }
+			get { return (XmlDictionaryReaderQuotasElement) this ["readerQuotas"]; }
 		}
 
 		[ConfigurationProperty ("resolver",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = null)]
 		public PeerResolverElement Resolver {
-			get { return (PeerResolverElement) base [resolver]; }
+			get { return (PeerResolverElement) this ["resolver"]; }
 		}
 
 		[ConfigurationProperty ("security",
 			 Options = ConfigurationPropertyOptions.None)]
 		public PeerSecurityElement Security {
-			get { return (PeerSecurityElement) base [security]; }
+			get { return (PeerSecurityElement) this ["security"]; }
 		}
 
 

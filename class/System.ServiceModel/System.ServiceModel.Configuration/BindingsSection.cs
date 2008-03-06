@@ -54,89 +54,15 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public sealed partial class BindingsSection
 		 : ConfigurationSection
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty basic_http_binding;
-		static ConfigurationProperty custom_binding;
-		static ConfigurationProperty msmq_integration_binding;
-		static ConfigurationProperty net_msmq_binding;
-		static ConfigurationProperty net_named_pipe_binding;
-		static ConfigurationProperty net_peer_tcp_binding;
-		static ConfigurationProperty net_tcp_binding;
-		static ConfigurationProperty w_s_dual_http_binding;
-		static ConfigurationProperty w_s_federation_http_binding;
-		static ConfigurationProperty w_s_http_binding;
-
-		static BindingsSection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			basic_http_binding = new ConfigurationProperty ("basicHttpBinding",
-				typeof (BasicHttpBindingCollectionElement), null, null/* FIXME: get converter for BasicHttpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			custom_binding = new ConfigurationProperty ("customBinding",
-				typeof (CustomBindingCollectionElement), null, null/* FIXME: get converter for CustomBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			msmq_integration_binding = new ConfigurationProperty ("msmqIntegrationBinding",
-				typeof (MsmqIntegrationBindingCollectionElement), null, null/* FIXME: get converter for MsmqIntegrationBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			net_msmq_binding = new ConfigurationProperty ("netMsmqBinding",
-				typeof (NetMsmqBindingCollectionElement), null, null/* FIXME: get converter for NetMsmqBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			net_named_pipe_binding = new ConfigurationProperty ("netNamedPipeBinding",
-				typeof (NetNamedPipeBindingCollectionElement), null, null/* FIXME: get converter for NetNamedPipeBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			net_peer_tcp_binding = new ConfigurationProperty ("netPeerTcpBinding",
-				typeof (NetPeerTcpBindingCollectionElement), null, null/* FIXME: get converter for NetPeerTcpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			net_tcp_binding = new ConfigurationProperty ("netTcpBinding",
-				typeof (NetTcpBindingCollectionElement), null, null/* FIXME: get converter for NetTcpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			w_s_dual_http_binding = new ConfigurationProperty ("wsDualHttpBinding",
-				typeof (WSDualHttpBindingCollectionElement), null, null/* FIXME: get converter for WSDualHttpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			w_s_federation_http_binding = new ConfigurationProperty ("wsFederationHttpBinding",
-				typeof (WSFederationHttpBindingCollectionElement), null, null/* FIXME: get converter for WSFederationHttpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			w_s_http_binding = new ConfigurationProperty ("wsHttpBinding",
-				typeof (WSHttpBindingCollectionElement), null, null/* FIXME: get converter for WSHttpBindingCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (basic_http_binding);
-			properties.Add (custom_binding);
-			properties.Add (msmq_integration_binding);
-			properties.Add (net_msmq_binding);
-			properties.Add (net_named_pipe_binding);
-			properties.Add (net_peer_tcp_binding);
-			properties.Add (net_tcp_binding);
-			properties.Add (w_s_dual_http_binding);
-			properties.Add (w_s_federation_http_binding);
-			properties.Add (w_s_http_binding);
-		}
-
-		public BindingsSection ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("basicHttpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public BasicHttpBindingCollectionElement BasicHttpBinding {
-			get { return (BasicHttpBindingCollectionElement) base [basic_http_binding]; }
+			get { return (BasicHttpBindingCollectionElement) this ["basicHttpBinding"]; }
 		}
 
 		[MonoTODO ("Not Implemented")]
@@ -147,59 +73,59 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("customBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public CustomBindingCollectionElement CustomBinding {
-			get { return (CustomBindingCollectionElement) base [custom_binding]; }
+			get { return (CustomBindingCollectionElement) this ["customBinding"]; }
 		}
 
 		[ConfigurationProperty ("msmqIntegrationBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public MsmqIntegrationBindingCollectionElement MsmqIntegrationBinding {
-			get { return (MsmqIntegrationBindingCollectionElement) base [msmq_integration_binding]; }
+			get { return (MsmqIntegrationBindingCollectionElement) this ["msmqIntegrationBinding"]; }
 		}
 
 		[ConfigurationProperty ("netMsmqBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NetMsmqBindingCollectionElement NetMsmqBinding {
-			get { return (NetMsmqBindingCollectionElement) base [net_msmq_binding]; }
+			get { return (NetMsmqBindingCollectionElement) this ["netMsmqBinding"]; }
 		}
 
 		[ConfigurationProperty ("netNamedPipeBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NetNamedPipeBindingCollectionElement NetNamedPipeBinding {
-			get { return (NetNamedPipeBindingCollectionElement) base [net_named_pipe_binding]; }
+			get { return (NetNamedPipeBindingCollectionElement) this ["netNamedPipeBinding"]; }
 		}
 
 		[ConfigurationProperty ("netPeerTcpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NetPeerTcpBindingCollectionElement NetPeerTcpBinding {
-			get { return (NetPeerTcpBindingCollectionElement) base [net_peer_tcp_binding]; }
+			get { return (NetPeerTcpBindingCollectionElement) this ["netPeerTcpBinding"]; }
 		}
 
 		[ConfigurationProperty ("netTcpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NetTcpBindingCollectionElement NetTcpBinding {
-			get { return (NetTcpBindingCollectionElement) base [net_tcp_binding]; }
+			get { return (NetTcpBindingCollectionElement) this ["netTcpBinding"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("wsDualHttpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WSDualHttpBindingCollectionElement WSDualHttpBinding {
-			get { return (WSDualHttpBindingCollectionElement) base [w_s_dual_http_binding]; }
+			get { return (WSDualHttpBindingCollectionElement) this ["wsDualHttpBinding"]; }
 		}
 
 		[ConfigurationProperty ("wsFederationHttpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WSFederationHttpBindingCollectionElement WSFederationHttpBinding {
-			get { return (WSFederationHttpBindingCollectionElement) base [w_s_federation_http_binding]; }
+			get { return (WSFederationHttpBindingCollectionElement) this ["wsFederationHttpBinding"]; }
 		}
 
 		[ConfigurationProperty ("wsHttpBinding",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WSHttpBindingCollectionElement WSHttpBinding {
-			get { return (WSHttpBindingCollectionElement) base [w_s_http_binding]; }
+			get { return (WSHttpBindingCollectionElement) this ["wsHttpBinding"]; }
 		}
 
 

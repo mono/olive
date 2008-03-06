@@ -54,70 +54,38 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class MessageSecurityOverHttpElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty algorithm_suite;
-		static ConfigurationProperty client_credential_type;
-		static ConfigurationProperty negotiate_service_credential;
-
-		static MessageSecurityOverHttpElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			algorithm_suite = new ConfigurationProperty ("algorithmSuite",
-				typeof (SecurityAlgorithmSuite), "Default", null/* FIXME: get converter for SecurityAlgorithmSuite*/, null,
-				ConfigurationPropertyOptions.None);
-
-			client_credential_type = new ConfigurationProperty ("clientCredentialType",
-				typeof (MessageCredentialType), "Windows", null/* FIXME: get converter for MessageCredentialType*/, null,
-				ConfigurationPropertyOptions.None);
-
-			negotiate_service_credential = new ConfigurationProperty ("negotiateServiceCredential",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (algorithm_suite);
-			properties.Add (client_credential_type);
-			properties.Add (negotiate_service_credential);
-		}
-
-		public MessageSecurityOverHttpElement ()
-		{
-		}
-
-
 		// Properties
 
-		[TypeConverter ()]
+		[TypeConverter (typeof (SecurityAlgorithmSuiteConverter))]
 		[ConfigurationProperty ("algorithmSuite",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Default")]
 		public SecurityAlgorithmSuite AlgorithmSuite {
-			get { return (SecurityAlgorithmSuite) base [algorithm_suite]; }
-			set { base [algorithm_suite] = value; }
+			get { return (SecurityAlgorithmSuite) base ["algorithmSuite"]; }
+			set { base ["algorithmSuite"] = value; }
 		}
 
 		[ConfigurationProperty ("clientCredentialType",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Windows")]
 		public MessageCredentialType ClientCredentialType {
-			get { return (MessageCredentialType) base [client_credential_type]; }
-			set { base [client_credential_type] = value; }
+			get { return (MessageCredentialType) base ["clientCredentialType"]; }
+			set { base ["clientCredentialType"] = value; }
 		}
 
 		[ConfigurationProperty ("negotiateServiceCredential",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool NegotiateServiceCredential {
-			get { return (bool) base [negotiate_service_credential]; }
-			set { base [negotiate_service_credential] = value; }
+			get { return (bool) base ["negotiateServiceCredential"]; }
+			set { base ["negotiateServiceCredential"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 
