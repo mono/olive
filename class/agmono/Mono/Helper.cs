@@ -215,5 +215,16 @@ namespace Mono {
 			MethodInfo lookup = depobj.GetMethod ("Lookup", BindingFlags.NonPublic | BindingFlags.Static, null, new Type [] {typeof (Kind), typeof (IntPtr)}, null);
 			return lookup.Invoke (null, new object [] {k, ptr});
 		}
+		
+		public static IntPtr GetNativeObject (object dependency_object)
+		{
+			if (dependency_object == null)
+				return IntPtr.Zero;
+			
+			Assembly agclr = GetAgclr ();
+			Type depobj = agclr.GetType ("System.Windows.DependencyObject");
+			FieldInfo field = depobj.GetField ("_native", BindingFlags.Instance | BindingFlags.NonPublic);
+			return (IntPtr) field.GetValue (dependency_object);
+		}
 	}
 }

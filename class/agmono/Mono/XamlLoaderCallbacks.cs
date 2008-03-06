@@ -65,6 +65,7 @@ namespace Mono.Xaml
 		private static bool allow_multiple_surfaces_per_domain;
 		
 		protected IntPtr native_loader;
+		private bool load_deps_synch = false;
 		
 		// We keep an instance copy of the surface and plugin here,
 		// since we have to support multiple surfaces for the non-browser case.
@@ -112,6 +113,20 @@ namespace Mono.Xaml
 		public IntPtr Surface {
 			get {
 				return surface;
+			}
+		}
+		
+		//
+		// Set whenever the loader will load dependencies synchronously using the browser
+		// This is used in cases where the user of the loader can't operate in async mode
+		// such as Control:InitializeFromXaml ()
+		//
+		public bool LoadDepsSynch {
+			get {
+				return load_deps_synch;
+			}
+			set {
+				load_deps_synch = value;
 			}
 		}
 		
@@ -219,5 +234,31 @@ namespace Mono.Xaml
 		// declare the return type as DependencyObject)
 		// 
 		public abstract object CreateDependencyObjectFromString (string xaml, bool createNamescope);
+		
+		public object InitializeFromXaml (string xaml, IntPtr native)
+		{
+			if (xaml == null)
+				throw new ArgumentNullException ("xaml");
+			
+			Kind kind;
+			IntPtr native_child;
+			
+			LoadDepsSynch = true;
+			CreateNativeLoader (null, xaml);
+			native_child = NativeMethods.control_initialize_from_xaml_callbacks (native, xaml,
+											  out kind, NativeLoader);
+			FreeNativeLoader ();
+		
+			if (native_child == IntPtr.Zero)
+				// FIXME: Add detail
+				throw new Exception ();
+		
+			return Helper.LookupDependencyObject (kind, native_child);
+		}
+		
+		public object InitializeFromXaml (string xaml, object dependency_object)
+		{
+			return InitializeFromXaml (xaml, Helper.GetNativeObject (dependency_object));
+		}
 	}
 }
