@@ -97,7 +97,9 @@ namespace System.ServiceModel.Configuration
 			get { return (WSHttpSecurityElement)this ["security"]; }
 		}
 
-
+		protected override void OnApplyConfiguration (Binding binding) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }

@@ -271,6 +271,10 @@ namespace System.ServiceModel.Configuration
 		}
 
 
+
+		protected override void OnApplyConfiguration (Binding binding) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }

@@ -129,7 +129,7 @@ namespace System.ServiceModel.Configuration
 			set { this ["sendTimeout"] = value; }
 		}
 
-
+		protected abstract void OnApplyConfiguration (Binding binding);
 	}
 
 }

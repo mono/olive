@@ -70,7 +70,9 @@ namespace System.ServiceModel.Configuration
 			get { return typeof (TStandardBinding); }
 		}
 
-
+		protected override void OnApplyConfiguration (Binding binding) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }
