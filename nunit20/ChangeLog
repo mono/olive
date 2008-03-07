@@ -1,3 +1,6 @@
+Fri Mar  7 09:58:41 MST 2008 Wade Berrier  <wberrier@novell.com>
+
+	* */Makefile: don't install nunit assemblies
 
 Wed Apr 20 18:05:41 CEST 2005 Paolo Molaro <lupus@ximian.com>
 

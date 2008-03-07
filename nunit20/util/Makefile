@@ -20,10 +20,7 @@ EXTRA_DISTFILES = \
 
 CLEAN_FILES = $(RESX_RES)
 
-ifeq (net_2_0, $(PROFILE))
 NO_INSTALL = yes
-endif
-
 
 include ../../build/library.make
 
