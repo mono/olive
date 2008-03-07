@@ -253,7 +253,10 @@ namespace System.ServiceModel.Configuration
 			set { base [use_default_web_proxy] = value; }
 		}
 
-
+		protected override void OnApplyConfiguration (Binding binding)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 
 }
