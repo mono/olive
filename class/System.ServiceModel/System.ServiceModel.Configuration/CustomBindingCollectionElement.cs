@@ -54,34 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class CustomBindingCollectionElement
+	public sealed class CustomBindingCollectionElement
 		 : BindingCollectionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty bindings;
-		static ConfigurationProperty configured_bindings;
-
-		static CustomBindingCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			bindings = new ConfigurationProperty ("",
-				typeof (CustomBindingElementCollection), null, null/* FIXME: get converter for CustomBindingElementCollection*/, null,
-				ConfigurationPropertyOptions.IsDefaultCollection);
-
-			configured_bindings = new ConfigurationProperty ("",
-				typeof (ReadOnlyCollection<IBindingConfigurationElement>), null, null/* FIXME: get converter for ReadOnlyCollection<IBindingConfigurationElement>*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (bindings);
-			properties.Add (configured_bindings);
-		}
-
-		public CustomBindingCollectionElement ()
-		{
-		}
-
 
 		// Properties
 
@@ -89,17 +64,26 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsDefaultCollection,
 			IsDefaultCollection = true)]
 		public CustomBindingElementCollection Bindings {
-			get { return (CustomBindingElementCollection) base [bindings]; }
+			get { return (CustomBindingElementCollection) this [String.Empty]; }
 		}
 
 		public override ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings {
-			get { return (ReadOnlyCollection<IBindingConfigurationElement>) base [configured_bindings]; }
+			get {
+				List<IBindingConfigurationElement> list = new List<IBindingConfigurationElement> ();
+				CustomBindingElementCollection bindings = Bindings;
+				for (int i = 0; i < bindings.Count; i++)
+					list.Add (bindings [i]);
+				return new ReadOnlyCollection<IBindingConfigurationElement> (list);
+			}
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		public override Type BindingType {
+			get { return typeof (CustomBinding); }
+		}
 
 	}
 

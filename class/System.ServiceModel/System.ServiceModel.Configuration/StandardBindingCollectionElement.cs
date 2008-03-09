@@ -54,30 +54,12 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class StandardBindingCollectionElement<TStandardBinding,TBindingConfiguration>
+	public class StandardBindingCollectionElement<TStandardBinding,TBindingConfiguration>
 		 : BindingCollectionElement
 		where TStandardBinding : Binding
 		where TBindingConfiguration : StandardBindingElement, new()
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty bindings;
-
-		static StandardBindingCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			bindings = new ConfigurationProperty ("",
-				typeof (StandardBindingElementCollection<TBindingConfiguration>), null, null/* FIXME: get converter for StandardBindingElementCollection<TBindingConfiguration>*/, null,
-				ConfigurationPropertyOptions.IsDefaultCollection);
-
-			properties.Add (bindings);
-		}
-
-		public StandardBindingCollectionElement ()
-		{
-		}
-
+		ConfigurationPropertyCollection _properties;
 
 		// Properties
 
@@ -85,7 +67,7 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsDefaultCollection,
 			IsDefaultCollection = true)]
 		public StandardBindingElementCollection<TBindingConfiguration> Bindings {
-			get { return (StandardBindingElementCollection<TBindingConfiguration>) base [bindings]; }
+			get { return (StandardBindingElementCollection<TBindingConfiguration>) this [String.Empty]; }
 		}
 
 		public override ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings {
@@ -99,9 +81,18 @@ namespace System.ServiceModel.Configuration
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty (String.Empty, typeof (StandardBindingElementCollection<TBindingConfiguration>), null, null, null, ConfigurationPropertyOptions.IsDefaultCollection));
+				}
+				return _properties;
+			}
 		}
 
+		public override Type BindingType {
+			get { return typeof (TStandardBinding); }
+		}
 
 	}
 

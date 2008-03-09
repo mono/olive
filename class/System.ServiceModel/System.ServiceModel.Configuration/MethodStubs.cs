@@ -458,14 +458,6 @@ Console.WriteLine (reader.LocalName);
 		}
 	}
 
-// CustomBindingCollectionElement
-	public partial class CustomBindingCollectionElement
-	{
-		public override Type BindingType {
-			get { return typeof (CustomBinding); }
-		}
-	}
-
 // CustomBindingElement
 	public partial class CustomBindingElement
 	{
@@ -483,14 +475,6 @@ Console.WriteLine (reader.LocalName);
 		protected internal override object CreateBehavior ()
 		{
 			throw new NotImplementedException ();
-		}
-	}
-
-// StandardBindingCollectionElement
-	public partial class StandardBindingCollectionElement<TStandardBinding,TBindingConfiguration>
-	{
-		public override Type BindingType {
-			get { return typeof (TStandardBinding); }
 		}
 	}
 
