@@ -33,43 +33,25 @@ using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 
-using ConfigurationType = System.Configuration.Configuration;
-
 namespace System.ServiceModel.Configuration
 {
 	internal static class ConfigUtil
 	{
-		static ConfigurationType execfg, webcfg;
-
-		static ConfigUtil ()
-		{
-			execfg = ConfigurationManager.OpenExeConfiguration (ConfigurationUserLevel.None);
-			if (execfg == null)
-				throw new Exception ("Internal configuration error: cannot load exe config.");
-			webcfg = ConfigurationManager.OpenExeConfiguration ("web.config");
-			if (webcfg == null)
-				throw new Exception ("Internal configuration error: cannot load web config.");
+		public static BindingsSection BindingsSection {
+			get { return (BindingsSection) ConfigurationManager.GetSection ("system.serviceModel/bindings"); }
 		}
 
-		public static ServiceModelSectionGroup ExeConfig {
-			get { return ServiceModelSectionGroup.GetSectionGroup (execfg); }
+		public static ServicesSection ServicesSection {
+			get { return (ServicesSection) ConfigurationManager.GetSection ("system.serviceModel/services"); }
 		}
 
-		public static ServiceModelSectionGroup WebConfig {
-			get { return ServiceModelSectionGroup.GetSectionGroup (webcfg); }
-		}
-
-		public static BindingsSection ExeBindings {
-			get { return BindingsSection.GetSection (execfg); }
-		}
-
-		public static BindingsSection WebBindings {
-			get { return BindingsSection.GetSection (webcfg); }
+		public static BehaviorsSection BehaviorsSection {
+			get { return (BehaviorsSection) ConfigurationManager.GetSection ("system.serviceModel/behaviors"); }
 		}
 
 		public static Binding CreateBinding (string binding, string bindingConfiguration)
 		{
-			BindingCollectionElement section = ConfigUtil.ExeConfig.Bindings [binding];
+			BindingCollectionElement section = ConfigUtil.BindingsSection [binding];
 			if (section == null)
 				throw new ArgumentException (String.Format ("binding section for {0} was not found.", binding));
 

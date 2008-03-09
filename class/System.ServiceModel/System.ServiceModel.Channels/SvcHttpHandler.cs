@@ -88,8 +88,7 @@ namespace System.ServiceModel.Channels {
 
 		void ApplyConfiguration (ServiceHost host)
 		{
-			ServiceModelSectionGroup cfgRoot = ConfigUtil.WebConfig;
-			foreach (ServiceElement service in cfgRoot.Services.Services) {
+			foreach (ServiceElement service in ConfigUtil.ServicesSection.Services) {
 				foreach (ServiceEndpointElement endpoint in service.Endpoints) {
 					// FIXME: consider BindingName as well
 					ServiceEndpoint se = host.AddServiceEndpoint (
@@ -98,7 +97,7 @@ namespace System.ServiceModel.Channels {
 						new Uri (path));
 				}
 				// behaviors
-				ServiceBehaviorElement behavior = cfgRoot.Behaviors.ServiceBehaviors.Find (service.BehaviorConfiguration);
+				ServiceBehaviorElement behavior = ConfigUtil.BehaviorsSection.ServiceBehaviors.Find (service.BehaviorConfiguration);
 				if (behavior != null) {
 					foreach (BehaviorExtensionElement bxel in behavior) {
 						IServiceBehavior b = null;
