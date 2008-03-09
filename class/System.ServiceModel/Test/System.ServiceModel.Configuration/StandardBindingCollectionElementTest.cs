@@ -71,7 +71,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 			Poker p2 = new Poker ();
 
 			Assert.AreEqual (false, p1.GetProperties ().Contains ("myProperty"), "Contains myProperty");
-			Assert.AreNotEqual (p1.GetProperties (), p2.GetProperties (), "#");
+			Assert.AreEqual (false, p1.GetProperties () == p2.GetProperties (), "#");
 		}
 
 		[Test]
