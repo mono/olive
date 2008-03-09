@@ -45,6 +45,12 @@ namespace MonoTests.System.ServiceModel.Configuration
 			public ConfigurationPropertyCollection GetProperties () {
 				return Properties;
 			}
+
+			[ConfigurationProperty ("myProperty")]
+			string MyProperty {
+				get { return "myProperty"; }
+				set { }
+			}
 		}
 
 		[Test]
@@ -56,6 +62,16 @@ namespace MonoTests.System.ServiceModel.Configuration
 			foreach (ConfigurationProperty prop in coll) {
 				Assert.AreEqual ("", prop.Name);
 			}
+		}
+
+		[Test]
+		public void Properties2 () {
+
+			Poker p1 = new Poker ();
+			Poker p2 = new Poker ();
+
+			Assert.AreEqual (false, p1.GetProperties ().Contains ("myProperty"), "Contains myProperty");
+			Assert.AreNotEqual (p1.GetProperties (), p2.GetProperties (), "#");
 		}
 
 		[Test]
