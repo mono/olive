@@ -54,28 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class AddressHeaderCollectionElement
+	public sealed class AddressHeaderCollectionElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty headers;
-
-		static AddressHeaderCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			headers = new ConfigurationProperty ("headers",
-				typeof (AddressHeaderCollection), null, null/* FIXME: get converter for AddressHeaderCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (headers);
-		}
-
-		public AddressHeaderCollectionElement ()
-		{
-		}
-
+		AddressHeaderCollection _headers;
 
 		// Properties
 
@@ -83,15 +65,67 @@ namespace System.ServiceModel.Configuration
 			 DefaultValue = null,
 			 Options = ConfigurationPropertyOptions.None)]
 		public AddressHeaderCollection Headers {
-			get { return (AddressHeaderCollection) base [headers]; }
-			set { base [headers] = value; }
+			get { return _headers; }
+			set { _headers = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
+		}
+		
+		protected override void DeserializeElement (
+			XmlReader reader, bool serializeCollectionKey) {
+			reader.MoveToContent ();
+			_headers = new AddressHeaderCollection (DeserializeAddressHeaders (reader));
 		}
 
+		static IEnumerable<AddressHeader> DeserializeAddressHeaders (XmlReader reader) {
+			while (true) {
+				do {
+					reader.Read ();
+				} while (reader.NodeType == XmlNodeType.Whitespace);
 
+				if (reader.NodeType == XmlNodeType.EndElement)
+					yield break;
+
+				if (reader.NodeType != XmlNodeType.Element)
+					throw new ConfigurationErrorsException ("invalid node type.");
+
+				yield return new ConfiguredAddressHeader (reader.LocalName, reader.NamespaceURI, reader.ReadOuterXml ());
+			}
+		}
+
+		[MonoTODO]
+		protected override bool SerializeToXmlElement (
+			XmlWriter writer, string elementName) {
+			throw new NotImplementedException ();
+		}
+
+		class ConfiguredAddressHeader : AddressHeader {
+
+			readonly string _name;
+			readonly string _namespace;
+			readonly string _outerXml;
+
+			public ConfiguredAddressHeader (string name, string @namespace, string outerXml) {
+				_name = name;
+				_namespace = @namespace;
+				_outerXml = outerXml;
+			}
+
+			[MonoTODO]
+			protected override void OnWriteAddressHeaderContents (XmlDictionaryWriter writer) {
+				throw new NotImplementedException ();
+			}
+
+			public override string Name {
+				get { return _name; }
+			}
+
+			public override string Namespace {
+				get { return _namespace; }
+			}
+		}
 	}
 
 }

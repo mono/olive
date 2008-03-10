@@ -12,23 +12,6 @@ using ConfigurationType = System.Configuration.Configuration;
 
 namespace System.ServiceModel.Configuration
 {
-// AddressHeaderCollectionElement
-	public partial class AddressHeaderCollectionElement
-	{
-		[MonoTODO]
-		protected override void DeserializeElement (
-			XmlReader reader, bool serializeCollectionKey)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[MonoTODO]
-		protected override bool SerializeToXmlElement (
-			XmlWriter writer, string elementName)
-		{
-			throw new NotImplementedException ();
-		}
-	}
 
 // AuthorizationPolicyTypeElement
 	public partial class AuthorizationPolicyTypeElement
