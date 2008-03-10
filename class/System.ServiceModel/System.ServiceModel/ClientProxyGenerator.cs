@@ -69,16 +69,14 @@ namespace System.ServiceModel
 				new CodeArgumentReference (typeof (ChannelFactory), 2, "arg1"));
 
 			// member implementation
-			MethodInfo processMethod = typeof (ClientRuntimeChannel).GetMethod ("Process");
-			if (processMethod == null) throw new Exception ("INTERNAL ERROR: ClientRuntimeChannel.Process() does not exist.");
 			foreach (OperationDescription od in cd.Operations) {
 				// FIXME: handle properties and events.
 				if (od.SyncMethod != null)
-					GenerateMethodImpl (c, processMethod, od.Name, od.SyncMethod);
+					GenerateMethodImpl (c, typeof (ClientRuntimeChannel).GetMethod ("Process"), od.Name, od.SyncMethod);
 				if (od.BeginMethod != null)
-					GenerateMethodImpl (c, processMethod, od.Name, od.BeginMethod);
+					GenerateMethodImpl (c, typeof (ClientRuntimeChannel).GetMethod ("BeginProcess"), od.Name, od.BeginMethod);
 				if (od.EndMethod != null)
-					GenerateMethodImpl (c, processMethod, od.Name, od.EndMethod);
+					GenerateMethodImpl (c, typeof (ClientRuntimeChannel).GetMethod ("EndProcess"), od.Name, od.EndMethod);
 			}
 
 			//Type zzz = c.CreateType ();

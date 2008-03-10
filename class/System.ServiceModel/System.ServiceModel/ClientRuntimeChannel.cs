@@ -34,19 +34,29 @@ using System.ServiceModel.Security;
 
 namespace System.ServiceModel
 {
-	internal class ClientRuntimeChannel
+#if TARGET_DOTNET
+	[MonoTODO]
+	public
+#else
+	internal
+#endif
+	class ClientRuntimeChannel
 		: CommunicationObject, IClientChannel
 	{
 		ClientRuntime runtime;
 		ChannelFactory factory;
 		IRequestChannel request_channel;
 		IOutputChannel output_channel;
+		readonly ProcessDelegate _processDelegate;
+
+		delegate object ProcessDelegate (MethodBase method, string operationName, object [] parameters);
 
 		public ClientRuntimeChannel (ClientRuntime runtime,
 			ChannelFactory factory)
 		{
 			this.runtime = runtime;
 			this.factory = factory;
+			_processDelegate = new ProcessDelegate (Process);
 		}
 
 		public ClientRuntime Runtime {
@@ -197,6 +207,17 @@ namespace System.ServiceModel
 		}
 
 		#region Request/Output processing
+
+		public IAsyncResult BeginProcess (MethodBase method, string operationName, object [] parameters) {
+			object [] param = new object [parameters.Length - 2];
+			for (int i = 0; i < param.Length; i++)
+				param [i] = parameters [i];
+			return _processDelegate.BeginInvoke (method, operationName, param, (AsyncCallback) parameters [parameters.Length - 2], parameters [parameters.Length - 1]);
+		}
+
+		public object EndProcess (MethodBase method, string operationName, object [] parameters) {
+			return _processDelegate.EndInvoke ((IAsyncResult) parameters [0]);
+		}
 
 		public object Process (MethodBase method, string operationName, object [] parameters)
 		{
