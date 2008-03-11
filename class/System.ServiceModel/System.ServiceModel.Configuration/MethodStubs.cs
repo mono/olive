@@ -13,16 +13,6 @@ using ConfigurationType = System.Configuration.Configuration;
 namespace System.ServiceModel.Configuration
 {
 
-// AuthorizationPolicyTypeElement
-	public partial class AuthorizationPolicyTypeElement
-	{
-		[MonoTODO]
-		public AuthorizationPolicyTypeElement (string configurationName)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // BindingsSection
 	public partial class BindingsSection
 	{
@@ -46,16 +36,6 @@ namespace System.ServiceModel.Configuration
 			}
 		}
 
-	}
-
-// AuthorizationPolicyTypeElementCollection
-	public sealed partial class AuthorizationPolicyTypeElementCollection
-		 : ServiceModelConfigurationElementCollection<AuthorizationPolicyTypeElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((AuthorizationPolicyTypeElement) element).PolicyType;
-		}
 	}
 
 // BaseAddressElementCollection
@@ -182,89 +162,9 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// ServiceBehaviorElementCollection
-	public sealed partial class ServiceBehaviorElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<ServiceBehaviorElement>,  ICollection,  IEnumerable
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((ServiceBehaviorElement) element).Name;
-		}
-
-		protected override bool ThrowOnDuplicate {
-			get { return true; }
-		}
-
-		internal ServiceBehaviorElement Find (string name)
-		{
-			foreach (ServiceBehaviorElement el in this)
-				if (el.Name == name)
-					return el;
-			return null;
-		}
-
-		[MonoTODO]
-		protected override void BaseAdd (ConfigurationElement element)
-		{
-			base.BaseAdd (element);
-		}
-
-		[MonoTODO]
-		protected override void DeserializeElement (
-			XmlReader reader, bool serializeCollectionKey)
-		{
-			base.DeserializeElement (reader, serializeCollectionKey);
-		}
-	}
-
-// ServiceBehaviorElement
-	public partial class ServiceBehaviorElement
-	{
-		protected override void DeserializeElement (
-			XmlReader reader, bool serializeCollectionKey)
-		{
-			if (reader.IsEmptyElement) {
-				reader.Skip ();
-				return;
-			}
-			reader.ReadStartElement ();
-
-			for (reader.MoveToContent ();
-			     reader.NodeType != XmlNodeType.EndElement;
-			     reader.MoveToContent ()) {
-				if (reader.NodeType != XmlNodeType.Element) {
-//					OnDeserializeUnrecognizedElement (reader.LocalName, reader);
-//					continue;
-throw new Exception ();
-				}
-				switch (reader.LocalName) {
-				case "serviceDebug":
-					ServiceDebugElement debug = new ServiceDebugElement ();
-					debug.CallDeserializeElement (reader, serializeCollectionKey);
-					break;
-				case "serviceMetadata":
-					ServiceMetadataPublishingElement meta = new ServiceMetadataPublishingElement ();
-					meta.CallDeserializeElement (reader, serializeCollectionKey);
-					break;
-				default:
-Console.WriteLine (reader.LocalName);
-					OnDeserializeUnrecognizedElement (reader.LocalName, reader);
-					break;
-				}
-			}
-			reader.ReadEndElement ();
-			reader.MoveToContent ();
-		}
-	}
-
 // ServiceDebugElement
 	public partial class ServiceDebugElement
 	{
-		internal void CallDeserializeElement (XmlReader r, bool serializeCollectionKey)
-		{
-			base.DeserializeElement (r, serializeCollectionKey);
-		}
-
 		[MonoTODO]
 		protected internal override object CreateBehavior ()
 		{
@@ -275,11 +175,6 @@ Console.WriteLine (reader.LocalName);
 // ServiceMetadataPublishingElement 
 	public partial class ServiceMetadataPublishingElement 
 	{
-		internal void CallDeserializeElement (XmlReader r, bool serializeCollectionKey)
-		{
-			base.DeserializeElement (r, serializeCollectionKey);
-		}
-
 		protected internal override object CreateBehavior ()
 		{
 			ServiceMetadataBehavior b = new ServiceMetadataBehavior ();
@@ -387,21 +282,6 @@ Console.WriteLine (reader.LocalName);
 		}
 	}
 
-// BehaviorExtensionElement
-	[MonoTODO]
-	public abstract partial class BehaviorExtensionElement
-		 : ServiceModelExtensionElement
-	{
-		protected BehaviorExtensionElement ()
-		{
-		}
-
-		// Properties
-		public abstract Type BehaviorType { get;  }
-
-		protected internal abstract object CreateBehavior ();
-	}
-
 // CallbackBehaviorElement
 	public partial class CallbackDebugElement
 	{
@@ -471,16 +351,6 @@ Console.WriteLine (reader.LocalName);
 		}
 	}
 
-// ServiceAuthorizationElement
-	public partial class ServiceAuthorizationElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // ServiceCredentialsElement
 	public partial class ServiceCredentialsElement
 	{
@@ -541,16 +411,4 @@ Console.WriteLine (reader.LocalName);
 		}
 	}
 
-// ServiceModelExtensionCollectionElement
-	public partial class ServiceModelExtensionCollectionElement<TServiceModelExtensionElement> 
-		: ConfigurationElement,
-		ICollection<TServiceModelExtensionElement>,
-		IEnumerable<TServiceModelExtensionElement>, 
-		IEnumerable
-	{
-		[MonoTODO]
-		int ICollection<TServiceModelExtensionElement>.Count {
-			get { throw new NotImplementedException (); }
-		}
-	}
 }

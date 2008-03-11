@@ -54,32 +54,11 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public abstract partial class NamedServiceModelExtensionCollectionElement<TServiceModelExtensionElement>
+	public abstract class NamedServiceModelExtensionCollectionElement<TServiceModelExtensionElement>
 		 : ServiceModelExtensionCollectionElement<TServiceModelExtensionElement>,  ICollection<TServiceModelExtensionElement>,  IEnumerable<TServiceModelExtensionElement>,  IEnumerable
 		where TServiceModelExtensionElement : ServiceModelExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty name;
-
-		internal static ConfigurationPropertyCollection CreateBaseProperties ()
-		{
-			ConfigurationPropertyCollection baseProperties = new ConfigurationPropertyCollection ();
-			foreach (ConfigurationProperty prop in properties)
-				baseProperties.Add (prop);
-			return baseProperties;
-		}
-
-		static NamedServiceModelExtensionCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			name = new ConfigurationProperty ("name",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
-
-			properties.Add (name);
-		}
+		ConfigurationPropertyCollection _properties;
 
 		internal NamedServiceModelExtensionCollectionElement ()
 		{
@@ -96,12 +75,18 @@ namespace System.ServiceModel.Configuration
 			IsRequired = true,
 			IsKey = true)]
 		public virtual string Name {
-			get { return (string) base [name]; }
-			set { base [name] = value; }
+			get { return (string) base ["name"]; }
+			set { base ["name"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("name", typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null), ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey));
+				}
+				return _properties;
+			}
 		}
 
 

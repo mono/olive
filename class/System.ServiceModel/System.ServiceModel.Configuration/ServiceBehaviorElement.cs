@@ -51,29 +51,53 @@ using System.ServiceModel.Security;
 using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
+using System.Diagnostics;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class ServiceBehaviorElement
+	public class ServiceBehaviorElement
 		 : NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>,  ICollection<BehaviorExtensionElement>,  IEnumerable<BehaviorExtensionElement>,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ServiceBehaviorElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		public ServiceBehaviorElement (string name) {
+			Name = name;
 		}
 
-		public ServiceBehaviorElement ()
-		{
+		public ServiceBehaviorElement () {
 		}
 
+		protected override void DeserializeElement (XmlReader reader, bool serializeCollectionKey) {
+			base.DeserializeElement (reader, serializeCollectionKey);
+		}
 
-		// Properties
+		[MonoTODO ("consider system.serviceModel/extensions/behaviorExtensions")]
+		internal override BehaviorExtensionElement DeserializeExtensionElement (string elementName, XmlReader reader) {
+			BehaviorExtensionElement element;
+			switch (reader.LocalName) {
+			case "serviceDebug":
+				element = new ServiceDebugElement ();
+				break;
+			case "serviceMetadata":
+				element = new ServiceMetadataPublishingElement ();
+				break;
+			case "serviceAuthorization":
+				element = new ServiceAuthorizationElement ();
+				break;
+			default:
+				Debug.WriteLine (reader.LocalName);
+				// TODO: consider system.serviceModel/extensions/behaviorExtensions
+				throw new ConfigurationErrorsException ("Invalid element in configuration. The extension name '" + reader.LocalName + "' is not registered in the collection at system.serviceModel/extensions/behaviorExtensions");
+			}
+			element.DeserializeElementInternal (reader, false);
+			return element;
+		}
 
+		public override void Add (BehaviorExtensionElement element) {
+			base.Add (element);
+		}
 
+		public override bool CanAdd (BehaviorExtensionElement element) {
+			return base.CanAdd (element);
+		}
 	}
 
 }

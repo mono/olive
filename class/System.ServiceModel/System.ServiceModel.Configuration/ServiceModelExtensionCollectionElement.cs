@@ -33,13 +33,15 @@ using System.Configuration;
 namespace System.ServiceModel.Configuration
 {
 	[MonoTODO]
-	public partial class ServiceModelExtensionCollectionElement<TServiceModelExtensionElement> 
+	public class ServiceModelExtensionCollectionElement<TServiceModelExtensionElement> 
 		: ConfigurationElement,
 		ICollection<TServiceModelExtensionElement>,
 		IEnumerable<TServiceModelExtensionElement>, 
 		IEnumerable
 		where TServiceModelExtensionElement : ServiceModelExtensionElement
 	{
+		Dictionary<Type, TServiceModelExtensionElement> _list = new Dictionary<Type, TServiceModelExtensionElement> ();
+
 		public virtual void Add (TServiceModelExtensionElement element)
 		{
 			throw new NotImplementedException ();
@@ -106,8 +108,29 @@ namespace System.ServiceModel.Configuration
 
 		public TServiceModelExtensionElement this [Type extensionType] {
 			get {
-				throw new NotImplementedException ();
+				return _list[extensionType];
 			}
+		}
+
+		protected override void DeserializeElement (System.Xml.XmlReader reader, bool serializeCollectionKey) {
+			base.DeserializeElement (reader, serializeCollectionKey);
+		}
+
+		protected override bool OnDeserializeUnrecognizedElement (string elementName, System.Xml.XmlReader reader) {
+			TServiceModelExtensionElement ext= DeserializeExtensionElement (elementName, reader);
+			if (ext == null)
+				return false;
+			_list [ext.GetType ()] = ext;
+			return true;
+		}
+
+		internal virtual TServiceModelExtensionElement DeserializeExtensionElement (string elementName, System.Xml.XmlReader reader) {
+			return null;
+		}
+
+		[MonoTODO]
+		public int Count {
+			get { throw new NotImplementedException (); }
 		}
 	}
 }

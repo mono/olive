@@ -59,24 +59,41 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
-	[MonoTODO]
-	public sealed partial class ServiceBehaviorElementCollection
+	public sealed class ServiceBehaviorElementCollection
 		 : ServiceModelEnhancedConfigurationElementCollection<ServiceBehaviorElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ServiceBehaviorElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
-
 		public ServiceBehaviorElementCollection ()
 		{
+			AddElementName = "behavior";
 		}
 
 
 		// Properties
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((ServiceBehaviorElement) element).Name;
+		}
+
+		protected override bool ThrowOnDuplicate {
+			get { return true; }
+		}
+
+		internal ServiceBehaviorElement Find (string name) {
+			foreach (ServiceBehaviorElement el in this)
+				if (el.Name == name)
+					return el;
+			return null;
+		}
+
+		[MonoTODO]
+		protected override void BaseAdd (ConfigurationElement element) {
+			base.BaseAdd (element);
+		}
+
+		[MonoTODO]
+		protected override void DeserializeElement (
+			XmlReader reader, bool serializeCollectionKey) {
+			base.DeserializeElement (reader, serializeCollectionKey);
+		}
 
 
 	}

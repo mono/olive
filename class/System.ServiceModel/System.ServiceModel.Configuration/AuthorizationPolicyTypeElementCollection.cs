@@ -59,26 +59,13 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
-	[MonoTODO]
-	public sealed partial class AuthorizationPolicyTypeElementCollection
+	public sealed class AuthorizationPolicyTypeElementCollection
 		 : ServiceModelConfigurationElementCollection<AuthorizationPolicyTypeElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static AuthorizationPolicyTypeElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
-
-		public AuthorizationPolicyTypeElementCollection ()
-		{
-		}
-
-
 		// Properties
-
-
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((AuthorizationPolicyTypeElement) element).PolicyType;
+		}
 	}
 
 }

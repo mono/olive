@@ -54,14 +54,12 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceAuthorizationElement
+	public sealed class ServiceAuthorizationElement
 		 : BehaviorExtensionElement
 	{
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty authorization_policies;
-		static ConfigurationProperty behavior_type;
 		static ConfigurationProperty impersonate_caller_for_all_operations;
 		static ConfigurationProperty principal_permission_mode;
 		static ConfigurationProperty role_provider_name;
@@ -71,11 +69,7 @@ namespace System.ServiceModel.Configuration
 		{
 			properties = new ConfigurationPropertyCollection ();
 			authorization_policies = new ConfigurationProperty ("authorizationPolicies",
-				typeof (AuthorizationPolicyTypeElementCollection), null, null/* FIXME: get converter for AuthorizationPolicyTypeElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
+				typeof (AuthorizationPolicyTypeElementCollection), null, null, null,
 				ConfigurationPropertyOptions.None);
 
 			impersonate_caller_for_all_operations = new ConfigurationProperty ("impersonateCallerForAllOperations",
@@ -83,19 +77,18 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			principal_permission_mode = new ConfigurationProperty ("principalPermissionMode",
-				typeof (PrincipalPermissionMode), "UseWindowsGroups", null/* FIXME: get converter for PrincipalPermissionMode*/, null,
+				typeof (PrincipalPermissionMode), "UseWindowsGroups", null, null,
 				ConfigurationPropertyOptions.None);
 
 			role_provider_name = new ConfigurationProperty ("roleProviderName",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue),
 				ConfigurationPropertyOptions.None);
 
 			service_authorization_manager_type = new ConfigurationProperty ("serviceAuthorizationManagerType",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue),
 				ConfigurationPropertyOptions.None);
 
 			properties.Add (authorization_policies);
-			properties.Add (behavior_type);
 			properties.Add (impersonate_caller_for_all_operations);
 			properties.Add (principal_permission_mode);
 			properties.Add (role_provider_name);
@@ -116,7 +109,7 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof(ServiceAuthorizationBehavior); }
 		}
 
 		[ConfigurationProperty ("impersonateCallerForAllOperations",
@@ -161,6 +154,10 @@ namespace System.ServiceModel.Configuration
 			set { base [service_authorization_manager_type] = value; }
 		}
 
+		[MonoTODO]
+		protected internal override object CreateBehavior () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

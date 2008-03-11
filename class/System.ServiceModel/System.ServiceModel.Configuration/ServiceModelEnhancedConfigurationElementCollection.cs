@@ -54,27 +54,20 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public abstract partial class ServiceModelEnhancedConfigurationElementCollection<TConfigurationElement>
+	public abstract class ServiceModelEnhancedConfigurationElementCollection<TConfigurationElement>
 		 : ServiceModelConfigurationElementCollection<TConfigurationElement>,  ICollection,  IEnumerable
 		where TConfigurationElement : ConfigurationElement, new()
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ServiceModelEnhancedConfigurationElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
-
-		protected ServiceModelEnhancedConfigurationElementCollection ()
-		{
-		}
-
-
 		// Properties
+		[MonoTODO]
+		protected override bool ThrowOnDuplicate {
+			get { return base.ThrowOnDuplicate; }
+		}
 
-
+		[MonoTODO]
+		protected override void BaseAdd (ConfigurationElement element) {
+			base.BaseAdd (element);
+		}
 	}
 
 }

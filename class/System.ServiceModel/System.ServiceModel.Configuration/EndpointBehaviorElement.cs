@@ -54,29 +54,27 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class EndpointBehaviorElement
+	public class EndpointBehaviorElement
 		 : NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>,  ICollection<BehaviorExtensionElement>,  IEnumerable<BehaviorExtensionElement>,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
+		ConfigurationPropertyCollection _properties;
 
-		static EndpointBehaviorElement ()
-		{
-			properties = NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>.CreateBaseProperties ();
-
-			properties.Add (new ConfigurationProperty ("callbackDebug",
-				typeof (CallbackDebugElement), null, null/* FIXME: get converter for CallbackDebugElement */, null,
-				ConfigurationPropertyOptions.None));
+		public EndpointBehaviorElement (string name) {
+			Name = name;
 		}
 
-		public EndpointBehaviorElement ()
-		{
+		public EndpointBehaviorElement () {
 		}
 
 		// Properties
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("callbackDebug", typeof (CallbackDebugElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 	}
 

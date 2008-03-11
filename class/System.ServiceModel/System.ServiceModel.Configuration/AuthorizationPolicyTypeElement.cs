@@ -55,7 +55,7 @@ using System.Xml;
 namespace System.ServiceModel.Configuration
 {
 	[MonoTODO]
-	public sealed partial class AuthorizationPolicyTypeElement
+	public sealed class AuthorizationPolicyTypeElement
 		 : ConfigurationElement
 	{
 		// Static Fields
@@ -66,7 +66,7 @@ namespace System.ServiceModel.Configuration
 		{
 			properties = new ConfigurationPropertyCollection ();
 			policy_type = new ConfigurationProperty ("policyType",
-				typeof (string), null, new StringConverter (), null,
+				typeof (string), null, null, new StringValidator (1, int.MaxValue), 
 				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
 
 			properties.Add (policy_type);
@@ -74,6 +74,11 @@ namespace System.ServiceModel.Configuration
 
 		public AuthorizationPolicyTypeElement ()
 		{
+		}
+		
+		[MonoTODO]
+		public AuthorizationPolicyTypeElement (string configurationName) {
+			throw new NotImplementedException ();
 		}
 
 
