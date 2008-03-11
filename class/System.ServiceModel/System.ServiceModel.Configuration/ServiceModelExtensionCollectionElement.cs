@@ -44,6 +44,10 @@ namespace System.ServiceModel.Configuration
 		{
 			throw new NotImplementedException ();
 		}
+		
+		public virtual bool CanAdd (TServiceModelExtensionElement element) {
+			throw new NotImplementedException ();
+		}
 
 		public void Clear ()
 		{
