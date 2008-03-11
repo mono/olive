@@ -1,5 +1,9 @@
 2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Makefile : oops, wrong EXTRA_DISTFILES.
+
+2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Makefile : add EXTRA_DISTFILES.
 
 2008-02-28 Eyal Alaluf <eyala@mainsoft.com>

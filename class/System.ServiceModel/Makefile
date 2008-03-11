@@ -27,8 +27,8 @@ LIB_MCS_FLAGS = \
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
 TEST_EXTRA_FILES = \
-	$(topdir)/Test/Resources/*.cer \
-	$(topdir)/Test/Resources/*.pfx
+	Test/Resources/*.cer \
+	Test/Resources/*.pfx
 
 EXTRA_DISTFILES = $(RESOURCE_FILES) $(TEST_EXTRA_FILES)
 
