@@ -305,6 +305,7 @@ System.ServiceModel.Configuration/BasicHttpBindingCollectionElement.cs
 System.ServiceModel.Configuration/BasicHttpBindingElement.cs
 System.ServiceModel.Configuration/BasicHttpMessageSecurityElement.cs
 System.ServiceModel.Configuration/BasicHttpSecurityElement.cs
+System.ServiceModel.Configuration/BehaviorExtensionElement.cs
 System.ServiceModel.Configuration/BehaviorsSection.cs
 System.ServiceModel.Configuration/BinaryMessageEncodingElement.cs
 System.ServiceModel.Configuration/BindingCollectionElement.cs
