@@ -1,3 +1,13 @@
+2008-03-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
+	  System.Windows.Automation/AutomationPattern.cs,
+	  System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/ControlType.cs,
+	  System.Windows.Automation/ElementNotEnabledException.cs: Added
+	  classes necessary to compile simple provider example from MSDN. 
+	  Mostly unimplemented, of course.
+
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Test/System.Windows.Automation.Text,

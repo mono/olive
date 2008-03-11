@@ -2,10 +2,14 @@ System.Windows.Automation/RowOrColumnMajor.cs
 System.Windows.Automation/WindowVisualState.cs
 System.Windows.Automation/StructureChangedEventArgs.cs
 System.Windows.Automation/DockPosition.cs
+System.Windows.Automation/AutomationPattern.cs
 System.Windows.Automation/AutomationProperty.cs
 System.Windows.Automation/AutomationPropertyChangedEventArgs.cs
 System.Windows.Automation/AutomationEvent.cs
 System.Windows.Automation/AutomationIdentifier.cs
+System.Windows.Automation/ControlType.cs
+System.Windows.Automation/ElementNotEnabledException.cs
+System.Windows.Automation/InvokePatternIdentifiers.cs
 System.Windows.Automation/ScrollAmount.cs
 System.Windows.Automation/StructureChangeType.cs
 System.Windows.Automation/ToggleState.cs
