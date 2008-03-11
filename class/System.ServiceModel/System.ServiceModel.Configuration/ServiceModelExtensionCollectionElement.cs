@@ -93,5 +93,17 @@ namespace System.ServiceModel.Configuration
 		bool ICollection<TServiceModelExtensionElement>.IsReadOnly {
 			get { throw new NotImplementedException (); }
 		}
+
+		public TServiceModelExtensionElement this [int index] {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
+
+		public TServiceModelExtensionElement this [Type extensionType] {
+			get {
+				throw new NotImplementedException ();
+			}
+		}
 	}
 }
