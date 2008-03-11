@@ -10,12 +10,15 @@
 
 sourcefile = $(LIBRARY).sources
 
+TEST_HARNESS=$(topdir)/class/lib/$(PROFILE)/nunit-console.exe
+
 # If the directory contains the per profile include file, generate list file.
 PROFILE_sources = $(PROFILE)_$(LIBRARY).sources
 ifeq ($(wildcard $(PROFILE_sources)), $(PROFILE_sources))
 PROFILE_excludes = $(wildcard $(PROFILE)_$(LIBRARY).exclude.sources)
+COMMON_sourcefile := $(sourcefile)
 sourcefile = $(depsdir)/$(PROFILE)_$(LIBRARY).sources
-$(sourcefile): $(PROFILE_sources) $(PROFILE_excludes)
+$(sourcefile): $(PROFILE_sources) $(PROFILE_excludes) $(COMMON_sourcefile)
 	@echo Creating the per profile list $@ ...
 	$(topdir)/tools/gensources.sh $(PROFILE_sources) $(PROFILE_excludes) > $@
 endif
@@ -37,14 +40,22 @@ ifndef LIBRARY_NAME
 LIBRARY_NAME = $(LIBRARY)
 endif
 
+ifdef LIBRARY_COMPAT
+lib_dir = compat
+else
+lib_dir = lib
+endif
+
 makefrag = $(depsdir)/$(PROFILE)_$(LIBRARY).makefrag
-the_lib = $(topdir)/class/lib/$(PROFILE)/$(LIBRARY_NAME)
+the_libdir = $(topdir)/class/$(lib_dir)/$(PROFILE)/
+the_lib = $(the_libdir)$(LIBRARY_NAME)
 the_pdb = $(the_lib:.dll=.pdb)
 the_mdb = $(the_lib).mdb
 library_CLEAN_FILES += $(makefrag) $(the_lib) $(the_pdb) $(the_mdb)
 
 ifdef LIBRARY_NEEDS_POSTPROCESSING
-build_lib = fixup/$(PROFILE)/$(LIBRARY_NAME)
+build_libdir = fixup/$(PROFILE)/
+build_lib = $(build_libdir)$(LIBRARY_NAME)
 library_CLEAN_FILES += $(build_lib) $(build_lib:.dll=.pdb)
 else
 build_lib = $(the_lib)
@@ -56,33 +67,20 @@ test_nunit_dep = $(test_nunit_lib:%=$(topdir)/class/lib/$(PROFILE)/%)
 test_nunit_ref = $(test_nunit_dep:%=-r:%)
 library_CLEAN_FILES += TestResult*.xml
 
-ifndef test_against
-test_against = $(the_lib)
-test_dep = $(the_lib)
-endif
-
-ifndef test_lib
 test_lib = $(LIBRARY:.dll=_test_$(PROFILE).dll)
 test_sourcefile = $(LIBRARY:.dll=_test.dll.sources)
-else
-test_sourcefile = $(test_lib).sources
-endif
 test_pdb = $(test_lib:.dll=.pdb)
 test_response = $(depsdir)/$(test_lib).response
 test_makefrag = $(depsdir)/$(test_lib).makefrag
-test_flags = -r:$(test_against) $(test_nunit_ref) $(TEST_MCS_FLAGS)
+test_flags = -r:$(the_lib) $(test_nunit_ref) $(TEST_MCS_FLAGS)
 library_CLEAN_FILES += $(LIBRARY:.dll=_test*.dll) $(LIBRARY:.dll=_test*.pdb) $(test_response) $(test_makefrag)
 
-ifndef btest_lib
 btest_lib = $(LIBRARY:.dll=_btest_$(PROFILE).dll)
 btest_sourcefile = $(LIBRARY:.dll=_btest.dll.sources)
-else
-btest_sourcefile = $(btest_lib).sources
-endif
 btest_pdb = $(btest_lib:.dll=.pdb)
 btest_response = $(depsdir)/$(btest_lib).response
 btest_makefrag = $(depsdir)/$(btest_lib).makefrag
-btest_flags = -r:$(test_against) $(test_nunit_ref) $(TEST_MBAS_FLAGS)
+btest_flags = -r:$(the_lib) $(test_nunit_ref) $(TEST_MBAS_FLAGS)
 library_CLEAN_FILES += $(LIBRARY:.dll=_btest*.dll) $(LIBRARY:.dll=_btest*.pdb) $(btest_response) $(btest_makefrag)
 
 ifndef HAVE_CS_TESTS
@@ -168,7 +166,7 @@ install-local:
 	$(GACUTIL) /i $(the_lib) /f $(gacdir_flag) /root $(GACROOT) $(package_flag)
 
 uninstall-local:
-	-$(GACUTIL) /u $(LIBRARY_NAME:.dll=) $(gacdir_flag) /root $(GACROOT) /package $(FRAMEWORK_VERSION)
+	-$(GACUTIL) /u $(LIBRARY_NAME:.dll=) $(gacdir_flag) /root $(GACROOT) $(package_flag)
 
 endif
 endif
@@ -203,26 +201,34 @@ test-local: $(test_assemblies)
 run-test-local: run-test-lib
 run-test-ondotnet-local: run-test-ondotnet-lib
 
-## FIXME: i18n problem in the 'sed' command below
+TEST_HARNESS_EXCLUDES = /exclude:NotWorking,ValueAdd,CAS,InetAccess
+TEST_HARNESS_EXCLUDES_ONDOTNET = /exclude:NotDotNet,CAS
 
-ifndef TEST_MONO_PATH
-TEST_MONO_PATH=$(topdir)/class/lib/$(PROFILE)
+ifdef TEST_HARNESS_VERBOSE
+TEST_HARNESS_OUTPUT = /labels
+TEST_HARNESS_OUTPUT_ONDOTNET = /labels
+TEST_HARNESS_POSTPROC = :
+TEST_HARNESS_POSTPROC_ONDOTNET = :
+else
+TEST_HARNESS_OUTPUT = /output:TestResult-$(PROFILE).log
+TEST_HARNESS_OUTPUT_ONDOTNET = /output:TestResult-ondotnet-$(PROFILE).log
+TEST_HARNESS_POSTPROC = (echo ''; cat TestResult-$(PROFILE).log) | sed '1,/^Tests run: /d'
+TEST_HARNESS_POSTPROC_ONDOTNET = (echo ''; cat TestResult-ondotnet-$(PROFILE).log) | sed '1,/^Tests run: /d'
 endif
 
+## FIXME: i18n problem in the 'sed' command below
 run-test-lib: test-local
 	ok=:; \
-	MONO_PATH=$(TEST_MONO_PATH) mono $(RUNTIME_FLAGS) $(topdir)/class/lib/$(PROFILE)/nunit-console.exe $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) /output:TestResult-$(PROFILE).log /exclude:NotWorking,ValueAdd,CAS,InetAccess /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
-	sed '1,/^Tests run: /d' TestResult-$(PROFILE).log; \
-	$$ok
+	MONO_REGISTRY_PATH="$(HOME)/.mono/registry" $(TEST_RUNTIME) $(RUNTIME_FLAGS) $(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) $(TEST_HARNESS_EXCLUDES) $(TEST_HARNESS_OUTPUT) /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	$(TEST_HARNESS_POSTPROC) ; $$ok
 
 run-test-ondotnet-lib: test-local
 	ok=:; \
-	$(TEST_HARNESS_ONDOTNET) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) /exclude=NotDotNet,CAS /output:TestResult-ondotnet-$(PROFILE).log /xml:TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
-	sed '1,/^Tests run: /d' TestResult-ondotnet-$(PROFILE).log; \
-	$$ok
+	$(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) $(TEST_HARNESS_EXCLUDES_ONDOTNET) $(TEST_HARNESS_OUTPUT_ONDOTNET) /xml:TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	$(TEST_HARNESS_POSTPROC_ONDOTNET) ; $$ok
 endif
 
-DISTFILES = $(sourcefile) $(EXTRA_DISTFILES)
+DISTFILES = $(wildcard *$(LIBRARY)*.sources) $(EXTRA_DISTFILES)
 
 TEST_FILES =
 
@@ -235,9 +241,10 @@ TEST_FILES += `sed -e '/^$$/d' -e 's,^,Test/,' $(btest_sourcefile)`
 DISTFILES += $(btest_sourcefile)
 endif
 
+# make dist will collect files in .sources files from all profiles
 dist-local: dist-default
 	subs=' ' ; \
-	for f in `cat $(sourcefile)` $(TEST_FILES) ; do \
+	for f in `$(topdir)/tools/removecomments.sh $(wildcard *$(LIBRARY).sources)` $(TEST_FILES) ; do \
 	  case $$f in \
 	  ../*) : ;; \
 	  *) dest=`dirname $$f` ; \
@@ -270,6 +277,15 @@ ifndef LIBRARY_SNK
 LIBRARY_SNK = $(topdir)/class/mono.snk
 endif
 
+ifdef gacutil
+$(gacutil):
+	cd $(topdir) && $(MAKE) PROFILE=net_1_1_bootstrap
+endif
+
+ifdef sn
+$(sn):
+	cd $(topdir) && $(MAKE) PROFILE=net_1_1_bootstrap
+endif
 
 ifdef BUILT_SOURCES
 ifeq (cat, $(PLATFORM_CHANGE_SEPARATOR_CMD))
@@ -281,12 +297,15 @@ endif
 
 # The library
 
-$(build_lib): $(response) $(BUILT_SOURCES)
+$(the_lib): $(the_libdir)/.stamp
+
+$(build_lib): $(response) $(sn) $(BUILT_SOURCES) $(build_libdir:=/.stamp)
 ifdef LIBRARY_USE_INTERMEDIATE_FILE
 	$(LIBRARY_COMPILE) $(LIBRARY_FLAGS) $(LIB_MCS_FLAGS) -target:library -out:$(LIBRARY_NAME) $(BUILT_SOURCES_cmdline) @$(response)
 	$(SN) $(SNFLAGS) $(LIBRARY_NAME) $(LIBRARY_SNK)
 	mv $(LIBRARY_NAME) $@
 	test ! -f $(LIBRARY_NAME).mdb || mv $(LIBRARY_NAME).mdb $@.mdb
+	test ! -f $(LIBRARY_NAME:.dll=.pdb) || mv $(LIBRARY_NAME:.dll=.pdb) $(dir $@)$(LIBRARY_NAME:.dll=.pdb)
 else
 	$(LIBRARY_COMPILE) $(LIBRARY_FLAGS) $(LIB_MCS_FLAGS) -target:library -out:$@ $(BUILT_SOURCES_cmdline) @$(response)
 	$(SN) $(SNFLAGS) $@ $(LIBRARY_SNK)
@@ -309,7 +328,7 @@ endif
 
 ifdef HAVE_CS_TESTS
 
-$(test_lib): $(test_dep) $(test_response) $(test_nunit_dep)
+$(test_lib): $(the_lib) $(test_response) $(test_nunit_dep)
 	$(TEST_COMPILE) -target:library -out:$@ $(test_flags) @$(test_response)
 
 $(test_response): $(test_sourcefile)
@@ -326,7 +345,7 @@ endif
 
 ifdef HAVE_VB_TESTS
 
-$(btest_lib): $(test_dep) $(btest_response) $(test_nunit_dep)
+$(btest_lib): $(the_lib) $(btest_response) $(test_nunit_dep)
 	$(BTEST_COMPILE) -target:library -out:$@ $(btest_flags) @$(btest_response)
 
 $(btest_response): $(btest_sourcefile)
@@ -345,5 +364,7 @@ endif
 include $(topdir)/build/corcompare.make
 
 all-local: $(makefrag) $(test_makefrag) $(btest_makefrag)
-$(makefrag) $(test_makefrag) $(btest_makefrag): $(topdir)/build/library.make
-
+ifneq ($(response),$(sourcefile))
+$(response): $(topdir)/build/library.make $(depsdir)/.stamp
+endif
+$(makefrag) $(test_response) $(test_makefrag) $(btest_response) $(btest_makefrag): $(topdir)/build/library.make $(depsdir)/.stamp

@@ -14,9 +14,10 @@ dots := $(shell echo $(thisdir) |sed -e 's,[^./][^/]*,..,g')
 topdir := $(dots)
 
 VERSION = 0.93
+CODEPAGE = 65001
 
-USE_MCS_FLAGS = $(LOCAL_MCS_FLAGS) $(PLATFORM_MCS_FLAGS) $(PROFILE_MCS_FLAGS) $(MCS_FLAGS)
-USE_MBAS_FLAGS = $(LOCAL_MBAS_FLAGS) $(PLATFORM_MBAS_FLAGS) $(PROFILE_MBAS_FLAGS) $(MBAS_FLAGS)
+USE_MCS_FLAGS = /codepage:$(CODEPAGE) $(LOCAL_MCS_FLAGS) $(PLATFORM_MCS_FLAGS) $(PROFILE_MCS_FLAGS) $(MCS_FLAGS)
+USE_MBAS_FLAGS = /codepage:$(CODEPAGE) $(LOCAL_MBAS_FLAGS) $(PLATFORM_MBAS_FLAGS) $(PROFILE_MBAS_FLAGS) $(MBAS_FLAGS)
 USE_CFLAGS = $(LOCAL_CFLAGS) $(CFLAGS)
 CSCOMPILE = $(MCS) $(USE_MCS_FLAGS)
 BASCOMPILE = $(MBAS) $(USE_MBAS_FLAGS)
@@ -27,11 +28,11 @@ INSTALL_DATA = $(INSTALL) -c -m 644
 INSTALL_BIN = $(INSTALL) -c -m 755
 INSTALL_LIB = $(INSTALL_BIN)
 MKINSTALLDIRS = $(SHELL) $(topdir)/mkinstalldirs
-INTERNAL_MCS = mcs
-INTERNAL_MBAS = mbas
+INTERNAL_MCS = mcs1
+INTERNAL_MBAS = vbnc
 INTERNAL_GMCS = gmcs
-INTERNAL_ILASM = ilasm
-INTERNAL_RESGEN = resgen
+INTERNAL_ILASM = ilasm2
+INTERNAL_RESGEN = resgen2
 corlib = mscorlib.dll
 
 depsdir = $(topdir)/build/deps
@@ -46,7 +47,7 @@ export CC
 export CFLAGS
 export INSTALL
 export MKINSTALLDIRS
-export TEST_HARNESS_ONDOTNET
+export TEST_HARNESS
 export BOOTSTRAP_MCS
 export DESTDIR
 export RESGEN
@@ -95,7 +96,7 @@ endif
 include $(topdir)/build/profiles/$(PROFILE).make
 -include $(topdir)/build/config.make
 
-ifdef OVERRIDE_STD_TARGETS
+ifdef OVERRIDE_TARGET_ALL
 all: all.override
 else
 all: do-all
@@ -103,11 +104,7 @@ endif
 
 STD_TARGETS = test run-test run-test-ondotnet clean install uninstall
 
-ifdef OVERRIDE_STD_TARGETS
-$(STD_TARGETS): %: %.override
-else
 $(STD_TARGETS): %: do-%
-endif
 
 do-run-test:
 	ok=:; $(MAKE) run-test-recursive || ok=false; $(MAKE) run-test-local || ok=false; $$ok
@@ -122,6 +119,10 @@ do-%: %-recursive
 PROFILE_SUBDIRS := $($(PROFILE)_SUBDIRS)
 ifndef PROFILE_SUBDIRS
 PROFILE_SUBDIRS = $(SUBDIRS)
+endif
+
+ifndef FRAMEWORK_VERSION_MAJOR
+FRAMEWORK_VERSION_MAJOR = $(basename $(FRAMEWORK_VERSION))
 endif
 
 %-recursive:
@@ -161,6 +162,10 @@ dist-default:
 	    dest=`dirname $(distdir)/$$f` ; \
 	    $(MKINSTALLDIRS) $$dest && cp -p $$f $$dest || exit 1 ; \
 	done
+
+%/.stamp:
+	$(MKINSTALLDIRS) $(@D)
+	touch $@
 
 # Useful
 

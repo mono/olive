@@ -1,3 +1,8 @@
+2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* rules.make, library.make : update to be in sync with those in mcs
+	  with some changes.
+
 2008-02-27  Atsushi Enomoto <atsushi@ximian.com>
 
 	* library.make: revert previous change. NotDotNet is not excluded
