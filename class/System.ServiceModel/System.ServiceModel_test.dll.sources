@@ -45,6 +45,7 @@ System.ServiceModel.Configuration/MexBindingElementTest.cs
 System.ServiceModel.Configuration/NetNamedPipeBindingElementTest.cs
 System.ServiceModel.Configuration/NetPeerTcpBindingElementTest.cs
 System.ServiceModel.Configuration/NetTcpBindingElementTest.cs
+System.ServiceModel.Configuration/ServiceBehaviorElementTest.cs
 System.ServiceModel.Configuration/ServiceModelConfigurationElementCollectionTest.cs
 System.ServiceModel.Configuration/ServiceModelSectionGroupTest.cs
 System.ServiceModel.Configuration/StandardBindingCollectionElementTest.cs
