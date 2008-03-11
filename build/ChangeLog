@@ -1,5 +1,9 @@
 2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* library.make : COMMON_sourcefile broke build, so removed them.
+
+2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* rules.make, library.make : update to be in sync with those in mcs
 	  with some changes.
 
