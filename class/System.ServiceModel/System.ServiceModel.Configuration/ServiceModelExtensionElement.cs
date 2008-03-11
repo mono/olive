@@ -55,35 +55,34 @@ using System.Xml;
 namespace System.ServiceModel.Configuration
 {
 	[MonoTODO]
-	public abstract partial class ServiceModelExtensionElement
+	public abstract class ServiceModelExtensionElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty configuration_element_name;
-
-		static ServiceModelExtensionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			configuration_element_name = new ConfigurationProperty ("",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (configuration_element_name);
-		}
-
 		protected ServiceModelExtensionElement ()
 		{
 		}
 
-
-		// Properties
-
 		public string ConfigurationElementName {
-			get { return (string) base [configuration_element_name]; }
+			get {
+				throw new NotImplementedException ();
+			}
 		}
 
+		public virtual void CopyFrom (ServiceModelExtensionElement from) {
+			throw new NotImplementedException ();
+		}
 
+		protected override bool IsModified () {
+			throw new NotImplementedException ();
+		}
+
+		protected override void Reset (ConfigurationElement parentElement) {
+			throw new NotImplementedException ();
+		}
+
+		protected override bool SerializeElement (XmlWriter writer, bool serializeCollectionKey) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }
