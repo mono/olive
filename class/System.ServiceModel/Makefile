@@ -26,7 +26,11 @@ LIB_MCS_FLAGS = \
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
-EXTRA_DISTFILES = $(RESOURCE_FILES)
+TEST_EXTRA_FILES = \
+	$(topdir)/Test/Resources/*.cer \
+	$(topdir)/Test/Resources/*.pfx
+
+EXTRA_DISTFILES = $(RESOURCE_FILES) $(TEST_EXTRA_FILES)
 
 # This is a WinFX only assembly
 
