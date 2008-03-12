@@ -54,8 +54,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceElement
+	public sealed class ServiceElement
 		 : ConfigurationElement
 	{
 		// Static Fields
@@ -69,19 +68,19 @@ namespace System.ServiceModel.Configuration
 		{
 			properties = new ConfigurationPropertyCollection ();
 			behavior_configuration = new ConfigurationProperty ("behaviorConfiguration",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.None);
 
 			endpoints = new ConfigurationProperty ("",
-				typeof (ServiceEndpointElementCollection), null, null/* FIXME: get converter for ServiceEndpointElementCollection*/, null,
+				typeof (ServiceEndpointElementCollection), null, null, null,
 				ConfigurationPropertyOptions.IsDefaultCollection);
 
 			host = new ConfigurationProperty ("host",
-				typeof (HostElement), null, null/* FIXME: get converter for HostElement*/, null,
+				typeof (HostElement), null, null, null,
 				ConfigurationPropertyOptions.None);
 
 			name = new ConfigurationProperty ("name",
-				typeof (string), null, new StringConverter (), null,
+				typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
 
 			properties.Add (behavior_configuration);

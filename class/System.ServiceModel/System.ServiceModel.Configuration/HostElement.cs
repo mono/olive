@@ -54,51 +54,25 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class HostElement
+	public sealed class HostElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty base_addresses;
-		static ConfigurationProperty timeouts;
-
-		static HostElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			base_addresses = new ConfigurationProperty ("baseAddresses",
-				typeof (BaseAddressElementCollection), null, null/* FIXME: get converter for BaseAddressElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			timeouts = new ConfigurationProperty ("timeouts",
-				typeof (HostTimeoutsElement), null, null/* FIXME: get converter for HostTimeoutsElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (base_addresses);
-			properties.Add (timeouts);
-		}
-
-		public HostElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("baseAddresses",
 			 Options = ConfigurationPropertyOptions.None)]
 		public BaseAddressElementCollection BaseAddresses {
-			get { return (BaseAddressElementCollection) base [base_addresses]; }
+			get { return (BaseAddressElementCollection) base ["baseAddresses"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("timeouts",
 			 Options = ConfigurationPropertyOptions.None)]
 		public HostTimeoutsElement Timeouts {
-			get { return (HostTimeoutsElement) base [timeouts]; }
+			get { return (HostTimeoutsElement) base ["timeouts"]; }
 		}
 
 

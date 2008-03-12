@@ -54,8 +54,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class BaseAddressElement
+	public sealed class BaseAddressElement
 		 : ConfigurationElement
 	{
 		// Static Fields
@@ -66,7 +65,7 @@ namespace System.ServiceModel.Configuration
 		{
 			properties = new ConfigurationPropertyCollection ();
 			base_address = new ConfigurationProperty ("baseAddress",
-				typeof (string), null, new StringConverter (), null,
+				typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
 
 			properties.Add (base_address);

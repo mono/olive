@@ -54,8 +54,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceEndpointElement
+	public sealed class ServiceEndpointElement
 		 : ConfigurationElement
 	{
 		// Static Fields
@@ -81,35 +80,35 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.IsKey);
 
 			behavior_configuration = new ConfigurationProperty ("behaviorConfiguration",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.None);
 
 			binding = new ConfigurationProperty ("binding",
-				typeof (string), null, new StringConverter (), null,
+				typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
 
 			binding_configuration = new ConfigurationProperty ("bindingConfiguration",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsKey);
 
 			binding_name = new ConfigurationProperty ("bindingName",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsKey);
 
 			binding_namespace = new ConfigurationProperty ("bindingNamespace",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsKey);
 
 			contract = new ConfigurationProperty ("contract",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.IsKey);
 
 			headers = new ConfigurationProperty ("headers",
-				typeof (AddressHeaderCollectionElement), null, null/* FIXME: get converter for AddressHeaderCollectionElement*/, null,
+				typeof (AddressHeaderCollectionElement), null, null, null,
 				ConfigurationPropertyOptions.None);
 
 			identity = new ConfigurationProperty ("identity",
-				typeof (IdentityElement), null, null/* FIXME: get converter for IdentityElement*/, null,
+				typeof (IdentityElement), null, null, null,
 				ConfigurationPropertyOptions.None);
 
 			listen_uri = new ConfigurationProperty ("listenUri",
@@ -117,11 +116,11 @@ namespace System.ServiceModel.Configuration
 				ConfigurationPropertyOptions.None);
 
 			listen_uri_mode = new ConfigurationProperty ("listenUriMode",
-				typeof (ListenUriMode), "Explicit", null/* FIXME: get converter for ListenUriMode*/, null,
+				typeof (ListenUriMode), "Explicit", null, null,
 				ConfigurationPropertyOptions.None);
 
 			name = new ConfigurationProperty ("name",
-				typeof (string), "", new StringConverter (), null,
+				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null),
 				ConfigurationPropertyOptions.None);
 
 			properties.Add (address);

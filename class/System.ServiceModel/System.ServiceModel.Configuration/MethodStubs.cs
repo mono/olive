@@ -38,16 +38,6 @@ namespace System.ServiceModel.Configuration
 
 	}
 
-// BaseAddressElementCollection
-	public sealed partial class BaseAddressElementCollection
-		 : ServiceModelConfigurationElementCollection<BaseAddressElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((BaseAddressElement) element).BaseAddress;
-		}
-	}
-
 // ChannelEndpointElementCollection
 	public sealed partial class ChannelEndpointElementCollection
 		 : ServiceModelEnhancedConfigurationElementCollection<ChannelEndpointElement>
@@ -183,26 +173,6 @@ namespace System.ServiceModel.Configuration
 			b.HttpGetUrl = HttpGetUrl;
 			b.HttpsGetUrl = HttpsGetUrl;
 			return b;
-		}
-	}
-
-// ServiceElementCollection
-	public sealed partial class ServiceElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<ServiceElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((ServiceElement) element).Name;
-		}
-	}
-
-// ServiceEndpointElementCollection
-	public sealed partial class ServiceEndpointElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<ServiceEndpointElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((ServiceEndpointElement) element).Name;
 		}
 	}
 

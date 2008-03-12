@@ -54,40 +54,20 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServicesSection
+	public sealed class ServicesSection
 		 : ConfigurationSection
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty services;
-
-		static ServicesSection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			services = new ConfigurationProperty ("",
-				typeof (ServiceElementCollection), null, null/* FIXME: get converter for ServiceElementCollection*/, null,
-				ConfigurationPropertyOptions.IsDefaultCollection);
-
-			properties.Add (services);
-		}
-
-		public ServicesSection ()
-		{
-		}
-
-
 		// Properties
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("",
 			 Options = ConfigurationPropertyOptions.IsDefaultCollection,
 			IsDefaultCollection = true)]
 		public ServiceElementCollection Services {
-			get { return (ServiceElementCollection) base [services]; }
+			get { return (ServiceElementCollection) base [String.Empty]; }
 		}
 
 

@@ -54,99 +54,49 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class IdentityElement
+	public sealed class IdentityElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty certificate;
-		static ConfigurationProperty certificate_reference;
-		static ConfigurationProperty dns;
-		static ConfigurationProperty rsa;
-		static ConfigurationProperty service_principal_name;
-		static ConfigurationProperty user_principal_name;
-
-		static IdentityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			certificate = new ConfigurationProperty ("certificate",
-				typeof (CertificateElement), null, null/* FIXME: get converter for CertificateElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			certificate_reference = new ConfigurationProperty ("certificateReference",
-				typeof (CertificateReferenceElement), null, null/* FIXME: get converter for CertificateReferenceElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			dns = new ConfigurationProperty ("dns",
-				typeof (DnsElement), null, null/* FIXME: get converter for DnsElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			rsa = new ConfigurationProperty ("rsa",
-				typeof (RsaElement), null, null/* FIXME: get converter for RsaElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			service_principal_name = new ConfigurationProperty ("servicePrincipalName",
-				typeof (ServicePrincipalNameElement), null, null/* FIXME: get converter for ServicePrincipalNameElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			user_principal_name = new ConfigurationProperty ("userPrincipalName",
-				typeof (UserPrincipalNameElement), null, null/* FIXME: get converter for UserPrincipalNameElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (certificate);
-			properties.Add (certificate_reference);
-			properties.Add (dns);
-			properties.Add (rsa);
-			properties.Add (service_principal_name);
-			properties.Add (user_principal_name);
-		}
-
-		public IdentityElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("certificate",
 			 Options = ConfigurationPropertyOptions.None)]
 		public CertificateElement Certificate {
-			get { return (CertificateElement) base [certificate]; }
+			get { return (CertificateElement) base ["certificate"]; }
 		}
 
 		[ConfigurationProperty ("certificateReference",
 			 Options = ConfigurationPropertyOptions.None)]
 		public CertificateReferenceElement CertificateReference {
-			get { return (CertificateReferenceElement) base [certificate_reference]; }
+			get { return (CertificateReferenceElement) base ["certificateReference"]; }
 		}
 
 		[ConfigurationProperty ("dns",
 			 Options = ConfigurationPropertyOptions.None)]
 		public DnsElement Dns {
-			get { return (DnsElement) base [dns]; }
+			get { return (DnsElement) base ["dns"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("rsa",
 			 Options = ConfigurationPropertyOptions.None)]
 		public RsaElement Rsa {
-			get { return (RsaElement) base [rsa]; }
+			get { return (RsaElement) base ["rsa"]; }
 		}
 
 		[ConfigurationProperty ("servicePrincipalName",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ServicePrincipalNameElement ServicePrincipalName {
-			get { return (ServicePrincipalNameElement) base [service_principal_name]; }
+			get { return (ServicePrincipalNameElement) base ["servicePrincipalName"]; }
 		}
 
 		[ConfigurationProperty ("userPrincipalName",
 			 Options = ConfigurationPropertyOptions.None)]
 		public UserPrincipalNameElement UserPrincipalName {
-			get { return (UserPrincipalNameElement) base [user_principal_name]; }
+			get { return (UserPrincipalNameElement) base ["userPrincipalName"]; }
 		}
 
 

@@ -59,25 +59,18 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
-	[MonoTODO]
-	public sealed partial class ServiceEndpointElementCollection
+	public sealed class ServiceEndpointElementCollection
 		 : ServiceModelEnhancedConfigurationElementCollection<ServiceEndpointElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ServiceEndpointElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
 
 		public ServiceEndpointElementCollection ()
 		{
+			AddElementName = "endpoint";
 		}
 
-
-		// Properties
-
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((ServiceEndpointElement) element).Name;
+		}
 
 	}
 

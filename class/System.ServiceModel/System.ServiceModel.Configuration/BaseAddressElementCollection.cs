@@ -59,26 +59,12 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.BasicMap)]
-	[MonoTODO]
-	public sealed partial class BaseAddressElementCollection
+	public sealed class BaseAddressElementCollection
 		 : ServiceModelConfigurationElementCollection<BaseAddressElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static BaseAddressElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((BaseAddressElement) element).BaseAddress;
 		}
-
-		public BaseAddressElementCollection ()
-		{
-		}
-
-
-		// Properties
-
-
 	}
 
 }

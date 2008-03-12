@@ -54,57 +54,29 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class HostTimeoutsElement
+	public sealed class HostTimeoutsElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty close_timeout;
-		static ConfigurationProperty open_timeout;
-
-		static HostTimeoutsElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			close_timeout = new ConfigurationProperty ("closeTimeout",
-				typeof (TimeSpan), "00:00:10", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			open_timeout = new ConfigurationProperty ("openTimeout",
-				typeof (TimeSpan), "00:01:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (close_timeout);
-			properties.Add (open_timeout);
-		}
-
-		public HostTimeoutsElement ()
-		{
-		}
-
-
 		// Properties
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("closeTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:00:10")]
 		public TimeSpan CloseTimeout {
-			get { return (TimeSpan) base [close_timeout]; }
-			set { base [close_timeout] = value; }
+			get { return (TimeSpan) base ["closeTimeout"]; }
+			set { base ["closeTimeout"] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("openTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:01:00")]
 		public TimeSpan OpenTimeout {
-			get { return (TimeSpan) base [open_timeout]; }
-			set { base [open_timeout] = value; }
+			get { return (TimeSpan) base ["openTimeout"]; }
+			set { base ["openTimeout"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 
