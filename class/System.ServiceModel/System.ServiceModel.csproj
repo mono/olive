@@ -525,6 +525,7 @@
     <Compile Include="System.ServiceModel.Configuration\BasicHttpBindingElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\BasicHttpMessageSecurityElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\BasicHttpSecurityElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\BehaviorExtensionElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\BehaviorsSection.cs" />
     <Compile Include="System.ServiceModel.Configuration\BinaryMessageEncodingElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\BindingCollectionElement.cs" />
