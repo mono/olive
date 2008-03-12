@@ -54,104 +54,62 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceMetadataPublishingElement
+	public sealed class ServiceMetadataPublishingElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty external_metadata_location;
-		static ConfigurationProperty http_get_enabled;
-		static ConfigurationProperty http_get_url;
-		static ConfigurationProperty https_get_enabled;
-		static ConfigurationProperty https_get_url;
-
-		static ServiceMetadataPublishingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			external_metadata_location = new ConfigurationProperty ("externalMetadataLocation",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			http_get_enabled = new ConfigurationProperty ("httpGetEnabled",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			http_get_url = new ConfigurationProperty ("httpGetUrl",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			https_get_enabled = new ConfigurationProperty ("httpsGetEnabled",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			https_get_url = new ConfigurationProperty ("httpsGetUrl",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (external_metadata_location);
-			properties.Add (http_get_enabled);
-			properties.Add (http_get_url);
-			properties.Add (https_get_enabled);
-			properties.Add (https_get_url);
-		}
-
-		public ServiceMetadataPublishingElement ()
-		{
-		}
-
-
-		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ServiceMetadataBehavior); }
 		}
 
 		[ConfigurationProperty ("externalMetadataLocation",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri ExternalMetadataLocation {
-			get { return (Uri) base [external_metadata_location]; }
-			set { base [external_metadata_location] = value; }
+			get { return (Uri) base ["externalMetadataLocation"]; }
+			set { base ["externalMetadataLocation"] = value; }
 		}
 
 		[ConfigurationProperty ("httpGetEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool HttpGetEnabled {
-			get { return (bool) base [http_get_enabled]; }
-			set { base [http_get_enabled] = value; }
+			get { return (bool) base ["httpGetEnabled"]; }
+			set { base ["httpGetEnabled"] = value; }
 		}
 
 		[ConfigurationProperty ("httpGetUrl",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri HttpGetUrl {
-			get { return (Uri) base [http_get_url]; }
-			set { base [http_get_url] = value; }
+			get { return (Uri) base ["httpGetUrl"]; }
+			set { base ["httpGetUrl"] = value; }
 		}
 
 		[ConfigurationProperty ("httpsGetEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool HttpsGetEnabled {
-			get { return (bool) base [https_get_enabled]; }
-			set { base [https_get_enabled] = value; }
+			get { return (bool) base ["httpsGetEnabled"]; }
+			set { base ["httpsGetEnabled"] = value; }
 		}
 
 		[ConfigurationProperty ("httpsGetUrl",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri HttpsGetUrl {
-			get { return (Uri) base [https_get_url]; }
-			set { base [https_get_url] = value; }
+			get { return (Uri) base ["httpsGetUrl"]; }
+			set { base ["httpsGetUrl"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
+		}
+
+		protected internal override object CreateBehavior () {
+			ServiceMetadataBehavior b = new ServiceMetadataBehavior ();
+			b.HttpGetEnabled = HttpGetEnabled;
+			b.HttpsGetEnabled = HttpsGetEnabled;
+			b.HttpGetUrl = HttpGetUrl;
+			b.HttpsGetUrl = HttpsGetUrl;
+			return b;
 		}
 
 

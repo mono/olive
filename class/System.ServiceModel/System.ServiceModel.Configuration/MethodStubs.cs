@@ -162,20 +162,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// ServiceMetadataPublishingElement 
-	public partial class ServiceMetadataPublishingElement 
-	{
-		protected internal override object CreateBehavior ()
-		{
-			ServiceMetadataBehavior b = new ServiceMetadataBehavior ();
-			b.HttpGetEnabled = HttpGetEnabled;
-			b.HttpsGetEnabled = HttpsGetEnabled;
-			b.HttpGetUrl = HttpGetUrl;
-			b.HttpsGetUrl = HttpsGetUrl;
-			return b;
-		}
-	}
-
 // StandardBindingElementCollection
 	public sealed partial class StandardBindingElementCollection<TBindingConfiguration>
 		 : ServiceModelEnhancedConfigurationElementCollection<TBindingConfiguration>,  ICollection,  IEnumerable
