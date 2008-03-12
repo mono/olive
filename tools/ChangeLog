@@ -1,3 +1,7 @@
+2008-03-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* removecomments.sh : copied from mcs.
+
 2006-10-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	(started to log)
