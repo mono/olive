@@ -58,13 +58,23 @@ namespace System.ServiceModel.Configuration
 	public abstract class ServiceModelExtensionElement
 		 : ConfigurationElement
 	{
+		static Dictionary<Type, string> _lookup = new Dictionary<Type, string> ();
+
+		static ServiceModelExtensionElement () {
+			// fill known extensions types
+			//bindingElementExtensions
+			_lookup [typeof (BinaryMessageEncodingElement)] = "binaryMessageEncoding";
+			//behaviorExtensions
+			_lookup [typeof (ServiceAuthorizationElement)] = "serviceAuthorization";
+		}
+
 		protected ServiceModelExtensionElement ()
 		{
 		}
 
 		public string ConfigurationElementName {
 			get {
-				throw new NotImplementedException ();
+				return _lookup [GetType ()];
 			}
 		}
 
@@ -82,6 +92,10 @@ namespace System.ServiceModel.Configuration
 
 		protected override bool SerializeElement (XmlWriter writer, bool serializeCollectionKey) {
 			throw new NotImplementedException ();
+		}
+
+		internal void DeserializeElementInternal (XmlReader reader, bool serializeCollectionKey) {
+			DeserializeElement (reader, serializeCollectionKey);
 		}
 	}
 

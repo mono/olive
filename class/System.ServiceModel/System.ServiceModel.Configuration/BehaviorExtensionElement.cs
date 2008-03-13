@@ -45,9 +45,5 @@ namespace System.ServiceModel.Configuration
 
 		protected internal abstract object CreateBehavior ();
 
-		internal void DeserializeElementInternal (XmlReader reader, bool serializeCollectionKey) {
-			DeserializeElement (reader, serializeCollectionKey);
-		}
-
 	}
 }

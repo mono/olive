@@ -277,16 +277,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// CustomBindingElement
-	public partial class CustomBindingElement
-	{
-		[MonoTODO]
-		public void ApplyConfiguration (Binding binding)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // DataContractSerializerElement
 	public partial class DataContractSerializerElement
 	{

@@ -54,100 +54,56 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class BinaryMessageEncodingElement
+	public sealed class BinaryMessageEncodingElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty max_read_pool_size;
-		static ConfigurationProperty max_session_size;
-		static ConfigurationProperty max_write_pool_size;
-		static ConfigurationProperty reader_quotas;
-
-		static BinaryMessageEncodingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_read_pool_size = new ConfigurationProperty ("maxReadPoolSize",
-				typeof (int), "64", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_session_size = new ConfigurationProperty ("maxSessionSize",
-				typeof (int), "2048", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_write_pool_size = new ConfigurationProperty ("maxWritePoolSize",
-				typeof (int), "16", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			reader_quotas = new ConfigurationProperty ("readerQuotas",
-				typeof (XmlDictionaryReaderQuotasElement), null, null/* FIXME: get converter for XmlDictionaryReaderQuotasElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (max_read_pool_size);
-			properties.Add (max_session_size);
-			properties.Add (max_write_pool_size);
-			properties.Add (reader_quotas);
-		}
-
-		public BinaryMessageEncodingElement ()
-		{
-		}
-
-
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (BinaryMessageEncodingBindingElement); }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxReadPoolSize",
 			 DefaultValue = "64",
 			 Options = ConfigurationPropertyOptions.None)]
 		public int MaxReadPoolSize {
-			get { return (int) base [max_read_pool_size]; }
-			set { base [max_read_pool_size] = value; }
+			get { return (int) base ["maxReadPoolSize"]; }
+			set { base ["maxReadPoolSize"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxSessionSize",
 			 DefaultValue = "2048",
 			 Options = ConfigurationPropertyOptions.None)]
 		public int MaxSessionSize {
-			get { return (int) base [max_session_size]; }
-			set { base [max_session_size] = value; }
+			get { return (int) base ["maxSessionSize"]; }
+			set { base ["maxSessionSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxWritePoolSize",
 			 DefaultValue = "16",
 			 Options = ConfigurationPropertyOptions.None)]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxWritePoolSize {
-			get { return (int) base [max_write_pool_size]; }
-			set { base [max_write_pool_size] = value; }
+			get { return (int) base ["maxWritePoolSize"]; }
+			set { base ["maxWritePoolSize"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("readerQuotas",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlDictionaryReaderQuotasElement ReaderQuotas {
-			get { return (XmlDictionaryReaderQuotasElement) base [reader_quotas]; }
+			get { return (XmlDictionaryReaderQuotasElement) base ["readerQuotas"]; }
 		}
 
 
