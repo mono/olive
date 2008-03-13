@@ -54,63 +54,41 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class ExtensionsSection
+	public class ExtensionsSection
 		 : ConfigurationSection
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_extensions;
-		static ConfigurationProperty binding_element_extensions;
-		static ConfigurationProperty binding_extensions;
-
-		static ExtensionsSection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_extensions = new ConfigurationProperty ("behaviorExtensions",
-				typeof (ExtensionElementCollection), null, null/* FIXME: get converter for ExtensionElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			binding_element_extensions = new ConfigurationProperty ("bindingElementExtensions",
-				typeof (ExtensionElementCollection), null, null/* FIXME: get converter for ExtensionElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			binding_extensions = new ConfigurationProperty ("bindingExtensions",
-				typeof (ExtensionElementCollection), null, null/* FIXME: get converter for ExtensionElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_extensions);
-			properties.Add (binding_element_extensions);
-			properties.Add (binding_extensions);
-		}
-
-		public ExtensionsSection ()
-		{
-		}
-
+		ConfigurationPropertyCollection _properties;
 
 		// Properties
 
 		[ConfigurationProperty ("behaviorExtensions",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ExtensionElementCollection BehaviorExtensions {
-			get { return (ExtensionElementCollection) base [behavior_extensions]; }
+			get { return (ExtensionElementCollection) base ["behaviorExtensions"]; }
 		}
 
 		[ConfigurationProperty ("bindingElementExtensions",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ExtensionElementCollection BindingElementExtensions {
-			get { return (ExtensionElementCollection) base [binding_element_extensions]; }
+			get { return (ExtensionElementCollection) base ["bindingElementExtensions"]; }
 		}
 
 		[ConfigurationProperty ("bindingExtensions",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ExtensionElementCollection BindingExtensions {
-			get { return (ExtensionElementCollection) base [binding_extensions]; }
+			get { return (ExtensionElementCollection) base ["bindingExtensions"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("behaviorExtensions", typeof (ExtensionElementCollection), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("bindingElementExtensions", typeof (ExtensionElementCollection), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("bindingExtensions", typeof (ExtensionElementCollection), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 
