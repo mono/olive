@@ -60,6 +60,13 @@ namespace System.ServiceModel.Configuration
 	{
 		ConfigurationPropertyCollection _properties;
 
+		public CustomBindingElement () {
+		}
+
+		public CustomBindingElement (string name) {
+			Name = name;
+		}
+
 		// Properties
 
 		[ConfigurationProperty ("closeTimeout",
