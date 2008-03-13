@@ -1,4 +1,4 @@
-//
+﻿//
 // ServiceBehaviorElementTest.cs
 //
 // Author:
@@ -51,6 +51,9 @@ namespace MonoTests.System.ServiceModel.Configuration
 
 			if (serviceAuthorization == null)
 				Assert.Fail ("ServiceAuthorizationElement is not exist in collection.");
+
+			Assert.AreEqual (typeof (ServiceAuthorizationBehavior), serviceAuthorization.BehaviorType, "RoleProviderName");
+			Assert.AreEqual ("serviceAuthorization", serviceAuthorization.ConfigurationElementName, "RoleProviderName");
 
 			Assert.AreEqual ("RoleProvider", serviceAuthorization.RoleProviderName, "RoleProviderName");
 			Assert.AreEqual (PrincipalPermissionMode.UseAspNetRoles, serviceAuthorization.PrincipalPermissionMode, "PrincipalPermissionMode");
