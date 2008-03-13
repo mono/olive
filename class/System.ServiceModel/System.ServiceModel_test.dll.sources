@@ -42,6 +42,7 @@ System.ServiceModel.Configuration/AddressHeaderCollectionElementTest.cs
 System.ServiceModel.Configuration/BasicHttpBindingElementTest.cs
 System.ServiceModel.Configuration/BehaviorsSectionTest.cs
 System.ServiceModel.Configuration/ChannelEndpointElementTest.cs
+System.ServiceModel.Configuration/CustomBindingElementTest.cs
 System.ServiceModel.Configuration/MexBindingElementTest.cs
 System.ServiceModel.Configuration/NetNamedPipeBindingElementTest.cs
 System.ServiceModel.Configuration/NetPeerTcpBindingElementTest.cs
