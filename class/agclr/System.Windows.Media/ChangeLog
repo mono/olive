@@ -1,3 +1,7 @@
+2008-03-13  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Color.cs: Fix compiler warnings.
+
 2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Visual.cs: Fix another breakage.

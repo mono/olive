@@ -4,7 +4,7 @@
 // Authors:
 //	Sebastien Pouliot  <sebastien@ximian.com>
 //
-// Copyright (C) 2007 Novell, Inc (http://www.novell.com)
+// Copyright (C) 2007-2008 Novell, Inc (http://www.novell.com)
 //
 // Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
@@ -64,17 +64,17 @@ namespace System.Windows.Media {
 
 		public byte A {
 			get { return (byte)(argb >> 24); }
-			set { argb = (uint)((value << 24) | (argb & 0x00FFFFFF)); }
+			set { argb = ((uint)(value << 24) | (argb & 0x00FFFFFF)); }
 		}
 
 		public byte R {
 			get { return (byte)((argb >> 16) & 0xFF); }
-			set { argb = (uint)((value << 16) | (argb & 0xFF00FFFF)); }
+			set { argb = ((uint)(value << 16) | (argb & 0xFF00FFFF)); }
 		}
 
 		public byte G {
 			get { return (byte)((argb >> 8) & 0xFF); }
-			set { argb = (uint)((value << 8) | (argb & 0xFFFF00FF)); }
+			set { argb = ((uint)(value << 8) | (argb & 0xFFFF00FF)); }
 		}
 
 		public byte B {
