@@ -54,7 +54,6 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public sealed class AuthorizationPolicyTypeElement
 		 : ConfigurationElement
 	{
@@ -76,9 +75,11 @@ namespace System.ServiceModel.Configuration
 		{
 		}
 		
-		[MonoTODO]
-		public AuthorizationPolicyTypeElement (string configurationName) {
-			throw new NotImplementedException ();
+		public AuthorizationPolicyTypeElement (string policyType) {
+			if (policyType == null)
+				throw new ArgumentNullException ("policyType");
+
+			PolicyType = policyType;
 		}
 
 
