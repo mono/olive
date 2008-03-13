@@ -34,7 +34,6 @@ using System.Xml;
 namespace System.ServiceModel.Configuration
 {
 	// BehaviorExtensionElement
-	[MonoTODO]
 	public abstract class BehaviorExtensionElement
 		 : ServiceModelExtensionElement
 	{

@@ -54,51 +54,34 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class BehaviorsSection
+	public class BehaviorsSection
 		 : ConfigurationSection
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty endpoint_behaviors;
-		static ConfigurationProperty service_behaviors;
-
-		static BehaviorsSection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			endpoint_behaviors = new ConfigurationProperty ("endpointBehaviors",
-				typeof (EndpointBehaviorElementCollection), null, null/* FIXME: get converter for EndpointBehaviorElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			service_behaviors = new ConfigurationProperty ("serviceBehaviors",
-				typeof (ServiceBehaviorElementCollection), null, null/* FIXME: get converter for ServiceBehaviorElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (endpoint_behaviors);
-			properties.Add (service_behaviors);
-		}
-
-		public BehaviorsSection ()
-		{
-		}
-
-
+		ConfigurationPropertyCollection _properties;
+		
 		// Properties
 
 		[ConfigurationProperty ("endpointBehaviors",
 			 Options = ConfigurationPropertyOptions.None)]
 		public EndpointBehaviorElementCollection EndpointBehaviors {
-			get { return (EndpointBehaviorElementCollection) base [endpoint_behaviors]; }
+			get { return (EndpointBehaviorElementCollection) base ["endpointBehaviors"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("endpointBehaviors", typeof (EndpointBehaviorElementCollection), null, null/* FIXME: get converter for EndpointBehaviorElementCollection*/, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("serviceBehaviors", typeof (ServiceBehaviorElementCollection), null, null/* FIXME: get converter for ServiceBehaviorElementCollection*/, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("serviceBehaviors",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ServiceBehaviorElementCollection ServiceBehaviors {
-			get { return (ServiceBehaviorElementCollection) base [service_behaviors]; }
+			get { return (ServiceBehaviorElementCollection) base ["serviceBehaviors"]; }
 		}
 
 
