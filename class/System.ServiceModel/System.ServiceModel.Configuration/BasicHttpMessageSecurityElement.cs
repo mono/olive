@@ -54,35 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class BasicHttpMessageSecurityElement
+	public sealed class BasicHttpMessageSecurityElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty algorithm_suite;
-		static ConfigurationProperty client_credential_type;
-
-		static BasicHttpMessageSecurityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			algorithm_suite = new ConfigurationProperty ("algorithmSuite",
-				typeof (SecurityAlgorithmSuite), "Default", new  SecurityAlgorithmSuiteConverter(), null,
-				ConfigurationPropertyOptions.None);
-
-			client_credential_type = new ConfigurationProperty ("clientCredentialType",
-				typeof (BasicHttpMessageCredentialType), "UserName", null/* FIXME: get converter for BasicHttpMessageCredentialType*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (algorithm_suite);
-			properties.Add (client_credential_type);
-		}
-
-		public BasicHttpMessageSecurityElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("algorithmSuite",
@@ -90,20 +64,20 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None)]
 		[TypeConverter (typeof (SecurityAlgorithmSuiteConverter))]
 		public SecurityAlgorithmSuite AlgorithmSuite {
-			get { return (SecurityAlgorithmSuite) base [algorithm_suite]; }
-			set { base [algorithm_suite] = value; }
+			get { return (SecurityAlgorithmSuite) base ["algorithmSuite"]; }
+			set { base ["algorithmSuite"] = value; }
 		}
 
 		[ConfigurationProperty ("clientCredentialType",
 			 DefaultValue = "UserName",
 			 Options = ConfigurationPropertyOptions.None)]
 		public BasicHttpMessageCredentialType ClientCredentialType {
-			get { return (BasicHttpMessageCredentialType) base [client_credential_type]; }
-			set { base [client_credential_type] = value; }
+			get { return (BasicHttpMessageCredentialType) base ["clientCredentialType"]; }
+			set { base ["clientCredentialType"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 

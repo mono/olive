@@ -54,65 +54,33 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class BasicHttpSecurityElement
+	public sealed class BasicHttpSecurityElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty message;
-		static ConfigurationProperty mode;
-		static ConfigurationProperty transport;
-
-		static BasicHttpSecurityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			message = new ConfigurationProperty ("message",
-				typeof (BasicHttpMessageSecurityElement), null, null/* FIXME: get converter for BasicHttpMessageSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			mode = new ConfigurationProperty ("mode",
-				typeof (BasicHttpSecurityMode), "None", null/* FIXME: get converter for BasicHttpSecurityMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			transport = new ConfigurationProperty ("transport",
-				typeof (HttpTransportSecurityElement), null, null/* FIXME: get converter for HttpTransportSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (message);
-			properties.Add (mode);
-			properties.Add (transport);
-		}
-
-		public BasicHttpSecurityElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("message",
 			 Options = ConfigurationPropertyOptions.None)]
 		public BasicHttpMessageSecurityElement Message {
-			get { return (BasicHttpMessageSecurityElement) base [message]; }
+			get { return (BasicHttpMessageSecurityElement) base ["message"]; }
 		}
 
 		[ConfigurationProperty ("mode",
 			 DefaultValue = "None",
 			 Options = ConfigurationPropertyOptions.None)]
 		public BasicHttpSecurityMode Mode {
-			get { return (BasicHttpSecurityMode) base [mode]; }
-			set { base [mode] = value; }
+			get { return (BasicHttpSecurityMode) base ["mode"]; }
+			set { base ["mode"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("transport",
 			 Options = ConfigurationPropertyOptions.None)]
 		public HttpTransportSecurityElement Transport {
-			get { return (HttpTransportSecurityElement) base [transport]; }
+			get { return (HttpTransportSecurityElement) base ["transport"]; }
 		}
 
 
