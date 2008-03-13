@@ -297,16 +297,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-	public partial class StandardBindingElement
-		 : ConfigurationElement, IBindingConfigurationElement
-	{
-		[MonoTODO]
-		public void ApplyConfiguration (Binding binding)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // ServiceCredentialsElement
 	public partial class ServiceCredentialsElement
 	{

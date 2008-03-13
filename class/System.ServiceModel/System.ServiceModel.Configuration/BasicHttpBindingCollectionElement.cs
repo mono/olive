@@ -54,26 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class BasicHttpBindingCollectionElement
 		 : StandardBindingCollectionElement<BasicHttpBinding, BasicHttpBindingElement>
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static BasicHttpBindingCollectionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
-
-		public BasicHttpBindingCollectionElement ()
-		{
-		}
-
-
-		// Properties
-
-
 	}
 
 }

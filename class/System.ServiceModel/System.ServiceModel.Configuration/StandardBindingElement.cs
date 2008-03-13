@@ -54,7 +54,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	public abstract partial class StandardBindingElement
+	public abstract class StandardBindingElement
 		 : ConfigurationElement,  IBindingConfigurationElement
 	{
 		ConfigurationPropertyCollection _properties;
@@ -130,6 +130,11 @@ namespace System.ServiceModel.Configuration
 		}
 
 		protected abstract void OnApplyConfiguration (Binding binding);
+		
+		[MonoTODO]
+		public void ApplyConfiguration (Binding binding) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }

@@ -54,7 +54,7 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	public partial class BasicHttpBindingElement
+	public class BasicHttpBindingElement
 		 : StandardBindingElement,  IBindingConfigurationElement
 	{
 		ConfigurationPropertyCollection _properties;
@@ -202,8 +202,6 @@ namespace System.ServiceModel.Configuration
 			get { return (bool) this ["useDefaultWebProxy"]; }
 			set { this ["useDefaultWebProxy"] = value; }
 		}
-
-
 
 		protected override void OnApplyConfiguration (Binding binding) {
 			throw new NotImplementedException ();
