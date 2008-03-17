@@ -1,3 +1,12 @@
+2008-03-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* rules.make :
+	  revert part of changes at 11th; get OVERRIDE_STD_TARGETS back.
+
+2008-03-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* library.make : revert previous wrong fix.
+
 2008-03-11  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* library.make : COMMON_sourcefile broke build, so removed them.

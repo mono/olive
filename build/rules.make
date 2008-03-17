@@ -96,7 +96,7 @@ endif
 include $(topdir)/build/profiles/$(PROFILE).make
 -include $(topdir)/build/config.make
 
-ifdef OVERRIDE_TARGET_ALL
+ifdef OVERRIDE_STD_TARGETS
 all: all.override
 else
 all: do-all
