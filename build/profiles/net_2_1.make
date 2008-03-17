@@ -1,6 +1,6 @@
 # -*- makefile -*-
 
-MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" mono --runtime=moonlight --security=temporary-smcs-hack $(topdir)/class/lib/$(PROFILE)/smcs.exe -langversion:linq
+MCS = MONO_PATH="$(topdir)/class/lib/$(PROFILE)$(PLATFORM_PATH_SEPARATOR)$$MONO_PATH" mono --runtime=moonlight --security=temporary-smcs-hack $(topdir)/class/lib/$(PROFILE)/smcs.exe
 # nuttzing!
 
 profile-check:
