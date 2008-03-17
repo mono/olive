@@ -1,3 +1,7 @@
+2008-03-17  Jb Evain  <jbevain@novell.com>
+
+	* rules.make: get the OVERRIDE_STD_TARGETS back.
+
 2008-03-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* rules.make :
