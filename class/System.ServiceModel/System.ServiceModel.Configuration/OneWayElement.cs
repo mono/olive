@@ -131,6 +131,11 @@ namespace System.ServiceModel.Configuration
 		}
 
 
+		[MonoTODO]
+		protected internal override BindingElement CreateBindingElement () {
+			throw new NotImplementedException ();
+		}
+
 	}
 
 }

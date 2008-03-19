@@ -54,27 +54,27 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public abstract partial class BindingElementExtensionElement
 		 : ServiceModelExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static BindingElementExtensionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		protected BindingElementExtensionElement () {
 		}
-
-		protected BindingElementExtensionElement ()
-		{
-		}
-
 
 		// Properties
-		public abstract Type BindingElementType { get;  }
+		public abstract Type BindingElementType { get; }
 
+		[MonoTODO]
+		public virtual void ApplyConfiguration (BindingElement bindingElement) {
+			throw new NotImplementedException ();
+		}
 
+		[MonoTODO]
+		protected internal abstract BindingElement CreateBindingElement ();
+
+		[MonoTODO]
+		protected internal virtual void InitializeFrom (BindingElement bindingElement) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }

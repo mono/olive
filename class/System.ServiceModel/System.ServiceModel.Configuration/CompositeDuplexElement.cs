@@ -101,6 +101,10 @@ namespace System.ServiceModel.Configuration
 			get { return properties; }
 		}
 
+		[MonoTODO]
+		protected internal override BindingElement CreateBindingElement () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

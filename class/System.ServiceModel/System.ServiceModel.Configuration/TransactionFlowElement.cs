@@ -102,6 +102,10 @@ namespace System.ServiceModel.Configuration
 			set { base [transaction_protocol] = value; }
 		}
 
+		[MonoTODO]
+		protected internal override BindingElement CreateBindingElement () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

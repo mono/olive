@@ -83,6 +83,10 @@ namespace System.ServiceModel.Configuration
 			get { return (Type) base [binding_element_type]; }
 		}
 
+		[MonoTODO]
+		protected internal override BindingElement CreateBindingElement () {
+			throw new NotImplementedException ();
+		}
 
 	}
 
