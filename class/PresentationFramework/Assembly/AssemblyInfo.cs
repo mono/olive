@@ -29,5 +29,5 @@ using System.Runtime.InteropServices;
 */
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../mono.pub")]
+[assembly: AssemblyKeyFile ("../winfx3.pub")]
 

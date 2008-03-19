@@ -56,4 +56,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../winfx.pub")]
+[assembly: AssemblyKeyFile("../ecma.pub")]

@@ -1,3 +1,26 @@
+2008-03-19  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* atlas.pub, orcas.pub, msfinal3.pub, winfx.pub:
+		Remove duplicate and conflicting (same name in other SVN
+		modules but different public keys). 
+	* winfx3.pub: New 3[.5] public key is now named winfx3.pub
+	* silverlight.pub: Add silverlight 2.0 public key.
+	* System.ServiceModel.Web/Assembly/AssemblyInfo.cs
+	* agmono/Assembly/AssemblyInfo.cs
+	* PresentationCore/Assembly/AssemblyInfo.cs
+	* WindowsBase/Assembly/AssemblyInfo.cs
+	* PresentationFramework/Assembly/AssemblyInfo.cs
+	* System.IdentityModel/Assembly/AssemblyInfo.cs
+	* System.Workflow.Activities/Assembly/AssemblyInfo.cs
+	* System.ServiceModel/Assembly/AssemblyInfo.cs
+	* System.Workflow.Runtime/Assembly/AssemblyInfo.cs
+	* System.Workflow.ComponentModel/Assembly/AssemblyInfo.cs
+	* System.Runtime.Serialization/Assembly/AssemblyInfo.cs
+	* UIAutomationProvider/Assembly/AssemblyInfo.cs
+	* System.IdentityModel.Selectors/Assembly/AssemblyInfo.cs
+	* UIAutomationTypes/Assembly/AssemblyInfo.cs:
+		Fix the AssemblyInfo with new key names.
+
 2008-03-03  Marek Safar  <marek.safar@gmail.com>
 
 	* Makefile: Moved System.Data.Linq to mcs.

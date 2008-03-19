@@ -30,7 +30,7 @@ using System.Windows.Markup;
 */
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../msfinal3.pub")]
+[assembly: AssemblyKeyFile ("../winfx3.pub")]
 
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Media")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Input")]

@@ -37,7 +37,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCulture("")]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile ("../msfinal3.pub")]
+[assembly: AssemblyKeyFile ("../winfx3.pub")]
 
 [assembly: ComVisible(false)]
 

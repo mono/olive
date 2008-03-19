@@ -59,6 +59,6 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyDelaySign(false)]
 #else
 [assembly: AssemblyDelaySign(true)]
-[assembly: AssemblyKeyFile("../msfinal3.pub")]
+[assembly: AssemblyKeyFile("../winfx3.pub")]
 #endif
 
