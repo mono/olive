@@ -467,6 +467,10 @@ System.ServiceModel.Configuration/TransportElement.cs
 System.ServiceModel.Configuration/UseManagedPresentationElement.cs
 System.ServiceModel.Configuration/UserNameServiceElement.cs
 System.ServiceModel.Configuration/UserPrincipalNameElement.cs
+System.ServiceModel.Configuration/WS2007FederationHttpBindingCollectionElement.cs
+System.ServiceModel.Configuration/WS2007FederationHttpBindingElement.cs
+System.ServiceModel.Configuration/WS2007HttpBindingCollectionElement.cs
+System.ServiceModel.Configuration/WS2007HttpBindingElement.cs
 System.ServiceModel.Configuration/WSDualHttpBindingCollectionElement.cs
 System.ServiceModel.Configuration/WSDualHttpBindingElement.cs
 System.ServiceModel.Configuration/WSDualHttpSecurityElement.cs
@@ -847,6 +851,8 @@ System.ServiceModel/TransferMode.cs
 System.ServiceModel/UnknownMessageReceivedEventArgs.cs
 System.ServiceModel/UpnEndpointIdentity.cs
 System.ServiceModel/UriSchemeKeyedCollection.cs
+System.ServiceModel/WS2007FederationHttpBinding.cs
+System.ServiceModel/WS2007HttpBinding.cs
 System.ServiceModel/WSDualHttpBinding.cs
 System.ServiceModel/WSDualHttpSecurity.cs
 System.ServiceModel/WSFederationHttpBinding.cs
