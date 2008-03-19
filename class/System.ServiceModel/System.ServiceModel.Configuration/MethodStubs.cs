@@ -121,16 +121,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// ExtensionElementCollection
-	public partial class ExtensionElementCollection
-		 : ServiceModelConfigurationElementCollection<ExtensionElement>,  ICollection,  IEnumerable
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((ExtensionElement) element).Name;
-		}
-	}
-
 // IssuedTokenClientBehaviorsElementCollection
 	public sealed partial class IssuedTokenClientBehaviorsElementCollection
 		 : ServiceModelConfigurationElementCollection<IssuedTokenClientBehaviorsElement>

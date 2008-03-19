@@ -59,26 +59,26 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.BasicMap)]
-	[MonoTODO]
-	public partial class ExtensionElementCollection
-		 : ServiceModelConfigurationElementCollection<ExtensionElement>,  ICollection,  IEnumerable
+	public class ExtensionElementCollection
+		 : ServiceModelConfigurationElementCollection<ExtensionElement>, ICollection, IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static ExtensionElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		protected override bool ThrowOnDuplicate {
+			get {
+				return base.ThrowOnDuplicate;
+			}
 		}
 
-		public ExtensionElementCollection ()
-		{
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((ExtensionElement) element).Name;
 		}
 
+		protected override void BaseAdd (ConfigurationElement element) {
+			base.BaseAdd (element);
+		}
 
-		// Properties
-
-
+		protected override void BaseAdd (int index, ConfigurationElement element) {
+			base.BaseAdd (index, element);
+		}
 	}
 
 }

@@ -54,38 +54,31 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class ExtensionElement
+	public class ExtensionElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty name;
-		static ConfigurationProperty type;
+		ConfigurationPropertyCollection _properties;
 
-		static ExtensionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			name = new ConfigurationProperty ("name",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
-
-			type = new ConfigurationProperty ("type",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.IsRequired);
-
-			properties.Add (name);
-			properties.Add (type);
+		public ExtensionElement () {
 		}
 
-		public ExtensionElement ()
-		{
+		public ExtensionElement (string name)
+			: this () {
+			if (String.IsNullOrEmpty (name))
+				throw new ArgumentNullException ("name");
+			Name = name;
 		}
 
+		public ExtensionElement (string name, string type)
+			: this (name) {
+			if (String.IsNullOrEmpty (type))
+				throw new ArgumentNullException ("type");
+			Type = type;
+		}
 
 		// Properties
 
-		[StringValidator ( MinLength = 1,
+		[StringValidator (MinLength = 1,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		[ConfigurationProperty ("name",
@@ -93,23 +86,30 @@ namespace System.ServiceModel.Configuration
 			IsRequired = true,
 			IsKey = true)]
 		public string Name {
-			get { return (string) base [name]; }
-			set { base [name] = value; }
+			get { return (string) base ["name"]; }
+			set { base ["name"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("name", typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null), ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey));
+					_properties.Add (new ConfigurationProperty ("type", typeof (string), null, new StringConverter (), new StringValidator (1, int.MaxValue, null), ConfigurationPropertyOptions.IsRequired));
+				}
+				return _properties;
+			}
 		}
 
-		[StringValidator ( MinLength = 1,
+		[StringValidator (MinLength = 1,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		[ConfigurationProperty ("type",
 			 Options = ConfigurationPropertyOptions.IsRequired,
 			IsRequired = true)]
 		public string Type {
-			get { return (string) base [type]; }
-			set { base [type] = value; }
+			get { return (string) base ["type"]; }
+			set { base ["type"] = value; }
 		}
 
 
