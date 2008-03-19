@@ -152,7 +152,10 @@ namespace System.ServiceModel.Configuration
 			set { base [web_content_type_mapper_type] = value; }
 		}
 
-
+		[MonoTODO]
+		protected override BindingElement CreateBindingElement ()
+		{
+			throw new NotImplementedException ();
+		}
 	}
-
 }
