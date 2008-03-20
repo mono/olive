@@ -51,6 +51,13 @@ namespace MonoTests.System.ServiceModel.Configuration
 
 	public class UserBindingElement : StandardBindingElement
 	{
+		public UserBindingElement () {
+		}
+
+		public UserBindingElement (string name) {
+			Name = name;
+		}
+
 		protected override Type BindingElementType {
 			get { return typeof (UserBinding); }
 		}
