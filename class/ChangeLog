@@ -1,3 +1,7 @@
+2008-03-20  Sebastien Pouliot  <sebastien@ximian.com>
+
+	* Makefile: remove all unexisting public keys.
+
 2008-03-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : make dist fixage.

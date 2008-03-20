@@ -43,7 +43,7 @@ dist-local: dist-default
 	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
 
 
-DISTFILES = msfinal.pub msfinal3.pub winfx3.pub silverlight.pub mono.snk mono.pub ecma.pub orcas.pub
+DISTFILES = msfinal.pub winfx3.pub silverlight.pub mono.snk mono.pub ecma.pub
 
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):
