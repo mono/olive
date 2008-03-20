@@ -94,6 +94,18 @@ namespace System.ServiceModel.Configuration
 			get { return typeof (TStandardBinding); }
 		}
 
+
+		public override bool ContainsKey (string name) {
+			throw new NotImplementedException ();
+		}
+
+		protected internal override Binding GetDefault () {
+			throw new NotImplementedException ();
+		}
+
+		protected internal override bool TryAdd (string name, Binding binding, System.Configuration.Configuration config) {
+			throw new NotImplementedException ();
+		}
 	}
 
 }

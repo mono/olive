@@ -54,9 +54,11 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	public sealed partial class BindingsSection
+	public sealed class BindingsSection
 		 : ConfigurationSection
 	{
+		ConfigurationPropertyCollection _properties;
+
 		// Properties
 
 		[ConfigurationProperty ("basicHttpBinding",
@@ -67,7 +69,7 @@ namespace System.ServiceModel.Configuration
 
 		[MonoTODO ("Not Implemented")]
 		public List<BindingCollectionElement> BindingCollections {
-			get { throw new NotImplementedException(); }
+			get { throw new NotImplementedException (); }
 		}
 
 		[ConfigurationProperty ("customBinding",
@@ -107,7 +109,17 @@ namespace System.ServiceModel.Configuration
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return base.Properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					ExtensionElementCollection extensions = ((ExtensionsSection) EvaluationContext.GetSection ("system.serviceModel/extensions")).BindingExtensions;
+					for (int i = 0; i < extensions.Count; i++) {
+						ExtensionElement extension = extensions [i];
+						_properties.Add (new ConfigurationProperty (extension.Name, Type.GetType (extension.Type), null, null, null, ConfigurationPropertyOptions.None));
+					}
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("wsDualHttpBinding",
@@ -128,6 +140,23 @@ namespace System.ServiceModel.Configuration
 			get { return (WSHttpBindingCollectionElement) this ["wsHttpBinding"]; }
 		}
 
+		public static BindingsSection GetSection (System.Configuration.Configuration config) {
+			ServiceModelSectionGroup sm = ServiceModelSectionGroup.GetSectionGroup (config);
+			if (sm == null)
+				throw new SystemException ("Could not retrieve configuration section group 'system.serviceModel'");
+			if (sm.Bindings == null)
+				throw new SystemException ("Could not retrieve configuration sub section group 'bindings' in 'system.serviceModel'");
+			return sm.Bindings;
+		}
+
+		public new BindingCollectionElement this [string name] {
+			get {
+				object element = base [name];
+				if (element is BindingCollectionElement)
+					return (BindingCollectionElement) element;
+				throw new NotImplementedException (String.Format ("Could not find {0}", name));
+			}
+		}
 
 	}
 

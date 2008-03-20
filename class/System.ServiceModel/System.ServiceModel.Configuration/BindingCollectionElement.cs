@@ -55,23 +55,25 @@ using System.Xml;
 namespace System.ServiceModel.Configuration
 {
 	[MonoTODO]
-	public abstract partial class BindingCollectionElement
+	public abstract class BindingCollectionElement
 		 : ConfigurationElement
 	{
 
-		protected BindingCollectionElement ()
-		{
+		protected BindingCollectionElement () {
 		}
 
 
 		// Properties
-		[MonoTODO("not implemented")]
+		[MonoTODO ("not implemented")]
 		public string BindingName {
 			get { throw new NotImplementedException (); }
 		}
-		public abstract Type BindingType { get;  }
-		public abstract ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings { get;  }
+		public abstract Type BindingType { get; }
+		public abstract ReadOnlyCollection<IBindingConfigurationElement> ConfiguredBindings { get; }
 
+		public abstract bool ContainsKey (string name);
+		protected internal abstract Binding GetDefault ();
+		protected internal abstract bool TryAdd (string name, Binding binding, System.Configuration.Configuration config);
 
 	}
 

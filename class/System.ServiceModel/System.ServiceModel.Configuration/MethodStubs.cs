@@ -13,31 +13,6 @@ using ConfigurationType = System.Configuration.Configuration;
 namespace System.ServiceModel.Configuration
 {
 
-// BindingsSection
-	public partial class BindingsSection
-	{
-		public static BindingsSection GetSection (
-			System.Configuration.Configuration config)
-		{
-			ServiceModelSectionGroup sm = ServiceModelSectionGroup.GetSectionGroup (config);
-			if (sm == null)
-				throw new SystemException ("Could not retrieve configuration section group 'system.serviceModel'");
-			if (sm.Bindings == null)
-				throw new SystemException ("Could not retrieve configuration sub section group 'bindings' in 'system.serviceModel'");
-			return sm.Bindings;
-		}
-
-		public new BindingCollectionElement this [string name] {
-			get {
-				object element = base [name];
-				if (element is BindingCollectionElement)
-					return (BindingCollectionElement) element;
-				throw new NotImplementedException (String.Format ("Could not find {0}", name));
-			}
-		}
-
-	}
-
 // ChannelEndpointElementCollection
 	public sealed partial class ChannelEndpointElementCollection
 		 : ServiceModelEnhancedConfigurationElementCollection<ChannelEndpointElement>

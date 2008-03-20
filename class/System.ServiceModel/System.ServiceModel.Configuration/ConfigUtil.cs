@@ -49,6 +49,10 @@ namespace System.ServiceModel.Configuration
 			get { return (BehaviorsSection) ConfigurationManager.GetSection ("system.serviceModel/behaviors"); }
 		}
 
+		public static ExtensionsSection ExtensionsSection {
+			get { return (ExtensionsSection) ConfigurationManager.GetSection ("system.serviceModel/extensions"); }
+		}
+
 		public static Binding CreateBinding (string binding, string bindingConfiguration)
 		{
 			BindingCollectionElement section = ConfigUtil.BindingsSection [binding];
