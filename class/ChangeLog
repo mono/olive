@@ -1,3 +1,7 @@
+2008-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : make dist fixage.
+
 2008-03-19  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* atlas.pub, orcas.pub, msfinal3.pub, winfx.pub:
