@@ -13,7 +13,10 @@ LIB_MCS_FLAGS = \
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
-EXTRA_DISTFILES =
+EXTRA_DISTFILES = \
+	Test/Resources/test.cer \
+	Test/Resources/test.pfx \
+	Test/Resources/test2.pfx
 
 # This is a WinFX only assembly
 VALID_PROFILE := $(filter net_3_0 net_3_5, $(PROFILE))
