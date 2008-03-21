@@ -28,7 +28,8 @@ TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
 TEST_EXTRA_FILES = \
 	Test/Resources/*.cer \
-	Test/Resources/*.pfx
+	Test/Resources/*.pfx \
+	Test/System.ServiceModel.Description/dump.xml
 
 EXTRA_DISTFILES = $(RESOURCE_FILES) $(TEST_EXTRA_FILES)
 
