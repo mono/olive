@@ -1,3 +1,7 @@
+2008-03-21  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : added missing EXTRA_DISTFILES.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* Makefile: Filter out some warnings.

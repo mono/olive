@@ -15,7 +15,8 @@ LIB_MCS_FLAGS = \
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) /r:System.ServiceModel.dll
 
-EXTRA_DISTFILES = $(RESOURCE_FILES)
+EXTRA_DISTFILES = $(RESOURCE_FILES) \
+	Test/System.Runtime.Serialization/one.xml
 
 # This assembly is .NET 3.0 or later only
 VALID_PROFILE := $(filter net_3_0 net_3_5, $(PROFILE))
