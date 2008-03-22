@@ -1,0 +1,124 @@
+2007-04-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : more verbose.
+	* samplecli11.cs, samplesvc11.cs : mutual sslnego sample.
+	* samplecli12.cs, samplesvc12.cs : spnego sample.
+	* samplecli13.cs, samplesvc13.cs : WSHttpBinding+IssuedToken sample.
+	* samplecli14.cs, samplesvc14.cs : issued token sample.
+	* Makefile : added all above.
+
+2007-03-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : with this temporary addition, you might be able to
+	  understand what is included in the security state raw data.
+
+2007-03-13  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs : removed extra code. Use pass-through security state
+	  encoder so that its scope could become clearer.
+	* samplecli10.cs : removed extra code.
+
+2007-02-28  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc10.cs, samplecli10.cs :
+	  new test, for SslSecurityTokenParameters.
+	* Makefile : added above.
+
+2007-02-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs : fix some security property check.
+	* samplesvc6.exe.config : be more quiet.
+	* samplecli7.cs : be more strict.
+
+2007-02-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc3.exe.config, samplesvc8.exe.config,
+	  samplesvc9.exe.config : trace helpers.
+	* test.cer, test2.pfx : forgot to add.
+	* samplesvc9.cs, samplecli9.cs : SignedEncrypted token sample.
+	* Makefile : added new test.
+
+2007-02-20  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs : make it more strict to verify x509 tokens.
+
+2007-02-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs : removed extra code. Check some security properties.
+	* samplecli6.cs : use public-only key to detect possible bugs.
+	* samplesvc8.cs : now it could be nicer to return user name from
+	  supporting token.
+
+2007-02-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli8.cs, samplesvc8.cs, Makefile :
+	  sample7 + Signed supporting token (UsernameToken).
+
+2007-02-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli7.cs, samplesvc7.cs :
+	  now our code can stand under more strict situations.
+
+2007-01-29  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.exe.config : trace support (it works only under .NET
+	  for now.)
+	* samplesvc7.cs, samplecli7.cs, samplesvc7.exe.config :
+	  new sample - asymmetric version of samplesvc6.
+	* Makefile: add above.
+
+2007-01-26  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs, samplecli6.cs: they are even made simpler.
+
+2007-01-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs, samplecli6.cs: be less restrictive (still does not
+	  interoperate).
+
+2007-01-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc6.cs, samplecli6.cs, Makefile: added almost identical
+	  case to sample #3 (differ in key derivation and x509 clause).
+
+2006-10-12  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplecli5.cs, samplesvc5.cs : basically the same as
+	  sample 4, but the contract is Message-based.
+	* samplesvc4.cs : tiny additional comment.
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs, samplesvc4.cs : reduced several lines to simplify
+	  sample 3 (and they still work together).
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs, samplesvc4.cs : new files, for now just copy of
+	  sample 3.
+	* Makefile : added above. Added Inspector.cs to sample 1.
+	* Inspector.cs : indent output.
+
+2006-10-05  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli.cs, samplesvc.cs, samplecli3.cs, samplesvc3.cs :
+	  finally got sample 3 working fine on .NET, by making its ws-policy
+	  equivalent to sample (1).
+
+2006-09-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplecli3.cs, samplesvc3.cs : new low-level example 
+	  (without WSHttpBinding), but the reply is still invalid (on .NET).
+	  Anyways now mono service can decrypt the message from .NET client.
+	* samplecli2.cs, samplesvc2.cs : removed metadata behavior and
+	  added inspector instead.
+
+2006-09-06  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli2.cs, samplesvc2.cs : added UserNamePassword example.
+	* Makefile : added above.
+	* samplecli.cs, samplesvc.cs, Inspector.cs : added some debug stuff.
+
+2006-09-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile, samplesvc.cs, samplecli.cs, test.pfx : new sample files.
