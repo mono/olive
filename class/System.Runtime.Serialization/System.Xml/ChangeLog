@@ -1,3 +1,10 @@
+2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReader.cs :
+	  - It didn't clean namespaces up during Read().
+	  - Non-typed attribute nodes should be allowed in get_Value().
+	  - Fixed wrong namespace scope push.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlBinaryDictionaryReader.cs: Handle compilation warnings.

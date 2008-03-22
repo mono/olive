@@ -1,3 +1,9 @@
+2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* XmlBinaryDictionaryReaderTest.cs : it contained bogus multibyte
+	  characters, so replaced them with \uXXXX.
+	  Removed some NotWorking and FIXMEs.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlBinaryDictionaryReaderTest.cs: UseCase1 test fails also on .Net

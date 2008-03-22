@@ -46,10 +46,9 @@ namespace MonoTests.System.Xml
 		}
 
 		[Test]
-		[Category ("NotDotNet")]
 		public void UseCase1 ()
 		{
-			string xml = @"<?xml version=""1.0"" encoding=""utf-16""?><root a=""""><!---->     <AAA xmlns=""urn:AAA""></AAA><ePfix:AAA xmlns:ePfix=""urn:AAABBB""></ePfix:AAA><AAA>CCCÅXàÍCCCAAA&amp;AAADDD&amp;DDDíö<!--COMMENT--></AAA><AAA BBB=""bbb"" pfix:BBB=""bbbbb"" xml:lang=""ja"" xml:space=""preserve"" xml:base=""local:hogehoge"" xmlns:pfix=""urn:bbb"">CCCICAg/4Aw</AAA></root>";
+			string xml = @"<?xml version=""1.0"" encoding=""utf-16""?><root a=""""><!---->     <AAA xmlns=""urn:AAA""></AAA><ePfix:AAA xmlns:ePfix=""urn:AAABBB""></ePfix:AAA><AAA>CCC" + "\u3005\u4E00" + @"CCCAAA&amp;AAADDD&amp;DDD" + '\u4E01' + @"<!--COMMENT--></AAA><AAA BBB=""bbb"" pfix:BBB=""bbbbb"" xml:lang=""ja"" xml:space=""preserve"" xml:base=""local:hogehoge"" xmlns:pfix=""urn:bbb"">CCCICAg/4Aw</AAA></root>";
 
 			XmlDictionaryReader reader =
 				XmlDictionaryReader.CreateBinaryReader (usecase1,new XmlDictionaryReaderQuotas ());
@@ -64,7 +63,6 @@ namespace MonoTests.System.Xml
 
 		// $ : kind
 		// ! : length
-		// FIXME: see fixmes in the test itself.
 		static readonly byte [] usecase1 = new byte [] {
 			// $!root$!  a....!__  ___.!AAA  $!urn:AA  A$$!ePfi
 			0x40, 0x04, 0x72, 0x6F, 0x6F, 0x74, 0x04, 0x01,
@@ -105,7 +103,6 @@ namespace MonoTests.System.Xml
 			};
 
 		[Test]
-		[Category ("NotWorking")]
 		public void UseCase2 ()
 		{
 			XmlDictionary dic = new XmlDictionary ();
@@ -126,7 +123,6 @@ namespace MonoTests.System.Xml
 		// ! : length
 		// @ : dictionary index
 		// ^ : missing ns decl?
-		// FIXME: see fixmes in the test itself.
 		static readonly byte [] usecase2 = new byte [] {
 			// $@$!BAR$  @$@///$@  ^@$!ppp!  $!ppp@$!  xyz$!bbb
 			0x42, 2, 0x40, 3, 0x42, 0x41, 0x52, 0x42,

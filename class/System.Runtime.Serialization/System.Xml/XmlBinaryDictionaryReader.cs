@@ -148,6 +148,8 @@ namespace System.Xml
 
 			public string Value {
 				get {
+					if (BF.AttrString <= ValueType && ValueType <= BF.GlobalAttrIndexInElemNS)
+						return value; // attribute
 					switch (ValueType) {
 					case 0:
 					case BF.Comment:
@@ -490,7 +492,6 @@ namespace System.Xml
 			if (node.NodeType == XmlNodeType.Element) {
 				// push element scope
 				depth++;
-				context.NamespaceManager.PushScope ();
 				if (node_stack.Count <= depth) {
 					node_stack.Add (node);
 					node = new NodeInfo ();
@@ -576,6 +577,7 @@ namespace System.Xml
 			// element
 			node.NodeType = XmlNodeType.Element;
 			node.Prefix = String.Empty;
+			context.NamespaceManager.PushScope ();
 			switch (ident) {
 			case BF.ElemString:
 				node.LocalName = ReadUTF8 ();
@@ -701,6 +703,7 @@ namespace System.Xml
 #endif
 
 			ns_store.Clear ();
+			ns_dict_store.Clear ();
 		}
 
 		void FillNamespaceBySlot (NodeInfo n)
