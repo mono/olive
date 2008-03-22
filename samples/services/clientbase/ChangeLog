@@ -1,3 +1,7 @@
+2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : use -pkg:olive.
+
 2006-10-04  Ankit Jain  <jankit@novell.com>
 
 	* samplesvc4.cs: Oops, change hostname is uri's to localhost.

@@ -49,11 +49,3 @@ public interface IMyService
 	string Greet (string input);
 }
 
-public class MyService : IMyService
-{
-	public string Greet (string input)
-	{
-		return "huh? " + input;
-	}
-}
-

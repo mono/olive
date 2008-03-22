@@ -1,3 +1,9 @@
+2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc.cs : added some more debuggy stuff.
+	* samplecli.cs : remove extra type.
+	* Makefile : enable -debug.
+
 2008-02-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc.cs, samplecli.cs : added couple of complication.

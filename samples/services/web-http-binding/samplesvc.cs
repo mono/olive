@@ -22,6 +22,27 @@ public class Test
 	}
 }
 
+public class MyDispatchMessageFormatter : IDispatchMessageFormatter
+{
+	IDispatchMessageFormatter src;
+
+	public MyDispatchMessageFormatter (IDispatchMessageFormatter source)
+	{
+		this.src = source;
+	}
+
+	public void DeserializeRequest (Message msg, object [] parameters)
+	{
+Console.WriteLine ("!!! " + OperationContext.Current);
+		src.DeserializeRequest (msg, parameters);
+	}
+
+	public Message SerializeReply (MessageVersion messageVersion, object [] parameters, object result)
+	{
+		return src.SerializeReply (messageVersion, parameters, result);
+	}
+}
+
 public class MySelector : WebHttpDispatchOperationSelector
 {
 	public MySelector (ServiceEndpoint se)
@@ -61,6 +82,11 @@ public class MyWebBehavior : WebHttpBehavior
 		base.ApplyDispatchBehavior (endpoint, endpointDispatcher);
 Console.WriteLine (endpointDispatcher.AddressFilter);
 		endpointDispatcher.AddressFilter = new MyEndpointAddressMessageFilter (endpoint.Address);
+	}
+
+	protected override IDispatchMessageFormatter GetRequestDispatchFormatter (OperationDescription operation, ServiceEndpoint endpoint)
+	{
+		return new MyDispatchMessageFormatter (base.GetRequestDispatchFormatter (operation, endpoint));
 	}
 
 	protected override WebHttpDispatchOperationSelector GetOperationSelector (ServiceEndpoint endpoint)
