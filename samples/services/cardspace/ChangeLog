@@ -1,3 +1,7 @@
+2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* gettoken.cs : add some dumper.
+
 2007-04-13  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* gettoken.cs : by default, test self-issued card.
