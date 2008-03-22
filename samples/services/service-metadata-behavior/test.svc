@@ -1,2 +1,0 @@
-<%@ServiceHost Service="TestService, test" %>
-
