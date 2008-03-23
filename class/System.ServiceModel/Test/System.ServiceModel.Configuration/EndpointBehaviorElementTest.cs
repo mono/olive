@@ -53,6 +53,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 				Assert.Fail ("CallbackDebugElement is not exist in collection.");
 
 			Assert.AreEqual (typeof (CallbackDebugBehavior), callbackDebug.BehaviorType, "RoleProviderName");
+			Assert.AreEqual ("callbackDebug", callbackDebug.ConfigurationElementName, "RoleProviderName");
 			Assert.AreEqual (true, callbackDebug.IncludeExceptionDetailInFaults, "IncludeExceptionDetailInFaults");
 		}
 	}
