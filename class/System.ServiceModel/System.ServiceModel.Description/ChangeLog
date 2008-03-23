@@ -1,3 +1,8 @@
+2008-03-23  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* ContractDescriptionGenerator.cs: fixed GetMessage, fixed namespace
+	while creating message part
+
 2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ContractDescriptionGenerator.cs: Init ConfigurationName from attribute.

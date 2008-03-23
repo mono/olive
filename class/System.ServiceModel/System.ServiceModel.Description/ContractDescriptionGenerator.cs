@@ -278,7 +278,7 @@ namespace System.ServiceModel.Description
 						GetMessageBodyMemberAttribute (mi);
 					MessagePartDescription pd =
 						CreatePartCore (mba, pi.Name,
-							"http://tempuri.org/");
+							md.Body.WrapperNamespace);
 					if (mba != null && mba.HasProtectionLevel)
 						pd.ProtectionLevel = mba.ProtectionLevel;
 					pd.Index = index++;
