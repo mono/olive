@@ -1,3 +1,7 @@
+2008-03-23  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* OperationDescriptionTest.cs: added parts and namespace tests
+
 2007-08-19  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WsdlImporterTest.cs : fix tests under run-test-ondotnet with 3.5.
