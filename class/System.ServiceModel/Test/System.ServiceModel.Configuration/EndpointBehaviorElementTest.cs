@@ -32,6 +32,7 @@ using System.Text;
 using NUnit.Framework;
 using System.ServiceModel.Configuration;
 using System.Configuration;
+using System.ServiceModel.Description;
 
 namespace MonoTests.System.ServiceModel.Configuration
 {
@@ -51,6 +52,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 			if (callbackDebug == null)
 				Assert.Fail ("CallbackDebugElement is not exist in collection.");
 
+			Assert.AreEqual (typeof (CallbackDebugBehavior), callbackDebug.BehaviorType, "RoleProviderName");
 			Assert.AreEqual (true, callbackDebug.IncludeExceptionDetailInFaults, "IncludeExceptionDetailInFaults");
 		}
 	}
