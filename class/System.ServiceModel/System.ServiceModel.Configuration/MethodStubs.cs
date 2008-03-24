@@ -86,16 +86,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// EndpointBehaviorElementCollection
-	public sealed partial class EndpointBehaviorElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<EndpointBehaviorElement>,  ICollection,  IEnumerable
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((EndpointBehaviorElement) element).Name;
-		}
-	}
-
 // IssuedTokenClientBehaviorsElementCollection
 	public sealed partial class IssuedTokenClientBehaviorsElementCollection
 		 : ServiceModelConfigurationElementCollection<IssuedTokenClientBehaviorsElement>
@@ -200,15 +190,6 @@ namespace System.ServiceModel.Configuration
 		protected override object GetElementKey (ConfigurationElement element)
 		{
 			throw new NotImplementedException ();
-		}
-	}
-
-// CallbackBehaviorElement
-	public partial class CallbackDebugElement
-	{
-		protected internal override object CreateBehavior ()
-		{
-			return new CallbackDebugBehavior (IncludeExceptionDetailInFaults);
 		}
 	}
 

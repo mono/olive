@@ -58,24 +58,19 @@ namespace System.ServiceModel.Configuration
 	public abstract class ServiceModelExtensionElement
 		 : ConfigurationElement
 	{
-		static Dictionary<Type, string> _lookup = new Dictionary<Type, string> ();
+		string _configurationElementName;
 
-		static ServiceModelExtensionElement () {
-			// fill known extensions types
-			//bindingElementExtensions
-			_lookup [typeof (BinaryMessageEncodingElement)] = "binaryMessageEncoding";
-			//behaviorExtensions
-			_lookup [typeof (ServiceAuthorizationElement)] = "serviceAuthorization";
-		}
-
-		protected ServiceModelExtensionElement ()
-		{
+		protected ServiceModelExtensionElement () {
 		}
 
 		public string ConfigurationElementName {
 			get {
-				return _lookup [GetType ()];
+				return _configurationElementName ?? (_configurationElementName = GetConfigurationElementName ());
 			}
+		}
+
+		internal virtual string GetConfigurationElementName () {
+			throw new NotImplementedException ();
 		}
 
 		public virtual void CopyFrom (ServiceModelExtensionElement from) {

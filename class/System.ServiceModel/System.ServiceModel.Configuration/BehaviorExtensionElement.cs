@@ -45,5 +45,8 @@ namespace System.ServiceModel.Configuration
 
 		protected internal abstract object CreateBehavior ();
 
+		internal override string GetConfigurationElementName () {
+			return ConfigUtil.ExtensionsSection.BehaviorExtensions.GetConfigurationElementName (GetType ());
+		}
 	}
 }

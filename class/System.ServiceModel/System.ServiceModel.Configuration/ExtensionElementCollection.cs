@@ -62,6 +62,22 @@ namespace System.ServiceModel.Configuration
 	public class ExtensionElementCollection
 		 : ServiceModelConfigurationElementCollection<ExtensionElement>, ICollection, IEnumerable
 	{
+		Dictionary<Type, ExtensionElement> _lookup;
+
+		Dictionary<Type, ExtensionElement> Lookup {
+			get {
+				if (_lookup == null) {
+					_lookup = new Dictionary<Type, ExtensionElement> ();
+					for (int i = 0; i < Count; i++) {
+						ExtensionElement extension = this [i];
+						Type type = Type.GetType (extension.Type);
+						_lookup.Add (type, extension);
+					}
+				}
+				return _lookup;
+			}
+		}
+
 		protected override bool ThrowOnDuplicate {
 			get {
 				return base.ThrowOnDuplicate;
@@ -78,6 +94,18 @@ namespace System.ServiceModel.Configuration
 
 		protected override void BaseAdd (int index, ConfigurationElement element) {
 			base.BaseAdd (index, element);
+		}
+
+		private void AddLookup (ConfigurationElement element) {
+			ExtensionElement extension = (ExtensionElement) element;
+			Type type = Type.GetType (extension.Type);
+			_lookup.Add (type, extension);
+		}
+
+		internal string GetConfigurationElementName (Type type) {
+			if (Lookup.ContainsKey (type))
+				return Lookup [type].Name;
+			return null;
 		}
 	}
 

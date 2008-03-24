@@ -44,7 +44,7 @@ namespace System.ServiceModel.Configuration
 
 		public virtual void Add (TServiceModelExtensionElement element)
 		{
-			throw new NotImplementedException ();
+			_list [element.GetType ()] = element;
 		}
 		
 		public virtual bool CanAdd (TServiceModelExtensionElement element) {
@@ -53,12 +53,12 @@ namespace System.ServiceModel.Configuration
 
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			_list.Clear ();
 		}
 
 		public bool Contains (TServiceModelExtensionElement element)
 		{
-			throw new NotImplementedException ();
+			return _list.ContainsValue (element);
 		}
 
 		public bool ContainsKey (string elementName)
@@ -68,7 +68,7 @@ namespace System.ServiceModel.Configuration
 
 		public bool ContainsKey (Type elementType)
 		{
-			throw new NotImplementedException ();
+			return _list.ContainsKey (elementType);
 		}
 
 		public void CopyTo (TServiceModelExtensionElement[] elements,
@@ -86,9 +86,8 @@ namespace System.ServiceModel.Configuration
 			}
 		}
 
-		public bool Remove (TServiceModelExtensionElement element)
-		{
-			throw new NotImplementedException ();
+		public bool Remove (TServiceModelExtensionElement element) {
+			return _list.Remove (element.GetType ());
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
@@ -108,7 +107,9 @@ namespace System.ServiceModel.Configuration
 
 		public TServiceModelExtensionElement this [Type extensionType] {
 			get {
-				return _list[extensionType];
+				if (_list.ContainsKey (extensionType))
+					return _list [extensionType];
+				return null;
 			}
 		}
 
@@ -120,7 +121,7 @@ namespace System.ServiceModel.Configuration
 			TServiceModelExtensionElement ext= DeserializeExtensionElement (elementName, reader);
 			if (ext == null)
 				return false;
-			_list [ext.GetType ()] = ext;
+			Add (ext);
 			return true;
 		}
 
@@ -128,9 +129,8 @@ namespace System.ServiceModel.Configuration
 			return null;
 		}
 
-		[MonoTODO]
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return _list.Count; }
 		}
 	}
 }

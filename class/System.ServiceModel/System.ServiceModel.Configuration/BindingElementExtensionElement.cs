@@ -68,12 +68,15 @@ namespace System.ServiceModel.Configuration
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO]
 		protected internal abstract BindingElement CreateBindingElement ();
 
 		[MonoTODO]
 		protected internal virtual void InitializeFrom (BindingElement bindingElement) {
 			throw new NotImplementedException ();
+		}
+
+		internal override string GetConfigurationElementName () {
+			return ConfigUtil.ExtensionsSection.BindingElementExtensions.GetConfigurationElementName (GetType());
 		}
 	}
 

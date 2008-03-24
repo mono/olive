@@ -54,29 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class CallbackDebugElement
+	public sealed class CallbackDebugElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty include_exception_detail_in_faults;
-
-		static CallbackDebugElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			include_exception_detail_in_faults = new ConfigurationProperty ("includeExceptionDetailInFaults",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (include_exception_detail_in_faults);
-		}
 
 		public CallbackDebugElement ()
 		{
@@ -86,21 +66,24 @@ namespace System.ServiceModel.Configuration
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (CallbackDebugBehavior); }
 		}
 
 		[ConfigurationProperty ("includeExceptionDetailInFaults",
 			DefaultValue = false,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool IncludeExceptionDetailInFaults {
-			get { return (bool) base [include_exception_detail_in_faults]; }
-			set { base [include_exception_detail_in_faults] = value; }
+			get { return (bool) base ["includeExceptionDetailInFaults"]; }
+			set { base ["includeExceptionDetailInFaults"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new CallbackDebugBehavior (IncludeExceptionDetailInFaults);
+		}
 
 	}
 

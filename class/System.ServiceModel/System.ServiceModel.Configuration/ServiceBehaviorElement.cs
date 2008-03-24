@@ -56,7 +56,7 @@ using System.Diagnostics;
 namespace System.ServiceModel.Configuration
 {
 	public class ServiceBehaviorElement
-		 : NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>,  ICollection<BehaviorExtensionElement>,  IEnumerable<BehaviorExtensionElement>,  IEnumerable
+		 : NamedServiceModelExtensionCollectionElement<BehaviorExtensionElement>, ICollection<BehaviorExtensionElement>, IEnumerable<BehaviorExtensionElement>, IEnumerable
 	{
 		public ServiceBehaviorElement (string name) {
 			Name = name;
@@ -69,24 +69,16 @@ namespace System.ServiceModel.Configuration
 			base.DeserializeElement (reader, serializeCollectionKey);
 		}
 
-		[MonoTODO ("consider system.serviceModel/extensions/behaviorExtensions")]
+		[MonoTODO ("implement using EvaluationContext")]
 		internal override BehaviorExtensionElement DeserializeExtensionElement (string elementName, XmlReader reader) {
-			BehaviorExtensionElement element;
-			switch (reader.LocalName) {
-			case "serviceDebug":
-				element = new ServiceDebugElement ();
-				break;
-			case "serviceMetadata":
-				element = new ServiceMetadataPublishingElement ();
-				break;
-			case "serviceAuthorization":
-				element = new ServiceAuthorizationElement ();
-				break;
-			default:
-				Debug.WriteLine (reader.LocalName);
-				// TODO: consider system.serviceModel/extensions/behaviorExtensions
+			//ExtensionElementCollection extensions = ((ExtensionsSection) EvaluationContext.GetSection ("system.serviceModel/extensions")).BehaviorExtensions;
+			ExtensionElementCollection extensions = ConfigUtil.ExtensionsSection.BehaviorExtensions;
+
+			ExtensionElement extension = extensions [elementName];
+			if (extension == null)
 				throw new ConfigurationErrorsException ("Invalid element in configuration. The extension name '" + reader.LocalName + "' is not registered in the collection at system.serviceModel/extensions/behaviorExtensions");
-			}
+
+			BehaviorExtensionElement element = (BehaviorExtensionElement) Activator.CreateInstance (Type.GetType (extension.Type));
 			element.DeserializeElementInternal (reader, false);
 			return element;
 		}

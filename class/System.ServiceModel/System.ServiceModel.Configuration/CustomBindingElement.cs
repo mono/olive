@@ -119,18 +119,16 @@ namespace System.ServiceModel.Configuration
 			throw new NotImplementedException ();
 		}
 
-		[MonoTODO ("consider system.serviceModel/extensions/bindingElementExtensions")]
+		[MonoTODO ("implement using EvaluationContext")]
 		internal override BindingElementExtensionElement DeserializeExtensionElement (string elementName, XmlReader reader) {
-			BindingElementExtensionElement element;
-			switch (reader.LocalName) {
-			case "binaryMessageEncoding":
-				element = new BinaryMessageEncodingElement ();
-				break;
-			default:
-				Debug.WriteLine (reader.LocalName);
-				// TODO: consider system.serviceModel/extensions/bindingElementExtensions
-				throw new ConfigurationErrorsException ("Invalid element in configuration. The extension name '" + reader.LocalName + "' is not registered in the collection at system.serviceModel/extensions/behaviorExtensions");
-			}
+			//ExtensionElementCollection extensions = ((ExtensionsSection) EvaluationContext.GetSection ("system.serviceModel/extensions")).BindingElementExtensions;
+			ExtensionElementCollection extensions = ConfigUtil.ExtensionsSection.BindingElementExtensions;
+
+			ExtensionElement extension = extensions [elementName];
+			if (extension == null)
+				throw new ConfigurationErrorsException ("Invalid element in configuration. The extension name '" + reader.LocalName + "' is not registered in the collection at system.serviceModel/extensions/bindingElementExtensions");
+
+			BindingElementExtensionElement element = (BindingElementExtensionElement) Activator.CreateInstance (Type.GetType (extension.Type));
 			element.DeserializeElementInternal (reader, false);
 			return element;
 		}
