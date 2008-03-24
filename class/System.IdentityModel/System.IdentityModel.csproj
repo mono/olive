@@ -66,6 +66,7 @@
     <Compile Include="System.IdentityModel.Policy\EvaluationContext.cs" />
     <Compile Include="System.IdentityModel.Policy\IAuthorizationComponent.cs" />
     <Compile Include="System.IdentityModel.Policy\IAuthorizationPolicy.cs" />
+    <Compile Include="System.IdentityModel.Selectors\AudienceUriMode.cs" />
     <Compile Include="System.IdentityModel.Selectors\CustomUserNameSecurityTokenAuthenticator.cs" />
     <Compile Include="System.IdentityModel.Selectors\KerberosSecurityTokenAuthenticator.cs" />
     <Compile Include="System.IdentityModel.Selectors\KerberosSecurityTokenProvider.cs" />
