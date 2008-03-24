@@ -56,5 +56,14 @@ namespace MonoTests.System.ServiceModel.Configuration
 			Assert.AreEqual ("callbackDebug", callbackDebug.ConfigurationElementName, "RoleProviderName");
 			Assert.AreEqual (true, callbackDebug.IncludeExceptionDetailInFaults, "IncludeExceptionDetailInFaults");
 		}
+
+		[Test]
+		public void CallbackDebugElement_defaults () {
+			CallbackDebugElement element = new CallbackDebugElement ();
+
+			Assert.AreEqual (typeof (CallbackDebugBehavior), element.BehaviorType, "RoleProviderName");
+			Assert.AreEqual ("callbackDebug", element.ConfigurationElementName, "RoleProviderName");
+			Assert.AreEqual (false, element.IncludeExceptionDetailInFaults, "IncludeExceptionDetailInFaults");
+		}
 	}
 }
