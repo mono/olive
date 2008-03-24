@@ -57,6 +57,9 @@ namespace System.ServiceModel.Configuration
 	public sealed class X509ScopedServiceCertificateElement
 		 : ConfigurationElement
 	{
+		public X509ScopedServiceCertificateElement () {
+		}
+
 		// Properties
 
 		[ConfigurationProperty ("findValue",
