@@ -590,6 +590,7 @@ System.ServiceModel.Dispatcher/ChannelDispatcherBase.cs
 System.ServiceModel.Dispatcher/ChannelDispatcherCollection.cs
 System.ServiceModel.Dispatcher/ClientOperation.cs
 System.ServiceModel.Dispatcher/ClientRuntime.cs
+System.ServiceModel.Dispatcher/DataContractSerializerServiceBehavior.cs
 System.ServiceModel.Dispatcher/DefaultMessageOperationFormatter.cs
 System.ServiceModel.Dispatcher/DispatchOperation.cs
 System.ServiceModel.Dispatcher/DispatchRuntime.cs

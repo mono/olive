@@ -54,56 +54,33 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class TransactedBatchingElement
+	public sealed class TransactedBatchingElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty max_batch_size;
-
-		static TransactedBatchingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_batch_size = new ConfigurationProperty ("maxBatchSize",
-				typeof (int), "0", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (max_batch_size);
-		}
-
-		public TransactedBatchingElement ()
-		{
-		}
-
-
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (TransactedBatchingBehavior); }
 		}
 
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxBatchSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "0")]
 		public int MaxBatchSize {
-			get { return (int) base [max_batch_size]; }
-			set { base [max_batch_size] = value; }
+			get { return (int) base ["maxBatchSize"]; }
+			set { base ["maxBatchSize"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new TransactedBatchingBehavior (MaxBatchSize);
+		}
 
 	}
 

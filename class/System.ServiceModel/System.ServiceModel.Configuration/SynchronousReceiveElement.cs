@@ -54,35 +54,18 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class SynchronousReceiveElement
+	public sealed class SynchronousReceiveElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-
-		static SynchronousReceiveElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-		}
-
-		public SynchronousReceiveElement ()
-		{
-		}
-
-
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (SynchronousReceiveBehavior); }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new SynchronousReceiveBehavior ();
+		}
 
 	}
 

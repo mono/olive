@@ -54,70 +54,41 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class DataContractSerializerElement
+	public sealed class DataContractSerializerElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty ignore_extension_data_object;
-		static ConfigurationProperty max_items_in_object_graph;
-
-		static DataContractSerializerElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			ignore_extension_data_object = new ConfigurationProperty ("ignoreExtensionDataObject",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_items_in_object_graph = new ConfigurationProperty ("maxItemsInObjectGraph",
-				typeof (int), "65536", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (ignore_extension_data_object);
-			properties.Add (max_items_in_object_graph);
-		}
-
-		public DataContractSerializerElement ()
-		{
-		}
-
-
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (DataContractSerializerServiceBehavior); }
 		}
 
 		[ConfigurationProperty ("ignoreExtensionDataObject",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool IgnoreExtensionDataObject {
-			get { return (bool) base [ignore_extension_data_object]; }
-			set { base [ignore_extension_data_object] = value; }
+			get { return (bool) base ["ignoreExtensionDataObject"]; }
+			set { base ["ignoreExtensionDataObject"] = value; }
 		}
 
 		[ConfigurationProperty ("maxItemsInObjectGraph",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "65536")]
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxItemsInObjectGraph {
-			get { return (int) base [max_items_in_object_graph]; }
-			set { base [max_items_in_object_graph] = value; }
+			get { return (int) base ["maxItemsInObjectGraph"]; }
+			set { base ["maxItemsInObjectGraph"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new DataContractSerializerServiceBehavior (IgnoreExtensionDataObject, MaxItemsInObjectGraph);
+		}
 
 	}
 

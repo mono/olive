@@ -54,84 +54,40 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class X509ScopedServiceCertificateElement
+	public sealed class X509ScopedServiceCertificateElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty find_value;
-		static ConfigurationProperty store_location;
-		static ConfigurationProperty store_name;
-		static ConfigurationProperty target_uri;
-		static ConfigurationProperty x509_find_type;
-
-		static X509ScopedServiceCertificateElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			find_value = new ConfigurationProperty ("findValue",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			store_location = new ConfigurationProperty ("storeLocation",
-				typeof (StoreLocation), "CurrentUser", null/* FIXME: get converter for StoreLocation*/, null,
-				ConfigurationPropertyOptions.None);
-
-			store_name = new ConfigurationProperty ("storeName",
-				typeof (StoreName), "My", null/* FIXME: get converter for StoreName*/, null,
-				ConfigurationPropertyOptions.None);
-
-			target_uri = new ConfigurationProperty ("targetUri",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
-
-			x509_find_type = new ConfigurationProperty ("x509FindType",
-				typeof (X509FindType), "FindBySubjectDistinguishedName", null/* FIXME: get converter for X509FindType*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (find_value);
-			properties.Add (store_location);
-			properties.Add (store_name);
-			properties.Add (target_uri);
-			properties.Add (x509_find_type);
-		}
-
-		public X509ScopedServiceCertificateElement ()
-		{
-		}
-
-
 		// Properties
 
 		[ConfigurationProperty ("findValue",
 			 DefaultValue = "",
 			 Options = ConfigurationPropertyOptions.None)]
-		[StringValidator ( MinLength = 0,
+		[StringValidator (MinLength = 0,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string FindValue {
-			get { return (string) base [find_value]; }
-			set { base [find_value] = value; }
+			get { return (string) base ["findValue"]; }
+			set { base ["findValue"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("storeLocation",
 			 DefaultValue = "CurrentUser",
 			 Options = ConfigurationPropertyOptions.None)]
 		public StoreLocation StoreLocation {
-			get { return (StoreLocation) base [store_location]; }
-			set { base [store_location] = value; }
+			get { return (StoreLocation) base ["storeLocation"]; }
+			set { base ["storeLocation"] = value; }
 		}
 
 		[ConfigurationProperty ("storeName",
 			 DefaultValue = "My",
 			 Options = ConfigurationPropertyOptions.None)]
 		public StoreName StoreName {
-			get { return (StoreName) base [store_name]; }
-			set { base [store_name] = value; }
+			get { return (StoreName) base ["storeName"]; }
+			set { base ["storeName"] = value; }
 		}
 
 		[ConfigurationProperty ("targetUri",
@@ -140,19 +96,16 @@ namespace System.ServiceModel.Configuration
 			IsRequired = true,
 			IsKey = true)]
 		public Uri TargetUri {
-			get { return (Uri) base [target_uri]; }
-			set { base [target_uri] = value; }
+			get { return (Uri) base ["targetUri"]; }
+			set { base ["targetUri"] = value; }
 		}
 
 		[ConfigurationProperty ("x509FindType",
 			 DefaultValue = "FindBySubjectDistinguishedName",
 			 Options = ConfigurationPropertyOptions.None)]
 		public X509FindType X509FindType {
-			get { return (X509FindType) base [x509_find_type]; }
-			set { base [x509_find_type] = value; }
+			get { return (X509FindType) base ["x509FindType"]; }
+			set { base ["x509FindType"] = value; }
 		}
-
-
 	}
-
 }

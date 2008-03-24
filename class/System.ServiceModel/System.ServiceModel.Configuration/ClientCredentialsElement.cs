@@ -54,142 +54,94 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class ClientCredentialsElement
+	public class ClientCredentialsElement
 		 : BehaviorExtensionElement
 	{
 		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty client_certificate;
-		static ConfigurationProperty http_digest;
-		static ConfigurationProperty issued_token;
-		static ConfigurationProperty peer;
-		static ConfigurationProperty service_certificate;
-		static ConfigurationProperty support_interactive;
-		static ConfigurationProperty type;
-		static ConfigurationProperty windows;
-
-		static ClientCredentialsElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			client_certificate = new ConfigurationProperty ("clientCertificate",
-				typeof (X509InitiatorCertificateClientElement), null, null/* FIXME: get converter for X509InitiatorCertificateClientElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			http_digest = new ConfigurationProperty ("httpDigest",
-				typeof (HttpDigestClientElement), null, null/* FIXME: get converter for HttpDigestClientElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			issued_token = new ConfigurationProperty ("issuedToken",
-				typeof (IssuedTokenClientElement), null, null/* FIXME: get converter for IssuedTokenClientElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			peer = new ConfigurationProperty ("peer",
-				typeof (PeerCredentialElement), null, null/* FIXME: get converter for PeerCredentialElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			service_certificate = new ConfigurationProperty ("serviceCertificate",
-				typeof (X509RecipientCertificateClientElement), null, null/* FIXME: get converter for X509RecipientCertificateClientElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			support_interactive = new ConfigurationProperty ("supportInteractive",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			type = new ConfigurationProperty ("type",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			windows = new ConfigurationProperty ("windows",
-				typeof (WindowsClientElement), null, null/* FIXME: get converter for WindowsClientElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (client_certificate);
-			properties.Add (http_digest);
-			properties.Add (issued_token);
-			properties.Add (peer);
-			properties.Add (service_certificate);
-			properties.Add (support_interactive);
-			properties.Add (type);
-			properties.Add (windows);
-		}
-
-		public ClientCredentialsElement ()
-		{
-		}
-
+		ConfigurationPropertyCollection _properties;
 
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ClientCredentials); }
 		}
 
 		[ConfigurationProperty ("clientCertificate",
 			 Options = ConfigurationPropertyOptions.None)]
 		public X509InitiatorCertificateClientElement ClientCertificate {
-			get { return (X509InitiatorCertificateClientElement) base [client_certificate]; }
+			get { return (X509InitiatorCertificateClientElement) base ["clientCertificate"]; }
 		}
 
 		[ConfigurationProperty ("httpDigest",
 			 Options = ConfigurationPropertyOptions.None)]
 		public HttpDigestClientElement HttpDigest {
-			get { return (HttpDigestClientElement) base [http_digest]; }
+			get { return (HttpDigestClientElement) base ["httpDigest"]; }
 		}
 
 		[ConfigurationProperty ("issuedToken",
 			 Options = ConfigurationPropertyOptions.None)]
 		public IssuedTokenClientElement IssuedToken {
-			get { return (IssuedTokenClientElement) base [issued_token]; }
+			get { return (IssuedTokenClientElement) base ["issuedToken"]; }
 		}
 
 		[ConfigurationProperty ("peer",
 			 Options = ConfigurationPropertyOptions.None)]
 		public PeerCredentialElement Peer {
-			get { return (PeerCredentialElement) base [peer]; }
+			get { return (PeerCredentialElement) base ["peer"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("clientCertificate", typeof (X509InitiatorCertificateClientElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("httpDigest", typeof (HttpDigestClientElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("issuedToken", typeof (IssuedTokenClientElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("peer", typeof (PeerCredentialElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("serviceCertificate", typeof (X509RecipientCertificateClientElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("supportInteractive", typeof (bool), "true", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("type", typeof (string), String.Empty, new StringConverter (), new StringValidator (0, int.MaxValue, null), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("windows", typeof (WindowsClientElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("serviceCertificate",
 			 Options = ConfigurationPropertyOptions.None)]
 		public X509RecipientCertificateClientElement ServiceCertificate {
-			get { return (X509RecipientCertificateClientElement) base [service_certificate]; }
+			get { return (X509RecipientCertificateClientElement) base ["serviceCertificate"]; }
 		}
 
 		[ConfigurationProperty ("supportInteractive",
 			DefaultValue = true,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool SupportInteractive {
-			get { return (bool) base [support_interactive]; }
-			set { base [support_interactive] = value; }
+			get { return (bool) base ["supportInteractive"]; }
+			set { base ["supportInteractive"] = value; }
 		}
 
 		[ConfigurationProperty ("type",
 			 DefaultValue = "",
 			 Options = ConfigurationPropertyOptions.None)]
-		[StringValidator ( MinLength = 0,
+		[StringValidator (MinLength = 0,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string Type {
-			get { return (string) base [type]; }
-			set { base [type] = value; }
+			get { return (string) base ["type"]; }
+			set { base ["type"] = value; }
 		}
 
 		[ConfigurationProperty ("windows",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WindowsClientElement Windows {
-			get { return (WindowsClientElement) base [windows]; }
+			get { return (WindowsClientElement) base ["windows"]; }
 		}
 
+		[MonoTODO]
+		protected internal override object CreateBehavior () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

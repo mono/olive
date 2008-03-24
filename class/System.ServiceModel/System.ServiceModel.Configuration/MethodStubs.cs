@@ -160,17 +160,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// X509ScopedServiceCertificateElementCollection
-	public sealed partial class X509ScopedServiceCertificateElementCollection
-		 : ServiceModelConfigurationElementCollection<X509ScopedServiceCertificateElement>
-	{
-		[MonoTODO]
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // XmlElementElementCollection
 	public sealed partial class XmlElementElementCollection
 		 : ServiceModelConfigurationElementCollection<XmlElementElement>
@@ -188,36 +177,6 @@ namespace System.ServiceModel.Configuration
 	{
 		[MonoTODO]
 		protected override object GetElementKey (ConfigurationElement element)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
-// ClientCredentialsElement
-	public partial class ClientCredentialsElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
-// ClientViaElement
-	public partial class ClientViaElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
-// DataContractSerializerElement
-	public partial class DataContractSerializerElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -262,25 +221,4 @@ namespace System.ServiceModel.Configuration
 			throw new NotImplementedException ();
 		}
 	}
-
-// SynchronousReceiveElement
-	public partial class SynchronousReceiveElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
-// TransactedBatchingElement
-	public partial class TransactedBatchingElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 }

@@ -54,52 +54,29 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ClientViaElement
+	public sealed class ClientViaElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty via_uri;
-
-		static ClientViaElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			via_uri = new ConfigurationProperty ("viaUri",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (via_uri);
-		}
-
-		public ClientViaElement ()
-		{
-		}
-
-
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ClientViaBehavior); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("viaUri",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri ViaUri {
-			get { return (Uri) base [via_uri]; }
-			set { base [via_uri] = value; }
+			get { return (Uri) base ["viaUri"]; }
+			set { base ["viaUri"] = value; }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new ClientViaBehavior (ViaUri);
+		}
 
 	}
 
