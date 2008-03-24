@@ -35,23 +35,30 @@ namespace System.ServiceModel.Description
 	[MonoTODO]
 	public sealed class PolicyVersion
 	{
-		private PolicyVersion () {
+		static PolicyVersion _default = new PolicyVersion (null);
+		static PolicyVersion _policy12 = new PolicyVersion (null);
+		static PolicyVersion _policy15 = new PolicyVersion (null);
+
+		readonly string _namespace;
+
+		private PolicyVersion (string @namespace) {
+			_namespace = @namespace;
 		}
 
 		public static PolicyVersion Default {
-			get { throw new NotImplementedException (); }
+			get { return _default; }
 		}
 
 		public static PolicyVersion Policy12 {
-			get { throw new NotImplementedException (); }
+			get { return _policy12; }
 		}
 
 		public static PolicyVersion Policy15 {
-			get { throw new NotImplementedException (); }
+			get { return _policy15; }
 		}
 
 		public string Namespace {
-			get { throw new NotImplementedException (); }
+			get { return _namespace; }
 		}
 
 		public override string ToString () {

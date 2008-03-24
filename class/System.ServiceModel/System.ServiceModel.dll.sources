@@ -421,6 +421,7 @@ System.ServiceModel.Configuration/PeerTransportSecurityElement.cs
 System.ServiceModel.Configuration/PnrpPeerResolverElement.cs
 System.ServiceModel.Configuration/PolicyImporterElement.cs
 System.ServiceModel.Configuration/PolicyImporterElementCollection.cs
+System.ServiceModel.Configuration/PolicyVersionConverter.cs
 System.ServiceModel.Configuration/PrivacyNoticeElement.cs
 System.ServiceModel.Configuration/ReliableSessionElement.cs
 System.ServiceModel.Configuration/RsaElement.cs

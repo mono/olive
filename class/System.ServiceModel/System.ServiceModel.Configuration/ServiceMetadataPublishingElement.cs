@@ -112,6 +112,13 @@ namespace System.ServiceModel.Configuration
 			return b;
 		}
 
+		[ConfigurationPropertyAttribute ("policyVersion",
+			DefaultValue = "Default")]
+		[TypeConverter (typeof (PolicyVersionConverter))]
+		public PolicyVersion PolicyVersion {
+			get { return (PolicyVersion) base ["policyVersion"]; }
+			set { base ["policyVersion"] = value; }
+		}
 
 	}
 
