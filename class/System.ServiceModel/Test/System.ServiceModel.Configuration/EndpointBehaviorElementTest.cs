@@ -61,9 +61,31 @@ namespace MonoTests.System.ServiceModel.Configuration
 		public void CallbackDebugElement_defaults () {
 			CallbackDebugElement element = new CallbackDebugElement ();
 
-			Assert.AreEqual (typeof (CallbackDebugBehavior), element.BehaviorType, "RoleProviderName");
-			Assert.AreEqual ("callbackDebug", element.ConfigurationElementName, "RoleProviderName");
+			Assert.AreEqual (typeof (CallbackDebugBehavior), element.BehaviorType, "element");
+			Assert.AreEqual ("callbackDebug", element.ConfigurationElementName, "ConfigurationElementName");
 			Assert.AreEqual (false, element.IncludeExceptionDetailInFaults, "IncludeExceptionDetailInFaults");
+		}
+
+		[Test]
+		public void CallbackTimeoutsElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			CallbackTimeoutsElement element = (CallbackTimeoutsElement) behavior [typeof (CallbackTimeoutsElement)];
+
+			if (element == null)
+				Assert.Fail ("CallbackDebugElement is not exist in collection.");
+
+			Assert.AreEqual ("System.ServiceModel.Description.CallbackTimeoutsBehavior", element.BehaviorType.FullName, "BehaviorType");
+			Assert.AreEqual ("callbackTimeouts", element.ConfigurationElementName, "ConfigurationElementName");
+			Assert.AreEqual (new TimeSpan (0, 2, 30), element.TransactionTimeout, "TransactionTimeout");
+		}
+
+		[Test]
+		public void CallbackTimeoutsElement_defaults () {
+			CallbackTimeoutsElement element = new CallbackTimeoutsElement ();
+
+			Assert.AreEqual ("System.ServiceModel.Description.CallbackTimeoutsBehavior", element.BehaviorType.FullName, "BehaviorType");
+			Assert.AreEqual ("callbackTimeouts", element.ConfigurationElementName, "ConfigurationElementName");
+			Assert.AreEqual (new TimeSpan (0, 0, 0), element.TransactionTimeout, "TransactionTimeout");
 		}
 	}
 }
