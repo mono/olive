@@ -33,6 +33,9 @@ using NUnit.Framework;
 using System.ServiceModel.Configuration;
 using System.Configuration;
 using System.ServiceModel.Description;
+using System.Security.Cryptography.X509Certificates;
+using System.ServiceModel.Security;
+using System.Security.Principal;
 
 namespace MonoTests.System.ServiceModel.Configuration
 {
@@ -72,7 +75,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 			CallbackTimeoutsElement element = (CallbackTimeoutsElement) behavior [typeof (CallbackTimeoutsElement)];
 
 			if (element == null)
-				Assert.Fail ("CallbackDebugElement is not exist in collection.");
+				Assert.Fail ("CallbackTimeoutsElement is not exist in collection.");
 
 			Assert.AreEqual ("System.ServiceModel.Description.CallbackTimeoutsBehavior", element.BehaviorType.FullName, "BehaviorType");
 			Assert.AreEqual ("callbackTimeouts", element.ConfigurationElementName, "ConfigurationElementName");
@@ -86,6 +89,174 @@ namespace MonoTests.System.ServiceModel.Configuration
 			Assert.AreEqual ("System.ServiceModel.Description.CallbackTimeoutsBehavior", element.BehaviorType.FullName, "BehaviorType");
 			Assert.AreEqual ("callbackTimeouts", element.ConfigurationElementName, "ConfigurationElementName");
 			Assert.AreEqual (new TimeSpan (0, 0, 0), element.TransactionTimeout, "TransactionTimeout");
+		}
+
+		[Test]
+		public void ClientViaElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			ClientViaElement element = (ClientViaElement) behavior [typeof (ClientViaElement)];
+
+			if (element == null)
+				Assert.Fail ("ClientViaElement is not exist in collection.");
+
+			Assert.AreEqual (typeof (ClientViaBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("clientVia", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual ("http://via.uri", element.ViaUri.OriginalString, "ViaUri");
+		}
+
+		[Test]
+		public void ClientViaElement_defaults () {
+			ClientViaElement element = new ClientViaElement ();
+
+			Assert.AreEqual (typeof (ClientViaBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("clientVia", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (null, element.ViaUri, "ViaUri");
+		}
+
+		[Test]
+		public void DataContractSerializerElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			DataContractSerializerElement element = (DataContractSerializerElement) behavior [typeof (DataContractSerializerElement)];
+
+			if (element == null)
+				Assert.Fail ("DataContractSerializerElement is not exist in collection.");
+
+			Assert.AreEqual ("System.ServiceModel.Dispatcher.DataContractSerializerServiceBehavior", element.BehaviorType.FullName, "BehaviorType");
+			Assert.AreEqual ("dataContractSerializer", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (true, element.IgnoreExtensionDataObject, "IgnoreExtensionDataObject");
+			Assert.AreEqual (32768, element.MaxItemsInObjectGraph, "MaxItemsInObjectGraph");
+		}
+
+		[Test]
+		public void DataContractSerializerElement_defaults () {
+			DataContractSerializerElement element = new DataContractSerializerElement ();
+
+			Assert.AreEqual ("System.ServiceModel.Dispatcher.DataContractSerializerServiceBehavior", element.BehaviorType.FullName, "BehaviorType");
+			Assert.AreEqual ("dataContractSerializer", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (false, element.IgnoreExtensionDataObject, "IgnoreExtensionDataObject");
+			Assert.AreEqual (65536, element.MaxItemsInObjectGraph, "MaxItemsInObjectGraph");
+		}
+
+		[Test]
+		public void SynchronousReceiveElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			SynchronousReceiveElement element = (SynchronousReceiveElement) behavior [typeof (SynchronousReceiveElement)];
+
+			if (element == null)
+				Assert.Fail ("SynchronousReceiveElement is not exist in collection.");
+
+			Assert.AreEqual (typeof (SynchronousReceiveBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("synchronousReceive", element.ConfigurationElementName, "ConfigurationElementName");
+		}
+
+		[Test]
+		public void SynchronousReceiveElement_defaults () {
+			SynchronousReceiveElement element = new SynchronousReceiveElement ();
+
+			Assert.AreEqual (typeof (SynchronousReceiveBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("synchronousReceive", element.ConfigurationElementName, "ConfigurationElementName");
+		}
+
+		[Test]
+		public void TransactedBatchingElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			TransactedBatchingElement element = (TransactedBatchingElement) behavior [typeof (TransactedBatchingElement)];
+
+			if (element == null)
+				Assert.Fail ("TransactedBatchingElement is not exist in collection.");
+
+			Assert.AreEqual (typeof (TransactedBatchingBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("transactedBatching", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (16, element.MaxBatchSize, "MaxBatchSize");
+		}
+
+		[Test]
+		public void TransactedBatchingElement_defaults () {
+			TransactedBatchingElement element = new TransactedBatchingElement ();
+
+			Assert.AreEqual (typeof (TransactedBatchingBehavior), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("transactedBatching", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (0, element.MaxBatchSize, "MaxBatchSize");
+		}
+
+		[Test]
+		public void ClientCredentialsElement () {
+			EndpointBehaviorElement behavior = OpenConfig ();
+			ClientCredentialsElement element = (ClientCredentialsElement) behavior [typeof (ClientCredentialsElement)];
+
+			if (element == null)
+				Assert.Fail ("ClientCredentialsElement is not exist in collection.");
+
+			Assert.AreEqual (typeof (ClientCredentials), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("clientCredentials", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (false, element.SupportInteractive, "SupportInteractive");
+			Assert.AreEqual ("ClientCredentialType", element.Type, "Type");
+
+			Assert.AreEqual ("findValue", element.ClientCertificate.FindValue, "ClientCertificate.FindValue");
+			Assert.AreEqual (StoreLocation.LocalMachine, element.ClientCertificate.StoreLocation, "ClientCertificate.StoreLocation");
+			Assert.AreEqual (StoreName.Root, element.ClientCertificate.StoreName, "ClientCertificate.StoreName");
+			Assert.AreEqual (X509FindType.FindByExtension, element.ClientCertificate.X509FindType, "ClientCertificate.X509FindType");
+
+			Assert.AreEqual ("findValue", element.ServiceCertificate.DefaultCertificate.FindValue, "ServiceCertificate.DefaultCertificate.FindValue");
+			Assert.AreEqual (StoreLocation.LocalMachine, element.ServiceCertificate.DefaultCertificate.StoreLocation, "ServiceCertificate.DefaultCertificate.StoreLocation");
+			Assert.AreEqual (StoreName.Root, element.ServiceCertificate.DefaultCertificate.StoreName, "ServiceCertificate.DefaultCertificate.StoreName");
+			Assert.AreEqual (X509FindType.FindByExtension, element.ServiceCertificate.DefaultCertificate.X509FindType, "ServiceCertificate.DefaultCertificate.X509FindType");
+
+			Assert.AreEqual ("CustomCertificateValidatorType", element.ServiceCertificate.Authentication.CustomCertificateValidatorType, "ServiceCertificate.Authentication.CustomCertificateValidatorType");
+			Assert.AreEqual (X509CertificateValidationMode.None, element.ServiceCertificate.Authentication.CertificateValidationMode, "ServiceCertificate.Authentication.CertificateValidationMode");
+			Assert.AreEqual (X509RevocationMode.Offline, element.ServiceCertificate.Authentication.RevocationMode, "ServiceCertificate.Authentication.RevocationMode");
+			Assert.AreEqual (StoreLocation.LocalMachine, element.ServiceCertificate.Authentication.TrustedStoreLocation, "ServiceCertificate.Authentication.TrustedStoreLocation");
+
+			Assert.AreEqual (false, element.Windows.AllowNtlm, "Windows.AllowNtlm");
+			Assert.AreEqual (TokenImpersonationLevel.None, element.Windows.AllowedImpersonationLevel, "Windows.AllowedImpersonationLevel");
+
+			Assert.AreEqual (false, element.IssuedToken.CacheIssuedTokens, "IssuedToken.CacheIssuedTokens");
+			Assert.AreEqual (SecurityKeyEntropyMode.ClientEntropy, element.IssuedToken.DefaultKeyEntropyMode, "IssuedToken.DefaultKeyEntropyMode");
+			Assert.AreEqual (30, element.IssuedToken.IssuedTokenRenewalThresholdPercentage, "IssuedToken.IssuedTokenRenewalThresholdPercentage");
+
+			Assert.AreEqual (TokenImpersonationLevel.None, element.HttpDigest.ImpersonationLevel, "HttpDigest.ImpersonationLevel");
+		}
+
+		[Test]
+		public void ClientCredentialsElement_defaults () {
+			ClientCredentialsElement element = new ClientCredentialsElement ();
+
+			Assert.AreEqual (typeof (ClientCredentials), element.BehaviorType, "BehaviorType");
+			Assert.AreEqual ("clientCredentials", element.ConfigurationElementName, "ConfigurationElementName");
+
+			Assert.AreEqual (true, element.SupportInteractive, "SupportInteractive");
+			Assert.AreEqual (String.Empty, element.Type, "Type");
+
+			Assert.AreEqual (String.Empty, element.ClientCertificate.FindValue, "ClientCertificate.FindValue");
+			Assert.AreEqual (StoreLocation.CurrentUser, element.ClientCertificate.StoreLocation, "ClientCertificate.StoreLocation");
+			Assert.AreEqual (StoreName.My, element.ClientCertificate.StoreName, "ClientCertificate.StoreName");
+			Assert.AreEqual (X509FindType.FindBySubjectDistinguishedName, element.ClientCertificate.X509FindType, "ClientCertificate.X509FindType");
+
+			Assert.AreEqual (String.Empty, element.ServiceCertificate.DefaultCertificate.FindValue, "ServiceCertificate.DefaultCertificate.FindValue");
+			Assert.AreEqual (StoreLocation.CurrentUser, element.ServiceCertificate.DefaultCertificate.StoreLocation, "ServiceCertificate.DefaultCertificate.StoreLocation");
+			Assert.AreEqual (StoreName.My, element.ServiceCertificate.DefaultCertificate.StoreName, "ServiceCertificate.DefaultCertificate.StoreName");
+			Assert.AreEqual (X509FindType.FindBySubjectDistinguishedName, element.ServiceCertificate.DefaultCertificate.X509FindType, "ServiceCertificate.DefaultCertificate.X509FindType");
+
+			Assert.AreEqual (String.Empty, element.ServiceCertificate.Authentication.CustomCertificateValidatorType, "ServiceCertificate.Authentication.CustomCertificateValidatorType");
+			Assert.AreEqual (X509CertificateValidationMode.ChainTrust, element.ServiceCertificate.Authentication.CertificateValidationMode, "ServiceCertificate.Authentication.CertificateValidationMode");
+			Assert.AreEqual (X509RevocationMode.Online, element.ServiceCertificate.Authentication.RevocationMode, "ServiceCertificate.Authentication.RevocationMode");
+			Assert.AreEqual (StoreLocation.CurrentUser, element.ServiceCertificate.Authentication.TrustedStoreLocation, "ServiceCertificate.Authentication.TrustedStoreLocation");
+
+			Assert.AreEqual (true, element.Windows.AllowNtlm, "Windows.AllowNtlm");
+			Assert.AreEqual (TokenImpersonationLevel.Identification, element.Windows.AllowedImpersonationLevel, "Windows.AllowedImpersonationLevel");
+
+			Assert.AreEqual (true, element.IssuedToken.CacheIssuedTokens, "IssuedToken.CacheIssuedTokens");
+			Assert.AreEqual (SecurityKeyEntropyMode.CombinedEntropy, element.IssuedToken.DefaultKeyEntropyMode, "IssuedToken.DefaultKeyEntropyMode");
+			Assert.AreEqual (60, element.IssuedToken.IssuedTokenRenewalThresholdPercentage, "IssuedToken.IssuedTokenRenewalThresholdPercentage");
+
+			Assert.AreEqual (TokenImpersonationLevel.Identification, element.HttpDigest.ImpersonationLevel, "HttpDigest.ImpersonationLevel");
 		}
 	}
 }
