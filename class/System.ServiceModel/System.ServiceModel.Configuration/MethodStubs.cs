@@ -193,16 +193,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// CallbackTimeoutsElement
-	public partial class CallbackTimeoutsElement
-	{
-		[MonoTODO]
-		protected internal override object CreateBehavior ()
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // ClientCredentialsElement
 	public partial class ClientCredentialsElement
 	{

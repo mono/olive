@@ -54,54 +54,33 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class CallbackTimeoutsElement
+	public sealed class CallbackTimeoutsElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty transaction_timeout;
-
-		static CallbackTimeoutsElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			transaction_timeout = new ConfigurationProperty ("transactionTimeout",
-				typeof (TimeSpan), "00:00:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (transaction_timeout);
+		public CallbackTimeoutsElement () {
 		}
-
-		public CallbackTimeoutsElement ()
-		{
-		}
-
 
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (CallbackTimeoutsBehavior); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("transactionTimeout",
 			 DefaultValue = "00:00:00",
 			 Options = ConfigurationPropertyOptions.None)]
 		public TimeSpan TransactionTimeout {
-			get { return (TimeSpan) base [transaction_timeout]; }
-			set { base [transaction_timeout] = value; }
+			get { return (TimeSpan) base ["transactionTimeout"]; }
+			set { base ["transactionTimeout"] = value; }
 		}
 
+		protected internal override object CreateBehavior () {
+			return new CallbackTimeoutsBehavior (TransactionTimeout);
+		}
 
 	}
 
