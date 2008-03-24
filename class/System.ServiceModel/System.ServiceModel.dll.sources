@@ -570,6 +570,7 @@ System.ServiceModel.Description/ServiceMetadataExtension.cs
 System.ServiceModel.Description/ServiceModelInternalConverter.cs
 System.ServiceModel.Description/ServiceSecurityAuditBehavior.cs
 System.ServiceModel.Description/ServiceThrottlingBehavior.cs
+System.ServiceModel.Description/SynchronousReceiveBehavior.cs
 System.ServiceModel.Description/TransactedBatchingBehavior.cs
 System.ServiceModel.Description/TypedMessageConverter.cs
 System.ServiceModel.Description/WSTrustMessageConverters.cs
