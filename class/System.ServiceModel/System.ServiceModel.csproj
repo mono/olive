@@ -790,6 +790,7 @@
     <Compile Include="System.ServiceModel.Description\ServiceModelInternalConverter.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceSecurityAuditBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceThrottlingBehavior.cs" />
+    <Compile Include="System.ServiceModel.Description\SynchronousReceiveBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\TransactedBatchingBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\TypedMessageConverter.cs" />
     <Compile Include="System.ServiceModel.Description\WebServiceHelper.cs" />
@@ -809,6 +810,7 @@
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcherCollection.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ClientOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ClientRuntime.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\DataContractSerializerServiceBehavior.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DefaultMessageOperationFormatter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchRuntime.cs" />
