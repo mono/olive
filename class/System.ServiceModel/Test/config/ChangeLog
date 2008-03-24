@@ -1,3 +1,8 @@
+2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* userBinding.config: 
+	consider test's assembly name System.ServiceModel_test_net_3_0.
+
 2006-06-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* test1.config : config file for test.
