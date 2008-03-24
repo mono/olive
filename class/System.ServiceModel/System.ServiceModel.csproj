@@ -690,6 +690,10 @@
     <Compile Include="System.ServiceModel.Configuration\WindowsClientElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\WindowsServiceElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\WindowsStreamSecurityElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\WS2007FederationHttpBindingCollectionElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\WS2007FederationHttpBindingElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\WS2007HttpBindingCollectionElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\WS2007HttpBindingElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\WsdlImporterElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\WsdlImporterElementCollection.cs" />
     <Compile Include="System.ServiceModel.Configuration\WSDualHttpBindingCollectionElement.cs" />
@@ -724,6 +728,7 @@
     <Compile Include="System.ServiceModel.Configuration\XPathMessageFilterElementCollection.cs" />
     <Compile Include="System.ServiceModel.Configuration\XPathMessageFilterElementComparer.cs" />
     <Compile Include="System.ServiceModel.Description\CallbackDebugBehavior.cs" />
+    <Compile Include="System.ServiceModel.Description\CallbackTimeoutsBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ClientCredentials.cs" />
     <Compile Include="System.ServiceModel.Description\ClientViaBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ContractDescription.cs" />
@@ -1067,6 +1072,8 @@
     <Compile Include="System.ServiceModel\UnknownMessageReceivedEventArgs.cs" />
     <Compile Include="System.ServiceModel\UpnEndpointIdentity.cs" />
     <Compile Include="System.ServiceModel\UriSchemeKeyedCollection.cs" />
+    <Compile Include="System.ServiceModel\WS2007FederationHttpBinding.cs" />
+    <Compile Include="System.ServiceModel\WS2007HttpBinding.cs" />
     <Compile Include="System.ServiceModel\WSDualHttpBinding.cs" />
     <Compile Include="System.ServiceModel\WSDualHttpSecurity.cs" />
     <Compile Include="System.ServiceModel\WSFederationHttpBinding.cs" />
