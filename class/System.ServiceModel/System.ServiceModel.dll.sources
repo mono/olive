@@ -559,6 +559,7 @@ System.ServiceModel.Description/OperationDescription.cs
 System.ServiceModel.Description/OperationDescriptionCollection.cs
 System.ServiceModel.Description/PolicyAssertionCollection.cs
 System.ServiceModel.Description/PolicyConversionContext.cs
+System.ServiceModel.Description/PolicyVersion.cs
 System.ServiceModel.Description/ServiceAuthorizationBehavior.cs
 System.ServiceModel.Description/ServiceContractGenerationContext.cs
 System.ServiceModel.Description/ServiceContractGenerator.cs
