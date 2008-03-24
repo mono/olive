@@ -12,6 +12,7 @@ System.IdentityModel.Policy/AuthorizationContext.cs
 System.IdentityModel.Policy/EvaluationContext.cs
 System.IdentityModel.Policy/IAuthorizationComponent.cs
 System.IdentityModel.Policy/IAuthorizationPolicy.cs
+System.IdentityModel.Selectors/AudienceUriMode.cs
 System.IdentityModel.Selectors/CustomUserNameSecurityTokenAuthenticator.cs
 System.IdentityModel.Selectors/KerberosSecurityTokenAuthenticator.cs
 System.IdentityModel.Selectors/KerberosSecurityTokenProvider.cs
