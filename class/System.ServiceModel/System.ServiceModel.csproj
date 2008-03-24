@@ -516,6 +516,8 @@
     <Compile Include="System.ServiceModel.Channels\XmlSerializerBodyWriter.cs" />
     <Compile Include="System.ServiceModel.ComIntegration\Dummy.cs" />
     <Compile Include="System.ServiceModel.Configuration\AddressHeaderCollectionElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\AllowedAudienceUriElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\AllowedAudienceUriElementCollection.cs" />
     <Compile Include="System.ServiceModel.Configuration\AuthenticationMode.cs" />
     <Compile Include="System.ServiceModel.Configuration\AuthorizationPolicyTypeElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\AuthorizationPolicyTypeElementCollection.cs" />
@@ -639,6 +641,7 @@
     <Compile Include="System.ServiceModel.Configuration\PnrpPeerResolverElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\PolicyImporterElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\PolicyImporterElementCollection.cs" />
+    <Compile Include="System.ServiceModel.Configuration\PolicyVersionConverter.cs" />
     <Compile Include="System.ServiceModel.Configuration\PrivacyNoticeElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\ReliableSessionElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\RsaElement.cs" />
@@ -777,6 +780,7 @@
     <Compile Include="System.ServiceModel.Description\OperationDescriptionCollection.cs" />
     <Compile Include="System.ServiceModel.Description\PolicyAssertionCollection.cs" />
     <Compile Include="System.ServiceModel.Description\PolicyConversionContext.cs" />
+    <Compile Include="System.ServiceModel.Description\PolicyVersion.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceAuthorizationBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceContractGenerationContext.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceContractGenerator.cs" />
@@ -790,6 +794,7 @@
     <Compile Include="System.ServiceModel.Description\ServiceModelInternalConverter.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceSecurityAuditBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceThrottlingBehavior.cs" />
+    <Compile Include="System.ServiceModel.Description\ServiceTimeoutsBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\SynchronousReceiveBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\TransactedBatchingBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\TypedMessageConverter.cs" />
