@@ -54,90 +54,60 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceThrottlingElement
+	public sealed class ServiceThrottlingElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty max_concurrent_calls;
-		static ConfigurationProperty max_concurrent_instances;
-		static ConfigurationProperty max_concurrent_sessions;
-
-		static ServiceThrottlingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_concurrent_calls = new ConfigurationProperty ("maxConcurrentCalls",
-				typeof (int), "16", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_concurrent_instances = new ConfigurationProperty ("maxConcurrentInstances",
-				typeof (int), "int.MaxValue", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_concurrent_sessions = new ConfigurationProperty ("maxConcurrentSessions",
-				typeof (int), "10", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (max_concurrent_calls);
-			properties.Add (max_concurrent_instances);
-			properties.Add (max_concurrent_sessions);
-		}
-
-		public ServiceThrottlingElement ()
-		{
+		public ServiceThrottlingElement () {
 		}
 
 
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ServiceThrottlingBehavior); }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxConcurrentCalls",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "16")]
 		public int MaxConcurrentCalls {
-			get { return (int) base [max_concurrent_calls]; }
-			set { base [max_concurrent_calls] = value; }
+			get { return (int) base ["maxConcurrentCalls"]; }
+			set { base ["maxConcurrentCalls"] = value; }
 		}
 
 		[ConfigurationProperty ("maxConcurrentInstances",
 			 Options = ConfigurationPropertyOptions.None,
-			DefaultValue = int.MaxValue)]
-		[IntegerValidator ( MinValue = 1,
+			DefaultValue = 26)]
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxConcurrentInstances {
-			get { return (int) base [max_concurrent_instances]; }
-			set { base [max_concurrent_instances] = value; }
+			get { return (int) base ["maxConcurrentInstances"]; }
+			set { base ["maxConcurrentInstances"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxConcurrentSessions",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10")]
 		public int MaxConcurrentSessions {
-			get { return (int) base [max_concurrent_sessions]; }
-			set { base [max_concurrent_sessions] = value; }
+			get { return (int) base ["maxConcurrentSessions"]; }
+			set { base ["maxConcurrentSessions"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		[MonoTODO]
+		protected internal override object CreateBehavior () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

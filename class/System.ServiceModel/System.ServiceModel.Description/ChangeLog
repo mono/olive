@@ -1,3 +1,9 @@
+2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* PolicyVersion.cs: imפlement ToString method, fix Namespace property.
+	* ServiceTimeoutsBehavior.cs: add internal class behavior corresponds
+	ServiceTimeoutsElement.
+
 2008-03-23  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* ContractDescriptionGenerator.cs: fixed GetMessage, fixed namespace

@@ -59,25 +59,14 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
-	[MonoTODO]
-	public sealed partial class X509CertificateTrustedIssuerElementCollection
+	public sealed class X509CertificateTrustedIssuerElementCollection
 		 : ServiceModelConfigurationElementCollection<X509CertificateTrustedIssuerElement>,  ICollection,  IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
 
-		static X509CertificateTrustedIssuerElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		protected override object GetElementKey (ConfigurationElement element) {
+			X509CertificateTrustedIssuerElement el = (X509CertificateTrustedIssuerElement) element;
+			return el.FindValue + ";" + el.StoreLocation + ";" + el.StoreName + ";" + el.X509FindType;
 		}
-
-		public X509CertificateTrustedIssuerElementCollection ()
-		{
-		}
-
-
-		// Properties
-
 
 	}
 

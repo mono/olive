@@ -1,5 +1,5 @@
 ﻿//
-// PolicyVersion.cs
+// ServiceTimeoutsElement.cs
 //
 // Author:
 //	Igor Zelmanovich <igorz@mainsoft.com>
@@ -32,35 +32,31 @@ using System.Text;
 
 namespace System.ServiceModel.Description
 {
-	public sealed class PolicyVersion
+	class ServiceTimeoutsBehavior : IServiceBehavior
 	{
-		static PolicyVersion _policy12 = new PolicyVersion ("http://schemas.xmlsoap.org/ws/2004/09/policy");
-		static PolicyVersion _policy15 = new PolicyVersion ("http://www.w3.org/ns/ws-policy");
-
-		readonly string _namespace;
-
-		private PolicyVersion (string @namespace) {
-			_namespace = @namespace;
+		public TimeSpan TransactionTimeout {
+			get;
+			set;
 		}
 
-		public static PolicyVersion Default {
-			get { return _policy12; }
+		public ServiceTimeoutsBehavior (TimeSpan timeout) {
+			TransactionTimeout = timeout;
 		}
 
-		public static PolicyVersion Policy12 {
-			get { return _policy12; }
+		#region IServiceBehavior Members
+
+		void IServiceBehavior.AddBindingParameters (ServiceDescription description, ServiceHostBase serviceHostBase, System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, System.ServiceModel.Channels.BindingParameterCollection parameters) {
+			throw new NotImplementedException ();
 		}
 
-		public static PolicyVersion Policy15 {
-			get { return _policy15; }
+		void IServiceBehavior.ApplyDispatchBehavior (ServiceDescription description, ServiceHostBase serviceHostBase) {
+			throw new NotImplementedException ();
 		}
 
-		public string Namespace {
-			get { return _namespace; }
+		void IServiceBehavior.Validate (ServiceDescription description, ServiceHostBase serviceHostBase) {
+			throw new NotImplementedException ();
 		}
 
-		public override string ToString () {
-			return Namespace;
-		}
+		#endregion
 	}
 }

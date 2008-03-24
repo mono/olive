@@ -1,3 +1,18 @@
+2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ExtensionsSection.cs: typo fix.
+	* MethodStubs.cs: refactoring.	
+	* PolicyVersionConverter.cs: implement ConvertTo method.
+	* ServiceAuthorizationElement.cs: refactoring.
+	* ServiceCredentialsElement.cs: fix BehaviorType property, refactoring.
+	* ServiceDebugElement.cs: fix BehaviorType property, refactoring.
+	* ServiceSecurityAuditElement.cs: fix BehaviorType property, refactoring.
+	* ServiceThrottlingElement.cs: fix BehaviorType property, refactoring.
+	* ServiceTimeoutsElement.cs: fix BehaviorType property, refactoring.
+	* X509CertificateTrustedIssuerElement.cs: refactoring.
+	* X509CertificateTrustedIssuerElementCollection.cs: implement GetElementKey.
+	all changes make corresponding tests pass.																							
+											
 2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* EndpointBehaviorElement.cs: Add "callbackDebug" behavior element.

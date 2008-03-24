@@ -54,42 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class X509CertificateTrustedIssuerElement
+	public sealed class X509CertificateTrustedIssuerElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty find_value;
-		static ConfigurationProperty store_location;
-		static ConfigurationProperty store_name;
-		static ConfigurationProperty x509_find_type;
-
-		static X509CertificateTrustedIssuerElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			find_value = new ConfigurationProperty ("findValue",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.IsKey);
-
-			store_location = new ConfigurationProperty ("storeLocation",
-				typeof (StoreLocation), "LocalMachine", null/* FIXME: get converter for StoreLocation*/, null,
-				ConfigurationPropertyOptions.IsKey);
-
-			store_name = new ConfigurationProperty ("storeName",
-				typeof (StoreName), "My", null/* FIXME: get converter for StoreName*/, null,
-				ConfigurationPropertyOptions.IsKey);
-
-			x509_find_type = new ConfigurationProperty ("x509FindType",
-				typeof (X509FindType), "FindBySubjectDistinguishedName", null/* FIXME: get converter for X509FindType*/, null,
-				ConfigurationPropertyOptions.IsKey);
-
-			properties.Add (find_value);
-			properties.Add (store_location);
-			properties.Add (store_name);
-			properties.Add (x509_find_type);
-		}
-
 		public X509CertificateTrustedIssuerElement ()
 		{
 		}
@@ -105,12 +72,12 @@ namespace System.ServiceModel.Configuration
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string FindValue {
-			get { return (string) base [find_value]; }
-			set { base [find_value] = value; }
+			get { return (string) base ["findValue"]; }
+			set { base ["findValue"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("storeLocation",
@@ -118,8 +85,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsKey,
 			IsKey = true)]
 		public StoreLocation StoreLocation {
-			get { return (StoreLocation) base [store_location]; }
-			set { base [store_location] = value; }
+			get { return (StoreLocation) base ["storeLocation"]; }
+			set { base ["storeLocation"] = value; }
 		}
 
 		[ConfigurationProperty ("storeName",
@@ -127,8 +94,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsKey,
 			IsKey = true)]
 		public StoreName StoreName {
-			get { return (StoreName) base [store_name]; }
-			set { base [store_name] = value; }
+			get { return (StoreName) base ["storeName"]; }
+			set { base ["storeName"] = value; }
 		}
 
 		[ConfigurationProperty ("x509FindType",
@@ -136,8 +103,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsKey,
 			IsKey = true)]
 		public X509FindType X509FindType {
-			get { return (X509FindType) base [x509_find_type]; }
-			set { base [x509_find_type] = value; }
+			get { return (X509FindType) base ["x509FindType"]; }
+			set { base ["x509FindType"] = value; }
 		}
 
 

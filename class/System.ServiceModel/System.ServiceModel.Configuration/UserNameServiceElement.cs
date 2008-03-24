@@ -54,60 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class UserNameServiceElement
+	public sealed class UserNameServiceElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty cached_logon_token_lifetime;
-		static ConfigurationProperty cache_logon_tokens;
-		static ConfigurationProperty custom_user_name_password_validator_type;
-		static ConfigurationProperty include_windows_groups;
-		static ConfigurationProperty max_cached_logon_tokens;
-		static ConfigurationProperty membership_provider_name;
-		static ConfigurationProperty user_name_password_validation_mode;
-
-		static UserNameServiceElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			cached_logon_token_lifetime = new ConfigurationProperty ("cachedLogonTokenLifetime",
-				typeof (TimeSpan), "00:15:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			cache_logon_tokens = new ConfigurationProperty ("cacheLogonTokens",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			custom_user_name_password_validator_type = new ConfigurationProperty ("customUserNamePasswordValidatorType",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			include_windows_groups = new ConfigurationProperty ("includeWindowsGroups",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_cached_logon_tokens = new ConfigurationProperty ("maxCachedLogonTokens",
-				typeof (int), "128", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			membership_provider_name = new ConfigurationProperty ("membershipProviderName",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			user_name_password_validation_mode = new ConfigurationProperty ("userNamePasswordValidationMode",
-				typeof (UserNamePasswordValidationMode), "Windows", null/* FIXME: get converter for UserNamePasswordValidationMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (cached_logon_token_lifetime);
-			properties.Add (cache_logon_tokens);
-			properties.Add (custom_user_name_password_validator_type);
-			properties.Add (include_windows_groups);
-			properties.Add (max_cached_logon_tokens);
-			properties.Add (membership_provider_name);
-			properties.Add (user_name_password_validation_mode);
-		}
-
 		public UserNameServiceElement ()
 		{
 		}
@@ -118,18 +67,17 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("cachedLogonTokenLifetime",
 			 DefaultValue = "00:15:00",
 			 Options = ConfigurationPropertyOptions.None)]
-		[TypeConverter ()]
 		public TimeSpan CachedLogonTokenLifetime {
-			get { return (TimeSpan) base [cached_logon_token_lifetime]; }
-			set { base [cached_logon_token_lifetime] = value; }
+			get { return (TimeSpan) base ["cachedLogonTokenLifetime"]; }
+			set { base ["cachedLogonTokenLifetime"] = value; }
 		}
 
 		[ConfigurationProperty ("cacheLogonTokens",
 			DefaultValue = false,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool CacheLogonTokens {
-			get { return (bool) base [cache_logon_tokens]; }
-			set { base [cache_logon_tokens] = value; }
+			get { return (bool) base ["cacheLogonTokens"]; }
+			set { base ["cacheLogonTokens"] = value; }
 		}
 
 		[ConfigurationProperty ("customUserNamePasswordValidatorType",
@@ -139,16 +87,16 @@ namespace System.ServiceModel.Configuration
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string CustomUserNamePasswordValidatorType {
-			get { return (string) base [custom_user_name_password_validator_type]; }
-			set { base [custom_user_name_password_validator_type] = value; }
+			get { return (string) base ["customUserNamePasswordValidatorType"]; }
+			set { base ["customUserNamePasswordValidatorType"] = value; }
 		}
 
 		[ConfigurationProperty ("includeWindowsGroups",
 			DefaultValue = true,
 			 Options = ConfigurationPropertyOptions.None)]
 		public bool IncludeWindowsGroups {
-			get { return (bool) base [include_windows_groups]; }
-			set { base [include_windows_groups] = value; }
+			get { return (bool) base ["includeWindowsGroups"]; }
+			set { base ["includeWindowsGroups"] = value; }
 		}
 
 		[ConfigurationProperty ("maxCachedLogonTokens",
@@ -158,8 +106,8 @@ namespace System.ServiceModel.Configuration
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxCachedLogonTokens {
-			get { return (int) base [max_cached_logon_tokens]; }
-			set { base [max_cached_logon_tokens] = value; }
+			get { return (int) base ["maxCachedLogonTokens"]; }
+			set { base ["maxCachedLogonTokens"] = value; }
 		}
 
 		[StringValidator ( MinLength = 0,
@@ -169,20 +117,20 @@ namespace System.ServiceModel.Configuration
 			 DefaultValue = "",
 			 Options = ConfigurationPropertyOptions.None)]
 		public string MembershipProviderName {
-			get { return (string) base [membership_provider_name]; }
-			set { base [membership_provider_name] = value; }
+			get { return (string) base ["membershipProviderName"]; }
+			set { base ["membershipProviderName"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("userNamePasswordValidationMode",
 			 DefaultValue = "Windows",
 			 Options = ConfigurationPropertyOptions.None)]
 		public UserNamePasswordValidationMode UserNamePasswordValidationMode {
-			get { return (UserNamePasswordValidationMode) base [user_name_password_validation_mode]; }
-			set { base [user_name_password_validation_mode] = value; }
+			get { return (UserNamePasswordValidationMode) base ["userNamePasswordValidationMode"]; }
+			set { base ["userNamePasswordValidationMode"] = value; }
 		}
 
 

@@ -54,5 +54,15 @@ namespace System.ServiceModel.Configuration
 				throw new ArgumentException ();
 			}
 		}
+
+		public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+			PolicyVersion policy = (PolicyVersion) value;
+			if (policy == PolicyVersion.Policy12)
+				return "Policy12";
+			else if (policy == PolicyVersion.Policy15)
+				return "Policy15";
+			else
+				return "Default";
+		}
 	}
 }

@@ -54,107 +54,65 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceDebugElement
+	public sealed class ServiceDebugElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty http_help_page_enabled;
-		static ConfigurationProperty http_help_page_url;
-		static ConfigurationProperty https_help_page_enabled;
-		static ConfigurationProperty https_help_page_url;
-		static ConfigurationProperty include_exception_detail_in_faults;
-
-		static ServiceDebugElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			http_help_page_enabled = new ConfigurationProperty ("httpHelpPageEnabled",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			http_help_page_url = new ConfigurationProperty ("httpHelpPageUrl",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			https_help_page_enabled = new ConfigurationProperty ("httpsHelpPageEnabled",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			https_help_page_url = new ConfigurationProperty ("httpsHelpPageUrl",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			include_exception_detail_in_faults = new ConfigurationProperty ("includeExceptionDetailInFaults",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (behavior_type);
-			properties.Add (http_help_page_enabled);
-			properties.Add (http_help_page_url);
-			properties.Add (https_help_page_enabled);
-			properties.Add (https_help_page_url);
-			properties.Add (include_exception_detail_in_faults);
-		}
-
-		public ServiceDebugElement ()
-		{
+		public ServiceDebugElement () {
 		}
 
 
 		// Properties
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ServiceDebugBehavior); }
 		}
 
 		[ConfigurationProperty ("httpHelpPageEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool HttpHelpPageEnabled {
-			get { return (bool) base [http_help_page_enabled]; }
-			set { base [http_help_page_enabled] = value; }
+			get { return (bool) base ["httpHelpPageEnabled"]; }
+			set { base ["httpHelpPageEnabled"] = value; }
 		}
 
 		[ConfigurationProperty ("httpHelpPageUrl",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri HttpHelpPageUrl {
-			get { return (Uri) base [http_help_page_url]; }
-			set { base [http_help_page_url] = value; }
+			get { return (Uri) base ["httpHelpPageUrl"]; }
+			set { base ["httpHelpPageUrl"] = value; }
 		}
 
 		[ConfigurationProperty ("httpsHelpPageEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool HttpsHelpPageEnabled {
-			get { return (bool) base [https_help_page_enabled]; }
-			set { base [https_help_page_enabled] = value; }
+			get { return (bool) base ["httpsHelpPageEnabled"]; }
+			set { base ["httpsHelpPageEnabled"] = value; }
 		}
 
 		[ConfigurationProperty ("httpsHelpPageUrl",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri HttpsHelpPageUrl {
-			get { return (Uri) base [https_help_page_url]; }
-			set { base [https_help_page_url] = value; }
+			get { return (Uri) base ["httpsHelpPageUrl"]; }
+			set { base ["httpsHelpPageUrl"] = value; }
 		}
 
 		[ConfigurationProperty ("includeExceptionDetailInFaults",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool IncludeExceptionDetailInFaults {
-			get { return (bool) base [include_exception_detail_in_faults]; }
-			set { base [include_exception_detail_in_faults] = value; }
+			get { return (bool) base ["includeExceptionDetailInFaults"]; }
+			set { base ["includeExceptionDetailInFaults"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		[MonoTODO]
+		protected internal override object CreateBehavior () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

@@ -54,50 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ServiceSecurityAuditElement
+	public sealed class ServiceSecurityAuditElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty audit_log_location;
-		static ConfigurationProperty behavior_type;
-		static ConfigurationProperty message_authentication_audit_level;
-		static ConfigurationProperty service_authorization_audit_level;
-		static ConfigurationProperty suppress_audit_failure;
-
-		static ServiceSecurityAuditElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			audit_log_location = new ConfigurationProperty ("auditLogLocation",
-				typeof (AuditLogLocation), "Default", null/* FIXME: get converter for AuditLogLocation*/, null,
-				ConfigurationPropertyOptions.None);
-
-			behavior_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			message_authentication_audit_level = new ConfigurationProperty ("messageAuthenticationAuditLevel",
-				typeof (AuditLevel), "None", null/* FIXME: get converter for AuditLevel*/, null,
-				ConfigurationPropertyOptions.None);
-
-			service_authorization_audit_level = new ConfigurationProperty ("serviceAuthorizationAuditLevel",
-				typeof (AuditLevel), "None", null/* FIXME: get converter for AuditLevel*/, null,
-				ConfigurationPropertyOptions.None);
-
-			suppress_audit_failure = new ConfigurationProperty ("suppressAuditFailure",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (audit_log_location);
-			properties.Add (behavior_type);
-			properties.Add (message_authentication_audit_level);
-			properties.Add (service_authorization_audit_level);
-			properties.Add (suppress_audit_failure);
-		}
-
-		public ServiceSecurityAuditElement ()
-		{
+		public ServiceSecurityAuditElement () {
 		}
 
 
@@ -107,42 +67,46 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Default")]
 		public AuditLogLocation AuditLogLocation {
-			get { return (AuditLogLocation) base [audit_log_location]; }
-			set { base [audit_log_location] = value; }
+			get { return (AuditLogLocation) base ["auditLogLocation"]; }
+			set { base ["auditLogLocation"] = value; }
 		}
 
 		public override Type BehaviorType {
-			get { return (Type) base [behavior_type]; }
+			get { return typeof (ServiceSecurityAuditBehavior); }
 		}
 
 		[ConfigurationProperty ("messageAuthenticationAuditLevel",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "None")]
 		public AuditLevel MessageAuthenticationAuditLevel {
-			get { return (AuditLevel) base [message_authentication_audit_level]; }
-			set { base [message_authentication_audit_level] = value; }
+			get { return (AuditLevel) base ["messageAuthenticationAuditLevel"]; }
+			set { base ["messageAuthenticationAuditLevel"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("serviceAuthorizationAuditLevel",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "None")]
 		public AuditLevel ServiceAuthorizationAuditLevel {
-			get { return (AuditLevel) base [service_authorization_audit_level]; }
-			set { base [service_authorization_audit_level] = value; }
+			get { return (AuditLevel) base ["serviceAuthorizationAuditLevel"]; }
+			set { base ["serviceAuthorizationAuditLevel"] = value; }
 		}
 
 		[ConfigurationProperty ("suppressAuditFailure",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool SuppressAuditFailure {
-			get { return (bool) base [suppress_audit_failure]; }
-			set { base [suppress_audit_failure] = value; }
+			get { return (bool) base ["suppressAuditFailure"]; }
+			set { base ["suppressAuditFailure"] = value; }
 		}
 
+		[MonoTODO]
+		protected internal override object CreateBehavior () {
+			throw new NotImplementedException ();
+		}
 
 	}
 

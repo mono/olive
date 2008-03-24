@@ -57,44 +57,6 @@ namespace System.ServiceModel.Configuration
 	public sealed class ServiceAuthorizationElement
 		 : BehaviorExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty authorization_policies;
-		static ConfigurationProperty impersonate_caller_for_all_operations;
-		static ConfigurationProperty principal_permission_mode;
-		static ConfigurationProperty role_provider_name;
-		static ConfigurationProperty service_authorization_manager_type;
-
-		static ServiceAuthorizationElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			authorization_policies = new ConfigurationProperty ("authorizationPolicies",
-				typeof (AuthorizationPolicyTypeElementCollection), null, null, null,
-				ConfigurationPropertyOptions.None);
-
-			impersonate_caller_for_all_operations = new ConfigurationProperty ("impersonateCallerForAllOperations",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			principal_permission_mode = new ConfigurationProperty ("principalPermissionMode",
-				typeof (PrincipalPermissionMode), "UseWindowsGroups", null, null,
-				ConfigurationPropertyOptions.None);
-
-			role_provider_name = new ConfigurationProperty ("roleProviderName",
-				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue),
-				ConfigurationPropertyOptions.None);
-
-			service_authorization_manager_type = new ConfigurationProperty ("serviceAuthorizationManagerType",
-				typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue),
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (authorization_policies);
-			properties.Add (impersonate_caller_for_all_operations);
-			properties.Add (principal_permission_mode);
-			properties.Add (role_provider_name);
-			properties.Add (service_authorization_manager_type);
-		}
-
 		public ServiceAuthorizationElement ()
 		{
 		}
@@ -105,7 +67,7 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("authorizationPolicies",
 			 Options = ConfigurationPropertyOptions.None)]
 		public AuthorizationPolicyTypeElementCollection AuthorizationPolicies {
-			get { return (AuthorizationPolicyTypeElementCollection) base [authorization_policies]; }
+			get { return (AuthorizationPolicyTypeElementCollection) base ["authorizationPolicies"]; }
 		}
 
 		public override Type BehaviorType {
@@ -116,20 +78,20 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool ImpersonateCallerForAllOperations {
-			get { return (bool) base [impersonate_caller_for_all_operations]; }
-			set { base [impersonate_caller_for_all_operations] = value; }
+			get { return (bool) base ["impersonateCallerForAllOperations"]; }
+			set { base ["impersonateCallerForAllOperations"] = value; }
 		}
 
 		[ConfigurationProperty ("principalPermissionMode",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "UseWindowsGroups")]
 		public PrincipalPermissionMode PrincipalPermissionMode {
-			get { return (PrincipalPermissionMode) base [principal_permission_mode]; }
-			set { base [principal_permission_mode] = value; }
+			get { return (PrincipalPermissionMode) base ["principalPermissionMode"]; }
+			set { base ["principalPermissionMode"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[StringValidator ( MinLength = 0,
@@ -139,8 +101,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "")]
 		public string RoleProviderName {
-			get { return (string) base [role_provider_name]; }
-			set { base [role_provider_name] = value; }
+			get { return (string) base ["roleProviderName"]; }
+			set { base ["roleProviderName"] = value; }
 		}
 
 		[StringValidator ( MinLength = 0,
@@ -150,8 +112,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "")]
 		public string ServiceAuthorizationManagerType {
-			get { return (string) base [service_authorization_manager_type]; }
-			set { base [service_authorization_manager_type] = value; }
+			get { return (string) base ["serviceAuthorizationManagerType"]; }
+			set { base ["serviceAuthorizationManagerType"] = value; }
 		}
 
 		[MonoTODO]

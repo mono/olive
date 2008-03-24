@@ -149,7 +149,7 @@ namespace System.ServiceModel.Configuration
 			BehaviorExtensions.Add (new ExtensionElement ("serviceAuthorization", typeof (ServiceAuthorizationElement).AssemblyQualifiedName));
 			BehaviorExtensions.Add (new ExtensionElement ("serviceCredentials", typeof (ServiceCredentialsElement).AssemblyQualifiedName));
 			BehaviorExtensions.Add (new ExtensionElement ("serviceDebug", typeof (ServiceDebugElement).AssemblyQualifiedName));
-			BehaviorExtensions.Add (new ExtensionElement ("serviceMetadata", typeof (ServiceMetadataExtension).AssemblyQualifiedName));
+			BehaviorExtensions.Add (new ExtensionElement ("serviceMetadata", typeof (ServiceMetadataPublishingElement).AssemblyQualifiedName));
 			BehaviorExtensions.Add (new ExtensionElement ("serviceSecurityAudit", typeof (ServiceSecurityAuditElement).AssemblyQualifiedName));
 			BehaviorExtensions.Add (new ExtensionElement ("serviceThrottling", typeof (ServiceThrottlingElement).AssemblyQualifiedName));
 			BehaviorExtensions.Add (new ExtensionElement ("serviceTimeouts", typeof (ServiceTimeoutsElement).AssemblyQualifiedName));
