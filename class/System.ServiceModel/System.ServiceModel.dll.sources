@@ -296,6 +296,8 @@ System.ServiceModel.Channels/XmlReaderBodyWriter.cs
 System.ServiceModel.Channels/XmlSerializerBodyWriter.cs
 System.ServiceModel.ComIntegration/Dummy.cs
 System.ServiceModel.Configuration/AddressHeaderCollectionElement.cs
+System.ServiceModel.Configuration/AllowedAudienceUriElement.cs
+System.ServiceModel.Configuration/AllowedAudienceUriElementCollection.cs
 System.ServiceModel.Configuration/AuthenticationMode.cs
 System.ServiceModel.Configuration/AuthorizationPolicyTypeElement.cs
 System.ServiceModel.Configuration/AuthorizationPolicyTypeElementCollection.cs
