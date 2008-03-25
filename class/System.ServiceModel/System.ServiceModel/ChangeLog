@@ -1,3 +1,8 @@
+2008-03-25  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
+	* ServiceHostBase.cs: implemented ApplyConfiguration, fixed service 
+	hosting
+
 2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Move configuration handling to ChannelFactory.

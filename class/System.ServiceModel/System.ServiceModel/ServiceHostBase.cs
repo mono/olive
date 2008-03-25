@@ -251,7 +251,38 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected virtual void ApplyConfiguration ()
 		{
-			throw new NotImplementedException ();
+			foreach (ServiceElement service in ConfigUtil.ServicesSection.Services) {
+
+				//base addresses
+				HostElement host = service.Host;
+				foreach (BaseAddressElement baseAddress in host.BaseAddresses) {
+					this.base_addresses.Add (new Uri (baseAddress.BaseAddress));
+				}
+
+				// services
+				foreach (ServiceEndpointElement endpoint in service.Endpoints) {
+					// FIXME: consider BindingName as well
+					ServiceEndpoint se = AddServiceEndpoint (
+						endpoint.Contract,
+						ConfigUtil.CreateBinding (endpoint.Binding, endpoint.BindingConfiguration),
+						endpoint.Address.ToString ());
+				}
+				// behaviors
+				ServiceBehaviorElement behavior = ConfigUtil.BehaviorsSection.ServiceBehaviors.Find (service.BehaviorConfiguration);
+				if (behavior != null) {
+					foreach (BehaviorExtensionElement bxel in behavior) {
+						IServiceBehavior b = null;
+						ServiceMetadataPublishingElement meta = bxel as ServiceMetadataPublishingElement;
+						if (meta != null) {
+							ServiceMetadataBehavior smb = meta.CreateBehavior () as ServiceMetadataBehavior;
+							smb.HttpGetUrl = null;
+							b = smb;
+						}
+						if (b != null)
+							Description.Behaviors.Add (b);
+					}
+				}
+			}
 		}
 
 		internal ContractDescription GetContract (string name, string ns)
@@ -272,6 +303,8 @@ namespace System.ServiceModel
 			IDictionary<string,ContractDescription> retContracts;
 			description = CreateDescription (out retContracts);
 			contracts = retContracts;
+
+			ApplyConfiguration ();
 		}
 
 		[MonoTODO]
@@ -282,6 +315,7 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected void LoadConfigurationSection (ServiceElement element)
 		{
+			ServicesSection services = ConfigUtil.ServicesSection;
 		}
 
 		void DoOpen (TimeSpan timeout)
@@ -372,6 +406,7 @@ namespace System.ServiceModel
 
 		protected override sealed void OnOpen (TimeSpan timeout)
 		{
+			InitializeRuntime ();
 			DoOpen (timeout);
 		}
 
