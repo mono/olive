@@ -361,7 +361,7 @@ if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
 				foreach (FaultReasonText t in Reason.Translations) {
 					writer.WriteStartElement ("faultstring", version.Namespace);
 					if (t.XmlLang != null)
-						writer.WriteAttributeString ("xml:lang", t.XmlLang);
+						writer.WriteAttributeString ("xml", "lang", null, t.XmlLang);
 					writer.WriteString (t.Text);
 					writer.WriteEndElement ();
 				}
@@ -370,7 +370,7 @@ if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
 				foreach (FaultReasonText t in Reason.Translations) {
 					writer.WriteStartElement ("Text", version.Namespace);
 					if (t.XmlLang != null)
-						writer.WriteAttributeString ("xml:lang", t.XmlLang);
+						writer.WriteAttributeString ("xml", "lang", null, t.XmlLang);
 					writer.WriteString (t.Text);
 					writer.WriteEndElement ();
 				}

@@ -1,3 +1,7 @@
+2008-03-25  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* MessageFault.cs: fixed WriteReason, .net XmlWriter compatible
+
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* DuplexSessionChannelBase.cs : made it non-session (more reusable).
