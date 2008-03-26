@@ -14,7 +14,24 @@ using System;
 using System.Reflection;
 using System.Runtime.InteropServices;
 
-[assembly: AssemblyVersion ("0.0.0.0")]
+// General Information about the System.Windows assembly
+
+[assembly: AssemblyVersion ("2.0.5.0")]
+[assembly: SatelliteContractVersion ("2.0.5.0")]
+
+[assembly: AssemblyTitle ("System.Windows.dll")]
+[assembly: AssemblyDescription ("System.Windows.dll")]
+[assembly: AssemblyConfiguration ("Development version")]
+[assembly: AssemblyCompany ("MONO development team")]
+[assembly: AssemblyProduct ("MONO CLI")]
+[assembly: AssemblyCopyright ("(c) 2007 Various Authors")]
+[assembly: AssemblyTrademark ("")]
+
+[assembly: AssemblyDefaultAlias ("System.Windows.dll")]
+[assembly: AssemblyInformationalVersion ("0.0.0.1")]
+[assembly: NeutralResourcesLanguage ("en-US")]
+
+[assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
 #if NET_2_1
