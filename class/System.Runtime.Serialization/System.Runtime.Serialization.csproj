@@ -112,6 +112,11 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+	  <EmbeddedResource Include="resources\mstypes.schema" >
+		  <LogicalName>mstypes.schema</LogicalName>
+	  </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
     <Folder Include="Properties\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
