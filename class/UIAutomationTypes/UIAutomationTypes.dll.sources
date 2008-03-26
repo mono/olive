@@ -17,6 +17,7 @@ System.Windows.Automation/ExpandCollapseState.cs
 System.Windows.Automation/SupportedTextSelection.cs
 System.Windows.Automation/AutomationEventArgs.cs
 System.Windows.Automation/WindowInteractionState.cs
+System.Windows.Automation/WindowPatternIdentifiers.cs
 System.Windows.Automation/AutomationElementIdentifiers.cs
 System.Windows.Automation.Text/TextPatternRangeEndpoint.cs
 System.Windows.Automation.Text/TextUnit.cs

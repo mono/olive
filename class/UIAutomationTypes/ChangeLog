@@ -1,5 +1,10 @@
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* UIAutomationTypes.dll.sources: Added WindowPatternIdentifiers.cs to
+	  assembly build.
+
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationTypes.mdp,
 	  System.Windows.Automation/WindowPatternIdentifiers.cs: Added
 	  WindowPatternIdentifiers.  Fields present but not quite
