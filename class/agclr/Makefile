@@ -1,9 +1,9 @@
 thisdir = class/agclr
 include ../../build/rules.make
 
-LIBRARY = agclr.dll
+LIBRARY = System.Windows.dll
 
-LIB_MCS_FLAGS = -r:System -r:agmono -d:AGCLR -unsafe
+LIB_MCS_FLAGS = -r:System -r:Mono.Moonlight -d:AGCLR -unsafe
 
 include ../../build/library.make
 
