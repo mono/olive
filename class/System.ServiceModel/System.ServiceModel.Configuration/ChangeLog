@@ -1,3 +1,14 @@
+2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ClientSection.cs: implement InitializeDefaults, refactoring.
+	* MetadataElement.cs: implement LoadPolicyImporExtensions, 
+	LoasWsdlImportExtensions, refactoring.		
+	* MethodStubs.cs: refactoring.
+	* PolicyImporterElement.cs: add missing constructors, refactoring.
+	* PolicyImporterElementCollection.cs: refactoring.
+	* WsdlImporterElement.cs: add missing constructors, refactoring.
+	* WsdlImporterElementCollection.cs: refactoring.			
+
 2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ExtensionsSection.cs: typo fix.

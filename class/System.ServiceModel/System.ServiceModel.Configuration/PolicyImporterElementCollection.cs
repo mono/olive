@@ -59,26 +59,16 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]
-	[MonoTODO]
-	public sealed partial class PolicyImporterElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<PolicyImporterElement>,  ICollection,  IEnumerable
+	public sealed class PolicyImporterElementCollection
+		 : ServiceModelEnhancedConfigurationElementCollection<PolicyImporterElement>, ICollection, IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static PolicyImporterElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-		}
-
-		public PolicyImporterElementCollection ()
-		{
+		public PolicyImporterElementCollection () {
 			AddElementName = "extension";
 		}
 
-
-		// Properties
-
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((PolicyImporterElement) element).Type;
+		}
 
 	}
 

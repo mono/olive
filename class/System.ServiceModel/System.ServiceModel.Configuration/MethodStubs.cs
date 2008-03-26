@@ -97,16 +97,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-// PolicyImporterElementCollection
-	public sealed partial class PolicyImporterElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<PolicyImporterElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((PolicyImporterElement) element).Type;
-		}
-	}
-
 // StandardBindingElementCollection
 	public sealed partial class StandardBindingElementCollection<TBindingConfiguration>
 		 : ServiceModelEnhancedConfigurationElementCollection<TBindingConfiguration>,  ICollection,  IEnumerable
@@ -128,16 +118,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-
-// WsdlImporterElementCollection
-	public sealed partial class WsdlImporterElementCollection
-		 : ServiceModelEnhancedConfigurationElementCollection<WsdlImporterElement>
-	{
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			return ((WsdlImporterElement) element).Type;
-		}
-	}
 
 // XmlElementElementCollection
 	public sealed partial class XmlElementElementCollection

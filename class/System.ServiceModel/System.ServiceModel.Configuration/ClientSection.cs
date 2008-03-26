@@ -54,34 +54,31 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ClientSection
+	public sealed class ClientSection
 		 : ConfigurationSection
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty endpoints;
-		static ConfigurationProperty metadata;
+		static Type [] _defaultPolicyImporters = new Type [] {
+				typeof(CompositeDuplexBindingElementImporter),
+				typeof(MessageEncodingBindingElementImporter),
+				typeof(OneWayBindingElementImporter),
+				typeof(PrivacyNoticeBindingElementImporter),
+				typeof(ReliableSessionBindingElementImporter),
+				typeof(SecurityBindingElementImporter),
+				typeof(TransactionFlowBindingElementImporter),
+				typeof(TransportBindingElementImporter),
+				typeof(UseManagedPresentationBindingElementImporter)
+			};
 
-		static ClientSection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			endpoints = new ConfigurationProperty ("",
-				typeof (ChannelEndpointElementCollection), null, null/* FIXME: get converter for ChannelEndpointElementCollection*/, null,
-				ConfigurationPropertyOptions.IsDefaultCollection);
+		static Type [] _defaultWsdlImporters = new Type [] { 
+				typeof(MessageEncodingBindingElementImporter),
+				typeof(StandardBindingImporter),
+				typeof(TransportBindingElementImporter),
+				typeof(DataContractSerializerMessageContractImporter),
+				typeof(XmlSerializerMessageContractImporter)
+			};
 
-			metadata = new ConfigurationProperty ("metadata",
-				typeof (MetadataElement), null, null/* FIXME: get converter for MetadataElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (endpoints);
-			properties.Add (metadata);
+		public ClientSection () {
 		}
-
-		public ClientSection ()
-		{
-		}
-
 
 		// Properties
 
@@ -89,20 +86,34 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsDefaultCollection,
 			IsDefaultCollection = true)]
 		public ChannelEndpointElementCollection Endpoints {
-			get { return (ChannelEndpointElementCollection) base [endpoints]; }
+			get { return (ChannelEndpointElementCollection) this [String.Empty]; }
 		}
 
 		[ConfigurationProperty ("metadata",
 			 Options = ConfigurationPropertyOptions.None)]
 		public MetadataElement Metadata {
-			get { return (MetadataElement) base [metadata]; }
+			get { return (MetadataElement) this ["metadata"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
+		protected override void InitializeDefault () {
+			base.InitializeDefault ();
 
+			PolicyImporterElementCollection policyImporters = Metadata.PolicyImporters;
+			for (int i = 0; i < _defaultPolicyImporters.Length; i++)
+				policyImporters.Add (new PolicyImporterElement (_defaultPolicyImporters [i]));
+
+			WsdlImporterElementCollection wsdlImporters = Metadata.WsdlImporters;
+			for (int i = 0; i < _defaultWsdlImporters.Length; i++)
+				wsdlImporters.Add (new WsdlImporterElement (_defaultWsdlImporters [i]));
+		}
+
+		protected override void PostDeserialize () {
+			base.PostDeserialize ();
+		}
 	}
 
 }

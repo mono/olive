@@ -46,6 +46,7 @@ System.ServiceModel.Configuration/ChannelEndpointElementTest.cs
 System.ServiceModel.Configuration/CustomBindingElementTest.cs
 System.ServiceModel.Configuration/EndpointBehaviorElementTest.cs
 System.ServiceModel.Configuration/ExtensionsSectionTest.cs
+System.ServiceModel.Configuration/MetadataElementTest.cs
 System.ServiceModel.Configuration/MexBindingElementTest.cs
 System.ServiceModel.Configuration/NetNamedPipeBindingElementTest.cs
 System.ServiceModel.Configuration/NetPeerTcpBindingElementTest.cs

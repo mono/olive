@@ -54,28 +54,32 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class PolicyImporterElement
+	public sealed class PolicyImporterElement
 		 : ConfigurationElement
 	{
 		// Static Fields
 		static ConfigurationPropertyCollection properties;
 		static ConfigurationProperty type;
 
-		static PolicyImporterElement ()
-		{
+		static PolicyImporterElement () {
 			properties = new ConfigurationPropertyCollection ();
 			type = new ConfigurationProperty ("type",
-				typeof (string), null, new StringConverter (), null,
-				ConfigurationPropertyOptions.IsRequired| ConfigurationPropertyOptions.IsKey);
+				typeof (string), null, new StringConverter (), new StringValidator (1),
+				ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey);
 
 			properties.Add (type);
 		}
 
-		public PolicyImporterElement ()
-		{
+		public PolicyImporterElement () {
 		}
 
+		public PolicyImporterElement (string type) {
+			Type = type;
+		}
+
+		public PolicyImporterElement (Type type) {
+			Type = type.AssemblyQualifiedName;
+		}
 
 		// Properties
 
@@ -87,15 +91,13 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsRequired | ConfigurationPropertyOptions.IsKey,
 			IsRequired = true,
 			IsKey = true)]
-		[StringValidator ( MinLength = 1,
+		[StringValidator (MinLength = 1,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string Type {
 			get { return (string) base [type]; }
 			set { base [type] = value; }
 		}
-
-
 	}
 
 }

@@ -1,3 +1,11 @@
+2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* client.metadata:
+	* client.metadata.config:
+	* empty:
+	* empty.config:
+	add config files for tests.
+
 2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* userBinding.config: 

@@ -1,3 +1,7 @@
+2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* MetadataElementTest.cs: new test
+
 2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ServiceModelConfigurationElementCollectionTest.cs: Created file.

@@ -54,54 +54,49 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class MetadataElement
+	public sealed class MetadataElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty policy_importers;
-		static ConfigurationProperty wsdl_importers;
-
-		static MetadataElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			policy_importers = new ConfigurationProperty ("policyImporters",
-				typeof (PolicyImporterElementCollection), null, null/* FIXME: get converter for PolicyImporterElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			wsdl_importers = new ConfigurationProperty ("wsdlImporters",
-				typeof (WsdlImporterElementCollection), null, null/* FIXME: get converter for WsdlImporterElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (policy_importers);
-			properties.Add (wsdl_importers);
+		public MetadataElement () {
 		}
-
-		public MetadataElement ()
-		{
-		}
-
 
 		// Properties
 
 		[ConfigurationProperty ("policyImporters",
 			 Options = ConfigurationPropertyOptions.None)]
 		public PolicyImporterElementCollection PolicyImporters {
-			get { return (PolicyImporterElementCollection) base [policy_importers]; }
+			get { return (PolicyImporterElementCollection) base ["policyImporters"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("wsdlImporters",
 			 Options = ConfigurationPropertyOptions.None)]
 		public WsdlImporterElementCollection WsdlImporters {
-			get { return (WsdlImporterElementCollection) base [wsdl_importers]; }
+			get { return (WsdlImporterElementCollection) base ["wsdlImporters"]; }
 		}
 
+		public Collection<IPolicyImportExtension> LoadPolicyImportExtensions () {
+			Collection<IPolicyImportExtension> col = new Collection<IPolicyImportExtension> ();
+			for (int i = 0; i < PolicyImporters.Count; i++) {
+				Type t = Type.GetType (PolicyImporters [i].Type);
+				IPolicyImportExtension ext = (IPolicyImportExtension) Activator.CreateInstance (t);
+				col.Add (ext);
+			}
+			return col;
+		}
 
+		public Collection<IWsdlImportExtension> LoadWsdlImportExtensions () {
+			Collection<IWsdlImportExtension> col = new Collection<IWsdlImportExtension> ();
+			for (int i = 0; i < WsdlImporters.Count; i++) {
+				Type t = Type.GetType (WsdlImporters [i].Type);
+				IWsdlImportExtension ext = (IWsdlImportExtension) Activator.CreateInstance (t);
+				col.Add (ext);
+			}
+			return col;
+		}
 	}
 
 }
