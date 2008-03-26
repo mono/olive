@@ -1,4 +1,4 @@
 Name: Silverlight Libraries
 Description: Silverlight Libraries for Mono, only the new ones.
 Version: @VERSION@
-Libs: -r:@silverdir@/agclr.dll -r:@silverdir@/System.SilverLight.dll
+Libs: -r:@silverdir@/System.Windows.dll -r:@silverdir@/System.Windows.Browser.dll
