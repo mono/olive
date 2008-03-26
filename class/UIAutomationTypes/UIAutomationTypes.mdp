@@ -38,6 +38,7 @@
     <File name="System.Windows.Automation/InvokePatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/ElementNotEnabledException.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/AutomationPattern.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/WindowPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />

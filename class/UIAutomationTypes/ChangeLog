@@ -1,3 +1,10 @@
+2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.mdp,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs: Added
+	  WindowPatternIdentifiers.  Fields present but not quite
+	  implemented.
+
 2008-03-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
