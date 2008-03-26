@@ -77,13 +77,9 @@ namespace System.ServiceModel.Configuration
 			throw new NotImplementedException ();
 		}
 
-		public IEnumerator<TServiceModelExtensionElement> GetEnumerator ()
-		{
-			foreach (PropertyInformation pi in ElementInformation.Properties) {
-				TServiceModelExtensionElement val = pi.Value as TServiceModelExtensionElement;
-				if (val != null)
-					yield return val;
-			}
+		public IEnumerator<TServiceModelExtensionElement> GetEnumerator () {
+			foreach (TServiceModelExtensionElement element in _list.Values)
+				yield return element;
 		}
 
 		public bool Remove (TServiceModelExtensionElement element) {

@@ -1,5 +1,10 @@
 2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* ServiceModelExtensionCollectionElement.cs:
+	fix GetEnumerator method.	
+
+2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* ClientSection.cs: implement InitializeDefaults, refactoring.
 	* MetadataElement.cs: implement LoadPolicyImporExtensions, 
 	LoasWsdlImportExtensions, refactoring.		
