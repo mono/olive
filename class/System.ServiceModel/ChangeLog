@@ -1,3 +1,8 @@
+2008-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : include Test/config/* in EXTRA_DISTFILES to fix
+	  nunit test failures.
+
 2008-03-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : more EXTRA_DISTFILES.
