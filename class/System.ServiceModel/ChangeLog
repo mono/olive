@@ -1,5 +1,10 @@
 2008-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* Makefile : add System.ServiceModel_test_net_3_0.dll.config to
+	  EXTRA_DISTFILES too.
+
+2008-03-27  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Makefile : include Test/config/* in EXTRA_DISTFILES to fix
 	  nunit test failures.
 

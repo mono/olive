@@ -27,6 +27,7 @@ LIB_MCS_FLAGS = \
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
 TEST_EXTRA_FILES = \
+	System.ServiceModel_test_net_3_0.dll.config \
 	Test/config/* \
 	Test/Resources/* \
 	Test/System.ServiceModel.Description/dump.xml
