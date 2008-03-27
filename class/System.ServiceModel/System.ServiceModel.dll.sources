@@ -362,6 +362,7 @@ System.ServiceModel.Configuration/HttpTransportSecurityElement.cs
 System.ServiceModel.Configuration/HttpsTransportElement.cs
 System.ServiceModel.Configuration/IBindingConfigurationElement.cs
 System.ServiceModel.Configuration/IdentityElement.cs
+System.ServiceModel.Configuration/IPAddressConverter.cs
 System.ServiceModel.Configuration/IssuedTokenClientBehaviorsElement.cs
 System.ServiceModel.Configuration/IssuedTokenClientBehaviorsElementCollection.cs
 System.ServiceModel.Configuration/IssuedTokenClientElement.cs
@@ -374,7 +375,9 @@ System.ServiceModel.Configuration/MessageLoggingElement.cs
 System.ServiceModel.Configuration/MessageSecurityOverHttpElement.cs
 System.ServiceModel.Configuration/MessageSecurityOverMsmqElement.cs
 System.ServiceModel.Configuration/MessageSecurityOverTcpElement.cs
+System.ServiceModel.Configuration/MessageSecurityVersionConverter.cs
 System.ServiceModel.Configuration/MetadataElement.cs
+System.ServiceModel.Configuration/MessageVersionConverter.cs
 System.ServiceModel.Configuration/MethodStubs.cs
 System.ServiceModel.Configuration/MexBindingBindingCollectionElement.cs
 System.ServiceModel.Configuration/MexBindingElement.cs
@@ -423,6 +426,7 @@ System.ServiceModel.Configuration/PolicyImporterElement.cs
 System.ServiceModel.Configuration/PolicyImporterElementCollection.cs
 System.ServiceModel.Configuration/PolicyVersionConverter.cs
 System.ServiceModel.Configuration/PrivacyNoticeElement.cs
+System.ServiceModel.Configuration/ReliableMessagingVersionConverter.cs
 System.ServiceModel.Configuration/ReliableSessionElement.cs
 System.ServiceModel.Configuration/RsaElement.cs
 System.ServiceModel.Configuration/SecureConversationServiceElement.cs
@@ -841,6 +845,7 @@ System.ServiceModel/PeerSecuritySettings.cs
 System.ServiceModel/PoisonMessageException.cs
 System.ServiceModel/ProtocolException.cs
 System.ServiceModel/QuotaExceededException.cs
+System.ServiceModel/ReliableMessagingVersion.cs
 System.ServiceModel/ReliableSession.cs
 System.ServiceModel/RsaEndpointIdentity.cs
 System.ServiceModel/ServiceAuthorizationManager.cs

@@ -1,3 +1,11 @@
+2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* IPAddressConverter.cs:
+	* MessageVersionConverter.cs:
+	* MessageSecurityVersionConverter.cs:
+	* ReliableMessagingVersionConverter.cs:	
+	new internal converters used for reading configuration.			
+
 2008-03-26  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceModelExtensionCollectionElement.cs:
