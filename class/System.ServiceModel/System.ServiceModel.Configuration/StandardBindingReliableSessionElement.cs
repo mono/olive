@@ -92,7 +92,6 @@ namespace System.ServiceModel.Configuration
 
 		// Properties
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("inactivityTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:10:00")]

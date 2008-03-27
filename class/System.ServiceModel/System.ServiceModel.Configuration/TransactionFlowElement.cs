@@ -54,52 +54,38 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public partial class TransactionFlowElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty transaction_protocol;
+		ConfigurationPropertyCollection _properties;
 
-		static TransactionFlowElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			transaction_protocol = new ConfigurationProperty ("transactionProtocol",
-				typeof (TransactionProtocol), "OleTransactions", null/* FIXME: get converter for TransactionProtocol*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (transaction_protocol);
-		}
-
-		public TransactionFlowElement ()
-		{
+		public TransactionFlowElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (TransactionFlowBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("transactionProtocol", typeof (TransactionProtocol), "OleTransactions", new TransactionProtocolConverter (), null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("transactionProtocol",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "OleTransactions")]
-		[TypeConverter ()]
+		[TypeConverter (typeof (TransactionProtocolConverter))]
 		public TransactionProtocol TransactionProtocol {
-			get { return (TransactionProtocol) base [transaction_protocol]; }
-			set { base [transaction_protocol] = value; }
+			get { return (TransactionProtocol) base ["transactionProtocol"]; }
+			set { base ["transactionProtocol"] = value; }
 		}
 
 		[MonoTODO]

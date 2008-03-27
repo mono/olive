@@ -54,130 +54,78 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public sealed partial class MtomMessageEncodingElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty max_buffer_size;
-		static ConfigurationProperty max_read_pool_size;
-		static ConfigurationProperty max_write_pool_size;
-		static ConfigurationProperty message_version;
-		static ConfigurationProperty reader_quotas;
-		static ConfigurationProperty write_encoding;
-
-		static MtomMessageEncodingElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_size = new ConfigurationProperty ("maxBufferSize",
-				typeof (int), "65536", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_read_pool_size = new ConfigurationProperty ("maxReadPoolSize",
-				typeof (int), "64", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_write_pool_size = new ConfigurationProperty ("maxWritePoolSize",
-				typeof (int), "16", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			message_version = new ConfigurationProperty ("messageVersion",
-				typeof (MessageVersion), "Soap12WSAddressing10", null/* FIXME: get converter for MessageVersion*/, null,
-				ConfigurationPropertyOptions.None);
-
-			reader_quotas = new ConfigurationProperty ("readerQuotas",
-				typeof (XmlDictionaryReaderQuotasElement), null, null/* FIXME: get converter for XmlDictionaryReaderQuotasElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			write_encoding = new ConfigurationProperty ("writeEncoding",
-				typeof (Encoding), "utf-8", null/* FIXME: get converter for Encoding*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (max_buffer_size);
-			properties.Add (max_read_pool_size);
-			properties.Add (max_write_pool_size);
-			properties.Add (message_version);
-			properties.Add (reader_quotas);
-			properties.Add (write_encoding);
-		}
-
-		public MtomMessageEncodingElement ()
-		{
+		public MtomMessageEncodingElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (MtomMessageEncodingBindingElement); }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxBufferSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "65536")]
 		public int MaxBufferSize {
-			get { return (int) base [max_buffer_size]; }
-			set { base [max_buffer_size] = value; }
+			get { return (int) base ["maxBufferSize"]; }
+			set { base ["maxBufferSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxReadPoolSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "64")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxReadPoolSize {
-			get { return (int) base [max_read_pool_size]; }
-			set { base [max_read_pool_size] = value; }
+			get { return (int) base ["maxReadPoolSize"]; }
+			set { base ["maxReadPoolSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxWritePoolSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "16")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxWritePoolSize {
-			get { return (int) base [max_write_pool_size]; }
-			set { base [max_write_pool_size] = value; }
+			get { return (int) base ["maxWritePoolSize"]; }
+			set { base ["maxWritePoolSize"] = value; }
 		}
 
 		[ConfigurationProperty ("messageVersion",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Soap12WSAddressing10")]
-		[TypeConverter ()]
+		[TypeConverter (typeof (MessageVersionConverter))]
 		public MessageVersion MessageVersion {
-			get { return (MessageVersion) base [message_version]; }
-			set { base [message_version] = value; }
+			get { return (MessageVersion) base ["messageVersion"]; }
+			set { base ["messageVersion"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("readerQuotas",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlDictionaryReaderQuotasElement ReaderQuotas {
-			get { return (XmlDictionaryReaderQuotasElement) base [reader_quotas]; }
+			get { return (XmlDictionaryReaderQuotasElement) base ["readerQuotas"]; }
 		}
 
 		[ConfigurationProperty ("writeEncoding",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "utf-8")]
-		[TypeConverter ()]
+		[TypeConverter (typeof (EncodingConverter))]
 		public Encoding WriteEncoding {
-			get { return (Encoding) base [write_encoding]; }
-			set { base [write_encoding] = value; }
+			get { return (Encoding) base ["writeEncoding"]; }
+			set { base ["writeEncoding"] = value; }
 		}
 
 

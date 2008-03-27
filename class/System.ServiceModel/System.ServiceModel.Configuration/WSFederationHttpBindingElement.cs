@@ -68,9 +68,6 @@ namespace System.ServiceModel.Configuration
 		static WSFederationHttpBindingElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
 
 			privacy_notice_at = new ConfigurationProperty ("privacyNoticeAt",
 				typeof (Uri), null, new UriTypeConverter (), null,

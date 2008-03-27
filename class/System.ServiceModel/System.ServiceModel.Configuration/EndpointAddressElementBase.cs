@@ -54,40 +54,13 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class EndpointAddressElementBase
+	public class EndpointAddressElementBase
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty address;
-		static ConfigurationProperty headers;
-		static ConfigurationProperty identity;
+		ConfigurationPropertyCollection _properties;
 
-		static EndpointAddressElementBase ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			address = new ConfigurationProperty ("address",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.IsRequired);
-
-			headers = new ConfigurationProperty ("headers",
-				typeof (AddressHeaderCollectionElement), null, null/* FIXME: get converter for AddressHeaderCollectionElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			identity = new ConfigurationProperty ("identity",
-				typeof (IdentityElement), null, null/* FIXME: get converter for IdentityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (address);
-			properties.Add (headers);
-			properties.Add (identity);
+		public EndpointAddressElementBase () {
 		}
-
-		public EndpointAddressElementBase ()
-		{
-		}
-
 
 		// Properties
 
@@ -96,27 +69,33 @@ namespace System.ServiceModel.Configuration
 			 DefaultValue = null,
 			IsRequired = true)]
 		public Uri Address {
-			get { return (Uri) base [address]; }
-			set { base [address] = value; }
+			get { return (Uri) base ["address"]; }
+			set { base ["address"] = value; }
 		}
 
 		[ConfigurationProperty ("headers",
 			 Options = ConfigurationPropertyOptions.None)]
 		public AddressHeaderCollectionElement Headers {
-			get { return (AddressHeaderCollectionElement) base [headers]; }
+			get { return (AddressHeaderCollectionElement) base ["headers"]; }
 		}
 
 		[ConfigurationProperty ("identity",
 			 Options = ConfigurationPropertyOptions.None)]
 		public IdentityElement Identity {
-			get { return (IdentityElement) base [identity]; }
+			get { return (IdentityElement) base ["identity"]; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("address", typeof (Uri), null, new UriTypeConverter (), null, ConfigurationPropertyOptions.IsRequired));
+					_properties.Add (new ConfigurationProperty ("headers", typeof (AddressHeaderCollectionElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("identity", typeof (IdentityElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
-
-
 	}
 
 }

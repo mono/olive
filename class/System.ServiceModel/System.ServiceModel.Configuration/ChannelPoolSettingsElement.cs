@@ -54,38 +54,10 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ChannelPoolSettingsElement
+	public sealed class ChannelPoolSettingsElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty idle_timeout;
-		static ConfigurationProperty lease_timeout;
-		static ConfigurationProperty max_outbound_channels_per_endpoint;
-
-		static ChannelPoolSettingsElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			idle_timeout = new ConfigurationProperty ("idleTimeout",
-				typeof (TimeSpan), "00:02:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			lease_timeout = new ConfigurationProperty ("leaseTimeout",
-				typeof (TimeSpan), "00:10:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_outbound_channels_per_endpoint = new ConfigurationProperty ("maxOutboundChannelsPerEndpoint",
-				typeof (int), "10", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (idle_timeout);
-			properties.Add (lease_timeout);
-			properties.Add (max_outbound_channels_per_endpoint);
-		}
-
-		public ChannelPoolSettingsElement ()
-		{
+		public ChannelPoolSettingsElement () {
 		}
 
 
@@ -94,34 +66,32 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("idleTimeout",
 			 DefaultValue = "00:02:00",
 			 Options = ConfigurationPropertyOptions.None)]
-		[TypeConverter ()]
 		public TimeSpan IdleTimeout {
-			get { return (TimeSpan) base [idle_timeout]; }
-			set { base [idle_timeout] = value; }
+			get { return (TimeSpan) base ["idleTimeout"]; }
+			set { base ["idleTimeout"] = value; }
 		}
 
 		[ConfigurationProperty ("leaseTimeout",
 			 DefaultValue = "00:10:00",
 			 Options = ConfigurationPropertyOptions.None)]
-		[TypeConverter ()]
 		public TimeSpan LeaseTimeout {
-			get { return (TimeSpan) base [lease_timeout]; }
-			set { base [lease_timeout] = value; }
+			get { return (TimeSpan) base ["leaseTimeout"]; }
+			set { base ["leaseTimeout"] = value; }
 		}
 
 		[ConfigurationProperty ("maxOutboundChannelsPerEndpoint",
 			 DefaultValue = "10",
 			 Options = ConfigurationPropertyOptions.None)]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxOutboundChannelsPerEndpoint {
-			get { return (int) base [max_outbound_channels_per_endpoint]; }
-			set { base [max_outbound_channels_per_endpoint] = value; }
+			get { return (int) base ["maxOutboundChannelsPerEndpoint"]; }
+			set { base ["maxOutboundChannelsPerEndpoint"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 

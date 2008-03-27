@@ -54,115 +54,81 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class PeerTransportElement
+	public class PeerTransportElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty listen_i_p_address;
-		static ConfigurationProperty max_buffer_pool_size;
-		static ConfigurationProperty max_received_message_size;
-		static ConfigurationProperty port;
-		static ConfigurationProperty security;
+		ConfigurationPropertyCollection _properties;
 
-		static PeerTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			listen_i_p_address = new ConfigurationProperty ("listenIPAddress",
-				typeof (IPAddress), null, null/* FIXME: get converter for IPAddress*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
-				typeof (long), "524288", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_received_message_size = new ConfigurationProperty ("maxReceivedMessageSize",
-				typeof (long), "65536", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			port = new ConfigurationProperty ("port",
-				typeof (int), "0", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			security = new ConfigurationProperty ("security",
-				typeof (PeerSecurityElement), null, null/* FIXME: get converter for PeerSecurityElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (listen_i_p_address);
-			properties.Add (max_buffer_pool_size);
-			properties.Add (max_received_message_size);
-			properties.Add (port);
-			properties.Add (security);
-		}
-
-		public PeerTransportElement ()
-		{
+		public PeerTransportElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (PeerTransportBindingElement); }
 		}
 
-		[TypeConverter ()]
+		[TypeConverter (typeof (IPAddressConverter))]
 		[ConfigurationProperty ("listenIPAddress",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = null)]
 		public IPAddress ListenIPAddress {
-			get { return (IPAddress) base [listen_i_p_address]; }
-			set { base [listen_i_p_address] = value; }
+			get { return (IPAddress) base ["listenIPAddress"]; }
+			set { base ["listenIPAddress"] = value; }
 		}
 
-		[LongValidator ( MinValue = 1,
+		[LongValidator (MinValue = 1,
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxBufferPoolSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "524288")]
 		public long MaxBufferPoolSize {
-			get { return (long) base [max_buffer_pool_size]; }
-			set { base [max_buffer_pool_size] = value; }
+			get { return (long) base ["maxBufferPoolSize"]; }
+			set { base ["maxBufferPoolSize"] = value; }
 		}
 
-		[LongValidator ( MinValue = 1,
+		[LongValidator (MinValue = 1,
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxReceivedMessageSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "65536")]
 		public long MaxReceivedMessageSize {
-			get { return (long) base [max_received_message_size]; }
-			set { base [max_received_message_size] = value; }
+			get { return (long) base ["maxReceivedMessageSize"]; }
+			set { base ["maxReceivedMessageSize"] = value; }
 		}
 
 		[ConfigurationProperty ("port",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "0")]
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			 MaxValue = 65535,
 			ExcludeRange = false)]
 		public int Port {
-			get { return (int) base [port]; }
-			set { base [port] = value; }
+			get { return (int) base ["port"]; }
+			set { base ["port"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("listenIPAddress", typeof (IPAddress), null, new IPAddressConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferPoolSize", typeof (long), "524288", null, new LongValidator (1, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxReceivedMessageSize", typeof (long), "65536", null, new LongValidator (1, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("port", typeof (int), "0", null, new IntegerValidator (0, 65535, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("security", typeof (PeerSecurityElement), null, null/* FIXME: get converter for PeerSecurityElement*/, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("security",
 			 Options = ConfigurationPropertyOptions.None)]
 		public PeerSecurityElement Security {
-			get { return (PeerSecurityElement) base [security]; }
+			get { return (PeerSecurityElement) base ["security"]; }
 		}
 
 		[MonoTODO]

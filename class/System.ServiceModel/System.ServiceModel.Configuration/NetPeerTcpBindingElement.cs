@@ -72,7 +72,7 @@ namespace System.ServiceModel.Configuration
 		}
 
 		[MonoTODO ("get converter for IPAddress")]
-		[TypeConverter ()]
+		//[TypeConverter (typeof(IPAddressConverter))]
 		[ConfigurationProperty ("listenIPAddress",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = null)]

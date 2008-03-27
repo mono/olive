@@ -54,148 +54,94 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class ReliableSessionElement
+	public sealed class ReliableSessionElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty acknowledgement_interval;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty flow_control_enabled;
-		static ConfigurationProperty inactivity_timeout;
-		static ConfigurationProperty max_pending_channels;
-		static ConfigurationProperty max_retry_count;
-		static ConfigurationProperty max_transfer_window_size;
-		static ConfigurationProperty ordered;
-
-		static ReliableSessionElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			acknowledgement_interval = new ConfigurationProperty ("acknowledgementInterval",
-				typeof (TimeSpan), "00:00:00.2", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			flow_control_enabled = new ConfigurationProperty ("flowControlEnabled",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			inactivity_timeout = new ConfigurationProperty ("inactivityTimeout",
-				typeof (TimeSpan), "00:10:00", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_pending_channels = new ConfigurationProperty ("maxPendingChannels",
-				typeof (int), "4", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_retry_count = new ConfigurationProperty ("maxRetryCount",
-				typeof (int), "8", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_transfer_window_size = new ConfigurationProperty ("maxTransferWindowSize",
-				typeof (int), "8", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			ordered = new ConfigurationProperty ("ordered",
-				typeof (bool), "true", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (acknowledgement_interval);
-			properties.Add (binding_element_type);
-			properties.Add (flow_control_enabled);
-			properties.Add (inactivity_timeout);
-			properties.Add (max_pending_channels);
-			properties.Add (max_retry_count);
-			properties.Add (max_transfer_window_size);
-			properties.Add (ordered);
+		public ReliableSessionElement () {
 		}
-
-		public ReliableSessionElement ()
-		{
-		}
-
 
 		// Properties
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("acknowledgementInterval",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:00:00.2")]
 		public TimeSpan AcknowledgementInterval {
-			get { return (TimeSpan) base [acknowledgement_interval]; }
-			set { base [acknowledgement_interval] = value; }
+			get { return (TimeSpan) base ["acknowledgementInterval"]; }
+			set { base ["acknowledgementInterval"] = value; }
 		}
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (ReliableSessionBindingElement); }
 		}
 
 		[ConfigurationProperty ("flowControlEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool FlowControlEnabled {
-			get { return (bool) base [flow_control_enabled]; }
-			set { base [flow_control_enabled] = value; }
+			get { return (bool) base ["flowControlEnabled"]; }
+			set { base ["flowControlEnabled"] = value; }
 		}
 
 		[ConfigurationProperty ("inactivityTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:10:00")]
-		[TypeConverter ()]
 		public TimeSpan InactivityTimeout {
-			get { return (TimeSpan) base [inactivity_timeout]; }
-			set { base [inactivity_timeout] = value; }
+			get { return (TimeSpan) base ["inactivityTimeout"]; }
+			set { base ["inactivityTimeout"] = value; }
 		}
 
 		[ConfigurationProperty ("maxPendingChannels",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "4")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			 MaxValue = 16384,
 			ExcludeRange = false)]
 		public int MaxPendingChannels {
-			get { return (int) base [max_pending_channels]; }
-			set { base [max_pending_channels] = value; }
+			get { return (int) base ["maxPendingChannels"]; }
+			set { base ["maxPendingChannels"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxRetryCount",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "8")]
 		public int MaxRetryCount {
-			get { return (int) base [max_retry_count]; }
-			set { base [max_retry_count] = value; }
+			get { return (int) base ["maxRetryCount"]; }
+			set { base ["maxRetryCount"] = value; }
 		}
 
 		[ConfigurationProperty ("maxTransferWindowSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "8")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			 MaxValue = 4096,
 			ExcludeRange = false)]
 		public int MaxTransferWindowSize {
-			get { return (int) base [max_transfer_window_size]; }
-			set { base [max_transfer_window_size] = value; }
+			get { return (int) this ["maxTransferWindowSize"]; }
+			set { this ["maxTransferWindowSize"] = value; }
 		}
 
 		[ConfigurationProperty ("ordered",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = true)]
 		public bool Ordered {
-			get { return (bool) base [ordered]; }
-			set { base [ordered] = value; }
+			get { return (bool) this ["ordered"]; }
+			set { this ["ordered"] = value; }
+		}
+
+		[ConfigurationPropertyAttribute ("reliableMessagingVersion",
+			DefaultValue = "WSReliableMessagingFebruary2005")]
+		[TypeConverter (typeof (ReliableMessagingVersionConverter))]
+		public ReliableMessagingVersion ReliableMessagingVersion {
+			get { return (ReliableMessagingVersion) this ["reliableMessagingVersion"]; }
+			set { this ["reliableMessagingVersion"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
-
 
 		[MonoTODO]
 		protected internal override BindingElement CreateBindingElement () {

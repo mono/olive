@@ -248,7 +248,7 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("textEncoding",
 			 DefaultValue = "utf-8",
 			 Options = ConfigurationPropertyOptions.None)]
-		[TypeConverter ()]
+		[TypeConverter (typeof(EncodingConverter))]
 		public Encoding TextEncoding {
 			get { return (Encoding) base [text_encoding]; }
 			set { base [text_encoding] = value; }

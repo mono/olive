@@ -54,51 +54,28 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class CompositeDuplexElement
+	public sealed class CompositeDuplexElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty client_base_address;
-
-		static CompositeDuplexElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			client_base_address = new ConfigurationProperty ("clientBaseAddress",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (client_base_address);
+		public CompositeDuplexElement () {
 		}
-
-		public CompositeDuplexElement ()
-		{
-		}
-
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (CompositeDuplexBindingElement); }
 		}
 
 		[ConfigurationProperty ("clientBaseAddress",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = null)]
 		public Uri ClientBaseAddress {
-			get { return (Uri) base [client_base_address]; }
-			set { base [client_base_address] = value; }
+			get { return (Uri) base ["clientBaseAddress"]; }
+			set { base ["clientBaseAddress"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[MonoTODO]

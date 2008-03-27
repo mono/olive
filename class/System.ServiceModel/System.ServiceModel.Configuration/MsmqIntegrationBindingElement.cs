@@ -67,9 +67,6 @@ namespace System.ServiceModel.Configuration
 		static MsmqIntegrationBindingElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
 
 			security = new ConfigurationProperty ("security",
 				typeof (MsmqIntegrationSecurityElement), null, null/* FIXME: get converter for MsmqIntegrationSecurityElement*/, null,

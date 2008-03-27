@@ -54,51 +54,36 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class MsmqIntegrationElement
+	public sealed class MsmqIntegrationElement
 		 : MsmqElementBase
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty serialization_format;
+		ConfigurationPropertyCollection _properties;
 
-		static MsmqIntegrationElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			serialization_format = new ConfigurationProperty ("serializationFormat",
-				typeof (MsmqMessageSerializationFormat), "Xml", null/* FIXME: get converter for MsmqMessageSerializationFormat*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (serialization_format);
+		public MsmqIntegrationElement () {
 		}
-
-		public MsmqIntegrationElement ()
-		{
-		}
-
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (System.ServiceModel.MsmqIntegration.MsmqIntegrationBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("serializationFormat", typeof (MsmqMessageSerializationFormat), "Xml", null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("serializationFormat",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Xml")]
 		public MsmqMessageSerializationFormat SerializationFormat {
-			get { return (MsmqMessageSerializationFormat) base [serialization_format]; }
-			set { base [serialization_format] = value; }
+			get { return (MsmqMessageSerializationFormat) base ["serializationFormat"]; }
+			set { base ["serializationFormat"] = value; }
 		}
 
 

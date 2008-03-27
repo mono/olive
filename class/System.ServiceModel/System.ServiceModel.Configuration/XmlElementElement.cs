@@ -54,33 +54,20 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class XmlElementElement
+	public sealed class XmlElementElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty xml_element;
-
-		static XmlElementElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			xml_element = new ConfigurationProperty ("xmlElement",
-				typeof (XmlElement), null, null/* FIXME: get converter for XmlElement*/, null,
-				ConfigurationPropertyOptions.IsKey);
-
-			properties.Add (xml_element);
+		public XmlElementElement () {
 		}
 
-		public XmlElementElement ()
-		{
+		public XmlElementElement (XmlElement element) {
+			XmlElement = element;
 		}
-
 
 		// Properties
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("xmlElement",
@@ -88,11 +75,21 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.IsKey,
 			IsKey = true)]
 		public XmlElement XmlElement {
-			get { return (XmlElement) base [xml_element]; }
-			set { base [xml_element] = value; }
+			get { return (XmlElement) base ["xmlElement"]; }
+			set { base ["xmlElement"] = value; }
 		}
 
+		protected override void DeserializeElement (XmlReader reader, bool serializeCollectionKey) {
+			base.DeserializeElement (reader, serializeCollectionKey);
+		}
 
+		protected override void PostDeserialize () {
+			base.PostDeserialize ();
+		}
+
+		protected override bool SerializeToXmlElement (XmlWriter writer, string elementName) {
+			return base.SerializeToXmlElement (writer, elementName);
+		}
 	}
 
 }

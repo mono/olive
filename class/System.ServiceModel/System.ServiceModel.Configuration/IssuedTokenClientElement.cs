@@ -165,7 +165,6 @@ namespace System.ServiceModel.Configuration
 			set { base [local_issuer_channel_behaviors] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("maxIssuedTokenCachingTime",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10675199.02:48:05.4775807")]

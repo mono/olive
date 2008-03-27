@@ -102,7 +102,6 @@ namespace System.ServiceModel.Configuration
 			set { base [group_name] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("idleTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:02:00")]

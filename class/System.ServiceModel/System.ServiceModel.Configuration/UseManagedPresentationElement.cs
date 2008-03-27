@@ -54,33 +54,17 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class UseManagedPresentationElement
+	public class UseManagedPresentationElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-
-		static UseManagedPresentationElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-		}
-
-		public UseManagedPresentationElement ()
-		{
+		public UseManagedPresentationElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (UseManagedPresentationBindingElement); }
 		}
 
 		[MonoTODO]

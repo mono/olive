@@ -168,7 +168,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("inactivityTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:02:00")]
-		[TypeConverter ()]
 		public TimeSpan InactivityTimeout {
 			get { return (TimeSpan) base [inactivity_timeout]; }
 			set { base [inactivity_timeout] = value; }
@@ -177,7 +176,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("issuedCookieLifetime",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10:00:00")]
-		[TypeConverter ()]
 		public TimeSpan IssuedCookieLifetime {
 			get { return (TimeSpan) base [issued_cookie_lifetime]; }
 			set { base [issued_cookie_lifetime] = value; }
@@ -197,7 +195,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("maxClockSkew",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:05:00")]
-		[TypeConverter ()]
 		public TimeSpan MaxClockSkew {
 			get { return (TimeSpan) base [max_clock_skew]; }
 			set { base [max_clock_skew] = value; }
@@ -225,7 +222,6 @@ namespace System.ServiceModel.Configuration
 			set { base [max_stateful_negotiations] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("negotiationTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:01:00")]
@@ -257,7 +253,6 @@ namespace System.ServiceModel.Configuration
 			set { base [replay_cache_size] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("replayWindow",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:05:00")]
@@ -269,13 +264,11 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("sessionKeyRenewalInterval",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "15:00:00")]
-		[TypeConverter ()]
 		public TimeSpan SessionKeyRenewalInterval {
 			get { return (TimeSpan) base [session_key_renewal_interval]; }
 			set { base [session_key_renewal_interval] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("sessionKeyRolloverInterval",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:05:00")]
@@ -287,7 +280,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("timestampValidityDuration",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:05:00")]
-		[TypeConverter ()]
 		public TimeSpan TimestampValidityDuration {
 			get { return (TimeSpan) base [timestamp_validity_duration]; }
 			set { base [timestamp_validity_duration] = value; }

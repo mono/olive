@@ -1,5 +1,53 @@
 2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* XmlElementElementCollection.cs:
+	* XmlElementElement.cs:
+	* WSFederationHttpBindingElement.cs:
+	* WSDualHttpBindingElement.cs:
+	* WindowsStreamSecurityElement.cs:
+	* UseManagedPresentationElement.cs:
+	* TransportElement.cs:
+	* TransactionFlowElement.cs:
+	* TextMessageEncodingElement.cs:
+	* TcpTransportElement.cs:
+	* TcpConnectionPoolSettingsElement.cs:
+	* StandardBindingReliableSessionElement.cs:
+	* SslStreamSecurityElement.cs:
+	* SecurityElementBase.cs:
+	* SecurityElement.cs:
+	* ReliableSessionElement.cs:
+	* PrivacyNoticeElement.cs:
+	* PnrpPeerResolverElement.cs:
+	* PeerTransportElement.cs:
+	* OneWayElement.cs:
+	* NetPeerTcpBindingElement.cs:
+	* NetMsmqBindingElement.cs:
+	* NamedPipeTransportElement.cs:
+	* NamedPipeConnectionPoolSettingsElement.cs:
+	* MtomMessageEncodingElement.cs:
+	* MsmqTransportElement.cs:
+	* MsmqIntegrationElement.cs:
+	* MsmqIntegrationBindingElement.cs:
+	* MsmqElementBase.cs:
+	* MsmqBindingElementBase.cs:
+	* MethodStubs.cs:
+	* MessageSecurityOverMsmqElement.cs:
+	* LocalServiceSecuritySettingsElement.cs:
+	* LocalClientSecuritySettingsElement.cs:
+	* IssuedTokenParametersEndpointAddressElement.cs:
+	* IssuedTokenParametersElement.cs:
+	* IssuedTokenClientElement.cs:
+	* HttpTransportElement.cs:
+	* HttpsTransportElement.cs:
+	* FederatedMessageSecurityOverHttpElement.cs:
+	* EndpointAddressElementBase.cs:
+	* ConnectionOrientedTransportElement.cs:
+	* CompositeDuplexElement.cs:
+	* ChannelPoolSettingsElement.cs:
+	fix apis and implementation, make corresponding tests pass																							
+
+2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* IPAddressConverter.cs:
 	* MessageVersionConverter.cs:
 	* MessageSecurityVersionConverter.cs:

@@ -54,60 +54,9 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class IssuedTokenParametersElement
+	public sealed class IssuedTokenParametersElement
 		 : ConfigurationElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty additional_request_parameters;
-		static ConfigurationProperty claim_type_requirements;
-		static ConfigurationProperty issuer;
-		static ConfigurationProperty issuer_metadata;
-		static ConfigurationProperty key_size;
-		static ConfigurationProperty key_type;
-		static ConfigurationProperty token_type;
-
-		static IssuedTokenParametersElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			additional_request_parameters = new ConfigurationProperty ("additionalRequestParameters",
-				typeof (XmlElementElementCollection), null, null/* FIXME: get converter for XmlElementElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			claim_type_requirements = new ConfigurationProperty ("claimTypeRequirements",
-				typeof (ClaimTypeElementCollection), null, null/* FIXME: get converter for ClaimTypeElementCollection*/, null,
-				ConfigurationPropertyOptions.None);
-
-			issuer = new ConfigurationProperty ("issuer",
-				typeof (IssuedTokenParametersEndpointAddressElement), null, null/* FIXME: get converter for IssuedTokenParametersEndpointAddressElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			issuer_metadata = new ConfigurationProperty ("issuerMetadata",
-				typeof (EndpointAddressElementBase), null, null/* FIXME: get converter for EndpointAddressElementBase*/, null,
-				ConfigurationPropertyOptions.None);
-
-			key_size = new ConfigurationProperty ("keySize",
-				typeof (int), "0", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			key_type = new ConfigurationProperty ("keyType",
-				typeof (SecurityKeyType), "SymmetricKey", null/* FIXME: get converter for SecurityKeyType*/, null,
-				ConfigurationPropertyOptions.None);
-
-			token_type = new ConfigurationProperty ("tokenType",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (additional_request_parameters);
-			properties.Add (claim_type_requirements);
-			properties.Add (issuer);
-			properties.Add (issuer_metadata);
-			properties.Add (key_size);
-			properties.Add (key_type);
-			properties.Add (token_type);
-		}
-
 		public IssuedTokenParametersElement ()
 		{
 		}
@@ -118,25 +67,25 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("additionalRequestParameters",
 			 Options = ConfigurationPropertyOptions.None)]
 		public XmlElementElementCollection AdditionalRequestParameters {
-			get { return (XmlElementElementCollection) base [additional_request_parameters]; }
+			get { return (XmlElementElementCollection) base ["additionalRequestParameters"]; }
 		}
 
 		[ConfigurationProperty ("claimTypeRequirements",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ClaimTypeElementCollection ClaimTypeRequirements {
-			get { return (ClaimTypeElementCollection) base [claim_type_requirements]; }
+			get { return (ClaimTypeElementCollection) base ["claimTypeRequirements"]; }
 		}
 
 		[ConfigurationProperty ("issuer",
 			 Options = ConfigurationPropertyOptions.None)]
 		public IssuedTokenParametersEndpointAddressElement Issuer {
-			get { return (IssuedTokenParametersEndpointAddressElement) base [issuer]; }
+			get { return (IssuedTokenParametersEndpointAddressElement) base ["issuer"]; }
 		}
 
 		[ConfigurationProperty ("issuerMetadata",
 			 Options = ConfigurationPropertyOptions.None)]
 		public EndpointAddressElementBase IssuerMetadata {
-			get { return (EndpointAddressElementBase) base [issuer_metadata]; }
+			get { return (EndpointAddressElementBase) base ["issuerMetadata"]; }
 		}
 
 		[ConfigurationProperty ("keySize",
@@ -146,20 +95,20 @@ namespace System.ServiceModel.Configuration
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int KeySize {
-			get { return (int) base [key_size]; }
-			set { base [key_size] = value; }
+			get { return (int) base ["keySize"]; }
+			set { base ["keySize"] = value; }
 		}
 
 		[ConfigurationProperty ("keyType",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "SymmetricKey")]
 		public SecurityKeyType KeyType {
-			get { return (SecurityKeyType) base [key_type]; }
-			set { base [key_type] = value; }
+			get { return (SecurityKeyType) base ["keyType"]; }
+			set { base ["keyType"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[StringValidator ( MinLength = 0,
@@ -169,8 +118,8 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "")]
 		public string TokenType {
-			get { return (string) base [token_type]; }
-			set { base [token_type] = value; }
+			get { return (string) base ["tokenType"]; }
+			set { base ["tokenType"] = value; }
 		}
 
 

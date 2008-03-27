@@ -54,38 +54,13 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
 	public abstract partial class TransportElement
 		 : BindingElementExtensionElement
 	{
 		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty manual_addressing;
-		static ConfigurationProperty max_buffer_pool_size;
-		static ConfigurationProperty max_received_message_size;
+		ConfigurationPropertyCollection _properties;
 
-		static TransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			manual_addressing = new ConfigurationProperty ("manualAddressing",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
-				typeof (long), "524288", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_received_message_size = new ConfigurationProperty ("maxReceivedMessageSize",
-				typeof (long), "65536", null/* FIXME: get converter for long*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (manual_addressing);
-			properties.Add (max_buffer_pool_size);
-			properties.Add (max_received_message_size);
-		}
-
-		protected TransportElement ()
-		{
+		protected TransportElement () {
 		}
 
 
@@ -95,34 +70,42 @@ namespace System.ServiceModel.Configuration
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool ManualAddressing {
-			get { return (bool) base [manual_addressing]; }
-			set { base [manual_addressing] = value; }
+			get { return (bool) base ["manualAddressing"]; }
+			set { base ["manualAddressing"] = value; }
 		}
 
 		[ConfigurationProperty ("maxBufferPoolSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "524288")]
-		[LongValidator ( MinValue = 1,
+		[LongValidator (MinValue = 1,
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		public long MaxBufferPoolSize {
-			get { return (long) base [max_buffer_pool_size]; }
-			set { base [max_buffer_pool_size] = value; }
+			get { return (long) base ["maxBufferPoolSize"]; }
+			set { base ["maxBufferPoolSize"] = value; }
 		}
 
-		[LongValidator ( MinValue = 1,
+		[LongValidator (MinValue = 1,
 			 MaxValue = 9223372036854775807,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxReceivedMessageSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "65536")]
 		public long MaxReceivedMessageSize {
-			get { return (long) base [max_received_message_size]; }
-			set { base [max_received_message_size] = value; }
+			get { return (long) base ["maxReceivedMessageSize"]; }
+			set { base ["maxReceivedMessageSize"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("manualAddressing", typeof (bool), "false", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferPoolSize", typeof (long), "524288", null, new LongValidator (1, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxReceivedMessageSize", typeof (long), "65536", null, new LongValidator (1, 9223372036854775807, false), ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 
