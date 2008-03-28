@@ -26,6 +26,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+#if NET_2_1 && FALSE
+
 using System;
 using System.Collections;
 using System.Globalization;
@@ -38,7 +40,6 @@ namespace System.Windows.Browser.Net
 {
 	public class BrowserHttpWebRequest : HttpWebRequest
 	{
-#if NET_2_1
 		IntPtr native;
 		Uri uri;
 		string method = "GET";
@@ -357,11 +358,7 @@ namespace System.Windows.Browser.Net
 			get { return headers [HttpRequestHeader.UserAgent]; }
 			set { headers [HttpRequestHeader.UserAgent] = value; }
 		}
-#else
-		BrowserHttpWebRequest ()
-			: base (null, default (System.Runtime.Serialization.StreamingContext))
-		{
-		}
-#endif
 	}
 }
+
+#endif
