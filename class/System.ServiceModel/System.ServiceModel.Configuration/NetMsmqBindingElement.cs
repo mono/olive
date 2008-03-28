@@ -70,9 +70,6 @@ namespace System.ServiceModel.Configuration
 		static NetMsmqBindingElement ()
 		{
 			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
 
 			max_buffer_pool_size = new ConfigurationProperty ("maxBufferPoolSize",
 				typeof (long), "524288", null/* FIXME: get converter for long*/, null,

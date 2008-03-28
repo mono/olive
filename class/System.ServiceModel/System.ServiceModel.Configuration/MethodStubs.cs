@@ -118,18 +118,6 @@ namespace System.ServiceModel.Configuration
 		}
 	}
 
-
-// XmlElementElementCollection
-	public sealed partial class XmlElementElementCollection
-		 : ServiceModelConfigurationElementCollection<XmlElementElement>
-	{
-		[MonoTODO]
-		protected override object GetElementKey (ConfigurationElement element)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 // XPathMessageFilterElementCollection
 	public sealed partial class XPathMessageFilterElementCollection
 		 : ServiceModelConfigurationElementCollection<XPathMessageFilterElement>

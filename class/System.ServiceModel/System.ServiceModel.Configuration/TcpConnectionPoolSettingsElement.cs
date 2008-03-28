@@ -111,7 +111,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("idleTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:02:00")]
-		[TypeConverter ()]
 		public TimeSpan IdleTimeout {
 			get { return (TimeSpan) base [idle_timeout]; }
 			set { base [idle_timeout] = value; }
@@ -120,7 +119,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("leaseTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:05:00")]
-		[TypeConverter ()]
 		public TimeSpan LeaseTimeout {
 			get { return (TimeSpan) base [lease_timeout]; }
 			set { base [lease_timeout] = value; }

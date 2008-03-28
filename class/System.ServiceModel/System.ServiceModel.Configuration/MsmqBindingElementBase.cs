@@ -222,7 +222,6 @@ namespace System.ServiceModel.Configuration
 			set { base [receive_retry_count] = value; }
 		}
 
-		[TypeConverter ()]
 		[ConfigurationProperty ("retryCycleDelay",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:30:00")]
@@ -234,7 +233,6 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("timeToLive",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "1.00:00:00")]
-		[TypeConverter ()]
 		public TimeSpan TimeToLive {
 			get { return (TimeSpan) base [time_to_live]; }
 			set { base [time_to_live] = value; }

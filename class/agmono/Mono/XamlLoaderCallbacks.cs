@@ -56,7 +56,7 @@ namespace Mono.Xaml
 		LoadFailure = 2
 	}
 	
-	public abstract class XamlLoader : MarshalByRefObject
+	public abstract class XamlLoader // : MarshalByRefObject
 	{
 		// Contains any surface/plugins already loaded in the current domain.
 		// This is required form System.Windows.XamlReader.Load to work.

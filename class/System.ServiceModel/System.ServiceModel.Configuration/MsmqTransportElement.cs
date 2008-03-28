@@ -54,84 +54,59 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class MsmqTransportElement
+	public sealed class MsmqTransportElement
 		 : MsmqElementBase
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty max_pool_size;
-		static ConfigurationProperty queue_transfer_protocol;
-		static ConfigurationProperty use_active_directory;
+		ConfigurationPropertyCollection _properties;
 
-		static MsmqTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			max_pool_size = new ConfigurationProperty ("maxPoolSize",
-				typeof (int), "8", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			queue_transfer_protocol = new ConfigurationProperty ("queueTransferProtocol",
-				typeof (QueueTransferProtocol), "Native", null/* FIXME: get converter for QueueTransferProtocol*/, null,
-				ConfigurationPropertyOptions.None);
-
-			use_active_directory = new ConfigurationProperty ("useActiveDirectory",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (max_pool_size);
-			properties.Add (queue_transfer_protocol);
-			properties.Add (use_active_directory);
-		}
-
-		public MsmqTransportElement ()
-		{
+		public MsmqTransportElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (MsmqTransportBindingElement); }
 		}
 
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxPoolSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "8")]
 		public int MaxPoolSize {
-			get { return (int) base [max_pool_size]; }
-			set { base [max_pool_size] = value; }
+			get { return (int) base ["maxPoolSize"]; }
+			set { base ["maxPoolSize"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("maxPoolSize", typeof (int), "8", null, new IntegerValidator (0, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("queueTransferProtocol", typeof (QueueTransferProtocol), "Native", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("useActiveDirectory", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("queueTransferProtocol",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Native")]
 		public QueueTransferProtocol QueueTransferProtocol {
-			get { return (QueueTransferProtocol) base [queue_transfer_protocol]; }
-			set { base [queue_transfer_protocol] = value; }
+			get { return (QueueTransferProtocol) base ["queueTransferProtocol"]; }
+			set { base ["queueTransferProtocol"] = value; }
 		}
 
 		[ConfigurationProperty ("useActiveDirectory",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool UseActiveDirectory {
-			get { return (bool) base [use_active_directory]; }
-			set { base [use_active_directory] = value; }
+			get { return (bool) base ["useActiveDirectory"]; }
+			set { base ["useActiveDirectory"] = value; }
 		}
-
 
 		[MonoTODO]
 		protected internal override BindingElement CreateBindingElement () {

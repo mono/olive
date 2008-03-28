@@ -54,39 +54,31 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class SecurityElement
+	public sealed class SecurityElement
 		 : SecurityElementBase
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty secure_conversation_bootstrap;
+		ConfigurationPropertyCollection _properties;
 
-		static SecurityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			secure_conversation_bootstrap = new ConfigurationProperty ("secureConversationBootstrap",
-				typeof (SecurityElementBase), null, null/* FIXME: get converter for SecurityElementBase*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (secure_conversation_bootstrap);
-		}
-
-		public SecurityElement ()
-		{
+		public SecurityElement () {
 		}
 
 
 		// Properties
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("secureConversationBootstrap", typeof (SecurityElementBase), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("secureConversationBootstrap",
 			 Options = ConfigurationPropertyOptions.None)]
 		public SecurityElementBase SecureConversationBootstrap {
-			get { return (SecurityElementBase) base [secure_conversation_bootstrap]; }
+			get { return (SecurityElementBase) base ["secureConversationBootstrap"]; }
 		}
 
 

@@ -54,153 +54,107 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public abstract partial class ConnectionOrientedTransportElement
+	public abstract class ConnectionOrientedTransportElement
 		 : TransportElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty channel_initialization_timeout;
-		static ConfigurationProperty connection_buffer_size;
-		static ConfigurationProperty host_name_comparison_mode;
-		static ConfigurationProperty max_buffer_size;
-		static ConfigurationProperty max_output_delay;
-		static ConfigurationProperty max_pending_accepts;
-		static ConfigurationProperty max_pending_connections;
-		static ConfigurationProperty transfer_mode;
+		ConfigurationPropertyCollection _properties;
 
-		static ConnectionOrientedTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			channel_initialization_timeout = new ConfigurationProperty ("channelInitializationTimeout",
-				typeof (TimeSpan), "00:00:05", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			connection_buffer_size = new ConfigurationProperty ("connectionBufferSize",
-				typeof (int), "8192", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			host_name_comparison_mode = new ConfigurationProperty ("hostNameComparisonMode",
-				typeof (HostNameComparisonMode), "StrongWildcard", null/* FIXME: get converter for HostNameComparisonMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_buffer_size = new ConfigurationProperty ("maxBufferSize",
-				typeof (int), "65536", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_output_delay = new ConfigurationProperty ("maxOutputDelay",
-				typeof (TimeSpan), "00:00:00.2", null/* FIXME: get converter for TimeSpan*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_pending_accepts = new ConfigurationProperty ("maxPendingAccepts",
-				typeof (int), "1", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			max_pending_connections = new ConfigurationProperty ("maxPendingConnections",
-				typeof (int), "10", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			transfer_mode = new ConfigurationProperty ("transferMode",
-				typeof (TransferMode), "Buffered", null/* FIXME: get converter for TransferMode*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (channel_initialization_timeout);
-			properties.Add (connection_buffer_size);
-			properties.Add (host_name_comparison_mode);
-			properties.Add (max_buffer_size);
-			properties.Add (max_output_delay);
-			properties.Add (max_pending_accepts);
-			properties.Add (max_pending_connections);
-			properties.Add (transfer_mode);
+		protected ConnectionOrientedTransportElement () {
 		}
-
-		protected ConnectionOrientedTransportElement ()
-		{
-		}
-
 
 		// Properties
 
 		[ConfigurationProperty ("channelInitializationTimeout",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:00:05")]
-		[TypeConverter ()]
 		public TimeSpan ChannelInitializationTimeout {
-			get { return (TimeSpan) base [channel_initialization_timeout]; }
-			set { base [channel_initialization_timeout] = value; }
+			get { return (TimeSpan) base ["channelInitializationTimeout"]; }
+			set { base ["channelInitializationTimeout"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("connectionBufferSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "8192")]
 		public int ConnectionBufferSize {
-			get { return (int) base [connection_buffer_size]; }
-			set { base [connection_buffer_size] = value; }
+			get { return (int) base ["connectionBufferSize"]; }
+			set { base ["connectionBufferSize"] = value; }
 		}
 
 		[ConfigurationProperty ("hostNameComparisonMode",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "StrongWildcard")]
 		public HostNameComparisonMode HostNameComparisonMode {
-			get { return (HostNameComparisonMode) base [host_name_comparison_mode]; }
-			set { base [host_name_comparison_mode] = value; }
+			get { return (HostNameComparisonMode) base ["hostNameComparisonMode"]; }
+			set { base ["hostNameComparisonMode"] = value; }
 		}
 
 		[ConfigurationProperty ("maxBufferSize",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "65536")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxBufferSize {
-			get { return (int) base [max_buffer_size]; }
-			set { base [max_buffer_size] = value; }
+			get { return (int) base ["maxBufferSize"]; }
+			set { base ["maxBufferSize"] = value; }
 		}
 
 		[ConfigurationProperty ("maxOutputDelay",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "00:00:00.2")]
-		[TypeConverter ()]
 		public TimeSpan MaxOutputDelay {
-			get { return (TimeSpan) base [max_output_delay]; }
-			set { base [max_output_delay] = value; }
+			get { return (TimeSpan) base ["maxOutputDelay"]; }
+			set { base ["maxOutputDelay"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("maxPendingAccepts",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "1")]
 		public int MaxPendingAccepts {
-			get { return (int) base [max_pending_accepts]; }
-			set { base [max_pending_accepts] = value; }
+			get { return (int) base ["maxPendingAccepts"]; }
+			set { base ["maxPendingAccepts"] = value; }
 		}
 
 		[ConfigurationProperty ("maxPendingConnections",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10")]
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		public int MaxPendingConnections {
-			get { return (int) base [max_pending_connections]; }
-			set { base [max_pending_connections] = value; }
+			get { return (int) base ["maxPendingConnections"]; }
+			set { base ["maxPendingConnections"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("channelInitializationTimeout", typeof (TimeSpan), "00:00:05", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("connectionBufferSize", typeof (int), "8192", null, new IntegerValidator (1, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("hostNameComparisonMode", typeof (HostNameComparisonMode), "StrongWildcard", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxBufferSize", typeof (int), "65536", null, new IntegerValidator (1, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxOutputDelay", typeof (TimeSpan), "00:00:00.2", null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxPendingAccepts", typeof (int), "1", null, new IntegerValidator (1, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("maxPendingConnections", typeof (int), "10", null, new IntegerValidator (1, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("transferMode", typeof (TransferMode), "Buffered", null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("transferMode",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "Buffered")]
 		public TransferMode TransferMode {
-			get { return (TransferMode) base [transfer_mode]; }
-			set { base [transfer_mode] = value; }
+			get { return (TransferMode) base ["transferMode"]; }
+			set { base ["transferMode"] = value; }
 		}
 
 

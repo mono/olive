@@ -54,51 +54,29 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class WindowsStreamSecurityElement
+	public sealed class WindowsStreamSecurityElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty protection_level;
-
-		static WindowsStreamSecurityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			protection_level = new ConfigurationProperty ("protectionLevel",
-				typeof (ProtectionLevel), "EncryptAndSign", null/* FIXME: get converter for ProtectionLevel*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (protection_level);
-		}
-
-		public WindowsStreamSecurityElement ()
-		{
+		public WindowsStreamSecurityElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (WindowsStreamSecurityBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("protectionLevel",
 			 DefaultValue = "EncryptAndSign",
 			 Options = ConfigurationPropertyOptions.None)]
 		public ProtectionLevel ProtectionLevel {
-			get { return (ProtectionLevel) base [protection_level]; }
-			set { base [protection_level] = value; }
+			get { return (ProtectionLevel) base ["protectionLevel"]; }
+			set { base ["protectionLevel"] = value; }
 		}
 
 

@@ -59,26 +59,27 @@ namespace System.ServiceModel.Configuration
 		 RemoveItemName = "remove",
 		 ClearItemsName = "clear",
 		 CollectionType = ConfigurationElementCollectionType.BasicMap)]
-	[MonoTODO]
-	public sealed partial class XmlElementElementCollection
-		 : ServiceModelConfigurationElementCollection<XmlElementElement>,  ICollection,  IEnumerable
+	public sealed class XmlElementElementCollection
+		 : ServiceModelConfigurationElementCollection<XmlElementElement>, ICollection, IEnumerable
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-
-		static XmlElementElementCollection ()
-		{
-			properties = new ConfigurationPropertyCollection ();
+		public XmlElementElementCollection () {
+			AddElementName = "xmlElement";
 		}
 
-		public XmlElementElementCollection ()
-		{
+		protected override object GetElementKey (ConfigurationElement element) {
+			return ((XmlElementElement) element).XmlElement;
 		}
 
+		[MonoTODO]
+		protected override bool OnDeserializeUnrecognizedElement (string elementName, XmlReader reader) {
+			//return base.OnDeserializeUnrecognizedElement (elementName, reader);
+			reader.ReadOuterXml ();
+			return true;
+		}
 
-		// Properties
-
-
+		protected override void Unmerge (ConfigurationElement sourceElement, ConfigurationElement parentElement, ConfigurationSaveMode saveMode) {
+			base.Unmerge (sourceElement, parentElement, saveMode);
+		}
 	}
 
 }

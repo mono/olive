@@ -58,46 +58,33 @@ namespace System.ServiceModel.Configuration
 	public sealed partial class NamedPipeTransportElement
 		 : ConnectionOrientedTransportElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty connection_pool_settings;
+		ConfigurationPropertyCollection _properties;
 
-		static NamedPipeTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			connection_pool_settings = new ConfigurationProperty ("connectionPoolSettings",
-				typeof (NamedPipeConnectionPoolSettingsElement), null, null/* FIXME: get converter for NamedPipeConnectionPoolSettingsElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (connection_pool_settings);
-		}
-
-		public NamedPipeTransportElement ()
-		{
+		public NamedPipeTransportElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (NamedPipeTransportBindingElement); }
 		}
 
 		[ConfigurationProperty ("connectionPoolSettings",
 			 Options = ConfigurationPropertyOptions.None)]
 		public NamedPipeConnectionPoolSettingsElement ConnectionPoolSettings {
-			get { return (NamedPipeConnectionPoolSettingsElement) base [connection_pool_settings]; }
-			set { base [connection_pool_settings] = value; }
+			get { return (NamedPipeConnectionPoolSettingsElement) base ["connectionPoolSettings"]; }
+			set { base ["connectionPoolSettings"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("connectionPoolSettings", typeof (NamedPipeConnectionPoolSettingsElement), null, null, null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[MonoTODO]

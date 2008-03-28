@@ -54,95 +54,66 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class TcpTransportElement
+	public sealed class TcpTransportElement
 		 : ConnectionOrientedTransportElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty connection_pool_settings;
-		static ConfigurationProperty listen_backlog;
-		static ConfigurationProperty port_sharing_enabled;
-		static ConfigurationProperty teredo_enabled;
+		ConfigurationPropertyCollection _properties;
 
-		static TcpTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			connection_pool_settings = new ConfigurationProperty ("connectionPoolSettings",
-				typeof (TcpConnectionPoolSettingsElement), null, null/* FIXME: get converter for TcpConnectionPoolSettingsElement*/, null,
-				ConfigurationPropertyOptions.None);
-
-			listen_backlog = new ConfigurationProperty ("listenBacklog",
-				typeof (int), "10", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			port_sharing_enabled = new ConfigurationProperty ("portSharingEnabled",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			teredo_enabled = new ConfigurationProperty ("teredoEnabled",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (connection_pool_settings);
-			properties.Add (listen_backlog);
-			properties.Add (port_sharing_enabled);
-			properties.Add (teredo_enabled);
-		}
-
-		public TcpTransportElement ()
-		{
+		public TcpTransportElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (TcpTransportBindingElement); }
 		}
 
 		[ConfigurationProperty ("connectionPoolSettings",
 			 Options = ConfigurationPropertyOptions.None)]
 		public TcpConnectionPoolSettingsElement ConnectionPoolSettings {
-			get { return (TcpConnectionPoolSettingsElement) base [connection_pool_settings]; }
-			set { base [connection_pool_settings] = value; }
+			get { return (TcpConnectionPoolSettingsElement) base ["connectionPoolSettings"]; }
+			set { base ["connectionPoolSettings"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 1,
+		[IntegerValidator (MinValue = 1,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("listenBacklog",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "10")]
 		public int ListenBacklog {
-			get { return (int) base [listen_backlog]; }
-			set { base [listen_backlog] = value; }
+			get { return (int) base ["listenBacklog"]; }
+			set { base ["listenBacklog"] = value; }
 		}
 
 		[ConfigurationProperty ("portSharingEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool PortSharingEnabled {
-			get { return (bool) base [port_sharing_enabled]; }
-			set { base [port_sharing_enabled] = value; }
+			get { return (bool) base ["portSharingEnabled"]; }
+			set { base ["portSharingEnabled"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("connectionPoolSettings", typeof (TcpConnectionPoolSettingsElement), null, null, null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("listenBacklog", typeof (int), "10", null, new IntegerValidator (1, int.MaxValue, false), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("portSharingEnabled", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("teredoEnabled", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("teredoEnabled",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool TeredoEnabled {
-			get { return (bool) base [teredo_enabled]; }
-			set { base [teredo_enabled] = value; }
+			get { return (bool) base ["teredoEnabled"]; }
+			set { base ["teredoEnabled"] = value; }
 		}
 
 

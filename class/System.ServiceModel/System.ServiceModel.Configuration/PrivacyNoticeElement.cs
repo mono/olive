@@ -54,67 +54,48 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class PrivacyNoticeElement
+	public class PrivacyNoticeElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty url;
-		static ConfigurationProperty version;
+		ConfigurationPropertyCollection _properties;
 
-		static PrivacyNoticeElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			url = new ConfigurationProperty ("url",
-				typeof (Uri), null, new UriTypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			version = new ConfigurationProperty ("version",
-				typeof (int), "0", null/* FIXME: get converter for int*/, null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (url);
-			properties.Add (version);
-		}
-
-		public PrivacyNoticeElement ()
-		{
+		public PrivacyNoticeElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof(PrivacyNoticeBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = new ConfigurationPropertyCollection ();
+					_properties.Add (new ConfigurationProperty ("url", typeof (Uri), null, new UriTypeConverter (), null, ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("version", typeof (int), "0", null, new IntegerValidator (0, int.MaxValue, false), ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("url",
 			 Options = ConfigurationPropertyOptions.None)]
 		public Uri Url {
-			get { return (Uri) base [url]; }
-			set { base [url] = value; }
+			get { return (Uri) base ["url"]; }
+			set { base ["url"] = value; }
 		}
 
-		[IntegerValidator ( MinValue = 0,
+		[IntegerValidator (MinValue = 0,
 			MaxValue = int.MaxValue,
 			ExcludeRange = false)]
 		[ConfigurationProperty ("version",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "0")]
 		public int Version {
-			get { return (int) base [version]; }
-			set { base [version] = value; }
+			get { return (int) base ["version"]; }
+			set { base ["version"] = value; }
 		}
 
 

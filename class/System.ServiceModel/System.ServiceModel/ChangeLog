@@ -1,3 +1,7 @@
+2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ReliableMessagingVersion.cs: add missing API.
+
 2008-03-25  Vladmir Krasnov  <vladmimir@mainsoft.com>
 
 	* ServiceHostBase.cs: implemented ApplyConfiguration, fixed service 

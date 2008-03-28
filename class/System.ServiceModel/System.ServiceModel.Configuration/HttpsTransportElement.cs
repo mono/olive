@@ -54,51 +54,37 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public partial class HttpsTransportElement
+	public class HttpsTransportElement
 		 : HttpTransportElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty require_client_certificate;
+		ConfigurationPropertyCollection _properties;
 
-		static HttpsTransportElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			require_client_certificate = new ConfigurationProperty ("requireClientCertificate",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (require_client_certificate);
-		}
-
-		public HttpsTransportElement ()
-		{
+		public HttpsTransportElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (HttpsTransportBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("requireClientCertificate", typeof (bool), "false", new BooleanConverter (), null, ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 		[ConfigurationProperty ("requireClientCertificate",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool RequireClientCertificate {
-			get { return (bool) base [require_client_certificate]; }
-			set { base [require_client_certificate] = value; }
+			get { return (bool) base ["requireClientCertificate"]; }
+			set { base ["requireClientCertificate"] = value; }
 		}
 
 

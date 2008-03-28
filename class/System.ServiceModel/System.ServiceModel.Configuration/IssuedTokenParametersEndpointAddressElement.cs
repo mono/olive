@@ -54,32 +54,12 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class IssuedTokenParametersEndpointAddressElement
+	public sealed class IssuedTokenParametersEndpointAddressElement
 		 : EndpointAddressElementBase
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding;
-		static ConfigurationProperty binding_configuration;
+		ConfigurationPropertyCollection _properties;
 
-		static IssuedTokenParametersEndpointAddressElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding = new ConfigurationProperty ("binding",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			binding_configuration = new ConfigurationProperty ("bindingConfiguration",
-				typeof (string), "", new StringConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding);
-			properties.Add (binding_configuration);
-		}
-
-		public IssuedTokenParametersEndpointAddressElement ()
-		{
+		public IssuedTokenParametersEndpointAddressElement () {
 		}
 
 
@@ -88,27 +68,34 @@ namespace System.ServiceModel.Configuration
 		[ConfigurationProperty ("binding",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "")]
-		[StringValidator ( MinLength = 0,
+		[StringValidator (MinLength = 0,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string Binding {
-			get { return (string) base [binding]; }
-			set { base [binding] = value; }
+			get { return (string) base ["binding"]; }
+			set { base ["binding"] = value; }
 		}
 
 		[ConfigurationProperty ("bindingConfiguration",
 			 Options = ConfigurationPropertyOptions.None,
 			 DefaultValue = "")]
-		[StringValidator ( MinLength = 0,
+		[StringValidator (MinLength = 0,
 			MaxLength = int.MaxValue,
 			 InvalidCharacters = null)]
 		public string BindingConfiguration {
-			get { return (string) base [binding_configuration]; }
-			set { base [binding_configuration] = value; }
+			get { return (string) base ["bindingConfiguration"]; }
+			set { base ["bindingConfiguration"] = value; }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get {
+				if (_properties == null) {
+					_properties = base.Properties;
+					_properties.Add (new ConfigurationProperty ("binding", typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null), ConfigurationPropertyOptions.None));
+					_properties.Add (new ConfigurationProperty ("bindingConfiguration", typeof (string), "", new StringConverter (), new StringValidator (0, int.MaxValue, null), ConfigurationPropertyOptions.None));
+				}
+				return _properties;
+			}
 		}
 
 

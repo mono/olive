@@ -54,51 +54,30 @@ using System.Xml;
 
 namespace System.ServiceModel.Configuration
 {
-	[MonoTODO]
-	public sealed partial class SslStreamSecurityElement
+	public sealed class SslStreamSecurityElement
 		 : BindingElementExtensionElement
 	{
-		// Static Fields
-		static ConfigurationPropertyCollection properties;
-		static ConfigurationProperty binding_element_type;
-		static ConfigurationProperty require_client_certificate;
 
-		static SslStreamSecurityElement ()
-		{
-			properties = new ConfigurationPropertyCollection ();
-			binding_element_type = new ConfigurationProperty ("",
-				typeof (Type), null, new TypeConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			require_client_certificate = new ConfigurationProperty ("requireClientCertificate",
-				typeof (bool), "false", new BooleanConverter (), null,
-				ConfigurationPropertyOptions.None);
-
-			properties.Add (binding_element_type);
-			properties.Add (require_client_certificate);
-		}
-
-		public SslStreamSecurityElement ()
-		{
+		public SslStreamSecurityElement () {
 		}
 
 
 		// Properties
 
 		public override Type BindingElementType {
-			get { return (Type) base [binding_element_type]; }
+			get { return typeof (SslStreamSecurityBindingElement); }
 		}
 
 		protected override ConfigurationPropertyCollection Properties {
-			get { return properties; }
+			get { return base.Properties; }
 		}
 
 		[ConfigurationProperty ("requireClientCertificate",
 			 Options = ConfigurationPropertyOptions.None,
 			DefaultValue = false)]
 		public bool RequireClientCertificate {
-			get { return (bool) base [require_client_certificate]; }
-			set { base [require_client_certificate] = value; }
+			get { return (bool) base ["requireClientCertificate"]; }
+			set { base ["requireClientCertificate"] = value; }
 		}
 
 
