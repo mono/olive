@@ -29,7 +29,7 @@
 //
 
 using Mono;
-using System.Collections;
+using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -44,7 +44,7 @@ using System.Threading;
 namespace System.Windows {
 	public abstract class DependencyObject {
 		static Thread moonlight_thread;
-		static Hashtable objects = new Hashtable ();
+		static Dictionary<IntPtr, DependencyObject> objects = new Dictionary<IntPtr, DependencyObject> ();
 		internal IntPtr _native;
 
 		internal EventHandlerList events;
@@ -65,7 +65,7 @@ namespace System.Windows {
 
 			private set {
 				_native = value;
-				if (objects.Contains (value))
+				if (objects.ContainsKey (value))
 					return;
 				objects [value] = this;
 			}
@@ -103,10 +103,10 @@ namespace System.Windows {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			object reference = objects [ptr];
-			if (reference != null)
-				return (DependencyObject) reference;
-			
+			DependencyObject reference;
+			if (objects.TryGetValue (ptr, out reference))
+				return reference;
+
 			DependencyObject dop = (DependencyObject) CreateObject (k, ptr);
 			if (dop == null){
 				Console.WriteLine ("agclr: Returning a null object, did not know how to construct {0}", k);
@@ -125,7 +125,11 @@ namespace System.Windows {
 			if (ptr == IntPtr.Zero)
 				return null;
 
-			return (DependencyObject) objects [ptr];
+			DependencyObject obj;
+			if (!objects.TryGetValue (ptr, out obj))
+				return null;
+
+			return obj;
 		}
 		
 		static object CreateObject (Kind k, IntPtr raw)

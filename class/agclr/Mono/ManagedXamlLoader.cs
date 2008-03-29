@@ -30,7 +30,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -655,7 +654,7 @@ namespace Mono.Xaml
 		//   * An Assembly (for resolved references).
 		//   * An AssemblyName (for unresolved references).
 		//
-		Hashtable deps;
+		Dictionary<string, object> deps;
 
 		public DependencyLoader (ManagedXamlLoader parent, string asm_path)
 		{
@@ -700,11 +699,11 @@ namespace Mono.Xaml
 				    an.Name == "System.Core")
 					continue;
 				
-				if (deps == null){
-					deps = new Hashtable ();
+				if (deps == null) {
+					deps = new Dictionary<string, object> ();
 					deps [a.GetName ().Name] = a;
 				}
-				if (deps.Contains (an.Name))
+				if (deps.ContainsKey (an.Name))
 					continue;
 				deps [an.Name] = an;
 				missing++;
