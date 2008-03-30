@@ -419,6 +419,7 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void MessageSecurityIssuedToken ()
 		{
 			WSHttpBinding binding = new WSHttpBinding ();

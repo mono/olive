@@ -1,3 +1,8 @@
+2008-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WSHttpBindingTest.cs : mark MessageSecurityIssuedToken as NotWorking.
+	* EndpointAddress10Test.cs : mark SerializeDeserialize as NotWorking.
+
 2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelFactory_1Test.cs: Add tests for different ctors.

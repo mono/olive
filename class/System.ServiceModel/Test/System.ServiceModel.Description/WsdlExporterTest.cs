@@ -55,6 +55,7 @@ namespace MonoTests.System.ServiceModel.Description
 	public class WsdlExporterTest
 	{
 		[Test]
+		[Category ("NotWorking")]
 		public void Ctor1 ()
 		{
 			WsdlExporter we = new WsdlExporter ();

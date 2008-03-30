@@ -184,6 +184,7 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void GetContractMessageParameter ()
 		{
 			ContractDescription cd = ContractDescription.GetContract (typeof (IMessageParameter));

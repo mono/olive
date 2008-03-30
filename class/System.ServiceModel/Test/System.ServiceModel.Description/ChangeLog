@@ -1,3 +1,8 @@
+2008-03-30  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WsdlExporterTest.cs, WsdlImporterTest.cs,
+	  ContractDescriptionTest.cs : marked coupled of tests as NotWorking.
+
 2008-03-23  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* OperationDescriptionTest.cs: added parts and namespace tests

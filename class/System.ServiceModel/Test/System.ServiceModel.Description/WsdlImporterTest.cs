@@ -256,6 +256,7 @@ namespace MonoTests.System.ServiceModel.Description
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ContractsTest ()
 		{
 			NoExtensionsSetup ();
@@ -452,6 +453,7 @@ namespace MonoTests.System.ServiceModel.Description
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void EndpointsTest ()
 		{
 			NoExtensionsSetup ();
@@ -518,6 +520,7 @@ namespace MonoTests.System.ServiceModel.Description
 
 
 		[Test]
+		[Category ("NotWorking")]
 		public void EndpointTestWithExtensions ()
 		{
 			List<IWsdlImportExtension> list = new List<IWsdlImportExtension> ();
