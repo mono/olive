@@ -179,8 +179,6 @@ namespace MonoTests.System.Runtime.Serialization
 		// pass typeof(DCEmpty), serialize int
 
 		[Test]
-		[Category ("NotWorking")]
-		// this test needs XML-canonicalized comparison.
 		public void SerializeIntForDCEmpty ()
 		{
 			DataContractSerializer ser =
@@ -195,7 +193,7 @@ namespace MonoTests.System.Runtime.Serialization
 			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
 				ser.WriteObject (w, 1);
 			}
-			Assert.AreEqual (expected, sw.ToString ());
+			XmlComparer.AssertAreEqual (expected, sw.ToString ());
 		}
 
 		// DCEmpty
@@ -515,8 +513,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
-		//Proper xml comparison required
 		public void SerializeEnum2 ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (Colors));
@@ -525,7 +521,7 @@ namespace MonoTests.System.Runtime.Serialization
 				ser.WriteObject (w, 0);
 			}
 
-			Assert.AreEqual (
+			XmlComparer.AssertAreEqual (
 				@"<Colors xmlns:d1p1=""http://www.w3.org/2001/XMLSchema"" i:type=""d1p1:int"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">0</Colors>",
 				sw.ToString ());
 		}
@@ -559,8 +555,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
-		//Proper xml comparison required
 		public void SerializeEnumWithDC2 ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (ColorsWithDC));
@@ -569,7 +563,7 @@ namespace MonoTests.System.Runtime.Serialization
 				ser.WriteObject (w, 3);
 			}
 
-			Assert.AreEqual (
+			XmlComparer.AssertAreEqual (
 				@"<_ColorsWithDC xmlns:d1p1=""http://www.w3.org/2001/XMLSchema"" i:type=""d1p1:int"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">3</_ColorsWithDC>",
 				sw.ToString ());
 		}
@@ -601,7 +595,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void SerializerDCArray ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (DCWithEnum []));
@@ -613,13 +606,12 @@ namespace MonoTests.System.Runtime.Serialization
 				ser.WriteObject (w, arr);
 			}
 
-			Assert.AreEqual (
+			XmlComparer.AssertAreEqual (
 				@"<ArrayOfDCWithEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><DCWithEnum><_colors>Red</_colors></DCWithEnum><DCWithEnum><_colors>Green</_colors></DCWithEnum></ArrayOfDCWithEnum>",
 				sw.ToString ());
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void SerializerDCArray2 ()
 		{
 			List<Type> known = new List<Type> ();
@@ -635,13 +627,12 @@ namespace MonoTests.System.Runtime.Serialization
 				ser.WriteObject (w, arr);
 			}
 
-			Assert.AreEqual (
+			XmlComparer.AssertAreEqual (
 				@"<ArrayOfanyType xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""><anyType xmlns:d2p1=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"" i:type=""d2p1:DCWithEnum""><d2p1:_colors>Red</d2p1:_colors></anyType><anyType xmlns:d2p1=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"" i:type=""d2p1:DCSimple1""><d2p1:Foo>hello</d2p1:Foo></anyType></ArrayOfanyType>",
 				sw.ToString ());
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void SerializerDCArray3 ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (int []));
@@ -653,7 +644,7 @@ namespace MonoTests.System.Runtime.Serialization
 				ser.WriteObject (w, arr);
 			}
 
-			Assert.AreEqual (
+			XmlComparer.AssertAreEqual (
 				@"<ArrayOfint xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""><int>1</int><int>2</int></ArrayOfint>",
 				sw.ToString ());
 		}

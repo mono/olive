@@ -1,3 +1,7 @@
+2008-03-30  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* XmlObjectSerializerTest.cs: use XmlComparer, remove NotWorking.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlObjectSerializerTest.cs: Added tests for Read/WriteObject
