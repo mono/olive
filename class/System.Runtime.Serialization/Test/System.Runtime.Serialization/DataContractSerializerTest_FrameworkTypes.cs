@@ -44,7 +44,7 @@ namespace MonoTests.System.Runtime.Serialization
 {
 	public class DataContractSerializerTest_FrameworkTypes
 	{
-		public void Test<T> () where T : new () {
+		protected void Test<T> () where T : new () {
 			T o = new T ();
 			Type t = o.GetType ();
 			string fileName = "Test/Resources/FrameworkTypes/" + t.FullName + ".xml";

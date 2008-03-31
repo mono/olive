@@ -1,5 +1,10 @@
 2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* DataContractSerializerTest_FrameworkTypes.cs: refactoring. 
+	* DataContractSerializerTest_FrameworkTypes_mscorlib.cs: new testfixture.
+
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* DataContractSerializerTest_FrameworkTypes.cs: 
 	add infrastructure for following tests.
 
