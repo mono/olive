@@ -1,3 +1,8 @@
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes.cs: 
+	add infrastructure for following tests.
+
 2008-03-30  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* XmlObjectSerializerTest.cs: use XmlComparer, remove NotWorking.
