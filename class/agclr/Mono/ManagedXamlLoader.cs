@@ -692,10 +692,11 @@ namespace Mono.Xaml
 			AssemblyName [] list = Helper.GetReferencedAssemblies (a);
 			
 			foreach (AssemblyName an in list){
-				if (an.Name == "agclr" || an.Name == "mscorlib" ||
-				    an.Name == "System.Xml.Core" || an.Name == "System" ||
+				if (an.Name == "System.Windows" || an.Name == "mscorlib" ||
+				    an.Name == "System.Xml" || an.Name == "System" ||
 				    an.Name == "Microsoft.Scripting" ||
-				    an.Name == "System.SilverLight" ||
+				    an.Name == "System.Windows.Browser" ||
+					an.Name == "System.Net" ||
 				    an.Name == "System.Core")
 					continue;
 				
