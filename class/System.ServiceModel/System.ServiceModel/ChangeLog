@@ -1,5 +1,9 @@
 2008-03-31  Vladmir Krasnov  <vladmimir@mainsoft.com>
 
+	* BasicHttpBinding.cs: fixed GetTransport, TransportBindingElement init
+
+2008-03-31  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
 	* BasicHttpBinding.cs: fixed configuration issues
 
 2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
