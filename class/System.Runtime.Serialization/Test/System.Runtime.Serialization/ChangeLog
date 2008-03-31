@@ -1,5 +1,9 @@
 2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* DataContractSerializerTest_FrameworkTypes_System.Data.cs: new testfixture.
+
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* DataContractSerializerTest_FrameworkTypes_System.cs: new testfixture.
 
 2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
