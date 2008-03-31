@@ -204,7 +204,27 @@ namespace System.ServiceModel.Configuration
 		}
 
 		protected override void OnApplyConfiguration (Binding binding) {
-			throw new NotImplementedException ();
+			BasicHttpBinding basicHttpBinding = (BasicHttpBinding) binding;
+			
+			basicHttpBinding.AllowCookies = AllowCookies;
+			basicHttpBinding.BypassProxyOnLocal = BypassProxyOnLocal;
+			basicHttpBinding.HostNameComparisonMode = HostNameComparisonMode;
+			basicHttpBinding.MaxBufferPoolSize = MaxBufferPoolSize;
+			basicHttpBinding.MaxBufferSize = MaxBufferSize;
+			basicHttpBinding.MaxReceivedMessageSize = MaxReceivedMessageSize;
+			basicHttpBinding.MessageEncoding = MessageEncoding;
+			basicHttpBinding.ProxyAddress = ProxyAddress;
+
+			basicHttpBinding.ReaderQuotas.MaxArrayLength = ReaderQuotas.MaxArrayLength;
+			basicHttpBinding.ReaderQuotas.MaxBytesPerRead = ReaderQuotas.MaxBytesPerRead;
+			basicHttpBinding.ReaderQuotas.MaxDepth = ReaderQuotas.MaxDepth;
+			basicHttpBinding.ReaderQuotas.MaxNameTableCharCount = ReaderQuotas.MaxNameTableCharCount;
+			basicHttpBinding.ReaderQuotas.MaxStringContentLength = ReaderQuotas.MaxStringContentLength;
+
+			basicHttpBinding.Security.Mode = Security.Mode;
+			basicHttpBinding.TextEncoding = TextEncoding;
+			basicHttpBinding.TransferMode = TransferMode;
+			basicHttpBinding.UseDefaultWebProxy = UseDefaultWebProxy;
 		}
 	}
 

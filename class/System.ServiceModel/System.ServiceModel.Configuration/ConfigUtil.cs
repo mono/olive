@@ -61,11 +61,9 @@ namespace System.ServiceModel.Configuration
 
 			Binding b = (Binding) Activator.CreateInstance (section.BindingType, new object [0]);
 
-			// FIXME: handle ConfiguredBindings.
-			//foreach (IBindingConfigurationElement el in section.ConfiguredBindings)
-			//	el.ApplyConfiguration (b);
-
-			// FIXME: handle bindingConfiguration
+			foreach (IBindingConfigurationElement el in section.ConfiguredBindings)
+				if (el.Name == bindingConfiguration)
+					el.ApplyConfiguration (b);
 
 			return b;
 		}

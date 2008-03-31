@@ -131,9 +131,12 @@ namespace System.ServiceModel.Configuration
 
 		protected abstract void OnApplyConfiguration (Binding binding);
 		
-		[MonoTODO]
 		public void ApplyConfiguration (Binding binding) {
-			throw new NotImplementedException ();
+			binding.CloseTimeout = CloseTimeout;
+			binding.OpenTimeout = OpenTimeout;
+			binding.ReceiveTimeout = ReceiveTimeout;
+			binding.SendTimeout = SendTimeout;
+			OnApplyConfiguration (binding);
 		}
 	}
 
