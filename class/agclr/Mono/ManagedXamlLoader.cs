@@ -693,11 +693,11 @@ namespace Mono.Xaml
 			
 			foreach (AssemblyName an in list){
 				if (an.Name == "System.Windows" || an.Name == "mscorlib" ||
-				    an.Name == "System.Xml" || an.Name == "System" ||
-				    an.Name == "Microsoft.Scripting" ||
-				    an.Name == "System.Windows.Browser" ||
+					an.Name == "System.Xml" || an.Name == "System" ||
+					an.Name == "Microsoft.Scripting" ||
+					an.Name == "System.Windows.Browser" ||
 					an.Name == "System.Net" ||
-				    an.Name == "System.Core")
+					an.Name == "System.Core")
 					continue;
 				
 				if (deps == null) {
