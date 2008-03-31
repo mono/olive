@@ -32,6 +32,7 @@ using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Text;
 using System.Xml;
+using System.ServiceModel.Configuration;
 
 namespace System.ServiceModel
 {
@@ -41,9 +42,7 @@ namespace System.ServiceModel
 		bool allow_cookies, bypass_proxy_on_local;
 		HostNameComparisonMode host_name_comparison_mode
 			= HostNameComparisonMode.StrongWildcard;
-		// FIXME: could be configurable
 		long max_buffer_pool_size = 0x80000;
-		// FIXME: could be configurable
 		int max_buffer_size = 0x10000;
 		long max_recv_message_size = 0x10000;
 		WSMessageEncoding message_encoding
@@ -51,9 +50,7 @@ namespace System.ServiceModel
 		Uri proxy_address;
 		XmlDictionaryReaderQuotas reader_quotas
 			= new XmlDictionaryReaderQuotas ();
-		// FIXME: could be configurable.
 		EnvelopeVersion env_version = EnvelopeVersion.Soap11;
-		// FIXME: could be configurable.
 		Encoding text_encoding = new UTF8Encoding ();
 		TransferMode transfer_mode
 			 = TransferMode.Buffered;
@@ -65,10 +62,14 @@ namespace System.ServiceModel
 		{
 		}
 
-		[MonoTODO]
 		public BasicHttpBinding (string configurationName)
+			: this ()
 		{
-			throw new NotImplementedException ();
+			BindingsSection bindingsSection = ConfigUtil.BindingsSection;
+			BasicHttpBindingElement el = 
+				bindingsSection.BasicHttpBinding.Bindings [configurationName];
+
+			el.ApplyConfiguration (this);
 		}
 
 		public BasicHttpBinding (
@@ -129,7 +130,6 @@ namespace System.ServiceModel
 			set { proxy_address = value; }
 		}
 
-		[MonoTODO ("set proper values. It is different from default")]
 		public XmlDictionaryReaderQuotas ReaderQuotas {
 			get { return reader_quotas; }
 			set { reader_quotas = value; }

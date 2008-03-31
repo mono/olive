@@ -582,6 +582,7 @@
     <Compile Include="System.ServiceModel.Configuration\HttpTransportSecurityElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\IBindingConfigurationElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\IdentityElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\IPAddressConverter.cs" />
     <Compile Include="System.ServiceModel.Configuration\IssuedTokenClientBehaviorsElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\IssuedTokenClientBehaviorsElementCollection.cs" />
     <Compile Include="System.ServiceModel.Configuration\IssuedTokenClientElement.cs" />
@@ -594,6 +595,8 @@
     <Compile Include="System.ServiceModel.Configuration\MessageSecurityOverHttpElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\MessageSecurityOverMsmqElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\MessageSecurityOverTcpElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\MessageSecurityVersionConverter.cs" />
+    <Compile Include="System.ServiceModel.Configuration\MessageVersionConverter.cs" />
     <Compile Include="System.ServiceModel.Configuration\MetadataElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\MethodStubs.cs" />
     <Compile Include="System.ServiceModel.Configuration\MexBindingBindingCollectionElement.cs" />
@@ -643,6 +646,7 @@
     <Compile Include="System.ServiceModel.Configuration\PolicyImporterElementCollection.cs" />
     <Compile Include="System.ServiceModel.Configuration\PolicyVersionConverter.cs" />
     <Compile Include="System.ServiceModel.Configuration\PrivacyNoticeElement.cs" />
+    <Compile Include="System.ServiceModel.Configuration\ReliableMessagingVersionConverter.cs" />
     <Compile Include="System.ServiceModel.Configuration\ReliableSessionElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\RsaElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\SecureConversationServiceElement.cs" />
@@ -1061,6 +1065,7 @@
     <Compile Include="System.ServiceModel\PoisonMessageException.cs" />
     <Compile Include="System.ServiceModel\ProtocolException.cs" />
     <Compile Include="System.ServiceModel\QuotaExceededException.cs" />
+    <Compile Include="System.ServiceModel\ReliableMessagingVersion.cs" />
     <Compile Include="System.ServiceModel\ReliableSession.cs" />
     <Compile Include="System.ServiceModel\RsaEndpointIdentity.cs" />
     <Compile Include="System.ServiceModel\ServiceAuthorizationManager.cs" />

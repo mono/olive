@@ -1,3 +1,25 @@
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes_System.Data.cs: new testfixture.
+
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes_System.cs: new testfixture.
+
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes.cs: refactoring. 
+	* DataContractSerializerTest_FrameworkTypes_mscorlib.cs: new testfixture.
+
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes.cs: 
+	add infrastructure for following tests.
+
+2008-03-30  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* XmlObjectSerializerTest.cs: use XmlComparer, remove NotWorking.
+
 2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlObjectSerializerTest.cs: Added tests for Read/WriteObject

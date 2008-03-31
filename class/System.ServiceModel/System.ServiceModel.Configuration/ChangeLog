@@ -1,3 +1,9 @@
+2008-03-31  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
+	* ConfigUtil.cs: fixed CreateBinding
+	* BasicHttpBindingElement.cs: OnApplyConfiguration
+	* StandardBindingElement.cs: implemented ApplyConfiguration
+
 2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* XmlElementElementCollection.cs:

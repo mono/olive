@@ -1,3 +1,17 @@
+2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* mono-api.xsl : ... and some path difference from mono tree.
+
+2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : add profile support (for net_3_5).
+	  Added more olive assemblies.
+	* mono-api-info.cs, mono-api-diff.cs, transform.cs :
+	  updated from mcs tree.
+	* mono-api.xsl : updated from mcs tree and removed some commented
+	  elements (note that it does not run htmlize here, unlike mono tree).
+	* cm/cormissing.css, cm/cormissing.js : updated from mcs tree.
+
 2007-09-10  Marek Safar  <marek.safar@gmail.com>
 
 	* mono-api-* : Sync with mcs.

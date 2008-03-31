@@ -10,12 +10,14 @@ LIB_MCS_FLAGS = \
 			/nowarn:168,169,219,414 \
 	        /r:System.dll \
 	        /r:System.Xml.dll \
+	        /r:System.Data.dll \
 		/r:System.Configuration.dll \
 		$(RESOURCE_FILES:%=/resource:%)
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) /r:System.ServiceModel.dll
 
 EXTRA_DISTFILES = $(RESOURCE_FILES) \
+	Test/Resources/FrameworkTypes/* \
 	Test/System.Runtime.Serialization/one.xml
 
 # This assembly is .NET 3.0 or later only

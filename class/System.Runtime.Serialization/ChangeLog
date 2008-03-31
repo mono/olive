@@ -1,3 +1,14 @@
+2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* Makefile : add reference to System.Data.dll, 
+	required for test suite.
+	* System.Runtime.Serialization_test.dll.sources : added
+	DataContractSerializerTest_FrameworkTypes_System.Data.cs
+
+2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : Fix EXTRA_DISTFILES.
+
 2008-03-21  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : added missing EXTRA_DISTFILES.
