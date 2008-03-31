@@ -11,8 +11,8 @@
 				<TITLE>
 					Mono Class Library Status
 				</TITLE>
-				<SCRIPT src="cormissing.js"></SCRIPT>
-				<LINK rel="stylesheet" type="text/css" href="cormissing.css"></LINK>
+				<SCRIPT src="cm/cormissing.js"></SCRIPT>
+				<LINK rel="stylesheet" type="text/css" href="cm/cormissing.css"></LINK>
 			</HEAD>
 			<BODY onLoad="onLoad();">
 				<P>

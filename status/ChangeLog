@@ -1,5 +1,9 @@
 2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* mono-api.xsl : ... and some path difference from mono tree.
+
+2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* Makefile : add profile support (for net_3_5).
 	  Added more olive assemblies.
 	* mono-api-info.cs, mono-api-diff.cs, transform.cs :
