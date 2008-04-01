@@ -1,3 +1,7 @@
+2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* System.ServiceModel_test.dll.sources: Add ServiceHostBaseTest.cs.
+
 2008-03-27  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : add System.ServiceModel_test_net_3_0.dll.config to

@@ -120,6 +120,7 @@ System.ServiceModel/NetMsmqBindingTest.cs
 System.ServiceModel/ServiceAssert.cs
 System.ServiceModel/ServiceEndpointCollectionTest.cs
 System.ServiceModel/ServiceEndpointTest.cs
+System.ServiceModel/ServiceHostBaseTest.cs
 System.ServiceModel/ServiceHostTest.cs
 System.ServiceModel/SynchronizedReadOnlyCollectionTest.cs
 System.ServiceModel/TransactionProtocolTest.cs
