@@ -194,9 +194,12 @@ namespace System.ServiceModel
 
 		MessageEncodingBindingElement BuildMessageEncodingBindingElement ()
 		{
-			if (MessageEncoding == WSMessageEncoding.Text)
-				return new TextMessageEncodingBindingElement (
+			if (MessageEncoding == WSMessageEncoding.Text) {
+				TextMessageEncodingBindingElement tm = new TextMessageEncodingBindingElement (
 					MessageVersion.CreateVersion (EnvelopeVersion, AddressingVersion.None), TextEncoding);
+				ReaderQuotas.CopyTo (tm.ReaderQuotas);
+				return tm;
+			}
 			else
 				return new MtomMessageEncodingBindingElement (
 					MessageVersion.CreateVersion (EnvelopeVersion, AddressingVersion.None), TextEncoding);
