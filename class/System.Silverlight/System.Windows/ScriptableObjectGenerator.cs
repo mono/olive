@@ -313,8 +313,6 @@ namespace System.Windows
 				return v.u.d;
 			case Kind.STRING:
 				return Marshal.PtrToStringAnsi (v.u.p);
-			case Kind.NPOBJ:
-				return v.u.p;
 			default:
 				Console.WriteLine ("unsupported Kind.{0}", v.k);
 				throw new NotSupportedException ();
@@ -353,11 +351,6 @@ namespace System.Windows
 				v.u.p = result;
 				break;
 			default:
-				if (o is ScriptableObject) {
-					v.k = Kind.NPOBJ;
-					v.u.p = ((ScriptableObject) o).Handle;
-					return;
-				}
 				Console.WriteLine ("unsupported TypeCode.{0}", Type.GetTypeCode(o.GetType()));
 				throw new NotSupportedException ();
 			}
