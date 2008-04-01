@@ -1,3 +1,7 @@
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* MouseEventArgs.cs: Two more base_unref_delayed -> base_unref cases.
+
 2008-01-09  Chris Toshok  <toshok@ximian.com>
 
 	* MouseEventArgs.cs: wrap the IntPtr passed in to the ctor.  make
