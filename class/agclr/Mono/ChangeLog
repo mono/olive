@@ -1,3 +1,7 @@
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ManagedXamlLoader.cs: Two more base_unref_delayed -> base_unref cases.
+
 2008-03-06  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Move LoadDepsSynch to XamlLoader in agmono.

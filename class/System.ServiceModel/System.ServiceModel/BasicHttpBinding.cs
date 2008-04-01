@@ -194,9 +194,12 @@ namespace System.ServiceModel
 
 		MessageEncodingBindingElement BuildMessageEncodingBindingElement ()
 		{
-			if (MessageEncoding == WSMessageEncoding.Text)
-				return new TextMessageEncodingBindingElement (
+			if (MessageEncoding == WSMessageEncoding.Text) {
+				TextMessageEncodingBindingElement tm = new TextMessageEncodingBindingElement (
 					MessageVersion.CreateVersion (EnvelopeVersion, AddressingVersion.None), TextEncoding);
+				ReaderQuotas.CopyTo (tm.ReaderQuotas);
+				return tm;
+			}
 			else
 				return new MtomMessageEncodingBindingElement (
 					MessageVersion.CreateVersion (EnvelopeVersion, AddressingVersion.None), TextEncoding);
@@ -204,13 +207,29 @@ namespace System.ServiceModel
 
 		TransportBindingElement GetTransport ()
 		{
+			HttpTransportBindingElement transportBindingElement;
 			switch (Security.Mode) {
 			case BasicHttpSecurityMode.Transport:
 			case BasicHttpSecurityMode.TransportWithMessageCredential:
-				return new HttpsTransportBindingElement ();
+				transportBindingElement
+					= new HttpsTransportBindingElement ();
+				break;
 			default:
-				return new HttpTransportBindingElement ();
+				transportBindingElement
+					= new HttpTransportBindingElement ();
+				break;
 			}
+
+			transportBindingElement.AllowCookies = AllowCookies;
+			transportBindingElement.BypassProxyOnLocal = BypassProxyOnLocal;
+			transportBindingElement.HostNameComparisonMode = HostNameComparisonMode;
+			transportBindingElement.MaxBufferPoolSize = MaxBufferPoolSize;
+			transportBindingElement.MaxBufferSize = MaxBufferSize;
+			transportBindingElement.MaxReceivedMessageSize = MaxReceivedMessageSize;
+			transportBindingElement.ProxyAddress = ProxyAddress;
+			transportBindingElement.UseDefaultWebProxy = UseDefaultWebProxy;
+
+			return transportBindingElement;
 		}
 
 		// explicit interface implementations

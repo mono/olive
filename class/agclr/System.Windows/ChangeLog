@@ -1,3 +1,8 @@
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* DependencyObject.cs: base_unref_delayed doesn't exist anymore, just use
+	  base_unref.
+
 2008-03-04  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* DependencyObject.cs: Inform agmono about our own assembly.

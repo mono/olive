@@ -43,7 +43,7 @@ namespace System.Windows.Input {
 		~MouseEventArgs ()
 		{
 			if (this.native != IntPtr.Zero) {
-				NativeMethods.base_unref_delayed (this.native);
+				NativeMethods.base_unref (this.native);
 				this.native = IntPtr.Zero;
 			}
 		}

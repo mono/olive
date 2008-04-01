@@ -1,3 +1,7 @@
+2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* service.config: more configuration.
+	
 2008-03-27  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* customBinding.config: change value of messageSecurityVersion attribute

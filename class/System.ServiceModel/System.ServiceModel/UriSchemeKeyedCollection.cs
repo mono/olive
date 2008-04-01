@@ -35,7 +35,7 @@ namespace System.ServiceModel
 	public class UriSchemeKeyedCollection
 		: SynchronizedKeyedCollection<string, Uri>
 	{
-		public UriSchemeKeyedCollection (Uri [] uris)
+		public UriSchemeKeyedCollection (params Uri [] uris)
 			: base (new object ())
 		{
 			if (uris == null)

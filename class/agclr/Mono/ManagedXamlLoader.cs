@@ -127,7 +127,7 @@ namespace Mono.Xaml
 			
 			if (result != null) {
 				// Delete our reference, result already has one.
-				NativeMethods.base_unref_delayed (top);
+				NativeMethods.base_unref (top);
 			}
 			
 			return result;

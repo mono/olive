@@ -74,5 +74,13 @@ namespace MonoTests.System.ServiceModel.Configuration
 			Assert.AreEqual ("net.tcp://endpoint.com", service.Host.BaseAddresses [1].BaseAddress, "Host.BaseAddresses[1].BaseAddress");
 		}
 
+		[Test]
+		public void ServiceEndpointCollection () {
+			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/service").GetSectionGroup ("system.serviceModel");
+			ServiceElement service = config.Services.Services [1];
+
+			Assert.AreEqual (3, service.Endpoints.Count, "Count");
+		}
+
 	}
 }
