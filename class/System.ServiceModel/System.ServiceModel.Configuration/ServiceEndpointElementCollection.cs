@@ -69,7 +69,14 @@ namespace System.ServiceModel.Configuration
 		}
 
 		protected override object GetElementKey (ConfigurationElement element) {
-			return ((ServiceEndpointElement) element).Name;
+			ServiceEndpointElement el = (ServiceEndpointElement) element;
+
+			return el.Address + ";" +
+				el.Binding.GetHashCode () + ";" +
+				el.BindingConfiguration.GetHashCode () + ";" +
+				el.BindingName.GetHashCode () + ";" +
+				el.BindingNamespace.GetHashCode () + ";" +
+				el.Contract.GetHashCode ();
 		}
 
 	}

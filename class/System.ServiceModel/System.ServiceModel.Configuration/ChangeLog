@@ -1,3 +1,7 @@
+2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ServiceEndpointElementCollection.cs: fix GetElementKey().
+	
 2008-03-31  Vladmir Krasnov  <vladmimir@mainsoft.com>
 
 	* ConfigUtil.cs: fixed CreateBinding
