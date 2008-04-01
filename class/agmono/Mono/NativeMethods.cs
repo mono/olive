@@ -60,9 +60,6 @@ namespace Mono {
 
 		[DllImport("moon")]
 		public extern static void base_unref (IntPtr ptr);
-
-		[DllImport("moon")]
-		public extern static void base_unref_delayed (IntPtr ptr);
 #endregion
 
 		[DllImport("moon")]
