@@ -1,3 +1,7 @@
+2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* UriSchemeKeyedCollection.cs: fix API (.ctor signature).
+
 2008-04-01  Vladmir Krasnov  <vladmimir@mainsoft.com>
 
 	* BasicHttpBinding.cs: fixed ReaderQuotas in
