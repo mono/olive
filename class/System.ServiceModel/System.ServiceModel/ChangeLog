@@ -1,3 +1,10 @@
+2008-04-02  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ServiceHost.cs:
+	* ServiceHostBase.cs:
+	ServiceAuthorizationBehavior and ServiceDebugBehavior are added during
+	ApplyConfiguration. 
+
 2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* UriSchemeKeyedCollection.cs: fix API (.ctor signature).

@@ -63,10 +63,10 @@ namespace MonoTests.System.ServiceModel
 			Poker host = new Poker ();
 
 			Assert.AreEqual (null, host.Description, "Description");
+			Assert.AreEqual (null, host.Authorization, "Authorization");
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void DefaultConfiguration () {
 			Poker host = new Poker ();
 			host.OnApplyConfiguration += delegate (object sender, EventArgs e) {
@@ -78,6 +78,9 @@ namespace MonoTests.System.ServiceModel
 
 			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceDebugBehavior> (), "ServiceDebugBehavior");
 			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceAuthorizationBehavior> (), "ServiceDebugBehavior");
+			Assert.IsNotNull (host.Authorization, "Authorization #1");
+
+			Assert.AreEqual (host.Description.Behaviors.Find<ServiceAuthorizationBehavior> (), host.Authorization, "Authorization #2");
 		}
 	}
 }
