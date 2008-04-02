@@ -32,6 +32,10 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Security;
 using NUnit.Framework;
+using System.ServiceModel.Configuration;
+using System.Configuration;
+using System.Text;
+using System.Net;
 
 namespace MonoTests.System.ServiceModel
 {
@@ -168,6 +172,92 @@ namespace MonoTests.System.ServiceModel
 				}
 			}
 			Assert.Fail ("No message encodiing binding element.");
+		}
+
+		[Test]
+		public void ApplyConfiguration ()
+		{
+			BasicHttpBinding b = CreateBindingFromConfig ();
+
+			Assert.AreEqual (true, b.AllowCookies, "#1");
+			Assert.AreEqual (true, b.BypassProxyOnLocal, "#2");
+			Assert.AreEqual (HostNameComparisonMode.Exact, b.HostNameComparisonMode, "#3");
+			Assert.AreEqual (262144, b.MaxBufferPoolSize, "#4");
+			Assert.AreEqual (32768, b.MaxBufferSize, "#5");
+			Assert.AreEqual (32768, b.MaxReceivedMessageSize, "#6");
+			Assert.AreEqual ("proxy", b.ProxyAddress.ToString (), "#7");
+			Assert.AreEqual (Encoding.Unicode, b.TextEncoding, "#7");
+			Assert.AreEqual (TransferMode.Streamed, b.TransferMode, "#7");
+		}
+
+		[Test]
+		public void CreateBindingElements ()
+		{
+			BasicHttpBinding b = CreateBindingFromConfig ();
+
+			// Binding elements
+			BindingElementCollection bec = b.CreateBindingElements ();
+			Assert.AreEqual (2, bec.Count, "#1");
+			Assert.AreEqual (typeof (TextMessageEncodingBindingElement),
+				bec [0].GetType (), "#2");
+			Assert.AreEqual (typeof (HttpTransportBindingElement),
+				bec [1].GetType (), "#3");
+		}
+
+		[Test]
+		public void Elements_MessageEncodingBindingElement ()
+		{
+			BasicHttpBinding b = CreateBindingFromConfig ();
+			BindingElementCollection bec = b.CreateBindingElements ();
+			TextMessageEncodingBindingElement m =
+				(TextMessageEncodingBindingElement) bec [0];
+
+			Assert.AreEqual (64, m.MaxReadPoolSize, "#1");
+			Assert.AreEqual (16, m.MaxWritePoolSize, "#2");
+			Assert.AreEqual (4096, m.ReaderQuotas.MaxArrayLength, "#3");
+			Assert.AreEqual (8192, m.ReaderQuotas.MaxBytesPerRead, "#4");
+			Assert.AreEqual (64, m.ReaderQuotas.MaxDepth, "#5");
+			Assert.AreEqual (8192, m.ReaderQuotas.MaxNameTableCharCount, "#6");
+			Assert.AreEqual (16384, m.ReaderQuotas.MaxStringContentLength, "#7");
+			Assert.AreEqual (Encoding.Unicode, m.WriteEncoding, "#8");
+		}
+
+		[Test]
+		public void Elements_TransportBindingElement ()
+		{
+			BasicHttpBinding b = CreateBindingFromConfig ();
+			BindingElementCollection bec = b.CreateBindingElements ();
+			HttpTransportBindingElement t =
+				(HttpTransportBindingElement) bec [1];
+
+			Assert.AreEqual (true, t.AllowCookies, "#1");
+			Assert.AreEqual (AuthenticationSchemes.Anonymous, t.AuthenticationScheme, "#2");
+			Assert.AreEqual (true, t.BypassProxyOnLocal, "#3");
+			Assert.AreEqual (HostNameComparisonMode.Exact, t.HostNameComparisonMode, "#4");
+			Assert.AreEqual (true, t.KeepAliveEnabled, "#5");
+			Assert.AreEqual (false, t.ManualAddressing, "#6");
+			Assert.AreEqual (262144, t.MaxBufferPoolSize, "#7");
+			Assert.AreEqual (32768, t.MaxBufferSize, "#8");
+			Assert.AreEqual (32768, t.MaxReceivedMessageSize, "#9");
+			Assert.AreEqual ("proxy", t.ProxyAddress.ToString (), "#10");
+			Assert.AreEqual (AuthenticationSchemes.Anonymous, t.ProxyAuthenticationScheme, "#11");
+			Assert.AreEqual ("", t.Realm, "#12");
+			Assert.AreEqual ("http", t.Scheme, "#13");
+			Assert.AreEqual (TransferMode.Streamed, t.TransferMode, "#14");
+			Assert.AreEqual (false, t.UnsafeConnectionNtlmAuthentication, "#15");
+			Assert.AreEqual (false, t.UseDefaultWebProxy, "#16");
+		}
+
+		private BasicHttpBinding CreateBindingFromConfig ()
+		{
+			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/basicHttpBinding").GetSectionGroup ("system.serviceModel");
+			BindingsSection section = (BindingsSection) config.Bindings;
+			BasicHttpBindingElement el = section.BasicHttpBinding.Bindings ["BasicHttpBinding2_Service"];
+
+			BasicHttpBinding b = new BasicHttpBinding ();
+			el.ApplyConfiguration (b);
+
+			return b;
 		}
 	}
 }
