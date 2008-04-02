@@ -1,5 +1,9 @@
 2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
+	* Kind.cs: Removed Kind::NPOBJ, it's not needed.
+
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
 	* NativeMethods.cs: Remove base_unref_delayed from native methods.
 
 2008-03-14  Larry Ewing  <lewing@novell.com>

@@ -49,8 +49,6 @@ namespace System.ServiceModel
 		ChannelDispatcherCollection channel_dispatchers;
 		IDictionary<string,ContractDescription> contracts;
 		int flow_limit = int.MaxValue;
-		ServiceAuthorizationBehavior svc_auth_behavior =
-			new ServiceAuthorizationBehavior ();
 		IExtensionCollection<ServiceHostBase> extensions;
 
 		protected ServiceHostBase ()
@@ -77,9 +75,9 @@ namespace System.ServiceModel
 			get { return channel_dispatchers; }
 		}
 
-		[MonoTODO]
 		public ServiceAuthorizationBehavior Authorization {
-			get { return svc_auth_behavior; }
+			get;
+			private set;
 		}
 
 		[MonoTODO]
@@ -282,6 +280,22 @@ namespace System.ServiceModel
 							Description.Behaviors.Add (b);
 					}
 				}
+			}
+
+			// TODO: consider commonBehaviors here
+
+			// ensure ServiceAuthorizationBehavior
+			Authorization = Description.Behaviors.Find<ServiceAuthorizationBehavior> ();
+			if (Authorization == null) {
+				Authorization = new ServiceAuthorizationBehavior ();
+				Description.Behaviors.Add (Authorization);
+			}
+
+			// ensure ServiceDebugBehavior
+			ServiceDebugBehavior debugBehavior = Description.Behaviors.Find<ServiceDebugBehavior> ();
+			if (debugBehavior == null) {
+				debugBehavior = new ServiceDebugBehavior ();
+				Description.Behaviors.Add (debugBehavior);
 			}
 		}
 

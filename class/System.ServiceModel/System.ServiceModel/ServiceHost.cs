@@ -133,8 +133,6 @@ namespace System.ServiceModel
 			if (SingletonInstance != null)
 				sba.SetWellKnownSingleton (SingletonInstance);
 			sd.Behaviors.Add (sba);
-			sd.Behaviors.Add (Authorization);
-			sd.Behaviors.Add (new ServiceDebugBehavior ());
 
 			return sd;
 		}

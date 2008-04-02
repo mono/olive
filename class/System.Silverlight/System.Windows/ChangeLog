@@ -1,3 +1,7 @@
+2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
+
+	* ScriptableObjectGenerator.cs: Completely remove Kind.NPOBJ.
+
 2007-08-20  Jb Evain  <jbevain@novell.com>
 
 	* ScriptableObjectGenerator.cs: use Helper methods to
