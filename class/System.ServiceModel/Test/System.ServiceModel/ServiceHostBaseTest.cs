@@ -44,7 +44,10 @@ namespace MonoTests.System.ServiceModel
 
 			protected override ServiceDescription CreateDescription (out IDictionary<string, ContractDescription> implementedContracts) {
 				implementedContracts = new Dictionary<string, ContractDescription> ();
-				return new ServiceDescription ();
+				ServiceDescription description = new ServiceDescription ();
+				description.ServiceType = typeof (MyService);
+				description.Behaviors.Add (new ServiceBehaviorAttribute ());
+				return description;
 			}
 
 			protected override void ApplyConfiguration () {
@@ -55,6 +58,14 @@ namespace MonoTests.System.ServiceModel
 
 			public void CallInitializeDescription () {
 				InitializeDescription (new UriSchemeKeyedCollection ());
+			}
+
+			protected override void InitializeRuntime () {
+				base.InitializeRuntime ();
+			}
+
+			public void CallInitializeRuntime () {
+				InitializeRuntime ();
 			}
 		}
 
@@ -70,17 +81,72 @@ namespace MonoTests.System.ServiceModel
 		public void DefaultConfiguration () {
 			Poker host = new Poker ();
 			host.OnApplyConfiguration += delegate (object sender, EventArgs e) {
-				Assert.AreEqual (0, host.Description.Behaviors.Count, "Description.Behaviors.Count #1");
+				Assert.AreEqual (1, host.Description.Behaviors.Count, "Description.Behaviors.Count #1");
 			};
 			host.CallInitializeDescription ();
 
-			Assert.AreEqual (true, host.Description.Behaviors.Count > 0, "Description.Behaviors.Count #2");
+			Assert.AreEqual (true, host.Description.Behaviors.Count > 1, "Description.Behaviors.Count #2");
 
 			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceDebugBehavior> (), "ServiceDebugBehavior");
 			Assert.IsNotNull (host.Description.Behaviors.Find<ServiceAuthorizationBehavior> (), "ServiceDebugBehavior");
 			Assert.IsNotNull (host.Authorization, "Authorization #1");
 
 			Assert.AreEqual (host.Description.Behaviors.Find<ServiceAuthorizationBehavior> (), host.Authorization, "Authorization #2");
+		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ApplyConfigurationNoDescription () {
+			CustomServiceHost customHost = new CustomServiceHost ();
+			customHost.ApplyConfiguration ();
+		}
+
+		class CustomServiceHost : ServiceHostBase
+		{
+
+			public CustomServiceHost () {
+
+			}
+
+			public void ApplyConfiguration () {
+				base.ApplyConfiguration ();
+			}
+
+			protected override ServiceDescription CreateDescription (out IDictionary<string, ContractDescription> implementedContracts) {
+				throw new NotImplementedException ();
+			}
+		}
+
+		[Test]
+		public void InitializeRuntime () {
+			Poker host = new Poker ();
+			host.CallInitializeDescription ();
+			EndpointAddress address = new EndpointAddress ("http://localhost:8090/");
+			ContractDescription contract = ContractDescription.GetContract (typeof (IMyContract));
+			ServiceEndpoint endpoint = new ServiceEndpoint (contract, new BasicHttpBinding (), address);
+			endpoint.ListenUri = address.Uri;
+			host.Description.Endpoints.Add (endpoint);
+
+			Assert.AreEqual (0, host.ChannelDispatchers.Count, "ChannelDispatchers.Count #1");
+
+			host.CallInitializeRuntime ();
+
+			Assert.AreEqual (1, host.ChannelDispatchers.Count, "ChannelDispatchers.Count #1");
+			Assert.AreEqual (CommunicationState.Created, host.ChannelDispatchers [0].State, "ChannelDispatchers.Count #1");
+		}
+
+		[ServiceContract]
+		interface IMyContract
+		{
+			[OperationContract]
+			string GetData ();
+		}
+
+		class MyService : IMyContract
+		{
+			public string GetData () {
+				return "Hello World";
+			}
 		}
 	}
 }

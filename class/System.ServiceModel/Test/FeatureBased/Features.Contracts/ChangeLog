@@ -1,0 +1,4 @@
+2006-04-03  Roei Erez  <roeie@ximian.com>
+	* DataContractTester.cs
+	MessageContractTester.cs
+	PrimitiveTester

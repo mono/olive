@@ -1,3 +1,7 @@
+2008-04-03  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* StandardBindingElementCollectionTest.cs: fixed test
+
 2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceElementTest.cs: new test

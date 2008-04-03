@@ -43,6 +43,7 @@ using System.Xml;
 namespace MonoTests.System.Runtime.Serialization
 {
 	[TestFixture]
+	[Category ("NotWorking")]
 	public partial class DataContractSerializerTest_FrameworkTypes_System_Data
 		: DataContractSerializerTest_FrameworkTypes
 	{

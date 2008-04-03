@@ -43,6 +43,7 @@ using System.Xml;
 namespace MonoTests.System.Runtime.Serialization
 {
 	[TestFixture]
+	[Category ("NotWorking")]
 	public partial class DataContractSerializerTest_FrameworkTypes_mscorlib
 		: DataContractSerializerTest_FrameworkTypes
 	{
@@ -371,11 +372,11 @@ namespace MonoTests.System.Runtime.Serialization
 		public void System_PlatformNotSupportedException () {
 			Test<global::System.PlatformNotSupportedException> ();
 		}
-		[Test]
-		[Category ("NotWorking")]
-		public void System_Random () {
-			Test<global::System.Random> ();
-		}
+		//[Test]
+		//[Category ("NotWorking")]
+		//public void System_Random () {
+		//    Test<global::System.Random> ();
+		//}
 		[Test]
 		public void System_RankException () {
 			Test<global::System.RankException> ();

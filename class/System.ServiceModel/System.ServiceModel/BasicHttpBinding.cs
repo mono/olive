@@ -228,6 +228,7 @@ namespace System.ServiceModel
 			transportBindingElement.MaxReceivedMessageSize = MaxReceivedMessageSize;
 			transportBindingElement.ProxyAddress = ProxyAddress;
 			transportBindingElement.UseDefaultWebProxy = UseDefaultWebProxy;
+			transportBindingElement.TransferMode = TransferMode;
 
 			return transportBindingElement;
 		}

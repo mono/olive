@@ -1,3 +1,8 @@
+2008-04-03  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ServiceModelExtensionCollectionElement.cs:
+	implement this[int index] api.
+	
 2008-04-01  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceEndpointElementCollection.cs: fix GetElementKey().

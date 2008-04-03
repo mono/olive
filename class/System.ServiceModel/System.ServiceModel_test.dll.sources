@@ -127,3 +127,11 @@ System.ServiceModel/TransactionProtocolTest.cs
 System.ServiceModel/UriSchemeKeyedCollectionTest.cs
 System.ServiceModel/WSFederationHttpBindingTest.cs
 System.ServiceModel/WSHttpBindingTest.cs
+FeatureBased/TestFixtureBase.cs
+FeatureBased/Features.Client/DataContractTesterProxy.cs
+FeatureBased/Features.Client/PrimitiveTesterProxy.cs
+FeatureBased/Features.Contracts/DataContractTester.cs
+FeatureBased/Features.Contracts/MessageContractTester.cs
+FeatureBased/Features.Contracts/PrimitiveTester.cs
+FeatureBased/Features.Serialization/DataContractSerializerTest.cs
+FeatureBased/Features.Serialization/PrimitiveTesterTest.cs
