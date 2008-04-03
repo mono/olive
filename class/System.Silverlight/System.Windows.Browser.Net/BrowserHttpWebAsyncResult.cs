@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if NET_2_1 && FALSE
+#if NET_2_1
 
 using System;
 using System.Globalization;

@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if NET_2_1 && FALSE
+#if NET_2_1
 
 using System;
 using System.Collections;
@@ -38,7 +38,7 @@ using Mono;
 
 namespace System.Windows.Browser.Net
 {
-	public class BrowserHttpWebRequest : HttpWebRequest
+	class BrowserHttpWebRequest : HttpWebRequest
 	{
 		IntPtr native;
 		Uri uri;
@@ -49,7 +49,6 @@ namespace System.Windows.Browser.Net
 		BrowserHttpWebAsyncResult async_result;
 
 		public BrowserHttpWebRequest (Uri uri)
-			: base (uri)
 		{
 			this.uri = uri;
 		}
@@ -73,53 +72,10 @@ namespace System.Windows.Browser.Net
 			NativeMethods.browser_http_request_abort (native);
 		}
 
-		public override void AddRange (int range)
-		{
-			AddRange ("bytes", range);
-		}
-
-		public override void AddRange (int @from, int to)
-		{
-			AddRange ("bytes", @from, to);
-		}
-
-		public override void AddRange (string rangeSpecifier, int range)
-		{
-			AddRangeInternal (rangeSpecifier, range, null);
-		}
-
-		public override void AddRange (string rangeSpecifier, int @from, int to)
-		{
-			AddRangeInternal (rangeSpecifier, @from, to);
-		}
-
 		static bool IsSameRangeKind (string range, string rangeSpecifier)
 		{
 			return range.ToLower (CultureInfo.InvariantCulture).StartsWith (
 				rangeSpecifier.ToLower (CultureInfo.InvariantCulture));
-		}
-
-		void AddRangeInternal (string rangeSpecifier, int @from, int? to)
-		{
-			if (rangeSpecifier == null)
-				throw new ArgumentNullException ("rangeSpecifier");
-
-			if (from < 0 || ((to != null) && (to < 0 || from > to)))
-				throw new ArgumentOutOfRangeException ();
-
-			string range = headers [HttpRequestHeader.Range];
-			if (string.IsNullOrEmpty (range))
-				range = rangeSpecifier + "=";
-			else if (IsSameRangeKind (range, rangeSpecifier))
-				range += ",";
-			else
-				throw new InvalidOperationException ("rangeSpecifier");
-
-			range += from.ToString (CultureInfo.InvariantCulture) + "-";
-			if (to != null)
-				range += ((int) to).ToString (CultureInfo.InvariantCulture);
-
-			headers [HttpRequestHeader.Range] = range;
 		}
 
 		public override IAsyncResult BeginGetRequestStream (AsyncCallback callback, object state)
@@ -153,7 +109,7 @@ namespace System.Windows.Browser.Net
 			throw new NotImplementedException ();
 		}
 
-		public override HttpWebResponse EndGetResponse (IAsyncResult asyncResult)
+		public override WebResponse EndGetResponse (IAsyncResult asyncResult)
 		{
 			if (async_result != asyncResult)
 				throw new ArgumentException ();
@@ -173,7 +129,7 @@ namespace System.Windows.Browser.Net
 			return response;
 		}
 
-		public override Stream GetRequestStream ()
+		public Stream GetRequestStream ()
 		{
 			if (request == null)
 				request = new MemoryStream ();
@@ -212,7 +168,7 @@ namespace System.Windows.Browser.Net
 			}
 		}
 
-		public override HttpWebResponse GetResponse ()
+		public HttpWebResponse GetResponse ()
 		{
 			InitializeNativeRequest ();
 
@@ -227,68 +183,9 @@ namespace System.Windows.Browser.Net
 			return response;
 		}
 
-		public override string Accept {
-			get { return headers [HttpRequestHeader.Accept]; }
-			set { headers [HttpRequestHeader.Connection] = value; }
-		}
-
-		public override Uri Address {
-			get { return uri; }
-		}
-
-		public override bool AllowAutoRedirect {
-			get { return true; } // silverlight always returns true
-			set { throw new NotSupportedException (); }
-		}
-
-		public override bool AllowWriteStreamBuffering {
-			get { return true; }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override DecompressionMethods AutomaticDecompression {
-			get { return DecompressionMethods.None; }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override string Connection {
-			get { return headers [HttpRequestHeader.Connection]; }
-			set { headers [HttpRequestHeader.Connection] = value; }
-		}
-
-		public override long ContentLength {
-			get {
-				// silverlight 1.1 throws FormatException on ContentLength when it's not set.
-				return long.Parse (headers [HttpRequestHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);
-			}
-			set {
-				headers [HttpRequestHeader.ContentLength] = value.ToString (CultureInfo.InvariantCulture);
-			}
-		}
-
 		public override string ContentType {
 			get { return headers [HttpRequestHeader.ContentType]; }
 			set { headers [HttpRequestHeader.ContentType] = value; }
-		}
-
-		public Delegate ContinueDelegate {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public object CookieContainer {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public object Credentials {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override string Expect {
-			get { return headers [HttpRequestHeader.Expect]; }
-			set { headers [HttpRequestHeader.Expect] = value; }
 		}
 
 		public override bool HaveResponse {
@@ -300,63 +197,13 @@ namespace System.Windows.Browser.Net
 			set { headers = value; }
 		}
 
-		public override bool KeepAlive {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override string MediaType {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
 		public override string Method {
 			get { return method; }
 			set { method = value; }
 		}
 
-		public override bool Pipelined {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override bool PreAuthenticate {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override int ReadWriteTimeout {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override string Referer {
-			get { return headers [HttpRequestHeader.Referer]; }
-			set { headers [HttpRequestHeader.Referer] = value; }
-		}
-
 		public override Uri RequestUri {
 			get { return uri; }
-		}
-
-		public override bool SendChunked {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override int Timeout {
-			get { throw new NotSupportedException (); }
-			set { throw new NotSupportedException (); }
-		}
-
-		public override string TransferEncoding {
-			get { return headers [HttpRequestHeader.TransferEncoding]; }
-			set { headers [HttpRequestHeader.TransferEncoding] = value; }
-		}
-
-		public override string UserAgent {
-			get { return headers [HttpRequestHeader.UserAgent]; }
-			set { headers [HttpRequestHeader.UserAgent] = value; }
 		}
 	}
 }

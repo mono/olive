@@ -26,7 +26,7 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
-#if NET_2_1 && FALSE
+#if NET_2_1
 
 using System;
 using System.Globalization;
@@ -79,6 +79,12 @@ namespace System.Windows.Browser.Net
 			response.Dispose ();
 		}
 
+		public override void Dispose (bool disposing)
+		{
+			if (disposing)
+				Close ();
+		}
+
 		internal void Read ()
 		{
 			int size;
@@ -95,54 +101,26 @@ namespace System.Windows.Browser.Net
 			response = new MemoryStream (data);
 		}
 
-		public override string GetResponseHeader (string headerName)
-		{
-			return headers [headerName];
-		}
-
 		public override Stream GetResponseStream ()
 		{
 			return response;
 		}
 
-		public override string CharacterSet {
-			get { throw new NotImplementedException (); }
-		}
-
-		public override string ContentEncoding {
-			get { return headers [HttpResponseHeader.ContentEncoding]; }
-		}
-
 		public override long ContentLength {
-			get { return long.Parse (headers [HttpResponseHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);; }
+			get { return long.Parse (headers [HttpRequestHeader.ContentLength], NumberStyles.Integer, CultureInfo.InvariantCulture);; }
 		}
 
 		public override string ContentType {
-			get { return headers [HttpResponseHeader.ContentType]; }
-		}
-
-		public override WebHeaderCollection Headers {
-			get { return headers; }
-		}
-
-		public override DateTime LastModified {
-			get { return DateTime.Parse (headers [HttpResponseHeader.ContentLength], CultureInfo.InvariantCulture); }
+			get { return headers [HttpRequestHeader.ContentType]; }
 		}
 
 		public override string Method {
 			get { return request.Method; }
 		}
 
-		public override Version ProtocolVersion {
-			get { throw new NotImplementedException (); }
-		}
 
 		public override Uri ResponseUri {
 			get { return request.RequestUri; }
-		}
-
-		public override string Server {
-			get { return headers [HttpResponseHeader.Server]; }
 		}
 
 		void GetStatus ()
