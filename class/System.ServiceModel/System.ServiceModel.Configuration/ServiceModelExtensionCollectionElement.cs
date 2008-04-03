@@ -40,11 +40,11 @@ namespace System.ServiceModel.Configuration
 		IEnumerable
 		where TServiceModelExtensionElement : ServiceModelExtensionElement
 	{
-		Dictionary<Type, TServiceModelExtensionElement> _list = new Dictionary<Type, TServiceModelExtensionElement> ();
+		KeyedByTypeCollection<TServiceModelExtensionElement> _list = new KeyedByTypeCollection<TServiceModelExtensionElement> ();
 
 		public virtual void Add (TServiceModelExtensionElement element)
 		{
-			_list [element.GetType ()] = element;
+			_list.Add (element);
 		}
 		
 		public virtual bool CanAdd (TServiceModelExtensionElement element) {
@@ -58,7 +58,7 @@ namespace System.ServiceModel.Configuration
 
 		public bool Contains (TServiceModelExtensionElement element)
 		{
-			return _list.ContainsValue (element);
+			return _list.Contains (element);
 		}
 
 		public bool ContainsKey (string elementName)
@@ -68,7 +68,7 @@ namespace System.ServiceModel.Configuration
 
 		public bool ContainsKey (Type elementType)
 		{
-			return _list.ContainsKey (elementType);
+			return _list.Contains (elementType);
 		}
 
 		public void CopyTo (TServiceModelExtensionElement[] elements,
@@ -78,8 +78,8 @@ namespace System.ServiceModel.Configuration
 		}
 
 		public IEnumerator<TServiceModelExtensionElement> GetEnumerator () {
-			foreach (TServiceModelExtensionElement element in _list.Values)
-				yield return element;
+			for (int i = 0; i < Count; i++)
+				yield return this [i];
 		}
 
 		public bool Remove (TServiceModelExtensionElement element) {
@@ -97,13 +97,13 @@ namespace System.ServiceModel.Configuration
 
 		public TServiceModelExtensionElement this [int index] {
 			get {
-				throw new NotImplementedException ();
+				return _list [index];
 			}
 		}
 
 		public TServiceModelExtensionElement this [Type extensionType] {
 			get {
-				if (_list.ContainsKey (extensionType))
+				if (_list.Contains (extensionType))
 					return _list [extensionType];
 				return null;
 			}
