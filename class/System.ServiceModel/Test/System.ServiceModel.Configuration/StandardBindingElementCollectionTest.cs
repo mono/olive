@@ -45,7 +45,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/basicHttpBinding").GetSectionGroup ("system.serviceModel");
 
 			BasicHttpBindingCollectionElement basicHttpBinding = config.Bindings.BasicHttpBinding;
-			Assert.AreEqual (1, basicHttpBinding.Bindings.Count, "count");
+			Assert.AreEqual (2, basicHttpBinding.Bindings.Count, "count");
 
 			BasicHttpBindingElement binding = basicHttpBinding.Bindings [0];
 			Assert.AreEqual ("BasicHttpBinding_Service", binding.Name, "Name");
