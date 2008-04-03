@@ -1,3 +1,7 @@
+2008-04-04  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
+	* BasicHttpBinding.cs: fixed GetTransport method
+
 2008-04-03  Roei Erez <roeie@mainsoft.com>
 
 	* ServiceHostBase.cs: fix ApplyConfiguration to consider only the current
