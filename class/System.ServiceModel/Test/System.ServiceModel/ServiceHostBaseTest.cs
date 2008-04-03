@@ -82,5 +82,28 @@ namespace MonoTests.System.ServiceModel
 
 			Assert.AreEqual (host.Description.Behaviors.Find<ServiceAuthorizationBehavior> (), host.Authorization, "Authorization #2");
 		}
+
+		[Test]
+		[ExpectedException (typeof (InvalidOperationException))]
+		public void ApplyConfigurationNoDescription () {
+			CustomServiceHost customHost = new CustomServiceHost ();
+			customHost.ApplyConfiguration ();
+		}
+
+		class CustomServiceHost : ServiceHostBase
+		{
+
+			public CustomServiceHost () {
+
+			}
+
+			public void ApplyConfiguration () {
+				base.ApplyConfiguration ();
+			}
+
+			protected override ServiceDescription CreateDescription (out IDictionary<string, ContractDescription> implementedContracts) {
+				throw new NotImplementedException ();
+			}
+		}
 	}
 }

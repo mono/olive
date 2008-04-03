@@ -249,8 +249,14 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected virtual void ApplyConfiguration ()
 		{
-			foreach (ServiceElement service in ConfigUtil.ServicesSection.Services) {
+			if (Description == null)
+				throw new InvalidOperationException ("ApplyConfiguration requires that the Description property be initialized. Either provide a valid ServiceDescription in the CreateDescription method or override the ApplyConfiguration method to provide an alternative implementation");
 
+			ServiceElement service = GetServiceElement ();
+
+			//TODO: Should we call here LoadServiceElement ?
+			if (service != null) {
+				
 				//base addresses
 				HostElement host = service.Host;
 				foreach (BaseAddressElement baseAddress in host.BaseAddresses) {
@@ -281,7 +287,6 @@ namespace System.ServiceModel
 					}
 				}
 			}
-
 			// TODO: consider commonBehaviors here
 
 			// ensure ServiceAuthorizationBehavior
@@ -297,6 +302,14 @@ namespace System.ServiceModel
 				debugBehavior = new ServiceDebugBehavior ();
 				Description.Behaviors.Add (debugBehavior);
 			}
+		}
+
+		private ServiceElement GetServiceElement() {
+			Type serviceType = Description.ServiceType;
+			if (serviceType == null)
+				return null;
+
+			return ConfigUtil.ServicesSection.Services [serviceType.FullName];			
 		}
 
 		internal ContractDescription GetContract (string name, string ns)

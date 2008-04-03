@@ -1,3 +1,8 @@
+2008-04-03  Roei Erez <roeie@mainsoft.com>
+
+	* ServiceHostBase.cs: fix ApplyConfiguration to consider only the current
+	service according to the 'Description' attribute.
+
 2008-04-02  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceHost.cs:

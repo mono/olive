@@ -1,3 +1,7 @@
+2008-04-03  Roei Erez <roeie@mainsoft.com>
+
+	* ServiceHostBaseTest.cs: new test for negative flow in ApplyConfiguration.
+
 2008-04-02  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* BasicHttpBindingTest.cs: added tests
