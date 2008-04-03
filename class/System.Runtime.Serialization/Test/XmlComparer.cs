@@ -140,8 +140,11 @@ namespace MonoTests
 				XmlDocument dr = new XmlDocument ();
 				dr.LoadXml (actual);
 				XmlComparer comparer = new XmlComparer ();
-				if (comparer.AreEqual (or, dr))
+				if (!comparer.AreEqual (or, dr))
 					Assert.AreEqual (comparer.Expected, comparer.Actual, msg);
+			}
+			catch (AssertionException) {
+				throw;
 			}
 			catch (Exception e) {
 				//swallow e when there is XML error and fallback

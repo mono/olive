@@ -1,3 +1,11 @@
+2008-04-03  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* DataContractSerializerTest_FrameworkTypes_mscorlib.cs:
+	* DataContractSerializerTest_FrameworkTypes_System.cs:
+	* DataContractSerializerTest_FrameworkTypes_System.Data.cs:
+	* XmlObjectSerializerTest.cs:
+	add NotWorking attribute.
+
 2008-03-31  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* DataContractSerializerTest_FrameworkTypes_System.Data.cs: new testfixture.

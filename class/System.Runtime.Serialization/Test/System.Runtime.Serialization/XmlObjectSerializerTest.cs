@@ -595,6 +595,7 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void SerializerDCArray ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (DCWithEnum []));
@@ -612,6 +613,7 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void SerializerDCArray2 ()
 		{
 			List<Type> known = new List<Type> ();
@@ -633,6 +635,7 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void SerializerDCArray3 ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (int []));

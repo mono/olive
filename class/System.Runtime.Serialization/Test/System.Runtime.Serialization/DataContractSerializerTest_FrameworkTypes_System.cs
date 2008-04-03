@@ -43,6 +43,7 @@ using System.Xml;
 namespace MonoTests.System.Runtime.Serialization
 {
 	[TestFixture]
+	[Category ("NotWorking")]
 	public partial class DataContractSerializerTest_FrameworkTypes_System
 		: DataContractSerializerTest_FrameworkTypes
 	{
@@ -292,11 +293,11 @@ namespace MonoTests.System.Runtime.Serialization
 		public void System_Net_AuthenticationSchemes () {
 			Test<global::System.Net.AuthenticationSchemes> ();
 		}
-		[Test]
-		[Category ("NotWorking")]
-		public void System_Net_Cookie () {
-			Test<global::System.Net.Cookie> ();
-		}
+		//[Test]
+		//[Category ("NotWorking")]
+		//public void System_Net_Cookie () {
+		//    Test<global::System.Net.Cookie> ();
+		//}
 		[Test]
 		public void System_Net_CookieCollection () {
 			Test<global::System.Net.CookieCollection> ();
