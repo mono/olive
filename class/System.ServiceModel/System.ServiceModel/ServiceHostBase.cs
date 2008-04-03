@@ -272,16 +272,12 @@ namespace System.ServiceModel
 						endpoint.Address.ToString ());
 				}
 				// behaviors
+				// TODO: use EvaluationContext of ServiceElement.
 				ServiceBehaviorElement behavior = ConfigUtil.BehaviorsSection.ServiceBehaviors.Find (service.BehaviorConfiguration);
 				if (behavior != null) {
-					foreach (BehaviorExtensionElement bxel in behavior) {
-						IServiceBehavior b = null;
-						ServiceMetadataPublishingElement meta = bxel as ServiceMetadataPublishingElement;
-						if (meta != null) {
-							ServiceMetadataBehavior smb = meta.CreateBehavior () as ServiceMetadataBehavior;
-							smb.HttpGetUrl = null;
-							b = smb;
-						}
+					for (int i = 0; i < behavior.Count; i++) {
+						BehaviorExtensionElement bxel = behavior [i];
+						IServiceBehavior b = (IServiceBehavior) behavior [i].CreateBehavior ();
 						if (b != null)
 							Description.Behaviors.Add (b);
 					}
@@ -337,16 +333,6 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected virtual void InitializeRuntime ()
 		{
-		}
-
-		[MonoTODO]
-		protected void LoadConfigurationSection (ServiceElement element)
-		{
-			ServicesSection services = ConfigUtil.ServicesSection;
-		}
-
-		void DoOpen (TimeSpan timeout)
-		{
 			BindingParameterCollection commonParams =
 				new BindingParameterCollection ();
 
@@ -381,11 +367,22 @@ namespace System.ServiceModel
 				if (cd.MessageVersion == null)
 					cd.MessageVersion = MessageVersion.Default;
 				cd.Attach (this);
-				cd.Open ();
 			}
 
 			foreach (IServiceBehavior b in description.Behaviors)
 				b.ApplyDispatchBehavior (description, this);
+		}
+
+		[MonoTODO]
+		protected void LoadConfigurationSection (ServiceElement element)
+		{
+			ServicesSection services = ConfigUtil.ServicesSection;
+		}
+
+		void DoOpen (TimeSpan timeout)
+		{
+			for (int i = 0; i < ChannelDispatchers.Count; i++)
+				ChannelDispatchers [i].Open (timeout);
 		}
 
 		IChannelListener BuildListener (ServiceEndpoint se,
