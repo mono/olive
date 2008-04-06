@@ -1,3 +1,7 @@
+2008-04-06  Roei Erez <roeie@mainsoft.com>
+
+	* EndpointDiaptcher: Added new tests (MessageFilter, ContractFilter)
+
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ExceptionHandlerTest.cs : disabled a test that is not in effect.
