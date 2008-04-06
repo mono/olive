@@ -1,5 +1,9 @@
 2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* added UntypedMessageTester.cs
+
+2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* added: KnownTypeTester.cs
 	* removed 3.5 dependencies
 	

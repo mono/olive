@@ -1,5 +1,9 @@
 2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* added: UntypedMessageTest.cs
+
+2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* added: KnownTypeTest.cs
 
 2006-04-03  Roei Erez  <roeie@ximian.com>
