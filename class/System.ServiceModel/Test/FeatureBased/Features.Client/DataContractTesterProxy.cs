@@ -8,13 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Runtime.Serialization.ContractNamespaceAttribute("http://MonoTests.Features.Client", ClrNamespace="monotests.features.client")]
-
-namespace monotests.features.client
+namespace Proxy.MonoTests.Features.Client
 {
-    using System.Runtime.Serialization;
-    
-    
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "3.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="ComplexPrimitiveClass", Namespace="http://MonoTests.Features.Client")]
@@ -194,12 +189,12 @@ public interface IDataContractTesterContract
 {
     
     [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Integrative.Contracts/IDataContractTesterContract/Add", ReplyAction="http://MonoTests.Integrative.Contracts/IDataContractTesterContract/AddResponse")]
-    monotests.features.client.ComplexPrimitiveClass Add(monotests.features.client.ComplexPrimitiveClass n1, monotests.features.client.ComplexPrimitiveClass n2);
+	Proxy.MonoTests.Features.Client.ComplexPrimitiveClass Add (Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1, Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2);
     
     [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Integrative.Contracts/IDataContractTesterContract/AddByRef", ReplyAction="http://MonoTests.Integrative.Contracts/IDataContractTesterContract/AddByRefRespon" +
         "se")]
     [return: System.ServiceModel.MessageParameterAttribute(Name="result")]
-    monotests.features.client.ComplexPrimitiveClass AddByRef(monotests.features.client.ComplexPrimitiveClass n1, monotests.features.client.ComplexPrimitiveClass n2);
+	Proxy.MonoTests.Features.Client.ComplexPrimitiveClass AddByRef (Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1, Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2);
 }
 
 [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -235,13 +230,13 @@ public partial class DataContractTesterContractClient : System.ServiceModel.Clie
             base(binding, remoteAddress)
     {
     }
-    
-    public monotests.features.client.ComplexPrimitiveClass Add(monotests.features.client.ComplexPrimitiveClass n1, monotests.features.client.ComplexPrimitiveClass n2)
+
+	public Proxy.MonoTests.Features.Client.ComplexPrimitiveClass Add (Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1, Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2)
     {
         return base.Channel.Add(n1, n2);
     }
-    
-    public monotests.features.client.ComplexPrimitiveClass AddByRef(monotests.features.client.ComplexPrimitiveClass n1, monotests.features.client.ComplexPrimitiveClass n2)
+
+	public Proxy.MonoTests.Features.Client.ComplexPrimitiveClass AddByRef (Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1, Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2)
     {
         return base.Channel.AddByRef(n1, n2);
     }

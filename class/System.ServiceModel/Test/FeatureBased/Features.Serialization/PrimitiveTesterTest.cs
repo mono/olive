@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using MonoTests.Features;
 using MonoTests.Features.Contracts;
 using NUnit.Framework;
+using Proxy.MonoTests.Features.Client;
 
 namespace MonoTests.Features.Serialization
 {

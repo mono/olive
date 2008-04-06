@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.ServiceModel;
 using MonoTests.Features;
 using MonoTests.Features.Contracts;
 using NUnit.Framework;
+
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
@@ -15,9 +15,9 @@ namespace MonoTests.Features.Serialization
 
 		[Test]
 		public void TestPrimitiveComplexType () {
-			monotests.features.client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
-			monotests.features.client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
-			monotests.features.client.ComplexPrimitiveClass result = Client.Add (n1, n2);
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass result = Client.Add (n1, n2);
 			Assert.IsTrue (result.byteMember == 2);
 			Assert.IsTrue (result.sbyteMember == 2);
 			Assert.IsTrue (result.shortMember == 2);
@@ -32,9 +32,9 @@ namespace MonoTests.Features.Serialization
 
 		[Test]
 		public void TestPrimitiveComplexTypeByRef () {
-			monotests.features.client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
-			monotests.features.client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
-			monotests.features.client.ComplexPrimitiveClass result = null;
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass result = null;
 			result = Client.AddByRef (n1, n2);
 			Assert.IsTrue (result.byteMember == 2);
 			Assert.IsTrue (result.sbyteMember == 2);
@@ -48,8 +48,9 @@ namespace MonoTests.Features.Serialization
 			Assert.IsTrue (result.floatMember == 2);
 		}
 
-		private monotests.features.client.ComplexPrimitiveClass GetNewDataInstance () {
-			monotests.features.client.ComplexPrimitiveClass inst = new monotests.features.client.ComplexPrimitiveClass ();
+		private Proxy.MonoTests.Features.Client.ComplexPrimitiveClass GetNewDataInstance ()
+		{
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass inst = new Proxy.MonoTests.Features.Client.ComplexPrimitiveClass ();
 			inst.byteMember = 1;
 			inst.sbyteMember = 1;
 			inst.intMember = 1;

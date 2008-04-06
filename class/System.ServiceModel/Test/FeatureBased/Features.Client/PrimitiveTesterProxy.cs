@@ -8,134 +8,135 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-
-
-[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-[System.ServiceModel.ServiceContractAttribute(Namespace="http://MonoTests.Features.Contracts", ConfigurationName="IPrimitiveTesterContract")]
-public interface IPrimitiveTesterContract
+namespace Proxy.MonoTests.Features.Client
 {
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByte", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByteResponse")]
-    int AddByte(byte n1, byte n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddSByte", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddSByteResponse")]
-    int AddSByte(sbyte n1, sbyte n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddShort", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddShortResponse")]
-    int AddShort(short n1, short n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUShort", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUShortResponse")]
-    int AddUShort(ushort n1, ushort n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddInt", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddIntResponse")]
-    int AddInt(int n1, int n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUInt", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUIntResponse")]
-    uint AddUInt(uint n1, uint n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddLong", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddLongResponse")]
-    long AddLong(long n1, long n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddULong", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddULongResponse")]
-    ulong AddULong(ulong n1, ulong n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddDouble", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddDoubleResponse")]
-    double AddDouble(double n1, double n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddFloat", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddFloatResponse")]
-    float AddFloat(float n1, float n2);
-    
-    [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRef", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRefResponse")]
-    [return: System.ServiceModel.MessageParameterAttribute(Name="n3")]
-    double AddByRef(out double n4, double n1, double n2);
-}
+	[System.CodeDom.Compiler.GeneratedCodeAttribute ("System.ServiceModel", "3.0.0.0")]
+	[System.ServiceModel.ServiceContractAttribute (Namespace = "http://MonoTests.Features.Contracts", ConfigurationName = "IPrimitiveTesterContract")]
 
-[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-public interface IPrimitiveTesterContractChannel : IPrimitiveTesterContract, System.ServiceModel.IClientChannel
-{
-}
+	public interface IPrimitiveTesterContract
+	{
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByte", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByteResponse")]
+		int AddByte (byte n1, byte n2);
 
-[System.Diagnostics.DebuggerStepThroughAttribute()]
-[System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
-public partial class PrimitiveTesterContractClient : System.ServiceModel.ClientBase<IPrimitiveTesterContract>, IPrimitiveTesterContract
-{
-    
-    public PrimitiveTesterContractClient()
-    {
-    }
-    
-    public PrimitiveTesterContractClient(string endpointConfigurationName) : 
-            base(endpointConfigurationName)
-    {
-    }
-    
-    public PrimitiveTesterContractClient(string endpointConfigurationName, string remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
-    {
-    }
-    
-    public PrimitiveTesterContractClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(endpointConfigurationName, remoteAddress)
-    {
-    }
-    
-    public PrimitiveTesterContractClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-            base(binding, remoteAddress)
-    {
-    }
-    
-    public int AddByte(byte n1, byte n2)
-    {
-        return base.Channel.AddByte(n1, n2);
-    }
-    
-    public int AddSByte(sbyte n1, sbyte n2)
-    {
-        return base.Channel.AddSByte(n1, n2);
-    }
-    
-    public int AddShort(short n1, short n2)
-    {
-        return base.Channel.AddShort(n1, n2);
-    }
-    
-    public int AddUShort(ushort n1, ushort n2)
-    {
-        return base.Channel.AddUShort(n1, n2);
-    }
-    
-    public int AddInt(int n1, int n2)
-    {
-        return base.Channel.AddInt(n1, n2);
-    }
-    
-    public uint AddUInt(uint n1, uint n2)
-    {
-        return base.Channel.AddUInt(n1, n2);
-    }
-    
-    public long AddLong(long n1, long n2)
-    {
-        return base.Channel.AddLong(n1, n2);
-    }
-    
-    public ulong AddULong(ulong n1, ulong n2)
-    {
-        return base.Channel.AddULong(n1, n2);
-    }
-    
-    public double AddDouble(double n1, double n2)
-    {
-        return base.Channel.AddDouble(n1, n2);
-    }
-    
-    public float AddFloat(float n1, float n2)
-    {
-        return base.Channel.AddFloat(n1, n2);
-    }
-    
-    public double AddByRef(out double n4, double n1, double n2)
-    {
-        return base.Channel.AddByRef(out n4, n1, n2);
-    }
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddSByte", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddSByteResponse")]
+		int AddSByte (sbyte n1, sbyte n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddShort", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddShortResponse")]
+		int AddShort (short n1, short n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUShort", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUShortResponse")]
+		int AddUShort (ushort n1, ushort n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddInt", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddIntResponse")]
+		int AddInt (int n1, int n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUInt", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddUIntResponse")]
+		uint AddUInt (uint n1, uint n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddLong", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddLongResponse")]
+		long AddLong (long n1, long n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddULong", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddULongResponse")]
+		ulong AddULong (ulong n1, ulong n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddDouble", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddDoubleResponse")]
+		double AddDouble (double n1, double n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddFloat", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddFloatResponse")]
+		float AddFloat (float n1, float n2);
+
+		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRef", ReplyAction = "http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRefResponse")]
+		[return: System.ServiceModel.MessageParameterAttribute (Name = "n3")]
+		double AddByRef (out double n4, double n1, double n2);
+	}
+
+	[System.CodeDom.Compiler.GeneratedCodeAttribute ("System.ServiceModel", "3.0.0.0")]
+	public interface IPrimitiveTesterContractChannel : IPrimitiveTesterContract, System.ServiceModel.IClientChannel
+	{
+	}
+
+	[System.Diagnostics.DebuggerStepThroughAttribute ()]
+	[System.CodeDom.Compiler.GeneratedCodeAttribute ("System.ServiceModel", "3.0.0.0")]
+	public partial class PrimitiveTesterContractClient : System.ServiceModel.ClientBase<IPrimitiveTesterContract>, IPrimitiveTesterContract
+	{
+
+		public PrimitiveTesterContractClient ()
+		{
+		}
+
+		public PrimitiveTesterContractClient (string endpointConfigurationName) :
+			base (endpointConfigurationName)
+		{
+		}
+
+		public PrimitiveTesterContractClient (string endpointConfigurationName, string remoteAddress) :
+			base (endpointConfigurationName, remoteAddress)
+		{
+		}
+
+		public PrimitiveTesterContractClient (string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) :
+			base (endpointConfigurationName, remoteAddress)
+		{
+		}
+
+		public PrimitiveTesterContractClient (System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) :
+			base (binding, remoteAddress)
+		{
+		}
+
+		public int AddByte (byte n1, byte n2)
+		{
+			return base.Channel.AddByte (n1, n2);
+		}
+
+		public int AddSByte (sbyte n1, sbyte n2)
+		{
+			return base.Channel.AddSByte (n1, n2);
+		}
+
+		public int AddShort (short n1, short n2)
+		{
+			return base.Channel.AddShort (n1, n2);
+		}
+
+		public int AddUShort (ushort n1, ushort n2)
+		{
+			return base.Channel.AddUShort (n1, n2);
+		}
+
+		public int AddInt (int n1, int n2)
+		{
+			return base.Channel.AddInt (n1, n2);
+		}
+
+		public uint AddUInt (uint n1, uint n2)
+		{
+			return base.Channel.AddUInt (n1, n2);
+		}
+
+		public long AddLong (long n1, long n2)
+		{
+			return base.Channel.AddLong (n1, n2);
+		}
+
+		public ulong AddULong (ulong n1, ulong n2)
+		{
+			return base.Channel.AddULong (n1, n2);
+		}
+
+		public double AddDouble (double n1, double n2)
+		{
+			return base.Channel.AddDouble (n1, n2);
+		}
+
+		public float AddFloat (float n1, float n2)
+		{
+			return base.Channel.AddFloat (n1, n2);
+		}
+
+		public double AddByRef (out double n4, double n1, double n2)
+		{
+			return base.Channel.AddByRef (out n4, n1, n2);
+		}
+	}
 }
