@@ -1,3 +1,7 @@
+2008-04-06  Roei Erez <roeie@mainsoft.com>
+
+	* ServiceHostBaseTests: Added new tests
+
 2008-04-03  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceHostBaseTest.cs.cs: new test for InitializeRuntime.

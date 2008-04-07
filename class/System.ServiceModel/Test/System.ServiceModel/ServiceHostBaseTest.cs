@@ -32,6 +32,9 @@ using System.Text;
 using NUnit.Framework;
 using System.ServiceModel;
 using System.ServiceModel.Description;
+using System.ServiceModel.Dispatcher;
+using SMMessage = System.ServiceModel.Channels.Message;
+using System.ServiceModel.Channels;
 
 namespace MonoTests.System.ServiceModel
 {
@@ -147,6 +150,195 @@ namespace MonoTests.System.ServiceModel
 			public string GetData () {
 				return "Hello World";
 			}
+		}
+
+		[Test]
+		[Category("NotWorking")]
+		public void ChannelDispatchers_NoDebug () {
+			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (AllActions).FullName, new BasicHttpBinding (), "address");
+
+			ServiceDebugBehavior b = h.Description.Behaviors.Find<ServiceDebugBehavior> ();
+			b.HttpHelpPageEnabled = false;						
+
+			h.Open ();
+			Assert.AreEqual (h.ChannelDispatchers.Count, 1);
+			ChannelDispatcher channelDispatcher =  h.ChannelDispatchers[0] as ChannelDispatcher;
+			Assert.IsNotNull (channelDispatcher, "#1");
+			Assert.IsTrue (channelDispatcher.Endpoints.Count == 1, "#2");
+			EndpointAddressMessageFilter filter = channelDispatcher.Endpoints [0].AddressFilter as EndpointAddressMessageFilter;
+			Assert.IsNotNull (filter, "#3");
+			Assert.IsTrue (filter.Address.Equals (new EndpointAddress ("http://localhost:8080/address")), "#4");
+			Assert.IsFalse (filter.IncludeHostNameInComparison, "#5");
+			Assert.IsTrue (channelDispatcher.Endpoints [0].ContractFilter is MatchAllMessageFilter, "#6");
+			h.Close ();
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void ChannelDispatchers_WithDebug () {
+			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (AllActions).FullName, new BasicHttpBinding (), "address");
+			ServiceMetadataBehavior b = new ServiceMetadataBehavior ();
+			b.HttpGetEnabled = true;
+			b.HttpGetUrl = new Uri( "http://localhost:8080" );
+			h.Description.Behaviors.Add (b);
+			h.Open ();
+
+			Assert.AreEqual (h.ChannelDispatchers.Count, 2, "#1");
+			ChannelDispatcher channelDispatcher = h.ChannelDispatchers[1] as ChannelDispatcher;
+			Assert.IsNotNull (channelDispatcher, "#2");
+			Assert.IsTrue (channelDispatcher.Endpoints.Count == 1, "#3");
+			EndpointAddressMessageFilter filter = channelDispatcher.Endpoints [0].AddressFilter as EndpointAddressMessageFilter;
+			Assert.IsNotNull (filter, "#4");
+			Assert.IsTrue (filter.Address.Equals (new EndpointAddress ("http://localhost:8080")), "#5");
+			Assert.IsFalse (filter.IncludeHostNameInComparison, "#6");
+			Assert.IsTrue (channelDispatcher.Endpoints [0].ContractFilter is MatchAllMessageFilter, "#7");
+			h.Close ();
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void SpecificActionTest () {
+			//EndpointDispatcher d = new EndpointDispatcher(
+			ServiceHost h = new ServiceHost (typeof (SpecificAction), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (SpecificAction).FullName, new BasicHttpBinding (), "address");
+						
+			h.Open ();
+			ChannelDispatcher d = h.ChannelDispatchers [0] as ChannelDispatcher;
+			EndpointDispatcher ed = d.Endpoints [0] as EndpointDispatcher;
+			ActionMessageFilter actionFilter = ed.ContractFilter as ActionMessageFilter;
+			Assert.IsNotNull (actionFilter, "#1");
+			Assert.IsTrue (actionFilter.Actions.Count == 1, "#2");
+			h.Close();
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void Attach () {
+			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (AllActions).FullName, new BasicHttpBinding (), "address");
+			MyChannelDispatcher d = new MyChannelDispatcher (new MyChannelListener());
+			h.ChannelDispatchers.Add (d);
+			Assert.IsTrue (d.Attached, "#1");
+		}
+
+		[ServiceContract]
+		class AllActions
+		{
+			[OperationContract (Action = "*", ReplyAction = "*")]
+			public SMMessage Get (SMMessage req) {
+				return null;
+			}
+		}
+
+		[ServiceContract]
+		class SpecificAction
+		{
+			[OperationContract (Action = "Specific", ReplyAction = "*")]
+			public SMMessage Get (SMMessage req) {
+				return null;
+			}
+		}
+
+		class MyChannelDispatcher : ChannelDispatcher
+		{
+			public bool Attached = false;
+
+			public MyChannelDispatcher (IChannelListener l) : base (l) { }
+			protected override void Attach (ServiceHostBase host) {
+				base.Attach (host);
+				Attached = true;
+			}
+		}
+
+		class MyChannelListener : IChannelListener
+		{
+			#region IChannelListener Members
+
+			public IAsyncResult BeginWaitForChannel (TimeSpan timeout, AsyncCallback callback, object state) {
+				throw new NotImplementedException ();
+			}
+
+			public bool EndWaitForChannel (IAsyncResult result) {
+				throw new NotImplementedException ();
+			}
+
+			public T GetProperty<T> () where T : class {
+				throw new NotImplementedException ();
+			}
+
+			public Uri Uri {
+				get { throw new NotImplementedException (); }
+			}
+
+			public bool WaitForChannel (TimeSpan timeout) {
+				throw new NotImplementedException ();
+			}
+
+			#endregion
+
+			#region ICommunicationObject Members
+
+			public void Abort () {
+				throw new NotImplementedException ();
+			}
+
+			public IAsyncResult BeginClose (TimeSpan timeout, AsyncCallback callback, object state) {
+				throw new NotImplementedException ();
+			}
+
+			public IAsyncResult BeginClose (AsyncCallback callback, object state) {
+				throw new NotImplementedException ();
+			}
+
+			public IAsyncResult BeginOpen (TimeSpan timeout, AsyncCallback callback, object state) {
+				throw new NotImplementedException ();
+			}
+
+			public IAsyncResult BeginOpen (AsyncCallback callback, object state) {
+				throw new NotImplementedException ();
+			}
+
+			public void Close (TimeSpan timeout) {
+				throw new NotImplementedException ();
+			}
+
+			public void Close () {
+				throw new NotImplementedException ();
+			}
+
+			public event EventHandler Closed;
+
+			public event EventHandler Closing;
+
+			public void EndClose (IAsyncResult result) {
+				throw new NotImplementedException ();
+			}
+
+			public void EndOpen (IAsyncResult result) {
+				throw new NotImplementedException ();
+			}
+
+			public event EventHandler Faulted;
+
+			public void Open (TimeSpan timeout) {
+				throw new NotImplementedException ();
+			}
+
+			public void Open () {
+				throw new NotImplementedException ();
+			}
+
+			public event EventHandler Opened;
+
+			public event EventHandler Opening;
+
+			public CommunicationState State {
+				get { throw new NotImplementedException (); }
+			}
+
+			#endregion
 		}
 	}
 }

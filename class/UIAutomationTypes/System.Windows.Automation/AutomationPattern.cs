@@ -29,6 +29,15 @@ namespace System.Windows.Automation
 {
 	public class AutomationPattern : AutomationIdentifier
 	{
+#region Protected Constructor
+		
+		protected AutomationPattern (int id, string programmaticName) :
+			base (id, programmaticName)
+		{
+		}
+		
+#endregion
+		
 #region Public Static Methods
 		
 		public static AutomationPattern LookupById (int id)

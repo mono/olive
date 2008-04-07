@@ -26,6 +26,8 @@
 using System;
 using System.Windows.Automation;
 
+using System.Reflection;
+
 namespace System.Windows.Automation.Provider
 {
 	public static class AutomationInteropProvider
@@ -33,32 +35,87 @@ namespace System.Windows.Automation.Provider
 		public const int AppendRuntimeId = 3;
 		public const int InvalidateLimit = 20;
 		public const int RootObjectId = -25;
+		
+		private static IAutomationBridge bridge = null;
+		
+		static AutomationInteropProvider ()
+		{
+			bridge = BridgeManager.GetAutomationBridge ();
+		}
 
-		public static bool ClientsAreListening { get { return false; } }
+		public static bool ClientsAreListening {
+			get {
+				return bridge.ClientsAreListening;
+			}
+		}
 
 		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd) 
 		{
 			throw new NotImplementedException();
 		}
 
-		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e) 
+		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
-			throw new NotImplementedException();
+			// TODO
+			bridge.RaiseAutomationEvent (eventId, provider, e);
 		}
 
 		public static void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple element, AutomationPropertyChangedEventArgs e) 
 		{
-			throw new NotImplementedException();
+			// TODO
+			bridge.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
-		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e) 
+		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
-			throw new NotImplementedException();
+			// TODO
+			bridge.RaiseStructureChangedEvent (provider, e);
 		}
 
 		public static IntPtr ReturnRawElementProvider (IntPtr hwnd, IntPtr wParam, IntPtr lParam, IRawElementProviderSimple el) 
 		{
 			throw new NotImplementedException();
+		}
+	}
+	
+	// TODO: Move to commonly-referenced assembly
+	// NOTE: No types used outside of UIAutomationTypes, so that all assemblies
+	//       can reference the assembly that will contain this interface definition.
+	public interface IAutomationBridge
+	{
+		bool ClientsAreListening { get; }
+		
+		void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e);
+		
+		void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e);
+		
+		void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
+	}
+	
+	internal static class BridgeManager
+	{
+		private const string UiaAtkBridgeAssembly =
+			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
+		
+		public static IAutomationBridge GetAutomationBridge ()
+		{
+			// TODO: Get bridge assembly details from env var or
+			//       some other run-time value?
+			Assembly bridgeAssembly = Assembly.Load (UiaAtkBridgeAssembly);
+			Type bridgeType = null;
+			
+			// Quickie inefficent implementation
+			Type bridgeInterfaceType = typeof (IAutomationBridge);
+			foreach (Type type in bridgeAssembly.GetTypes ()) {
+				if (bridgeInterfaceType.IsAssignableFrom (type)) {
+					bridgeType = type;
+					break;
+				}
+			}
+			if (bridgeType == null)
+				throw new Exception ("No bridge, bummer!");
+			
+			return (IAutomationBridge) Activator.CreateInstance (bridgeType);
 		}
 	}
 }

@@ -29,8 +29,17 @@ namespace System.Windows.Automation
 {
 	public class AutomationIdentifier : IComparable
 	{
-		public int Id { get { return 0; } }
-		public string ProgrammaticName { get { return null; } }
+		protected int id;
+		protected string programmaticName;
+		
+		protected AutomationIdentifier (int id, string programmaticName)
+		{
+			this.id = id;
+			this.programmaticName = programmaticName;
+		}
+		
+		public int Id { get { return id; } }
+		public string ProgrammaticName { get { return programmaticName; } }
 
 		public int CompareTo (object obj)
 		{

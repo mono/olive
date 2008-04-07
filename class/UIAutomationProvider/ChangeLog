@@ -1,3 +1,12 @@
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Experimenting with idea of forwarding events along to the bridge
+	  via new IAutomationBridge interface.  This interface will be
+	  defined in a separate assembly that only depends on
+	  UIAutomationTypes.  Internal BridgeManager class is used to find
+	  the class in the bridge assembly that impelements this interface.
+
 2008-03-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationProvider.mdp: Add project reference to UIAutomationTypes.
