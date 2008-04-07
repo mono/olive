@@ -1,5 +1,10 @@
 2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/StructureChangedEventArgs.cs: Implemented
+	  class.
+
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/AutomationElementIdentifiers.cs,
 	  System.Windows.Automation/AutomationEvent.cs,
 	  System.Windows.Automation/AutomationIdentifier.cs,

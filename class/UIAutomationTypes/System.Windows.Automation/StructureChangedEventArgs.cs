@@ -39,7 +39,7 @@ namespace System.Windows.Automation
 		}
 
 		public StructureChangedEventArgs (StructureChangeType structureChangeType, int[] runtimeId) :
-			base (AutomationEvent.LookupById(0))
+			base (AutomationEvent.LookupById(0)) // TODO: Is 0 correct?
 		{
 			this.structureChangeType = structureChangeType;
 			this.runtimeId = runtimeId;
