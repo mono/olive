@@ -1,3 +1,9 @@
+2008-04-07  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* added: FaultsTest.cs
+	MessageContractTest.cs
+	AsyncCallTest.cs
+
 2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* added: UntypedMessageTest.cs

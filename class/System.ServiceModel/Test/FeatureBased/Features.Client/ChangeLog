@@ -1,3 +1,10 @@
+2008-04-07  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* added: MessageContractTesterProxy.cs
+	AsyncCallTesterProxy.cs
+	FaultsTesterProxy.cs
+	* fixed: UntypedMessageTesterProxy.cs
+
 2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* Added: UntypedMessageTesterProxy.cs
