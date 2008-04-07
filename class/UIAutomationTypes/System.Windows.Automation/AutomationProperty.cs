@@ -29,9 +29,23 @@ namespace System.Windows.Automation
 {
 	public class AutomationProperty : AutomationIdentifier
 	{
+		internal const int NamePropertyId = 0;
+		internal const int ControlTypePropertyId = 1;
+		
 		public static AutomationProperty LookupById (int id)
 		{
-			throw new NotImplementedException ();			
+			// TODO: Determine programmatic names (MS uses for debugging/diagnostic only, apparently?)
+			if (id == NamePropertyId)
+				return new AutomationProperty (id, "Name");
+			else if (id == ControlTypePropertyId)
+				return new AutomationProperty (id, "ControlType");
+			else
+				return null;
+		}
+		
+		protected AutomationProperty (int id, string programmaticName) :
+			base (id, programmaticName)
+		{
 		}
 	}
 }

@@ -1,3 +1,18 @@
+2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationElementIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs,
+	  System.Windows.Automation/AutomationIdentifier.cs,
+	  System.Windows.Automation/AutomationPattern.cs,
+	  System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/ControlType.cs: Add protected constructor
+	  to AutomationIdentifier.  Using internal constants to ensure proper
+	  construction of derivied types.  Values need to be determined via
+	  unit test of the MS implementation, and are currently made up.
+	* System.Windows.Automation/AutomationEventArgs.cs,
+	  System.Windows.Automation/StructureChangedEventArgs.cs: Implement
+	  eventargs classes.
+
 2008-03-25  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationTypes.dll.sources: Added WindowPatternIdentifiers.cs to

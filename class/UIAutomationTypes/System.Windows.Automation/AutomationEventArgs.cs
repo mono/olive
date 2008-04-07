@@ -29,11 +29,17 @@ namespace System.Windows.Automation
 {
 	public class AutomationEventArgs : EventArgs
 	{
-		public AutomationEvent EventId { get { return null; } }
+		private AutomationEvent eventId;
+		
+		public AutomationEvent EventId {
+			get {
+				return eventId;
+			}
+		}
 
 		public AutomationEventArgs (AutomationEvent eventId)
 		{ 
-			throw new NotImplementedException ();			
+			this.eventId = eventId;
 		}
 	}
 }

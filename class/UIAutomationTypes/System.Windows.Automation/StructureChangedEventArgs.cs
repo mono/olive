@@ -29,16 +29,25 @@ namespace System.Windows.Automation
 {
 	public sealed class StructureChangedEventArgs : AutomationEventArgs
 	{
-		public StructureChangeType StructureChangeType { get { return StructureChangeType.ChildRemoved; } }
+		private StructureChangeType structureChangeType;
+		private int[] runtimeId;
+		
+		public StructureChangeType StructureChangeType { 
+			get {
+				return structureChangeType;
+			}
+		}
 
-		public StructureChangedEventArgs (StructureChangeType structureChangeType, int[] runtimeId) : base (AutomationEvent.LookupById(0))
+		public StructureChangedEventArgs (StructureChangeType structureChangeType, int[] runtimeId) :
+			base (AutomationEvent.LookupById(0))
 		{
-			throw new NotImplementedException ();
+			this.structureChangeType = structureChangeType;
+			this.runtimeId = runtimeId;
 		}
 
 		public int[] GetRuntimeId ()
 		{
-			throw new NotImplementedException ();
+			return runtimeId;
 		}
 	}
 }

@@ -35,6 +35,15 @@ namespace System.Windows.Automation
 		
 #endregion
 		
+#region Protected Constructor
+		
+		protected ControlType (int id, string programmaticName) :
+			base (id, programmaticName)
+		{
+		}
+		
+#endregion
+		
 #region Public Methods
 		
 		public AutomationPattern [] GetNeverSupportedPatterns ()
@@ -65,16 +74,27 @@ namespace System.Windows.Automation
 		
 #endregion
 		
+#region Internal Constants
+		
+		internal const int WindowId = 0;
+		
+#endregion
+		
 #region Static Members
 		
 		static ControlType ()
 		{
 			// TODO: Initialize Fields
+			// TODO: Figure out IDs via test
+			Window = LookupById (WindowId);
 		}
 		
 		public static ControlType LookupById (int id)
 		{
-			throw new NotImplementedException ();
+			if (id == WindowId)
+				return new ControlType (id, "Window");
+			else
+				return null;
 		}
 		
 		public static readonly ControlType Button;

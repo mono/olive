@@ -36,6 +36,9 @@ namespace System.Windows.Automation
 			NotSupported = new object ();
 			
 			// TODO: Assign fields
+			// TODO: Figure out IDs via test
+			NameProperty = AutomationProperty.LookupById (AutomationProperty.NamePropertyId);
+			ControlTypeProperty = AutomationProperty.LookupById (AutomationProperty.ControlTypePropertyId);
 		}
 		
 #endregion

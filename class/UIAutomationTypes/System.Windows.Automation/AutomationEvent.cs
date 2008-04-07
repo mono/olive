@@ -31,7 +31,17 @@ namespace System.Windows.Automation
 	{
 		public static AutomationEvent LookupById (int id)
 		{
-			throw new NotImplementedException ();			
+			// TODO: Figure out where to get mappings
+			return null;
 		}
+		
+#region Protected Constructor
+		
+		protected AutomationEvent (int id, string programmaticName) :
+			base (id, programmaticName)
+		{
+		}
+		
+#endregion
 	}
 }
