@@ -214,13 +214,190 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("NotWorking")]
-		public void Attach () {
-			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
-			h.AddServiceEndpoint (typeof (AllActions).FullName, new BasicHttpBinding (), "address");
-			MyChannelDispatcher d = new MyChannelDispatcher (new MyChannelListener());
-			h.ChannelDispatchers.Add (d);
-			Assert.IsTrue (d.Attached, "#1");
+		public void InitializeRuntimeBehaviors1 () {
+			HostState st = new HostState ();
+			ServiceHost h = new ServiceHost (typeof (SpecificAction2), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (SpecificAction2), new BasicHttpBinding (), "temp");			
+
+			h.Description.Behaviors.Add (new MyServiceBehavior (st, h));
+
+			h.Description.Endpoints [0].Behaviors.Add (new MyEndpointBehavior (st, h));
+			h.Description.Endpoints [0].Contract.Behaviors.Add (new MyContractBehavior (st, h));
+			h.Description.Endpoints [0].Contract.Operations [0].Behaviors.Add (new MyOperationBehavior (st, h));
+			
+			h.Open ();
+			h.Close ();
+			
+			string expected = "Start, IServiceBehavior.Validate, IContractBehavior.Validate, IEndpointBehavior.Validate, IOperationBehavior.ApplyDispatchBehavior, IServiceBehavior.AddBindingParameters, IContractBehavior.AddBindingParameters, IEndpointBehavior.AddBindingParameters, IOperationBehavior.AddBindingParameters, IServiceBehavior.ApplyDispatchBehavior, IContractBehavior.ApplyDispatchBehavior, IEndpointBehavior.ApplyDispatchBehavior, IOperationBehavior.ApplyDispatchBehavior";
+			Assert.AreEqual (expected, st.CurrentStage);
+		}
+
+		[Test]
+		[Category("NotWorking")]
+		public void InitializeRuntimeBehaviors2 () {
+			HostState st = new HostState ();
+			ServiceHost h = new ServiceHost (typeof (SpecificAction), new Uri ("http://localhost:8080"));
+			h.AddServiceEndpoint (typeof (Action1Interface), new BasicHttpBinding (), "temp");
+			h.AddServiceEndpoint (typeof (Action2Interface), new BasicHttpBinding (), "temp2");
+
+			h.Description.Behaviors.Add (new MyServiceBehavior (st, h));			
+			
+			h.Description.Endpoints [0].Behaviors.Add (new MyEndpointBehavior (st, h));
+			h.Description.Endpoints [0].Contract.Behaviors.Add (new MyContractBehavior (st, h));
+			h.Description.Endpoints [0].Contract.Operations [0].Behaviors.Add (new MyOperationBehavior (st, h));
+
+			h.Description.Endpoints [1].Behaviors.Add (new MyEndpointBehavior (st, h));
+			h.Description.Endpoints [1].Contract.Behaviors.Add (new MyContractBehavior (st, h));
+			h.Description.Endpoints [1].Contract.Operations [0].Behaviors.Add (new MyOperationBehavior (st, h));
+			h.Open ();
+			h.Close ();
+
+			string expected = "Start, IServiceBehavior.Validate, IContractBehavior.Validate, IEndpointBehavior.Validate, IOperationBehavior.ApplyDispatchBehavior, IContractBehavior.Validate, IEndpointBehavior.Validate, IOperationBehavior.ApplyDispatchBehavior, IServiceBehavior.AddBindingParameters, IContractBehavior.AddBindingParameters, IEndpointBehavior.AddBindingParameters, IOperationBehavior.AddBindingParameters, IServiceBehavior.AddBindingParameters, IContractBehavior.AddBindingParameters, IEndpointBehavior.AddBindingParameters, IOperationBehavior.AddBindingParameters, IServiceBehavior.ApplyDispatchBehavior, IContractBehavior.ApplyDispatchBehavior, IEndpointBehavior.ApplyDispatchBehavior, IOperationBehavior.ApplyDispatchBehavior, IContractBehavior.ApplyDispatchBehavior, IEndpointBehavior.ApplyDispatchBehavior, IOperationBehavior.ApplyDispatchBehavior";
+			Assert.AreEqual (expected, st.CurrentStage);
+		}
+
+		#region helpers
+
+		public enum Stage
+		{
+		}
+
+		public class HostState
+		{
+			public string CurrentStage = "Start";
+		}
+
+		public class MyServiceBehavior : IServiceBehavior
+		{
+			#region IServiceBehavior Members
+
+			HostState _state;
+			ServiceHost _host;
+			public MyServiceBehavior (HostState state, ServiceHost h) {
+				_state = state;
+				_host = h;
+			}
+
+			public void AddBindingParameters (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, global::System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) {
+				Console.WriteLine ("MyServiceBehavior - AddBindingParameters " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IServiceBehavior.AddBindingParameters";				
+				bindingParameters.Add (this);
+			}
+
+			public void ApplyDispatchBehavior (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+				Console.WriteLine ("MyServiceBehavior - ApplyDispatchBehavior " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IServiceBehavior.ApplyDispatchBehavior";				
+			}
+
+			public void Validate (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+				Console.WriteLine ("MyServiceBehavior - Validate " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IServiceBehavior.Validate";
+				Assert.AreEqual (_host.ChannelDispatchers.Count, 0);
+			}
+
+			#endregion
+		}
+
+		public class MyEndpointBehavior : IEndpointBehavior
+		{
+			#region IEndpointBehavior Members
+			HostState _state;
+			ServiceHost _host;
+			public MyEndpointBehavior (HostState state, ServiceHost h) {
+				_state = state;
+				_host = h;
+			}
+
+			public void AddBindingParameters (ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) {
+				Console.WriteLine ("IEndpointBehavior - AddBindingParameters " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IEndpointBehavior.AddBindingParameters";				
+				bindingParameters.Add (this);
+			}
+
+			public void ApplyClientBehavior (ServiceEndpoint endpoint, ClientRuntime clientRuntime) {
+				Console.WriteLine ("IEndpointBehavior - ApplyClientBehavior " + _host.ChannelDispatchers.Count);
+			}
+
+			public void ApplyDispatchBehavior (ServiceEndpoint endpoint, EndpointDispatcher endpointDispatcher) {
+				Console.WriteLine ("IEndpointBehavior - ApplyDispatchBehavior " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IEndpointBehavior.ApplyDispatchBehavior";				
+			}
+
+			public void Validate (ServiceEndpoint endpoint) {
+				Console.WriteLine ("IEndpointBehavior - Validate " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IEndpointBehavior.Validate";
+				Assert.AreEqual (_host.ChannelDispatchers.Count, 0);				
+			}
+
+			#endregion
+		}
+
+		public class MyContractBehavior : IContractBehavior
+		{
+			#region IContractBehavior Members
+			HostState _state;
+			ServiceHost _host;
+			public MyContractBehavior (HostState state, ServiceHost h) {
+				_state = state;
+				_host = h;
+			}
+
+			public void AddBindingParameters (ContractDescription contractDescription, ServiceEndpoint endpoint, BindingParameterCollection bindingParameters) {
+				Console.WriteLine ("Contract - AddBindingParameters " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IContractBehavior.AddBindingParameters";				
+				bindingParameters.Add (this);
+			}
+
+			public void ApplyClientBehavior (ContractDescription contractDescription, ServiceEndpoint endpoint, ClientRuntime clientRuntime) {
+				Console.WriteLine ("Contract - ApplyClientBehavior " + _host.ChannelDispatchers.Count);
+			}
+
+			public void ApplyDispatchBehavior (ContractDescription contractDescription, ServiceEndpoint endpoint, DispatchRuntime dispatchRuntime) {
+				Console.WriteLine ("Contract - ApplyDispatchBehavior " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IContractBehavior.ApplyDispatchBehavior";				
+			}
+
+			public void Validate (ContractDescription contractDescription, ServiceEndpoint endpoint) {
+				Console.WriteLine ("Contract - Validate " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IContractBehavior.Validate";		
+				Assert.AreEqual (_host.ChannelDispatchers.Count, 0);				
+			}
+
+			#endregion
+		}
+
+		public class MyOperationBehavior : IOperationBehavior
+		{
+			#region IOperationBehavior Members
+			HostState _state;
+			ServiceHost _host;
+			public MyOperationBehavior (HostState state, ServiceHost h) {
+				_state = state;
+				_host = h;
+			}
+
+			public void AddBindingParameters (OperationDescription operationDescription, BindingParameterCollection bindingParameters) {
+				Console.WriteLine ("IOperationBehavior - AddBindingParameters " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IOperationBehavior.AddBindingParameters";					
+				bindingParameters.Add (this);
+			}
+
+			public void ApplyClientBehavior (OperationDescription operationDescription, ClientOperation clientOperation) {
+				Console.WriteLine ("IOperationBehavior - ApplyClientBehavior " + _host.ChannelDispatchers.Count);
+			}
+
+			public void ApplyDispatchBehavior (OperationDescription operationDescription, DispatchOperation dispatchOperation) {
+				Console.WriteLine ("IOperationBehavior - ApplyDispatchBehavior " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IOperationBehavior.ApplyDispatchBehavior";				
+			}
+
+			public void Validate (OperationDescription operationDescription) {
+				Console.WriteLine ("IOperationBehavior - Validate " + _host.ChannelDispatchers.Count);
+				_state.CurrentStage += ", IOperationBehavior.ApplyDispatchBehavior";
+				Assert.AreEqual (_host.ChannelDispatchers.Count, 0);
+			}
+
+			#endregion
 		}
 
 		[ServiceContract]
@@ -233,10 +410,35 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[ServiceContract]
-		class SpecificAction
+		interface Action1Interface
+		{
+			[OperationContract (Action = "Specific1", ReplyAction = "*")]
+			SMMessage GetMessage1 (SMMessage req);
+		}
+
+		[ServiceContract]
+		interface Action2Interface
+		{
+			[OperationContract (Action = "Specific2", ReplyAction = "*")]
+			SMMessage GetMessage2 (SMMessage req);
+		}
+		
+		class SpecificAction : Action1Interface, Action2Interface
+		{			
+			public SMMessage GetMessage1 (SMMessage req) {
+				return null;
+			}
+
+			public SMMessage GetMessage2 (SMMessage req) {
+				return null;
+			}
+		}
+
+		[ServiceContract]
+		class SpecificAction2
 		{
 			[OperationContract (Action = "Specific", ReplyAction = "*")]
-			public SMMessage Get (SMMessage req) {
+			public SMMessage GetMessage1 (SMMessage req) {
 				return null;
 			}
 		}
@@ -340,5 +542,7 @@ namespace MonoTests.System.ServiceModel
 
 			#endregion
 		}
+		#endregion
+
 	}
 }

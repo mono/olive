@@ -135,11 +135,11 @@ namespace System.ServiceModel.Description
 			((IExtension<ServiceHostBase>)sme).Attach (serviceHostBase);
 		}
 
+		[MonoTODO]
 		void IServiceBehavior.Validate (
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase)
-		{
-			throw new NotImplementedException ();
+		{			
 		}
 	}
 }

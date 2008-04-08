@@ -92,6 +92,15 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 			Assert.IsTrue (ed.ContractFilter is MatchAllMessageFilter, "#1");
 		}
 
+		[Test]		
+		public void DispatchRuntimeProperty () {
+			ServiceHost h = new ServiceHost (typeof (SpecificAction), new Uri ("http://localhost:8000"));
+			EndpointDispatcher ed = new EndpointDispatcher (new EndpointAddress ("http://localhost:8000/address"),
+							typeof (SpecificAction).FullName,
+							typeof (SpecificAction).Namespace);
+			Assert.IsNotNull (ed.DispatchRuntime, "#1");
+		}
+
 		[ServiceContract]
 		class SpecificAction
 		{

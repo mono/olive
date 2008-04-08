@@ -34,8 +34,11 @@ namespace System.ServiceModel.Dispatcher
 	public class ChannelDispatcherCollection
 		: SynchronizedCollection<ChannelDispatcherBase>
 	{
-		internal ChannelDispatcherCollection ()
+		private ServiceHostBase _service;
+
+		internal ChannelDispatcherCollection (ServiceHostBase service)
 		{
+			_service = service;
 		}
 
 		internal ChannelDispatcherCollection (
@@ -46,8 +49,11 @@ namespace System.ServiceModel.Dispatcher
 
 		[MonoTODO ("What to do here?")]
 		protected override void ClearItems ()
-		{
+		{			
+			ChannelDispatcherBase[] channels = this.InnerList.ToArray ();
 			base.ClearItems ();
+			foreach (ChannelDispatcherBase c in channels)
+				c.Detach (_service);
 		}
 
 		internal List<ChannelDispatcherBase> InnerList {
@@ -57,19 +63,24 @@ namespace System.ServiceModel.Dispatcher
 		[MonoTODO ("What to do here?")]
 		protected override void InsertItem (int index, ChannelDispatcherBase item)
 		{
-			base.InsertItem (index, item);
+			item.Attach (_service);
+			base.InsertItem (index, item);			
 		}
 
 		[MonoTODO ("What to do here?")]
 		protected override void RemoveItem (int index)
 		{
+			ChannelDispatcherBase removed = this [index];
 			base.RemoveItem (index);
+			removed.Detach (_service);
+			
 		}
 
 		[MonoTODO ("What to do here?")]
 		protected override void SetItem (int index, ChannelDispatcherBase item)
 		{
-			base.SetItem (index, item);
-		}
+			item.Attach (_service);
+			base.SetItem (index, item);			
+		}		
 	}
 }

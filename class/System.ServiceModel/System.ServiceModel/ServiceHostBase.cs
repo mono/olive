@@ -60,7 +60,7 @@ namespace System.ServiceModel
 			throttle = new ServiceThrottle ();
 			contexts = new List<InstanceContext> ();
 			exposed_contexts = new ReadOnlyCollection<InstanceContext> (contexts);
-			channel_dispatchers = new ChannelDispatcherCollection ();
+			channel_dispatchers = new ChannelDispatcherCollection (this);
 		}
 
 		public event EventHandler<UnknownMessageReceivedEventArgs>
@@ -333,44 +333,132 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected virtual void InitializeRuntime ()
 		{
-			BindingParameterCollection commonParams =
-				new BindingParameterCollection ();
-
-			foreach (IServiceBehavior b in Description.Behaviors)
-				b.AddBindingParameters (
-					Description,
-					this,
-					Description.Endpoints,
-					commonParams);
-
-			// create endpoint listeners
-			foreach (ServiceEndpoint se in Description.Endpoints) {
-				// Apply service behaviors and
-				// Build IChannelListener
-				BindingParameterCollection parameters =
-					new BindingParameterCollection ();
-				foreach (object p in commonParams)
-					parameters.Add (p);
-
-				parameters.Add (ChannelProtectionRequirements.CreateFromContract (se.Contract));
-
-				foreach (IEndpointBehavior b in se.Behaviors)
-					b.AddBindingParameters (se, parameters);
-				foreach (IContractBehavior b in se.Contract.Behaviors)
-					b.AddBindingParameters (se.Contract, se, parameters);
-
-				IChannelListener lf = BuildListener (se, parameters);
-
-				ChannelDispatcher cd = new ChannelDispatcher (
-					lf, se.Binding.Name);
-				cd.MessageVersion = se.Binding.MessageVersion;
-				if (cd.MessageVersion == null)
-					cd.MessageVersion = MessageVersion.Default;
-				cd.Attach (this);
+			//First validate the description, which should call all behaviors
+			//'Validate' method.
+			ValidateDescription ();
+			
+			//Build all ChannelDispatchers, one dispatcher per user configured EndPoint.
+			//We must keep thet ServiceEndpoints as a seperate collection, since the user
+			//can change the collection in the description during the behaviors events.
+			Dictionary<ServiceEndpoint, ChannelDispatcher> endPointToDispatcher = new Dictionary<ServiceEndpoint,ChannelDispatcher>();
+			ServiceEndpoint[] endPoints = new ServiceEndpoint[Description.Endpoints.Count];
+			Description.Endpoints.CopyTo (endPoints, 0);
+			foreach (ServiceEndpoint se in endPoints) {
+				ChannelDispatcher channel = BuildChannelDispatcher(se);
+				ChannelDispatchers.Add (channel);				
+				endPointToDispatcher[se] = channel;				
 			}
 
-			foreach (IServiceBehavior b in description.Behaviors)
-				b.ApplyDispatchBehavior (description, this);
+			//After the ChannelDispatchers are created, and attached to the service host
+			//Apply dispatching behaviors.
+			foreach (IServiceBehavior b in Description.Behaviors)
+				b.ApplyDispatchBehavior (Description, this);
+
+			foreach(KeyValuePair<ServiceEndpoint, ChannelDispatcher> val in endPointToDispatcher)
+				ApplyDispatchBehavior(val.Value, val.Key);			
+		}
+
+		private void ValidateDescription () {
+			foreach (IServiceBehavior b in Description.Behaviors)
+				b.Validate (Description, this);
+			foreach (ServiceEndpoint endPoint in Description.Endpoints)
+				endPoint.Validate ();
+		}		
+
+		private void ApplyDispatchBehavior (ChannelDispatcher dispatcher, ServiceEndpoint endPoint) {			
+			foreach (IContractBehavior b in endPoint.Contract.Behaviors)
+				b.ApplyDispatchBehavior (endPoint.Contract, endPoint, dispatcher.Endpoints[0].DispatchRuntime);
+			foreach (IEndpointBehavior b in endPoint.Behaviors)
+				b.ApplyDispatchBehavior (endPoint, dispatcher.Endpoints [0]);
+			foreach (OperationDescription operation in endPoint.Contract.Operations) {
+				foreach (IOperationBehavior b in operation.Behaviors)
+					b.ApplyDispatchBehavior (operation, dispatcher.Endpoints [0].DispatchRuntime.Operations [operation.Name]);
+			}
+
+		}
+
+		private ChannelDispatcher BuildChannelDispatcher (ServiceEndpoint se) {
+
+			//Let all behaviors add their binding parameters
+			BindingParameterCollection commonParams =
+				new BindingParameterCollection ();
+			AddBindingParameters (commonParams, se);
+
+			//User the binding parameters to build the channel listener and Dispatcher
+			IChannelListener lf = BuildListener (se, commonParams);
+			ChannelDispatcher cd = new ChannelDispatcher (
+				lf, se.Binding.Name);
+			cd.MessageVersion = se.Binding.MessageVersion;
+			if (cd.MessageVersion == null)
+				cd.MessageVersion = MessageVersion.Default;
+
+			//Attach one EndpointDispacher to the ChannelDispatcher
+			EndpointDispatcher endpoint_dispatcher =
+				new EndpointDispatcher (se.Address, se.Contract.Name, se.Contract.Namespace);
+			endpoint_dispatcher.ChannelDispatcher = cd;
+			cd.Endpoints.Add (endpoint_dispatcher);
+			
+			//Build the dispatch operations
+			DispatchRuntime db = endpoint_dispatcher.DispatchRuntime;
+			foreach (OperationDescription od in se.Contract.Operations)
+				if (!db.Operations.Contains (od.Name))
+					PopulateDispatchOperation (db, od);
+
+			return cd;
+		}
+
+		private void AddBindingParameters (BindingParameterCollection commonParams, ServiceEndpoint endPoint) {
+
+			commonParams.Add (ChannelProtectionRequirements.CreateFromContract (endPoint.Contract));
+			foreach (IServiceBehavior b in Description.Behaviors)
+				b.AddBindingParameters (Description, this, Description.Endpoints, commonParams);
+
+			foreach (IContractBehavior b in endPoint.Contract.Behaviors)
+				b.AddBindingParameters (endPoint.Contract, endPoint, commonParams);
+			foreach (IEndpointBehavior b in endPoint.Behaviors)
+				b.AddBindingParameters (endPoint, commonParams);
+			foreach (OperationDescription operation in endPoint.Contract.Operations) {
+				foreach (IOperationBehavior b in operation.Behaviors)
+					b.AddBindingParameters (operation, commonParams);
+			}
+		}
+
+		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od) {
+			string reqA = null, resA = null;
+			foreach (MessageDescription m in od.Messages) {
+				if (m.Direction == MessageDirection.Input)
+					reqA = m.Action;
+				else
+					resA = m.Action;
+			}
+			DispatchOperation o =
+				od.IsOneWay ?
+				new DispatchOperation (db, od.Name, reqA) :
+				new DispatchOperation (db, od.Name, reqA, resA);
+			bool has_void_reply = false;
+			foreach (MessageDescription md in od.Messages) {
+				if (md.Direction == MessageDirection.Input &&
+					md.Body.Parts.Count == 1 &&
+					md.Body.Parts [0].Type == typeof (Message))
+					o.DeserializeRequest = false;
+				if (md.Direction == MessageDirection.Output &&
+					md.Body.ReturnValue != null) {
+					if (md.Body.ReturnValue.Type == typeof (Message))
+						o.SerializeReply = false;
+					else if (md.Body.ReturnValue.Type == typeof (void))
+						has_void_reply = true;
+				}
+			}
+
+			if (o.Action == "*" && o.ReplyAction == "*") {
+				//Signature : Message  (Message)
+				//	    : void  (Message)
+				//FIXME: void (IChannel)
+				if (!o.DeserializeRequest && (!o.SerializeReply || has_void_reply))
+					db.UnhandledDispatchOperation = o;
+			}
+
+			db.Operations.Add (o);
 		}
 
 		[MonoTODO]

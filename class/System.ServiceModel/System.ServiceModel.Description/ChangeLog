@@ -1,3 +1,14 @@
+2008-04-08  Roei Erez <roeie@mainsoft.com>
+
+	* ServiceAuthorizationBehavior.cs:
+	  -- remove throwing NotImplementedException and add MonoTODO
+	* ServiceDebugBehavior.cs
+	  -- remove throwing NotImplementedException and add MonoTODO
+	* ServiceEndpoint.cs
+	  -- Add validate method.
+	* ServiceMetadataBehavior.cs
+	  -- remove throwing NotImplementedException and add MonoTODO
+	
 2008-03-24  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* PolicyVersion.cs: imפlement ToString method, fix Namespace property.

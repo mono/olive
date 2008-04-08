@@ -69,7 +69,7 @@ namespace System.ServiceModel.Dispatcher
 			address_filter = new EndpointAddressMessageFilter (address);
 
 			//FIXME: Use ActionMessageFilter here, get action?
-			contract_filter = new MatchNoneMessageFilter ();
+			contract_filter = new MatchAllMessageFilter ();
 		}
 
 		public DispatchRuntime DispatchRuntime {

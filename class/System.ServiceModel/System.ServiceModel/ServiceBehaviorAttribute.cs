@@ -177,8 +177,7 @@ namespace System.ServiceModel
 		void IServiceBehavior.Validate (
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase)
-		{
-			throw new NotImplementedException ();
+		{			
 		}
 	}
 }

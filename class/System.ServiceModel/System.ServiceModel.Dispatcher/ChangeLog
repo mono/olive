@@ -1,3 +1,14 @@
+2008-04-08  Roei Erez <roeie@mainsoft.com>
+
+	* ChannelDispatcher.cs
+	  - fix 'Attach' logic
+	  - Add support for Endpoints property
+	  - Remove the hack of 'endpoint_dispatcher' field
+	* ChannelDispatcherCollection.cs
+	  - Add support for 'Attach' 'Detach'
+	* EndpointDispatcher.cs
+	  - By default create MatchAllMessageFilter.
+
 2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* EndpointDispatcher.cs : we don't need AddressFilter workaround

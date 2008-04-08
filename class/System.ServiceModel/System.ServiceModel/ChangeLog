@@ -1,3 +1,11 @@
+2008-04-08  Roei Erez <roeie@mainsoft.com>
+
+	* ServiceHostBase.cs:
+	- Refactoring of InitializeRuntime method:
+	  -- Build ChanneldDispatcher correctly
+	  -- Build EndPointDispatchers
+	  -- Fix the order of applying behaviors
+
 2008-04-03  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceHostBase.cs:
