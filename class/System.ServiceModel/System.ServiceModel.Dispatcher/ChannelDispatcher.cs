@@ -190,46 +190,7 @@ namespace System.ServiceModel.Dispatcher
 
 			//I did not remove this hack yet, in order not to break some flows.			
 			service_endpoint = FindEndpoint ();			
-		}
-
-		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od)
-		{
-			string reqA = null, resA = null;
-			foreach (MessageDescription m in od.Messages) {
-				if (m.Direction == MessageDirection.Input)
-					reqA = m.Action;
-				else
-					resA = m.Action;
-			}
-			DispatchOperation o =
-				od.IsOneWay ?
-				new DispatchOperation (db, od.Name, reqA) :
-				new DispatchOperation (db, od.Name, reqA, resA);
-			bool has_void_reply = false;
-			foreach (MessageDescription md in od.Messages) {
-				if (md.Direction == MessageDirection.Input &&
-				    md.Body.Parts.Count == 1 &&
-				    md.Body.Parts [0].Type == typeof (Message))
-					o.DeserializeRequest = false;
-				if (md.Direction == MessageDirection.Output &&
-				    md.Body.ReturnValue != null) {
-					if (md.Body.ReturnValue.Type == typeof (Message))
-						o.SerializeReply = false;
-					else if (md.Body.ReturnValue.Type == typeof (void))
-						has_void_reply = true;
-				}
-			}
-
-			if (o.Action == "*" && o.ReplyAction == "*") {
-				//Signature : Message  (Message)
-				//	    : void  (Message)
-				//FIXME: void (IChannel)
-				if (!o.DeserializeRequest && (!o.SerializeReply || has_void_reply))
-					db.UnhandledDispatchOperation = o;
-			}
-
-			db.Operations.Add (o);
-		}
+		}		
 
 		public override void CloseInput ()
 		{
