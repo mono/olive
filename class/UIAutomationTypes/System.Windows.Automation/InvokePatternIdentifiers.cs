@@ -34,7 +34,7 @@ namespace System.Windows.Automation
 		static InvokePatternIdentifiers ()
 		{
 			// TODO: Initialize fields
-			InvokedEvent = new AutomationEvent (0, string.Empty); // TODO: Derive
+			//InvokedEvent = new AutomationEvent (0, string.Empty); // TODO: Derive
 		}
 		
 #endregion
