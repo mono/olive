@@ -1,3 +1,7 @@
+2008-04-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ProviderOptionsTest.cs: Fixed namespace.
+
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* AutomationInteropProviderTest.cs, NavigateDirectionTest.cs: Fixed headers.
