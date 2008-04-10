@@ -5,6 +5,7 @@
 //	Atsushi Enomoto <atsushi@ximian.com>
 //	Ankit Jain <JAnkit@novell.com>
 //	Duncan Mak (duncan@ximian.com)
+//	Eyal Alaluf (eyala@mainsoft.com)
 //
 // Copyright (C) 2005 Novell, Inc.  http://www.novell.com
 // Copyright (C) 2006 Novell, Inc.  http://www.novell.com
@@ -286,181 +287,42 @@ namespace System.Runtime.Serialization
 					fi.GetValue (graph) :
 					pi.GetValue (graph, null);
 
-				serializer.WriteStartElement (dmi.XmlName);
+				serializer.WriteStartElement (dmi.XmlName, dmi.XmlNamespace);
 
 				serializer.Serialize (type, value);
 				serializer.WriteEndElement ();
 			}
 		}
 		
-		/* Gets instance of 'type' 
-		   or null if nil=true */
-		private object GetInstance (XmlReader reader, Type type)
-		{
-			if (reader.GetAttribute ("nil", XmlSchema.InstanceNamespace) != "true")
-				/* No nil!=true, so uninitialized instance of type is returned */
-				/* FIXME: CreateInstance requires a default .ctor, .net doesn't need it */
-				return type == typeof (void) ? null : Activator.CreateInstance (type, true);
-
-			/* i:nil = true */
-			for (int i = 0; i < Members.Count; i++)
-				if (Members [i].IsRequired)
-					throw MissingRequiredMember (Members [i], reader);
-
-			return null;
-		}
-
-		public object Deserialize (XmlReader reader,
-			XmlFormatterDeserializer deserializer)
-		{
-			/* These checks are required only on the top DataContract,
-			   so not included in DeserializeNoVerify */
-
-			QName graph_qname = new QName (reader.Name, reader.NamespaceURI);
-			SerializationMap map = KnownTypes.FindUserMap (graph_qname);
-
-			if (map == null) {
-				// <BClass .. i:type="EClass" >..</BClass>
-				// Expecting type EClass : allowed
-				// See test Serialize1b, and Serialize1c (for
-				// negative cases)
-
-				// Run through inheritance heirarchy .. 
-				Type baseType = RuntimeType.BaseType;
-				while (baseType != null) {
-					QName qname = KnownTypes.GetQName (baseType);
-					if (qname == graph_qname)
-						return DeserializeNoVerify (reader, deserializer);
-
-					baseType = baseType.BaseType;
-				}
-			} else if (map.XmlName == this.XmlName) {
-				return DeserializeNoVerify (reader, deserializer);
-			}
-
-			throw new SerializationException (String.Format (
-				"Expecting element '{0}' from namespace '{1}'. Encountered 'Element' with name '{2}', namespace '{3}'", 
-				XmlName.Name, XmlName.Namespace, graph_qname.Name, graph_qname.Namespace));
-		}
-
-		public object DeserializeNoVerify (XmlReader reader,
-			XmlFormatterDeserializer deserializer)
-		{
-			string global_ns = reader.NamespaceURI;
-			string itype = reader.GetAttribute ("type", XmlSchema.InstanceNamespace);
-			if (itype == null) {
-				reader.MoveToContent ();
-				return DeserializeContent (reader, deserializer);
-			}
-
-			/* Handle i:type */
-			QName graph_qname;
-			string [] parts = itype.Split (':');
-			if (parts.Length > 1)
-				/*FIXME: if (lookup == null)? */
-				graph_qname = new QName (parts [1], 
-						reader.LookupNamespace (reader.NameTable.Get (parts [0])));
-			else
-				graph_qname = new QName (itype, global_ns);
-
-			if (KnownTypeCollection.IsPrimitiveType (graph_qname)) {
-				reader.Read ();
-				return KnownTypeCollection.PredefinedTypeStringToObject (
-					reader.ReadContentAsString (), graph_qname.Name, reader);
-			}
-
-			SerializationMap map = KnownTypes.FindUserMap (graph_qname);
-			if (map == null)
-				throw new SerializationException (String.Format (
-					"No type has DataContract '{0}' in element '{1}'. Add the type corresponding to '{2}' to the list of knowntypes.", 
-					graph_qname, new QName (reader.Name, reader.NamespaceURI), graph_qname.Name));
-
-			reader.MoveToContent ();
-			return map.DeserializeContent (reader, deserializer);
-		}
-
 		/* Deserialize non-primitive types */
-		protected virtual object DeserializeContent (XmlReader reader,
+		public virtual object DeserializeContent (XmlReader reader,
 			XmlFormatterDeserializer deserializer)
 		{
-			int depth = reader.Depth;
-			int count = Members.Count;
-			int cur = 0;
-			object instance = GetInstance (reader, RuntimeType);
-
-			if (reader.IsEmptyElement) {
-				reader.Read ();
-				return instance;
-			}
-
-			reader.Read ();
-			if (reader.NodeType == XmlNodeType.EndElement)
-				/* <Shape></Shape> */
-				return instance;
-
-			if (reader.NodeType != XmlNodeType.Element)
-				/* <Shape>1</Shape> */
-				throw new SerializationException (String.Format (
-					"Expecting state 'Element'. Encountered '{0}' with name '{1}', namespace '{2}'",
-					reader.NodeType, reader.Name, reader.NamespaceURI));
-
+			object instance = RuntimeType == typeof (void) ? null : Activator.CreateInstance (RuntimeType, true);
+			int depth = reader.NodeType == XmlNodeType.None ? reader.Depth : reader.Depth - 1;
 			bool [] filled = new bool [Members.Count];
-			for (int i = 0; i < count; i++) {
-				int order = Members [i].Order;
-				DataMemberInfo dmi = Members [i];
-				
-				if (reader.Depth == depth) {
-					reader.ReadEndElement ();
-					break;
+			int memberInd = -1;
+			while (reader.NodeType == XmlNodeType.Element && reader.Depth > depth) {
+				DataMemberInfo dmi = null;
+				for (int i = memberInd + 1; i < Members.Count; i++) {
+					if (reader.LocalName == Members[i].XmlName &&
+						reader.NamespaceURI == XmlName.Namespace) {
+						memberInd = i;
+						dmi = Members [i];
+						break;
+					}
 				}
 
-				if (filled [i])
-					/* already done */
-					continue;
-
-				if (reader.LocalName != dmi.XmlName)
-					/* Move to next DataMember */
-					continue;
-
-				if (reader.NamespaceURI != XmlName.Namespace) {
-					reader.Skip();
-					i--;
+				if (dmi == null) {
+					reader.Skip ();
 					continue;
 				}
-
-				if (dmi.MemberType == typeof (object)) {
-					SetValue (dmi, instance,
-						DeserializeNoVerify (reader, deserializer));
-					filled [i] = true;
-					continue;
-				}
-
-				SerializationMap map = KnownTypes.FindUserMap (dmi.MemberType);
-				if (map != null) {
-					/* dmi.XmlName - compare with reader's element name,
-					   < .. > <shape1 .. /> <../> */
-					SetValue (dmi, instance, 
-						map.DeserializeNoVerify (reader, deserializer));
-					filled [i] = true;
-					continue;
-				}
-
-				/* Predefined (unmapped) type */
-
-				object value = null;
-				if (reader.GetAttribute ("nil", XmlSchema.InstanceNamespace) == "true")
-					reader.Read ();
-				else
-					value = deserializer.Deserialize (dmi.MemberType, reader, false);
-				
-				SetValue (dmi, instance, value);
-				filled [i] = true;
-					 
-				/* UNUSED FOR NOW : 
-				   for (; cur < i; cur++)
-					if (!filled [cur] && Members [cur].IsRequired)
-						throw MissingRequiredMember (Members [cur], reader);*/
+				SetValue (dmi, instance, deserializer.Deserialize (dmi.MemberType, reader));
+				filled [memberInd] = true;
 			}
+			for (int i = 0; i < Members.Count; i++)
+				if (!filled [i] && Members [i].IsRequired)
+					throw MissingRequiredMember (Members [i], reader);
 
 			return instance;
 		}
@@ -479,6 +341,16 @@ namespace System.Runtime.Serialization
 			else
 				((FieldInfo) dmi.Member).SetValue (obj, value);
 		}
+
+		protected DataMemberInfo CreateDataMemberInfo (DataMemberAttribute dma, MemberInfo mi, Type type)
+		{
+			KnownTypes.Add (type);
+			QName qname = KnownTypes.GetQName (type);
+			if (KnownTypeCollection.IsPrimitiveType (qname))
+				return new DataMemberInfo (mi, dma, null);
+			else
+				return new DataMemberInfo (mi, dma, qname.Namespace);
+		}
 	}
 
 	internal class XmlSerializableMap : SerializationMap
@@ -493,7 +365,7 @@ namespace System.Runtime.Serialization
 			IXmlSerializable ixs = graph as IXmlSerializable;
 			if (ixs == null)
 				//FIXME: Throw what exception here?
-				throw new Exception ();
+				throw new SerializationException ();
 
 			ixs.WriteXml (serializer.Writer);
 		}
@@ -558,13 +430,6 @@ namespace System.Runtime.Serialization
 			return data_members;
 		}
 
-		private DataMemberInfo CreateDataMemberInfo (DataMemberAttribute dma, MemberInfo mi, Type type)
-		{
-			KnownTypes.Add (type);
-			QName qname = KnownTypes.GetQName (type);
-			return new DataMemberInfo (mi, dma, qname.Namespace);
-		}
-
 		public override List<DataMemberInfo> GetMembers ()
 		{
 			return GetMembers (RuntimeType, XmlName, true);
@@ -591,8 +456,6 @@ namespace System.Runtime.Serialization
 			string ns = element_qname.Namespace;
 			if (ns == KnownTypeCollection.MSSimpleNamespace)
 				ns = KnownTypeCollection.MSArraysNamespace;
-
-			serializer.Writer.WriteXmlnsAttribute (null, ns);
 
 			foreach (object o in (IEnumerable) graph) {
 				serializer.WriteStartElement (element_qname.Name, ns);
@@ -677,8 +540,7 @@ namespace System.Runtime.Serialization
 					throw new InvalidDataContractException (String.Format ("DataMember field {0} must not be read-only.", fi));
 				DataMemberAttribute dma = new DataMemberAttribute ();
 				dma.Order = order++;
-				data_members.Add (new DataMemberInfo (fi, dma, qname.Namespace));
-				KnownTypes.Add (fi.FieldType);
+				data_members.Add (CreateDataMemberInfo (dma, fi, fi.FieldType));
 			}
 
 			return data_members;
@@ -777,10 +639,10 @@ namespace System.Runtime.Serialization
 				"Enum value '{0}' is invalid for type '{1}' and cannot be serialized.", graph, RuntimeType));
 		}
 
-		protected override object DeserializeContent (XmlReader reader,
+		public override object DeserializeContent (XmlReader reader,
 			XmlFormatterDeserializer deserializer)
 		{
-			string value = reader.ReadElementContentAsString ();
+			string value = reader.NodeType != XmlNodeType.Text ? String.Empty : reader.ReadContentAsString ();
 
 			if (value != String.Empty) {
 				foreach (EnumMemberInfo emi in enum_members)
@@ -805,7 +667,7 @@ namespace System.Runtime.Serialization
 		}
 	}
 
-	internal struct DataMemberInfo //: KeyValuePair<int, MemberInfo>
+	internal class DataMemberInfo //: KeyValuePair<int, MemberInfo>
 	{
 		public readonly int Order;
 		public readonly bool IsRequired;

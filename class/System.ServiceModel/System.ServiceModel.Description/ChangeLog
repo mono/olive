@@ -1,3 +1,13 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* TypedMessageConverter.cs: Simplified to use XmlMessagesFormatter and
+	  DataContractMessagesFormatter that handle the actual message
+	  serialization/deserialization.
+	  Added support for XmlSerializaerFormat serialization.
+	* ContractDescriptionGenerator.cs: Refactored to expose utilities for
+	  creating MessageDescription from types for TypedMessageConverter use.
+	* ServiceModelInternalConverter.cs: Removed.
+
 2008-04-08  Roei Erez <roeie@mainsoft.com>
 
 	* ServiceAuthorizationBehavior.cs:
@@ -20,11 +30,11 @@
 	* ContractDescriptionGenerator.cs: fixed GetMessage, fixed namespace
 	while creating message part
 
-2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ContractDescriptionGenerator.cs: Init ConfigurationName from attribute.
 
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* MetadataSectionSerializerBase.cs WSTrustMessageConverters.cs:
 	  Fix compilation warnings.

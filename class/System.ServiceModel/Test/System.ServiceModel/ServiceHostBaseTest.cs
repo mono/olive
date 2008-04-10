@@ -111,7 +111,7 @@ namespace MonoTests.System.ServiceModel
 
 			}
 
-			public void ApplyConfiguration () {
+			public new void ApplyConfiguration () {
 				base.ApplyConfiguration ();
 			}
 

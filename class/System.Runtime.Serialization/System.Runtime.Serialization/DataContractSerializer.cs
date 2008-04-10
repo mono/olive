@@ -266,11 +266,8 @@ namespace System.Runtime.Serialization
 
 			bool isEmpty = reader.IsEmptyElement;
 
-			object ret = XmlFormatterDeserializer.Deserialize (
-				reader, type, known_types, surrogate, verifyObjectName);
-
-			if (!isEmpty)
-				reader.Read ();
+			object ret = XmlFormatterDeserializer.Deserialize (reader, type,
+				known_types, surrogate, root_name.Value, root_ns.Value, verifyObjectName);
 
 			// remove temporarily-added known types for
 			// rootType and object graph type.
@@ -345,9 +342,9 @@ namespace System.Runtime.Serialization
 				throw new InvalidDataContractException ("Type '" + type.ToString () +
 					"' cannot have a DataContract attribute Name set to null or empty string.");
 
-			writer.WriteStartElement (root_name.Value, root_ns.Value);
 
 			if (graph == null) {
+				writer.WriteStartElement (root_name.Value, root_ns.Value);
 				writer.WriteAttributeString ("i", "nil", XmlSchema.InstanceNamespace, "true");
 				writer.WriteAttributeString ("xmlns", xmlns, root_ns.Value);
 
@@ -359,6 +356,12 @@ namespace System.Runtime.Serialization
 			QName graph_qname = known_types.GetQName (graph.GetType ());
 
 			known_types.Add (graph.GetType ());
+
+			writer.WriteStartElement (root_name.Value, root_ns.Value);
+			if (root_ns.Value != root_qname.Namespace)
+				if (root_qname.Namespace != KnownTypeCollection.MSSimpleNamespace)
+					writer.WriteXmlnsAttribute (null, root_qname.Namespace);
+
 			if (root_qname == graph_qname) {
 				if (root_qname.Namespace != KnownTypeCollection.MSSimpleNamespace &&
 					!rootType.IsEnum)

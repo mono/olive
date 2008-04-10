@@ -513,7 +513,6 @@
     <Compile Include="System.ServiceModel.Channels\WSSignedXml.cs" />
     <Compile Include="System.ServiceModel.Channels\XmlObjectSerializerBodyWriter.cs" />
     <Compile Include="System.ServiceModel.Channels\XmlReaderBodyWriter.cs" />
-    <Compile Include="System.ServiceModel.Channels\XmlSerializerBodyWriter.cs" />
     <Compile Include="System.ServiceModel.ComIntegration\Dummy.cs" />
     <Compile Include="System.ServiceModel.Configuration\AddressHeaderCollectionElement.cs" />
     <Compile Include="System.ServiceModel.Configuration\AllowedAudienceUriElement.cs" />
@@ -795,7 +794,6 @@
     <Compile Include="System.ServiceModel.Description\ServiceEndpointCollection.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceMetadataBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceMetadataExtension.cs" />
-    <Compile Include="System.ServiceModel.Description\ServiceModelInternalConverter.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceSecurityAuditBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceThrottlingBehavior.cs" />
     <Compile Include="System.ServiceModel.Description\ServiceTimeoutsBehavior.cs" />
@@ -814,13 +812,13 @@
     <Compile Include="System.ServiceModel.Diagnostics\PerformanceCounterScope.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ActionMessageFilter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ActionMessageFilterTable.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\BaseMessagesFormatter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcher.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcherBase.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcherCollection.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ClientOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ClientRuntime.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DataContractSerializerServiceBehavior.cs" />
-    <Compile Include="System.ServiceModel.Dispatcher\DefaultMessageOperationFormatter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchRuntime.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\EndpointAddressMessageFilter.cs" />

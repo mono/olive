@@ -34,7 +34,7 @@ namespace MonoTests.System.ServiceModel.Channels
 {
 	class ExtCommObj : CommunicationObject
 	{
-		public bool Aborted, Opened, Closed;
+		public new bool Aborted, Opened, Closed;
 
 		public ExtCommObj () : base ()
 		{

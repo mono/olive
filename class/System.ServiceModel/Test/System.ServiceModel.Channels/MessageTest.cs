@@ -39,7 +39,7 @@ namespace MonoTests.System.ServiceModel.Channels
 	[TestFixture]
 	public class MessageTest
 	{
-		string GetSerializedMessage (Message msg)
+		public static string GetSerializedMessage (Message msg)
 		{
 			StringWriter sw = new StringWriter ();
 			XmlWriterSettings settings = new XmlWriterSettings ();

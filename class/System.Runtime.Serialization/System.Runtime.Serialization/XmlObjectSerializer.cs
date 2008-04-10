@@ -74,7 +74,7 @@ namespace System.Runtime.Serialization
 
 		public virtual object ReadObject (XmlDictionaryReader reader)
 		{
-			return ReadObject (reader, false);
+			return ReadObject (reader, true);
 		}
 
 		public virtual object ReadObject (XmlReader reader, bool readContentOnly)

@@ -103,7 +103,7 @@ namespace Mono.CodeGeneration
 				gen.Emit (OpCodes.Box, sourceType);
 			}
 		}
-		
+
 		public static void LoadFromPtr (ILGenerator ig, Type t)
 		{
 			if (t == typeof(int))
@@ -142,7 +142,46 @@ namespace Mono.CodeGeneration
 			else
 				ig.Emit (OpCodes.Ldind_Ref);
 		}
-		
+
+		public static void SaveToPtr (ILGenerator ig, Type t)
+		{
+			if (t == typeof(int))
+				ig.Emit (OpCodes.Stind_I4);
+			else if (t == typeof(uint))
+				ig.Emit (OpCodes.Stind_I4);
+			else if (t == typeof(short))
+				ig.Emit (OpCodes.Stind_I2);
+			else if (t == typeof(ushort))
+				ig.Emit (OpCodes.Stind_I2);
+			else if (t == typeof(char))
+				ig.Emit (OpCodes.Stind_I2);
+			else if (t == typeof(byte))
+				ig.Emit (OpCodes.Stind_I1);
+			else if (t == typeof(sbyte))
+				ig.Emit (OpCodes.Stind_I1);
+			else if (t == typeof(ulong))
+				ig.Emit (OpCodes.Stind_I8);
+			else if (t == typeof(long))
+				ig.Emit (OpCodes.Stind_I8);
+			else if (t == typeof(float))
+				ig.Emit (OpCodes.Stind_R4);
+			else if (t == typeof(double))
+				ig.Emit (OpCodes.Stind_R8);
+			else if (t == typeof(bool))
+				ig.Emit (OpCodes.Stind_I1);
+			else if (t == typeof(IntPtr))
+				ig.Emit (OpCodes.Stind_I);
+			else if (t.IsEnum) {
+				if (t == typeof(Enum))
+					ig.Emit (OpCodes.Stind_Ref);
+				else
+					SaveToPtr (ig, t.UnderlyingSystemType);
+			} else if (t.IsValueType)
+				ig.Emit (OpCodes.Stobj, t);
+			else
+				ig.Emit (OpCodes.Stind_Ref);
+		}
+
 		public static bool IsNumber (Type t)
 		{
 			switch (Type.GetTypeCode (t))

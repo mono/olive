@@ -1,3 +1,10 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* System.ServiceModel.dll.sources, System.ServiceModel.csproj:
+	  Moved System.ServiceModel.Dispatcher/DefaultMessageOperationFormatter.cs
+	  to System.ServiceModel.Dispatcher/BaseMessagesFormatter.cs.
+	  Removed System.ServiceModel.Description/ServiceModelInternalConverter.cs.
+
 2008-04-01  Roei Erez <roeie@mainsoft.com>
 
 	* System.ServiceModel_test_net_3_0.dll.config: Added configurations for new tests.
@@ -28,12 +35,12 @@
 
 	* Makefile : add EXTRA_DISTFILES.
 
-2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-28  Eyal Alaluf <eyala@mainsoft.com>
 
 	* System.ServiceModel_test_net_3_0.dll.config: Add configurations for
 	  testing ClientBase<T> ctors.
 
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* Makefile: Ignore common warnings including use of obsolete API (since
 	  Mono.Security.* has several such warnings).

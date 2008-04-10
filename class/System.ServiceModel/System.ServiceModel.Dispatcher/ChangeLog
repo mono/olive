@@ -1,4 +1,14 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* DefaultMessageOperationFormatter.cs: Moved to BaseMessagesFormatter.cs.
+	* BaseMessagesFormatter.cs: Refactored so typed messages uses the classes
+	  defined here instead of the other way around.
+	  Added support for by-ref and out parameters.
+	  Added support for XmlSerializerFormat serializaters..
+	* DispatchOperation.cs, ClientOperation.cs: Use BaseMessagesFormatter.Create
+
 2008-04-09  Roei Erez <roeie@mainsoft.com>
+
 	* Remove unused nethod from previous commit
 
 2008-04-08  Roei Erez <roeie@mainsoft.com>

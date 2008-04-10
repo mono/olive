@@ -121,7 +121,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category("CurrentTest")]
 		public void ApplyConfigurationTest2 ()
 		{
 			SimpleChannelFactory factory = new SimpleChannelFactory ();

@@ -1,3 +1,7 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ClientProxyGenerator.cs: Add support for out and by ref params.
+
 2008-04-08  Roei Erez <roeie@mainsoft.com>
 
 	* ServiceHostBase.cs:
@@ -54,13 +58,13 @@
 	* ServiceHostBase.cs: implemented ApplyConfiguration, fixed service 
 	hosting
 
-2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Move configuration handling to ChannelFactory.
 	* ChannelFactory_1.cs: Add arguments checks.
 	* ChannelFactory.cs: Implement ApplyConfiguration.
 
-2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-28  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Handle better configuration lookup and contract
 	  attributes.
@@ -71,12 +75,12 @@
 
 	* DuplexChannelFactory.cs : CreateChannel() is extra.
 
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelBase.cs: Handle case where contract configuration name is set
 	  in the 'TChannel' type custom attributes.
 
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* WSHttpBindingBase.cs DuplexChannelFactory.cs: Fix compilation warnings.
 

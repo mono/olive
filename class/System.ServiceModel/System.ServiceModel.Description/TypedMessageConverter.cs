@@ -30,6 +30,7 @@ using System.Collections.ObjectModel;
 using System.Reflection;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
+using System.ServiceModel.Dispatcher;
 using System.Runtime.Serialization;
 using System.Xml;
 using System.Xml.Schema;
@@ -37,96 +38,18 @@ using System.Xml.Serialization;
 
 namespace System.ServiceModel.Description
 {
-	internal class MessageContractBodyWriter : BodyWriter
+	internal class DefaultTypedMessageConverter : TypedMessageConverter
 	{
-		MessageDescriptionMapping map;
-		MessageBodyDescription mb;
-		object body;
+		IClientMessageFormatter formatter;
 
-		public MessageContractBodyWriter (MessageDescriptionMapping map, MessageBodyDescription mb, object body)
-			: base (true)
+		public DefaultTypedMessageConverter (IClientMessageFormatter formatter)
 		{
-			this.map = map;
-			this.mb = mb;
-			this.body = body;
-		}
-
-		protected override BodyWriter OnCreateBufferedCopy (
-			int maxBufferSize)
-		{
-			return new MessageContractBodyWriter (map, mb, body);
-		}
-
-		protected override void OnWriteBodyContents (
-			XmlDictionaryWriter writer)
-		{
-			if (mb.WrapperName != null)
-				writer.WriteStartElement (mb.WrapperName, mb.WrapperNamespace);
-			writer.WriteXmlnsAttribute ("i", XmlSchema.InstanceNamespace);
-
-			if (mb.ReturnValue != null)
-				WriteMessagePart (writer, mb.ReturnValue);
-			foreach (MessagePartDescription part in mb.Parts)
-				WriteMessagePart (writer, part);
-
-			if (mb.WrapperName != null)
-				writer.WriteEndElement ();
-		}
-
-		void WriteMessagePart (XmlDictionaryWriter writer, MessagePartDescription part)
-		{
-			object value;
-			if (part.MemberInfo is FieldInfo)
-				value = ((FieldInfo) part.MemberInfo).GetValue (body);
-			else
-				value = ((PropertyInfo) part.MemberInfo).GetValue (body, null);
-			writer.WriteStartElement (part.Name, part.Namespace);
-			map.Serializers [part.Type].WriteObjectContent (writer, value);
-			writer.WriteEndElement ();
-		}
-	}
-
-	internal class TypedMessageConverterDC : TypedMessageConverter
-	{
-		DataContractFormatAttribute attr;
-		MessageBodyDescription msg_body;
-		MessageDescriptionMapping map;
-		Type type;
-
-		public TypedMessageConverterDC (Type type, string action,
-			string defaultNamespace,
-			DataContractFormatAttribute formatterAttribute)
-			: base (type, action, defaultNamespace)
-		{
-			this.attr = formatterAttribute;
-
-			// FIXME: handle format style (Document|RPC)
-
-			this.type = type;
-			msg_body = ServiceModelInternalConverter.MessageContractToMessageBody (type);
-			map = ServiceModelInternalConverter.MessageBodyToDataContractType (msg_body);
+			this.formatter = formatter;
 		}
 
 		public override object FromMessage (Message message)
 		{
-			object ret = Activator.CreateInstance (type);
-
-			if (!message.IsEmpty) {
-				XmlDictionaryReader r = message.GetReaderAtBodyContents ();
-				if (msg_body.WrapperName != null)
-					r.ReadStartElement (msg_body.WrapperName, msg_body.WrapperNamespace);
-				for (r.MoveToContent (); r.NodeType == XmlNodeType.Element; r.MoveToContent ()) {
-					MessagePartDescription p = msg_body.Parts [new XmlQualifiedName (r.LocalName, r.NamespaceURI)];
-					object mv = map.Serializers [p.Type].ReadObject (r);
-					if (p.MemberInfo is FieldInfo)
-						((FieldInfo) p.MemberInfo).SetValue (ret, mv);
-					else
-						((PropertyInfo) p.MemberInfo).SetValue (ret, mv, null);
-				}
-				if (msg_body.WrapperName != null)
-					r.ReadEndElement ();
-			}
-			return ret;
+			return formatter.DeserializeReply (message, null);
 		}
 
 		public override Message ToMessage (object typedMessage)
@@ -137,48 +60,7 @@ namespace System.ServiceModel.Description
 		public override Message ToMessage (
 			object typedMessage, MessageVersion version)
 		{
-			BodyWriter writer = new MessageContractBodyWriter (map, msg_body, typedMessage);
-			return Message.CreateMessage (version, Action, writer);
-		}
-	}
-
-	internal class TypedMessageConverterXS : TypedMessageConverter
-	{
-		XmlSerializerFormatAttribute attr;
-		XmlSerializer serializer;
-
-		public TypedMessageConverterXS (Type type, string action,
-			string defaultNamespace,
-			XmlSerializerFormatAttribute formatterAttribute)
-			: base (type, action, defaultNamespace)
-		{
-			this.attr = formatterAttribute;
-
-			// FIXME: handle format style (Document|RPC, Encoded|Literal)
-			serializer = new XmlSerializer (
-				ServiceModelInternalConverter.ToXmlSerializableType (type, defaultNamespace),
-				null,
-				Type.EmptyTypes,
-				null,
-				defaultNamespace);
-		}
-
-		public override object FromMessage (Message message)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override Message ToMessage (object typedMessage)
-		{
-			return ToMessage (typedMessage, MessageVersion.Default);
-		}
-
-		public override Message ToMessage (
-			object typedMessage, MessageVersion version)
-		{
-			return Message.CreateMessage (version,
-				Action,
-				new XmlSerializerBodyWriter (serializer, typedMessage));
+			return formatter.SerializeRequest (version, new object [] {typedMessage});
 		}
 	}
 
@@ -186,19 +68,8 @@ namespace System.ServiceModel.Description
 	{
 		internal const string TempUri = "http://tempuri.org/";
 
-		Type contract_type;
-		string action, default_ns;
-
 		protected TypedMessageConverter ()
 		{
-		}
-
-		internal TypedMessageConverter (Type type,
-			string action, string defaultNS)
-		{
-			contract_type = type;
-			this.action = action;
-			default_ns = defaultNS;
 		}
 
 		public static TypedMessageConverter Create (
@@ -211,8 +82,7 @@ namespace System.ServiceModel.Description
 			Type type, string action,
 			string defaultNamespace)
 		{
-			return new TypedMessageConverterDC (type, action,
-				defaultNamespace, null);
+			return Create (type, action, defaultNamespace, (DataContractFormatAttribute)null);
 		}
 
 		public static TypedMessageConverter Create (
@@ -227,8 +97,10 @@ namespace System.ServiceModel.Description
 			string action, string defaultNamespace,
 			DataContractFormatAttribute formatterAttribute)
 		{
-			return new TypedMessageConverterDC (type, action,
-				defaultNamespace, formatterAttribute);
+			return new DefaultTypedMessageConverter (
+				new DataContractMessagesFormatter (
+					MessageContractToMessagesDescription (type, defaultNamespace, action),
+					formatterAttribute));
 		}
 
 		public static TypedMessageConverter Create (
@@ -242,30 +114,31 @@ namespace System.ServiceModel.Description
 			Type type, string action, string defaultNamespace,
 			XmlSerializerFormatAttribute formatterAttribute)
 		{
-			return new TypedMessageConverterXS (type, action,
-				defaultNamespace, formatterAttribute);
+			return new DefaultTypedMessageConverter (
+				new XmlMessagesFormatter (
+					MessageContractToMessagesDescription (type, defaultNamespace, action),
+					formatterAttribute));
 		}
 
-		internal Type ContractType {
-			get { return contract_type; }
-		}
-
-		internal string Action {
-			get { return action; }
-		}
-
-		internal string DefaultNS {
-			get { return default_ns; }
-		}
-
-		[MonoTODO]
 		public abstract object FromMessage (Message message);
 
-		[MonoTODO]
 		public abstract Message ToMessage (object typedMessage);
 
-		[MonoTODO]
-		public abstract Message ToMessage (
-			object typedMessage, MessageVersion version);
+		public abstract Message ToMessage (object typedMessage, MessageVersion version);
+
+		static MessageDescriptionCollection MessageContractToMessagesDescription (
+			Type src, string defaultNamespace, string action)
+		{
+			MessageContractAttribute mca =
+				ContractDescriptionGenerator.GetMessageContractAttribute (src);
+
+			if (mca == null)
+				throw new ArgumentException (String.Format ("Type {0} and its ancestor types do not have MessageContract attribute.", src));
+
+			MessageDescriptionCollection messages = new MessageDescriptionCollection ();
+			messages.Add (ContractDescriptionGenerator.CreateMessageDescription (src, defaultNamespace, action, true, mca));
+			messages.Add (ContractDescriptionGenerator.CreateMessageDescription (src, defaultNamespace, action, false, mca));
+			return messages;
+		}
 	}
 }
