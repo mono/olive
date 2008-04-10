@@ -97,7 +97,7 @@ namespace System.ServiceModel.Syndication
 		{
 			if (serializer == null)
 				throw new ArgumentNullException ("serializer");
-			return (TExtension) serializer.ReadObject (GetReader ());
+			return (TExtension) serializer.ReadObject (GetReader (), false);
 		}
 
 		public TExtension GetObject<TExtension> (XmlSerializer serializer)
