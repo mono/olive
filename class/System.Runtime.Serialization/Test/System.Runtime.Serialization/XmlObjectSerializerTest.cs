@@ -601,7 +601,65 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
+		public void SerializeDCWithTwoEnums ()
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (DCWithTwoEnums));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				DCWithTwoEnums e = new DCWithTwoEnums ();
+				e.colors = Colors.Blue;
+				e.colors2 = Colors.Green;
+				ser.WriteObject (w, e);
+			}
+ 
+			Assert.AreEqual (
+				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors>Blue</colors><colors2>Green</colors2></DCWithTwoEnums>",
+				sw.ToString ());
+		}
+
+		[Test]
+		public void SerializeNestingDC2 ()
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (NestingDC2));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				NestingDC2 e = new NestingDC2 ();
+				e.Field = new NestedDC2 ("Something");
+				ser.WriteObject (w, e);
+			}
+ 
+			Assert.AreEqual (
+				@"<NestingDC2 xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""test2""><Field xmlns:d2p1=""test1""><d2p1:Name>Something</d2p1:Name></Field></NestingDC2>",
+				sw.ToString ());
+		}
+
+		[Test]
+		public void SerializeNestingDC ()
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (NestingDC));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				NestingDC e = new NestingDC ();
+				e.Field1 = new NestedDC ("test1");
+				e.Field2 = new NestedDC ("test2");
+				ser.WriteObject (w, e);
+			}
+ 
+			Assert.AreEqual (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1><Name>test1</Name></Field1><Field2><Name>test2</Name></Field2></NestingDC>",
+				sw.ToString ());
+			sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				NestingDC e = new NestingDC ();
+				ser.WriteObject (w, e);
+			}
+ 
+			Assert.AreEqual (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1 i:nil=""true"" /><Field2 i:nil=""true"" /></NestingDC>",
+				sw.ToString ());
+		}
+
+		[Test]
 		public void SerializerDCArray ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (DCWithEnum []));
@@ -619,7 +677,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void SerializerDCArray2 ()
 		{
 			List<Type> known = new List<Type> ();
@@ -641,7 +698,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void SerializerDCArray3 ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (int []));
@@ -781,6 +837,127 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		public void DeserializeNestingDC ()
+		{
+			object o = Deserialize (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1><Name>test1</Name></Field1><Field2><Name>test2</Name></Field2></NestingDC>",
+				typeof (NestingDC));
+
+			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
+			NestingDC dc = (NestingDC) o;
+			Assert.IsNotNull (dc.Field1, "#N1: Field1 should not be null.");
+			Assert.IsNotNull (dc.Field2, "#N2: Field2 should not be null.");
+			Assert.AreEqual ("test1", dc.Field1.Name, "#1");
+			Assert.AreEqual ("test2", dc.Field2.Name, "#2");
+		}
+
+		[Test]
+		public void DeserializeNestingDC2 ()
+		{
+			object o = Deserialize (
+				@"<NestingDC2 xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""test2""><Field xmlns:d2p1=""test1""><d2p1:Name>Something</d2p1:Name></Field></NestingDC2>",
+				typeof (NestingDC2));
+
+			Assert.AreEqual (typeof (NestingDC2), o.GetType (), "#de7");
+			NestingDC2 dc = (NestingDC2) o;
+			Assert.IsNotNull (dc.Field, "#N0: Field should not be null.");
+			Assert.AreEqual ("Something", dc.Field.Name, "#N1");
+		}
+
+		[Test]
+		public void DeserializeTwice ()
+		{
+			string xml = 
+				@"<any><_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">_Red</_ColorsWithDC> <_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">_Red</_ColorsWithDC></any>";
+			DataContractSerializer ser = new DataContractSerializer (typeof (ColorsWithDC));
+			XmlReader xr = XmlReader.Create (new StringReader (xml), new XmlReaderSettings ());
+			xr.ReadStartElement ();
+			object o = ser.ReadObject (xr);
+			Assert.AreEqual (typeof (ColorsWithDC), o.GetType (), "#de5");
+			ColorsWithDC cdc = (ColorsWithDC) o;
+			Assert.AreEqual (ColorsWithDC.Red, o, "#de6");
+
+			o = ser.ReadObject (xr);
+			Assert.AreEqual (typeof (ColorsWithDC), o.GetType (), "#de5");
+			cdc = (ColorsWithDC) o;
+			Assert.AreEqual (ColorsWithDC.Red, o, "#de6");
+			Assert.AreEqual (XmlNodeType.EndElement, xr.NodeType, "#de6");
+			Assert.AreEqual ("any", xr.LocalName, "#de6");
+			xr.ReadEndElement ();
+		}
+
+
+		[Test]
+		public void DeserializeEmptyNestingDC ()
+		{
+			object o = Deserialize (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""></NestingDC>",
+				typeof (NestingDC));
+
+			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
+			NestingDC dc = (NestingDC) o;
+			Assert.IsNotNull (dc, "#A0: The object should not be null.");
+			Assert.IsNull (dc.Field1, "#A1: Field1 should be null.");
+			Assert.IsNull (dc.Field2, "#A2: Field2 should be null.");
+
+			o = Deserialize (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""/>",
+				typeof (NestingDC));
+
+			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
+			dc = (NestingDC) o;
+			Assert.IsNotNull (dc, "#B0: The object should not be null.");
+			Assert.IsNull (dc.Field1, "#B1: Field1 should be null.");
+			Assert.IsNull (dc.Field2, "#B2: Field2 should be null.");
+
+			o = Deserialize (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1 i:nil=""true"" /><Field2 i:nil=""true"" /></NestingDC>",
+				typeof (NestingDC));
+			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
+			dc = (NestingDC) o;
+			Assert.IsNotNull (dc, "#B0: The object should not be null.");
+			Assert.IsNull (dc.Field1, "#B1: Field1 should be null.");
+			Assert.IsNull (dc.Field2, "#B2: Field2 should be null.");
+		}
+
+		[Test]
+		[ExpectedException (typeof (SerializationException))]
+		public void DeserializeEmptyDCWithTwoEnums ()
+		{
+			object o = Deserialize (
+				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/><colors2 i:nil=""true""/></DCWithTwoEnums>",
+				typeof (DCWithTwoEnums));
+
+			DCWithTwoEnums dc = (DCWithTwoEnums) o;
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void DeserializeDCWithNullableEnum ()
+		{
+			object o = Deserialize (
+				@"<DCWithNullableEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/></DCWithNullableEnum>",
+				typeof (DCWithNullableEnum));
+
+			DCWithNullableEnum dc = (DCWithNullableEnum) o;
+			Assert.IsNotNull (dc, "#B0: The object should not be null.");
+			Assert.IsNull (dc.colors, "#B1: Field should be null.");
+		}
+
+		[Test]
+		public void DeserializeDCWithTwoEnums ()
+		{
+			object o = Deserialize (
+				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors>Blue</colors><colors2>Green</colors2></DCWithTwoEnums>",
+				typeof (DCWithTwoEnums));
+
+			Assert.AreEqual (typeof (DCWithTwoEnums), o.GetType (), "#de7");
+			DCWithTwoEnums dc = (DCWithTwoEnums) o;
+			Assert.AreEqual (Colors.Blue, dc.colors, "#0");
+			Assert.AreEqual (Colors.Green, dc.colors2, "#1");
+		}
+
+		[Test]
 		public void ReadObjectNoVerifyObjectName ()
 		{
 			string xml = @"<any><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization1"">bar1</Member1><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization2"">bar2</Member1><Member1 xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">bar</Member1></any>";
@@ -799,8 +976,8 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		[Category ("CurrentTest")]
 		[ExpectedException (typeof (SerializationException))]
-		[Category ("NotWorking")]
 		public void ReadObjectWrongNamespace ()
 		{
 			string xml = @"<VerifyObjectNameTestData xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization2""><Member1>bar</Member1></VerifyObjectNameTestData>";
@@ -844,6 +1021,52 @@ namespace MonoTests.System.Runtime.Serialization
 	public class DCWithEnum {
 		[DataMember (Name = "_colors")]
 		public Colors colors;
+	}
+
+ 	[DataContract]
+	public class DCWithTwoEnums {
+		[DataMember]
+		public Colors colors;
+		[DataMember]
+		public Colors colors2;
+	}
+
+ 	[DataContract]
+	public class DCWithNullableEnum {
+		[DataMember]
+		public Colors? colors;
+	}
+
+ 	[DataContract]
+	public class NestedDC {
+		public NestedDC (string name) { this.Name = name; }
+		public NestedDC () {}
+
+		[DataMember]
+		public string Name;
+	}
+
+ 	[DataContract]
+	public class NestingDC {
+		[DataMember]
+		public NestedDC Field1;
+		[DataMember]
+		public NestedDC Field2;
+	}
+
+ 	[DataContract (Namespace = "test1")]
+	public class NestedDC2 {
+		public NestedDC2 (string name) { this.Name = name; }
+		public NestedDC2 () {}
+
+		[DataMember]
+		public string Name;
+	}
+
+ 	[DataContract (Namespace = "test2")]
+	public class NestingDC2 {
+		[DataMember]
+		public NestedDC2 Field;
 	}
 
 	[DataContract]

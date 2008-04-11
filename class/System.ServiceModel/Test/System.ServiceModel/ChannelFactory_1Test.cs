@@ -28,10 +28,12 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.Xml;
+using System.Xml.Serialization;
 using MonoTests.System.ServiceModel.Channels;
 using NUnit.Framework;
 
@@ -160,53 +162,312 @@ namespace MonoTests.System.ServiceModel
 			f.CreateChannel ();
 		}
 
-		[Test]
-		public void CreateChannelAndInvoke ()
+		private T CreateChannel<T> (RequestSender handler)
 		{
-			CustomBinding b = new CustomBinding (new HandlerTransportBindingElement (delegate (Message input) {
-				BodyWriter bw = new HandlerBodyWriter (delegate (XmlDictionaryWriter writer) {
-					writer.WriteStartElement ("BarResponse", "http://tempuri.org/");
-					writer.WriteStartElement ("BarResponse", "http://tempuri.org/");
-					writer.WriteEndElement ();
-					writer.WriteEndElement ();
-					});
-				return Message.CreateMessage (input.Version, input.Headers.Action + "Response", bw);
-				}));
-			ChannelFactory<ITestService> f =
-				new ChannelFactory<ITestService> (
-					b, new EndpointAddress ("urn:dummy"));
-			ITestService ts = f.CreateChannel ();
-			// no need to open anything.
+			CustomBinding b = new CustomBinding (new HandlerTransportBindingElement (handler));
+			ChannelFactory<T> f = new ChannelFactory<T> ( b, new EndpointAddress ("urn:dummy"));
+			return f.CreateChannel ();
+		}
+
+		[Test]
+		public void InvokeFoo ()
+		{
+			ITestService ts = CreateChannel<ITestService> (
+				delegate (Message input) {
+					BodyWriter bw = new HandlerBodyWriter (
+						delegate (XmlDictionaryWriter writer) {
+							writer.WriteStartElement ("FooResponse", "http://tempuri.org/");
+							writer.WriteElementString ("FooResult", "http://tempuri.org/", "cecil");
+							writer.WriteEndElement ();
+						}
+					);
+					return Message.CreateMessage (input.Version, input.Headers.Action + "Response", bw);
+				}
+			);
+			Assert.AreEqual ("cecil", ts.Foo ("il offre sa confiance et son amour"));
+		}
+
+		[Test]
+		public void InvokeBar ()
+		{
+			ITestService ts = CreateChannel<ITestService> (
+				delegate (Message input) {
+					BodyWriter bw = new HandlerBodyWriter (
+						delegate (XmlDictionaryWriter writer) {
+							writer.WriteStartElement ("BarResponse", "http://tempuri.org/");
+							writer.WriteElementString ("DummyBarResponse", "http://tempuri.org/", "cecil");
+							writer.WriteEndElement ();
+						}
+					);
+					return Message.CreateMessage (input.Version, input.Headers.Action + "Response", bw);
+				}
+			);
 			ts.Bar ("il offre sa confiance et son amour");
 		}
 
-		[Test]
-		[Ignore ("puzzled: how could it return a meaningful value??")]
-		public void CreateChannelAndInvoke2 ()
+		Message ToMessage<T> (Message input, bool isXml, T val)
 		{
-			CustomBinding b = new CustomBinding (new HandlerTransportBindingElement (delegate (Message input) {
-				BodyWriter bw = new HandlerBodyWriter (delegate (XmlDictionaryWriter writer) {
-					writer.WriteStartElement ("FooResponse", "http://tempuri.org/");
-					writer.WriteElementString ("FooResponse", "http://tempuri.org/", "cecil");
-					writer.WriteEndElement ();
-					});
-				return Message.CreateMessage (input.Version, input.Headers.Action + "Response", bw);
-				}));
-			ChannelFactory<ITestService> f =
-				new ChannelFactory<ITestService> (
-					b, new EndpointAddress ("urn:dummy"));
-			ITestService ts = f.CreateChannel ();
-			Assert.AreEqual (null, ts.Foo ("il offre sa confiance et son amour"));
+			TypedMessageConverter tm;
+			if (isXml)
+				tm = TypedMessageConverter.Create (typeof (T),
+					input.Headers.Action + "Response", new XmlSerializerFormatAttribute ());
+			else
+				tm = TypedMessageConverter.Create (typeof (T),
+					input.Headers.Action + "Response");
+			return tm.ToMessage (val, input.Version);
+		}
+
+		T FromMessage<T> (Message input, bool isXml)
+		{
+			TypedMessageConverter tm;
+			if (isXml)
+				tm = TypedMessageConverter.Create (typeof (T), input.Headers.Action,
+					new XmlSerializerFormatAttribute ());
+			else
+				tm = TypedMessageConverter.Create (typeof (T), input.Headers.Action);
+			return (T)tm.FromMessage (input);
+		}
+
+		public T CreateFooOutParamChannel<T> (bool isXml)
+		{
+			return CreateChannel<T> (
+				delegate (Message input) {
+					// Test input for in and ref args.
+					XmlDocument doc = new XmlDocument ();
+					doc.LoadXml (input.ToString ());
+
+					XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
+					nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+					nss.AddNamespace ("t", "http://tempuri.org/");
+					XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:FooOutParam", nss) as XmlElement;
+					Assert.IsNotNull (el, "I#0");
+					XmlNode arg1 = el.SelectSingleNode ("t:arg1", nss);
+					Assert.IsNotNull (arg1, "I#2");
+					Assert.AreEqual ("testIt", arg1.InnerText, "I#3");
+					XmlNode arg2 = el.SelectSingleNode ("t:arg2", nss);
+					Assert.IsNotNull (arg2, "I#4");
+					Assert.AreEqual ("testRef", arg2.InnerText, "I#4");
+
+					return ToMessage (input, isXml,
+						new FooOutParamResponse ("callResult", "refArg", "outArg"));
+				}
+			);
+		}
+
+		[Test]
+		public void InvokeFooOutParam ()
+		{
+			ITestService ts = CreateFooOutParamChannel<ITestService> (false);
+			string argRef = "testRef";
+			string argOut;
+			string res = ts.FooOutParam ("testIt", ref argRef, out argOut);
+			Assert.AreEqual ("callResult", res, "#1");
+			Assert.AreEqual ("refArg", argRef, "#2");
+			Assert.AreEqual ("outArg", argOut, "#2");
+		}
+
+		[Test]
+		public void XmlInvokeFooOutParam ()
+		{
+			ITestServiceXml ts = CreateFooOutParamChannel<ITestServiceXml> (true);
+			string argRef = "testRef";
+			string argOut;
+			string res = ts.FooOutParam ("testIt", ref argRef, out argOut);
+			Assert.AreEqual ("callResult", res, "#1");
+			Assert.AreEqual ("refArg", argRef, "#2");
+			Assert.AreEqual ("outArg", argOut, "#2");
+		}
+
+		[Test]
+		public void InvokeFooComplex ()
+		{
+			ITestService ts = CreateChannel<ITestService> (
+				delegate (Message input) {
+					// Test input for in and ref args.
+					XmlDocument doc = new XmlDocument ();
+					doc.LoadXml (input.ToString ());
+
+					XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
+					nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+					nss.AddNamespace ("t", "http://tempuri.org/");
+					nss.AddNamespace ("v", "http://schemas.datacontract.org/2004/07/MonoTests.System.ServiceModel");
+					XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:FooComplex", nss) as XmlElement;
+					Assert.IsNotNull (el, "I#0");
+					XmlNode arg1 = el.SelectSingleNode ("t:arg1/v:val", nss);
+					Assert.IsNotNull (arg1, "I#2");
+					Assert.AreEqual ("testIt", arg1.InnerText, "I#3");
+
+					return ToMessage (input, false, new FooComplexResponse ("callResult"));
+				}
+			);
+
+			TestData res = ts.FooComplex (new TestData ("testIt"));
+			Assert.IsNotNull (res, "#1");
+			Assert.AreEqual ("callResult", res.val, "#2");
+		}
+
+		[Test]
+		public void XmlInvokeFooComplex ()
+		{
+			ITestServiceXml ts = CreateChannel<ITestServiceXml> (
+				delegate (Message input) {
+					// Test input for in and ref args.
+					XmlDocument doc = new XmlDocument ();
+					doc.LoadXml (input.ToString ());
+
+					XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
+					nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+					nss.AddNamespace ("t", "http://tempuri.org/");
+					XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:FooComplex", nss) as XmlElement;
+					Assert.IsNotNull (el, "I#0");
+					XmlElement arg1 = el.SelectSingleNode ("t:arg1", nss) as XmlElement;
+					Assert.IsNotNull (arg1, "I#2");
+					Assert.AreEqual ("testIt", arg1.GetAttribute ("val"), "I#3");
+
+					return ToMessage (input, true, new FooComplexResponse ("callResult"));
+				}
+			);
+
+			TestData res = ts.FooComplex (new TestData ("testIt"));
+			Assert.IsNotNull (res, "#1");
+			Assert.AreEqual ("callResult", res.val, "#2");
+		}
+
+		public T CreateFooComplexMC_Channel<T> (bool isXml)
+		{
+			return CreateChannel<T> (
+				delegate (Message input) {
+					TestMessage arg = FromMessage<TestMessage> (input, isXml);
+					Assert.IsNotNull (arg.data, "I#0");
+					Assert.AreEqual (arg.data.val, "testIt", "I#1");
+					Assert.IsNotNull (arg.msg, "I#2");
+					Assert.AreEqual (arg.msg.val, "testMsg", "I#3");
+
+					return ToMessage (input, isXml, new TestResult ("callResult", "callArg"));
+				}
+			);
+		}
+
+		[Test]
+		[Category ("CurrentTest")]
+		public void InvokeFooComplexMC ()
+		{
+			ITestService ts = CreateFooComplexMC_Channel<ITestService> (false);
+			TestResult res = ts.FooComplexMC (new TestMessage ("testIt", "testMsg"));
+			Assert.IsNotNull (res, "#1");
+			Assert.AreEqual ("callResult", res.resData.val, "#2");
+			Assert.AreEqual ("callArg", res.resMsg.val, "#3");
+		}
+
+		[Test]
+		[Category ("CurrentTest")]
+		public void XmlInvokeFooComplexMC ()
+		{
+			ITestServiceXml ts = CreateFooComplexMC_Channel<ITestServiceXml> (true);
+			TestResult res = ts.FooComplexMC (new TestMessage ("testIt", "testMsg"));
+			Assert.IsNotNull (res, "#1");
+			Assert.AreEqual ("callResult", res.resData.val, "#2");
+			Assert.AreEqual ("callArg", res.resMsg.val, "#3");
 		}
 
 		[ServiceContract]
-		interface ITestService
+		public interface ITestService
 		{
 			[OperationContract]
 			string Foo (string arg);
 
 			[OperationContract]
 			void Bar (string arg);
+
+			[OperationContract]
+			void Foo1 (string arg1, string arg2);
+
+			[OperationContract]
+			string FooOutParam (string arg1, ref string arg2, out string arg3);
+
+			[OperationContract]
+			TestData FooComplex (TestData arg1);
+
+			[OperationContract]
+			TestResult FooComplexMC (TestMessage arg1);
+		}
+
+		[ServiceContract]
+		public interface ITestServiceXml
+		{
+			[OperationContract]
+			string FooOutParam (string arg1, ref string arg2, out string arg3);
+
+			[OperationContract]
+			[XmlSerializerFormat]
+			TestData FooComplex (TestData arg1);
+
+			[OperationContract]
+			[XmlSerializerFormat]
+			TestResult FooComplexMC (TestMessage arg1);
+		}
+
+		[DataContract]
+		public class TestData
+		{
+			public TestData () {}
+			public TestData (string val) { this.val = val; }
+
+			[DataMember]
+			[XmlAttribute]
+			public string val;
+		}
+
+		[MessageContract]
+		public class TestMessage
+		{
+			TestMessage () {}
+			public TestMessage (string a, string b) { data = new TestData (a); msg = new TestData (b); }
+
+			[MessageBodyMember]
+			public TestData data;
+
+			[MessageBodyMember]
+			public TestData msg;
+		}
+
+		[MessageContract]
+		public class TestResult
+		{
+			TestResult () {}
+			public TestResult (string a, string b) { resData = new TestData (a); resMsg = new TestData (b); }
+
+			[MessageBodyMember]
+			public TestData resData;
+
+			[MessageBodyMember]
+			public TestData resMsg;
+		}
+
+		[MessageContract (WrapperNamespace = "http://tempuri.org/")]
+		class FooOutParamResponse
+		{
+			FooOutParamResponse () {}
+			public FooOutParamResponse (string ret, string refArg, string outArg) { FooOutParamResult = ret; this.arg2 = refArg; this.arg3 = outArg; }
+
+			[MessageBodyMember]
+			public string FooOutParamResult;
+
+			[MessageBodyMember]
+			public string arg2;
+
+			[MessageBodyMember]
+			public string arg3;
+		}
+
+		[MessageContract (WrapperNamespace = "http://tempuri.org/")]
+		class FooComplexResponse
+		{
+			FooComplexResponse () {}
+			public FooComplexResponse (string val) { FooComplexResult  = new TestData (val); }
+
+			[MessageBodyMember]
+			public TestData FooComplexResult;
 		}
 
 		class TestService

@@ -1,3 +1,8 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* XmlObjectSerializerTest.cs: Add test scenarios for testing serialization
+	  and deserialization of more complex types, namespace support, etc.
+
 2008-04-03  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* DataContractSerializerTest_FrameworkTypes_mscorlib.cs:

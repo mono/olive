@@ -1,4 +1,17 @@
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* DataContractSerializer.cs: Write and register the current type namespace
+	  within the writer.
+	* XmlObjectSerializer.cs: ReadObject verifies by default.
+	* XmlFormatterSerializer.cs: Write and register XML namespaces.
+	* XmlFormatterDeserializer.cs: Refactored so Deserialize instance method can
+	  be used from SerializationMap deserialization logic recursively.
+	* SerializationMap.cs: Reimplemented main deserialization logic. Now it
+	  handles better missing entries, consumes the XmlReader until the end
+	  element and handles XML namespaces correctly.
+	  Enabled checks for required fields.
+
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* SerializationMap.cs: Fix namespace logic at least in simple case where
 	  there are several unknown elements before the current element.

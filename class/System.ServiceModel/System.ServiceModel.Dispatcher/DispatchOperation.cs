@@ -207,7 +207,7 @@ namespace System.ServiceModel.Dispatcher
 				if (Formatter != null)
 					actual_formatter = Formatter;
 				else
-					actual_formatter = new DefaultMessageOperationFormatter (Description);
+					actual_formatter = BaseMessagesFormatter.Create (Description);
 			}
 			return actual_formatter;
 		}

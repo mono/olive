@@ -1,3 +1,12 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ChannelFactory_1Test.cs: Added test to check serialization of parameters
+	  and deserialization of return values and out parameters. The tests are
+	  currently checking only the client side and not the server side.
+
+2008-04-08  Roei Erez <roeie@mainsoft.com>
+	* Add tests for ServiceHostBaseTest.cs
+
 2008-04-06  Roei Erez <roeie@mainsoft.com>
 
 	* ServiceHostBaseTests: Added new tests
@@ -27,7 +36,7 @@
 	* WSHttpBindingTest.cs : mark MessageSecurityIssuedToken as NotWorking.
 	* EndpointAddress10Test.cs : mark SerializeDeserialize as NotWorking.
 
-2008-03-04 Eyal Alaluf <eyala@mainsoft.com>
+2008-03-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelFactory_1Test.cs: Add tests for different ctors.
 	* CommonUseCases.cs: Move common intefaces that are also configured by the
@@ -38,7 +47,7 @@
 	  interfaces to CommonUseCases.cs.
 
 
-2008-02-28 Eyal Alaluf <eyala@mainsoft.com>
+2008-02-28  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ServiceHostTest.cs: Marjed test as not working since it caused a crash(!)
 	* ClientBaseTest.cs: Add tests for ClientBase<T> constructors.

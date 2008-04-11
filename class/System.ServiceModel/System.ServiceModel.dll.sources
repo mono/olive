@@ -293,7 +293,6 @@ System.ServiceModel.Channels/WSSignedXml.cs
 System.ServiceModel.Channels/WindowsStreamSecurityBindingElement.cs
 System.ServiceModel.Channels/XmlObjectSerializerBodyWriter.cs
 System.ServiceModel.Channels/XmlReaderBodyWriter.cs
-System.ServiceModel.Channels/XmlSerializerBodyWriter.cs
 System.ServiceModel.ComIntegration/Dummy.cs
 System.ServiceModel.Configuration/AddressHeaderCollectionElement.cs
 System.ServiceModel.Configuration/AllowedAudienceUriElement.cs
@@ -575,7 +574,6 @@ System.ServiceModel.Description/ServiceEndpoint.cs
 System.ServiceModel.Description/ServiceEndpointCollection.cs
 System.ServiceModel.Description/ServiceMetadataBehavior.cs
 System.ServiceModel.Description/ServiceMetadataExtension.cs
-System.ServiceModel.Description/ServiceModelInternalConverter.cs
 System.ServiceModel.Description/ServiceSecurityAuditBehavior.cs
 System.ServiceModel.Description/ServiceThrottlingBehavior.cs
 System.ServiceModel.Description/ServiceTimeoutsBehavior.cs
@@ -594,13 +592,13 @@ System.ServiceModel.Description/XmlSerializerOperationBehavior.cs
 System.ServiceModel.Diagnostics/PerformanceCounterScope.cs
 System.ServiceModel.Dispatcher/ActionMessageFilter.cs
 System.ServiceModel.Dispatcher/ActionMessageFilterTable.cs
+System.ServiceModel.Dispatcher/BaseMessagesFormatter.cs
 System.ServiceModel.Dispatcher/ChannelDispatcher.cs
 System.ServiceModel.Dispatcher/ChannelDispatcherBase.cs
 System.ServiceModel.Dispatcher/ChannelDispatcherCollection.cs
 System.ServiceModel.Dispatcher/ClientOperation.cs
 System.ServiceModel.Dispatcher/ClientRuntime.cs
 System.ServiceModel.Dispatcher/DataContractSerializerServiceBehavior.cs
-System.ServiceModel.Dispatcher/DefaultMessageOperationFormatter.cs
 System.ServiceModel.Dispatcher/DispatchOperation.cs
 System.ServiceModel.Dispatcher/DispatchRuntime.cs
 System.ServiceModel.Dispatcher/EndpointAddressMessageFilter.cs

@@ -1,4 +1,8 @@
-2008-02-27 Eyal Alaluf <eyala@mainsoft.com>
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* CodeArgumentReference.cs, CodeGenerationHelper.cs: Added ByRef support.
+
+2008-02-27  Eyal Alaluf <eyala@mainsoft.com>
 
 	* CodeCustomAttribute.cs CodeAssignment.cs: Fix compilation warnings.
 

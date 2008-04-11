@@ -102,17 +102,34 @@ namespace System.ServiceModel
 				  new CodeNewArray (typeof (object), new CodeLiteral (pinfos.Length)));
 			for (int i = 0; i < pinfos.Length; i++) {
 				ParameterInfo par = pinfos [i];
-				b.Assign (
-					new CodeArrayItem (paramsRef, new CodeLiteral (i)),
-					new CodeArgumentReference (par.ParameterType, par.Position + 1, "arg" + i));
+				if (!par.IsOut)
+					b.Assign (
+						new CodeArrayItem (paramsRef, new CodeLiteral (i)),
+						new CodeArgumentReference (par.ParameterType, par.Position + 1, "arg" + i));
 			}
 			CodeMethodCall argMethodInfo = new CodeMethodCall (typeof (MethodBase), "GetCurrentMethod");
 			CodeLiteral argOperName = new CodeLiteral (name);
+			CodeVariableReference retValue = null;
 			if (mi.ReturnType == typeof (void))
 				b.Call (m.GetThis (), processMethod, argMethodInfo, argOperName, paramsRef);
-			else
-				b.Return (new CodeCast (mi.ReturnType,
-					b.CallFunc (m.GetThis (), processMethod, argMethodInfo, argOperName, paramsRef)));
+			else {
+				CodeVariableDeclaration retValueDecl = new CodeVariableDeclaration (mi.ReturnType, "retValue");
+				b.CurrentBlock.Add (retValueDecl);
+				retValue = retValueDecl.Variable;
+				b.Assign (retValue,
+					new CodeCast (mi.ReturnType,
+						b.CallFunc (m.GetThis (), processMethod, argMethodInfo, argOperName, paramsRef)));
+			}
+			for (int i = 0; i < pinfos.Length; i++) {
+				ParameterInfo par = pinfos [i];
+				if (par.IsOut || par.ParameterType.IsByRef)
+					b.Assign (
+						new CodeArgumentReference (par.ParameterType, par.Position + 1, "arg" + i),
+						new CodeCast (par.ParameterType.GetElementType (),
+							new CodeArrayItem (paramsRef, new CodeLiteral (i))));
+			}
+			if (retValue != null)
+				b.Return (retValue);
 		}
 	}
 }

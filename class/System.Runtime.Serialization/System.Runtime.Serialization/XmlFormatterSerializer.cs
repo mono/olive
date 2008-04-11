@@ -56,8 +56,7 @@ namespace System.Runtime.Serialization
 			KnownTypeCollection types,
 			bool ignoreUnknown, int maxItems, string root_ns)
 		{
-			new XmlFormatterSerializer (
-				writer, types, ignoreUnknown, maxItems, root_ns)
+			new XmlFormatterSerializer (writer, types, ignoreUnknown, maxItems, root_ns)
 				.Serialize (graph != null ? graph.GetType () : null, graph);
 		}
 
@@ -105,13 +104,18 @@ namespace System.Runtime.Serialization
 
 		public void WriteStartElement (string name, string ns)
 		{
-			ns_stack.Push (ns);
-			writer.WriteStartElement (name, ns);
+			string currentXml = ns_stack.Peek () as string;
+			if (!string.IsNullOrEmpty (currentXml)) {
+				writer.WriteStartElement (writer.LookupPrefix (currentXml), name, currentXml);
+				if (!String.IsNullOrEmpty (ns) && ns != currentXml)
+					writer.WriteXmlnsAttribute (null, ns);
+			}
+			else
+				writer.WriteStartElement (name, ns);
 		}
 
 		public void WriteEndElement ()
 		{
-			ns_stack.Pop ();
 			writer.WriteEndElement ();
 		}
 
@@ -137,11 +141,17 @@ namespace System.Runtime.Serialization
 				map = types.FindUserMap (actualType);
 //				throw new InvalidDataContractException (String.Format ("Type {0} has neither Serializable nor DataContract attributes.", type));
 			}
-				
+
 			if (type != actualType)
 				Write_i_type (map.XmlName);
 
+			bool pushNS = !String.IsNullOrEmpty (map.XmlName.Namespace);
+			if (pushNS)
+				ns_stack.Push (map.XmlName.Namespace);
+
 			map.Serialize (graph, this);
+			if (pushNS)
+				ns_stack.Pop ();
 		}
 	}
 }

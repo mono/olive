@@ -13,7 +13,7 @@ namespace Proxy.MonoTests.Features.Client
 	}
 
 	[System.CodeDom.Compiler.GeneratedCodeAttribute ("System.ServiceModel", "3.0.0.0")]
-	public interface ICalculatorChannel : IUntypedMessageTesterContract, System.ServiceModel.IClientChannel
+	public interface IUntypedMessageTesterContractChannel : IUntypedMessageTesterContract, System.ServiceModel.IClientChannel
 	{
 	}
 

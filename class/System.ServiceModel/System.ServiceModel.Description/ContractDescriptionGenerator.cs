@@ -163,10 +163,7 @@ namespace System.ServiceModel.Description
 			OperationContractAttribute oca,
 			Type asyncReturnType)
 		{
-			string name =
-				oca.Name != null ? oca.Name :
-				oca.AsyncPattern ? mi.Name.Substring (5) :
-				mi.Name;
+			string name = oca.Name ?? (oca.AsyncPattern ? mi.Name.Substring (5) : mi.Name);
 
 			OperationDescription od = null;
 			foreach (OperationDescription iter in cd.Operations) {
@@ -239,79 +236,26 @@ namespace System.ServiceModel.Description
 					"/", mi.Name,
 					isRequest ? String.Empty : "Response");
 
+			if (mca != null)
+				return CreateMessageDescription (messageType, cd.Namespace, action, isRequest, mca);
+			return CreateMessageDescription (oca, plist, mi.Name, cd.Namespace, action, isRequest, retType);
+		}
+
+		public static MessageDescription CreateMessageDescription (
+			Type messageType, string defaultNamespace, string action, bool isRequest, MessageContractAttribute mca)
+		{
 			MessageDescription md = new MessageDescription (
 				action, isRequest ? MessageDirection.Input :
 				MessageDirection.Output);
 			md.MessageType = MessageFilterOutByRef (messageType);
-			if (mca != null && mca.HasProtectionLevel)
+			if (mca.HasProtectionLevel)
 				md.ProtectionLevel = mca.ProtectionLevel;
 
 			MessageBodyDescription mb = md.Body;
-			bool isWrapped = mca == null || mca.IsWrapped;
-			if (isWrapped) {
-				mb.WrapperName =
-					mca != null && mca.WrapperName != null ? mca.WrapperName :
-					mi.Name + (isRequest ? String.Empty : "Response");
-				mb.WrapperNamespace =
-					mca != null && mca.WrapperNamespace != null ? mca.WrapperNamespace :
-					cd.Namespace;
-			}
+			mb.WrapperName = mca.WrapperName ?? messageType.Name;
+			mb.WrapperNamespace = mca.WrapperNamespace ?? defaultNamespace;
 
-			// FIXME: anything to do for ProtectionLevel?
-
-			// Parts
 			int index = 0;
-			if (mca != null)
-				FillMessageBodyDescriptionByContract (
-					messageType, md.Body);
-			else {
-				foreach (ParameterInfo pi in plist) {
-					// They are ignored:
-					// - out parameter in request
-					// - neither out nor ref parameter in reply
-					if (isRequest && pi.IsOut)
-						continue;
-					if (!isRequest && !pi.IsOut && !pi.ParameterType.IsByRef)
-						continue;
-
-					MessageBodyMemberAttribute mba = 
-						GetMessageBodyMemberAttribute (mi);
-					MessagePartDescription pd =
-						CreatePartCore (mba, pi.Name,
-							md.Body.WrapperNamespace);
-					if (mba != null && mba.HasProtectionLevel)
-						pd.ProtectionLevel = mba.ProtectionLevel;
-					pd.Index = index++;
-					pd.Type = MessageFilterOutByRef (pi.ParameterType);
-					mb.Parts.Add (pd);
-
-					// AsyncCallback and state are extraneous.
-					if (oca.AsyncPattern &&
-					    pi.Position == plist.Length - 3)
-						break;
-				}
-			}
-
-			// ReturnValue
-			if (!isRequest) {
-				MessagePartDescription mp = new MessagePartDescription (mi.Name + "Result", mb.WrapperNamespace);
-				mp.Index = 0;
-				mp.Type = retType;
-
-				mb.ReturnValue = mp;
-			}
-
-			// FIXME: fill headers and properties.
-
-			return md;
-		}
-
-		public static void FillMessageBodyDescriptionByContract (
-			Type messageType, MessageBodyDescription mb)
-		{
-			int index = 0;
-
-			// MessageContract-based population
 			foreach (MemberInfo bmi in messageType.GetMembers (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)) {
 				Type mtype = null;
 				string mname = null;
@@ -328,19 +272,71 @@ namespace System.ServiceModel.Description
 				else
 					continue;
 
-				MessageBodyMemberAttribute mba = 
-					GetMessageBodyMemberAttribute (bmi);
+				MessageBodyMemberAttribute mba = GetMessageBodyMemberAttribute (bmi);
 				if (mba == null)
 					continue;
 
-				MessagePartDescription pd =
-					CreatePartCore (mba, mname,
-						"http://tempuri.org/");
+				MessagePartDescription pd = CreatePartCore (mba, mname, defaultNamespace);
 				pd.Index = index++;
 				pd.Type = MessageFilterOutByRef (mtype);
 				pd.MemberInfo = bmi;
 				mb.Parts.Add (pd);
 			}
+
+			// FIXME: fill headers and properties.
+			return md;
+		}
+
+		public static MessageDescription CreateMessageDescription (
+			OperationContractAttribute oca, ParameterInfo[] plist, string name, string defaultNamespace, string action, bool isRequest, Type retType)
+		{
+			MessageDescription md = new MessageDescription (
+				action, isRequest ? MessageDirection.Input :
+				MessageDirection.Output);
+
+			MessageBodyDescription mb = md.Body;
+			mb.WrapperName = name + (isRequest ? String.Empty : "Response");
+			mb.WrapperNamespace = defaultNamespace;
+
+			// FIXME: anything to do for ProtectionLevel?
+
+			// Parts
+			int index = 0;
+			foreach (ParameterInfo pi in plist) {
+				// They are ignored:
+				// - out parameter in request
+				// - neither out nor ref parameter in reply
+				if (isRequest && pi.IsOut)
+					continue;
+				if (!isRequest && !pi.IsOut && !pi.ParameterType.IsByRef)
+					continue;
+
+				MessagePartDescription pd = CreatePartCore (null, pi.Name, defaultNamespace);
+				pd.Index = index++;
+				pd.Type = MessageFilterOutByRef (pi.ParameterType);
+				mb.Parts.Add (pd);
+
+				// AsyncCallback and state are extraneous.
+				if (oca.AsyncPattern && pi.Position == plist.Length - 3)
+					break;
+			}
+
+			// ReturnValue
+			if (!isRequest) {
+				MessagePartDescription mp = new MessagePartDescription (name + "Result", mb.WrapperNamespace);
+				mp.Index = 0;
+				mp.Type = retType;
+				mb.ReturnValue = mp;
+			}
+
+			// FIXME: fill properties.
+
+			return md;
+		}
+
+		public static void FillMessageBodyDescriptionByContract (
+			Type messageType, MessageBodyDescription mb)
+		{
 		}
 
 		static MessagePartDescription CreatePartCore (

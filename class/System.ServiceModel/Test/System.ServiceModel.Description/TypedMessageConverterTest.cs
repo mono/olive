@@ -57,45 +57,66 @@ namespace MonoTests.System.ServiceModel.Description
 			TypedMessageConverter c = TypedMessageConverter.Create (
 				typeof (Test1), "http://tempuri.org/MyTest");
 			Message msg = c.ToMessage (new Test1 ());
-			StringWriter sw = new StringWriter ();
-			using (XmlWriter w = XmlWriter.Create (sw)) {
-				msg.WriteMessage (w);
-			}
 
 			XmlDocument doc = new XmlDocument ();
-			doc.LoadXml (sw.ToString ());
+			doc.LoadXml (msg.ToString ());
 
 			XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
 			nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
 			nss.AddNamespace ("t", "http://tempuri.org/");
-			XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:Test1", nss) as XmlElement;
+			nss.AddNamespace ("v", "space");
+			nss.AddNamespace ("w", "yy1");
+			XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/v:MyName", nss) as XmlElement;
 			Assert.IsNotNull (el, "#1");
-			Assert.IsNotNull (el.SelectSingleNode ("t:body2", nss), "#2");
-			Assert.IsNotNull (el.SelectSingleNode ("t:echo", nss), "#3");
+			XmlNode part = el.SelectSingleNode ("t:body2", nss);
+			Assert.IsNotNull (part, "#2");
+			Assert.AreEqual ("TEST body", part.InnerText, "#3");
+			Assert.IsNotNull (el.SelectSingleNode ("w:xx1", nss), "#4");
+			part = el.SelectSingleNode ("w:xx1/v:msg", nss);
+			Assert.IsNotNull (part, "#5");
+			Assert.AreEqual ("default", part.InnerText, "#6");
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void StandardRoundtrip ()
 		{
 			TypedMessageConverter c = TypedMessageConverter.Create (
 				typeof (Test1), "http://tempuri.org/MyTest");
-			Message msg = c.ToMessage (new Test1 ());
-			Test1 t1 = (Test1) c.FromMessage (msg);
+			Test1 t1 = new Test1 ();
+			t1.echo.msg = "test";
+			t1.body2 = "testtest";
+			Message msg = c.ToMessage (t1);
+			Test1 t2 = (Test1) c.FromMessage (msg);
+			Assert.AreEqual ("test", t2.echo.msg, "#01");
+			Assert.AreEqual ("testtest", t2.body2, "#01");
+		}
+
+		[Test]
+		public void XmlSerializerdRoundtrip ()
+		{
+			TypedMessageConverter c = TypedMessageConverter.Create (
+				typeof (Test1), "http://tempuri.org/MyTest", new XmlSerializerFormatAttribute ());
+			Test1 t1 = new Test1 ();
+			t1.echo.msg = "test";
+			t1.body2 = "testtest";
+			Message msg = c.ToMessage (t1);
+			Test1 t2 = (Test1) c.FromMessage (msg);
+			Assert.AreEqual ("test", t2.echo.msg, "#01");
+			Assert.AreEqual ("testtest", t2.body2, "#01");
 		}
 	}
 
-	[MessageContract]
+	[MessageContract (WrapperNamespace = "space", WrapperName = "MyName")]
 	public class Test1
 	{
-		[MessageBodyMember]
+		[MessageBodyMember (Name = "xx1", Namespace = "yy1")]
 		public Echo echo = new Echo ();
 
 		[MessageBodyMember]
 		public string body2 = "TEST body";
 	}
 
-	[DataContract]
+	[DataContract (Namespace = "space")]
 	public class Echo
 	{
 		[DataMember]

@@ -1,3 +1,7 @@
+2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
+
+	* XmlSerializerBodyWriter.cs: Removed.
+
 2008-03-25  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* MessageFault.cs: fixed WriteReason, .net XmlWriter compatible

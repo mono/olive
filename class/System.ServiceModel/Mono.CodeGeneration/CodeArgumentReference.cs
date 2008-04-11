@@ -49,13 +49,23 @@ namespace Mono.CodeGeneration
 				case 3: gen.Emit (OpCodes.Ldarg_3); break;
 				default: gen.Emit (OpCodes.Ldarg, argNum); break;
 			}
+			if (type.IsByRef)
+				CodeGenerationHelper.LoadFromPtr (gen, type.GetElementType ());
 		}
 		
 		public override void GenerateSet (ILGenerator gen, CodeExpression value)
 		{
-			value.Generate (gen);
-			CodeGenerationHelper.GenerateSafeConversion (gen, type, value.GetResultType ());
-			gen.Emit (OpCodes.Starg, argNum);
+			if (type.IsByRef) {
+				gen.Emit (OpCodes.Ldarg, argNum);
+				value.Generate (gen);
+				CodeGenerationHelper.GenerateSafeConversion (gen, type.GetElementType (), value.GetResultType ());
+				CodeGenerationHelper.SaveToPtr (gen, type.GetElementType ());
+			}
+			else {
+				value.Generate (gen);
+				CodeGenerationHelper.GenerateSafeConversion (gen, type, value.GetResultType ());
+				gen.Emit (OpCodes.Starg, argNum);
+			}
 		}
 		
 		public override void PrintCode (CodeWriter cp)

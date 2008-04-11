@@ -527,6 +527,32 @@ Console.WriteLine ();
 		}
 
 		[Test]
+		public void WriteXmlnsAttributeWithNullPrefix ()
+		{
+			MemoryStream ms = new MemoryStream ();
+			XmlDictionary dic = new XmlDictionary ();
+			XmlDictionaryWriter w = XmlDictionaryWriter.CreateBinaryWriter (ms, dic, null);
+			w.WriteStartElement ("root", "aaaaa");
+			w.WriteXmlnsAttribute (null, "bbbbb");
+			w.WriteStartElement ("child", "ccccc");
+			w.WriteXmlnsAttribute (null, "ddddd");
+			w.WriteEndElement ();
+			w.WriteEndElement ();
+			w.Close ();
+			byte [] bytes = new byte [] {
+				// 0x40 (root) 0x8 (aaaaa)
+				0x40, 0x4, 0x72, 0x6F, 0x6F, 0x74, 0x8, 0x5, 0x61, 0x61, 0x61, 0x61, 0x61,
+				// 0x9 (a) (bbbbb)
+				0x9, 0x1, 0x61, 0x5, 0x62, 0x62, 0x62, 0x62, 0x62,
+				// 0x40 (child) 0x8 (ccccc)
+				0x40, 0x5, 0x63, 0x68, 0x69, 0x6C, 0x64, 0x8, 0x5, 0x63, 0x63, 0x63, 0x63, 0x63,
+				// 0x9 (b) (ddddd) 0x1 0x1
+				0x9, 0x1, 0x62, 0x5, 0x64, 0x64, 0x64, 0x64, 0x64, 0x1, 0x1
+			};
+			Assert.AreEqual (bytes, ms.ToArray ());
+		}
+
+		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
 		public void WriteAttributeWithoutElement ()
 		{

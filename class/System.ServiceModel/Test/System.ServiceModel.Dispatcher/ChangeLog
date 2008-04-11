@@ -1,3 +1,6 @@
+2008-04-08  Roei Erez <roeie@mainsoft.com>
+	* Add tests ChannelDispatcherTest, EndpointDispatcherTest
+
 2008-04-06  Roei Erez <roeie@mainsoft.com>
 
 	* EndpointDiaptcher: Added new tests (MessageFilter, ContractFilter)

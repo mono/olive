@@ -628,10 +628,11 @@ namespace System.Xml
 
 		public override void WriteXmlnsAttribute (string prefix, string namespaceUri)
 		{
-			if (prefix == null)
-				throw new ArgumentNullException ("prefix");
 			if (namespaceUri == null)
 				throw new ArgumentNullException ("namespaceUri");
+
+			if (prefix == null)
+				prefix = ((char)('a' + Depth - 1)).ToString ();
 
 			CheckStateForAttribute ();
 

@@ -91,5 +91,16 @@ namespace System.ServiceModel.Description
 			get { return name; }
 			set { name = value; }
 		}
+
+		internal void Validate () {
+			foreach (IContractBehavior b in Contract.Behaviors)
+				b.Validate (Contract, this);
+			foreach (IEndpointBehavior b in Behaviors)
+				b.Validate (this);
+			foreach (OperationDescription operation in Contract.Operations) {
+				foreach (IOperationBehavior b in operation.Behaviors)
+					b.Validate (operation);
+			}
+		}
 	}
 }

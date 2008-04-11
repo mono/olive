@@ -42,8 +42,7 @@ namespace System.ServiceModel.Dispatcher
 		ServiceHostBase host;
 		ServiceEndpoint service_endpoint;
 
-		string binding_name;
-		EndpointDispatcher endpoint_dispatcher;
+		string binding_name;		
 		Collection<IErrorHandler> error_handlers
 			= new Collection<IErrorHandler> ();
 		IChannelListener listener;
@@ -63,11 +62,14 @@ namespace System.ServiceModel.Dispatcher
 		EndpointListenerAsyncResult async_result;
 
 		ListenerLoopManager loop_manager;
+		SynchronizedCollection<EndpointDispatcher> _endpoints;
 
 		[MonoTODO ("get binding info from config")]
-		public ChannelDispatcher (IChannelListener listener)
-			: this (listener, null)
+		public ChannelDispatcher (IChannelListener listener)			
 		{
+			if (listener == null)
+				throw new ArgumentNullException ("listener");
+			Init (listener, null, null);
 		}
 
 		public ChannelDispatcher (
@@ -87,9 +89,15 @@ namespace System.ServiceModel.Dispatcher
 				throw new ArgumentNullException ("bindingName");
 			if (timeouts == null)
 				throw new ArgumentNullException ("timeouts");
+			Init (listener, bindingName, timeouts);
+		}
+
+		private void Init (IChannelListener listener, string bindingName,
+			IDefaultCommunicationTimeouts timeouts) {
 			this.listener = listener;
 			this.binding_name = bindingName;
 			this.timeouts = timeouts;
+			_endpoints = new SynchronizedCollection<EndpointDispatcher> ();
 		}
 
 		public string BindingName {
@@ -113,10 +121,8 @@ namespace System.ServiceModel.Dispatcher
 		}
 
 		public SynchronizedCollection<EndpointDispatcher> Endpoints {
-			get {
-				if (host == null)
-					throw new InvalidOperationException ("host is not attached yet.");
-				return new SynchronizedCollection<EndpointDispatcher> (null, endpoint_dispatcher);
+			get {				
+				return _endpoints;
 			}
 		}
 
@@ -181,69 +187,10 @@ namespace System.ServiceModel.Dispatcher
 		protected internal override void Attach (ServiceHostBase host)
 		{
 			this.host = host;
-			ServiceEndpoint se = FindEndpoint ();
-			service_endpoint = se;
-			// FIXME: raise an error in case endpoint was not found.
 
-			endpoint_dispatcher = new EndpointDispatcher (
-				se.Address, se.Contract.Name, se.Contract.Namespace);
-			endpoint_dispatcher.ChannelDispatcher = this;
-			host.ChannelDispatchers.Add (this);
-
-			DispatchRuntime db = endpoint_dispatcher.DispatchRuntime;
-
-			foreach (OperationDescription od in se.Contract.Operations)
-				if (!db.Operations.Contains (od.Name))
-					PopulateDispatchOperation (db, od);
-
-			// apply behaviors
-			foreach (IEndpointBehavior b in se.Behaviors)
-				b.ApplyDispatchBehavior (se, endpoint_dispatcher);
-			foreach (IContractBehavior b in se.Contract.Behaviors)
-				b.ApplyDispatchBehavior (se.Contract, se, db);
-			foreach (OperationDescription od in se.Contract.Operations)
-				foreach (IOperationBehavior ob in od.Behaviors)
-					ob.ApplyDispatchBehavior (od, db.Operations [od.Name]);
-		}
-
-		void PopulateDispatchOperation (DispatchRuntime db, OperationDescription od)
-		{
-			string reqA = null, resA = null;
-			foreach (MessageDescription m in od.Messages) {
-				if (m.Direction == MessageDirection.Input)
-					reqA = m.Action;
-				else
-					resA = m.Action;
-			}
-			DispatchOperation o =
-				od.IsOneWay ?
-				new DispatchOperation (db, od.Name, reqA) :
-				new DispatchOperation (db, od.Name, reqA, resA);
-			bool has_void_reply = false;
-			foreach (MessageDescription md in od.Messages) {
-				if (md.Direction == MessageDirection.Input &&
-				    md.Body.Parts.Count == 1 &&
-				    md.Body.Parts [0].Type == typeof (Message))
-					o.DeserializeRequest = false;
-				if (md.Direction == MessageDirection.Output &&
-				    md.Body.ReturnValue != null) {
-					if (md.Body.ReturnValue.Type == typeof (Message))
-						o.SerializeReply = false;
-					else if (md.Body.ReturnValue.Type == typeof (void))
-						has_void_reply = true;
-				}
-			}
-
-			if (o.Action == "*" && o.ReplyAction == "*") {
-				//Signature : Message  (Message)
-				//	    : void  (Message)
-				//FIXME: void (IChannel)
-				if (!o.DeserializeRequest && (!o.SerializeReply || has_void_reply))
-					db.UnhandledDispatchOperation = o;
-			}
-
-			db.Operations.Add (o);
-		}
+			//I did not remove this hack yet, in order not to break some flows.			
+			service_endpoint = FindEndpoint ();			
+		}		
 
 		public override void CloseInput ()
 		{
@@ -262,10 +209,8 @@ namespace System.ServiceModel.Dispatcher
 		}
 
 		protected internal override void Detach (ServiceHostBase host)
-		{
-			endpoint_dispatcher = null;
-			this.host = null;
-			host.ChannelDispatchers.Remove (this);
+		{			
+			this.host = null;			
 		}
 
 		internal ServiceEndpoint ServiceEndpoint {
@@ -313,7 +258,7 @@ namespace System.ServiceModel.Dispatcher
 		protected override void OnClosed ()
 		{
 			if (host != null)
-				Detach (host);
+				host.ChannelDispatchers.Remove (this);
 		}
 
 		protected override void OnEndClose (IAsyncResult result)
@@ -362,8 +307,8 @@ namespace System.ServiceModel.Dispatcher
 
 		void ProcessOpen (TimeSpan timeout)
 		{
-			if (endpoint_dispatcher == null)
-				throw new InvalidOperationException ("Service host is not attached to this ChannelDispatcher.");
+			if (Host == null || MessageVersion == null)
+				throw new InvalidOperationException ("Service host is not attached to this ChannelDispatcher.");			
 			try {
 				// FIXME: hack, just to make it runnable
 				listener.Open (timeout);
@@ -423,17 +368,22 @@ namespace System.ServiceModel.Dispatcher
 
 				// FIXME: use async WaitForBlah() method so
 				// that we can stop them at our own will.
+				
+				//FIXME: The logic here should be entirely different as follows:
+				//1. Get the message
+				//2. Get the appropriate EndPointDispatcher that can handle the message
+				//   which is done using the filters (AddressFilter, ContractFilter).
+				//3. Let the appropriate endpoint handle the request.
 
-				DispatchRuntime r = owner.endpoint_dispatcher.DispatchRuntime;
 				if (reply != null) {
 					while (loop) {
-						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout))
-							owner.endpoint_dispatcher.ProcessRequest (reply);
+						if (reply.WaitForRequest (owner.timeouts.ReceiveTimeout))							
+							owner.Endpoints[0].ProcessRequest (reply);
 					}
 				} else if (input != null) {
 					while (loop) {
 						if (input.WaitForMessage (owner.timeouts.ReceiveTimeout))
-							owner.endpoint_dispatcher.ProcessInput (input);
+							owner.Endpoints [0].ProcessInput (input);
 					}
 				}
 			}
