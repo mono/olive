@@ -1,3 +1,7 @@
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* ControlTypeTest.cs: Deleted extraneous commented code.
+
 2008-02-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* WindowVisualStateTest.cs, RowOrColumnMajorTest.cs,
