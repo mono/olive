@@ -1,4 +1,5 @@
 System.Windows.Automation/AutomationElementIdentifiersTest.cs
+System.Windows.Automation/ControlTypeTest.cs
 System.Windows.Automation/DockPositionTest.cs
 System.Windows.Automation/ExpandCollapseStateTest.cs
 System.Windows.Automation/RowOrColumnMajorTest.cs

@@ -1,3 +1,23 @@
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs: Added
+	  some missing *PatternIdentifiers classes.  They do not contain all
+	  members at this point.
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources:
+	  Include ControlTypeTest, which currently fails.
+
 2008-04-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/InvokePatternIdentifiers.cs: Commenting out

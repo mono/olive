@@ -28,6 +28,7 @@
     <File name="Test/System.Windows.Automation/ToggleStateTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/WindowInteractionStateTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/WindowVisualStateTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ControlTypeTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
