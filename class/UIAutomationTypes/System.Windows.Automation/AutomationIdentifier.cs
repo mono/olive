@@ -43,17 +43,25 @@ namespace System.Windows.Automation
 
 		public int CompareTo (object obj)
 		{
-			throw new NotImplementedException ();			
+			AutomationIdentifier other =
+				obj as AutomationIdentifier;
+			if (other == null)
+				return 1; // TODO: What?
+			return id.CompareTo (other.Id);
 		}
 
 		public override bool Equals (object obj)
 		{
-			throw new NotImplementedException ();			
+			AutomationIdentifier other =
+				obj as AutomationIdentifier;
+			if (other == null)
+				return false;
+			return id.Equals (other.Id);
 		}
 
 		public override int GetHashCode ()
 		{
-			throw new NotImplementedException ();			
+			return id; // TODO: Verify
 		}
 	}
 }

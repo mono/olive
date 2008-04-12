@@ -1,5 +1,10 @@
 2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/AutomationIdentifier.cs: Implement
+	  CompareTo, Equals, and GetHashCode.  Not tested yet.
+
+2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationTypes.dll.sources, UIAutomationTypes.mdp,
 	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
 	  System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
