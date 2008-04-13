@@ -17,8 +17,10 @@ namespace MonoTests.Features.Serialization
 			try {
 				Client.FaultMethod ("heh");
 			}
-			catch (Exception e) {
-				Assert.IsInstanceOfType (typeof (FaultException), e);
+			catch (FaultException e) {
+            } 
+            catch (Exception e) {
+                Assert.Fail("Exception is not FaultException");
 			}
 		}
 	}
@@ -34,7 +36,6 @@ namespace MonoTests.Features.Serialization
 				Client.FaultMethod ("heh");
 			}
 			catch (Exception e) {
-				Assert.IsInstanceOfType (typeof (Exception), e);
 				Assert.AreEqual ("heh", e.Message);
 			}
 		}

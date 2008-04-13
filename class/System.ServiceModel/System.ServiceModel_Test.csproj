@@ -31,7 +31,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="nunit.framework, Version=2.2.8.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Drawing" />
@@ -81,7 +80,6 @@
     <Content Include="Test\System.ServiceModel.Description\dump.xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\AsyncCallTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\DataContractTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\FaultsTesterProxy.cs" />
@@ -236,6 +234,17 @@
     <Compile Include="Test\System.ServiceModel\WSHttpBindingTest.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\nunit20\framework\nunit.framework.dll20.csproj">
+      <Project>{83DD7E12-A705-4DBA-9D71-09C8973D9382}</Project>
+      <Name>nunit.framework.dll20</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\nunit20\nunit-console\nunit-console20.csproj">
+      <Project>{9367EC89-6A38-42BA-9607-0DC288E4BC3A}</Project>
+      <Name>nunit-console20</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
     <Folder Include="Test\FeatureBased\Features.Binding\" />
     <Folder Include="Test\FeatureBased\Features.Metadata\" />
   </ItemGroup>
