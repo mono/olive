@@ -1,3 +1,10 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* ManagedXamlLoader.cs: update list ok known assemblies
+	with the 2.0 assemblies. Also use Dictionary<,> instead
+	of Hashtable for the assembly cache.
+	Merged from the Moonlight 2 branch.
+
 2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* ManagedXamlLoader.cs: Two more base_unref_delayed -> base_unref cases.

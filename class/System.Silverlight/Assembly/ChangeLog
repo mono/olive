@@ -1,3 +1,9 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* AssemblyInfo.cs: System.Silverlight is renamed
+	System.Windows.Browser.
+	Merged from the Moonlight 2 branch.
+
 2007-06-06  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* AssemblyInfo.cs : actually it was not CLS compliant. Copied this

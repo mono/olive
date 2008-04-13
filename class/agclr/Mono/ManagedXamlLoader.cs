@@ -30,7 +30,6 @@
 using System;
 using System.Diagnostics;
 using System.Reflection;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Windows;
@@ -655,7 +654,7 @@ namespace Mono.Xaml
 		//   * An Assembly (for resolved references).
 		//   * An AssemblyName (for unresolved references).
 		//
-		Hashtable deps;
+		Dictionary<string, object> deps;
 
 		public DependencyLoader (ManagedXamlLoader parent, string asm_path)
 		{
@@ -693,18 +692,19 @@ namespace Mono.Xaml
 			AssemblyName [] list = Helper.GetReferencedAssemblies (a);
 			
 			foreach (AssemblyName an in list){
-				if (an.Name == "agclr" || an.Name == "mscorlib" ||
-				    an.Name == "System.Xml.Core" || an.Name == "System" ||
-				    an.Name == "Microsoft.Scripting" ||
-				    an.Name == "System.SilverLight" ||
-				    an.Name == "System.Core")
+				if (an.Name == "System.Windows" || an.Name == "mscorlib" ||
+					an.Name == "System.Xml" || an.Name == "System" ||
+					an.Name == "Microsoft.Scripting" ||
+					an.Name == "System.Windows.Browser" ||
+					an.Name == "System.Net" ||
+					an.Name == "System.Core")
 					continue;
 				
-				if (deps == null){
-					deps = new Hashtable ();
+				if (deps == null) {
+					deps = new Dictionary<string, object> ();
 					deps [a.GetName ().Name] = a;
 				}
-				if (deps.Contains (an.Name))
+				if (deps.ContainsKey (an.Name))
 					continue;
 				deps [an.Name] = an;
 				missing++;

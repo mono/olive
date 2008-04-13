@@ -35,13 +35,13 @@ using System.Security;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
-// General Information about the System.Silverlight assembly
+// General Information about the System.Windows.Browser assembly
 
-[assembly: AssemblyVersion ("1.0.0.0")]
-[assembly: SatelliteContractVersion ("1.0.0.0")]
+[assembly: AssemblyVersion ("2.0.5.0")]
+[assembly: SatelliteContractVersion ("2.0.5.0")]
 
-[assembly: AssemblyTitle ("System.Silverlight.dll")]
-[assembly: AssemblyDescription ("System.Silverlight.dll")]
+[assembly: AssemblyTitle ("System.Windows.Browser.dll")]
+[assembly: AssemblyDescription ("System.Windows.Browser.dll")]
 [assembly: AssemblyConfiguration ("Development version")]
 [assembly: AssemblyCompany ("MONO development team")]
 [assembly: AssemblyProduct ("MONO CLI")]
@@ -49,7 +49,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTrademark ("")]
 
 [assembly: CLSCompliant (true)]
-[assembly: AssemblyDefaultAlias ("System.Silverlight.dll")]
+[assembly: AssemblyDefaultAlias ("System.Windows.Browser.dll")]
 [assembly: AssemblyInformationalVersion ("0.0.0.1")]
 [assembly: NeutralResourcesLanguage ("en-US")]
 

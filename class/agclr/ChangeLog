@@ -1,3 +1,9 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* Makefile, System.Windows.dll.sources: agclr is
+	renamed System.Windows.
+	Merged from the Moonlight 2 branch.
+
 2007-11-20  Jeffrey Stedfast  <fejj@novell.com>
 
 	* System.Windows.Interop/BrowserHost.cs (add_Resize): Removed old

@@ -1,3 +1,12 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* XamlLoaderCallbacks.cs: internalize the XamlLoader,
+	as it inherits for MarshalByRefObject, which is itself
+	internalized in the corlib, and requires Mono.Moonlight
+	to be friend of mscorlib, but that doesn't allow us to
+	expose XamlLoader.
+	Merged from the Moonlight 2 branch.
+
 2008-04-01  Rolf Bjarne Kvinge <RKvinge@novell.com> 
 
 	* Kind.cs: Removed Kind::NPOBJ, it's not needed.

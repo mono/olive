@@ -1,3 +1,9 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* agmono.pc.in, agmonosilver.pc.in, silver.pc.in,
+	silverdesktop.pc.in: update assembly names.
+	Merged from the Moonlight 2 branch.
+
 2008-02-07  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : oops, do replace @olive35dir@ correctly.

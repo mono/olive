@@ -1,3 +1,8 @@
+2008-04-13  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: agmono is renamed Mono.Moonlight.
+	Merged from the Moonlight 2 branch.
+
 2007-10-12  Jb Evain  <jbevain@novell.com>
 
 	* Mono/NativeMethods.cs: add image_brush_set_source.

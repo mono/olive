@@ -1,7 +1,7 @@
 thisdir = class/agmono
 include ../../build/rules.make
 
-LIBRARY = agmono.dll
+LIBRARY = Mono.Moonlight.dll
 
 LIB_MCS_FLAGS = -r:System -d:AGCLR -unsafe
 

@@ -113,7 +113,7 @@ namespace System.Windows.Browser.Serialization
 			switch (c) {
 			case '[':
 				i++;
-				ArrayList list = new ArrayList ();
+				List<object> list = new List<object> ();
 				i = SkipSpaces (input, i);
 				while (true) {
 					list.Add (DeserializeCore (input, ref i));
