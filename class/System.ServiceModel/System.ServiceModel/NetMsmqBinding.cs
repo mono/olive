@@ -112,7 +112,7 @@ namespace System.ServiceModel
 			te.UseMsmqTracing = UseMsmqTracing;
 			te.UseSourceJournal = UseSourceJournal;
 
-			return new BindingElementCollection (be, te);
+			return new BindingElementCollection (new BindingElement [] { be, te });
 		}
 	}
 }

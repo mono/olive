@@ -1,3 +1,8 @@
+2008-04-13  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* BindingTest.cs:
+	consider fixed API in BindingElementCollection class.			
+
 2008-02-20  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* TcpTransportBindingElementTest.cs : IDuplexChannel is not supported.

@@ -47,7 +47,7 @@ namespace MonoTests.System.ServiceModel.Channels
 			public override BindingElementCollection CreateBindingElements ()
 			{
 				return new BindingElementCollection (
-					new HttpTransportBindingElement ());
+					new BindingElement [] { new HttpTransportBindingElement () });
 			}
 		}
 

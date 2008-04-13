@@ -20,48 +20,30 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Calvin Gaisford <calvinrg@gmail.com>
+//      Sandy Armstrong <sanfordarmstrong@gmail.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public class AutomationIdentifier : IComparable
+	public static class TogglePatternIdentifiers
 	{
-		protected int id;
-		protected string programmaticName;
+#region Constructor
 		
-		protected AutomationIdentifier (int id, string programmaticName)
+		static TogglePatternIdentifiers ()
 		{
-			this.id = id;
-			this.programmaticName = programmaticName;
+			// TODO: Initialize fields
 		}
 		
-		public int Id { get { return id; } }
-		public string ProgrammaticName { get { return programmaticName; } }
-
-		public int CompareTo (object obj)
-		{
-			AutomationIdentifier other =
-				obj as AutomationIdentifier;
-			if (other == null)
-				return 1; // TODO: What?
-			return id.CompareTo (other.Id);
-		}
-
-		public override bool Equals (object obj)
-		{
-			AutomationIdentifier other =
-				obj as AutomationIdentifier;
-			if (other == null)
-				return false;
-			return id.Equals (other.Id);
-		}
-
-		public override int GetHashCode ()
-		{
-			return id; // TODO: Verify
-		}
+#endregion
+		
+#region Public Fields
+		
+		// TODO: Add missing fields
+		
+		public static readonly AutomationPattern Pattern;
+		
+#endregion
 	}
 }

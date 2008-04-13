@@ -1,3 +1,7 @@
+2008-04-13  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* BindingElementCollection.cs: fix API - .ctor's signature.
+
 2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlSerializerBodyWriter.cs: Removed.
