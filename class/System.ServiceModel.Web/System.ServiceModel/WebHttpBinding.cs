@@ -139,7 +139,7 @@ namespace System.ServiceModel
 			if (ReaderQuotas != null)
 				ReaderQuotas.CopyTo (m.ReaderQuotas);
 
-			return new BindingElementCollection (m, t.Clone ());
+			return new BindingElementCollection (new BindingElement [] { m, t.Clone () });
 		}
 
 		bool IBindingRuntimePreferences.ReceiveSynchronously {

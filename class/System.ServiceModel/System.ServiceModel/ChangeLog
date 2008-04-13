@@ -1,3 +1,10 @@
+2008-04-13  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* BasicHttpBinding.cs:
+	* NetMsmqBinding.cs:
+	* NetPeerTcpBinding.cs:
+	consider fixed API in BindingElementCollection class.			
+
 2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ClientProxyGenerator.cs: Add support for out and by ref params.

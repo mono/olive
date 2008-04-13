@@ -38,7 +38,7 @@ namespace System.ServiceModel.Channels
 		{
 		}
 
-		public BindingElementCollection (params BindingElement [] bindings)
+		public BindingElementCollection (BindingElement [] bindings)
 		{
 			AddRange (bindings);
 		}

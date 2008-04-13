@@ -125,7 +125,7 @@ namespace System.ServiceModel
 			tbe.MaxReceivedMessageSize = MaxReceivedMessageSize;
 			tbe.MessageAuthentication = MessageAuthentication;
 
-			return new BindingElementCollection (mbe, tbe);
+			return new BindingElementCollection (new BindingElement [] { mbe, tbe });
 		}
 
 		// explicit interface implementations

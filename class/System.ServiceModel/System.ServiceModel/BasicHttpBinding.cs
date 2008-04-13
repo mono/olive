@@ -178,16 +178,16 @@ namespace System.ServiceModel
 			case BasicHttpSecurityMode.TransportWithMessageCredential:
 				if (Security.Message.ClientCredentialType != BasicHttpMessageCredentialType.Certificate)
 					throw new InvalidOperationException ("When Message security is enabled in a BasicHttpBinding, the message security credential type must be BasicHttpMessageCredentialType.Certificate.");
-				return new BindingElementCollection (
+				return new BindingElementCollection (new BindingElement [] {
 					// FIXME: pass proper security token parameters.
 					new AsymmetricSecurityBindingElement (),
 					BuildMessageEncodingBindingElement (),
-					GetTransport ());
+					GetTransport ()});
 
 			default:
-				return new BindingElementCollection (
+				return new BindingElementCollection (new BindingElement [] {
 					BuildMessageEncodingBindingElement (),
-					GetTransport ());
+					GetTransport ()});
 			}
 
 		}
