@@ -298,7 +298,7 @@ namespace System.Runtime.Serialization
 		public virtual object DeserializeContent (XmlReader reader,
 			XmlFormatterDeserializer deserializer)
 		{
-			object instance = RuntimeType == typeof (void) ? null : Activator.CreateInstance (RuntimeType, true);
+			object instance = FormatterServices.GetUninitializedObject (RuntimeType);
 			int depth = reader.NodeType == XmlNodeType.None ? reader.Depth : reader.Depth - 1;
 			bool [] filled = new bool [Members.Count];
 			int memberInd = -1;
@@ -545,7 +545,7 @@ namespace System.Runtime.Serialization
 
 			return data_members;
 		}
-		
+
 		public override List<DataMemberInfo> GetMembers ()
 		{
 			return GetMembers (RuntimeType, XmlName, true);

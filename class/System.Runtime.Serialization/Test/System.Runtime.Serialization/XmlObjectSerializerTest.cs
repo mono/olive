@@ -1034,7 +1034,6 @@ namespace MonoTests.System.Runtime.Serialization
  	[DataContract]
 	public class NestedDC {
 		public NestedDC (string name) { this.Name = name; }
-		public NestedDC () {}
 
 		[DataMember]
 		public string Name;
@@ -1051,7 +1050,6 @@ namespace MonoTests.System.Runtime.Serialization
  	[DataContract (Namespace = "test1")]
 	public class NestedDC2 {
 		public NestedDC2 (string name) { this.Name = name; }
-		public NestedDC2 () {}
 
 		[DataMember]
 		public string Name;
