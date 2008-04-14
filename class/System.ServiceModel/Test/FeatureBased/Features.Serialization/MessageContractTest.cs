@@ -8,7 +8,7 @@ namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class MessageContractTest : TestFixtureBase<MessageContractTesterContractClient, MonoTests.Features.Contracts.MessageContractTester>
+    public class MessageContractTest : TestFixtureBase<MessageContractTesterContractClient, MonoTests.Features.Contracts.MessageContractTester, MonoTests.Features.Contracts.IMessageContractTesterContract>
 	{
 		[Test]
 		public void TestMessageContract ()

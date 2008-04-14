@@ -8,7 +8,7 @@ using System.ServiceModel;
 namespace MonoTests.Features.Contracts
 {
 	[ServiceContract (Namespace = "http://MonoTests.Features.Contracts")]
-	interface IMessageContractTesterContract
+	public interface IMessageContractTesterContract
 	{
 		[OperationContract (Action = "http://test/TestMessage_action", ReplyAction = "http://test/TestMessage_action")]
 		TestMessage FormatDate (TestMessage testMessage);

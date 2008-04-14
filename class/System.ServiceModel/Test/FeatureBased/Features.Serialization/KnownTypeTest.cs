@@ -8,7 +8,7 @@ namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class KnownTypeTest : TestFixtureBase<KnownTypeTesterContractClient, MonoTests.Features.Contracts.KnownTypeTester>
+    public class KnownTypeTest : TestFixtureBase<KnownTypeTesterContractClient, MonoTests.Features.Contracts.KnownTypeTester, MonoTests.Features.Contracts.IKnownTypeTesterContract>
 	{
 		[Test]
 		public void TestKnownType ()

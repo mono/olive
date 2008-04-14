@@ -18,7 +18,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>.\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;NET_3_5</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -62,6 +62,16 @@
     <None Include="Test\config\ChangeLog" />
     <None Include="Test\config\client.endpoint" />
     <None Include="Test\config\client.endpoint.config" />
+    <None Include="Test\config\client.metadata" />
+    <None Include="Test\config\client.metadata.config" />
+    <None Include="Test\config\customBinding" />
+    <None Include="Test\config\customBinding.config" />
+    <None Include="Test\config\empty" />
+    <None Include="Test\config\empty.config" />
+    <None Include="Test\config\endpointBehaviors" />
+    <None Include="Test\config\endpointBehaviors.config" />
+    <None Include="Test\config\extensions" />
+    <None Include="Test\config\extensions.config" />
     <None Include="Test\config\netTcpBinding" />
     <None Include="Test\config\netTcpBinding.config" />
     <None Include="Test\config\service" />
@@ -70,6 +80,8 @@
     <None Include="Test\config\serviceBehaviors.config" />
     <None Include="Test\config\test1" />
     <None Include="Test\config\test1.config" />
+    <None Include="Test\config\userBinding" />
+    <None Include="Test\config\userBinding.config" />
     <None Include="Test\config\wsHttpBinding" />
     <None Include="Test\config\wsHttpBinding.config" />
     <None Include="Test\Resources\test.cer" />

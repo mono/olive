@@ -4,12 +4,13 @@ using System.Text;
 using Proxy.MonoTests.Features.Client;
 using NUnit.Framework;
 using System.ServiceModel;
+using MonoTests.Features.Contracts;
 
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class FaultsTest : TestFixtureBase<FaultsTesterContractClient, MonoTests.Features.Contracts.FaultsTester>
+    public class FaultsTest : TestFixtureBase<FaultsTesterContractClient, FaultsTester, MonoTests.Features.Contracts.IFaultsTesterContract>
 	{
 		[Test]
 		public void TestFault ()
@@ -27,7 +28,7 @@ namespace MonoTests.Features.Serialization
 
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class FaultsTestIncludeDetails : TestFixtureBase<FaultsTesterContractClientIncludeDetails, MonoTests.Features.Contracts.FaultsTesterIncludeDetails>
+    public class FaultsTestIncludeDetails : TestFixtureBase<FaultsTesterContractClientIncludeDetails, MonoTests.Features.Contracts.FaultsTesterIncludeDetails, MonoTests.Features.Contracts.IFaultsTesterContractIncludeDetails>
 	{
 		[Test]
 		public void TestFault ()

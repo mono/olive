@@ -10,7 +10,7 @@ namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class UntypedMessageTest : TestFixtureBase<UntypedMessageTesterContractClient, MonoTests.Features.Contracts.UntypedMessageTester>
+    public class UntypedMessageTest : TestFixtureBase<UntypedMessageTesterContractClient, MonoTests.Features.Contracts.UntypedMessageTester, MonoTests.Features.Contracts.IUntypedMessageTesterContract>
 	{
 		[Test]
 		public void TestUntypedMessage ()

@@ -10,7 +10,7 @@ namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category ("NotWorking")]
-	public class DataContractSerializerTest : TestFixtureBase<DataContractTesterContractClient,  DataContractTester>
+    public class DataContractSerializerTest : TestFixtureBase<DataContractTesterContractClient, DataContractTester, MonoTests.Features.Contracts.IDataContractTesterContract>
 	{		
 
 		[Test]

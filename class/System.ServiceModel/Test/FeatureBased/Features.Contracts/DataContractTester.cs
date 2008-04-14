@@ -8,7 +8,7 @@ using System.Runtime.Serialization;
 namespace MonoTests.Features.Contracts
 {
 	[ServiceContract (Namespace = "http://MonoTests.Integrative.Contracts")]
-	interface IDataContractTesterContract
+	public interface IDataContractTesterContract
 	{
 		[OperationContract]
 		ComplexPrimitiveClass Add (ComplexPrimitiveClass n1, ComplexPrimitiveClass n2);

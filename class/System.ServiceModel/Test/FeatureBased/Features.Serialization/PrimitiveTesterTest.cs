@@ -11,7 +11,7 @@ namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
 	[Category("NotWorking")]
-	public class PrimitiveTesterTest : TestFixtureBase<PrimitiveTesterContractClient, PrimitiveTester>
+    public class PrimitiveTesterTest : TestFixtureBase<PrimitiveTesterContractClient, PrimitiveTester, MonoTests.Features.Contracts.IPrimitiveTesterContract>
 	{
 		[Test]
 		public void TestDouble () {

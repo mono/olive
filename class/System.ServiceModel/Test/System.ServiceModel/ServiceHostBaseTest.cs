@@ -202,7 +202,7 @@ namespace MonoTests.System.ServiceModel
 		public void SpecificActionTest () {
 			//EndpointDispatcher d = new EndpointDispatcher(
 			ServiceHost h = new ServiceHost (typeof (SpecificAction), new Uri ("http://localhost:8080"));
-			h.AddServiceEndpoint (typeof (SpecificAction).FullName, new BasicHttpBinding (), "address");
+			h.AddServiceEndpoint (typeof (Action1Interface), new BasicHttpBinding (), "address");
 						
 			h.Open ();
 			ChannelDispatcher d = h.ChannelDispatchers [0] as ChannelDispatcher;

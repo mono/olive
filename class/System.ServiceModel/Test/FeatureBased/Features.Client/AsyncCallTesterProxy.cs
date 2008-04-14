@@ -19,10 +19,10 @@ namespace Proxy.MonoTests.Features.Client
 	public interface IAsyncCallTesterContract
 	{
 
-		[System.ServiceModel.OperationContractAttribute (Action = "http://MonoTests.Features.Contracts/ICalculator/Query", ReplyAction = "http://MonoTests.Features.Contracts/ICalculator/QueryResponse")]
+        [System.ServiceModel.OperationContractAttribute(Action = "http://MonoTests.Features.Contracts/IAsyncCallTesterContract/Query", ReplyAction = "http://MonoTests.Features.Contracts/IAsyncCallTesterContract/QueryResponse")]
 		string Query (string query);
 
-		[System.ServiceModel.OperationContractAttribute (AsyncPattern = true, Action = "http://MonoTests.Features.Contracts/ICalculator/Query", ReplyAction = "http://MonoTests.Features.Contracts/ICalculator/QueryResponse")]
+        [System.ServiceModel.OperationContractAttribute(AsyncPattern = true, Action = "http://MonoTests.Features.Contracts/IAsyncCallTesterContract/Query", ReplyAction = "http://MonoTests.Features.Contracts/IAsyncCallTesterContract/QueryResponse")]
 		System.IAsyncResult BeginQuery (string query, System.AsyncCallback callback, object asyncState);
 
 		string EndQuery (System.IAsyncResult result);
