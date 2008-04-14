@@ -113,6 +113,7 @@ System.ServiceModel/EndpointAddressBuilderTest.cs
 System.ServiceModel/EndpointAddressTest.cs
 System.ServiceModel/EndpointBehaviorCollectionTest.cs
 System.ServiceModel/EndpointIdentityTest.cs
+System.ServiceModel/ExtensionCollectionTest.cs
 System.ServiceModel/FaultCodeTest.cs
 System.ServiceModel/FaultReasonTest.cs
 System.ServiceModel/IntegratedConnectionTest.cs

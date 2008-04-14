@@ -74,26 +74,35 @@ namespace System.ServiceModel
 		[MonoTODO]
 		protected override void ClearItems ()
 		{
-			// hmm, what to do here?
+			// FIXME: threadsafe?
+			for (int i = 0; i < Count; i++) {
+				this [i].Detach (owner);
+			}
 			base.ClearItems ();
 		}
 
 		[MonoTODO]
 		protected override void InsertItem (int index, IExtension<T> item)
 		{
-			// hmm, what to do here?
+			// FIXME: threadsafe?
+			item.Attach (owner);
 			base.InsertItem (index, item);
 		}
 
 		[MonoTODO]
 		protected override void RemoveItem (int index)
 		{
+			// FIXME: threadsafe?
+			this [index].Detach (owner);
 			base.RemoveItem (index);
 		}
 
 		[MonoTODO]
 		protected override void SetItem (int index, IExtension<T> item)
 		{
+			// FIXME: threadsafe?
+			this [index].Detach (owner);
+			item.Attach (owner);
 			base.SetItem (index, item);
 		}
 	}

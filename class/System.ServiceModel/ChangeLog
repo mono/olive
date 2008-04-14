@@ -1,3 +1,7 @@
+2008-04-14  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* System.ServiceModel_test.dll.sources: Add ExtensionCollectionTest.cs.
+
 2008-04-13  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* added: System.ServiceModel_Test.csproj, visual studio tests project
