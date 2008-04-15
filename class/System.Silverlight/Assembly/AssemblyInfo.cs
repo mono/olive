@@ -37,8 +37,13 @@ using System.Runtime.InteropServices;
 
 // General Information about the System.Windows.Browser assembly
 
+#if !NET_2_1
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+#else
 [assembly: AssemblyVersion ("2.0.5.0")]
 [assembly: SatelliteContractVersion ("2.0.5.0")]
+#endif
 
 [assembly: AssemblyTitle ("System.Windows.Browser.dll")]
 [assembly: AssemblyDescription ("System.Windows.Browser.dll")]
