@@ -134,9 +134,6 @@ namespace System.Windows {
 		
 		static object CreateObject (Kind k, IntPtr raw)
 		{
-			if (k <= Kind.DEPENDENCY_OBJECT)
-				throw new Exception ("the kind has to be a derived DependencyObject");
-
 			NativeMethods.base_ref (raw);
 			switch (k){
 			case Kind.ARCSEGMENT: return new ArcSegment (raw);
