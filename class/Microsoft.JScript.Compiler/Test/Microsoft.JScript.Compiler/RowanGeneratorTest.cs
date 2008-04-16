@@ -4,7 +4,7 @@ using System.Text;
 using Microsoft.JScript.Compiler;
 using NUnit.Core;
 using NUnit.Framework;
-using MSIA = Microsoft.Scripting.Internal.Ast;
+using MSIA = Microsoft.Scripting.Ast;
 using MSA = Microsoft.Scripting.Actions;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
 using MJR = Microsoft.JScript.Runtime;

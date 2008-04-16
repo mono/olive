@@ -34,13 +34,14 @@ namespace Microsoft.JScript.Compiler
 {
 	public class Parser
 	{
-		public Parser (char[] Input)
-			: this (Input, new IdentifierTable ())
+		public Parser (char[] Input, bool ECMA3Mode)
+			: this (Input, new IdentifierTable (), ECMA3Mode)
 		{
 		}
 
-		public Parser (char[] Input, IdentifierTable IDTable)
+		public Parser (char[] Input, IdentifierTable IDTable, bool ECMA3Mode)
 		{
+			this.ECMA3Mode = ECMA3Mode;
 			lexer = new Tokenizer (Input, IDTable);
 			diagnostics = new List<Diagnostic> ();
 			Next (); // innit on first token 
@@ -55,12 +56,15 @@ namespace Microsoft.JScript.Compiler
 		private int withinIteration;
 		private int withinSwitch;
 		private List<string> LabelSet = new List<string> ();
+		private bool ECMA3Mode;
+		private BindingInfo BindingInfo;
+		private List<Diagnostic> diagnostics;
 
 		#endregion
 
-		#region public methods
+		#region public members
 
-		public DList<Statement, BlockStatement> ParseProgram (ref List<Comment> Comments)
+		public DList<Statement, BlockStatement> ParseProgram (ref List<Comment> Comments, ref BindingInfo BindingInfo)
 		{
 			Init ();
 			DList<Statement, BlockStatement> result = new DList<Statement, BlockStatement> ();
@@ -75,21 +79,22 @@ namespace Microsoft.JScript.Compiler
 			return result;
 		}
 				
-		public Expression ParseExpression (ref List<Comment> Comments)
+		public Expression ParseExpression (ref List<Comment> Comments, ref BindingInfo BindingInfo)
 		{
 			Init ();
 			Expression ex = ParseExpression();
 			Comments = lexer.Comments;
+			this.BindingInfo = BindingInfo;
 			return ex;
 		}
 
-		public Statement ParseStatement (ref List<Comment> Comments)
+		/*public Statement ParseStatement (ref List<Comment> Comments)
 		{
 			Init ();
 			Statement sta = ParseStatement ();
 			Comments = lexer.Comments;
 			return sta;
-		}
+		}*///remove in the new version
 
 		public bool SyntaxIncomplete ()
 		{
@@ -99,6 +104,10 @@ namespace Microsoft.JScript.Compiler
 		public bool SyntaxOK ()
 		{
 			return diagnostics.Count == 0;
+		}
+
+		public List<Diagnostic> Diagnostics {
+			get { return diagnostics; }
 		}
 
 		#endregion
@@ -1262,12 +1271,6 @@ namespace Microsoft.JScript.Compiler
 		#endregion
 
 		#endregion
-
-		private List<Diagnostic> diagnostics;
-
-		public List<Diagnostic> Diagnostics {
-			get { return diagnostics; }
-		}
 
 		private void Error (DiagnosticCode code , TextSpan loc)
 		{

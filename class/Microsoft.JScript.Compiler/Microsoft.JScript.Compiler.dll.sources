@@ -4,25 +4,17 @@
 Assembly/AssemblyInfo.cs
 Microsoft.JScript.Compiler/BadToken.cs
 Microsoft.JScript.Compiler/Comment.cs
-Microsoft.JScript.Compiler/Compiler.cs
-Microsoft.JScript.Compiler/CompilerOptions.cs
 Microsoft.JScript.Compiler/DList.cs
 Microsoft.JScript.Compiler/Diagnostic.cs
-Microsoft.JScript.Compiler/Engine.cs
-Microsoft.JScript.Compiler/EngineOptions.cs
 Microsoft.JScript.Compiler/GlobalEnum.cs
 Microsoft.JScript.Compiler/HexIntegerLiteralToken.cs
 Microsoft.JScript.Compiler/Identifier.cs
-Microsoft.JScript.Compiler/IdentifierMappingTable.cs
 Microsoft.JScript.Compiler/IdentifierTable.cs
 Microsoft.JScript.Compiler/IdentifierToken.cs
-Microsoft.JScript.Compiler/JavaScriptCompiler.cs
 Microsoft.JScript.Compiler/NumericLiteralToken.cs
 Microsoft.JScript.Compiler/OctalIntegerLiteralToken.cs
-Microsoft.JScript.Compiler/OptionsParser.cs
 Microsoft.JScript.Compiler/Parser.cs
 Microsoft.JScript.Compiler/RegularExpressionLiteralToken.cs
-Microsoft.JScript.Compiler/RowanGenerator.cs
 Microsoft.JScript.Compiler/SplayTree.cs
 Microsoft.JScript.Compiler/StringLiteralToken.cs
 Microsoft.JScript.Compiler/Strings.cs
@@ -30,9 +22,7 @@ Microsoft.JScript.Compiler/Table.cs
 Microsoft.JScript.Compiler/TextPoint.cs
 Microsoft.JScript.Compiler/TextSpan.cs
 Microsoft.JScript.Compiler/Token.cs
-Microsoft.JScript.Compiler/TokenCategorizer.cs
 Microsoft.JScript.Compiler/Tokenizer.cs
-Microsoft.JScript.Compiler.Hosting/LanguageProvider.cs
 Microsoft.JScript.Compiler.ParseTree/ArgumentList.cs
 Microsoft.JScript.Compiler.ParseTree/ArrayLiteralExpression.cs
 Microsoft.JScript.Compiler.ParseTree/BinaryOperatorExpression.cs
@@ -84,6 +74,4 @@ Microsoft.JScript.Compiler.ParseTree/VariableDeclarationListElement.cs
 Microsoft.JScript.Compiler.ParseTree/VariableDeclarationStatement.cs
 Microsoft.JScript.Compiler.ParseTree/WhileStatement.cs
 Microsoft.JScript.Compiler.ParseTree/WithStatement.cs
-Microsoft.JScript.Compiler.Shell/CommandLine.cs
-Microsoft.JScript.Compiler.Shell/ConsoleOptions.cs
 

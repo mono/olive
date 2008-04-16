@@ -31,8 +31,6 @@ using System.Text;
 
 namespace Microsoft.JScript.Compiler
 {
-	// FIXME: do we need to reimplement linkedlist?
-
 	// double linked list because of name so must have a node somewhere
 	public class DList<ElementType, ParentType>
 	{
@@ -138,6 +136,10 @@ namespace Microsoft.JScript.Compiler
 				}
 				else
 					DL.head = current.Next;
+			}
+			
+			public bool AtLast {
+				get { return (current.Next == null); }
 			}
 
 			public ElementType Element {
