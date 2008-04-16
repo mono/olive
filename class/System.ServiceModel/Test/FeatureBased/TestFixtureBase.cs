@@ -33,7 +33,7 @@ namespace MonoTests.Features
 
         string getEndpoint()
         {
-			return "http://localhost:9999/" + typeof(TServer).Name
+			return "http://localhost:9999/" + typeof(TServer).Name;
         }
 
 		TClient _client;

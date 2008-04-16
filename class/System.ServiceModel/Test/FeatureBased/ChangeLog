@@ -1,3 +1,9 @@
+2008-04-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* TestFixtureBase.cs : Fix build.
+
+	(ChangeLog was missing in the previous build)
+
 2008-04-06  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* added 
