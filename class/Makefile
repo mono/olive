@@ -15,35 +15,26 @@ net_3_0_dirs = \
 	System.IdentityModel		\
 	System.IdentityModel.Selectors	\
 	System.ServiceModel 		\
-	agmono				\
-	System.Silverlight		\
-	agclr				\
 	UIAutomationTypes		\
 	UIAutomationProvider
-
-net_2_1_dirs = \
-	agmono		\
-	System.Silverlight	\
-	agclr		\
 
 net_3_5_dirs = \
 	System.ServiceModel.Web
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
-net_2_1_SUBDIRS := $(net_2_1_dirs)
 net_3_5_SUBDIRS := $(net_3_5_dirs)
 
-SUBDIRS = $(net_3_0_dirs) $(net_2_1_dirs) $(net_3_5_dirs)
+SUBDIRS = $(net_3_0_dirs) $(net_3_5_dirs)
 
 include ../build/rules.make
 
-DIST_PROFILE_DIRS = net_2_1 net_3_0 net_3_5
+DIST_PROFILE_DIRS = net_3_0 net_3_5
 
 dist-local: dist-default
 	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
 
 
-DISTFILES = msfinal.pub winfx3.pub silverlight.pub mono.snk mono.pub ecma.pub
+DISTFILES = msfinal.pub winfx3.pub mono.snk mono.pub ecma.pub
 
 .PHONY: all-local $(STD_TARGETS:=-local)
 all-local $(STD_TARGETS:=-local):
