@@ -1,3 +1,8 @@
+2008-04-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* configure : disable with-moonlight (did not remove it since we
+	  will still need it for olive assemblies tuned for moonlight).
+
 2007-12-15  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile : oops, nunit20 should be also included in SUBDIRS.

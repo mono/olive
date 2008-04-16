@@ -5,7 +5,7 @@
 VERSION=0.2
 
 prefix=NONE
-with_moonlight=yes
+with_moonlight=no
 test -e "$CONFIG_SITE" && . "$CONFIG_SITE"
 test "$prefix" = NONE && prefix=/usr/local
 
