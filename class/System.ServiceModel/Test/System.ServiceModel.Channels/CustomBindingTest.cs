@@ -137,7 +137,6 @@ namespace MonoTests.System.ServiceModel.Channels
 
 		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
-		[Category ("NotWorking")]
 		//  Envelope Version 'EnvelopeNone (http://schemas.microsoft.com/ws/2005/05/envelope/none)'
 		// does not support adding Message Headers.
 		public void MessageSecurityPOX ()

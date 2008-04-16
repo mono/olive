@@ -162,7 +162,6 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void WriteGenericXmlSecurityToken1 ()
 		{
 			StringWriter sw = new StringWriter ();
@@ -223,7 +222,6 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void WriteSecurityContextSecurityToken ()
 		{
 			StringWriter sw = new StringWriter ();

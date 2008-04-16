@@ -256,7 +256,6 @@ namespace MonoTests.System.ServiceModel.Channels
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void OpenRequestWithDefaultServiceCertificate ()
 		{
 			IChannelFactory<IRequestChannel> f =
@@ -396,7 +395,6 @@ namespace MonoTests.System.ServiceModel.Channels
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void RequestBasedOnContract2 ()
 		{
 			CustomBinding b = CreateBinding (delegate (Message input) {

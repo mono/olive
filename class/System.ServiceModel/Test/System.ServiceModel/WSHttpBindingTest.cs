@@ -446,7 +446,6 @@ namespace MonoTests.System.ServiceModel
 
 		[Test]
 		[ExpectedException (typeof (InvalidOperationException))]
-		[Category ("NotWorking")]
 		public void BuildListenerWithoutServiceCertificate ()
 		{
 			ServiceHost host = new ServiceHost (typeof (Foo));

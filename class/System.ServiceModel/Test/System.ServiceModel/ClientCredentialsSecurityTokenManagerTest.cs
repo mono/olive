@@ -506,7 +506,6 @@ Assert.IsFalse (new MyManager (new MyClientCredentials ()).IsIssued (r), "premis
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void CreateProviderSecureConv ()
 		{
 			SecurityTokenRequirement r = CreateRequirement ();

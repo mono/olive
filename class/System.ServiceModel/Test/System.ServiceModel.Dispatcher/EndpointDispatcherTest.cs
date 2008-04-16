@@ -63,7 +63,6 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void MatchTest () {
 			EndpointDispatcher d = new EndpointDispatcher (
 				new EndpointAddress ("http://localhost:8000"), "test", "http://MonoTests.Tests");
@@ -83,7 +82,6 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void ActionMessageFilterTest () {
 			ServiceHost h = new ServiceHost (typeof (SpecificAction), new Uri ("http://localhost:8000"));
 			EndpointDispatcher ed = new EndpointDispatcher (new EndpointAddress ("http://localhost:8000/address"),

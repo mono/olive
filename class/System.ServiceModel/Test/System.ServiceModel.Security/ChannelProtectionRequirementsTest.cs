@@ -36,7 +36,7 @@ using System.ServiceModel.Security.Tokens;
 using System.Security.Cryptography.Xml;
 using NUnit.Framework;
 
-namespace MonoTests.System.ServiceModel
+namespace MonoTests.System.ServiceModel.Security
 {
 	[TestFixture]
 	public class ChannelProtectionRequirementsTest
@@ -54,7 +54,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		[ExpectedException (typeof (InvalidOperationException))]
 		public void AddToReadOnly ()
 		{

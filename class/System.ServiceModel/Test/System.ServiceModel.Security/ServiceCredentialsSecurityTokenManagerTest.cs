@@ -397,7 +397,6 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorAnonSslNoSecurityBindingElement ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
@@ -409,7 +408,6 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorAnonSslNoIssuedSecurityTokenParameters ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
@@ -421,7 +419,6 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorAnonSslNoIssuerBindingContext ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
@@ -446,7 +443,6 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorAnonSslNoMessageSecurityVersion ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
@@ -469,7 +465,6 @@ namespace MonoTests.System.ServiceModel.Security
 
 		[Test]
 		[ExpectedException (typeof (ArgumentException))]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorAnonSslCertPublicOnly ()
 		{
 			RecipientServiceModelSecurityTokenRequirement r =
@@ -576,7 +571,6 @@ namespace MonoTests.System.ServiceModel.Security
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void CreateAuthenticatorSecureConv ()
 		{
 			// service certificate is not required
