@@ -11,9 +11,9 @@ else
 	silverdir  = $(prefix)/lib/mono/2.1
 endif
 
-all-local: olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc
+all-local: olive.pc 
 
-DISTFILES = olive.pc.in silver.pc.in silverdesktop.pc.in agmono.pc.in agmonosilver.pc.in
+DISTFILES = olive.pc.in 
 
 REWRITE=
 olive.pc: olive.pc.in Makefile
@@ -22,32 +22,12 @@ olive.pc: olive.pc.in Makefile
 	mv $@.tmp2 $@
 	rm $@.tmp
 
-silver.pc: silver.pc.in Makefile
-	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silver.pc.in > $@.tmp
-	mv $@.tmp $@
-
-agmonosilver.pc: agmonosilver.pc.in Makefile
-	sed -e "s,@silverdir@,$(silverdir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < agmonosilver.pc.in > $@.tmp
-	mv $@.tmp $@
-
-silverdesktop.pc: silverdesktop.pc.in Makefile
-	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < silverdesktop.pc.in > $@.tmp
-	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
-	mv $@.tmp2 $@
-	rm $@.tmp
-
-agmono.pc: agmono.pc.in Makefile
-	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < agmono.pc.in > $@.tmp
-	sed -e "s,@olive35dir@,$(olive35dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
-	mv $@.tmp2 $@
-	rm $@.tmp
-
-install-local: olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc
+install-local: olive.pc 
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
-	$(INSTALL_DATA) olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc $(DESTDIR)$(prefix)/lib/pkgconfig
+	$(INSTALL_DATA) olive.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
 clean-local:
-	rm -rf olive.pc silver.pc silverdesktop.pc agmono.pc agmonosilver.pc
+	rm -rf olive.pc 
 
 test-local:
 
