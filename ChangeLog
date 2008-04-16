@@ -1,3 +1,7 @@
+2008-04-16  Jb Evain  <jbevain@novell.com>
+
+	* Makefile: don't build a 2.1 profile anymore.
+
 2008-04-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* configure : disable with-moonlight (did not remove it since we

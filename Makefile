@@ -3,15 +3,11 @@ thisdir := .
 SUBDIRS := build class tools data scripts nunit20
 
 net_3_0_SUBDIRS := build class tools data scripts nunit20
-net_2_1_SUBDIRS := build class data
 net_3_5_SUBDIRS := build class nunit20
 
 include build/config.make
 
 PROFILES = net_3_0 net_3_5
-ifdef WITH_MOONLIGHT
-PROFILES += net_2_1
-endif
 
 STD_TARGETS_OVERRIDE = all clean install uninstall run-test
 
