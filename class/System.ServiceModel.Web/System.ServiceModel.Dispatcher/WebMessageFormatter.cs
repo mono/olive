@@ -230,7 +230,7 @@ namespace System.ServiceModel.Description
 
 				// FIXME: handle ref/out parameters
 
-				return serializer.ReadObject (message.GetReaderAtBodyContents ());
+				return serializer.ReadObject (message.GetReaderAtBodyContents (), false);
 			}
 		}
 

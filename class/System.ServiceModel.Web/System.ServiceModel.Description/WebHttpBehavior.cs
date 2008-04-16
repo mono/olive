@@ -133,7 +133,6 @@ namespace System.ServiceModel.Description
 		[MonoTODO]
 		public virtual void Validate (ServiceEndpoint endpoint)
 		{
-			throw new NotImplementedException ();
 		}
 	}
 }
