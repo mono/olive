@@ -100,8 +100,8 @@ namespace System.ServiceModel.Channels
 				}
 			} else if (ctx.Request.HttpMethod == "GET") {
 				msg = Message.CreateMessage (source.MessageEncoder.MessageVersion, null);
-				msg.Headers.To = ctx.Request.Url;
 			}
+			msg.Headers.To = ctx.Request.Url;
 			
 			HttpRequestMessageProperty prop =
 				new HttpRequestMessageProperty ();

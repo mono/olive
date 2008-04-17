@@ -1,5 +1,9 @@
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* HttpReplyChannel.cs: fixed TryReceiveRequest, fix message header To
+
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* MessageFault.cs: fixed CreateFault11, implemented "detail"
 
 2008-04-17  Noam Lampert <noaml@mainsoft.com>
