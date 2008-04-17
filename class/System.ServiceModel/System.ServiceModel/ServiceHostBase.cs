@@ -70,6 +70,18 @@ namespace System.ServiceModel
 			get { return new ReadOnlyCollection<Uri> (base_addresses.InternalItems); }
 		}
 
+		internal Uri CreateUri (string sheme, Uri relatieUri) {
+			Uri baseUri = base_addresses.Contains (sheme) ? base_addresses [sheme] : null;
+
+			if (relatieUri == null)
+				return baseUri;
+			if (relatieUri.IsAbsoluteUri)
+				return relatieUri;
+			if (baseUri == null)
+				return null;
+			return new Uri (baseUri, relatieUri);
+		}
+
 		[MonoTODO]
 		public ChannelDispatcherCollection ChannelDispatchers {
 			get { return channel_dispatchers; }
@@ -179,7 +191,7 @@ namespace System.ServiceModel
 		ContractDescription GetContract (string typeName)
 		{
 			//FIXME: hack hack hack
-			ImplementedContracts [ServiceMetadataBehavior.HttpGetWsdlContractName] =
+			ImplementedContracts ["HttpGetWsdl"] =
 				ContractDescription.GetContract (typeof (HttpGetWsdl));
 
 			// FIXME: As long as I tried, *only* IMetadataExchange
@@ -377,7 +389,7 @@ namespace System.ServiceModel
 
 		}
 
-		private ChannelDispatcher BuildChannelDispatcher (ServiceEndpoint se) {
+		internal ChannelDispatcher BuildChannelDispatcher (ServiceEndpoint se) {
 
 			//Let all behaviors add their binding parameters
 			BindingParameterCollection commonParams =
@@ -395,7 +407,7 @@ namespace System.ServiceModel
 			//Attach one EndpointDispacher to the ChannelDispatcher
 			EndpointDispatcher endpoint_dispatcher =
 				new EndpointDispatcher (se.Address, se.Contract.Name, se.Contract.Namespace);
-			endpoint_dispatcher.ContractFilter = new ActionMessageFilter (GetContractActions (se.Contract));
+			endpoint_dispatcher.ContractFilter = GetContractFilter (se.Contract);
 			endpoint_dispatcher.ChannelDispatcher = cd;
 			cd.Endpoints.Add (endpoint_dispatcher);
 			
@@ -408,15 +420,18 @@ namespace System.ServiceModel
 			return cd;
 		}
 
-		private string [] GetContractActions (ContractDescription contractDescription)
+		private MessageFilter GetContractFilter (ContractDescription contractDescription)
 		{
 			List<string> actions = new List<string> ();
 			foreach (OperationDescription od in contractDescription.Operations)
 				foreach (MessageDescription md in od.Messages)
 					if (md.Direction == MessageDirection.Input)
-						actions.Add (md.Action);
+						if (md.Action == "*")
+							return new MatchAllMessageFilter ();
+						else
+							actions.Add (md.Action);
 
-			return actions.ToArray ();
+			return new ActionMessageFilter (actions.ToArray ());
 		}
 
 		private void AddBindingParameters (BindingParameterCollection commonParams, ServiceEndpoint endPoint) {
