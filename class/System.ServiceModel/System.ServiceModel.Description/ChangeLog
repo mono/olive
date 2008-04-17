@@ -1,3 +1,7 @@
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* ServiceEndpoint.cs: fixed Name property
+
 2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
 
 	* TypedMessageConverter.cs: Simplified to use XmlMessagesFormatter and

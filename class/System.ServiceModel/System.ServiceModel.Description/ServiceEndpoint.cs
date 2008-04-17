@@ -88,7 +88,11 @@ namespace System.ServiceModel.Description
 		}
 
 		public string Name {
-			get { return name; }
+			get {
+				if (name == null)
+					name = Binding.Name + "_" + Contract.Name;
+				return name;
+			}
 			set { name = value; }
 		}
 
