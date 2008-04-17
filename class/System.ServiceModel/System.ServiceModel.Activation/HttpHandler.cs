@@ -1,5 +1,5 @@
 ﻿//
-// BasicHttpBindingElementTest.cs
+// HttpHandler.cs
 //
 // Author:
 //	Igor Zelmanovich <igorz@mainsoft.com>
