@@ -1,3 +1,7 @@
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* MessageFault.cs: fixed CreateFault11, implemented "detail"
+
 2008-04-17  Noam Lampert <noaml@mainsoft.com>
 
 	* HttpReplyChannel.cs: fix API - Fix crash during service shutdown.

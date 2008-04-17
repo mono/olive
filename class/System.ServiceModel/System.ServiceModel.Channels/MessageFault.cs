@@ -51,6 +51,7 @@ namespace System.ServiceModel.Channels
 		{
 			FaultCode fc = null;
 			FaultReason fr = null;
+			object details = null;
 			XmlDictionaryReader r = message.GetReaderAtBodyContents ();
 			r.ReadStartElement ("Fault", message.Version.Envelope.Namespace);
 			r.MoveToContent ();
@@ -64,8 +65,10 @@ namespace System.ServiceModel.Channels
 				case "faultstring":
 					fr = new FaultReason (r.ReadElementContentAsString ("faultstring", ns));
 					break;
-				case "faultactor":
 				case "detail":
+					details = new DataContractSerializer (typeof (ExceptionDetail)).ReadObject (r);
+					break;
+				case "faultactor":
 				default:
 					throw new NotImplementedException ();
 				}
@@ -73,7 +76,7 @@ namespace System.ServiceModel.Channels
 			}
 			r.ReadEndElement ();
 
-			return CreateFault (fc, fr);
+			return CreateFault (fc, fr, details);
 		}
 
 		static MessageFault CreateFault12 (Message message, int maxBufferSize)
@@ -313,6 +316,9 @@ if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
 
 		public T GetDetail<T> (XmlObjectSerializer formatter)
 		{
+			if (!HasDetail)
+				throw new InvalidOperationException ("This message does not have details.");
+
 			return (T) formatter.ReadObject (GetReaderAtDetailContents ());
 		}
 
