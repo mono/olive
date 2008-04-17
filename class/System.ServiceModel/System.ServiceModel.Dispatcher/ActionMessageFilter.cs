@@ -64,7 +64,7 @@ namespace System.ServiceModel.Dispatcher {
 		public override bool Match (Message message)
 		{
  			foreach (string action in actions)
- 				if (message.Headers.Action == action)
+ 				if (message.Headers.Action == action || action == "*")
  					return true;
 
 			return false;
