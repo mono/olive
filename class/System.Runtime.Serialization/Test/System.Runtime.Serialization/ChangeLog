@@ -1,3 +1,9 @@
+2008-04-17  Eyal Alaluf <eyala@mainsoft.com>
+
+	* XmlObjectSerializerTest.cs: Add test for base class with a different XML
+	  namespace then its derived class.
+	  Add tests for derserialization of arrays.
+
 2008-04-14  Eyal Alaluf <eyala@mainsoft.com>
 
 	* XmlObjectSerializerTest.cs: DataContract types don't need anymore an empty

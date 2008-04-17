@@ -50,7 +50,6 @@ namespace System.Runtime.Serialization
 		int max_items;
 
 		ArrayList objects = new ArrayList ();
-		Stack ns_stack = new Stack ();
 
 		public static void Serialize (XmlDictionaryWriter writer, object graph,
 			KnownTypeCollection types,
@@ -68,7 +67,6 @@ namespace System.Runtime.Serialization
 			this.types = types;
 			ignore_unknown = ignoreUnknown;
 			max_items = maxItems;
-			ns_stack.Push (root_ns);
 		}
 
 		public XmlDictionaryWriter Writer {
@@ -97,21 +95,11 @@ namespace System.Runtime.Serialization
 			writer.WriteString (KnownTypeCollection.PredefinedTypeObjectToString (graph));
 		}
 
-		public void WriteStartElement (string name)
+		public void WriteStartElement (string rootName, string rootNamespace, string currentNamespace)
 		{
-			WriteStartElement (name, ns_stack.Peek () as string);
-		}
-
-		public void WriteStartElement (string name, string ns)
-		{
-			string currentXml = ns_stack.Peek () as string;
-			if (!string.IsNullOrEmpty (currentXml)) {
-				writer.WriteStartElement (writer.LookupPrefix (currentXml), name, currentXml);
-				if (!String.IsNullOrEmpty (ns) && ns != currentXml)
-					writer.WriteXmlnsAttribute (null, ns);
-			}
-			else
-				writer.WriteStartElement (name, ns);
+			writer.WriteStartElement (rootName, rootNamespace);
+			if (!string.IsNullOrEmpty (currentNamespace) && currentNamespace != rootNamespace)
+				writer.WriteXmlnsAttribute (null, currentNamespace);
 		}
 
 		public void WriteEndElement ()
@@ -145,13 +133,7 @@ namespace System.Runtime.Serialization
 			if (type != actualType)
 				Write_i_type (map.XmlName);
 
-			bool pushNS = !String.IsNullOrEmpty (map.XmlName.Namespace);
-			if (pushNS)
-				ns_stack.Push (map.XmlName.Namespace);
-
 			map.Serialize (graph, this);
-			if (pushNS)
-				ns_stack.Pop ();
 		}
 	}
 }

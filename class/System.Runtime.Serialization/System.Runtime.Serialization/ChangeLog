@@ -1,3 +1,11 @@
+2008-04-17  Eyal Alaluf <eyala@mainsoft.com>
+
+	* SerializationMap.cs: Implement partially collections deserialization.
+	  Supports arrays and types derived from IList. Needs support for calling
+	  'Add' method and for dictionaries.
+	* SerializationMap.cs XmlFormatterSerializer.cs DataContractSerializer.cs:
+	  Serialize namespaces for base members according to base class namespace.
+
 2008-04-14  Eyal Alaluf <eyala@mainsoft.com>
 
 	* SerializationMap.cs: Use FormatterServices.GetUninitializedObject instead

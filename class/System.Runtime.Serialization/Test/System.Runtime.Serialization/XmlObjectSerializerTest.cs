@@ -654,6 +654,21 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		public void SerializeDerivedDC ()
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (DerivedDC));
+			StringWriter sw = new StringWriter ();
+			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+				DerivedDC e = new DerivedDC ();
+				ser.WriteObject (w, e);
+			}
+ 
+			Assert.AreEqual (
+				@"<DerivedDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""Derived""><baseVal xmlns=""Base"">0</baseVal><derivedVal>0</derivedVal></DerivedDC>",
+				sw.ToString ());
+		}
+
+		[Test]
 		public void SerializerDCArray ()
 		{
 			DataContractSerializer ser = new DataContractSerializer (typeof (DCWithEnum []));
@@ -748,43 +763,36 @@ namespace MonoTests.System.Runtime.Serialization
 		[Test]
 		public void DeserializeEnum ()
 		{
-			object o = Deserialize (
-				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">Red</Colors>",
-				typeof (Colors));
+			Colors c = Deserialize<Colors> (
+				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">Red</Colors>");
 
-			Assert.AreEqual (typeof (Colors), o.GetType (), "#de1");
-			Colors c = (Colors) o;
 			Assert.AreEqual (Colors.Red, c, "#de2");
 		}
 
 		[Test]
 		public void DeserializeEnum2 ()
 		{
-			object o = Deserialize (
-				@"<Colors xmlns:d1p1=""http://www.w3.org/2001/XMLSchema"" i:type=""d1p1:int"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">0</Colors>",
-				typeof (Colors));
+			Colors c = Deserialize<Colors> (
+				@"<Colors xmlns:d1p1=""http://www.w3.org/2001/XMLSchema"" i:type=""d1p1:int"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">1</Colors>",
+				typeof (int));
 
-			Assert.AreEqual (typeof (int), o.GetType (), "#de3");
-			int i = (int) o;
-			Assert.AreEqual (0, i, "#de4");
+			Assert.AreEqual (Colors.Green, c, "#de4");
 		}
 		
 		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEnumInvalid1 ()
 		{
-			Deserialize (
-				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""></Colors>",
-				typeof (Colors));
+			Deserialize<Colors> (
+				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""></Colors>");
 		}
 
 		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEnumInvalid2 ()
 		{
-			Deserialize (
-				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""/>",
-				typeof (Colors));
+			Deserialize<Colors> (
+				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""/>");
 		}
 
 		[Test]
@@ -792,53 +800,42 @@ namespace MonoTests.System.Runtime.Serialization
 		public void DeserializeEnumInvalid3 ()
 		{
 			//"red" instead of "Red"
-			Deserialize (
-				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">red</Colors>",
-				typeof (Colors));
+			Deserialize<Colors> (
+				@"<Colors xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">red</Colors>");
 		}
 
 		[Test]
 		public void DeserializeEnumWithDC ()
 		{
-			object o = Deserialize (
-				@"<_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">_Red</_ColorsWithDC>",
-				typeof (ColorsWithDC));
+			ColorsWithDC cdc = Deserialize<ColorsWithDC> (
+				@"<_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">_Red</_ColorsWithDC>");
 			
-			Assert.AreEqual (typeof (ColorsWithDC), o.GetType (), "#de5");
-			ColorsWithDC cdc = (ColorsWithDC) o;
-			Assert.AreEqual (ColorsWithDC.Red, o, "#de6");
+			Assert.AreEqual (ColorsWithDC.Red, cdc, "#de6");
 		}
 
 		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEnumWithDCInvalid ()
 		{
-			Deserialize (
-				@"<_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">NonExistant</_ColorsWithDC>",
-				typeof (ColorsWithDC));
+			Deserialize<ColorsWithDC> (
+				@"<_ColorsWithDC xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"">NonExistant</_ColorsWithDC>");
 		}
 
 		[Test]
 		public void DeserializeDCWithEnum ()
 		{
-			object o = Deserialize (
-				@"<DCWithEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><_colors>Red</_colors></DCWithEnum>",
-				typeof (DCWithEnum));
+			DCWithEnum dc = Deserialize<DCWithEnum> (
+				@"<DCWithEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><_colors>Red</_colors></DCWithEnum>");
 
-			Assert.AreEqual (typeof (DCWithEnum), o.GetType (), "#de7");
-			DCWithEnum dc = (DCWithEnum) o;
 			Assert.AreEqual (Colors.Red, dc.colors, "#de8");
 		}
 
 		[Test]
 		public void DeserializeNestingDC ()
 		{
-			object o = Deserialize (
-				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1><Name>test1</Name></Field1><Field2><Name>test2</Name></Field2></NestingDC>",
-				typeof (NestingDC));
+			NestingDC dc = Deserialize<NestingDC> (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1><Name>test1</Name></Field1><Field2><Name>test2</Name></Field2></NestingDC>");
 
-			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
-			NestingDC dc = (NestingDC) o;
 			Assert.IsNotNull (dc.Field1, "#N1: Field1 should not be null.");
 			Assert.IsNotNull (dc.Field2, "#N2: Field2 should not be null.");
 			Assert.AreEqual ("test1", dc.Field1.Name, "#1");
@@ -848,14 +845,21 @@ namespace MonoTests.System.Runtime.Serialization
 		[Test]
 		public void DeserializeNestingDC2 ()
 		{
-			object o = Deserialize (
-				@"<NestingDC2 xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""test2""><Field xmlns:d2p1=""test1""><d2p1:Name>Something</d2p1:Name></Field></NestingDC2>",
-				typeof (NestingDC2));
+			NestingDC2 dc = Deserialize<NestingDC2> (
+				@"<NestingDC2 xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""test2""><Field xmlns:d2p1=""test1""><d2p1:Name>Something</d2p1:Name></Field></NestingDC2>");
 
-			Assert.AreEqual (typeof (NestingDC2), o.GetType (), "#de7");
-			NestingDC2 dc = (NestingDC2) o;
-			Assert.IsNotNull (dc.Field, "#N0: Field should not be null.");
-			Assert.AreEqual ("Something", dc.Field.Name, "#N1");
+			Assert.IsNotNull (dc.Field, "#N1: Field should not be null.");
+			Assert.AreEqual ("Something", dc.Field.Name, "#N2");
+		}
+
+		[Test]
+		public void DeserializeDerivedDC ()
+		{
+			DerivedDC dc = Deserialize<DerivedDC> (
+				@"<DerivedDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""Derived""><baseVal xmlns=""Base"">1</baseVal><derivedVal>2</derivedVal></DerivedDC>");
+
+			Assert.AreEqual (1, dc.baseVal, "#N1");
+			Assert.AreEqual (2, dc.derivedVal, "#N2");
 		}
 
 		[Test]
@@ -884,31 +888,23 @@ namespace MonoTests.System.Runtime.Serialization
 		[Test]
 		public void DeserializeEmptyNestingDC ()
 		{
-			object o = Deserialize (
-				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""></NestingDC>",
-				typeof (NestingDC));
+			NestingDC dc = Deserialize<NestingDC> (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""></NestingDC>");
 
-			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
-			NestingDC dc = (NestingDC) o;
 			Assert.IsNotNull (dc, "#A0: The object should not be null.");
 			Assert.IsNull (dc.Field1, "#A1: Field1 should be null.");
 			Assert.IsNull (dc.Field2, "#A2: Field2 should be null.");
 
-			o = Deserialize (
-				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""/>",
-				typeof (NestingDC));
+			dc = Deserialize<NestingDC> (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""/>");
 
-			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
-			dc = (NestingDC) o;
 			Assert.IsNotNull (dc, "#B0: The object should not be null.");
 			Assert.IsNull (dc.Field1, "#B1: Field1 should be null.");
 			Assert.IsNull (dc.Field2, "#B2: Field2 should be null.");
 
-			o = Deserialize (
-				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1 i:nil=""true"" /><Field2 i:nil=""true"" /></NestingDC>",
-				typeof (NestingDC));
-			Assert.AreEqual (typeof (NestingDC), o.GetType (), "#de7");
-			dc = (NestingDC) o;
+			dc = Deserialize<NestingDC> (
+				@"<NestingDC xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><Field1 i:nil=""true"" /><Field2 i:nil=""true"" /></NestingDC>");
+
 			Assert.IsNotNull (dc, "#B0: The object should not be null.");
 			Assert.IsNull (dc.Field1, "#B1: Field1 should be null.");
 			Assert.IsNull (dc.Field2, "#B2: Field2 should be null.");
@@ -918,37 +914,72 @@ namespace MonoTests.System.Runtime.Serialization
 		[ExpectedException (typeof (SerializationException))]
 		public void DeserializeEmptyDCWithTwoEnums ()
 		{
-			object o = Deserialize (
-				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/><colors2 i:nil=""true""/></DCWithTwoEnums>",
-				typeof (DCWithTwoEnums));
-
-			DCWithTwoEnums dc = (DCWithTwoEnums) o;
+			Deserialize<DCWithTwoEnums> (
+				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/><colors2 i:nil=""true""/></DCWithTwoEnums>");
 		}
 
 		[Test]
 		[Category ("NotWorking")]
 		public void DeserializeDCWithNullableEnum ()
 		{
-			object o = Deserialize (
-				@"<DCWithNullableEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/></DCWithNullableEnum>",
-				typeof (DCWithNullableEnum));
+			DCWithNullableEnum dc = Deserialize<DCWithNullableEnum> (
+				@"<DCWithNullableEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors i:nil=""true""/></DCWithNullableEnum>");
 
-			DCWithNullableEnum dc = (DCWithNullableEnum) o;
-			Assert.IsNotNull (dc, "#B0: The object should not be null.");
 			Assert.IsNull (dc.colors, "#B1: Field should be null.");
 		}
 
 		[Test]
 		public void DeserializeDCWithTwoEnums ()
 		{
-			object o = Deserialize (
-				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors>Blue</colors><colors2>Green</colors2></DCWithTwoEnums>",
-				typeof (DCWithTwoEnums));
+			DCWithTwoEnums dc = Deserialize<DCWithTwoEnums> (
+				@"<DCWithTwoEnums xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><colors>Blue</colors><colors2>Green</colors2></DCWithTwoEnums>");
 
-			Assert.AreEqual (typeof (DCWithTwoEnums), o.GetType (), "#de7");
-			DCWithTwoEnums dc = (DCWithTwoEnums) o;
 			Assert.AreEqual (Colors.Blue, dc.colors, "#0");
 			Assert.AreEqual (Colors.Green, dc.colors2, "#1");
+		}
+
+		[Test]
+		public void DeserializerDCArray ()
+		{
+			DCWithEnum [] dcArray = Deserialize<DCWithEnum []> (
+				@"<ArrayOfDCWithEnum xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization""><DCWithEnum><_colors>Red</_colors></DCWithEnum><DCWithEnum><_colors>Green</_colors></DCWithEnum></ArrayOfDCWithEnum>");
+
+			Assert.AreEqual (2, dcArray.Length, "#N1");
+			Assert.AreEqual (Colors.Red, dcArray [0].colors, "#N2");
+			Assert.AreEqual (Colors.Green, dcArray [1].colors, "#N3");
+		}
+
+		[Test]
+		public void DeserializerDCArray2 ()
+		{
+			string xml = 
+				@"<ArrayOfanyType xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""><anyType xmlns:d2p1=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"" i:type=""d2p1:DCWithEnum""><d2p1:_colors>Red</d2p1:_colors></anyType><anyType xmlns:d2p1=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"" i:type=""d2p1:DCSimple1""><d2p1:Foo>hello</d2p1:Foo></anyType></ArrayOfanyType>";
+
+			List<Type> known = new List<Type> ();
+			known.Add (typeof (DCWithEnum));
+			known.Add (typeof (DCSimple1));
+			DataContractSerializer ser = new DataContractSerializer (typeof (object []), known);
+			XmlReader xr = XmlReader.Create (new StringReader (xml));
+
+			object [] dc = (object []) ser.ReadObject (xr);
+			Assert.AreEqual (2, dc.Length, "#N1");
+			Assert.AreEqual (typeof (DCWithEnum), dc [0].GetType (), "#N2");
+			DCWithEnum dc0 = (DCWithEnum) dc [0];
+			Assert.AreEqual (Colors.Red, dc0.colors, "#N3");
+			Assert.AreEqual (typeof (DCSimple1), dc [1].GetType (), "#N4");
+			DCSimple1 dc1 = (DCSimple1) dc [1];
+			Assert.AreEqual ("hello", dc1.Foo, "#N4");
+		}
+
+		[Test]
+		public void DeserializerDCArray3 ()
+		{
+			int [] intArray = Deserialize<int []> (
+				@"<ArrayOfint xmlns:i=""http://www.w3.org/2001/XMLSchema-instance"" xmlns=""http://schemas.microsoft.com/2003/10/Serialization/Arrays""><int>1</int><int>2</int></ArrayOfint>");
+
+			Assert.AreEqual (2, intArray.Length, "#N0");
+			Assert.AreEqual (1, intArray [0], "#N1");
+			Assert.AreEqual (2, intArray [1], "#N2");
 		}
 
 		[Test]
@@ -970,7 +1001,6 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
-		[Category ("CurrentTest")]
 		[ExpectedException (typeof (SerializationException))]
 		public void ReadObjectWrongNamespace ()
 		{
@@ -979,13 +1009,19 @@ namespace MonoTests.System.Runtime.Serialization
 				.ReadObject (XmlReader.Create (new StringReader (xml)));
 		}
 
-		private object Deserialize (string xml, Type type)
+		private T Deserialize<T> (string xml)
 		{
-			DataContractSerializer ser = new DataContractSerializer (type);
-			XmlReader xr = XmlReader.Create (new StringReader (xml), new XmlReaderSettings ());
-			return ser.ReadObject (xr);
+			return Deserialize<T> (xml, typeof (T));
 		}
 
+		private T Deserialize<T> (string xml, Type runtimeType)
+		{
+			DataContractSerializer ser = new DataContractSerializer (typeof (T));
+			XmlReader xr = XmlReader.Create (new StringReader (xml), new XmlReaderSettings ());
+			object o = ser.ReadObject (xr);
+			Assert.AreEqual (runtimeType, o.GetType (), "#DS0");
+			return (T)o;
+		}
  	}
  
 	public enum Colors {
@@ -1029,6 +1065,19 @@ namespace MonoTests.System.Runtime.Serialization
 	public class DCWithNullableEnum {
 		[DataMember]
 		public Colors? colors;
+	}
+
+
+	[DataContract (Namespace = "Base")]
+	public class BaseDC {
+		[DataMember]
+		public int baseVal;
+	}
+
+	[DataContract (Namespace = "Derived")]
+	public class DerivedDC : BaseDC {
+		[DataMember]
+		public int derivedVal;
 	}
 
  	[DataContract]

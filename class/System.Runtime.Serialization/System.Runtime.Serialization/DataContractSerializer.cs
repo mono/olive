@@ -368,7 +368,6 @@ namespace System.Runtime.Serialization
 					//FIXME: Hack, when should the "i:type" be written?
 					//Not used in case of enums
 					writer.WriteXmlnsAttribute ("i", XmlSchema.InstanceNamespace);
-				writer.WriteAttributeString ("xmlns", xmlns, root_ns.Value);
 
 				return;
 			}
@@ -384,13 +383,10 @@ namespace System.Runtime.Serialization
 				/* FIXME: Hack, .. see test WriteObject7 () */
 				instName = new QName (instName.Name, XmlSchema.Namespace);
 
-			// output xsi:type as rootType is not
-			// equivalent to the graph's type.
+			// output xsi:type as rootType is not equivalent to the graph's type.
 			writer.WriteStartAttribute ("i", "type", XmlSchema.InstanceNamespace);
 			writer.WriteQualifiedName (instName.Name, instName.Namespace);
 			writer.WriteEndAttribute ();
-
-			writer.WriteAttributeString ("xmlns", xmlns, root_ns.Value);
 		}
 
 		public override void WriteEndObject (XmlDictionaryWriter writer)

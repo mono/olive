@@ -287,8 +287,7 @@ namespace System.Runtime.Serialization
 					fi.GetValue (graph) :
 					pi.GetValue (graph, null);
 
-				serializer.WriteStartElement (dmi.XmlName, dmi.XmlNamespace);
-
+				serializer.WriteStartElement (dmi.XmlName, dmi.XmlRootNamespace, dmi.XmlNamespace);
 				serializer.Serialize (type, value);
 				serializer.WriteEndElement ();
 			}
@@ -305,8 +304,8 @@ namespace System.Runtime.Serialization
 			while (reader.NodeType == XmlNodeType.Element && reader.Depth > depth) {
 				DataMemberInfo dmi = null;
 				for (int i = memberInd + 1; i < Members.Count; i++) {
-					if (reader.LocalName == Members[i].XmlName &&
-						reader.NamespaceURI == XmlName.Namespace) {
+					if (reader.LocalName == Members [i].XmlName &&
+						reader.NamespaceURI == Members [i].XmlRootNamespace) {
 						memberInd = i;
 						dmi = Members [i];
 						break;
@@ -346,10 +345,11 @@ namespace System.Runtime.Serialization
 		{
 			KnownTypes.Add (type);
 			QName qname = KnownTypes.GetQName (type);
+			string rootNamespace = KnownTypes.GetQName (mi.DeclaringType).Namespace;
 			if (KnownTypeCollection.IsPrimitiveType (qname))
-				return new DataMemberInfo (mi, dma, null);
+				return new DataMemberInfo (mi, dma, rootNamespace, null);
 			else
-				return new DataMemberInfo (mi, dma, qname.Namespace);
+				return new DataMemberInfo (mi, dma, rootNamespace, qname.Namespace);
 		}
 	}
 
@@ -458,11 +458,31 @@ namespace System.Runtime.Serialization
 				ns = KnownTypeCollection.MSArraysNamespace;
 
 			foreach (object o in (IEnumerable) graph) {
-				serializer.WriteStartElement (element_qname.Name, ns);
+				serializer.WriteStartElement (element_qname.Name, XmlName.Namespace, ns);
 				serializer.Serialize (element_type, o);
 				serializer.WriteEndElement ();
 			}
 		}
+
+        public override object DeserializeContent(XmlReader reader, XmlFormatterDeserializer deserializer)
+        {
+            object instance;
+            if (RuntimeType.IsArray)
+                instance = new ArrayList ();
+            else
+                instance = Activator.CreateInstance (RuntimeType, true);
+            int depth = reader.NodeType == XmlNodeType.None ? reader.Depth : reader.Depth - 1;
+            while (reader.NodeType == XmlNodeType.Element && reader.Depth > depth) {
+                object elem = deserializer.Deserialize (element_type, reader);
+                if (instance is IList)
+                    ((IList)instance).Add (elem);
+                else
+                    throw new NotImplementedException (String.Format ("Type {0} is not supported", RuntimeType));
+            }
+            if (RuntimeType.IsArray)
+                return ((ArrayList)instance).ToArray (element_type);
+            return instance;
+        }
 
 		public override List<DataMemberInfo> GetMembers ()
 		{
@@ -674,9 +694,10 @@ namespace System.Runtime.Serialization
 		public readonly string XmlName;
 		public readonly MemberInfo Member;
 		public readonly string XmlNamespace;
+		public readonly string XmlRootNamespace;
 		public readonly Type MemberType;
 
-		public DataMemberInfo (MemberInfo member, DataMemberAttribute dma, string ns)
+		public DataMemberInfo (MemberInfo member, DataMemberAttribute dma, string rootNamespce, string ns)
 		{
 			if (dma == null)
 				throw new ArgumentNullException ("dma");
@@ -685,6 +706,7 @@ namespace System.Runtime.Serialization
 			IsRequired = dma.IsRequired;
 			XmlName = dma.Name != null ? dma.Name : member.Name;
 			XmlNamespace = ns;
+			XmlRootNamespace = rootNamespce;
 			if (Member is FieldInfo)
 				MemberType = ((FieldInfo) Member).FieldType;
 			else
