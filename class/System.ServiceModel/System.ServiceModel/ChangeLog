@@ -1,5 +1,10 @@
 2008-04-17  Vladmir Krasnov  <vladmimir@mainsoft.com>
 
+	* ServiceRuntimeChannel.cs: refactoring, consider chganges in channel
+	dispatcher and endpoint dispatcher
+
+2008-04-17  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
 	* ServiceHostBase.cs: fixed BuildChannelDispatcher, init of
 	endpoint dispatcher's ContractFilter
 

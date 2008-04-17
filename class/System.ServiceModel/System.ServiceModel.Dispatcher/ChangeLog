@@ -1,5 +1,13 @@
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* ChannelDispatcher.cs, EndpointDispatcher.cs: removed dependency on 
+	ServiceDescription/ServiceEndpoint, allows usage of channel dispatcher
+	without endpoint was explicitly built
+	* EndpointDispatcher.cs: Filters lazy evaluation, refactored
+	communication processing, logic moved to channel dispatcher
+
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* ActionMessageFilter.cs: fixed Match, match for "*" action
 
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>

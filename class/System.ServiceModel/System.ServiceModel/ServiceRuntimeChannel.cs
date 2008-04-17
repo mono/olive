@@ -34,25 +34,17 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
-	internal class ServiceRuntimeChannel : CommunicationObject, IServiceChannel
+	internal class ServiceRuntimeChannel : CommunicationObject, IContextChannel
 	{
-		ServiceEndpoint endpoint;
 		IExtensionCollection<IContextChannel> extensions;
-		IChannel channel;
+		readonly IChannel channel;
+		readonly IDefaultCommunicationTimeouts timeouts;
 
-		public ServiceRuntimeChannel (ServiceEndpoint endpoint, IChannel channel)
+		public ServiceRuntimeChannel (IChannel channel, IDefaultCommunicationTimeouts timeouts)
 		{
-			this.endpoint = endpoint;
 			this.channel = channel;
+			this.timeouts = timeouts;
 		}
-
-		#region IServiceChannel
-
-		public Uri ListenUri {
-			get { return endpoint.ListenUri; }
-		}
-
-		#endregion
 
 		#region IContextChannel
 
@@ -112,11 +104,11 @@ namespace System.ServiceModel
 
 		// CommunicationObject
 		protected internal override TimeSpan DefaultOpenTimeout {
-			get { return endpoint.Binding.OpenTimeout; }
+			get { return timeouts.OpenTimeout; }
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {
-			get { return endpoint.Binding.CloseTimeout; }
+			get { return timeouts.CloseTimeout; }
 		}
 
 		protected override void OnAbort ()

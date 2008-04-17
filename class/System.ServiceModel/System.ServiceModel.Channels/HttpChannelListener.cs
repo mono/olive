@@ -43,9 +43,9 @@ namespace System.ServiceModel.Channels
 		HttpTransportBindingElement source;
 		BindingContext context;
 		Uri listen_uri;
-		HttpListener listener;
 		List<IChannel> channels = new List<IChannel> ();
 		MessageEncoder encoder;
+		HttpChannelManager<TChannel> httpChannelManager;
 
 		public HttpChannelListener (HttpTransportBindingElement source,
 			BindingContext context)
@@ -67,7 +67,7 @@ namespace System.ServiceModel.Channels
 		}
 
 		public HttpListener Http {
-			get { return listener; }
+			get {  return httpChannelManager.HttpListener; }
 		}
 
 		public MessageEncoder MessageEncoder {
@@ -131,13 +131,8 @@ namespace System.ServiceModel.Channels
 		
 		void StartListening (TimeSpan timeout)
 		{
-			if (listener != null)
-				throw new InvalidOperationException ("This listener is already waiting for connection.");
-			listener = new HttpListener ();
-			string uri = Uri.AbsoluteUri;
-			uri = uri.EndsWith ("/") ? uri : uri + "/";
-			listener.Prefixes.Add (uri);
-			listener.Start ();
+			httpChannelManager = new HttpChannelManager<TChannel> (this);
+			httpChannelManager.Open (timeout);
 		}
 
 		protected override void OnOpen (TimeSpan timeout)
@@ -164,12 +159,8 @@ namespace System.ServiceModel.Channels
 			if (ServiceHostingEnvironment.InAspNet)
 				return;
 
+			httpChannelManager.Stop ();
 			// FIXME: somewhere to use timeout?
-			if (listener == null)
-				return;
-			if (listener.IsListening)
-				listener.Stop ();
-			((IDisposable) listener).Dispose ();
 		}
 
 		[MonoTODO]
