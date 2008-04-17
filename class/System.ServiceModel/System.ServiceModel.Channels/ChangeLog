@@ -1,3 +1,7 @@
+2008-04-17  Noam Lampert <noaml@mainsoft.com>
+
+	* HttpReplyChannel.cs: fix API - Fix crash during service shutdown.
+
 2008-04-13  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* BindingElementCollection.cs: fix API - .ctor's signature.

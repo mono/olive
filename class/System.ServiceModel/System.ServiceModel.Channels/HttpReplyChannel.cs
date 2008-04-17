@@ -161,7 +161,16 @@ w.Close ();
 
 		void HttpContextReceived (IAsyncResult result)
 		{
-			waiting.Add (source.Http.EndGetContext (result));
+			HttpListenerContext context = null;
+			try {
+				context = source.Http.EndGetContext (result);
+			}
+			catch (HttpListenerException e) {
+				// silently ignore exception. 
+				// So far this has exception only happens when the listener's worker thread is aborted. This is due to cancellation of asynchronous I/O.
+				return;
+			}
+			waiting.Add (context);
 			AutoResetEvent wait = (AutoResetEvent) result.AsyncState;
 			wait.Set ();
 		}
