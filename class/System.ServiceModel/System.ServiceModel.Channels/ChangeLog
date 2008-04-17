@@ -1,3 +1,7 @@
+2008-04-17  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* HttpChannleManager: ensure trailing slash in uri.
+
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* added: HttpChannleManager,
