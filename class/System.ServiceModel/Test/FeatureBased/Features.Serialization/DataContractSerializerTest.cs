@@ -9,7 +9,6 @@ using NUnit.Framework;
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-	[Category ("NotWorking")]
     public class DataContractSerializerTest : TestFixtureBase<DataContractTesterContractClient, DataContractTester, MonoTests.Features.Contracts.IDataContractTesterContract>
 	{		
 
@@ -31,6 +30,7 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void TestPrimitiveComplexTypeByRef () {
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
