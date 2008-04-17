@@ -1,3 +1,7 @@
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
+	* DispatchOperation.cs: fixed ProcessRequest, fault message creation
+
 2008-04-10  Eyal Alaluf <eyala@mainsoft.com>
 
 	* DefaultMessageOperationFormatter.cs: Moved to BaseMessagesFormatter.cs.

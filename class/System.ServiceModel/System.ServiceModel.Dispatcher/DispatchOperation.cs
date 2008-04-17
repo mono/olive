@@ -224,10 +224,10 @@ Console.WriteLine (ex);
 				FaultCode fc = new FaultCode (
 					"FIXME_InternalError",
 					req.Version.Addressing.Namespace);
-				string reason =
+				object reason =
 					parent.ChannelDispatcher.IncludeExceptionDetailInFaults ?
-					ex.ToString () :
-					String.Empty;
+					new ExceptionDetail (ex) :
+					(object) String.Empty;
 				// FIXME: set correct namespace URI
 				// FIXME: use ExceptionDetails to make Exception serializable.
 				return Message.CreateMessage (req.Version, fc,
