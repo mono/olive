@@ -42,7 +42,7 @@ namespace System.ServiceModel.Channels
 		[MonoTODO]
 		public MessageEncodingBindingElement (MessageEncodingBindingElement source)
 		{
-			throw new NotImplementedException ();
+			MessageVersion = source.MessageVersion;
 		}
 
 		public abstract MessageEncoderFactory

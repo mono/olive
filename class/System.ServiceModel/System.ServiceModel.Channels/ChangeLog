@@ -1,5 +1,9 @@
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* MessageEncodingBindingElement.cs: fixed ctor
+
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* XmlReaderBodyWriter.cs: fixed ctor, skip xml declaration
 
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
