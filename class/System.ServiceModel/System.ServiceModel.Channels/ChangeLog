@@ -1,5 +1,9 @@
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
+	* XmlReaderBodyWriter.cs: fixed ctor, skip xml declaration
+
+2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
+
 	* HttpReplyChannel.cs: fixed TryReceiveRequest, fix message header To
 
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>

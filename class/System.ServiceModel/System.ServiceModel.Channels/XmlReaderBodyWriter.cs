@@ -40,6 +40,7 @@ namespace System.ServiceModel.Channels
 		public XmlReaderBodyWriter (XmlDictionaryReader reader)
 			: base (false)
 		{
+			reader.MoveToContent ();
 			this.reader = reader;
 		}
 
