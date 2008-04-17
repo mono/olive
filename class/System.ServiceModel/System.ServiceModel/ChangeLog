@@ -1,3 +1,8 @@
+2008-04-17  Vladmir Krasnov  <vladmimir@mainsoft.com>
+
+	* ServiceHostBase.cs: fixed BuildChannelDispatcher, init of
+	endpoint dispatcher's ContractFilter
+
 2008-04-14  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ExtensionCollection.cs:

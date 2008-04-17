@@ -395,6 +395,7 @@ namespace System.ServiceModel
 			//Attach one EndpointDispacher to the ChannelDispatcher
 			EndpointDispatcher endpoint_dispatcher =
 				new EndpointDispatcher (se.Address, se.Contract.Name, se.Contract.Namespace);
+			endpoint_dispatcher.ContractFilter = new ActionMessageFilter (GetContractActions (se.Contract));
 			endpoint_dispatcher.ChannelDispatcher = cd;
 			cd.Endpoints.Add (endpoint_dispatcher);
 			
@@ -405,6 +406,17 @@ namespace System.ServiceModel
 					PopulateDispatchOperation (db, od);
 
 			return cd;
+		}
+
+		private string [] GetContractActions (ContractDescription contractDescription)
+		{
+			List<string> actions = new List<string> ();
+			foreach (OperationDescription od in contractDescription.Operations)
+				foreach (MessageDescription md in od.Messages)
+					if (md.Direction == MessageDirection.Input)
+						actions.Add (md.Action);
+
+			return actions.ToArray ();
 		}
 
 		private void AddBindingParameters (BindingParameterCollection commonParams, ServiceEndpoint endPoint) {
