@@ -1,3 +1,8 @@
+2008-04-21  Igor Zelmanovich  <igorz@mainsoft.com>
+
+	* WebHttpBehavior.cs : override endpoint's ContractFilter 
+	as well as AddressFilter. 
+
 2008-04-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebHttpBehavior.cs : now that ServiceHost calls Validate(),
