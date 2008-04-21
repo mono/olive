@@ -37,7 +37,7 @@ namespace MonoTests.System.Windows.Automation {
 		public void PatternTest ()
 		{
 			AutomationPattern pattern = RangeValuePatternIdentifiers.Pattern;
-			Assert.IsNotNull (pattern);
+			Assert.IsNotNull (pattern, "Pattern field must not be null");
 			Assert.AreEqual (10003, pattern.Id, "Id");
 			Assert.AreEqual ("RangeValuePatternIdentifiers.Pattern", pattern.ProgrammaticName, "ProgrammaticName");
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
