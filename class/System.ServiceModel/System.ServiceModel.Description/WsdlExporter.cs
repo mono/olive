@@ -196,7 +196,7 @@ namespace System.ServiceModel.Description
 			if (!msg_version_none) {
 				SoapBinding soap_binding = new SoapBinding ();
 				soap_binding.Transport = SoapBinding.HttpTransport;
-				soap_binding.Style = SoapBindingStyle.Default;
+				soap_binding.Style = SoapBindingStyle.Document;
 				ws_binding.Extensions.Add (soap_binding);
 			}
 

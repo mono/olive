@@ -1,3 +1,8 @@
+2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* WsdlExporter.cs: fix ExportEndpoint: SoapBinding.Style is initialized 
+	with SoapBindingStyle.Document value. 
+
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* ServiceEndpoint.cs: fixed Name property

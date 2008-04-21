@@ -608,6 +608,25 @@ namespace MonoTests.System.ServiceModel.Description
 			}
 		}
 
+		[Test]
+		public void ExportEndpointTest5 () {
+			WsdlExporter we = new WsdlExporter ();
+
+			ServiceEndpoint se = new ServiceEndpoint (ContractDescription.GetContract (typeof (IEchoService)));
+			se.Binding = new BasicHttpBinding ();
+			se.Address = new EndpointAddress ("http://localhost:8080");
+
+			we.ExportEndpoint (se);
+
+			MetadataSet ms = we.GetGeneratedMetadata ();
+			Assert.AreEqual (6, ms.MetadataSections.Count);
+			WSServiceDescription wsd = GetServiceDescription (ms, "http://tempuri.org/", "ExportEndpointTest5#1");
+
+			SoapBinding soapBinding = (SoapBinding) wsd.Bindings [0].Extensions [0];
+			Assert.AreEqual (SoapBindingStyle.Document, soapBinding.Style, "soapBinding.Style");
+			Assert.AreEqual (SoapBinding.HttpTransport, soapBinding.Transport, "soapBinding.Transport");
+		}
+
 	}
 
 	[DataContract]
