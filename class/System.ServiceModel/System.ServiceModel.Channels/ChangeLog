@@ -1,3 +1,8 @@
+2008-04-21  Roei Erez <roeie@mainsoft.com>
+
+	* HttpChannleManager: Fix for multithreaded use.
+	* HttpReplyChannel: Fix crash during sutdown.
+
 2008-04-17  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* HttpChannleManager: ensure trailing slash in uri.

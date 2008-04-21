@@ -35,12 +35,14 @@ namespace System.ServiceModel.Channels
 	internal class HttpChannelManager<TChannel> where TChannel : class, IChannel
 	{
 		static Dictionary<Uri, HttpListener> opened_listeners;
+		static Dictionary<Uri, List<HttpChannelListener<TChannel>>> registered_channels;
 		HttpChannelListener<TChannel> channel_listener;
 		HttpListener http_listener;
 
 		static HttpChannelManager ()
 		{
 			opened_listeners = new Dictionary<Uri, HttpListener> ();
+			registered_channels = new Dictionary<Uri, List<HttpChannelListener<TChannel>>> ();
 		}
 
 		public HttpChannelManager (HttpChannelListener<TChannel> channel_listener)
@@ -50,34 +52,46 @@ namespace System.ServiceModel.Channels
 
 		public void Open (TimeSpan timeout)
 		{
-			if (opened_listeners.ContainsKey (channel_listener.Uri))
+			lock (opened_listeners) {
+				if (!opened_listeners.ContainsKey (channel_listener.Uri)) {
+					HttpListener listener = new HttpListener ();
+
+					string uriString = channel_listener.Uri.ToString ();
+					if (!uriString.EndsWith ("/", StringComparison.Ordinal))
+						uriString += "/";
+					listener.Prefixes.Add (uriString);
+					listener.Start ();
+
+					opened_listeners [channel_listener.Uri] = listener;
+					List<HttpChannelListener<TChannel>> registeredList = new List<HttpChannelListener<TChannel>> ();					
+					registered_channels [channel_listener.Uri] = registeredList;
+				}
+
 				http_listener = opened_listeners [channel_listener.Uri];
-
-			if (http_listener == null) {
-				http_listener = new HttpListener ();
-
-				string uriString = channel_listener.Uri.ToString ();
-				if (!uriString.EndsWith ("/", StringComparison.Ordinal))
-					uriString += "/";
-				http_listener.Prefixes.Add (uriString);
-				http_listener.Start ();
-
-				opened_listeners [channel_listener.Uri] = http_listener;
+				registered_channels [channel_listener.Uri].Add (channel_listener);				
 			}
 		}
 
 		public void Stop ()
 		{
-			if (http_listener == null)
-				return;
-			if (http_listener.IsListening)
-				http_listener.Stop ();
-			((IDisposable) http_listener).Dispose ();
+			lock (opened_listeners) {
+				if (http_listener == null)
+					return;
+				List<HttpChannelListener<TChannel>> channelsList = registered_channels [channel_listener.Uri];
+				channelsList.Remove (channel_listener);
+				if (channelsList.Count == 0) {					
+					if (http_listener.IsListening)
+						http_listener.Stop ();
+					((IDisposable) http_listener).Dispose ();
+
+					opened_listeners.Remove (channel_listener.Uri);				
+				}				
+			}
 		}
 
 		public HttpListener HttpListener
 		{
 			get { return http_listener; }
 		}
-	}
+	}	
 }
