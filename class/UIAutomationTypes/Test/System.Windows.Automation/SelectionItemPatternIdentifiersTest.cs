@@ -38,8 +38,8 @@ namespace MonoTests.System.Windows.Automation {
 		{
 			AutomationPattern pattern = SelectionItemPatternIdentifiers.Pattern;
 			Assert.IsNotNull (pattern);
-			Assert.AreEqual (pattern.Id, 10010, "Id");
-			Assert.AreEqual (pattern.ProgrammaticName, "SelectionItemPatternIdentifiers.Pattern", "ProgrammaticName");
+			Assert.AreEqual (10010, pattern.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.Pattern", pattern.ProgrammaticName, "ProgrammaticName");
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 

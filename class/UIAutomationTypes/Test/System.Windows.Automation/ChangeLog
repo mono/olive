@@ -1,5 +1,9 @@
 2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* *PatternIdentifiersTest.cs: Fixed expected/actual typo.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* *PatternIdentifiersTest.cs: Added tests for various
 	  AutomationPatternIdentifiers.
 
