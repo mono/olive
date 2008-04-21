@@ -1,5 +1,10 @@
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* ServiceDebugBehaviorTest.cs: new testfixture.
+	* ServiceMetadataBehaviorTest.cs: new testfixture.	
+
+2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* WsdlExporterTest.cs: added new test.
 
 2008-04-10  Eyal Alaluf <eyala@mainsoft.com>

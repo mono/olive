@@ -191,8 +191,8 @@ namespace System.ServiceModel
 		ContractDescription GetContract (string typeName)
 		{
 			//FIXME: hack hack hack
-			ImplementedContracts ["HttpGetWsdl"] =
-				ContractDescription.GetContract (typeof (HttpGetWsdl));
+			ImplementedContracts ["IHttpGetHelpPageAndMetadataContract"] =
+				ContractDescription.GetContract (typeof (IHttpGetHelpPageAndMetadataContract));
 
 			// FIXME: As long as I tried, *only* IMetadataExchange
 			// is the exception case that does not require full
@@ -356,7 +356,11 @@ namespace System.ServiceModel
 			ServiceEndpoint[] endPoints = new ServiceEndpoint[Description.Endpoints.Count];
 			Description.Endpoints.CopyTo (endPoints, 0);
 			foreach (ServiceEndpoint se in endPoints) {
-				ChannelDispatcher channel = BuildChannelDispatcher(se);
+				//Let all behaviors add their binding parameters
+				BindingParameterCollection commonParams =
+					new BindingParameterCollection ();
+				AddBindingParameters (commonParams, se);
+				ChannelDispatcher channel = BuildChannelDispatcher (se, commonParams);
 				ChannelDispatchers.Add (channel);				
 				endPointToDispatcher[se] = channel;				
 			}
@@ -389,12 +393,7 @@ namespace System.ServiceModel
 
 		}
 
-		internal ChannelDispatcher BuildChannelDispatcher (ServiceEndpoint se) {
-
-			//Let all behaviors add their binding parameters
-			BindingParameterCollection commonParams =
-				new BindingParameterCollection ();
-			AddBindingParameters (commonParams, se);
+		internal ChannelDispatcher BuildChannelDispatcher (ServiceEndpoint se, BindingParameterCollection commonParams) {
 
 			//User the binding parameters to build the channel listener and Dispatcher
 			IChannelListener lf = BuildListener (se, commonParams);

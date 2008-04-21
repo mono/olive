@@ -65,6 +65,8 @@ System.ServiceModel.Description/MetadataResolverTest.cs
 System.ServiceModel.Description/OperationDescriptionTest.cs
 System.ServiceModel.Description/ServiceAuthorizationBehaviorTest.cs
 System.ServiceModel.Description/ServiceCredentialsTest.cs
+System.ServiceModel.Description/ServiceDebugBehaviorTest.cs
+System.ServiceModel.Description/ServiceMetadataBehaviorTest.cs
 System.ServiceModel.Description/TypedMessageConverterTest.cs
 System.ServiceModel.Description/WsdlExporterTest.cs
 System.ServiceModel.Description/WsdlImporterTest.cs

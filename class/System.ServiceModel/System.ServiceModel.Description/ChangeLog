@@ -1,5 +1,13 @@
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* ServiceDebugBehavior.cs: implement ApplyDispatchBehavior.
+	* ServiceMetadataBehavior.cs: fix ApplyDispatchBehavior.
+	* ServiceMetadataExtension.cs: refactoring, serves both 
+	ServiceDebugBehavior and ServiceMetadataBehavior by providing suitable 
+	functionality.		
+
+2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* WsdlExporter.cs: fix ExportEndpoint: SoapBinding.Style is initialized 
 	with SoapBindingStyle.Document value. 
 

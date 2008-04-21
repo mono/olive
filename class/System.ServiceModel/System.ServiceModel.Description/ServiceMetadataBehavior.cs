@@ -40,8 +40,6 @@ namespace System.ServiceModel.Description
 	public class ServiceMetadataBehavior : IServiceBehavior
 	{
 		public const string MexContractName = "IMetadataExchange";
-		//FIXME: Change to an interface
-		internal const string HttpGetWsdlContractName = "HttpGetWsdl";
 
 		bool enable_http, enable_https;
 		Uri http_url, https_url, location;
@@ -62,7 +60,7 @@ namespace System.ServiceModel.Description
 		}
 
 		public MetadataExporter MetadataExporter {
-			get { return exporter; }
+			get { return exporter ?? (exporter = new WsdlExporter ()); }
 			set { exporter = value; }
 		}
 
@@ -88,51 +86,38 @@ namespace System.ServiceModel.Description
 			Collection<ServiceEndpoint> endpoints,
 			BindingParameterCollection parameters)
 		{
-			if (HttpGetEnabled) {
-				//FIXME: Create the binding manually here?
-				BasicHttpBinding b = new BasicHttpBinding ();
-				BindingElementCollection elements = new BindingElementCollection ();
-				foreach (BindingElement be in b.CreateBindingElements ()) {
-					MessageEncodingBindingElement me = be as MessageEncodingBindingElement;
-					if (me != null)
-						me.MessageVersion = MessageVersion.None;
-					elements.Add (be);
-				}
-				CustomBinding cb = new CustomBinding (elements);
-				cb.Name = "HttpGetWsdlBinding"; //http://tempuri.org/:HttpGetWsdl
-
-				//FIXME: Extra endpoint for this should _not_ be there
-				//in Description.Endpoints collection
-				//Only ChannelDispatcher should get added
-				//FIXME: This should get added irrespective of whether
-				//ServiceMetadataBehavior is added or not (for the help page)
-				Uri url = HttpGetUrl ?? serviceHostBase.BaseAddresses [0];
-				serviceHostBase.AddServiceEndpointCore (
-					ContractDescription.GetContract (typeof (HttpGetWsdl)),
-					cb,
-					new EndpointAddress (url),
-					url);
-			}
 		}
 
 		void IServiceBehavior.ApplyDispatchBehavior (
 			ServiceDescription description,
-			ServiceHostBase serviceHostBase)
-		{
-			if (exporter == null)
-				exporter = new WsdlExporter ();
-			foreach (ServiceEndpoint ep in description.Endpoints) {
-				if (ep.Contract.Name == MexContractName ||
-					ep.Contract.Name == HttpGetWsdlContractName)
+			ServiceHostBase serviceHostBase) {
+
+			ServiceMetadataExtension sme = ServiceMetadataExtension.EnsureServiceMetadataExtension (description, serviceHostBase);
+
+			//Find ChannelDispatcher for Mex, and add a MexInstanceContextProvider
+			//to it
+			foreach (ChannelDispatcherBase cdb in serviceHostBase.ChannelDispatchers) {
+				ChannelDispatcher cd = cdb as ChannelDispatcher;
+				if (cd == null)
 					continue;
 
-				exporter.ExportEndpoint (ep);
+				foreach (EndpointDispatcher ed in cd.Endpoints) {
+					if (ed.ContractName == MexContractName)
+						ed.DispatchRuntime.InstanceContextProvider = new MexInstanceContextProvider (serviceHostBase);
+				}
 			}
-			
-			ServiceMetadataExtension sme = new ServiceMetadataExtension ();
-			sme.Metadata = exporter.GetGeneratedMetadata ();
-			serviceHostBase.Extensions.Add (sme);
-			((IExtension<ServiceHostBase>)sme).Attach (serviceHostBase);
+
+			if (HttpGetEnabled) {
+				Uri uri = serviceHostBase.CreateUri ("http", HttpGetUrl);
+				if (uri != null)
+					ServiceMetadataExtension.EnsureServiceMetadataHttpChanelDispatcher (description, serviceHostBase, sme, uri);
+			}
+
+			if (HttpsGetEnabled) {
+				Uri uri = serviceHostBase.CreateUri ("https", HttpsGetUrl);
+				if (uri != null)
+					ServiceMetadataExtension.EnsureServiceMetadataHttpsChanelDispatcher (description, serviceHostBase, sme, uri);
+			}
 		}
 
 		[MonoTODO]

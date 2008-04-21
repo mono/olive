@@ -50,8 +50,11 @@ namespace System.ServiceModel.Description
 {
 	public class ServiceMetadataExtension : IExtension<ServiceHostBase>
 	{
+		const string ServiceMetadataBehaviorHttpGetBinding = "ServiceMetadataBehaviorHttpGetBinding";
+
 		MetadataSet metadata;
 		ServiceHostBase owner;
+		Dictionary<Uri, ChannelDispatcherBase> _serviceMetadataChanelDispatchers;
 		
 		[MonoTODO]
 		public ServiceMetadataExtension ()
@@ -60,44 +63,67 @@ namespace System.ServiceModel.Description
 
 		[MonoTODO]
 		public MetadataSet Metadata {
-			get { return metadata; }
-			internal set { metadata = value; }
+			get {
+				if (metadata == null) {
+					MetadataExporter exporter = new WsdlExporter ();
+					foreach (ServiceEndpoint ep in owner.Description.Endpoints) {
+						if (ep.Contract.Name == ServiceMetadataBehavior.MexContractName)
+							continue;
+
+						exporter.ExportEndpoint (ep);
+					}
+					metadata = exporter.GetGeneratedMetadata ();
+				}
+				return metadata;
+			}
 		}
 
 		internal ServiceHostBase Owner {
 			get { return owner; }
 		}
 
-		[MonoTODO]
+		internal static ServiceMetadataExtension EnsureServiceMetadataExtension (ServiceDescription description, ServiceHostBase serviceHostBase) {
+			ServiceMetadataExtension sme = serviceHostBase.Extensions.Find<ServiceMetadataExtension> ();
+			if (sme == null) {
+				sme = new ServiceMetadataExtension ();
+				serviceHostBase.Extensions.Add (sme);
+			}
+			return sme;
+		}
+
+		internal static void EnsureServiceMetadataHttpChanelDispatcher (ServiceDescription description, ServiceHostBase serviceHostBase, ServiceMetadataExtension sme, Uri uri) {
+
+			if (sme._serviceMetadataChanelDispatchers == null)
+				sme._serviceMetadataChanelDispatchers = new Dictionary<Uri, ChannelDispatcherBase> ();
+			else if (sme._serviceMetadataChanelDispatchers.ContainsKey (uri))
+				return;
+
+			CustomBinding cb = new CustomBinding (new BasicHttpBinding ())
+			{
+				Name = ServiceMetadataBehaviorHttpGetBinding,
+			};
+			cb.Elements.Find<MessageEncodingBindingElement> ().MessageVersion = MessageVersion.None;
+
+			ServiceEndpoint se = new ServiceEndpoint (ContractDescription.GetContract (typeof (IHttpGetHelpPageAndMetadataContract)), cb, new EndpointAddress (uri))
+			{
+				ListenUri = uri,
+			};
+
+			ChannelDispatcher channelDispatcher = serviceHostBase.BuildChannelDispatcher (se, new BindingParameterCollection ());
+
+			channelDispatcher.Endpoints [0].DispatchRuntime.InstanceContextProvider = new SingletonInstanceContextProvider (new InstanceContext (serviceHostBase, new HttpGetWsdl (sme, uri)));
+
+			sme._serviceMetadataChanelDispatchers.Add (uri, channelDispatcher);
+			serviceHostBase.ChannelDispatchers.Add (channelDispatcher);
+		}
+
+		internal static void EnsureServiceMetadataHttpsChanelDispatcher (ServiceDescription description, ServiceHostBase serviceHostBase, ServiceMetadataExtension sme, Uri uri) {
+			throw new NotImplementedException ();
+		}
+
 		void IExtension<ServiceHostBase>.Attach (ServiceHostBase owner)
 		{
 			this.owner = owner;
-			//Find ServiceMetadataBehavior
-			ServiceMetadataBehavior metadata_beh = 
-				owner.Description.Behaviors [typeof (ServiceMetadataBehavior)] as ServiceMetadataBehavior;
-			if (metadata_beh == null)
-				//FIXME: ServiceDebugBehavior, HttpHelpPage.. 
-				return;
-
-			//Find ChannelDispatcher for Mex, and add a MexInstanceContextProvider
-			//to it
-			foreach (ChannelDispatcherBase cdb in owner.ChannelDispatchers) {
-				ChannelDispatcher cd = cdb as ChannelDispatcher;
-				if (cd == null)
-					continue;
-
-				foreach (EndpointDispatcher ed in cd.Endpoints) {
-					if (ed.ContractName == ServiceMetadataBehavior.MexContractName) {
-						ed.DispatchRuntime.InstanceContextProvider = 
-							new MexInstanceContextProvider (owner);
-					} else if (metadata_beh.HttpGetEnabled && 
-						ed.ContractName == "HttpGetWsdl" && 
-						ed.ContractNamespace == "http://tempuri.org/") {
-						ed.DispatchRuntime.InstanceContextProvider =
-							new HttpGetInstanceContextProvider (owner, new HttpGetWsdl (this, ed.EndpointAddress.Uri));
-					}
-				}
-			}
 		}
 
 		[MonoTODO]
@@ -107,8 +133,14 @@ namespace System.ServiceModel.Description
 		}
 	}
 
-	[ServiceContract]
-	class HttpGetWsdl
+	[ServiceContract (Namespace = "http://schemas.microsoft.com/2006/04/http/metadata")]
+	interface IHttpGetHelpPageAndMetadataContract
+	{
+		[OperationContract (Action = "*", ReplyAction = "*")]
+		SMMessage Get (SMMessage req);
+	}
+
+	class HttpGetWsdl : IHttpGetHelpPageAndMetadataContract
 	{
 		ServiceMetadataExtension metadata_extn;
 		Uri base_uri;
@@ -125,7 +157,6 @@ namespace System.ServiceModel.Description
 			GetMetadata (metadata_extn.Owner);
 		}
 		
-		[OperationContract (Action = "*", ReplyAction = "*")]
 		public SMMessage Get (SMMessage req)
 		{
 			HttpRequestMessageProperty prop = (HttpRequestMessageProperty) req.Properties [HttpRequestMessageProperty.Name];
@@ -201,17 +232,7 @@ namespace System.ServiceModel.Description
 
 		void GetMetadata (ServiceHostBase host)
 		{
-			//FIXME: Exporting metadata again here
-			WsdlExporter exporter = new WsdlExporter ();
-			foreach (ServiceEndpoint endpoint in host.Description.Endpoints) {
-				if (endpoint.Contract.Name == ServiceMetadataBehavior.MexContractName ||
-					endpoint.Contract.Name == ServiceMetadataBehavior.HttpGetWsdlContractName)
-					continue;
-
-				exporter.ExportEndpoint (endpoint);
-			}
-
-			MetadataSet metadata = exporter.GetGeneratedMetadata ();
+			MetadataSet metadata = metadata_extn.Metadata;
 			int xs_i = 0, wsdl_i = 0;
 
 			//Dictionary keyed by namespace

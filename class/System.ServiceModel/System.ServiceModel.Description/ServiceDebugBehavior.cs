@@ -35,7 +35,8 @@ namespace System.ServiceModel.Description
 	public class ServiceDebugBehavior : IServiceBehavior
 	{
 		bool inc_details;
-		bool http_help_enabled, https_help_enabled;
+		bool http_help_enabled = true;
+		bool https_help_enabled = true;
 		Uri http_help_url, https_help_url;
 
 		public ServiceDebugBehavior ()
@@ -80,9 +81,23 @@ namespace System.ServiceModel.Description
 			ServiceDescription description,
 			ServiceHostBase serviceHostBase)
 		{
+			ServiceMetadataExtension sme = ServiceMetadataExtension.EnsureServiceMetadataExtension (description, serviceHostBase);
+
 			foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
 				dispatcher.IncludeExceptionDetailInFaults =
 					IncludeExceptionDetailInFaults;
+
+			if (HttpHelpPageEnabled) {
+				Uri uri = serviceHostBase.CreateUri ("http", HttpHelpPageUrl);
+				if (uri != null)
+					ServiceMetadataExtension.EnsureServiceMetadataHttpChanelDispatcher (description, serviceHostBase, sme, uri);
+			}
+
+			if (HttpsHelpPageEnabled) {
+				Uri uri = serviceHostBase.CreateUri ("https", HttpsHelpPageUrl);
+				if (uri != null)
+					ServiceMetadataExtension.EnsureServiceMetadataHttpsChanelDispatcher (description, serviceHostBase, sme, uri);
+			}
 		}
 
 		[MonoTODO]

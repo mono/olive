@@ -1,3 +1,8 @@
+2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* System.ServiceModel_test.dll.sources: Add ServiceDebugBehaviorTest.cs and
+	ServiceMetadataBehaviorTest.cs.
+
 2008-04-17  Vladimir Krasnov  <vladimirk@mainsoft.com>
 
 	* System.ServiceModel.dll.sources: added HttpChannelManager.cs
