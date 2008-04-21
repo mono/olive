@@ -1,3 +1,8 @@
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* *PatternIdentifiersTest.cs: Added tests for various
+	  AutomationPatternIdentifiers.
+
 2008-04-11  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ControlTypeTest.cs: Deleted extraneous commented code.
