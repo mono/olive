@@ -56,9 +56,17 @@ namespace System.ServiceModel.Web
 
 		protected override void OnOpening ()
 		{
+			// FIXME: WebHttpBehavior must me added only to webHttpBinding endpoints.
 			foreach (ServiceEndpoint se in Description.Endpoints)
 				if (se.Behaviors.Find<WebHttpBehavior> () == null)
 					se.Behaviors.Add (new WebHttpBehavior ());
+
+			// disable help page.
+			ServiceDebugBehavior serviceDebugBehavior = Description.Behaviors.Find<ServiceDebugBehavior> ();
+			if (serviceDebugBehavior != null) {
+				serviceDebugBehavior.HttpHelpPageEnabled = false;
+				serviceDebugBehavior.HttpsHelpPageEnabled = false;
+			}
 		}
 	}
 }

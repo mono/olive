@@ -1,3 +1,7 @@
+2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* WebServiceHost.cs: disable http and https help page support on opening.
+
 2008-02-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WebOperationContext.cs : remove extra TODOs.
