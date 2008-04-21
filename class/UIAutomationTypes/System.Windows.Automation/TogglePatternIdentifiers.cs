@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static TogglePatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.TogglePattern;
 		}
 		
 #endregion

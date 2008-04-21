@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static RangeValuePatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.RangeValuePattern;
 		}
 		
 #endregion

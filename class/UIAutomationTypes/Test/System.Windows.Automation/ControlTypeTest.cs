@@ -1278,9 +1278,27 @@ namespace MonoTests.System.Windows.Automation {
 
 		private static void TestAutomationIdentifierListLists (AutomationIdentifier [] [] expectedIdentifierIdsArray, Array actualIdentifiers)
 		{
+			string expectedIdentifiers = "{";
+			foreach (AutomationIdentifier [] idArray in expectedIdentifierIdsArray) {
+				if (idArray.Length > 0) {
+					expectedIdentifiers += " {";
+					List<string> arrayIds = new List<string> ();
+					//IEnumerable<string> arrayIds = from x in idArray where x != null select x.ProgrammaticName;
+					foreach (AutomationIdentifier autoId in idArray) {
+						if (autoId != null)
+							arrayIds.Add (autoId.ProgrammaticName);
+						else
+							arrayIds.Add ("[unknown]");
+					}
+					expectedIdentifiers += GetCommaSeparatedList (arrayIds);
+					expectedIdentifiers += "} ";
+				}
+			}
+			expectedIdentifiers += "}";
+			
 			List<AutomationIdentifier []> expectedIdentifierIdArrays =
 				new List<AutomationIdentifier []> (expectedIdentifierIdsArray);
-			Assert.AreEqual (expectedIdentifierIdsArray.Length, actualIdentifiers.Length, "Length mismatch");
+			Assert.AreEqual (expectedIdentifierIdsArray.Length, actualIdentifiers.Length, "Length mismatch.  Expected arrays: " + expectedIdentifiers);
 			foreach (Array identifierArray in actualIdentifiers) {
 				int matchingIndex = -1;
 				for (int i = 0; i < expectedIdentifierIdArrays.Count; i++) {
@@ -1294,9 +1312,11 @@ namespace MonoTests.System.Windows.Automation {
 				if (matchingIndex >= 0) {
 					expectedIdentifierIdArrays.RemoveAt (matchingIndex);
 				} else {
-					IEnumerable<string> expectedIds = from AutomationIdentifier x in identifierArray select x.ProgrammaticName;
-					string expectedIdList = GetCommaSeparatedList (expectedIds);
-					Assert.Fail ("Did not expect array: " + expectedIdList);
+					IEnumerable<string> expectedIds = from AutomationIdentifier x in identifierArray select x.ProgrammaticName;	
+					string expectedIdList = string.Empty;
+					if (identifierArray.Length != 0)
+						expectedIdList = GetCommaSeparatedList (expectedIds);
+					Assert.Fail ("Did not expect array: " + expectedIdList + Environment.NewLine + "Expected arrays:" + expectedIdentifiers);
 				}
 			}
 
@@ -1320,7 +1340,7 @@ namespace MonoTests.System.Windows.Automation {
 				int matchingIndex = -1;
 				for (int i = 0; i < expectedIdentifierIds.Count; i++) {
 					AutomationIdentifier id = expectedIdentifierIds [i];
-					if (identifier == id) {
+					if (identifier.Id == id.Id) {
 						matchingIndex = i;
 						break;
 					}
@@ -1347,8 +1367,8 @@ namespace MonoTests.System.Windows.Automation {
 
 		private static string GetCommaSeparatedList<T> (IEnumerable<T> collection)
 		{
-			IList<T> itemList = new List<T> (collection);
 			string output = string.Empty;
+			IList<T> itemList = new List<T> (collection);
 			for (int i = 0; i < itemList.Count; i++) {
 				output += itemList [i].ToString ();
 				if (i < itemList.Count - 1)

@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static TransformPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.TransformPattern;
 		}
 		
 #endregion

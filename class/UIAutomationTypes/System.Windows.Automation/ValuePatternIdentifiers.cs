@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static ValuePatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.ValuePattern;
 		}
 		
 #endregion

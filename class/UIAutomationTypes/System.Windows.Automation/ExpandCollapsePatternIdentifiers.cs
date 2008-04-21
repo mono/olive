@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static ExpandCollapsePatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.ExpandCollapsePattern;
 		}
 		
 #endregion

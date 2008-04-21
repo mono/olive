@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static GridPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.GridPattern;
 		}
 		
 #endregion

@@ -29,17 +29,36 @@ namespace System.Windows.Automation
 {
 	public class AutomationEvent : AutomationIdentifier
 	{
-		public static AutomationEvent LookupById (int id)
-		{
-			// TODO: Figure out where to get mappings
-			return null;
-		}
-		
 #region Protected Constructor
 		
 		protected AutomationEvent (int id, string programmaticName) :
 			base (id, programmaticName)
 		{
+		}
+		
+#endregion
+		
+#region Internal Constants
+		
+		internal const int InvokedEventId = 0;
+	
+		internal static readonly AutomationEvent InvokedEvent;
+		
+#endregion
+		
+#region Public Static Methods
+		
+		static AutomationEvent ()
+		{
+			InvokedEvent = new AutomationEvent (InvokedEventId, "InvokedEvent");
+		}
+		
+		public static AutomationEvent LookupById (int id)
+		{
+			if (id == InvokedEventId)
+				return InvokedEvent;
+			else
+				return null;
 		}
 		
 #endregion

@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static SelectionItemPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.SelectionItemPattern;
 		}
 		
 #endregion

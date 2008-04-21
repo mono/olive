@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static WindowPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.WindowPattern;
 		}
 		
 #endregion

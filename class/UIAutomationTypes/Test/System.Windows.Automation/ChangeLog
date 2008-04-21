@@ -1,5 +1,10 @@
 2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* ControlTypeTest.cs: Tweak unit test to give more helpful output. 
+	  Still messy.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* *PatternIdentifiersTest.cs: Added message to null check.
 
 2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 

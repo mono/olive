@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static MultipleViewPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.MultipleViewPattern;
 		}
 		
 #endregion

@@ -29,6 +29,20 @@
     <File name="Test/System.Windows.Automation/WindowInteractionStateTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/WindowVisualStateTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/ControlTypeTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/GridPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/InvokePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/RangeValuePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ScrollPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/SelectionItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/SelectionPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TablePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TextPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TogglePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TransformPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/ValuePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/WindowPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />

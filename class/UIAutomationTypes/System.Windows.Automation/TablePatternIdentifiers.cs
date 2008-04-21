@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static TablePatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.TablePattern;
 		}
 		
 #endregion

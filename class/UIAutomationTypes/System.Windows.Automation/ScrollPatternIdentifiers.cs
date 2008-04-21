@@ -33,7 +33,7 @@ namespace System.Windows.Automation
 		
 		static ScrollPatternIdentifiers ()
 		{
-			// TODO: Initialize fields
+			Pattern = AutomationPattern.ScrollPattern;
 		}
 		
 #endregion
