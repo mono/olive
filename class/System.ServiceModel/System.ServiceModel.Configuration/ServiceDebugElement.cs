@@ -109,9 +109,15 @@ namespace System.ServiceModel.Configuration
 			get { return base.Properties; }
 		}
 
-		[MonoTODO]
 		protected internal override object CreateBehavior () {
-			throw new NotImplementedException ();
+			return new ServiceDebugBehavior ()
+			{
+				HttpHelpPageEnabled = HttpHelpPageEnabled,
+				HttpsHelpPageEnabled = HttpsHelpPageEnabled,
+				HttpHelpPageUrl = HttpHelpPageUrl,
+				HttpsHelpPageUrl = HttpsHelpPageUrl,
+				IncludeExceptionDetailInFaults = IncludeExceptionDetailInFaults,
+			};
 		}
 
 	}
