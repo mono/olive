@@ -390,6 +390,7 @@
     <Compile Include="System.ServiceModel.Channels\HtmlizedException.cs" />
     <Compile Include="System.ServiceModel.Channels\HttpChannelFactory.cs" />
     <Compile Include="System.ServiceModel.Channels\HttpChannelListener.cs" />
+    <Compile Include="System.ServiceModel.Channels\HttpChannelManager.cs" />
     <Compile Include="System.ServiceModel.Channels\HttpReplyChannel.cs" />
     <Compile Include="System.ServiceModel.Channels\HttpRequestChannel.cs" />
     <Compile Include="System.ServiceModel.Channels\HttpRequestContext.cs" />
