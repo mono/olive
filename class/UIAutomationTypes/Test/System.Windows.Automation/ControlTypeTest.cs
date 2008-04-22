@@ -1,3 +1,4 @@
+
 // Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the 
 // "Software"), to deal in the Software without restriction, including 
@@ -33,7 +34,7 @@ using System.Windows.Automation;
 using NUnit.Framework;
 
 namespace MonoTests.System.Windows.Automation {
-
+	
 	[TestFixture]
 	public class ControlTypeTest {
 
@@ -45,6 +46,9 @@ namespace MonoTests.System.Windows.Automation {
 				50000,
 				myButton.Id,
 				"Id");
+			Assert.IsNotNull (
+				myButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"button",
 				myButton.LocalizedControlType,
@@ -53,19 +57,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Button",
 				myButton.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myButton.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myButton.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myButton.GetRequiredProperties ());
+				myButton.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myButton.GetRequiredPatternSets ());
+				myButton.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -77,6 +86,9 @@ namespace MonoTests.System.Windows.Automation {
 				50001,
 				myCalendar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myCalendar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"calendar",
 				myCalendar.LocalizedControlType,
@@ -85,19 +97,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Calendar",
 				myCalendar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myCalendar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myCalendar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myCalendar.GetRequiredProperties ());
+				myCalendar.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern, ValuePatternIdentifiers.Pattern, SelectionPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myCalendar.GetRequiredPatternSets ());
+				myCalendar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -109,6 +126,9 @@ namespace MonoTests.System.Windows.Automation {
 				50002,
 				myCheckBox.Id,
 				"Id");
+			Assert.IsNotNull (
+				myCheckBox,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"check box",
 				myCheckBox.LocalizedControlType,
@@ -117,19 +137,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.CheckBox",
 				myCheckBox.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myCheckBox.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myCheckBox.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myCheckBox.GetRequiredProperties ());
+				myCheckBox.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TogglePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myCheckBox.GetRequiredPatternSets ());
+				myCheckBox.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -141,6 +166,9 @@ namespace MonoTests.System.Windows.Automation {
 				50003,
 				myComboBox.Id,
 				"Id");
+			Assert.IsNotNull (
+				myComboBox,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"combo box",
 				myComboBox.LocalizedControlType,
@@ -149,19 +177,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ComboBox",
 				myComboBox.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myComboBox.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myComboBox.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myComboBox.GetRequiredProperties ());
+				myComboBox.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern, ExpandCollapsePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myComboBox.GetRequiredPatternSets ());
+				myComboBox.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -173,6 +206,9 @@ namespace MonoTests.System.Windows.Automation {
 				50004,
 				myEdit.Id,
 				"Id");
+			Assert.IsNotNull (
+				myEdit,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"edit",
 				myEdit.LocalizedControlType,
@@ -181,19 +217,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Edit",
 				myEdit.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myEdit.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myEdit.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myEdit.GetRequiredProperties ());
+				myEdit.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ValuePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myEdit.GetRequiredPatternSets ());
+				myEdit.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -205,6 +246,9 @@ namespace MonoTests.System.Windows.Automation {
 				50005,
 				myHyperlink.Id,
 				"Id");
+			Assert.IsNotNull (
+				myHyperlink,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"hyperlink",
 				myHyperlink.LocalizedControlType,
@@ -213,19 +257,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Hyperlink",
 				myHyperlink.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myHyperlink.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myHyperlink.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myHyperlink.GetRequiredProperties ());
+				myHyperlink.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myHyperlink.GetRequiredPatternSets ());
+				myHyperlink.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -237,6 +286,9 @@ namespace MonoTests.System.Windows.Automation {
 				50006,
 				myImage.Id,
 				"Id");
+			Assert.IsNotNull (
+				myImage,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"image",
 				myImage.LocalizedControlType,
@@ -245,18 +297,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Image",
 				myImage.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myImage.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myImage.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myImage.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myImage.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myImage.GetRequiredPatternSets ());
+				myImage.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -268,6 +325,9 @@ namespace MonoTests.System.Windows.Automation {
 				50007,
 				myListItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myListItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"list item",
 				myListItem.LocalizedControlType,
@@ -276,19 +336,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ListItem",
 				myListItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myListItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myListItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myListItem.GetRequiredProperties ());
+				myListItem.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionItemPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myListItem.GetRequiredPatternSets ());
+				myListItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -300,6 +365,9 @@ namespace MonoTests.System.Windows.Automation {
 				50008,
 				myList.Id,
 				"Id");
+			Assert.IsNotNull (
+				myList,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"list view",
 				myList.LocalizedControlType,
@@ -308,19 +376,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.List",
 				myList.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myList.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myList.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myList.GetRequiredProperties ());
+				myList.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern, TablePatternIdentifiers.Pattern, GridPatternIdentifiers.Pattern, MultipleViewPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myList.GetRequiredPatternSets ());
+				myList.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -332,6 +405,9 @@ namespace MonoTests.System.Windows.Automation {
 				50009,
 				myMenu.Id,
 				"Id");
+			Assert.IsNotNull (
+				myMenu,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu",
 				myMenu.LocalizedControlType,
@@ -340,18 +416,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Menu",
 				myMenu.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myMenu.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myMenu.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myMenu.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myMenu.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myMenu.GetRequiredPatternSets ());
+				myMenu.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -363,6 +444,9 @@ namespace MonoTests.System.Windows.Automation {
 				50010,
 				myMenuBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myMenuBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu bar",
 				myMenuBar.LocalizedControlType,
@@ -371,18 +455,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.MenuBar",
 				myMenuBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myMenuBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myMenuBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myMenuBar.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myMenuBar.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myMenuBar.GetRequiredPatternSets ());
+				myMenuBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -394,6 +483,9 @@ namespace MonoTests.System.Windows.Automation {
 				50011,
 				myMenuItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myMenuItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu item",
 				myMenuItem.LocalizedControlType,
@@ -402,21 +494,26 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.MenuItem",
 				myMenuItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myMenuItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myMenuItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myMenuItem.GetRequiredProperties ());
+				myMenuItem.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {ExpandCollapsePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TogglePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myMenuItem.GetRequiredPatternSets ());
+				myMenuItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -428,6 +525,9 @@ namespace MonoTests.System.Windows.Automation {
 				50012,
 				myProgressBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myProgressBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"progress bar",
 				myProgressBar.LocalizedControlType,
@@ -436,19 +536,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ProgressBar",
 				myProgressBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myProgressBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myProgressBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myProgressBar.GetRequiredProperties ());
+				myProgressBar.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ValuePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myProgressBar.GetRequiredPatternSets ());
+				myProgressBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -460,6 +565,9 @@ namespace MonoTests.System.Windows.Automation {
 				50013,
 				myRadioButton.Id,
 				"Id");
+			Assert.IsNotNull (
+				myRadioButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"radio button",
 				myRadioButton.LocalizedControlType,
@@ -468,18 +576,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.RadioButton",
 				myRadioButton.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myRadioButton.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myRadioButton.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myRadioButton.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myRadioButton.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myRadioButton.GetRequiredPatternSets ());
+				myRadioButton.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -491,6 +604,9 @@ namespace MonoTests.System.Windows.Automation {
 				50014,
 				myScrollBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myScrollBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"scroll bar",
 				myScrollBar.LocalizedControlType,
@@ -499,18 +615,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ScrollBar",
 				myScrollBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myScrollBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myScrollBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myScrollBar.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myScrollBar.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myScrollBar.GetRequiredPatternSets ());
+				myScrollBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -522,6 +643,9 @@ namespace MonoTests.System.Windows.Automation {
 				50015,
 				mySlider.Id,
 				"Id");
+			Assert.IsNotNull (
+				mySlider,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"slider",
 				mySlider.LocalizedControlType,
@@ -530,20 +654,25 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Slider",
 				mySlider.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				mySlider.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				mySlider.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				mySlider.GetRequiredProperties ());
+				mySlider.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {RangeValuePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				mySlider.GetRequiredPatternSets ());
+				mySlider.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -555,6 +684,9 @@ namespace MonoTests.System.Windows.Automation {
 				50016,
 				mySpinner.Id,
 				"Id");
+			Assert.IsNotNull (
+				mySpinner,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"spinner",
 				mySpinner.LocalizedControlType,
@@ -563,20 +695,25 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Spinner",
 				mySpinner.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				mySpinner.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				mySpinner.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				mySpinner.GetRequiredProperties ());
+				mySpinner.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {RangeValuePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				mySpinner.GetRequiredPatternSets ());
+				mySpinner.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -588,6 +725,9 @@ namespace MonoTests.System.Windows.Automation {
 				50017,
 				myStatusBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myStatusBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"status bar",
 				myStatusBar.LocalizedControlType,
@@ -596,18 +736,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.StatusBar",
 				myStatusBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myStatusBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myStatusBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myStatusBar.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myStatusBar.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myStatusBar.GetRequiredPatternSets ());
+				myStatusBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -619,6 +764,9 @@ namespace MonoTests.System.Windows.Automation {
 				50018,
 				myTab.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTab,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tab",
 				myTab.LocalizedControlType,
@@ -627,18 +775,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Tab",
 				myTab.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTab.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTab.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTab.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myTab.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTab.GetRequiredPatternSets ());
+				myTab.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -650,6 +803,9 @@ namespace MonoTests.System.Windows.Automation {
 				50019,
 				myTabItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTabItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tab item",
 				myTabItem.LocalizedControlType,
@@ -658,18 +814,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TabItem",
 				myTabItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTabItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTabItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTabItem.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myTabItem.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTabItem.GetRequiredPatternSets ());
+				myTabItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -681,6 +842,9 @@ namespace MonoTests.System.Windows.Automation {
 				50020,
 				myText.Id,
 				"Id");
+			Assert.IsNotNull (
+				myText,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"text",
 				myText.LocalizedControlType,
@@ -689,18 +853,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Text",
 				myText.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myText.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myText.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myText.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myText.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myText.GetRequiredPatternSets ());
+				myText.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -712,6 +881,9 @@ namespace MonoTests.System.Windows.Automation {
 				50021,
 				myToolBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myToolBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tool bar",
 				myToolBar.LocalizedControlType,
@@ -720,18 +892,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ToolBar",
 				myToolBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myToolBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myToolBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myToolBar.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myToolBar.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myToolBar.GetRequiredPatternSets ());
+				myToolBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -743,6 +920,9 @@ namespace MonoTests.System.Windows.Automation {
 				50022,
 				myToolTip.Id,
 				"Id");
+			Assert.IsNotNull (
+				myToolTip,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tool tip",
 				myToolTip.LocalizedControlType,
@@ -751,18 +931,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ToolTip",
 				myToolTip.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myToolTip.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myToolTip.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myToolTip.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myToolTip.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myToolTip.GetRequiredPatternSets ());
+				myToolTip.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -774,6 +959,9 @@ namespace MonoTests.System.Windows.Automation {
 				50023,
 				myTree.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTree,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tree view",
 				myTree.LocalizedControlType,
@@ -782,18 +970,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Tree",
 				myTree.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTree.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTree.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTree.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myTree.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTree.GetRequiredPatternSets ());
+				myTree.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -805,6 +998,9 @@ namespace MonoTests.System.Windows.Automation {
 				50024,
 				myTreeItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTreeItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tree view item",
 				myTreeItem.LocalizedControlType,
@@ -813,18 +1009,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TreeItem",
 				myTreeItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTreeItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTreeItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTreeItem.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myTreeItem.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTreeItem.GetRequiredPatternSets ());
+				myTreeItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -836,6 +1037,9 @@ namespace MonoTests.System.Windows.Automation {
 				50025,
 				myCustom.Id,
 				"Id");
+			Assert.IsNotNull (
+				myCustom,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"custom",
 				myCustom.LocalizedControlType,
@@ -844,18 +1048,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Custom",
 				myCustom.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myCustom.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myCustom.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myCustom.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myCustom.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myCustom.GetRequiredPatternSets ());
+				myCustom.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -867,6 +1076,9 @@ namespace MonoTests.System.Windows.Automation {
 				50026,
 				myGroup.Id,
 				"Id");
+			Assert.IsNotNull (
+				myGroup,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"group",
 				myGroup.LocalizedControlType,
@@ -875,18 +1087,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Group",
 				myGroup.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myGroup.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myGroup.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myGroup.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myGroup.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myGroup.GetRequiredPatternSets ());
+				myGroup.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -898,6 +1115,9 @@ namespace MonoTests.System.Windows.Automation {
 				50027,
 				myThumb.Id,
 				"Id");
+			Assert.IsNotNull (
+				myThumb,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"thumb",
 				myThumb.LocalizedControlType,
@@ -906,18 +1126,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Thumb",
 				myThumb.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myThumb.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myThumb.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myThumb.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myThumb.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myThumb.GetRequiredPatternSets ());
+				myThumb.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -929,6 +1154,9 @@ namespace MonoTests.System.Windows.Automation {
 				50028,
 				myDataGrid.Id,
 				"Id");
+			Assert.IsNotNull (
+				myDataGrid,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"datagrid",
 				myDataGrid.LocalizedControlType,
@@ -937,21 +1165,26 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.DataGrid",
 				myDataGrid.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myDataGrid.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myDataGrid.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myDataGrid.GetRequiredProperties ());
+				myDataGrid.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TablePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myDataGrid.GetRequiredPatternSets ());
+				myDataGrid.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -963,6 +1196,9 @@ namespace MonoTests.System.Windows.Automation {
 				50029,
 				myDataItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myDataItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"dataitem",
 				myDataItem.LocalizedControlType,
@@ -971,19 +1207,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.DataItem",
 				myDataItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myDataItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myDataItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myDataItem.GetRequiredProperties ());
+				myDataItem.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionItemPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myDataItem.GetRequiredPatternSets ());
+				myDataItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -995,6 +1236,9 @@ namespace MonoTests.System.Windows.Automation {
 				50030,
 				myDocument.Id,
 				"Id");
+			Assert.IsNotNull (
+				myDocument,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"document",
 				myDocument.LocalizedControlType,
@@ -1003,20 +1247,25 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Document",
 				myDocument.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { ValuePatternIdentifiers.Pattern };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{ValuePatternIdentifiers.Pattern};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myDocument.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myDocument.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myDocument.GetRequiredProperties ());
+				myDocument.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ScrollPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TextPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myDocument.GetRequiredPatternSets ());
+				myDocument.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1028,6 +1277,9 @@ namespace MonoTests.System.Windows.Automation {
 				50031,
 				mySplitButton.Id,
 				"Id");
+			Assert.IsNotNull (
+				mySplitButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"split button",
 				mySplitButton.LocalizedControlType,
@@ -1036,20 +1288,25 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.SplitButton",
 				mySplitButton.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				mySplitButton.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				mySplitButton.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				mySplitButton.GetRequiredProperties ());
+				mySplitButton.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {ExpandCollapsePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				mySplitButton.GetRequiredPatternSets ());
+				mySplitButton.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1061,6 +1318,9 @@ namespace MonoTests.System.Windows.Automation {
 				50032,
 				myWindow.Id,
 				"Id");
+			Assert.IsNotNull (
+				myWindow,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"window",
 				myWindow.LocalizedControlType,
@@ -1069,20 +1329,25 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Window",
 				myWindow.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myWindow.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myWindow.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myWindow.GetRequiredProperties ());
+				myWindow.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TransformPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {WindowPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myWindow.GetRequiredPatternSets ());
+				myWindow.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1094,6 +1359,9 @@ namespace MonoTests.System.Windows.Automation {
 				50033,
 				myPane.Id,
 				"Id");
+			Assert.IsNotNull (
+				myPane,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"pane",
 				myPane.LocalizedControlType,
@@ -1102,19 +1370,24 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Pane",
 				myPane.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myPane.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myPane.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myPane.GetRequiredProperties ());
+				myPane.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TransformPatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myPane.GetRequiredPatternSets ());
+				myPane.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1126,6 +1399,9 @@ namespace MonoTests.System.Windows.Automation {
 				50034,
 				myHeader.Id,
 				"Id");
+			Assert.IsNotNull (
+				myHeader,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"header",
 				myHeader.LocalizedControlType,
@@ -1134,18 +1410,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Header",
 				myHeader.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myHeader.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myHeader.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myHeader.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myHeader.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myHeader.GetRequiredPatternSets ());
+				myHeader.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1157,6 +1438,9 @@ namespace MonoTests.System.Windows.Automation {
 				50035,
 				myHeaderItem.Id,
 				"Id");
+			Assert.IsNotNull (
+				myHeaderItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"header item",
 				myHeaderItem.LocalizedControlType,
@@ -1165,18 +1449,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.HeaderItem",
 				myHeaderItem.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myHeaderItem.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myHeaderItem.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myHeaderItem.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myHeaderItem.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myHeaderItem.GetRequiredPatternSets ());
+				myHeaderItem.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1188,6 +1477,9 @@ namespace MonoTests.System.Windows.Automation {
 				50036,
 				myTable.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTable,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"table",
 				myTable.LocalizedControlType,
@@ -1196,21 +1488,26 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Table",
 				myTable.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTable.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTable.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTable.GetRequiredProperties ());
+				myTable.GetRequiredProperties (),
+				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TablePatternIdentifiers.Pattern}};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTable.GetRequiredPatternSets ());
+				myTable.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1222,6 +1519,9 @@ namespace MonoTests.System.Windows.Automation {
 				50037,
 				myTitleBar.Id,
 				"Id");
+			Assert.IsNotNull (
+				myTitleBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"title bar",
 				myTitleBar.LocalizedControlType,
@@ -1230,18 +1530,23 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TitleBar",
 				myTitleBar.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				myTitleBar.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				myTitleBar.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				myTitleBar.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				myTitleBar.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				myTitleBar.GetRequiredPatternSets ());
+				myTitleBar.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
@@ -1253,6 +1558,9 @@ namespace MonoTests.System.Windows.Automation {
 				50038,
 				mySeparator.Id,
 				"Id");
+			Assert.IsNotNull (
+				mySeparator,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"separator",
 				mySeparator.LocalizedControlType,
@@ -1261,22 +1569,27 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Separator",
 				mySeparator.ProgrammaticName,
 				"ProgrammaticName");
-			AutomationIdentifier [] expectedNeverSupportedPatternIds = { };
+			AutomationIdentifier [] expectedNeverSupportedPatternIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
-				mySeparator.GetNeverSupportedPatterns ());
-			AutomationIdentifier [] expectedRequiredPropertyIds = { };
+				mySeparator.GetNeverSupportedPatterns (),
+				"NeverSupportedPatterns: ");
+			AutomationIdentifier [] expectedRequiredPropertyIds =
+				{};
 			TestAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
-				mySeparator.GetRequiredProperties ());
-			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] { };
+				mySeparator.GetRequiredProperties (),
+				"RequiredProperties: ");
+			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
 			TestAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
-				mySeparator.GetRequiredPatternSets ());
+				mySeparator.GetRequiredPatternSets (),
+				"RequiredPatternSets: ");
 
 		}
 
-		private static void TestAutomationIdentifierListLists (AutomationIdentifier [] [] expectedIdentifierIdsArray, Array actualIdentifiers)
+		private static void TestAutomationIdentifierListLists (AutomationIdentifier [] [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
 		{
 			string expectedIdentifiers = "{";
 			foreach (AutomationIdentifier [] idArray in expectedIdentifierIdsArray) {
@@ -1298,13 +1611,13 @@ namespace MonoTests.System.Windows.Automation {
 			
 			List<AutomationIdentifier []> expectedIdentifierIdArrays =
 				new List<AutomationIdentifier []> (expectedIdentifierIdsArray);
-			Assert.AreEqual (expectedIdentifierIdsArray.Length, actualIdentifiers.Length, "Length mismatch.  Expected arrays: " + expectedIdentifiers);
+			Assert.AreEqual (expectedIdentifierIdsArray.Length, actualIdentifiers.Length, testLabel + "Length mismatch.  Expected arrays: " + expectedIdentifiers);
 			foreach (Array identifierArray in actualIdentifiers) {
 				int matchingIndex = -1;
 				for (int i = 0; i < expectedIdentifierIdArrays.Count; i++) {
 					AutomationIdentifier [] ids = expectedIdentifierIdArrays [i];
 					try {
-						TestAutomationIdentifierLists (ids, identifierArray);
+						TestAutomationIdentifierLists (ids, identifierArray, testLabel);
 						matchingIndex = i;
 						break;
 					} catch (AssertionException) { }
@@ -1316,26 +1629,39 @@ namespace MonoTests.System.Windows.Automation {
 					string expectedIdList = string.Empty;
 					if (identifierArray.Length != 0)
 						expectedIdList = GetCommaSeparatedList (expectedIds);
-					Assert.Fail ("Did not expect array: " + expectedIdList + Environment.NewLine + "Expected arrays:" + expectedIdentifiers);
+					Assert.Fail (testLabel + "Did not expect array: " + expectedIdList + Environment.NewLine + "Expected arrays:" + expectedIdentifiers);
 				}
 			}
 
 			if (expectedIdentifierIdArrays.Count > 0)
 				Assert.Fail (
-					"Missed {0} expected arrays.  Here's the first one: {1}",
+					testLabel + "Missed {0} expected arrays.  Here's the first one: {1}",
 					expectedIdentifierIdArrays.Count,
 					GetCommaSeparatedList (expectedIdentifierIdArrays [0]));
 		}
 
-		private static void TestAutomationIdentifierLists (AutomationIdentifier [] expectedIdentifierIdsArray, Array actualIdentifiers)
+		private static void TestAutomationIdentifierLists (AutomationIdentifier [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
 		{
 			List<AutomationIdentifier> expectedIdentifierIds =
 				new List<AutomationIdentifier> (expectedIdentifierIdsArray);
+			
+			string expectedIdentifiers = "{";
+			if (expectedIdentifierIds.Count > 0) {
+				List<string> arrayIds = new List<string> ();
+				foreach (AutomationIdentifier autoId in expectedIdentifierIds) {
+					if (autoId != null)
+						arrayIds.Add (autoId.ProgrammaticName);
+					else
+						arrayIds.Add ("[unknown]");
+				}
+				expectedIdentifiers += GetCommaSeparatedList (arrayIds);
+			}
+			expectedIdentifiers += "}";
 
 			Assert.AreEqual (
 				expectedIdentifierIds.Count,
 				actualIdentifiers.Length,
-				"Length mismatch.");
+				testLabel + "Length mismatch. Expected: " + expectedIdentifiers);
 			foreach (AutomationIdentifier identifier in actualIdentifiers) {
 				int matchingIndex = -1;
 				for (int i = 0; i < expectedIdentifierIds.Count; i++) {
@@ -1348,7 +1674,7 @@ namespace MonoTests.System.Windows.Automation {
 				if (matchingIndex >= 0)
 					expectedIdentifierIds.RemoveAt (matchingIndex);
 				else
-					Assert.Fail (string.Format (
+					Assert.Fail (testLabel + string.Format (
 						"Did not expect \"{0}\" with id \"{1}\"",
 						identifier.ProgrammaticName,
 						identifier.Id));
@@ -1361,7 +1687,7 @@ namespace MonoTests.System.Windows.Automation {
 					if (i < expectedIdentifierIds.Count - 1)
 						ids += ", ";
 				}
-				Assert.Fail ("Expected the following additional identifiers: {0}", ids);
+				Assert.Fail (testLabel + "Expected the following additional identifiers: {0}", ids);
 			}
 		}
 
@@ -1379,6 +1705,4 @@ namespace MonoTests.System.Windows.Automation {
 
 	}
 }
-
-
 
