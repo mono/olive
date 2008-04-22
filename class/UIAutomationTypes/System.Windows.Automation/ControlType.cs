@@ -86,47 +86,45 @@ namespace System.Windows.Automation
 		internal const int CustomId = 50025;
 		internal const int DataGridId = 50028;
 		internal const int DataItemId = 50029;
-		internal const int DocumentId = 0;
-		internal const int EditId = 0;
-		internal const int GroupId = 0;
-		internal const int HeaderId = 0;
-		internal const int HeaderItemId = 0;
-		internal const int HyperlinkId = 0;
-		internal const int ImageId = 0;
-		internal const int ListId = 0;
-		internal const int ListItemId = 0;
-		internal const int MenuId = 0;
-		internal const int MenuBarId = 0;
-		internal const int MenuItemId = 0;
-		internal const int PaneId = 0;
-		internal const int ProgressBarId = 0;
-		internal const int RadioButtonId = 0;
-		internal const int ScrollBarId = 0;
-		internal const int SeparatorId = 0;
-		internal const int SliderId = 0;
-		internal const int SpinnerId = 0;
-		internal const int SplitButtonId = 0;
-		internal const int StatusBarId = 0;
-		internal const int TabId = 0;
-		internal const int TabItemId = 0;
-		internal const int TableId = 0;
-		internal const int TextId = 0;
-		internal const int ThumbId = 0;
-		internal const int TitleBarId = 0;
-		internal const int ToolBarId = 0;
-		internal const int ToolTipId = 0;
-		internal const int TreeId = 0;
-		internal const int TreeItemId = 0;
-		internal const int WindowId = 0;
+		internal const int DocumentId = 50030;
+		internal const int EditId = 50004;
+		internal const int GroupId = 50026;
+		internal const int HeaderItemId = 50035;
+		internal const int HeaderId = 50034;
+		internal const int HyperlinkId = 50005;
+		internal const int ImageId = 50006;
+		internal const int ListId = 50008;
+		internal const int ListItemId = 50007;
+		internal const int MenuId = 50009;
+		internal const int MenuBarId = 50010;
+		internal const int MenuItemId = 50011;
+		internal const int PaneId = 50033;
+		internal const int ProgressBarId = 50012;
+		internal const int RadioButtonId = 50013;
+		internal const int ScrollBarId = 50014;
+		internal const int SeparatorId = 50038;
+		internal const int SliderId = 50015;
+		internal const int SpinnerId = 50016;
+		internal const int SplitButtonId = 50031;
+		internal const int StatusBarId = 50017;
+		internal const int TabId = 50018;
+		internal const int TabItemId = 50019;
+		internal const int TableId = 50036;
+		internal const int TextId = 50020;
+		internal const int ThumbId = 50027;
+		internal const int TitleBarId = 50037;
+		internal const int ToolBarId = 50021;
+		internal const int ToolTipId = 50022;
+		internal const int TreeId = 50023;
+		internal const int TreeItemId = 50024;
+		internal const int WindowId = 50032;
 		
 #endregion
 		
 #region Static Members
 		
 		static ControlType ()
-		{
-			Window = new ControlType (WindowId, "Window");
-			
+		{			
 			Button = new ControlType (ButtonId, "ControlType.Button");
 			Button.localizedControlType = "button";
 			Button.neverSupportedPatterns = new AutomationPattern [] {};
@@ -184,14 +182,269 @@ namespace System.Windows.Automation
 			DataItem.localizedControlType = "dataitem";
 			DataItem.neverSupportedPatterns = new AutomationPattern [] {};
 			DataItem.requiredProperties = new AutomationProperty [] {};
-			DataItem.requiredPatternSets = new AutomationPattern [] [] {};
+			DataItem.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					SelectionItemPatternIdentifiers.Pattern}
+			};
+			
+			Document = new ControlType (DocumentId, "ControlType.Document");
+			Document.localizedControlType = "document";
+			Document.neverSupportedPatterns = new AutomationPattern [] {
+				ValuePatternIdentifiers.Pattern
+			};
+			Document.requiredProperties = new AutomationProperty [] {};
+			Document.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					ScrollPatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					TextPatternIdentifiers.Pattern}
+			};
+			
+			Edit = new ControlType (EditId, "ControlType.Edit");
+			Edit.localizedControlType = "edit";
+			Edit.neverSupportedPatterns = new AutomationPattern [] {};
+			Edit.requiredProperties = new AutomationProperty [] {};
+			Edit.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					ValuePatternIdentifiers.Pattern}
+			};
+			
+			Group = new ControlType (GroupId, "ControlType.Group");
+			Group.localizedControlType = "group";
+			Group.neverSupportedPatterns = new AutomationPattern [] {};
+			Group.requiredProperties = new AutomationProperty [] {};
+			Group.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			HeaderItem = new ControlType (HeaderItemId, "ControlType.HeaderItem");
+			HeaderItem.localizedControlType = "header item";
+			HeaderItem.neverSupportedPatterns = new AutomationPattern [] {};
+			HeaderItem.requiredProperties = new AutomationProperty [] {};
+			HeaderItem.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Header = new ControlType (HeaderId, "ControlType.Header");
+			Header.localizedControlType = "header";
+			Header.neverSupportedPatterns = new AutomationPattern [] {};
+			Header.requiredProperties = new AutomationProperty [] {};
+			Header.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Hyperlink = new ControlType (HyperlinkId, "ControlType.Hyperlink");
+			Hyperlink.localizedControlType = "hyperlink";
+			Hyperlink.neverSupportedPatterns = new AutomationPattern [] {};
+			Hyperlink.requiredProperties = new AutomationProperty [] {};
+			Hyperlink.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					InvokePatternIdentifiers.Pattern}
+			};
+			
+			Image = new ControlType (ImageId, "ControlType.Image");
+			Image.localizedControlType = "image";
+			Image.neverSupportedPatterns = new AutomationPattern [] {};
+			Image.requiredProperties = new AutomationProperty [] {};
+			Image.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			ListItem = new ControlType (ListItemId, "ControlType.ListItem");
+			ListItem.localizedControlType = "list item";
+			ListItem.neverSupportedPatterns = new AutomationPattern [] {};
+			ListItem.requiredProperties = new AutomationProperty [] {};
+			ListItem.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					SelectionItemPatternIdentifiers.Pattern}
+			};
+			
+			List = new ControlType (ListId, "ControlType.List");
+			List.localizedControlType = "list view";
+			List.neverSupportedPatterns = new AutomationPattern [] {};
+			List.requiredProperties = new AutomationProperty [] {};
+			List.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					SelectionPatternIdentifiers.Pattern,
+					TablePatternIdentifiers.Pattern,
+					GridPatternIdentifiers.Pattern,
+					MultipleViewPatternIdentifiers.Pattern}
+			};
+			
+			MenuBar = new ControlType (MenuBarId, "ControlType.MenuBar");
+			MenuBar.localizedControlType = "menu bar";
+			MenuBar.neverSupportedPatterns = new AutomationPattern [] {};
+			MenuBar.requiredProperties = new AutomationProperty [] {};
+			MenuBar.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			MenuItem = new ControlType (MenuItemId, "ControlType.MenuItem");
+			MenuItem.localizedControlType = "menu item";
+			MenuItem.neverSupportedPatterns = new AutomationPattern [] {};
+			MenuItem.requiredProperties = new AutomationProperty [] {};
+			MenuItem.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					InvokePatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					ExpandCollapsePatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					TogglePatternIdentifiers.Pattern}
+			};
+			
+			Menu = new ControlType (MenuId, "ControlType.Menu");
+			Menu.localizedControlType = "menu";
+			Menu.neverSupportedPatterns = new AutomationPattern [] {};
+			Menu.requiredProperties = new AutomationProperty [] {};
+			Menu.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Pane = new ControlType (PaneId, "ControlType.Pane");
+			Pane.localizedControlType = "pane";
+			Pane.neverSupportedPatterns = new AutomationPattern [] {};
+			Pane.requiredProperties = new AutomationProperty [] {};
+			Pane.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					TransformPatternIdentifiers.Pattern}
+			};
+			
+			ProgressBar = new ControlType (ProgressBarId, "ControlType.ProgressBar");
+			ProgressBar.localizedControlType = "progress bar";
+			ProgressBar.neverSupportedPatterns = new AutomationPattern [] {};
+			ProgressBar.requiredProperties = new AutomationProperty [] {};
+			ProgressBar.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					ValuePatternIdentifiers.Pattern}
+			};
+			
+			RadioButton = new ControlType (RadioButtonId, "ControlType.RadioButton");
+			RadioButton.localizedControlType = "radio button";
+			RadioButton.neverSupportedPatterns = new AutomationPattern [] {};
+			RadioButton.requiredProperties = new AutomationProperty [] {};
+			RadioButton.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			ScrollBar = new ControlType (ScrollBarId, "ControlType.ScrollBar");
+			ScrollBar.localizedControlType = "scroll bar";
+			ScrollBar.neverSupportedPatterns = new AutomationPattern [] {};
+			ScrollBar.requiredProperties = new AutomationProperty [] {};
+			ScrollBar.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Separator = new ControlType (SeparatorId, "ControlType.Separator");
+			Separator.localizedControlType = "separator";
+			Separator.neverSupportedPatterns = new AutomationPattern [] {};
+			Separator.requiredProperties = new AutomationProperty [] {};
+			Separator.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Slider = new ControlType (SliderId, "ControlType.Slider");
+			Slider.localizedControlType = "slider";
+			Slider.neverSupportedPatterns = new AutomationPattern [] {};
+			Slider.requiredProperties = new AutomationProperty [] {};
+			Slider.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					RangeValuePatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					SelectionPatternIdentifiers.Pattern}
+			};
+			
+			Spinner = new ControlType (SpinnerId, "ControlType.Spinner");
+			Spinner.localizedControlType = "spinner";
+			Spinner.neverSupportedPatterns = new AutomationPattern [] {};
+			Spinner.requiredProperties = new AutomationProperty [] {};
+			Spinner.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					RangeValuePatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					SelectionPatternIdentifiers.Pattern}
+			};
+			
+			SplitButton = new ControlType (SplitButtonId, "ControlType.SplitButton");
+			SplitButton.localizedControlType = "split button";
+			SplitButton.neverSupportedPatterns = new AutomationPattern [] {};
+			SplitButton.requiredProperties = new AutomationProperty [] {};
+			SplitButton.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					InvokePatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					ExpandCollapsePatternIdentifiers.Pattern}
+			};
+			
+			StatusBar = new ControlType (StatusBarId, "ControlType.StatusBar");
+			StatusBar.localizedControlType = "status bar";
+			StatusBar.neverSupportedPatterns = new AutomationPattern [] {};
+			StatusBar.requiredProperties = new AutomationProperty [] {};
+			StatusBar.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			TabItem = new ControlType (TabItemId, "ControlType.TabItem");
+			TabItem.localizedControlType = "tab item";
+			TabItem.neverSupportedPatterns = new AutomationPattern [] {};
+			TabItem.requiredProperties = new AutomationProperty [] {};
+			TabItem.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Table = new ControlType (TableId, "ControlType.Table");
+			Table.localizedControlType = "table";
+			Table.neverSupportedPatterns = new AutomationPattern [] {};
+			Table.requiredProperties = new AutomationProperty [] {};
+			Table.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					GridPatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					SelectionPatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					TablePatternIdentifiers.Pattern}
+			};
+			
+			Tab = new ControlType (TabId, "ControlType.Tab");
+			Tab.localizedControlType = "tab";
+			Tab.neverSupportedPatterns = new AutomationPattern [] {};
+			Tab.requiredProperties = new AutomationProperty [] {};
+			Tab.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Text = new ControlType (TextId, "ControlType.Text");
+			Text.localizedControlType = "text";
+			Text.neverSupportedPatterns = new AutomationPattern [] {};
+			Text.requiredProperties = new AutomationProperty [] {};
+			Text.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Thumb = new ControlType (ThumbId, "ControlType.Thumb");
+			Thumb.localizedControlType = "thumb";
+			Thumb.neverSupportedPatterns = new AutomationPattern [] {};
+			Thumb.requiredProperties = new AutomationProperty [] {};
+			Thumb.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			TitleBar = new ControlType (TitleBarId, "ControlType.TitleBar");
+			TitleBar.localizedControlType = "title bar";
+			TitleBar.neverSupportedPatterns = new AutomationPattern [] {};
+			TitleBar.requiredProperties = new AutomationProperty [] {};
+			TitleBar.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			ToolBar = new ControlType (ToolBarId, "ControlType.ToolBar");
+			ToolBar.localizedControlType = "tool bar";
+			ToolBar.neverSupportedPatterns = new AutomationPattern [] {};
+			ToolBar.requiredProperties = new AutomationProperty [] {};
+			ToolBar.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			ToolTip = new ControlType (ToolTipId, "ControlType.ToolTip");
+			ToolTip.localizedControlType = "tool tip";
+			ToolTip.neverSupportedPatterns = new AutomationPattern [] {};
+			ToolTip.requiredProperties = new AutomationProperty [] {};
+			ToolTip.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			TreeItem = new ControlType (TreeItemId, "ControlType.TreeItem");
+			TreeItem.localizedControlType = "tree view item";
+			TreeItem.neverSupportedPatterns = new AutomationPattern [] {};
+			TreeItem.requiredProperties = new AutomationProperty [] {};
+			TreeItem.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Tree = new ControlType (TreeId, "ControlType.Tree");
+			Tree.localizedControlType = "tree view";
+			Tree.neverSupportedPatterns = new AutomationPattern [] {};
+			Tree.requiredProperties = new AutomationProperty [] {};
+			Tree.requiredPatternSets = new AutomationPattern [] [] {};
+			
+			Window = new ControlType (WindowId, "ControlType.Window");
+			Window.localizedControlType = "window";
+			Window.neverSupportedPatterns = new AutomationPattern [] {};
+			Window.requiredProperties = new AutomationProperty [] {};
+			Window.requiredPatternSets = new AutomationPattern [] [] {
+				new AutomationPattern [] {
+					TransformPatternIdentifiers.Pattern},
+				new AutomationPattern [] {
+					WindowPatternIdentifiers.Pattern}
+			};
 		}
 		
 		public static ControlType LookupById (int id)
 		{
-			if (id == WindowId)
-				return Window;
-			else if (id == ButtonId)
+			if (id == ButtonId)
 				return Button;
 			else if (id == CalendarId)
 				return Calendar;
@@ -205,6 +458,68 @@ namespace System.Windows.Automation
 				return DataGrid;
 			else if (id == DataItemId)
 				return DataItem;
+			else if (id == EditId)
+			         return Edit;
+			else if (id == GroupId)
+				return Group;
+			else if (id == HeaderItemId)
+				return HeaderItem;
+			else if (id == HeaderId)
+				return Header;
+			else if (id == HyperlinkId)
+				return Hyperlink;
+			else if (id == ImageId)
+				return Image;
+			else if (id == ListItemId)
+				return ListItem;
+			else if (id == ListId)
+				return List;
+			else if (id == MenuBarId)
+				return MenuBar;
+			else if (id == MenuItemId)
+				return MenuItem;
+			else if (id == MenuId)
+				return Menu;
+			else if (id == PaneId)
+				return Pane;
+			else if (id == ProgressBarId)
+				return ProgressBar;
+			else if (id == RadioButtonId)
+				return RadioButton;
+			else if (id == ScrollBarId)
+				return ScrollBar;
+			else if (id == SeparatorId)
+				return Separator;
+			else if (id == SliderId)
+				return Slider;
+			else if (id == SpinnerId)
+				return Spinner;
+			else if (id == SplitButtonId)
+				return SplitButton;
+			else if (id == StatusBarId)
+				return StatusBar;
+			else if (id == TabItemId)
+				return TabItem;
+			else if (id == TableId)
+				return Table;
+			else if (id == TabId)
+				return Tab;
+			else if (id == TextId)
+				return Text;
+			else if (id == ThumbId)
+				return Thumb;
+			else if (id == TitleBarId)
+				return TitleBar;
+			else if (id == ToolBarId)
+				return ToolBar;
+			else if (id == ToolTipId)
+				return ToolTip;
+			else if (id == TreeItemId)
+				return TreeItem;
+			else if (id == TreeId)
+				return Tree;
+			else if (id == WindowId)
+				return Window;
 			else
 				return null;
 		}

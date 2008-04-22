@@ -1,5 +1,10 @@
 2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/ControlType.cs: Finish implementation of
+	  ControlType.
+
+2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources: Add
 	  *PatternIdentifiersTest classes to MD project and dll.sources.
 	* System.Windows.Automation/InvokePatternIdentifiers.cs,
