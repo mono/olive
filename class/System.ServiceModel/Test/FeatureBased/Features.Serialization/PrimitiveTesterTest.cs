@@ -10,7 +10,6 @@ using Proxy.MonoTests.Features.Client;
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-	[Category("NotWorking")]
     public class PrimitiveTesterTest : TestFixtureBase<PrimitiveTesterContractClient, PrimitiveTester, MonoTests.Features.Contracts.IPrimitiveTesterContract>
 	{
 		[Test]
@@ -49,6 +48,7 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")] // InvalidCastException in generated stub code
 		public void TestLong () {
 			Assert.IsTrue (Client.AddLong (1, 1) == 2);
 		}
@@ -64,6 +64,7 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")] // Serialization
 		public void TestByRef () {
 			double d;
 			double res = Client.AddByRef (out d, 1, 1);

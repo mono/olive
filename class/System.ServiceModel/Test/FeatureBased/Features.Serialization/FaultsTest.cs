@@ -9,7 +9,7 @@ using MonoTests.Features.Contracts;
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-	[Category ("NotWorking")]
+	[Category ("NotWorking")] // Failure on client side to deserialize the FaultException
     public class FaultsTest : TestFixtureBase<FaultsTesterContractClient, FaultsTester, MonoTests.Features.Contracts.IFaultsTesterContract>
 	{
 		[Test]
@@ -27,7 +27,7 @@ namespace MonoTests.Features.Serialization
 	}
 
 	[TestFixture]
-	[Category ("NotWorking")]
+	[Category ("NotWorking")] // Failure on client side to deserialize the FaultException
     public class FaultsTestIncludeDetails : TestFixtureBase<FaultsTesterContractClientIncludeDetails, MonoTests.Features.Contracts.FaultsTesterIncludeDetails, MonoTests.Features.Contracts.IFaultsTesterContractIncludeDetails>
 	{
 		[Test]

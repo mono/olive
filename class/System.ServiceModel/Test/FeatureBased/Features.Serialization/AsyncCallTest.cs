@@ -9,7 +9,7 @@ using System.Threading;
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-	[Category ("NotWorking")]
+	[Category ("NotWorking")] // Can't even build in Mono. Missing public APIs.
     public class AsyncCallTest : TestFixtureBase<AsyncCallTesterContractClient, AsyncCallTester, MonoTests.Features.Contracts.IAsyncCallTesterContract>
 	{
 		bool client_QueryCompleted;

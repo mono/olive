@@ -268,4 +268,8 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <PostBuildEvent>copy $(TargetDir)..\..\nunit20\nunit-console\bin\$(ConfigurationName)\*.exe $(TargetDir)
+copy $(TargetDir)..\..\nunit20\nunit-console\bin\$(ConfigurationName)\*.dll $(TargetDir)</PostBuildEvent>
+  </PropertyGroup>
 </Project>

@@ -9,7 +9,7 @@ using System.ServiceModel.Channels;
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-	[Category ("NotWorking")]
+	[Category ("NotWorking")] // Message version mismatch. Expected Soap11, Received Soap12
     public class UntypedMessageTest : TestFixtureBase<UntypedMessageTesterContractClient, MonoTests.Features.Contracts.UntypedMessageTester, MonoTests.Features.Contracts.IUntypedMessageTesterContract>
 	{
 		[Test]
