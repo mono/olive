@@ -42,13 +42,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ButtonTest ()
 		{
 			ControlType myButton = ControlType.Button;
+			Assert.IsNotNull (
+				myButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50000,
 				myButton.Id,
 				"Id");
-			Assert.IsNotNull (
-				myButton,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"button",
 				myButton.LocalizedControlType,
@@ -82,13 +82,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void CalendarTest ()
 		{
 			ControlType myCalendar = ControlType.Calendar;
+			Assert.IsNotNull (
+				myCalendar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50001,
 				myCalendar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myCalendar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"calendar",
 				myCalendar.LocalizedControlType,
@@ -122,13 +122,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void CheckBoxTest ()
 		{
 			ControlType myCheckBox = ControlType.CheckBox;
+			Assert.IsNotNull (
+				myCheckBox,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50002,
 				myCheckBox.Id,
 				"Id");
-			Assert.IsNotNull (
-				myCheckBox,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"check box",
 				myCheckBox.LocalizedControlType,
@@ -162,13 +162,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ComboBoxTest ()
 		{
 			ControlType myComboBox = ControlType.ComboBox;
+			Assert.IsNotNull (
+				myComboBox,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50003,
 				myComboBox.Id,
 				"Id");
-			Assert.IsNotNull (
-				myComboBox,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"combo box",
 				myComboBox.LocalizedControlType,
@@ -202,13 +202,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void EditTest ()
 		{
 			ControlType myEdit = ControlType.Edit;
+			Assert.IsNotNull (
+				myEdit,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50004,
 				myEdit.Id,
 				"Id");
-			Assert.IsNotNull (
-				myEdit,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"edit",
 				myEdit.LocalizedControlType,
@@ -242,13 +242,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void HyperlinkTest ()
 		{
 			ControlType myHyperlink = ControlType.Hyperlink;
+			Assert.IsNotNull (
+				myHyperlink,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50005,
 				myHyperlink.Id,
 				"Id");
-			Assert.IsNotNull (
-				myHyperlink,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"hyperlink",
 				myHyperlink.LocalizedControlType,
@@ -282,13 +282,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ImageTest ()
 		{
 			ControlType myImage = ControlType.Image;
+			Assert.IsNotNull (
+				myImage,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50006,
 				myImage.Id,
 				"Id");
-			Assert.IsNotNull (
-				myImage,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"image",
 				myImage.LocalizedControlType,
@@ -321,13 +321,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ListItemTest ()
 		{
 			ControlType myListItem = ControlType.ListItem;
+			Assert.IsNotNull (
+				myListItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50007,
 				myListItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myListItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"list item",
 				myListItem.LocalizedControlType,
@@ -361,13 +361,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ListTest ()
 		{
 			ControlType myList = ControlType.List;
+			Assert.IsNotNull (
+				myList,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50008,
 				myList.Id,
 				"Id");
-			Assert.IsNotNull (
-				myList,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"list view",
 				myList.LocalizedControlType,
@@ -401,13 +401,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void MenuTest ()
 		{
 			ControlType myMenu = ControlType.Menu;
+			Assert.IsNotNull (
+				myMenu,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50009,
 				myMenu.Id,
 				"Id");
-			Assert.IsNotNull (
-				myMenu,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu",
 				myMenu.LocalizedControlType,
@@ -440,13 +440,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void MenuBarTest ()
 		{
 			ControlType myMenuBar = ControlType.MenuBar;
+			Assert.IsNotNull (
+				myMenuBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50010,
 				myMenuBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myMenuBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu bar",
 				myMenuBar.LocalizedControlType,
@@ -479,13 +479,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void MenuItemTest ()
 		{
 			ControlType myMenuItem = ControlType.MenuItem;
+			Assert.IsNotNull (
+				myMenuItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50011,
 				myMenuItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myMenuItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"menu item",
 				myMenuItem.LocalizedControlType,
@@ -521,13 +521,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ProgressBarTest ()
 		{
 			ControlType myProgressBar = ControlType.ProgressBar;
+			Assert.IsNotNull (
+				myProgressBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50012,
 				myProgressBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myProgressBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"progress bar",
 				myProgressBar.LocalizedControlType,
@@ -561,13 +561,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void RadioButtonTest ()
 		{
 			ControlType myRadioButton = ControlType.RadioButton;
+			Assert.IsNotNull (
+				myRadioButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50013,
 				myRadioButton.Id,
 				"Id");
-			Assert.IsNotNull (
-				myRadioButton,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"radio button",
 				myRadioButton.LocalizedControlType,
@@ -600,13 +600,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ScrollBarTest ()
 		{
 			ControlType myScrollBar = ControlType.ScrollBar;
+			Assert.IsNotNull (
+				myScrollBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50014,
 				myScrollBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myScrollBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"scroll bar",
 				myScrollBar.LocalizedControlType,
@@ -639,13 +639,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void SliderTest ()
 		{
 			ControlType mySlider = ControlType.Slider;
+			Assert.IsNotNull (
+				mySlider,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50015,
 				mySlider.Id,
 				"Id");
-			Assert.IsNotNull (
-				mySlider,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"slider",
 				mySlider.LocalizedControlType,
@@ -680,13 +680,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void SpinnerTest ()
 		{
 			ControlType mySpinner = ControlType.Spinner;
+			Assert.IsNotNull (
+				mySpinner,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50016,
 				mySpinner.Id,
 				"Id");
-			Assert.IsNotNull (
-				mySpinner,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"spinner",
 				mySpinner.LocalizedControlType,
@@ -721,13 +721,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void StatusBarTest ()
 		{
 			ControlType myStatusBar = ControlType.StatusBar;
+			Assert.IsNotNull (
+				myStatusBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50017,
 				myStatusBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myStatusBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"status bar",
 				myStatusBar.LocalizedControlType,
@@ -760,13 +760,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TabTest ()
 		{
 			ControlType myTab = ControlType.Tab;
+			Assert.IsNotNull (
+				myTab,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50018,
 				myTab.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTab,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tab",
 				myTab.LocalizedControlType,
@@ -799,13 +799,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TabItemTest ()
 		{
 			ControlType myTabItem = ControlType.TabItem;
+			Assert.IsNotNull (
+				myTabItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50019,
 				myTabItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTabItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tab item",
 				myTabItem.LocalizedControlType,
@@ -838,13 +838,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TextTest ()
 		{
 			ControlType myText = ControlType.Text;
+			Assert.IsNotNull (
+				myText,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50020,
 				myText.Id,
 				"Id");
-			Assert.IsNotNull (
-				myText,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"text",
 				myText.LocalizedControlType,
@@ -877,13 +877,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ToolBarTest ()
 		{
 			ControlType myToolBar = ControlType.ToolBar;
+			Assert.IsNotNull (
+				myToolBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50021,
 				myToolBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myToolBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tool bar",
 				myToolBar.LocalizedControlType,
@@ -916,13 +916,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ToolTipTest ()
 		{
 			ControlType myToolTip = ControlType.ToolTip;
+			Assert.IsNotNull (
+				myToolTip,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50022,
 				myToolTip.Id,
 				"Id");
-			Assert.IsNotNull (
-				myToolTip,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tool tip",
 				myToolTip.LocalizedControlType,
@@ -955,13 +955,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TreeTest ()
 		{
 			ControlType myTree = ControlType.Tree;
+			Assert.IsNotNull (
+				myTree,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50023,
 				myTree.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTree,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tree view",
 				myTree.LocalizedControlType,
@@ -994,13 +994,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TreeItemTest ()
 		{
 			ControlType myTreeItem = ControlType.TreeItem;
+			Assert.IsNotNull (
+				myTreeItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50024,
 				myTreeItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTreeItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"tree view item",
 				myTreeItem.LocalizedControlType,
@@ -1033,13 +1033,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void CustomTest ()
 		{
 			ControlType myCustom = ControlType.Custom;
+			Assert.IsNotNull (
+				myCustom,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50025,
 				myCustom.Id,
 				"Id");
-			Assert.IsNotNull (
-				myCustom,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"custom",
 				myCustom.LocalizedControlType,
@@ -1072,13 +1072,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void GroupTest ()
 		{
 			ControlType myGroup = ControlType.Group;
+			Assert.IsNotNull (
+				myGroup,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50026,
 				myGroup.Id,
 				"Id");
-			Assert.IsNotNull (
-				myGroup,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"group",
 				myGroup.LocalizedControlType,
@@ -1111,13 +1111,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void ThumbTest ()
 		{
 			ControlType myThumb = ControlType.Thumb;
+			Assert.IsNotNull (
+				myThumb,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50027,
 				myThumb.Id,
 				"Id");
-			Assert.IsNotNull (
-				myThumb,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"thumb",
 				myThumb.LocalizedControlType,
@@ -1150,13 +1150,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void DataGridTest ()
 		{
 			ControlType myDataGrid = ControlType.DataGrid;
+			Assert.IsNotNull (
+				myDataGrid,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50028,
 				myDataGrid.Id,
 				"Id");
-			Assert.IsNotNull (
-				myDataGrid,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"datagrid",
 				myDataGrid.LocalizedControlType,
@@ -1192,13 +1192,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void DataItemTest ()
 		{
 			ControlType myDataItem = ControlType.DataItem;
+			Assert.IsNotNull (
+				myDataItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50029,
 				myDataItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myDataItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"dataitem",
 				myDataItem.LocalizedControlType,
@@ -1232,13 +1232,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void DocumentTest ()
 		{
 			ControlType myDocument = ControlType.Document;
+			Assert.IsNotNull (
+				myDocument,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50030,
 				myDocument.Id,
 				"Id");
-			Assert.IsNotNull (
-				myDocument,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"document",
 				myDocument.LocalizedControlType,
@@ -1273,13 +1273,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void SplitButtonTest ()
 		{
 			ControlType mySplitButton = ControlType.SplitButton;
+			Assert.IsNotNull (
+				mySplitButton,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50031,
 				mySplitButton.Id,
 				"Id");
-			Assert.IsNotNull (
-				mySplitButton,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"split button",
 				mySplitButton.LocalizedControlType,
@@ -1314,13 +1314,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void WindowTest ()
 		{
 			ControlType myWindow = ControlType.Window;
+			Assert.IsNotNull (
+				myWindow,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50032,
 				myWindow.Id,
 				"Id");
-			Assert.IsNotNull (
-				myWindow,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"window",
 				myWindow.LocalizedControlType,
@@ -1355,13 +1355,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void PaneTest ()
 		{
 			ControlType myPane = ControlType.Pane;
+			Assert.IsNotNull (
+				myPane,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50033,
 				myPane.Id,
 				"Id");
-			Assert.IsNotNull (
-				myPane,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"pane",
 				myPane.LocalizedControlType,
@@ -1395,13 +1395,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void HeaderTest ()
 		{
 			ControlType myHeader = ControlType.Header;
+			Assert.IsNotNull (
+				myHeader,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50034,
 				myHeader.Id,
 				"Id");
-			Assert.IsNotNull (
-				myHeader,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"header",
 				myHeader.LocalizedControlType,
@@ -1434,13 +1434,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void HeaderItemTest ()
 		{
 			ControlType myHeaderItem = ControlType.HeaderItem;
+			Assert.IsNotNull (
+				myHeaderItem,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50035,
 				myHeaderItem.Id,
 				"Id");
-			Assert.IsNotNull (
-				myHeaderItem,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"header item",
 				myHeaderItem.LocalizedControlType,
@@ -1473,13 +1473,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TableTest ()
 		{
 			ControlType myTable = ControlType.Table;
+			Assert.IsNotNull (
+				myTable,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50036,
 				myTable.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTable,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"table",
 				myTable.LocalizedControlType,
@@ -1515,13 +1515,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void TitleBarTest ()
 		{
 			ControlType myTitleBar = ControlType.TitleBar;
+			Assert.IsNotNull (
+				myTitleBar,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50037,
 				myTitleBar.Id,
 				"Id");
-			Assert.IsNotNull (
-				myTitleBar,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"title bar",
 				myTitleBar.LocalizedControlType,
@@ -1554,13 +1554,13 @@ namespace MonoTests.System.Windows.Automation {
 		public void SeparatorTest ()
 		{
 			ControlType mySeparator = ControlType.Separator;
+			Assert.IsNotNull (
+				mySeparator,
+				"Pattern field must not be null.");
 			Assert.AreEqual (
 				50038,
 				mySeparator.Id,
 				"Id");
-			Assert.IsNotNull (
-				mySeparator,
-				"Pattern field must not be null.");
 			Assert.AreEqual (
 				"separator",
 				mySeparator.LocalizedControlType,
