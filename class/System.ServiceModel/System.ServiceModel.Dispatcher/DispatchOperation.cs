@@ -177,43 +177,6 @@ namespace System.ServiceModel.Dispatcher
 			get { return Parent.ChannelDispatcher.MessageVersion; }
 		}
 
-		OperationDescription Description {
-			get {
-				EndpointDispatcher ed = Parent.EndpointDispatcher;
-				if (ed == null)
-					throw new Exception ("INTERNAL ERROR: EndpointDispatcher is not bound yet.");
-				if (Parent.ChannelDispatcher == null)
-					throw new Exception ("INTERNAL ERROR: ChannelDispatcher is not bound yet.");
-				ContractDescription cd = ed.ChannelDispatcher.Host.GetContract (ed.ContractName, ed.ContractNamespace);
-				if (cd == null)
-					throw new Exception (String.Format ("INTERNAL ERROR: Contact {0} in namespace {1} not found.", ed.ContractName, ed.ContractNamespace));
-				OperationDescription od =
-					Name != "*" ? cd.Operations.Find (Name) :
-					cd.Operations.Count > 0 ? cd.Operations [0] :
-					null;
-				if (od == null) {
-					if (Name == "*")
-						throw new Exception (String.Format ("INTERNAL ERROR: Contract {0} in namespace {1} does not contain Operations.", cd.Name, cd.Namespace));
-					else
-						throw new Exception (String.Format ("INTERNAL ERROR: Operation {0} was not found.", Name));
-				}
-				return od;
-			}
-		}
-
-		IDispatchMessageFormatter GetFormatter ()
-		{
-			if (actual_formatter == null) {
-				if (Formatter != null)
-					actual_formatter = Formatter;
-				else
-					actual_formatter = BaseMessagesFormatter.Create (Description);
-			}
-			return actual_formatter;
-		}
-
-		// Utility methods used by ChannelDispatcher.
-
 		internal Message ProcessRequest (Message req)
 		{
 			try {
@@ -236,8 +199,16 @@ Console.WriteLine (ex);
 			}
 		}
 
+		void EnsureValid () {
+			if (Invoker == null)
+				throw new InvalidOperationException ("DispatchOperation requires Invoker.");
+			if ((DeserializeRequest || SerializeReply) && Formatter == null)
+				throw new InvalidOperationException ("The DispatchOperation '" + Name + "' requires Formatter, since DeserializeRequest and SerializeReply are not both false.");
+		}
+
 		Message DoProcessRequest (Message req)
 		{
+			EnsureValid ();
 			object instance = null;
 			if (parent.InstanceContextProvider != null) {
 				InstanceContext ictx = parent.InstanceContextProvider.GetExistingInstanceContext (req, null);
@@ -254,25 +225,8 @@ Console.WriteLine (ex);
 
 			object [] inputs;
 			if (DeserializeRequest) {
-				if (Invoker != null)
-					inputs = Invoker.AllocateInputs ();
-				else {
-					/*if (!Parent.EndpointDispatcher.ContractFilter.Match (req))
-						return CreateActionNotSupported (req);*/
-
-					MessageDescription md = null;
-					if (req.Headers.Action != null)
-						md = Description.Messages.Find (req.Headers.Action);
-					else {
-						foreach (MessageDescription mi in Description.Messages)
-							if (mi.Direction == MessageDirection.Input)
-								md = mi;
-					}
-					if (md == null)
-						return CreateActionNotSupported (req);
-					inputs = new object [md.Body.Parts.Count];
-				}
-				GetFormatter ().DeserializeRequest (req, inputs);
+				inputs = Invoker.AllocateInputs ();
+				Formatter.DeserializeRequest (req, inputs);
 			}
 			else
 				inputs = new object [] {req};
@@ -288,24 +242,16 @@ Console.WriteLine (ex);
 				ctx_initialization_results [i] =
 					CallContextInitializers [i].BeforeInvoke (OperationContext.Current.InstanceContext, null, req);
 
-			if (Invoker != null)
+			if (Invoker.IsSynchronous)
 				result = Invoker.Invoke (instance, inputs, out outputs);
-			else {
-				object [] fullargs = new object [Description.SyncMethod.GetParameters ().Length];
-				Array.Copy (inputs, fullargs, inputs.Length);
-				// FIXME: support async method
-				result = Description.SyncMethod.Invoke (instance, fullargs);
-				outputs = new object [fullargs.Length - inputs.Length];
-				Array.Copy (
-					outputs, 0, fullargs, inputs.Length,
-					outputs.Length);
-			}
+			else
+				throw new NotImplementedException ();
 
 			for (int i = 0; i < ctx_initialization_results.Length; i++)
 				CallContextInitializers [i].AfterInvoke (ctx_initialization_results [i]);
 
 			if (SerializeReply)
-				return GetFormatter ().SerializeReply (
+				return Formatter.SerializeReply (
 					MessageVersion, outputs, result);
 			else
 				return (Message) result;
@@ -323,6 +269,7 @@ Console.WriteLine (ex);
 
 		internal void ProcessInput (Message req)
 		{
+			EnsureValid ();
 			object instance = parent.InstanceProvider != null ?
 				parent.InstanceProvider.GetInstance (OperationContext.Current.InstanceContext, req) : null;
 
@@ -335,13 +282,10 @@ Console.WriteLine (ex);
 			else
 				inputs = new object [] {req};
 			object [] outputs;
-			if (Invoker != null)
+			if (Invoker.IsSynchronous)
 				Invoker.Invoke (instance, inputs, out outputs);
-			else {
-				object [] fullargs = new object [Description.SyncMethod.GetParameters ().Length];
-				Array.Copy (inputs, fullargs, inputs.Length);
-				Description.SyncMethod.Invoke (instance, fullargs);
-			}
+			else
+				throw new NotImplementedException ();
 		}
 	}
 }

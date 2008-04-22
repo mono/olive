@@ -33,6 +33,7 @@ using System.ServiceModel.Configuration;
 using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
+using System.Reflection;
 
 namespace System.ServiceModel
 {
@@ -476,6 +477,14 @@ namespace System.ServiceModel
 				}
 			}
 
+			// Setup Invoker
+			// FIXME: support async method
+			if (od.SyncMethod != null)
+				o.Invoker = new SyncMethodInvoker (od.SyncMethod);
+
+			// Setup Formater
+			o.Formatter = BaseMessagesFormatter.Create (od);
+
 			if (o.Action == "*" && o.ReplyAction == "*") {
 				//Signature : Message  (Message)
 				//	    : void  (Message)
@@ -572,6 +581,45 @@ namespace System.ServiceModel
 		void IDisposable.Dispose ()
 		{
 			Close ();
+		}
+
+		class SyncMethodInvoker : IOperationInvoker
+		{
+			readonly MethodInfo _methodInfo;
+			public SyncMethodInvoker (MethodInfo methodInfo) {
+				_methodInfo = methodInfo;
+			}
+			
+			#region IOperationInvoker Members
+
+			public bool IsSynchronous {
+				get { return true; }
+			}
+
+			public object [] AllocateInputs () {
+				return new object [_methodInfo.GetParameters ().Length];
+			}
+
+			public object Invoke (object instance, object [] inputs, out object [] outputs) {
+				object [] fullargs = new object [_methodInfo.GetParameters ().Length];
+				Array.Copy (inputs, fullargs, inputs.Length);
+				object result = _methodInfo.Invoke (instance, fullargs);
+				outputs = new object [fullargs.Length - inputs.Length];
+				Array.Copy (
+					outputs, 0, fullargs, inputs.Length,
+					outputs.Length);
+				return result;
+			}
+
+			public IAsyncResult InvokeBegin (object instance, object [] inputs, AsyncCallback callback, object state) {
+				throw new NotSupportedException ();
+			}
+
+			public object InvokeEnd (object instance, out object [] outputs, IAsyncResult result) {
+				throw new NotSupportedException ();
+			}
+
+			#endregion
 		}
 	}
 }

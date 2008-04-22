@@ -1,3 +1,7 @@
+2008-04-22  Igor Zelmanovich <igorz@mainsoft.com>
+
+	* ServiceHostBase.cs: initialize DispatchOperation's Invoker and Formater.
+	
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceHostBase.cs: consider refactoring of HttpGetWsdl.

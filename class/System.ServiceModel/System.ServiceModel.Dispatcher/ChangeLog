@@ -1,5 +1,11 @@
 2008-04-22  Igor Zelmanovich <igorz@mainsoft.com>
 
+	* DispatchOperation.cs: removed dependency on OperationDescription, 
+	allows usage of custom channel dispatcher without endpoint was explicitly 
+	built
+
+2008-04-22  Igor Zelmanovich <igorz@mainsoft.com>
+
 	* MexInstanceContextProvider.cs - remove unused code.
 
 2008-04-21  Roei Erez <roeie@mainsoft.com>
