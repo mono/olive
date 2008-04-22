@@ -57,6 +57,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Button",
 				myButton.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myButton,
+				ControlType.LookupById (myButton.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -97,6 +101,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Calendar",
 				myCalendar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myCalendar,
+				ControlType.LookupById (myCalendar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -137,6 +145,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.CheckBox",
 				myCheckBox.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myCheckBox,
+				ControlType.LookupById (myCheckBox.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -177,6 +189,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ComboBox",
 				myComboBox.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myComboBox,
+				ControlType.LookupById (myComboBox.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -217,6 +233,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Edit",
 				myEdit.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myEdit,
+				ControlType.LookupById (myEdit.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -257,6 +277,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Hyperlink",
 				myHyperlink.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myHyperlink,
+				ControlType.LookupById (myHyperlink.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -297,6 +321,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Image",
 				myImage.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myImage,
+				ControlType.LookupById (myImage.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -336,6 +364,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ListItem",
 				myListItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myListItem,
+				ControlType.LookupById (myListItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -376,6 +408,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.List",
 				myList.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myList,
+				ControlType.LookupById (myList.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -416,6 +452,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Menu",
 				myMenu.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myMenu,
+				ControlType.LookupById (myMenu.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -455,6 +495,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.MenuBar",
 				myMenuBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myMenuBar,
+				ControlType.LookupById (myMenuBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -494,6 +538,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.MenuItem",
 				myMenuItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myMenuItem,
+				ControlType.LookupById (myMenuItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -536,6 +584,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ProgressBar",
 				myProgressBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myProgressBar,
+				ControlType.LookupById (myProgressBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -576,6 +628,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.RadioButton",
 				myRadioButton.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myRadioButton,
+				ControlType.LookupById (myRadioButton.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -615,6 +671,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ScrollBar",
 				myScrollBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myScrollBar,
+				ControlType.LookupById (myScrollBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -654,6 +714,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Slider",
 				mySlider.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				mySlider,
+				ControlType.LookupById (mySlider.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -695,6 +759,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Spinner",
 				mySpinner.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				mySpinner,
+				ControlType.LookupById (mySpinner.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -736,6 +804,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.StatusBar",
 				myStatusBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myStatusBar,
+				ControlType.LookupById (myStatusBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -775,6 +847,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Tab",
 				myTab.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTab,
+				ControlType.LookupById (myTab.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -814,6 +890,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TabItem",
 				myTabItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTabItem,
+				ControlType.LookupById (myTabItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -853,6 +933,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Text",
 				myText.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myText,
+				ControlType.LookupById (myText.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -892,6 +976,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ToolBar",
 				myToolBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myToolBar,
+				ControlType.LookupById (myToolBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -931,6 +1019,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.ToolTip",
 				myToolTip.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myToolTip,
+				ControlType.LookupById (myToolTip.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -970,6 +1062,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Tree",
 				myTree.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTree,
+				ControlType.LookupById (myTree.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1009,6 +1105,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TreeItem",
 				myTreeItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTreeItem,
+				ControlType.LookupById (myTreeItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1048,6 +1148,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Custom",
 				myCustom.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myCustom,
+				ControlType.LookupById (myCustom.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1087,6 +1191,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Group",
 				myGroup.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myGroup,
+				ControlType.LookupById (myGroup.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1126,6 +1234,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Thumb",
 				myThumb.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myThumb,
+				ControlType.LookupById (myThumb.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1165,6 +1277,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.DataGrid",
 				myDataGrid.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myDataGrid,
+				ControlType.LookupById (myDataGrid.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1207,6 +1323,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.DataItem",
 				myDataItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myDataItem,
+				ControlType.LookupById (myDataItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1247,6 +1367,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Document",
 				myDocument.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myDocument,
+				ControlType.LookupById (myDocument.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{ValuePatternIdentifiers.Pattern};
 			TestAutomationIdentifierLists (
@@ -1288,6 +1412,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.SplitButton",
 				mySplitButton.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				mySplitButton,
+				ControlType.LookupById (mySplitButton.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1329,6 +1457,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Window",
 				myWindow.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myWindow,
+				ControlType.LookupById (myWindow.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1370,6 +1502,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Pane",
 				myPane.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myPane,
+				ControlType.LookupById (myPane.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1410,6 +1546,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Header",
 				myHeader.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myHeader,
+				ControlType.LookupById (myHeader.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1449,6 +1589,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.HeaderItem",
 				myHeaderItem.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myHeaderItem,
+				ControlType.LookupById (myHeaderItem.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1488,6 +1632,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Table",
 				myTable.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTable,
+				ControlType.LookupById (myTable.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1530,6 +1678,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.TitleBar",
 				myTitleBar.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				myTitleBar,
+				ControlType.LookupById (myTitleBar.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (
@@ -1569,6 +1721,10 @@ namespace MonoTests.System.Windows.Automation {
 				"ControlType.Separator",
 				mySeparator.ProgrammaticName,
 				"ProgrammaticName");
+			Assert.AreEqual (
+				mySeparator,
+				ControlType.LookupById (mySeparator.Id),
+				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
 			TestAutomationIdentifierLists (

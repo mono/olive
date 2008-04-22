@@ -1,5 +1,9 @@
 2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* ControlTypeTest.cs: Test LookupById.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* AutomationElementIdentifiersTest.cs: Complete field tests.
 
 2008-04-21  Sandy Armstrong <sanfordarmstrong@gmail.com> 
