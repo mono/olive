@@ -115,36 +115,4 @@ namespace System.ServiceModel.Dispatcher
 			throw new NotImplementedException ();
 		}
 	}
-	
-	// FIXME: Replace MexInstanceContextProvider and HttpGetInstanceContextProvider
-	// with a single class
-	internal class HttpGetInstanceContextProvider : IInstanceContextProvider
-	{
-		InstanceContext ctx;
-
-		public HttpGetInstanceContextProvider (ServiceHostBase service_host, object instance)
-		{
-			ctx = new InstanceContext (service_host, instance);
-		}
-		
-		public InstanceContext GetExistingInstanceContext (Message message, IContextChannel channel)
-		{
-			return ctx;
-		}
-
-		public void InitializeInstanceContext (InstanceContext instanceContext, Message message, IContextChannel channel)
-		{
-		}
-
-		public bool IsIdle (InstanceContext instanceContext)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void NotifyIdle (InstanceContextIdleCallback callback, InstanceContext instanceContext)
-		{
-			throw new NotImplementedException ();
-		}
-	}
-
 }
