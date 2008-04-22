@@ -1,5 +1,9 @@
 2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* ControlTypeTest.cs: Remove "Test" from helper method names.
+
+2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* ControlTypeTest.cs: Test LookupById.
 
 2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 

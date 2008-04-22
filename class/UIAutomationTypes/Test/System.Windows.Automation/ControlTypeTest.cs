@@ -63,19 +63,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myButton.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myButton.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myButton.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -107,19 +107,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myCalendar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myCalendar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern, ValuePatternIdentifiers.Pattern, SelectionPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myCalendar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -151,19 +151,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myCheckBox.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myCheckBox.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TogglePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myCheckBox.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -195,19 +195,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myComboBox.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myComboBox.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern, ExpandCollapsePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myComboBox.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -239,19 +239,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myEdit.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myEdit.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ValuePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myEdit.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -283,19 +283,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myHyperlink.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myHyperlink.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myHyperlink.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -327,18 +327,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myImage.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myImage.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myImage.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -370,19 +370,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myListItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myListItem.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionItemPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myListItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -414,19 +414,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myList.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myList.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern, TablePatternIdentifiers.Pattern, GridPatternIdentifiers.Pattern, MultipleViewPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myList.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -458,18 +458,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myMenu.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myMenu.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myMenu.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -501,18 +501,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myMenuBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myMenuBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myMenuBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -544,13 +544,13 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myMenuItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myMenuItem.GetRequiredProperties (),
 				"RequiredProperties: ");
@@ -558,7 +558,7 @@ namespace MonoTests.System.Windows.Automation {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {ExpandCollapsePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TogglePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myMenuItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -590,19 +590,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myProgressBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myProgressBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ValuePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myProgressBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -634,18 +634,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myRadioButton.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myRadioButton.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myRadioButton.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -677,18 +677,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myScrollBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myScrollBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myScrollBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -720,20 +720,20 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				mySlider.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				mySlider.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {RangeValuePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				mySlider.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -765,20 +765,20 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				mySpinner.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				mySpinner.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {RangeValuePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				mySpinner.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -810,18 +810,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myStatusBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myStatusBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myStatusBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -853,18 +853,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTab.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTab.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTab.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -896,18 +896,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTabItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTabItem.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTabItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -939,18 +939,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myText.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myText.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myText.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -982,18 +982,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myToolBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myToolBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myToolBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1025,18 +1025,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myToolTip.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myToolTip.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myToolTip.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1068,18 +1068,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTree.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTree.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTree.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1111,18 +1111,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTreeItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTreeItem.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTreeItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1154,18 +1154,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myCustom.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myCustom.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myCustom.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1197,18 +1197,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myGroup.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myGroup.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myGroup.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1240,18 +1240,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myThumb.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myThumb.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myThumb.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1283,13 +1283,13 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myDataGrid.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myDataGrid.GetRequiredProperties (),
 				"RequiredProperties: ");
@@ -1297,7 +1297,7 @@ namespace MonoTests.System.Windows.Automation {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TablePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myDataGrid.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1329,19 +1329,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myDataItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myDataItem.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {SelectionItemPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myDataItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1373,20 +1373,20 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{ValuePatternIdentifiers.Pattern};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myDocument.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myDocument.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {ScrollPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TextPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myDocument.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1418,20 +1418,20 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				mySplitButton.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				mySplitButton.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {InvokePatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {ExpandCollapsePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				mySplitButton.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1463,20 +1463,20 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myWindow.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myWindow.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TransformPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {WindowPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myWindow.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1508,19 +1508,19 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myPane.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myPane.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {
 				new AutomationIdentifier [] {TransformPatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myPane.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1552,18 +1552,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myHeader.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myHeader.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myHeader.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1595,18 +1595,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myHeaderItem.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myHeaderItem.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myHeaderItem.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1638,13 +1638,13 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTable.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTable.GetRequiredProperties (),
 				"RequiredProperties: ");
@@ -1652,7 +1652,7 @@ namespace MonoTests.System.Windows.Automation {
 				new AutomationIdentifier [] {GridPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {SelectionPatternIdentifiers.Pattern}, 
 				new AutomationIdentifier [] {TablePatternIdentifiers.Pattern}};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTable.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1684,18 +1684,18 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				myTitleBar.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				myTitleBar.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				myTitleBar.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
@@ -1727,25 +1727,25 @@ namespace MonoTests.System.Windows.Automation {
 				"LookupById");
 			AutomationIdentifier [] expectedNeverSupportedPatternIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedNeverSupportedPatternIds,
 				mySeparator.GetNeverSupportedPatterns (),
 				"NeverSupportedPatterns: ");
 			AutomationIdentifier [] expectedRequiredPropertyIds =
 				{};
-			TestAutomationIdentifierLists (
+			VerifyAutomationIdentifierLists (
 				expectedRequiredPropertyIds,
 				mySeparator.GetRequiredProperties (),
 				"RequiredProperties: ");
 			AutomationIdentifier [] [] expectedRequiredPatternSets = new AutomationIdentifier [] [] {};
-			TestAutomationIdentifierListLists (
+			VerifyAutomationIdentifierListLists (
 				expectedRequiredPatternSets,
 				mySeparator.GetRequiredPatternSets (),
 				"RequiredPatternSets: ");
 
 		}
 
-		private static void TestAutomationIdentifierListLists (AutomationIdentifier [] [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
+		private static void VerifyAutomationIdentifierListLists (AutomationIdentifier [] [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
 		{
 			string expectedIdentifiers = "{";
 			foreach (AutomationIdentifier [] idArray in expectedIdentifierIdsArray) {
@@ -1773,7 +1773,7 @@ namespace MonoTests.System.Windows.Automation {
 				for (int i = 0; i < expectedIdentifierIdArrays.Count; i++) {
 					AutomationIdentifier [] ids = expectedIdentifierIdArrays [i];
 					try {
-						TestAutomationIdentifierLists (ids, identifierArray, testLabel);
+						VerifyAutomationIdentifierLists (ids, identifierArray, testLabel);
 						matchingIndex = i;
 						break;
 					} catch (AssertionException) { }
@@ -1796,7 +1796,7 @@ namespace MonoTests.System.Windows.Automation {
 					GetCommaSeparatedList (expectedIdentifierIdArrays [0]));
 		}
 
-		private static void TestAutomationIdentifierLists (AutomationIdentifier [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
+		private static void VerifyAutomationIdentifierLists (AutomationIdentifier [] expectedIdentifierIdsArray, Array actualIdentifiers, string testLabel)
 		{
 			List<AutomationIdentifier> expectedIdentifierIds =
 				new List<AutomationIdentifier> (expectedIdentifierIdsArray);
