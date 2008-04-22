@@ -458,6 +458,8 @@ namespace System.Windows.Automation
 				return DataGrid;
 			else if (id == DataItemId)
 				return DataItem;
+			else if (id == DocumentId)
+				return Document;
 			else if (id == EditId)
 			         return Edit;
 			else if (id == GroupId)
