@@ -348,10 +348,10 @@ namespace System.ServiceModel.Dispatcher
 
 			public void Stop ()
 			{
-				StopLoop ();				
+				StopLoop ();
+				owner.Listener.Close ();
 				if (loop_thread.IsAlive)
 					loop_thread.Abort ();
-				owner.Listener.Close ();
 				loop_thread = null;
 			}
 

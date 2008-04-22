@@ -159,8 +159,9 @@ namespace System.ServiceModel.Channels
 			if (ServiceHostingEnvironment.InAspNet)
 				return;
 
+			foreach (TChannel ch in channels)
+				ch.Close(timeout);
 			httpChannelManager.Stop ();
-			// FIXME: somewhere to use timeout?
 		}
 
 		[MonoTODO]

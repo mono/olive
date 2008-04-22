@@ -161,21 +161,12 @@ w.Close ();
 
 		void HttpContextReceived (IAsyncResult result)
 		{
-			HttpListenerContext context = null;
-			try {
-				context = source.Http.EndGetContext (result);
+			if (State == CommunicationState.Closing || State == CommunicationState.Closed)
+				return;
 
-				waiting.Add (context);
-				AutoResetEvent wait = (AutoResetEvent) result.AsyncState;
-				wait.Set ();
-			}
-			catch (Exception e) {				
-				// silently ignore exception if in close or closing state. 
-				// So far this has exception only happens when the listener's worker thread is aborted. This is due to cancellation of asynchronous I/O.
-				if (State == CommunicationState.Closing || State == CommunicationState.Closed)
-					return;
-				throw;
-			}
+			waiting.Add (source.Http.EndGetContext (result));
+			AutoResetEvent wait = (AutoResetEvent) result.AsyncState;
+			wait.Set ();
 		}
 
 		public override IAsyncResult BeginWaitForRequest (TimeSpan timeout, AsyncCallback callback, object state)
