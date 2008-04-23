@@ -29,17 +29,31 @@ namespace System.Windows.Automation
 {
 	public class AutomationIdentifier : IComparable
 	{
-		protected int id;
-		protected string programmaticName;
+#region Private Fields
 		
-		protected AutomationIdentifier (int id, string programmaticName)
+		private int id;
+		private string programmaticName;
+		
+#endregion
+		
+#region Internal Constructor
+		
+		internal AutomationIdentifier (int id, string programmaticName)
 		{
 			this.id = id;
 			this.programmaticName = programmaticName;
 		}
 		
+#endregion
+		
+#region Public Properties
+		
 		public int Id { get { return id; } }
 		public string ProgrammaticName { get { return programmaticName; } }
+		
+#endregion
+		
+#region IComparable Members
 
 		public int CompareTo (object obj)
 		{
@@ -49,6 +63,10 @@ namespace System.Windows.Automation
 				return 1; // TODO: What?
 			return id.CompareTo (other.Id);
 		}
+		
+#endregion
+		
+#region Public Overrides
 
 		public override bool Equals (object obj)
 		{
@@ -63,5 +81,7 @@ namespace System.Windows.Automation
 		{
 			return id; // TODO: Verify
 		}
+		
+#endregion
 	}
 }

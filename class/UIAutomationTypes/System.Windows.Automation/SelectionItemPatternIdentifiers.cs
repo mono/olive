@@ -30,10 +30,13 @@ namespace System.Windows.Automation
 	public static class SelectionItemPatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10010;
 		
 		static SelectionItemPatternIdentifiers ()
 		{
-			Pattern = AutomationPattern.SelectionItemPattern;
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "SelectionItemPatternIdentifiers.Pattern");
 		}
 		
 #endregion

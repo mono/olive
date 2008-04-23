@@ -30,10 +30,13 @@ namespace System.Windows.Automation
 	public static class ValuePatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10002;
 		
 		static ValuePatternIdentifiers ()
 		{
-			Pattern = AutomationPattern.ValuePattern;
+			Pattern =
+				new AutomationPattern (PatternId, 
+				                       "ValuePatternIdentifiers.Pattern");
 		}
 		
 #endregion

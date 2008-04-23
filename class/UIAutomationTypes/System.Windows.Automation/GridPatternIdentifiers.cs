@@ -30,10 +30,13 @@ namespace System.Windows.Automation
 	public static class GridPatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10006;
 		
 		static GridPatternIdentifiers ()
 		{
-			Pattern = AutomationPattern.GridPattern;
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "GridPatternIdentifiers.Pattern");
 		}
 		
 #endregion

@@ -30,11 +30,17 @@ namespace System.Windows.Automation
 	public static class InvokePatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10000;		
+		internal const int InvokedEventId = 0;
 		
 		static InvokePatternIdentifiers ()
 		{
-			InvokedEvent = AutomationEvent.InvokedEvent;
-			Pattern = AutomationPattern.InvokePattern;
+			InvokedEvent =
+				new AutomationEvent (InvokedEventId, 
+				                     "InvokePatternIdentifiers.InvokedEvent");
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "InvokePatternIdentifiers.Pattern");
 		}
 		
 #endregion

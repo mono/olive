@@ -38,9 +38,9 @@ namespace System.Windows.Automation
 		
 #endregion
 		
-#region Protected Constructor
+#region Internal Constructor
 		
-		protected ControlType (int id, string programmaticName) :
+		internal ControlType (int id, string programmaticName) :
 			base (id, programmaticName)
 		{
 		}

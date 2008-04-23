@@ -30,10 +30,13 @@ namespace System.Windows.Automation
 	public static class ScrollPatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10004;
 		
 		static ScrollPatternIdentifiers ()
 		{
-			Pattern = AutomationPattern.ScrollPattern;
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "ScrollPatternIdentifiers.Pattern");
 		}
 		
 #endregion

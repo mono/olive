@@ -29,34 +29,39 @@ namespace System.Windows.Automation
 {
 	public class AutomationEvent : AutomationIdentifier
 	{
-#region Protected Constructor
+#region Internal Constructor
 		
-		protected AutomationEvent (int id, string programmaticName) :
+		internal AutomationEvent (int id, string programmaticName) :
 			base (id, programmaticName)
 		{
 		}
 		
 #endregion
 		
-#region Internal Constants
-		
-		internal const int InvokedEventId = 0;
-	
-		internal static readonly AutomationEvent InvokedEvent;
-		
-#endregion
-		
 #region Public Static Methods
-		
-		static AutomationEvent ()
-		{
-			InvokedEvent = new AutomationEvent (InvokedEventId, "InvokedEvent");
-		}
 		
 		public static AutomationEvent LookupById (int id)
 		{
-			if (id == InvokedEventId)
-				return InvokedEvent;
+			if (id == InvokePatternIdentifiers.InvokedEventId)
+				return InvokePatternIdentifiers.InvokedEvent;
+			else if (id == AutomationElementIdentifiers.AsyncContentLoadedEventId)
+				return AutomationElementIdentifiers.AsyncContentLoadedEvent;
+			else if (id == AutomationElementIdentifiers.AutomationFocusChangedEventId)
+				return AutomationElementIdentifiers.AutomationFocusChangedEvent;
+			else if (id == AutomationElementIdentifiers.AutomationPropertyChangedEventId)
+				return AutomationElementIdentifiers.AutomationPropertyChangedEvent;
+			else if (id == AutomationElementIdentifiers.LayoutInvalidatedEventId)
+				return AutomationElementIdentifiers.LayoutInvalidatedEvent;
+			else if (id == AutomationElementIdentifiers.MenuClosedEventId)
+				return AutomationElementIdentifiers.MenuClosedEvent;
+			else if (id == AutomationElementIdentifiers.MenuOpenedEventId)
+				return AutomationElementIdentifiers.MenuOpenedEvent;
+			else if (id == AutomationElementIdentifiers.StructureChangedEventId)
+				return AutomationElementIdentifiers.StructureChangedEvent;
+			else if (id == AutomationElementIdentifiers.ToolTipClosedEventId)
+				return AutomationElementIdentifiers.ToolTipClosedEvent;
+			else if (id == AutomationElementIdentifiers.ToolTipOpenedEventId)
+				return AutomationElementIdentifiers.ToolTipOpenedEvent;
 			else
 				return null;
 		}

@@ -30,10 +30,13 @@ namespace System.Windows.Automation
 	public static class TogglePatternIdentifiers
 	{
 #region Constructor
+		internal const int PatternId = 10015;
 		
 		static TogglePatternIdentifiers ()
 		{
-			Pattern = AutomationPattern.TogglePattern;
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "TogglePatternIdentifiers.Pattern");
 		}
 		
 #endregion

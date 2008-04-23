@@ -1,3 +1,36 @@
+2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs: Implemented
+	  AutomationElementIdentifier fields.  Constructor is internal, not
+	  protected.
+	* System.Windows.Automation/AutomationElementIdentifiers.cs:
+	  Implemented AutomationElementIdentifier fields.
+	* System.Windows.Automation/AutomationEvent.cs: Implemented
+	  AutomationElementIdentifier fields.  Constructor is internal, not
+	  protected.  Moved InvokedEvent* stuff where it belongs.
+	* System.Windows.Automation/ControlType.cs: Constructor is internal,
+	  not protected.
+	* System.Windows.Automation/AutomationIdentifier.cs: Constructor and
+	  fields are internal, not protected.
+	* System.Windows.Automation/AutomationPattern.cs: Constructor is
+	  internal, not protected.  Moved AutomationPattern instantiation to
+	  *PatternIdentifiers classes.
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs,
+	  System.Windows.Automation/GridPatternIdentifiers.cs,
+	  System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/MultipleViewPatternIdentifiers.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs,
+	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/SelectionPatternIdentifiers.cs,
+	  System.Windows.Automation/TablePatternIdentifiers.cs,
+	  System.Windows.Automation/TextPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/TransformPatternIdentifiers.cs,
+	  System.Windows.Automation/ValuePatternIdentifiers.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs: Moved
+	  AutomationPattern instantiation to *PatternIdentifiers classes.
+
 2008-04-22  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/ControlType.cs: Handle Document field in
