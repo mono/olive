@@ -101,7 +101,14 @@ namespace System.Windows.Automation.Provider
 		{
 			// TODO: Get bridge assembly details from env var or
 			//       some other run-time value?
-			Assembly bridgeAssembly = Assembly.Load (UiaAtkBridgeAssembly);
+			Assembly bridgeAssembly = null;
+			try {
+				bridgeAssembly = Assembly.Load (UiaAtkBridgeAssembly);
+			} catch {
+				// TODO: This is just here for testing
+				return null;
+			}
+			
 			Type bridgeType = null;
 			
 			// Quickie inefficent implementation

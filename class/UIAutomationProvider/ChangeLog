@@ -1,3 +1,10 @@
+2008-04-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: When
+	  unable to load the UiaAtkBridge assembly, return null for the
+	  bridge.  This is just temporary to accomodate test code.  Bridge
+	  should be determined through an environment variable or something.
+
 2008-04-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
