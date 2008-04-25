@@ -28,32 +28,42 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+
 using System;
 using System.Reflection;
 using System.Resources;
 using System.Security;
+using System.Security.Permissions;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about the System.IdentityModel.Selectors assembly
-
-[assembly: AssemblyVersion (Consts.FxVersion)]
-[assembly: SatelliteContractVersion (Consts.FxVersion)]
+// v3.0 Assembly
 
 [assembly: AssemblyTitle ("System.IdentityModel.Selectors.dll")]
 [assembly: AssemblyDescription ("System.IdentityModel.Selectors.dll")]
-[assembly: AssemblyConfiguration ("Development version")]
-[assembly: AssemblyCompany ("MONO development team")]
-[assembly: AssemblyProduct ("MONO CLI")]
-[assembly: AssemblyCopyright ("(c) 2005 Various Authors")]
-[assembly: AssemblyTrademark ("")]
-
-[assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.IdentityModel.Selectors.dll")]
-[assembly: AssemblyInformationalVersion ("0.0.0.1")]
+
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyInformationalVersion (Consts.FxFileVersion)]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
+
 [assembly: NeutralResourcesLanguage ("en-US")]
+[assembly: CLSCompliant (true)]
+[assembly: AssemblyDelaySign (true)]
+[assembly: AssemblyKeyFile ("../ecma.pub")]
 
 [assembly: ComVisible (false)]
 
-[assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../ecma.pub")]
+[assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
+[assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
+[assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification = true)]
+
+//[assembly: InternalsVisibleTo ("infocard, PublicKey=00000000000000000400000000000000")]
+//[assembly: InternalsVisibleTo ("infocardsvc, PublicKey=00000000000000000400000000000000")]
