@@ -32,28 +32,40 @@ using System;
 using System.Reflection;
 using System.Resources;
 using System.Security;
+using System.Security.Permissions;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about the System.IdentityModel assembly
-
-[assembly: AssemblyVersion (Consts.FxVersion)]
-[assembly: SatelliteContractVersion (Consts.FxVersion)]
+// v3.0 Assembly
 
 [assembly: AssemblyTitle ("System.IdentityModel.dll")]
 [assembly: AssemblyDescription ("System.IdentityModel.dll")]
-[assembly: AssemblyConfiguration ("Development version")]
-[assembly: AssemblyCompany ("MONO development team")]
-[assembly: AssemblyProduct ("MONO CLI")]
-[assembly: AssemblyCopyright ("(c) 2003 Various Authors")]
-[assembly: AssemblyTrademark ("")]
-
-[assembly: CLSCompliant (true)]
 [assembly: AssemblyDefaultAlias ("System.IdentityModel.dll")]
-[assembly: AssemblyInformationalVersion ("0.0.0.1")]
+
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyInformationalVersion (Consts.FxFileVersion)]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
+
 [assembly: NeutralResourcesLanguage ("en-US")]
+[assembly: CLSCompliant (true)]
+[assembly: AssemblyDelaySign (true)]
+[assembly: AssemblyKeyFile ("../ecma.pub")]
 
 [assembly: ComVisible (false)]
+[assembly: ComCompatibleVersion (1, 0, 3300, 0)]
+[assembly: AllowPartiallyTrustedCallers]
 
-[assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../ecma.pub")]
+[assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
+[assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
+[assembly: SecurityCritical (SecurityCriticalScope.Explicit)]
+[assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification = true)]
+
+[assembly: InternalsVisibleTo ("System.ServiceModel, PublicKey=00000000000000000400000000000000")]
+[assembly: InternalsVisibleTo ("System.ServiceModel.Friend, PublicKey=002400000480000094000000060200000024000052534131000400000100010007d1fa57c4aed9f0a32e84aa0faefd0de9e8fd6aec8f87fb03766c834c99921eb23be79ad9d5dcc1dd9ad236132102900b723cf980957fc4e177108fc607774f29e8320e92ea05ece4e821c0a5efe8f1645c4c0c93c1ab99285d622caa652c1dfad63d745d6f2de5f17e5eaf0fc4963d261c8a12436518206dc093344d5ad293")]
