@@ -1,4 +1,6 @@
 System.Windows/FrameworkElement.cs
+System.Windows/ResourceDictionaryLocation.cs
+System.Windows/ThemeInfoAttribute.cs
 System.Windows.Controls/ClickMode.cs
 System.Windows.Controls/Control.cs
 System.Windows.Controls/ContentControl.cs

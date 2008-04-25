@@ -1,3 +1,7 @@
+2008-04-25  Andreas Nahr <ClassDevelopment@A-SoftTech.com>
+
+	* PresentationFramework.dll.sources: Added two new implemented files
+
 2007-02-27  Wade Berrier  <wberrier@novell.com>
 
 	* Makefile: make filelist out of generator helper files for
