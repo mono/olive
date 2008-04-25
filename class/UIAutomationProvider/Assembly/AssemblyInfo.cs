@@ -23,25 +23,34 @@
 //      Calvin Gaisford <calvinrg@gmail.com>
 // 
 
+using System;
+using System.Resources;
 using System.Reflection;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Security;
+using System.Security.Permissions;
 
-[assembly: AssemblyTitle("UIAutomationProvider")]
-[assembly: AssemblyDescription("")]
-[assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Novell, Inc.")]
-[assembly: AssemblyProduct("UIAutomationProvider")]
-[assembly: AssemblyCopyright("Copyright © 2008 Novell, Inc")]
-[assembly: AssemblyTrademark("")]
-[assembly: AssemblyCulture("")]
+// General Information about the UIAutomationProvider assembly
+// v3.0 Assembly
 
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: AssemblyFileVersion (Consts.WinFileVersion)]
+
+[assembly: NeutralResourcesLanguage ("en")]
+[assembly: CLSCompliant (true)]
 [assembly: AssemblyDelaySign (true)]
 [assembly: AssemblyKeyFile ("../winfx3.pub")]
 
-[assembly: ComVisible(false)]
+[assembly: ComVisible (false)]
+[assembly: AllowPartiallyTrustedCallers]
 
-//[assembly: Guid("555db09c-afb8-4037-a366-24393d587ba9")]
-
-//[assembly: AssemblyVersion("1.0.0.0")]
-//[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
+[assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
+[assembly: PermissionSet (SecurityAction.RequestMinimum, Name = "FullTrust")]
+[assembly: SecurityPermission (SecurityAction.RequestMinimum, SkipVerification = true)]
