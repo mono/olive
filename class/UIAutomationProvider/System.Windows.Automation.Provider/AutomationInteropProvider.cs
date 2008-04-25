@@ -45,7 +45,10 @@ namespace System.Windows.Automation.Provider
 
 		public static bool ClientsAreListening {
 			get {
-				return bridge.ClientsAreListening;
+				if (bridge != null)
+					return bridge.ClientsAreListening;
+				else
+					return false;
 			}
 		}
 
@@ -56,20 +59,20 @@ namespace System.Windows.Automation.Provider
 
 		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
-			// TODO
-			bridge.RaiseAutomationEvent (eventId, provider, e);
+			if (bridge != null)
+				bridge.RaiseAutomationEvent (eventId, provider, e);
 		}
 
 		public static void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple element, AutomationPropertyChangedEventArgs e) 
 		{
-			// TODO
-			bridge.RaiseAutomationPropertyChangedEvent (element, e);
+			if (bridge != null)
+				bridge.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
 		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
-			// TODO
-			bridge.RaiseStructureChangedEvent (provider, e);
+			if (bridge != null)
+				bridge.RaiseStructureChangedEvent (provider, e);
 		}
 
 		public static IntPtr ReturnRawElementProvider (IntPtr hwnd, IntPtr wParam, IntPtr lParam, IRawElementProviderSimple el) 
