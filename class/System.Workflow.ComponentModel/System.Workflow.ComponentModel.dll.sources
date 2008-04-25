@@ -23,6 +23,8 @@ System.Workflow.ComponentModel.Compiler/ITypeProvider.cs
 System.Workflow.ComponentModel/ActivityBind.cs
 System.Workflow.ComponentModel/WorkflowParameterBinding.cs
 System.Workflow.ComponentModel.Serialization/MarkupExtension.cs
+System.Workflow.ComponentModel.Serialization/XmlnsDefinitionAttribute.cs
+System.Workflow.ComponentModel.Serialization/XmlnsPrefixAttribute.cs
 System.Workflow.ComponentModel.Design/IPropertyValueProvider.cs
 System.Workflow.ComponentModel/IDynamicPropertyTypeProvider.cs
 System.Workflow.ComponentModel.Compiler/AccessTypes.cs
