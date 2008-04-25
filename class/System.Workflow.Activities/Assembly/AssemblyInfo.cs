@@ -23,42 +23,42 @@
 //	Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
-
 using System;
 using System.Reflection;
 using System.Resources;
 using System.Security;
+using System.Security.Permissions;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Workflow.ComponentModel.Serialization;
 
+// General Information about the System.Workflow.Activities assembly
+// v3.0 Assembly
 
-[assembly: AssemblyVersion ("3.0.0.0")]
-[assembly: SatelliteContractVersion ("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
-[assembly: CompilationRelaxations (8)]
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyTrademark ("")]
 
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
 
-[assembly: AssemblyTitle("System.Workflow.Activities.dll")]
-[assembly: AssemblyDescription("System.Workflow.Activities.dll")]
-[assembly: AssemblyCompany("MONO development team")]
-[assembly: AssemblyProduct("MONO CLI")]
-[assembly: AssemblyCopyright("(c) 2006 Various Authors")]
+[assembly: CLSCompliant (true)]
 
-#if !TARGET_JVM
-[assembly: CLSCompliant(true)]
-#endif
-[assembly: AssemblyDefaultAlias("System.Windows.Activities.dll")]
-[assembly: AssemblyInformationalVersion("0.0.0.1")]
-[assembly: NeutralResourcesLanguage("en-US")]
+// FIXME: Next two entries not in original
+[assembly: AssemblyDelaySign (true)]
+[assembly: AssemblyKeyFile ("../winfx3.pub")]
 
-[assembly: ComCompatibleVersion (1, 0, 3300, 0)]
-[assembly: ComVisible(false)]
-[assembly: AllowPartiallyTrustedCallers]
+[assembly: ComVisible (false)]
 
-#if TARGET_JVM
-[assembly: AssemblyDelaySign(false)]
-#else
-[assembly: AssemblyDelaySign(true)]
-[assembly: AssemblyKeyFile("../winfx3.pub")]
-#endif
+[assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
+[assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
 
+[assembly: XmlnsPrefix ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "wf")]
+
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.Activities")]
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.Activities.Rules")]
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.Activities.Rules.Design")]
