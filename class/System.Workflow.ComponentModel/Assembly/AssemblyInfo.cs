@@ -24,39 +24,52 @@
 //	Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
+
 using System;
 using System.Reflection;
 using System.Resources;
 using System.Security;
+using System.Security.Permissions;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Workflow.ComponentModel.Serialization;
 
+// General Information about the System.Workflow.ComponentModel assembly
+// v3.0 Assembly
 
-[assembly: AssemblyVersion ("3.0.0.0")]
-[assembly: SatelliteContractVersion ("3.0.0.0")]
-[assembly: AssemblyFileVersion("3.0.0.0")]
-[assembly: CompilationRelaxations(8)]
-[assembly: AssemblyTitle("System.Workflow.ComponentModel.dll")]
-[assembly: AssemblyDescription("System.Workflow.ComponentModel.dll")]
-[assembly: AssemblyCompany("MONO development team")]
-[assembly: AssemblyProduct("MONO CLI")]
-[assembly: AssemblyCopyright("(c) 2006 Various Authors")]
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyTrademark ("")]
 
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: SatelliteContractVersion (Consts.FxVersion)]
+[assembly: AssemblyFileVersion (Consts.FxFileVersion)]
 
-#if !TARGET_JVM
-[assembly: CLSCompliant(true)]
-#endif
-[assembly: AssemblyDefaultAlias("System.Workflow.ComponentModel.dll")]
-[assembly: NeutralResourcesLanguage("en-US")]
+[assembly: CLSCompliant (true)]
 
-[assembly: ComCompatibleVersion (1, 0, 3300, 0)]
-[assembly: ComVisible(false)]
-[assembly: AllowPartiallyTrustedCallers]
+// FIXME: Next two entries not in original
+[assembly: AssemblyDelaySign (true)]
+[assembly: AssemblyKeyFile ("../winfx3.pub")]
 
-#if TARGET_JVM
-[assembly: AssemblyDelaySign(false)]
-#else
-[assembly: AssemblyDelaySign(true)]
-[assembly: AssemblyKeyFile("../winfx3.pub")]
-#endif
+[assembly: ComVisible (false)]
 
+[assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
+[assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
+[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
+
+[assembly: XmlnsPrefix ("http://schemas.microsoft.com/winfx/2006/xaml", "x")]
+[assembly: XmlnsPrefix ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "wf")]
+
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml", "System.Workflow.ComponentModel.Serialization")]
+
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.ComponentModel")]
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.ComponentModel.Compiler")]
+[assembly: XmlnsDefinition ("http://schemas.microsoft.com/winfx/2006/xaml/workflow", "System.Workflow.ComponentModel.Design")]
+
+[assembly: InternalsVisibleTo ("System.WorkflowServiceModel, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b5fc90e7027f67871e773a8fde8938c81dd402ba65b9201d60593e96c492651e889cc13f1415ebb53fac1131ae0bd333c5ee6021672d9718ea31a8aebd0da0072f25d87dba6fc90ffd598ed4da35e44c398c454307e8e33b8426143daec9f596836f97c8f74750e5975c64e2189f45def46b2a2b1247adc3652bf5c308055da9")]
+[assembly: InternalsVisibleTo ("System.WorkflowModel.Activities, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b5fc90e7027f67871e773a8fde8938c81dd402ba65b9201d60593e96c492651e889cc13f1415ebb53fac1131ae0bd333c5ee6021672d9718ea31a8aebd0da0072f25d87dba6fc90ffd598ed4da35e44c398c454307e8e33b8426143daec9f596836f97c8f74750e5975c64e2189f45def46b2a2b1247adc3652bf5c308055da9")]
+[assembly: InternalsVisibleTo ("System.WorkflowModel, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b5fc90e7027f67871e773a8fde8938c81dd402ba65b9201d60593e96c492651e889cc13f1415ebb53fac1131ae0bd333c5ee6021672d9718ea31a8aebd0da0072f25d87dba6fc90ffd598ed4da35e44c398c454307e8e33b8426143daec9f596836f97c8f74750e5975c64e2189f45def46b2a2b1247adc3652bf5c308055da9")]
+[assembly: InternalsVisibleTo ("System.WorkflowServices, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b5fc90e7027f67871e773a8fde8938c81dd402ba65b9201d60593e96c492651e889cc13f1415ebb53fac1131ae0bd333c5ee6021672d9718ea31a8aebd0da0072f25d87dba6fc90ffd598ed4da35e44c398c454307e8e33b8426143daec9f596836f97c8f74750e5975c64e2189f45def46b2a2b1247adc3652bf5c308055da9")]
+[assembly: InternalsVisibleTo ("System.Workflow.Runtime, PublicKey=0024000004800000940000000602000000240000525341310004000001000100b5fc90e7027f67871e773a8fde8938c81dd402ba65b9201d60593e96c492651e889cc13f1415ebb53fac1131ae0bd333c5ee6021672d9718ea31a8aebd0da0072f25d87dba6fc90ffd598ed4da35e44c398c454307e8e33b8426143daec9f596836f97c8f74750e5975c64e2189f45def46b2a2b1247adc3652bf5c308055da9")]
