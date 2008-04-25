@@ -1,3 +1,8 @@
+2008-04-25  Andreas Nahr <ClassDevelopment@A-SoftTech.com>
+
+	* XmlnsPrefixAttribute.cs: Added and implemented
+	* XmlnsDefinitionAttribute.cs: Added and implemented
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* MarkupExtension.cs: added
