@@ -1,3 +1,7 @@
+2008-04-25  Andreas Nahr <ClassDevelopment@A-SoftTech.com>
+
+	* AssemblyInfo.cs: Added missing attributes
+
 2006-09-02  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* Initial check-in
