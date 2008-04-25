@@ -57,7 +57,7 @@ using System.Windows.Markup;
 
 [assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
 [assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints |
-                       DebuggableAttribute.DebuggingModes.Default))]
+                       DebuggableAttribute.DebuggingModes.Default)]
 [assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
 [assembly: Dependency ("System,", LoadHint.Always)]
 [assembly: SecurityCritical]
