@@ -39,7 +39,6 @@ using NUnit.Framework;
 
 namespace MonoTests.System.ServiceModel.Security.Tokens
 {
-	[TestFixture]
 	public class X509ListedCertificateValidator : X509CertificateValidator
 	{
 		Collection<X509Certificate2> certs =
