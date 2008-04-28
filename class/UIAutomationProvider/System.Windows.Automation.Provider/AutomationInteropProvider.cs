@@ -45,10 +45,9 @@ namespace System.Windows.Automation.Provider
 
 		public static bool ClientsAreListening {
 			get {
-				if (bridge != null)
-					return bridge.ClientsAreListening;
-				else
+				if (bridge == null)
 					return false;
+				return bridge.ClientsAreListening;
 			}
 		}
 
@@ -59,20 +58,23 @@ namespace System.Windows.Automation.Provider
 
 		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
 		{
-			if (bridge != null)
-				bridge.RaiseAutomationEvent (eventId, provider, e);
+			if (bridge == null)
+				return;
+			bridge.RaiseAutomationEvent (eventId, provider, e);
 		}
 
 		public static void RaiseAutomationPropertyChangedEvent (IRawElementProviderSimple element, AutomationPropertyChangedEventArgs e) 
 		{
-			if (bridge != null)
-				bridge.RaiseAutomationPropertyChangedEvent (element, e);
+			if (bridge == null)
+				return;
+			bridge.RaiseAutomationPropertyChangedEvent (element, e);
 		}
 
 		public static void RaiseStructureChangedEvent (IRawElementProviderSimple provider, StructureChangedEventArgs e)
 		{
-			if (bridge != null)
-				bridge.RaiseStructureChangedEvent (provider, e);
+			if (bridge == null)
+				return;
+			bridge.RaiseStructureChangedEvent (provider, e);
 		}
 
 		public static IntPtr ReturnRawElementProvider (IntPtr hwnd, IntPtr wParam, IntPtr lParam, IRawElementProviderSimple el) 
@@ -88,11 +90,15 @@ namespace System.Windows.Automation.Provider
 	{
 		bool ClientsAreListening { get; }
 		
-		void RaiseAutomationEvent (AutomationEvent eventId, object provider, AutomationEventArgs e);
+		void RaiseAutomationEvent (AutomationEvent eventId,
+		                           object provider,
+		                           AutomationEventArgs e);
 		
-		void RaiseAutomationPropertyChangedEvent (object element, AutomationPropertyChangedEventArgs e);
+		void RaiseAutomationPropertyChangedEvent (object element,
+		                                          AutomationPropertyChangedEventArgs e);
 		
-		void RaiseStructureChangedEvent (object provider, StructureChangedEventArgs e);
+		void RaiseStructureChangedEvent (object provider,
+		                                 StructureChangedEventArgs e);
 	}
 	
 	internal static class BridgeManager

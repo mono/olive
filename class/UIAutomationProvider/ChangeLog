@@ -1,3 +1,8 @@
+2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Style fixes.
+
 2008-04-24  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
