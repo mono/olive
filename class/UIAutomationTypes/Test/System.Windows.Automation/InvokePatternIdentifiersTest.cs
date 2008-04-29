@@ -31,6 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Automation {
 	[TestFixture]
 	public class InvokePatternIdentifiersTest {
+
 		[Test]
 		public void PatternTest ()
 		{
@@ -40,5 +41,16 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual ("InvokePatternIdentifiers.Pattern", pattern.ProgrammaticName, "ProgrammaticName");
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
+
+		[Test]
+		public void InvokedEventTest ()
+		{
+			AutomationEvent automationEvent = InvokePatternIdentifiers.InvokedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20009, automationEvent.Id, "Id");
+			Assert.AreEqual ("InvokePatternIdentifiers.InvokedEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
 	}
 }

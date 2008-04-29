@@ -43,5 +43,15 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void ToggleStatePropertyTest ()
+		{
+			AutomationProperty property = TogglePatternIdentifiers.ToggleStateProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30086, property.Id, "Id");
+			Assert.AreEqual ("TogglePatternIdentifiers.ToggleStateProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
 	}
 }
