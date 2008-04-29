@@ -297,7 +297,7 @@ namespace System.Runtime.Serialization
 			case "int":
 				return XmlConvert.ToInt32 (s);
 			case "long":
-				return XmlConvert.ToInt32 (s);
+				return XmlConvert.ToInt64 (s);
 			case "unsignedByte":
 				return XmlConvert.ToByte (s);
 			case "unsignedShort":

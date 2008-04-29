@@ -1,3 +1,7 @@
+2008-04-29  Eyal Alaluf <eyala@mainsoft.com>
+
+	* KnownTypeCollection.cs: Fixed a typo in long conversion.
+
 2008-04-17  Eyal Alaluf <eyala@mainsoft.com>
 
 	* SerializationMap.cs: Implement partially collections deserialization.
