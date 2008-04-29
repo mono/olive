@@ -1,3 +1,9 @@
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	  Implement HostProviderFromHandle by passing it on to the
+	  IAutomationBridge.
+
 2008-04-28  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:

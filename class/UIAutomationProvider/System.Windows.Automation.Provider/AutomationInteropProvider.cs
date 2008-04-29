@@ -51,9 +51,11 @@ namespace System.Windows.Automation.Provider
 			}
 		}
 
-		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd) 
+		public static IRawElementProviderSimple HostProviderFromHandle (IntPtr hwnd)
 		{
-			throw new NotImplementedException();
+			if (bridge == null)
+				return null;
+			return (IRawElementProviderSimple) bridge.HostProviderFromHandle (hwnd);
 		}
 
 		public static void RaiseAutomationEvent (AutomationEvent eventId, IRawElementProviderSimple provider, AutomationEventArgs e)
@@ -89,6 +91,8 @@ namespace System.Windows.Automation.Provider
 	public interface IAutomationBridge
 	{
 		bool ClientsAreListening { get; }
+		
+		object HostProviderFromHandle (IntPtr hwnd);
 		
 		void RaiseAutomationEvent (AutomationEvent eventId,
 		                           object provider,
