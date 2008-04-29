@@ -132,6 +132,8 @@ namespace System.Windows.Automation
 				return AutomationElementIdentifiers.ProcessIdProperty;
 			else if (id == AutomationElementIdentifiers.RuntimeIdPropertyId)
 				return AutomationElementIdentifiers.RuntimeIdProperty;
+			else if (id == TogglePatternIdentifiers.ToggleStatePropertyId)
+				return TogglePatternIdentifiers.ToggleStateProperty;
 			else
 				return null;
 		}

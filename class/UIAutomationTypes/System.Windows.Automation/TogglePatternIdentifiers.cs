@@ -31,21 +31,24 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10015;
+		internal const int ToggleStatePropertyId = 0;
 		
 		static TogglePatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TogglePatternIdentifiers.Pattern");
+			ToggleStateProperty =
+				new AutomationProperty (ToggleStatePropertyId,
+				                        "TogglePatternIdentifiers.ToggleStateProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty ToggleStateProperty;
 		
 #endregion
 	}
