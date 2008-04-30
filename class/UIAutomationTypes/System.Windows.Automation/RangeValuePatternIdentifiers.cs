@@ -46,6 +46,12 @@ namespace System.Windows.Automation
 		// TODO: Add missing fields
 		
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty IsReadOnlyProperty;
+		public static readonly AutomationProperty LargeChangeProperty;
+		public static readonly AutomationProperty MaximumProperty;
+		public static readonly AutomationProperty MinimumProperty;
+		public static readonly AutomationProperty SmallChangeProperty;
+		public static readonly AutomationProperty ValueProperty;
 		
 #endregion
 	}

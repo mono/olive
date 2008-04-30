@@ -1,3 +1,8 @@
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/RangeValuePatternIdentifiers.cs: Add
+	  missing fields (unimplemented).
+
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/InvokePatternIdentifiers.cs,
