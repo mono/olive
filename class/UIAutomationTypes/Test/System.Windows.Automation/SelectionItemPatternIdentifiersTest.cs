@@ -43,5 +43,55 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void IsSelectedPropertyTest ()
+		{
+			AutomationProperty property = SelectionItemPatternIdentifiers.IsSelectedProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30079, property.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.IsSelectedProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void SelectionContainerPropertyTest ()
+		{
+			AutomationProperty property = SelectionItemPatternIdentifiers.SelectionContainerProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30080, property.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.SelectionContainerProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void ElementAddedToSelectionEventTest ()
+		{
+			AutomationEvent automationEvent = SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20010, automationEvent.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
+		[Test]
+		public void ElementRemovedFromSelectionEventTest ()
+		{
+			AutomationEvent automationEvent = SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20011, automationEvent.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
+		[Test]
+		public void ElementSelectedEventTest ()
+		{
+			AutomationEvent automationEvent = SelectionItemPatternIdentifiers.ElementSelectedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20012, automationEvent.Id, "Id");
+			Assert.AreEqual ("SelectionItemPatternIdentifiers.ElementSelectedEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
 	}
 }

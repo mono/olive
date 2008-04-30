@@ -1,5 +1,9 @@
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* SelectionItemPatternIdentifiersTest.cs: Finished fields.
+	
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* InvokePatternIdentifiersTest.cs: InvokedEvent.
 	* TogglePatternIdentifiersTest.cs: ToggleStateProperty.
 
