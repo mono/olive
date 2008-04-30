@@ -31,21 +31,44 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10010;
+		internal const int ElementAddedToSelectionEventId = 0;
+		internal const int ElementRemovedFromSelectionEventId = 0;
+		internal const int ElementSelectedEventId = 0;
+		internal const int IsSelectedPropertyId = 0;
+		internal const int SelectionContainerPropertyId = 0;
 		
 		static SelectionItemPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "SelectionItemPatternIdentifiers.Pattern");
+			ElementAddedToSelectionEvent =
+				new AutomationEvent (ElementAddedToSelectionEventId,
+				                     "SelectionItemPatternIdentifiers.Pattern");
+			ElementRemovedFromSelectionEvent =
+				new AutomationEvent (ElementRemovedFromSelectionEventId,
+				                     "SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent");
+			ElementSelectedEvent =
+				new AutomationEvent (ElementSelectedEventId,
+				                     "SelectionItemPatternIdentifiers.ElementSelectedEvent");
+			IsSelectedProperty =
+				new AutomationProperty (IsSelectedPropertyId,
+				                     "SelectionItemPatternIdentifiers.IsSelectedProperty");
+			SelectionContainerProperty =
+				new AutomationProperty (SelectionContainerPropertyId,
+				                     "SelectionItemPatternIdentifiers.SelectionContainerProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationEvent ElementAddedToSelectionEvent;
+		public static readonly AutomationEvent ElementRemovedFromSelectionEvent;
+		public static readonly AutomationEvent ElementSelectedEvent;
+		public static readonly AutomationProperty IsSelectedProperty;
+		public static readonly AutomationProperty SelectionContainerProperty;
 		
 #endregion
 	}

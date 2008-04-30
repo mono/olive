@@ -1,5 +1,10 @@
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/SelectionItemPatternIdentifiers.cs:
+	  Skeleton implementation of remaining SelectionItem fields.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/TogglePatternIdentifiers.cs,
 	  System.Windows.Automation/AutomationProperty.cs: Add support for
 	  ToggleStateProperty.
