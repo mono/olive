@@ -134,6 +134,10 @@ namespace System.Windows.Automation
 				return AutomationElementIdentifiers.RuntimeIdProperty;
 			else if (id == TogglePatternIdentifiers.ToggleStatePropertyId)
 				return TogglePatternIdentifiers.ToggleStateProperty;
+			else if (id == SelectionItemPatternIdentifiers.IsSelectedPropertyId)
+				return SelectionItemPatternIdentifiers.IsSelectedProperty;
+			else if (id == SelectionItemPatternIdentifiers.SelectionContainerPropertyId)
+				return SelectionItemPatternIdentifiers.SelectionContainerProperty;
 			else
 				return null;
 		}

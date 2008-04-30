@@ -31,7 +31,7 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10015;
-		internal const int ToggleStatePropertyId = 0;
+		internal const int ToggleStatePropertyId = 30086;
 		
 		static TogglePatternIdentifiers ()
 		{

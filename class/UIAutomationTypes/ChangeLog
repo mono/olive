@@ -1,5 +1,15 @@
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/InvokePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/SelectionItemPatternIdentifiers.cs,
+	  System.Windows.Automation/TogglePatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Finish implementing
+	  fields for InvokePatternIdentifiers, TogglePatternIdentifiers, and
+	  SelectionItemPatternIdentifiers.
+
+2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/SelectionItemPatternIdentifiers.cs:
 	  Skeleton implementation of remaining SelectionItem fields.
 

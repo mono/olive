@@ -62,6 +62,12 @@ namespace System.Windows.Automation
 				return AutomationElementIdentifiers.ToolTipClosedEvent;
 			else if (id == AutomationElementIdentifiers.ToolTipOpenedEventId)
 				return AutomationElementIdentifiers.ToolTipOpenedEvent;
+			else if (id == SelectionItemPatternIdentifiers.ElementAddedToSelectionEventId)
+				return SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
+			else if (id == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEventId)
+				return SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
+			else if (id == SelectionItemPatternIdentifiers.ElementSelectedEventId)
+				return SelectionItemPatternIdentifiers.ElementSelectedEvent;
 			else
 				return null;
 		}
