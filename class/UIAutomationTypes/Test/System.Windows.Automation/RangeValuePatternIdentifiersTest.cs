@@ -43,5 +43,65 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void IsReadOnlyPropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.IsReadOnlyProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30048, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.IsReadOnlyProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void LargeChangePropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.LargeChangeProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30051, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.LargeChangeProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void MaximumPropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.MaximumProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30050, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.MaximumProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void MinimumPropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.MinimumProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30049, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.MinimumProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void SmallChangePropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.SmallChangeProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30052, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.SmallChangeProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void ValuePropertyTest ()
+		{
+			AutomationProperty property = RangeValuePatternIdentifiers.ValueProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30047, property.Id, "Id");
+			Assert.AreEqual ("RangeValuePatternIdentifiers.ValueProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
 	}
 }
