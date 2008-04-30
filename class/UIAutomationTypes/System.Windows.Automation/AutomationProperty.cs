@@ -138,6 +138,18 @@ namespace System.Windows.Automation
 				return SelectionItemPatternIdentifiers.IsSelectedProperty;
 			else if (id == SelectionItemPatternIdentifiers.SelectionContainerPropertyId)
 				return SelectionItemPatternIdentifiers.SelectionContainerProperty;
+			else if (id == RangeValuePatternIdentifiers.IsReadOnlyPropertyId)
+				return RangeValuePatternIdentifiers.IsReadOnlyProperty;
+			else if (id == RangeValuePatternIdentifiers.LargeChangePropertyId)
+				return RangeValuePatternIdentifiers.LargeChangeProperty;
+			else if (id == RangeValuePatternIdentifiers.MaximumPropertyId)
+				return RangeValuePatternIdentifiers.MaximumProperty;
+			else if (id == RangeValuePatternIdentifiers.MinimumPropertyId)
+				return RangeValuePatternIdentifiers.MinimumProperty;
+			else if (id == RangeValuePatternIdentifiers.SmallChangePropertyId)
+				return RangeValuePatternIdentifiers.SmallChangeProperty;
+			else if (id == RangeValuePatternIdentifiers.ValuePropertyId)
+				return RangeValuePatternIdentifiers.ValueProperty;
 			else
 				return null;
 		}

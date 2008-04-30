@@ -1,5 +1,12 @@
 2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/RangeValuePatternIdentifiers.cs: Fully
+	  implement AutomationProperty fields for
+	  RangeValuePatternIdentifiers.
+
+2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/RangeValuePatternIdentifiers.cs: Add
 	  missing fields (unimplemented).
 

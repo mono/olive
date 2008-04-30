@@ -31,19 +31,41 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10003;
+		internal const int IsReadOnlyPropertyId = 30048;
+		internal const int LargeChangePropertyId = 30051;
+		internal const int MaximumPropertyId = 30050;
+		internal const int MinimumPropertyId = 30049;
+		internal const int SmallChangePropertyId = 30052;
+		internal const int ValuePropertyId = 30047;
 		
 		static RangeValuePatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "RangeValuePatternIdentifiers.Pattern");
+			IsReadOnlyProperty =
+				new AutomationProperty (IsReadOnlyPropertyId,
+				                        "RangeValuePatternIdentifiers.IsReadOnlyProperty");
+			LargeChangeProperty =
+				new AutomationProperty (LargeChangePropertyId,
+				                        "RangeValuePatternIdentifiers.LargeChangeProperty");
+			MaximumProperty =
+				new AutomationProperty (MaximumPropertyId,
+				                        "RangeValuePatternIdentifiers.MaximumProperty");
+			MinimumProperty =
+				new AutomationProperty (MinimumPropertyId,
+				                        "RangeValuePatternIdentifiers.MinimumProperty");
+			SmallChangeProperty =
+				new AutomationProperty (SmallChangePropertyId,
+				                        "RangeValuePatternIdentifiers.SmallChangeProperty");
+			ValueProperty =
+				new AutomationProperty (ValuePropertyId,
+				                        "RangeValuePatternIdentifiers.ValueProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
-		
-		// TODO: Add missing fields
 		
 		public static readonly AutomationPattern Pattern;
 		public static readonly AutomationProperty IsReadOnlyProperty;
