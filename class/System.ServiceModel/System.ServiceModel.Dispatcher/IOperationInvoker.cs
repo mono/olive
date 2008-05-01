@@ -32,8 +32,8 @@ namespace System.ServiceModel.Dispatcher
 	public interface IOperationInvoker
 	{
 		bool IsSynchronous { get; }
-		object [] AllocateInputs ();
-		object Invoke (object instance, object [] inputs, out object [] outputs);
+		object [] AllocateParameters ();
+		object Invoke (object instance, object [] inputs);
 		IAsyncResult InvokeBegin (object instance, object [] inputs, 
 			AsyncCallback callback, object state);
 		object InvokeEnd (object instance, out object [] outputs, IAsyncResult result);

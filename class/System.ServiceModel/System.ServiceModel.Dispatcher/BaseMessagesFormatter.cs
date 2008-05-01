@@ -124,7 +124,7 @@ namespace System.ServiceModel.Dispatcher
 				MessageObjectToParts (md, result, parts);
 			else {
 				parts [0] = result;
-				int index = 1;
+				int index = ParamsOffset (md.Body);
 				foreach (ParameterInfo pi in replyMethodParams)
 					if (pi.IsOut || pi.ParameterType.IsByRef)
 						parts [index++] = parameters [pi.Position];
@@ -168,7 +168,7 @@ namespace System.ServiceModel.Dispatcher
 				return msgObject;
 			}
 			else {
-				int index = 1;
+				int index = ParamsOffset (md.Body);
 				foreach (ParameterInfo pi in requestMethodParams)
 					if (pi.IsOut || pi.ParameterType.IsByRef)
 						parameters [pi.Position] = parts [index++];
@@ -199,7 +199,12 @@ namespace System.ServiceModel.Dispatcher
 			return desc.ReturnValue != null && desc.ReturnValue.Type != typeof (void);
 		}
 
-		object [] CreatePartsArray (MessageBodyDescription desc)
+		protected static int ParamsOffset (MessageBodyDescription desc)
+		{
+			return HasReturnValue (desc) ? 1 : 0;
+		}
+
+		protected static object [] CreatePartsArray (MessageBodyDescription desc)
 		{
 			if (HasReturnValue (desc))
 				return new object [desc.Parts.Count + 1];
@@ -328,9 +333,9 @@ namespace System.ServiceModel.Dispatcher
 		{
 			if (message.IsEmpty)
 				return null;
-				
-			int offset = HasReturnValue (md.Body) ? 1 : 0;
-			object [] parts = new object [md.Body.Parts.Count + offset];
+
+			int offset = ParamsOffset (md.Body);
+			object [] parts = CreatePartsArray (md.Body);
 
 			XmlDictionaryReader r = message.GetReaderAtBodyContents ();
 			if (md.Body.WrapperName != null)

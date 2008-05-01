@@ -1,3 +1,8 @@
+2008-05-01  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ClientProxyGenerator.cs: Add explicit casts for allowing boxing.
+	* ServiceHostBase.cs: Simplified in/out parameter handling.
+
 2008-04-22  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceHostBase.cs: initialize DispatchOperation's Invoker and Formater.

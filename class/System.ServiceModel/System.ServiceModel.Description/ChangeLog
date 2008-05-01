@@ -1,3 +1,8 @@
+2008-05-01  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ContractDescriptionGenerator.cs: Support specifying custom names of
+	  operations, actions, parameters and return value via attributes.
+
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceDebugBehavior.cs: implement ApplyDispatchBehavior.

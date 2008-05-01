@@ -1,3 +1,9 @@
+2008-05-01  Eyal Alaluf <eyala@mainsoft.com>
+
+	* BaseMessagesFormatter.cs: Handle methods with out parameters that return
+	  void.
+	* DispatchOperation.cs, IOperationInvoker.cs: Simplify method invocation.
+
 2008-04-22  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* DispatchOperation.cs: removed dependency on OperationDescription, 

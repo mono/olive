@@ -1,3 +1,8 @@
+2008-05-01  Eyal Alaluf <eyala@mainsoft.com>
+
+	* ContractDescriptionTest.cs: Add test with method operation, parameters
+	  and return value names specified by attributes.
+
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* ServiceDebugBehaviorTest.cs: new testfixture.

@@ -142,7 +142,7 @@ namespace System.ServiceModel.Description
 					end = contractType.GetMethod ("End" + mi.Name.Substring (5));
 					if (end == null)
 						throw new InvalidOperationException ("For async operation contract patterns, corresponding End method is required for each Begin method.");
-					if (end.GetCustomAttributes (typeof (OperationContractAttribute), true).Length > 0)
+					if (GetOperationContractAttribute (end) != null)
 						throw new InvalidOperationException ("Async 'End' method must not have OperationContractAttribute. It is automatically treated as the EndMethod of the corresponding 'Begin' method.");
 				}
 				OperationDescription od = GetOrCreateOperation (cd, mi, oca, end != null ? end.ReturnType : null);
@@ -177,9 +177,9 @@ namespace System.ServiceModel.Description
 				od.IsOneWay = oca.IsOneWay;
 				if (oca.HasProtectionLevel)
 					od.ProtectionLevel = oca.ProtectionLevel;
-				od.Messages.Add (GetMessage (cd, mi, oca, true, null));
+				od.Messages.Add (GetMessage (od, mi, oca, true, null));
 				if (!od.IsOneWay)
-					od.Messages.Add (GetMessage (cd, mi, oca, false, asyncReturnType));
+					od.Messages.Add (GetMessage (od, mi, oca, false, asyncReturnType));
 				cd.Operations.Add (od);
 			}
 			else if (oca.AsyncPattern && od.BeginMethod != null ||
@@ -203,10 +203,11 @@ namespace System.ServiceModel.Description
 		}
 
 		static MessageDescription GetMessage (
-			ContractDescription cd, MethodInfo mi,
+			OperationDescription od, MethodInfo mi,
 			OperationContractAttribute oca, bool isRequest,
 			Type asyncReturnType)
 		{
+			ContractDescription cd = od.DeclaringContract;
 			ParameterInfo [] plist = mi.GetParameters ();
 			Type messageType = null;
 			string action = isRequest ? oca.Action : oca.ReplyAction;
@@ -232,13 +233,12 @@ namespace System.ServiceModel.Description
 
 			if (action == null)
 				action = String.Concat (cd.Namespace, 
-					cd.Namespace.EndsWith ("/") ? "" : "/", cd.Name,
-					"/", mi.Name,
-					isRequest ? String.Empty : "Response");
+					cd.Namespace.EndsWith ("/") ? "" : "/", cd.Name, "/",
+					od.Name, isRequest ? String.Empty : "Response");
 
 			if (mca != null)
 				return CreateMessageDescription (messageType, cd.Namespace, action, isRequest, mca);
-			return CreateMessageDescription (oca, plist, mi.Name, cd.Namespace, action, isRequest, retType);
+			return CreateMessageDescription (oca, plist, od.Name, cd.Namespace, action, isRequest, retType, mi.ReturnTypeCustomAttributes);
 		}
 
 		public static MessageDescription CreateMessageDescription (
@@ -288,7 +288,7 @@ namespace System.ServiceModel.Description
 		}
 
 		public static MessageDescription CreateMessageDescription (
-			OperationContractAttribute oca, ParameterInfo[] plist, string name, string defaultNamespace, string action, bool isRequest, Type retType)
+			OperationContractAttribute oca, ParameterInfo[] plist, string name, string defaultNamespace, string action, bool isRequest, Type retType, ICustomAttributeProvider retTypeAttributes)
 		{
 			MessageDescription md = new MessageDescription (
 				action, isRequest ? MessageDirection.Input :
@@ -311,7 +311,7 @@ namespace System.ServiceModel.Description
 				if (!isRequest && !pi.IsOut && !pi.ParameterType.IsByRef)
 					continue;
 
-				MessagePartDescription pd = CreatePartCore (null, pi.Name, defaultNamespace);
+				MessagePartDescription pd = CreatePartCore (GetMessageParameterAttribute (pi), pi.Name, defaultNamespace);
 				pd.Index = index++;
 				pd.Type = MessageFilterOutByRef (pi.ParameterType);
 				mb.Parts.Add (pd);
@@ -323,7 +323,7 @@ namespace System.ServiceModel.Description
 
 			// ReturnValue
 			if (!isRequest) {
-				MessagePartDescription mp = new MessagePartDescription (name + "Result", mb.WrapperNamespace);
+				MessagePartDescription mp = CreatePartCore (GetMessageParameterAttribute (retTypeAttributes), name + "Result", mb.WrapperNamespace);
 				mp.Index = 0;
 				mp.Type = retType;
 				mb.ReturnValue = mp;
@@ -337,6 +337,18 @@ namespace System.ServiceModel.Description
 		public static void FillMessageBodyDescriptionByContract (
 			Type messageType, MessageBodyDescription mb)
 		{
+		}
+
+		static MessagePartDescription CreatePartCore (
+			MessageParameterAttribute mpa, string defaultName,
+			string defaultNamespace)
+		{
+			string pname = null;
+			if (mpa != null && mpa.Name != null)
+				pname = mpa.Name;
+			if (pname == null)
+				pname = defaultName;
+			return new MessagePartDescription (pname, defaultNamespace);
 		}
 
 		static MessagePartDescription CreatePartCore (
@@ -362,6 +374,13 @@ namespace System.ServiceModel.Description
 		{
 			return type == null ? null :
 				type.IsByRef ? type.GetElementType () : type;
+		}
+
+		static MessageParameterAttribute GetMessageParameterAttribute (ICustomAttributeProvider provider)
+		{
+			object [] attrs = provider.GetCustomAttributes (
+				typeof (MessageParameterAttribute), true);
+			return attrs.Length > 0 ? (MessageParameterAttribute) attrs [0] : null;
 		}
 
 		static MessageBodyMemberAttribute GetMessageBodyMemberAttribute (MemberInfo mi)

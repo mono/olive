@@ -48,9 +48,8 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")] // InvalidCastException in generated stub code
 		public void TestLong () {
-			Assert.IsTrue (Client.AddLong (1, 1) == 2);
+			Assert.AreEqual (2, Client.AddLong (1, 1));
 		}
 
 		[Test]
@@ -64,7 +63,6 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")] // Serialization
 		public void TestByRef () {
 			double d;
 			double res = Client.AddByRef (out d, 1, 1);

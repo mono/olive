@@ -223,15 +223,14 @@ Console.WriteLine (ex);
 					Activator.CreateInstance (Parent.ChannelDispatcher.Host.Description.ServiceType);
 			}
 
-			object [] inputs;
+			object [] parameters;
 			if (DeserializeRequest) {
-				inputs = Invoker.AllocateInputs ();
-				Formatter.DeserializeRequest (req, inputs);
+				parameters = Invoker.AllocateParameters ();
+				Formatter.DeserializeRequest (req, parameters);
 			}
 			else
-				inputs = new object [] {req};
+				parameters = new object [] {req};
 
-			object [] outputs;
 			object result;
 
 			object [] ctx_initialization_results =
@@ -243,7 +242,7 @@ Console.WriteLine (ex);
 					CallContextInitializers [i].BeforeInvoke (OperationContext.Current.InstanceContext, null, req);
 
 			if (Invoker.IsSynchronous)
-				result = Invoker.Invoke (instance, inputs, out outputs);
+				result = Invoker.Invoke (instance, parameters);
 			else
 				throw new NotImplementedException ();
 
@@ -252,7 +251,7 @@ Console.WriteLine (ex);
 
 			if (SerializeReply)
 				return Formatter.SerializeReply (
-					MessageVersion, outputs, result);
+					MessageVersion, parameters, result);
 			else
 				return (Message) result;
 		}
@@ -273,17 +272,17 @@ Console.WriteLine (ex);
 			object instance = parent.InstanceProvider != null ?
 				parent.InstanceProvider.GetInstance (OperationContext.Current.InstanceContext, req) : null;
 
-			object [] inputs;
+			object [] parameters;
 			if (DeserializeRequest) {
 				// FIXME: invoker and formatter could be null.
-				inputs = Invoker.AllocateInputs ();
-				Formatter.DeserializeRequest (req, inputs);
+				parameters = Invoker.AllocateParameters ();
+				Formatter.DeserializeRequest (req, parameters);
 			}
 			else
-				inputs = new object [] {req};
-			object [] outputs;
-			if (Invoker.IsSynchronous)
-				Invoker.Invoke (instance, inputs, out outputs);
+				parameters = new object [] {req};
+
+            if (Invoker.IsSynchronous)
+				Invoker.Invoke (instance, parameters);
 			else
 				throw new NotImplementedException ();
 		}

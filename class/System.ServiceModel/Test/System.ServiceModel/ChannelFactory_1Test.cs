@@ -228,6 +228,54 @@ namespace MonoTests.System.ServiceModel
 			return (T)tm.FromMessage (input);
 		}
 
+		public T CreateVoidFooOutParamChannel<T> (bool isXml)
+		{
+			return CreateChannel<T> (
+				delegate (Message input) {
+					// Test input for in and ref args.
+					XmlDocument doc = new XmlDocument ();
+					doc.LoadXml (input.ToString ());
+
+					XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
+					nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+					nss.AddNamespace ("t", "http://tempuri.org/");
+					XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:VoidFooOutParam", nss) as XmlElement;
+					Assert.IsNotNull (el, "I#0");
+					XmlNode arg1 = el.SelectSingleNode ("t:arg1", nss);
+					Assert.IsNotNull (arg1, "I#2");
+					Assert.AreEqual ("testIt", arg1.InnerText, "I#3");
+					XmlNode arg2 = el.SelectSingleNode ("t:arg2", nss);
+					Assert.IsNotNull (arg2, "I#4");
+					Assert.AreEqual ("testRef", arg2.InnerText, "I#4");
+
+					return ToMessage (input, isXml,
+						new VoidFooOutParamResponse ("refArg", "outArg"));
+				}
+			);
+		}
+
+		[Test]
+		public void InvokeVoidFooOutParam ()
+		{
+			ITestService ts = CreateVoidFooOutParamChannel<ITestService> (false);
+			string argRef = "testRef";
+			string argOut;
+			ts.VoidFooOutParam ("testIt", ref argRef, out argOut);
+			Assert.AreEqual ("refArg", argRef, "#1");
+			Assert.AreEqual ("outArg", argOut, "#2");
+		}
+
+		[Test]
+		public void XmlInvokeVoidFooOutParam ()
+		{
+			ITestServiceXml ts = CreateVoidFooOutParamChannel<ITestServiceXml> (true);
+			string argRef = "testRef";
+			string argOut;
+			ts.VoidFooOutParam ("testIt", ref argRef, out argOut);
+			Assert.AreEqual ("refArg", argRef, "#1");
+			Assert.AreEqual ("outArg", argOut, "#2");
+		}
+
 		public T CreateFooOutParamChannel<T> (bool isXml)
 		{
 			return CreateChannel<T> (
@@ -263,7 +311,7 @@ namespace MonoTests.System.ServiceModel
 			string res = ts.FooOutParam ("testIt", ref argRef, out argOut);
 			Assert.AreEqual ("callResult", res, "#1");
 			Assert.AreEqual ("refArg", argRef, "#2");
-			Assert.AreEqual ("outArg", argOut, "#2");
+			Assert.AreEqual ("outArg", argOut, "#3");
 		}
 
 		[Test]
@@ -275,7 +323,7 @@ namespace MonoTests.System.ServiceModel
 			string res = ts.FooOutParam ("testIt", ref argRef, out argOut);
 			Assert.AreEqual ("callResult", res, "#1");
 			Assert.AreEqual ("refArg", argRef, "#2");
-			Assert.AreEqual ("outArg", argOut, "#2");
+			Assert.AreEqual ("outArg", argOut, "#3");
 		}
 
 		[Test]
@@ -349,7 +397,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("CurrentTest")]
 		public void InvokeFooComplexMC ()
 		{
 			ITestService ts = CreateFooComplexMC_Channel<ITestService> (false);
@@ -360,7 +407,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("CurrentTest")]
 		public void XmlInvokeFooComplexMC ()
 		{
 			ITestServiceXml ts = CreateFooComplexMC_Channel<ITestServiceXml> (true);
@@ -386,6 +432,9 @@ namespace MonoTests.System.ServiceModel
 			string FooOutParam (string arg1, ref string arg2, out string arg3);
 
 			[OperationContract]
+			void VoidFooOutParam (string arg1, ref string arg2, out string arg3);
+
+			[OperationContract]
 			TestData FooComplex (TestData arg1);
 
 			[OperationContract]
@@ -399,6 +448,9 @@ namespace MonoTests.System.ServiceModel
 			string FooOutParam (string arg1, ref string arg2, out string arg3);
 
 			[OperationContract]
+			void VoidFooOutParam (string arg1, ref string arg2, out string arg3);
+
+			[OperationContract]
 			[XmlSerializerFormat]
 			TestData FooComplex (TestData arg1);
 
@@ -410,7 +462,7 @@ namespace MonoTests.System.ServiceModel
 		[DataContract]
 		public class TestData
 		{
-			public TestData () {}
+			TestData () {}
 			public TestData (string val) { this.val = val; }
 
 			[DataMember]
@@ -452,6 +504,19 @@ namespace MonoTests.System.ServiceModel
 
 			[MessageBodyMember]
 			public string FooOutParamResult;
+
+			[MessageBodyMember]
+			public string arg2;
+
+			[MessageBodyMember]
+			public string arg3;
+		}
+
+		[MessageContract (WrapperNamespace = "http://tempuri.org/")]
+		class VoidFooOutParamResponse
+		{
+			VoidFooOutParamResponse () {}
+			public VoidFooOutParamResponse (string refArg, string outArg) { this.arg2 = refArg; this.arg3 = outArg; }
 
 			[MessageBodyMember]
 			public string arg2;

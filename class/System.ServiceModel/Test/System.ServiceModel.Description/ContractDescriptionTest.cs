@@ -55,6 +55,49 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
+		public void GetContractParamRenamed ()
+		{
+			ContractDescription cd = ContractDescription.GetContract (typeof (IFooMsgParams));
+
+			Assert.AreEqual (1, cd.Operations.Count, "Operation count");
+
+			// Operation #1
+			OperationDescription od = cd.Operations [0];
+
+			ServiceAssert.AssertOperationDescription (
+				"MyFoo", null, null, 
+				typeof (IFooMsgParams).GetMethod ("Foo"),
+				true, false, false,
+				od, "MyFoo");
+
+			// Operation #1 -> Message #1
+			MessageDescription md = od.Messages [0];
+
+			ServiceAssert.AssertMessageAndBodyDescription (
+				"http://tempuri.org/IFooMsgParams/MyFoo",
+				MessageDirection.Input,
+				null, "MyFoo", "http://tempuri.org/", false,
+				md, "MyFoo");
+
+			ServiceAssert.AssertMessagePartDescription (
+				"MyParam", "http://tempuri.org/", 0, false,
+				ProtectionLevel.None, typeof (string), md.Body.Parts [0], "MyFoo.msg");
+
+			md = od.Messages [1];
+
+			ServiceAssert.AssertMessageAndBodyDescription (
+				"http://tempuri.org/IFooMsgParams/MyFooResponse",
+				MessageDirection.Output,
+				null, "MyFooResponse",
+				"http://tempuri.org/", true,
+				md, "MyFoo");
+
+			ServiceAssert.AssertMessagePartDescription (
+				"MyResult", "http://tempuri.org/", 0, false,
+				ProtectionLevel.None, typeof (string), md.Body.ReturnValue, "MyResult ReturnValue");
+		}
+
+		[Test]
 		public void GetContractConfigName ()
 		{
 			ContractDescription cd = ContractDescription.GetContract (typeof (ICtorUseCase2));
@@ -511,6 +554,14 @@ namespace MonoTests.System.ServiceModel
 
 			[OperationContract]
 			string Echo (string s1, string s2);
+		}
+
+		[ServiceContract]
+		public interface IFooMsgParams
+		{
+			[OperationContract (Name = "MyFoo")]
+			[return: MessageParameter (Name = "MyResult")]
+			string Foo ([MessageParameter (Name = "MyParam")] string param);
 		}
 
 		[ServiceContract]

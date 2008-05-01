@@ -596,19 +596,13 @@ namespace System.ServiceModel
 				get { return true; }
 			}
 
-			public object [] AllocateInputs () {
+			public object [] AllocateParameters () {
 				return new object [_methodInfo.GetParameters ().Length];
 			}
 
-			public object Invoke (object instance, object [] inputs, out object [] outputs) {
-				object [] fullargs = new object [_methodInfo.GetParameters ().Length];
-				Array.Copy (inputs, fullargs, inputs.Length);
-				object result = _methodInfo.Invoke (instance, fullargs);
-				outputs = new object [fullargs.Length - inputs.Length];
-				Array.Copy (
-					outputs, 0, fullargs, inputs.Length,
-					outputs.Length);
-				return result;
+			public object Invoke (object instance, object [] parameters)
+            {
+				return _methodInfo.Invoke (instance, parameters);
 			}
 
 			public IAsyncResult InvokeBegin (object instance, object [] inputs, AsyncCallback callback, object state) {
