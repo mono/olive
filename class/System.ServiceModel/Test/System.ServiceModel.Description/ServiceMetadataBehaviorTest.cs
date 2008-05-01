@@ -57,7 +57,7 @@ namespace MonoTests.System.ServiceModel.Description
 		[Test]
 		public void InitializeRuntime1 () {
 			using (ServiceHost host = new ServiceHost (typeof (MyService), new Uri ("http://localhost:8080"))) {
-				host.AddServiceEndpoint (typeof (IMyContract), new BasicHttpBinding (), "");
+				host.AddServiceEndpoint (typeof (IMyContract), new BasicHttpBinding (), "e1");
 				host.Description.Behaviors.Add (new ServiceMetadataBehavior () { HttpGetEnabled = true });
 
 				Assert.AreEqual (0, host.ChannelDispatchers.Count, "ChannelDispatchers.Count #1");
