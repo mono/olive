@@ -75,7 +75,7 @@ namespace Mono.CodeGeneration
 		
 		public override Type GetResultType ()
 		{
-			return type;
+			return type.IsByRef ? type.GetElementType () : type;
 		}
 	}
 }
