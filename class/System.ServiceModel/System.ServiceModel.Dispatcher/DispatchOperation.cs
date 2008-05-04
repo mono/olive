@@ -225,11 +225,12 @@ namespace System.ServiceModel.Dispatcher
 			else { // asynchronous
 				Invoker.InvokeBegin (instance, parameters,
 					delegate (IAsyncResult res) {
+						object result;
 						try {
-							object result = Invoker.InvokeEnd (instance, out parameters, res);
+							result = Invoker.InvokeEnd (instance, out parameters, res);
 						}
-						catch (Exception e) {
-							Message m = BuildExceptionMessage (rc.RequestMessage, ex);
+						catch (Exception ex) {
+							Message m = BuildExceptionMessage (req, ex);
 							rc.Reply (m);
 							return;
 						}
