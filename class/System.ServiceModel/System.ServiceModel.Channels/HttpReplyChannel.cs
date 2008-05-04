@@ -152,7 +152,14 @@ w.Close ();
 		public override bool WaitForRequest (TimeSpan timeout)
 		{
 			AutoResetEvent wait = new AutoResetEvent (false);
-			source.Http.BeginGetContext (HttpContextReceived, wait);
+			try {
+				source.Http.BeginGetContext (HttpContextReceived, wait);
+			}
+			catch (HttpListenerException e) {
+				if (e.ErrorCode == 0x80004005) // invalid handle. Happens during shutdown.
+					while (true) Thread.Sleep(1000); // thread is about to be terminated.
+				throw;
+			}
 			// FIXME: we might want to take other approaches.
 			if (timeout.Ticks > int.MaxValue)
 				timeout = TimeSpan.FromDays (20);
