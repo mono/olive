@@ -412,19 +412,17 @@ namespace System.ServiceModel.Dispatcher
 					using (OperationContextScope scope = new OperationContextScope (octx)) {
 						OperationContext.Current.EndpointDispatcher = candidate;
 						OperationContext.Current.RequestContext = rc;
-						Message res;
 						try {
-							res = candidate.ProcessRequest (rc.RequestMessage);
-							res.Headers.CopyHeadersFrom (octx.OutgoingMessageHeaders);
-							res.Properties.CopyProperties (octx.OutgoingMessageProperties);
+							candidate.ProcessRequest (rc, octx, owner.timeouts.SendTimeout);
 						}
 						catch (Exception ex) {
 							owner.HandleError (ex);
 							FaultConverter fc = FaultConverter.GetDefaultFaultConverter (owner.MessageVersion);
+							Message res;
 							if (!fc.TryCreateFaultMessage (ex, out res))
 								throw;
+							rc.Reply (res, owner.timeouts.SendTimeout);
 						}
-						rc.Reply (res, owner.timeouts.SendTimeout);
 					}
 				}
 				catch (Exception ex) {

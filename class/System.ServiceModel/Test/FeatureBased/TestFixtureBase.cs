@@ -8,6 +8,9 @@ using NUnit.Framework;
 using System.Reflection;
 using System.Threading;
 using System.Configuration;
+using System.IO;
+using System.Net;
+using MonoTests.stand_alone.WebHarness;
 
 namespace MonoTests.Features
 {
@@ -23,6 +26,7 @@ namespace MonoTests.Features
 		public static bool onlyServers;
 		public static bool onlyClients;
 		public static string endpointBase;
+		public static bool IsLocal { get { return !onlyServers && !onlyClients; } }
 	}
 
 
@@ -43,6 +47,46 @@ namespace MonoTests.Features
 			Run (runServer, runClient);			
 		}
 
+		public void TestWsdlImpl () {
+			string goldWsdl;
+			try {
+				Assembly _assembly = Assembly.GetExecutingAssembly ();
+				StreamReader _stream = new StreamReader (_assembly.GetManifestResourceStream ("MonoTests.System.ServiceModel.Test.FeatureBased.Features.Contracts." + typeof (TServer).Name + ".xml"));
+				goldWsdl = _stream.ReadToEnd ();
+			}
+			catch {
+				Console.WriteLine ("Couldn't test WSDL of server " + typeof (TServer).Name + " because gold wsdl is not embedded in test !");
+				return;
+			}
+			string currentWsdl = "";
+
+			HttpWebRequest myReq = (HttpWebRequest) WebRequest.Create (getMexEndpoint () + "?wsdl");
+			// Obtain a 'Stream' object associated with the response object.
+			WebResponse response = myReq.GetResponse ();
+			Stream ReceiveStream = response.GetResponseStream ();
+
+			Encoding encode = global::System.Text.Encoding.GetEncoding ("utf-8");
+
+			// Pipe the stream to a higher level stream reader with the required encoding format. 
+			StreamReader readStream = new StreamReader (ReceiveStream, encode);
+			Console.WriteLine ("\nResponse stream received");
+			int maxLen = 10 * 1024;
+			Char [] read = new Char [maxLen];
+
+			// Read 256 charcters at a time.    
+			int count = readStream.Read (read, 0, maxLen);
+			while (count > 0) {
+				currentWsdl = currentWsdl + new String (read, 0, count);
+				count = readStream.Read (read, 0, 256);
+			}
+			readStream.Close ();
+			response.Close ();
+
+			XmlComparer comparer = new XmlComparer (XmlComparer.Flags.IgnoreAttribOrder, true);
+			Assert.IsTrue (comparer.AreEqual (goldWsdl, currentWsdl), "Service WSDL does not match gold WSDL");
+
+		}
+
 		protected void Run (bool runServer, bool runClient) {
 
 			if (runServer) {
@@ -58,6 +102,11 @@ namespace MonoTests.Features
         {
 			return Configuration.endpointBase + typeof(TServer).Name;
         }
+
+		public string getMexEndpoint () 
+		{
+			return getEndpoint () + "_wsdl"; // should be getEndpoint() but currently implementation is buggy
+		}
 
 		TClient _client;
 		protected virtual TClient InitializeClient () {
@@ -80,7 +129,7 @@ namespace MonoTests.Features
             host.AddServiceEndpoint(typeof(IServer), new BasicHttpBinding(), getEndpoint());
 			ServiceMetadataBehavior smb = new ServiceMetadataBehavior ();
 			smb.HttpGetEnabled = true;
-			smb.HttpGetUrl = new Uri (getEndpoint ());
+			smb.HttpGetUrl = new Uri (getMexEndpoint ());
 			host.Description.Behaviors.Add (smb);
             return host;
 		}

@@ -89,35 +89,43 @@
     <None Include="Test\Resources\test2.pfx" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Test\FeatureBased\Features.Contracts\OperationContractServer.xml" />
     <Content Include="Test\System.ServiceModel.Description\dump.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Test\FeatureBased\Features.Client\AsyncCallTesterProxy.cs" />
+    <Compile Include="Test\FeatureBased\Features.Client\AsyncPatternServer.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\DataContractTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\ExitProcessHelperServer.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\FaultsTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\KnownTypeTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\MessageContractTesterProxy.cs" />
+    <Compile Include="Test\FeatureBased\Features.Client\OperationContractServer.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\PrimitiveTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\UntypedMessageTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\AsyncCallTester.cs" />
+    <Compile Include="Test\FeatureBased\Features.Contracts\AsyncPatternContract.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\DataContractTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\ExitpProcessHelper.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\FaultsTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\KnownTypeTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\MessageContractTester.cs" />
+    <Compile Include="Test\FeatureBased\Features.Contracts\OperationContract.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\PrimitiveTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\UntypedMessageTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\AsyncCallTest.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Test\FeatureBased\Features.Serialization\AsyncPatternTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\DataContractSerializerTest.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\ExitProcessHelper.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\FaultsTest.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\KnownTypeTest.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\MessageContractTest.cs" />
+    <Compile Include="Test\FeatureBased\Features.Serialization\OperationContractTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\PrimitiveTesterTest.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\UntypedMessageTest.cs" />
+    <Compile Include="Test\FeatureBased\Features.Serialization\XmlComparer.cs" />
     <Compile Include="Test\FeatureBased\TestFixtureBase.cs" />
     <Compile Include="Test\System.ServiceModel.Channels\AddressHeaderTest.cs" />
     <Compile Include="Test\System.ServiceModel.Channels\AddressingVersionTest.cs" />

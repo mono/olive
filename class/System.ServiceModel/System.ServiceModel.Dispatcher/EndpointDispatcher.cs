@@ -114,10 +114,9 @@ namespace System.ServiceModel.Dispatcher
 
 		#region communication processing
 
-		internal Message ProcessRequest (Message message)
+		internal void ProcessRequest (RequestContext rc, OperationContext octx, TimeSpan sendTimeout)
 		{
-			Message res = null;
-
+			Message message = rc.RequestMessage;
 			DispatchOperation op = GetOperation (message);
 			if (op == null) {
 				// process WS-Trust based negotiation
@@ -126,20 +125,20 @@ namespace System.ServiceModel.Dispatcher
 				if (support != null && message.Headers.FindHeader ("Security", Constants.WssNamespace) < 0) {
 					CommunicationSecurityTokenAuthenticator nego =
 						support.TokenAuthenticator as CommunicationSecurityTokenAuthenticator;
-					if (nego != null)
-						res = nego.Communication.ProcessNegotiation (message);
+					if (nego != null) {
+						Message res = nego.Communication.ProcessNegotiation (message);
+						if (res != null) {
+							res.Headers.CopyHeadersFrom (octx.OutgoingMessageHeaders);
+							res.Properties.CopyProperties (octx.OutgoingMessageProperties);
+							rc.Reply (res, sendTimeout);
+							return;
+						}
+					}
 				}
-				if (res == null)
-					op = DispatchRuntime.UnhandledDispatchOperation;
+				op = DispatchRuntime.UnhandledDispatchOperation;
 			}
 
-			if (res == null)
-				res = op.ProcessRequest (message);
-
-			if (res == null)
-				throw new InvalidOperationException (String.Format ("The operation '{0}' returned a null message.", op.Action));
-
-			return res;
+			op.ProcessRequest (rc, octx, sendTimeout);
 		}
 
 		internal void ProcessInput (Message message)

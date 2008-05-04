@@ -177,26 +177,30 @@ namespace System.ServiceModel.Dispatcher
 			get { return Parent.ChannelDispatcher.MessageVersion; }
 		}
 
-		internal Message ProcessRequest (Message req)
+		internal void ProcessRequest (RequestContext rc, OperationContext octx, TimeSpan sendTimeout)
 		{
 			try {
-				return DoProcessRequest (req);
+				DoProcessRequest (rc, octx, sendTimeout);
 			} catch (Exception ex) {
-Console.WriteLine (ex);
-				// FIXME: set correct name
-				FaultCode fc = new FaultCode (
-					"FIXME_InternalError",
-					req.Version.Addressing.Namespace);
-				object reason =
-					parent.ChannelDispatcher.IncludeExceptionDetailInFaults ?
-					new ExceptionDetail (ex) :
-					(object) String.Empty;
-				// FIXME: set correct namespace URI
-				// FIXME: use ExceptionDetails to make Exception serializable.
-				return Message.CreateMessage (req.Version, fc,
-					"An internal error occured.", reason, req.Headers.Action);
-
+				Message m = BuildExceptionMessage (rc.RequestMessage, ex);
+				rc.Reply (m);
 			}
+		}
+
+		private Message BuildExceptionMessage (Message req, Exception ex) {
+			Console.WriteLine (ex);
+			// FIXME: set correct name
+			FaultCode fc = new FaultCode (
+				"FIXME_InternalError",
+				req.Version.Addressing.Namespace);
+			object reason =
+				parent.ChannelDispatcher.IncludeExceptionDetailInFaults ?
+				new ExceptionDetail (ex) :
+				(object) String.Empty;
+			// FIXME: set correct namespace URI
+			// FIXME: use ExceptionDetails to make Exception serializable.
+			return Message.CreateMessage (req.Version, fc,
+				"An internal error occured.", reason, req.Headers.Action);
 		}
 
 		void EnsureValid () {
@@ -206,24 +210,67 @@ Console.WriteLine (ex);
 				throw new InvalidOperationException ("The DispatchOperation '" + Name + "' requires Formatter, since DeserializeRequest and SerializeReply are not both false.");
 		}
 
-		Message DoProcessRequest (Message req)
+		void DoProcessRequest (RequestContext rc, OperationContext octx, TimeSpan sendTimeout)
 		{
+			Message req = rc.RequestMessage;
+			object instance;
+			object [] parameters;
+			object [] ctx_initialization_results;
+			BuildInvokeParams (req, out instance, out parameters, out ctx_initialization_results);
+
+			if (Invoker.IsSynchronous) {
+				object result = Invoker.Invoke (instance, parameters);
+				HandleInvokeResult (rc, octx, sendTimeout, parameters, result, ctx_initialization_results);
+			}
+			else { // asynchronous
+				Invoker.InvokeBegin (instance, parameters,
+					delegate (IAsyncResult res) {
+						try {
+							object result = Invoker.InvokeEnd (instance, out parameters, res);
+						}
+						catch (Exception e) {
+							Message m = BuildExceptionMessage (rc.RequestMessage, ex);
+							rc.Reply (m);
+							return;
+						}
+						HandleInvokeResult (rc, octx, sendTimeout, parameters, result, ctx_initialization_results);
+					},
+					null);
+			}
+		}
+
+		private void HandleInvokeResult (RequestContext rc, OperationContext octx, TimeSpan sendTimeout, object [] outputs, object result, object [] ctx_initialization_results) {
+			for (int i = 0; i < ctx_initialization_results.Length; i++)
+				CallContextInitializers [i].AfterInvoke (ctx_initialization_results [i]);
+
+			Message res = null;
+			if (SerializeReply)
+				res = Formatter.SerializeReply (
+					MessageVersion, outputs, result);
+			else
+				res = (Message) result;
+			res.Headers.CopyHeadersFrom (octx.OutgoingMessageHeaders);
+			res.Properties.CopyProperties (octx.OutgoingMessageProperties);
+			rc.Reply (res, sendTimeout);
+		}
+
+		private void BuildInvokeParams (Message req, out object instance, out object [] parameters, out object [] ctx_initialization_results) {
 			EnsureValid ();
-			object instance = null;
+			instance = null;
 			if (parent.InstanceContextProvider != null) {
 				InstanceContext ictx = parent.InstanceContextProvider.GetExistingInstanceContext (req, null);
 				if (ictx == null)
 					//FIXME: What should be done here?
 					throw new InvalidOperationException ("The instance context provider failed to get or create an instance context");
 				instance = ictx.GetServiceInstance ();
-			} else {
+			}
+			else {
 				instance = parent.InstanceProvider != null ?
 					parent.InstanceProvider.GetInstance (OperationContext.Current.InstanceContext, req) :
 					// FIXME: this is hack to make simple things work.
 					Activator.CreateInstance (Parent.ChannelDispatcher.Host.Description.ServiceType);
 			}
 
-			object [] parameters;
 			if (DeserializeRequest) {
 				parameters = Invoker.AllocateParameters ();
 				Formatter.DeserializeRequest (req, parameters);
@@ -231,29 +278,12 @@ Console.WriteLine (ex);
 			else
 				parameters = new object [] {req};
 
-			object result;
-
-			object [] ctx_initialization_results =
-				new object [CallContextInitializers.Count];
+			ctx_initialization_results =   new object [CallContextInitializers.Count];
 
 			for (int i = 0; i < ctx_initialization_results.Length; i++)
 				// FIXME: get IClientChannel from somewhere.
 				ctx_initialization_results [i] =
 					CallContextInitializers [i].BeforeInvoke (OperationContext.Current.InstanceContext, null, req);
-
-			if (Invoker.IsSynchronous)
-				result = Invoker.Invoke (instance, parameters);
-			else
-				throw new NotImplementedException ();
-
-			for (int i = 0; i < ctx_initialization_results.Length; i++)
-				CallContextInitializers [i].AfterInvoke (ctx_initialization_results [i]);
-
-			if (SerializeReply)
-				return Formatter.SerializeReply (
-					MessageVersion, parameters, result);
-			else
-				return (Message) result;
 		}
 
 		Message CreateActionNotSupported (Message req)

@@ -303,6 +303,10 @@ namespace System.ServiceModel.Description
 			// Parts
 			int index = 0;
 			foreach (ParameterInfo pi in plist) {
+				// AsyncCallback and state are extraneous.
+				if (oca.AsyncPattern && pi.Position == plist.Length - 2)
+					break;
+
 				// They are ignored:
 				// - out parameter in request
 				// - neither out nor ref parameter in reply
@@ -314,11 +318,7 @@ namespace System.ServiceModel.Description
 				MessagePartDescription pd = CreatePartCore (GetMessageParameterAttribute (pi), pi.Name, defaultNamespace);
 				pd.Index = index++;
 				pd.Type = MessageFilterOutByRef (pi.ParameterType);
-				mb.Parts.Add (pd);
-
-				// AsyncCallback and state are extraneous.
-				if (oca.AsyncPattern && pi.Position == plist.Length - 3)
-					break;
+				mb.Parts.Add (pd);			
 			}
 
 			// ReturnValue
