@@ -29,13 +29,15 @@ namespace System.Windows.Automation
 {
 	public sealed class AutomationPropertyChangedEventArgs : AutomationEventArgs
 	{
-		public object NewValue { get { return null; } }
-		public object OldValue { get { return null; } }
-		public AutomationProperty Property { get { return null; } }
+		public object NewValue { get; private set; }
+		public object OldValue { get; private set; }
+		public AutomationProperty Property { get; private set; }
 
 		public AutomationPropertyChangedEventArgs (AutomationProperty property, object oldValue, object newValue) : base (AutomationEvent.LookupById(0))
 		{
-			throw new NotImplementedException ();
+			Property = property;
+			OldValue = oldValue;
+			NewValue = newValue;
 		}
 	}
 }

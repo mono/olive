@@ -1,3 +1,8 @@
+2008-05-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationPropertyChangedEventArgs.cs:
+	  Implement constructor, using automatic properties.
+
 2008-04-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/AutomationProperty.cs,
