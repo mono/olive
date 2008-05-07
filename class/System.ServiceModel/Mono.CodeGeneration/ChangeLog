@@ -1,3 +1,7 @@
+2008-07-05  Eyal Alaluf <eyala@mainsoft.com>
+
+	* CodeGenerationHelper.cs: Correctly handle enum underlying types.
+
 2008-05-04  Eyal Alaluf <eyala@mainsoft.com>
 
 	* CodeArgumentReference.cs: Fix GetResultType () when argument type is

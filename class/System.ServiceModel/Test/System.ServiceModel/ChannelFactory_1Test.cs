@@ -228,6 +228,35 @@ namespace MonoTests.System.ServiceModel
 			return (T)tm.FromMessage (input);
 		}
 
+		[Test]
+		public void InvokeFooOutEnumParam ()
+		{
+			ITestService ts = CreateChannel<ITestService> (
+				delegate (Message input) {
+					// Test input for in and out Enum args.
+					XmlDocument doc = new XmlDocument ();
+					doc.LoadXml (input.ToString ());
+
+					XmlNamespaceManager nss = new XmlNamespaceManager (doc.NameTable);
+					nss.AddNamespace ("s", "http://www.w3.org/2003/05/soap-envelope");
+					nss.AddNamespace ("t", "http://tempuri.org/");
+					XmlElement el = doc.SelectSingleNode ("/s:Envelope/s:Body/t:FooOutEnumParam", nss) as XmlElement;
+					Assert.IsNotNull (el, "I#0");
+					XmlNode arg1 = el.SelectSingleNode ("t:arg1", nss);
+					Assert.IsNotNull (arg1, "I#2");
+					Assert.AreEqual ("Blue", arg1.InnerText, "I#3");
+
+					return ToMessage (input, false,
+						new FooOutEnumParamResponse (FooColor.Green, FooColor.Red));
+				}
+			);
+
+			FooColor argOut;
+			FooColor res = ts.FooOutEnumParam (FooColor.Blue, out argOut);
+			Assert.AreEqual (FooColor.Green, res, "#1");
+			Assert.AreEqual (FooColor.Red, argOut, "#2");
+		}
+
 		public T CreateVoidFooOutParamChannel<T> (bool isXml)
 		{
 			return CreateChannel<T> (
@@ -429,6 +458,9 @@ namespace MonoTests.System.ServiceModel
 			void Foo1 (string arg1, string arg2);
 
 			[OperationContract]
+			FooColor FooOutEnumParam (FooColor arg1, out FooColor arg2);
+
+			[OperationContract]
 			string FooOutParam (string arg1, ref string arg2, out string arg3);
 
 			[OperationContract]
@@ -458,6 +490,8 @@ namespace MonoTests.System.ServiceModel
 			[XmlSerializerFormat]
 			TestResult FooComplexMC (TestMessage arg1);
 		}
+
+		public enum FooColor { Red = 1, Green, Blue }
 
 		[DataContract]
 		public class TestData
@@ -510,6 +544,19 @@ namespace MonoTests.System.ServiceModel
 
 			[MessageBodyMember]
 			public string arg3;
+		}
+
+		[MessageContract (WrapperNamespace = "http://tempuri.org/")]
+		class FooOutEnumParamResponse
+		{
+			FooOutEnumParamResponse () {}
+			public FooOutEnumParamResponse (FooColor ret, FooColor outArg) { FooOutEnumParamResult = ret; this.arg2 = outArg; }
+
+			[MessageBodyMember]
+			public FooColor FooOutEnumParamResult;
+
+			[MessageBodyMember]
+			public FooColor arg2;
 		}
 
 		[MessageContract (WrapperNamespace = "http://tempuri.org/")]

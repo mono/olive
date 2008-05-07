@@ -136,7 +136,7 @@ namespace Mono.CodeGeneration
 				if (t == typeof(Enum))
 					ig.Emit (OpCodes.Ldind_Ref);
 				else
-					LoadFromPtr (ig, t.UnderlyingSystemType);
+					LoadFromPtr (ig, System.Enum.GetUnderlyingType (t));
 			} else if (t.IsValueType)
 				ig.Emit (OpCodes.Ldobj, t);
 			else
@@ -175,7 +175,7 @@ namespace Mono.CodeGeneration
 				if (t == typeof(Enum))
 					ig.Emit (OpCodes.Stind_Ref);
 				else
-					SaveToPtr (ig, t.UnderlyingSystemType);
+					SaveToPtr (ig, System.Enum.GetUnderlyingType (t));
 			} else if (t.IsValueType)
 				ig.Emit (OpCodes.Stobj, t);
 			else
