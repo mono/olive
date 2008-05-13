@@ -1,3 +1,8 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationProviderTests.csproj: Add VS 2008 project.
+	* UIAutomationProviderTests.sln: Add VS 2008 solution.
+	
 2008-04-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* ProviderOptionsTest.cs: Fixed namespace.
