@@ -28,6 +28,8 @@ using System.Windows.Automation;
 
 using System.Reflection;
 
+using Mono.UIAutomation.Bridge;
+
 namespace System.Windows.Automation.Provider
 {
 	public static class AutomationInteropProvider
@@ -83,26 +85,6 @@ namespace System.Windows.Automation.Provider
 		{
 			throw new NotImplementedException();
 		}
-	}
-	
-	// TODO: Move to commonly-referenced assembly
-	// NOTE: No types used outside of UIAutomationTypes, so that all assemblies
-	//       can reference the assembly that will contain this interface definition.
-	public interface IAutomationBridge
-	{
-		bool ClientsAreListening { get; }
-		
-		object HostProviderFromHandle (IntPtr hwnd);
-		
-		void RaiseAutomationEvent (AutomationEvent eventId,
-		                           object provider,
-		                           AutomationEventArgs e);
-		
-		void RaiseAutomationPropertyChangedEvent (object element,
-		                                          AutomationPropertyChangedEventArgs e);
-		
-		void RaiseStructureChangedEvent (object provider,
-		                                 StructureChangedEventArgs e);
 	}
 	
 	internal static class BridgeManager

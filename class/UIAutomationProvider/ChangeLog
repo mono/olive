@@ -1,3 +1,11 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomation.mds: Add UIAutomationBridge solution.
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs: Move
+	  IAutomationBridge out to UIAutomationBridge assembly.
+	* UIAutomationProvider.mdp, Makefile: Depend on UIAutomationBridge
+	  project.
+
 2008-04-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
