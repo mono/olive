@@ -43,5 +43,25 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void TextChangedEvent ()
+		{
+			AutomationEvent automationEvent = TextPatternIdentifiers.TextChangedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20015, automationEvent.Id, "Id");
+			Assert.AreEqual ("TextPatternIdentifiers.TextChangedEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
+		[Test]
+		public void TextSelectionChangedEvent ()
+		{
+			AutomationEvent automationEvent = TextPatternIdentifiers.TextSelectionChangedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20014, automationEvent.Id, "Id");
+			Assert.AreEqual ("TextPatternIdentifiers.TextSelectionChangedEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
 	}
 }
