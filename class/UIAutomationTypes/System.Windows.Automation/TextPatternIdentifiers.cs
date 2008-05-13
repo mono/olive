@@ -31,8 +31,8 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10014;
-		internal const int TextChangedEventId = 0;
-		internal const int TextSelectionChangedEventId = 0;
+		internal const int TextChangedEventId = 20015;
+		internal const int TextSelectionChangedEventId = 20014;
 		
 		static TextPatternIdentifiers ()
 		{

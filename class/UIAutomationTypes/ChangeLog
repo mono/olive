@@ -1,5 +1,10 @@
 2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/TextPatternIdentifiers.cs: Update event
+	  IDs.
+
+2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/TextPatternIdentifiers.cs,
 	  System.Windows.Automation/AutomationEvent.cs: Add TextChangedEvent
 	  and TextSelectionChangedEvent.
