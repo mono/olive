@@ -16,6 +16,7 @@ net_3_0_dirs = \
 	System.IdentityModel.Selectors	\
 	System.ServiceModel 		\
 	UIAutomationTypes		\
+	UIAutomationBridge		\
 	UIAutomationProvider
 
 net_3_5_dirs = \

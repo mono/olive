@@ -1,3 +1,8 @@
+2008-05-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Moved IAutomationBridge interface to a new
+	  assembly, UIAutomationBridge.
+
 2008-03-20  Sebastien Pouliot  <sebastien@ximian.com>
 
 	* Makefile: remove all unexisting public keys.
