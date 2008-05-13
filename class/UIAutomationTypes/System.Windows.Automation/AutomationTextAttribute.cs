@@ -27,37 +27,24 @@ using System;
 
 namespace System.Windows.Automation
 {
-	public static class TextPatternIdentifiers
+	public class AutomationTextAttribute : AutomationIdentifier
 	{
-#region Constructor
-		internal const int PatternId = 10014;
-		internal const int TextChangedEventId = 20015;
-		internal const int TextSelectionChangedEventId = 20014;
+#region Internal Constructor
 		
-		static TextPatternIdentifiers ()
+		internal AutomationTextAttribute (int id, string programmaticName) :
+			base (id, programmaticName)
 		{
-			Pattern =
-				new AutomationPattern (PatternId,
-				                       "TextPatternIdentifiers.Pattern");
-			TextChangedEvent = 
-				new AutomationEvent (TextChangedEventId,
-				                     "TextPatternIdentifiers.TextChangedEvent");
-			TextSelectionChangedEvent = 
-				new AutomationEvent (TextSelectionChangedEventId,
-				                     "TextPatternIdentifiers.TextSelectionChangedEvent");
 		}
 		
 #endregion
 		
-#region Public Fields
+#region Public Static Methods
 		
-		// TODO: Add missing fields (this class has MANY,
-		//       mostly of type AutomationTextAttribute)
-		
-		public static readonly AutomationPattern Pattern;
-		
-		public static readonly AutomationEvent TextChangedEvent;		
-		public static readonly AutomationEvent TextSelectionChangedEvent;
+		public static AutomationTextAttribute LookupById (int id)
+		{
+			// TODO: Implement
+			return null;
+		}
 		
 #endregion
 	}

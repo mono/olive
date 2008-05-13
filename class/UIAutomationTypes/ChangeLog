@@ -1,3 +1,8 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationTextAttribute.cs: Add
+	  AutomationTextAttribute class.
+
 2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/TextPatternIdentifiers.cs: Update event
