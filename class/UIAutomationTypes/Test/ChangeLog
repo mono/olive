@@ -1,3 +1,8 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationTypesTests.csproj: Add VS 2008 project.
+	* UIAutomationTypesTests.sln: Add VS 2008 solution.
+	
 2008-05-12  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* TextPatternIdentifiersTest.cs: Finished events.
