@@ -68,6 +68,10 @@ namespace System.Windows.Automation
 				return SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
 			else if (id == SelectionItemPatternIdentifiers.ElementSelectedEventId)
 				return SelectionItemPatternIdentifiers.ElementSelectedEvent;
+			else if (id == TextPatternIdentifiers.TextChangedEventId)
+				return TextPatternIdentifiers.TextChangedEvent;
+			else if (id == TextPatternIdentifiers.TextSelectionChangedEventId)
+				return TextPatternIdentifiers.TextSelectionChangedEvent;
 			else
 				return null;
 		}

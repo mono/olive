@@ -31,21 +31,32 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10014;
+		internal const int TextChangedEventId = 0;
+		internal const int TextSelectionChangedEventId = 0;
 		
 		static TextPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TextPatternIdentifiers.Pattern");
+			TextChangedEvent = 
+				new AutomationEvent (TextChangedEventId,
+				                     "TextPatternIdentifiers.TextChangedEvent");
+			TextSelectionChangedEvent = 
+				new AutomationEvent (TextSelectionChangedEventId,
+				                     "TextPatternIdentifiers.TextSelectionChangedEvent");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
+		// TODO: Add missing fields (this class has MANY, mostly attributes)
 		
 		public static readonly AutomationPattern Pattern;
+		
+		public static readonly AutomationEvent TextChangedEvent;		
+		public static readonly AutomationEvent TextSelectionChangedEvent;
 		
 #endregion
 	}
