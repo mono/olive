@@ -1,0 +1,8 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Assembly, Assembly/AssemblyInfo.cs, Mono.UIAutomation.Bridge,
+	  Mono.UIAutomation.Bridge/IAutomationBridge.cs, ChangeLog,
+	  UIAutomationBridge.dll.sources, UIAutomationBridge.mdp,
+	  UIAutomationBridge.mds, Makefile: Moved IAutomationBridge interface
+	  to a new assembly, UIAutomationBridge.
+
