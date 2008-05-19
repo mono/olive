@@ -41,6 +41,7 @@ namespace MonoTests.System.ServiceModel.Configuration
 	{
 
 		[Test]
+		[Category("NotWorking")]
 		public void UserConfiguration () {
 			ServiceModelSectionGroup config = (ServiceModelSectionGroup) ConfigurationManager.OpenExeConfiguration ("Test/config/userBinding").GetSectionGroup ("system.serviceModel");
 
