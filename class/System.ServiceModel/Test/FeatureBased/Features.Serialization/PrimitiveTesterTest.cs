@@ -71,7 +71,6 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void TestChar () {
 			Assert.AreEqual (Client.AddChar ((char) 1, (char) 1), (char) 2);
 		}

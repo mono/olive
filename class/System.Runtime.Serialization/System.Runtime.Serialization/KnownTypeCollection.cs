@@ -213,7 +213,7 @@ namespace System.Runtime.Serialization
 			case TypeCode.Byte:
 				return XmlConvert.ToString ((byte) obj);
 			case TypeCode.Char:
-				return XmlConvert.ToString ((char) obj);
+				return XmlConvert.ToString ((uint) (char) obj);
 			case TypeCode.DateTime:
 				return XmlConvert.ToString ((DateTime) obj, XmlDateTimeSerializationMode.RoundtripKind);
 			case TypeCode.Decimal:
@@ -320,8 +320,11 @@ namespace System.Runtime.Serialization
 			case "guid":
 				return XmlConvert.ToGuid (s);
 			case "anyType":
-			default:
 				return s;
+			case "char":
+				return (char) XmlConvert.ToUInt32 (s);
+			default:
+				throw new Exception ("Unanticipated primitive type: " + name);
 			}
 		}
 
