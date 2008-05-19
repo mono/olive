@@ -133,7 +133,7 @@ System.ServiceModel/WSFederationHttpBindingTest.cs
 System.ServiceModel/WSHttpBindingTest.cs
 FeatureBased/TestFixtureBase.cs
 FeatureBased/Features.Client/DataContractTesterProxy.cs
-FeatureBased/Features.Client/PrimitiveTesterProxy.cs
+FeatureBased/Features.Client/PrimitiveTester.cs
 FeatureBased/Features.Contracts/DataContractTester.cs
 FeatureBased/Features.Contracts/MessageContractTester.cs
 FeatureBased/Features.Contracts/PrimitiveTester.cs
