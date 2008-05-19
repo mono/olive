@@ -71,6 +71,12 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
+		[Category ("NotWorking")]
+		public void TestChar () {
+			Assert.AreEqual (Client.AddChar ((char) 1, (char) 1), (char) 2);
+		}
+
+		[Test]
 		public void TestByRef () {
 			double d;
 			double res = ClientProxy.AddByRef (out d, 1, 1);
@@ -78,7 +84,6 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void TestNullableInt() {
 			int? x1 = Client.NullableInt(3);
 			Assert.AreEqual(x1,4,"TestNullableInt(3)==4");
@@ -87,12 +92,11 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")]
-		public void TestNullableChar () {
-			char? x1 = Client.NullableChar ('a');
-			Assert.AreEqual (x1, 'b', "TestNullableInt('a')=='b'");
-			char? x2 = Client.NullableChar (null);
-			Assert.IsNull (x2, "TestNullableChar(null)==null");
+		public void TestNullableFloat () {
+			float? x1 = Client.NullableFloat ((float)1.5);
+			Assert.AreEqual (x1, 2.5, "TestNullableFloat(1.5)==2.5");
+			float? x2 = Client.NullableFloat (null);
+			Assert.IsNull (x2, "TestNullableFloat(null)==null");
 		}
 
 	}

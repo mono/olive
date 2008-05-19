@@ -43,13 +43,16 @@ namespace MonoTests.Features.Contracts
 		float AddFloat (float n1, float n2);
 
 		[OperationContract]
+		char AddChar (char n1, char c2);
+
+		[OperationContract]
 		void AddByRef(double n1, double n2, out double n3, out double n4);
 
 		[OperationContract]
 		int? NullableInt (int? x);
 
 		[OperationContract]
-		char? NullableChar (char? x);
+		float? NullableFloat (float? x);
 	}
 	
 	public class PrimitiveTester : IPrimitiveTesterContract
@@ -97,6 +100,10 @@ namespace MonoTests.Features.Contracts
 			return n1 + n2;
 		}
 
+		public char AddChar (char n1, char n2) {
+			return (char)(n1 + n2);
+		}
+
 		public void AddByRef (double n1, double n2, out double n3, out double n4) {
 			n3 = n4 = n1 + n2;
 		}
@@ -105,8 +112,8 @@ namespace MonoTests.Features.Contracts
 			return x==null ? x : x+1;
 		}
 
-		public char? NullableChar (char? x) {
-			return x==null ? x : (char)(((int)x)+1);
+		public float? NullableFloat (float? x) {
+			return x == null ? x : x + 1;
 		}
 	}	
 }
