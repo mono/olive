@@ -53,6 +53,13 @@ namespace Proxy.MonoTests.Features.Client
         [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRef", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/AddByRefResponse")]
         [return: System.ServiceModel.MessageParameterAttribute(Name="n3")]
         double AddByRef(out double n4, double n1, double n2);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/NullableInt", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/NullableIntResponse")]
+        System.Nullable<int> NullableInt(System.Nullable<int> x);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/NullableChar", ReplyAction="http://MonoTests.Features.Contracts/IPrimitiveTesterContract/NullableCharResponse" +
+            "")]
+        System.Nullable<char> NullableChar(System.Nullable<char> x);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "3.0.0.0")]
@@ -147,6 +154,16 @@ namespace Proxy.MonoTests.Features.Client
         public double AddByRef(out double n4, double n1, double n2)
         {
             return base.Channel.AddByRef(out n4, n1, n2);
+        }
+        
+        public System.Nullable<int> NullableInt(System.Nullable<int> x)
+        {
+            return base.Channel.NullableInt(x);
+        }
+        
+        public System.Nullable<char> NullableChar(System.Nullable<char> x)
+        {
+            return base.Channel.NullableChar(x);
         }
     }
 }

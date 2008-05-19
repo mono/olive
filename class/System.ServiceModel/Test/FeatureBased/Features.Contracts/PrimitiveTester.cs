@@ -44,6 +44,12 @@ namespace MonoTests.Features.Contracts
 
 		[OperationContract]
 		void AddByRef(double n1, double n2, out double n3, out double n4);
+
+		[OperationContract]
+		int? NullableInt (int? x);
+
+		[OperationContract]
+		char? NullableChar (char? x);
 	}
 	
 	public class PrimitiveTester : IPrimitiveTesterContract
@@ -93,6 +99,14 @@ namespace MonoTests.Features.Contracts
 
 		public void AddByRef (double n1, double n2, out double n3, out double n4) {
 			n3 = n4 = n1 + n2;
+		}
+
+		public int? NullableInt(int?x) {
+			return x==null ? x : x+1;
+		}
+
+		public char? NullableChar (char? x) {
+			return x==null ? x : (char)(((int)x)+1);
 		}
 	}	
 }

@@ -103,7 +103,9 @@ namespace System.Runtime.Serialization
 			if (isNil)
 				if (!type.IsValueType)
 					return null;
-				else // FIXME: Handle Nullable<T>
+				else if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))
+					return null;
+				else 
 					throw new SerializationException (String.Format ("Value type {0} cannot be null.", type));
 
 			object res = DeserializeContent (graph_qname, type, reader);

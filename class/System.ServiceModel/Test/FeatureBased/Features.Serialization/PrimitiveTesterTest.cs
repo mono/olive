@@ -1,4 +1,6 @@
-﻿using System;
+﻿
+
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.ServiceModel;
@@ -74,5 +76,24 @@ namespace MonoTests.Features.Serialization
 			double res = ClientProxy.AddByRef (out d, 1, 1);
 			Assert.IsTrue(d == res);
 		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void TestNullableInt() {
+			int? x1 = Client.NullableInt(3);
+			Assert.AreEqual(x1,4,"TestNullableInt(3)==4");
+			int? x2 = Client.NullableInt (null);
+			Assert.IsNull (x2, "TestNullableInt(null)==null");
+		}
+
+		[Test]
+		[Category ("NotWorking")]
+		public void TestNullableChar () {
+			char? x1 = Client.NullableChar ('a');
+			Assert.AreEqual (x1, 'b', "TestNullableInt('a')=='b'");
+			char? x2 = Client.NullableChar (null);
+			Assert.IsNull (x2, "TestNullableChar(null)==null");
+		}
+
 	}
 }

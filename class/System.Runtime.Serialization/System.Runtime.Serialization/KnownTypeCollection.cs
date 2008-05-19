@@ -93,6 +93,10 @@ namespace System.Runtime.Serialization
 
 		static KnownTypeCollection ()
 		{
+			//any_type, bool_type,	byte_type, date_type, decimal_type, double_type,	float_type, string_type,
+			// short_type, int_type, long_type, 	ubyte_type, ushort_type, uint_type, ulong_type,
+			// 	any_uri_type, base64_type, duration_type, qname_type,
+			// 	char_type, guid_type,	dbnull_type;
 			string s = MSSimpleNamespace;
 			any_type = new QName ("anyType", s);
 			any_uri_type = new QName ("anyURI", s);
@@ -114,6 +118,7 @@ namespace System.Runtime.Serialization
 			ulong_type = new QName ("unsignedLong", s);
 			string_type = new QName ("string", s);
 			guid_type = new QName ("guid", s);
+			char_type = new QName ("char", s);
 
 			dbnull_type = new QName ("DBNull", MSSimpleNamespace + "System");
 		}
@@ -140,6 +145,9 @@ namespace System.Runtime.Serialization
 
 		internal static QName GetPrimitiveTypeName (Type type)
 		{
+			if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))
+				return GetPrimitiveTypeName (type.GetGenericArguments () [0]);
+
 			if (type.IsEnum)
 				return QName.Empty;
 
@@ -257,6 +265,7 @@ namespace System.Runtime.Serialization
 			case "string":
 			case "anyType":
 			case "guid":
+			case "char":
 				return true;
 			default:
 				return false;
@@ -474,8 +483,16 @@ namespace System.Runtime.Serialization
 
 		internal bool IsPrimitiveNotEnum (Type type)
 		{
-			return (!type.IsEnum && 
-				(Type.GetTypeCode (type) != TypeCode.Object || type == typeof (Guid) || type == typeof (object)));
+			if (type.IsEnum)
+				return false;
+			if (Type.GetTypeCode (type) != TypeCode.Object) // explicitly primitive
+				return true;
+			if (type == typeof (Guid) || type == typeof (object)) // special primitives
+				return true;
+			// nullable
+			if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))
+				return IsPrimitiveNotEnum (type.GetGenericArguments () [0]);
+			return false;
 		}
 
 		internal bool TryRegister (Type type)
