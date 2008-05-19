@@ -16,7 +16,7 @@ namespace MonoTests.Features.Serialization
 		public void TestPrimitiveComplexType () {
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
-			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass result = Client.Add (n1, n2);
+			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass result = ClientProxy.Add (n1, n2);
 			Assert.IsTrue (result.byteMember == 2);
 			Assert.IsTrue (result.sbyteMember == 2);
 			Assert.IsTrue (result.shortMember == 2);
@@ -35,7 +35,7 @@ namespace MonoTests.Features.Serialization
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass result = null;
-			result = Client.AddByRef (n1, n2);
+			result = ClientProxy.AddByRef (n1, n2);
 			Assert.IsTrue (result.byteMember == 2);
 			Assert.IsTrue (result.sbyteMember == 2);
 			Assert.IsTrue (result.shortMember == 2);

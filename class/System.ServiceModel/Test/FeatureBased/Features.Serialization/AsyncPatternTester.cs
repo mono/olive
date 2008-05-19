@@ -16,7 +16,7 @@ namespace MonoTests.Features.Serialization
 		[Test]
 		[Category("NotWorking")]
 		public void TestAsync () {
-			Assert.AreEqual (Client.AsyncMethod (), 3, "Called method with AsyncPattern=true");
+			Assert.AreEqual (ClientProxy.AsyncMethod (), 3, "Called method with AsyncPattern=true");
 		}
 	}
 }

@@ -123,7 +123,8 @@ namespace System.ServiceModel.Dispatcher
 			if (md.MessageType != null)
 				MessageObjectToParts (md, result, parts);
 			else {
-				parts [0] = result;
+				if (HasReturnValue (md.Body))
+					parts [0] = result;
 				int index = ParamsOffset (md.Body);
 				foreach (ParameterInfo pi in replyMethodParams)
 					if (pi.IsOut || pi.ParameterType.IsByRef)

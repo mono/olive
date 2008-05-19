@@ -26,8 +26,8 @@ namespace MonoTests.Features.Serialization
             ev = new AutoResetEvent(false);
 			client_QueryCompleted = false;
 
-			Client.QueryCompleted += new EventHandler<QueryCompletedEventArgs>(Client_QueryCompleted);
-			Client.QueryAsync ("heh");
+			ClientProxy.QueryCompleted += new EventHandler<QueryCompletedEventArgs>(Client_QueryCompleted);
+			ClientProxy.QueryAsync ("heh");
             ev.WaitOne(2000, true);
             Assert.IsTrue(client_QueryCompleted, "async call completed");
             Assert.AreEqual("hehheh", s, "#1");

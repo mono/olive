@@ -10,6 +10,9 @@ namespace MonoTests.Features.Contracts
 	public interface IPrimitiveTesterContract
 	{
 		[OperationContract]
+		void DoNothing ();
+
+		[OperationContract]
 		int AddByte (byte n1, byte n2);
 
 		[OperationContract]
@@ -44,7 +47,10 @@ namespace MonoTests.Features.Contracts
 	}
 	
 	public class PrimitiveTester : IPrimitiveTesterContract
-	{		
+	{
+		public void DoNothing () {
+		}
+
 		public int AddByte (byte n1, byte n2) {
 			return (byte) n1 + n2;
 		}

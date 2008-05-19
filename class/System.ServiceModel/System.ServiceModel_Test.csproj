@@ -101,7 +101,7 @@
     <Compile Include="Test\FeatureBased\Features.Client\KnownTypeTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\MessageContractTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\OperationContractServer.cs" />
-    <Compile Include="Test\FeatureBased\Features.Client\PrimitiveTesterProxy.cs" />
+    <Compile Include="Test\FeatureBased\Features.Client\PrimitiveTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Client\UntypedMessageTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\AsyncCallTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\AsyncPatternContract.cs" />

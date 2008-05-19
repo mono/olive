@@ -118,10 +118,17 @@ namespace MonoTests.Features
 			return (TClient) info.Invoke (parameters);
 		}
 
-		public TClient Client {
+		public TClient ClientProxy {
 			get {
 				return _client;
 			}			
+		}
+
+		public IServer Client {
+			get {
+				ChannelFactory<IServer> factory = new ChannelFactory<IServer> (new BasicHttpBinding (), new EndpointAddress (getEndpoint ()));
+				return factory.CreateChannel ();
+			}
 		}
 
 		protected virtual ServiceHost InitializeServiceHost () {

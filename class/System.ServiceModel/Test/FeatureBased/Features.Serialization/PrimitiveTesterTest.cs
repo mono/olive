@@ -13,6 +13,12 @@ namespace MonoTests.Features.Serialization
     public class PrimitiveTesterTest : TestFixtureBase<PrimitiveTesterContractClient, PrimitiveTester, MonoTests.Features.Contracts.IPrimitiveTesterContract>
 	{
 		[Test]
+		public void TestDoNothing () 
+		{
+			Client.DoNothing ();
+		}
+
+		[Test]
 		public void TestDouble () {
 			Assert.IsTrue (Client.AddDouble (1, 1) == 2);
 		}
@@ -65,7 +71,7 @@ namespace MonoTests.Features.Serialization
 		[Test]
 		public void TestByRef () {
 			double d;
-			double res = Client.AddByRef (out d, 1, 1);
+			double res = ClientProxy.AddByRef (out d, 1, 1);
 			Assert.IsTrue(d == res);
 		}
 	}

@@ -20,7 +20,7 @@ namespace MonoTests.Features.Serialization
 			p2.X = 2;
 			p2.Y = 3;
 
-			Point2D r = Client.Move (p1, p2);
+			Point2D r = ClientProxy.Move (p1, p2);
 			Assert.IsNotNull (r, "#1");
 			Assert.IsTrue (r is AdvPoint2D, "#2");
 			Assert.AreEqual (((AdvPoint2D) r).ZeroDistance, 5, "#3");

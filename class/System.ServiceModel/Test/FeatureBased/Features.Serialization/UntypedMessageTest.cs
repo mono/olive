@@ -16,7 +16,7 @@ namespace MonoTests.Features.Serialization
 		public void TestUntypedMessage ()
 		{
 			String action = "http://localhost/UntypedMessageTester/Message_RequestAction";
-			using (new OperationContextScope (Client.InnerChannel)) {
+			using (new OperationContextScope (ClientProxy.InnerChannel)) {
 				// Call the Sum service operation.
 				string [] strings = { "a", "b", "c" };
 				Message request = Message.CreateMessage (OperationContext.Current.OutgoingMessageHeaders.MessageVersion, action, strings);
