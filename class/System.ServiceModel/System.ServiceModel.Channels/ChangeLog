@@ -1,3 +1,8 @@
+2008-05-20  Noam Lampert <noaml@mainsoft.com>
+
+	* Message.c: Use private setter for state private variable to ease debugging.
+				 Modify ToString not to change the state, as it is called quite often by VS debugger
+				 
 2008-04-21  Roei Erez <roeie@mainsoft.com>
 
 	* HttpChannleManager: Fix for multithreaded use.

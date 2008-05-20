@@ -37,11 +37,10 @@ namespace System.ServiceModel.Channels
 	public abstract class Message : IDisposable
 	{
 		bool disposed;
-		MessageState state = MessageState.Created;
 		string body_id;
 
-		protected Message ()
-		{
+		protected Message () {
+			State = MessageState.Created;
 		}
 
 		public abstract MessageHeaders Headers { get; }
@@ -61,8 +60,10 @@ namespace System.ServiceModel.Channels
 
 		public abstract MessageProperties Properties { get; }
 
+		MessageState ___state;
 		public MessageState State {
-			get { return state; }
+			get { return ___state; }
+			private set { ___state = value;	}
 		}
 
 		public abstract MessageVersion Version { get; }
@@ -75,7 +76,7 @@ namespace System.ServiceModel.Channels
 		{
 			if (!disposed)
 				OnClose ();
-			state = MessageState.Closed;
+			State = MessageState.Closed;
 			disposed = true;
 		}
 
@@ -86,7 +87,7 @@ namespace System.ServiceModel.Channels
 			try {
 				return OnCreateBufferedCopy (maxBufferSize);
 			} finally {
-				state = MessageState.Copied;
+				State = MessageState.Copied;
 			}
 		}
 
@@ -117,14 +118,21 @@ namespace System.ServiceModel.Channels
 
 		public override string ToString ()
 		{
-			StringWriter sw = new StringWriter ();
-			XmlWriterSettings settings = new XmlWriterSettings ();
-			settings.Indent = true;
-			settings.OmitXmlDeclaration = true;
-			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
-				WriteMessage (w);
+			MessageState tempState = State;
+			try {
+
+				StringWriter sw = new StringWriter ();
+				XmlWriterSettings settings = new XmlWriterSettings ();
+				settings.Indent = true;
+				settings.OmitXmlDeclaration = true;
+				using (XmlWriter w = XmlWriter.Create (sw, settings)) {
+					WriteMessage (w);
+				}
+				return sw.ToString ();
 			}
-			return sw.ToString ();
+			finally {
+				State = tempState;
+			}
 		}
 
 		void WriteXsiNil (XmlDictionaryWriter writer)
@@ -160,7 +168,7 @@ namespace System.ServiceModel.Channels
 		{
 			if (State != MessageState.Created)
 				throw new InvalidOperationException (String.Format ("The message is already at {0} state", State));
-			state = MessageState.Written;
+			State = MessageState.Written;
 
 			OnWriteMessage (writer);
 		}
@@ -174,7 +182,7 @@ namespace System.ServiceModel.Channels
 		{
 			if (State != MessageState.Created && State != MessageState.Written)
 				throw new InvalidOperationException (String.Format ("The message is already at {0} state", State));
-			state = MessageState.Written;
+			State = MessageState.Written;
 
 			OnWriteStartBody (writer);
 		}
@@ -189,7 +197,7 @@ namespace System.ServiceModel.Channels
 		{
 			if (State != MessageState.Created && State != MessageState.Written)
 				throw new InvalidOperationException (String.Format ("The message is already at {0} state", State));
-			state = MessageState.Written;
+			State = MessageState.Written;
 
 			OnWriteStartEnvelope (writer);
 		}
