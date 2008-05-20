@@ -30,7 +30,6 @@ namespace MonoTests.Features.Serialization
 		}
 
 		[Test]
-		[Category ("NotWorking")] // serialization failure
 		public void TestPrimitiveComplexTypeByRef () {
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n1 = GetNewDataInstance ();
 			Proxy.MonoTests.Features.Client.ComplexPrimitiveClass n2 = GetNewDataInstance ();

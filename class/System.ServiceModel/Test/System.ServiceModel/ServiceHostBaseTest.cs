@@ -174,7 +174,6 @@ namespace MonoTests.System.ServiceModel
 		}
 
 		[Test]
-		[Category ("NotWorking")]
 		public void ChannelDispatchers_WithDebug () {
 			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
 			h.AddServiceEndpoint (typeof (AllActions).FullName, new BasicHttpBinding (), "address");
