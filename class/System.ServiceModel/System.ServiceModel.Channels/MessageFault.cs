@@ -76,6 +76,8 @@ namespace System.ServiceModel.Channels
 			}
 			r.ReadEndElement ();
 
+			if (details == null)
+				return CreateFault (fc, fr);
 			return CreateFault (fc, fr, details);
 		}
 

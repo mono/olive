@@ -191,16 +191,16 @@ namespace System.ServiceModel.Dispatcher
 			Console.WriteLine (ex);
 			// FIXME: set correct name
 			FaultCode fc = new FaultCode (
-				"FIXME_InternalError",
+				"InternalServiceFault",
 				req.Version.Addressing.Namespace);
-			object reason =
-				parent.ChannelDispatcher.IncludeExceptionDetailInFaults ?
-				new ExceptionDetail (ex) :
-				(object) String.Empty;
-			// FIXME: set correct namespace URI
-			// FIXME: use ExceptionDetails to make Exception serializable.
-			return Message.CreateMessage (req.Version, fc,
-				"An internal error occured.", reason, req.Headers.Action);
+
+	
+			if (parent.ChannelDispatcher.IncludeExceptionDetailInFaults) {
+				return Message.CreateMessage (req.Version, fc, ex.Message, new ExceptionDetail (ex), req.Headers.Action);
+			}
+			string faultString =
+				@"The server was unable to process the request due to an internal error.  For more information about the error, either turn on IncludeExceptionDetailInFaults (either from ServiceBehaviorAttribute or from the &lt;serviceDebug&gt; configuration behavior) on the server in order to send the exception information back to the client, or turn on tracing as per the Microsoft .NET Framework 3.0 SDK documentation and inspect the server trace logs.";
+			return Message.CreateMessage(req.Version, fc, faultString, req.Headers.Action);
 		}
 
 		void EnsureValid () {
