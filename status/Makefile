@@ -44,3 +44,7 @@ transform.exe : transform.cs
 clean:
 	rm -f deploy/*.html src/*.src infos/*.xml transform.exe mono-api-info.exe mono-api-diff.exe
 
+masterinfos: mono-api-info.exe
+	cd masterinfos && bash gen-all.sh && cd ..
+	tar -czf masterinfos-3.0.tar.gz masterinfos/*.xml
+

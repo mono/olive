@@ -18,7 +18,6 @@
 				<P>
 					<H1>Mono Class Library Status</H1>
 				</P>
-
 				<table>
 					<tr>
 						<td> <input type="checkbox" ID="todo" onClick="selectTodo()" checked="checked"/> </td>
@@ -313,6 +312,13 @@
 	<!-- event -->
 	<xsl:template match="events">
 		<xsl:apply-templates select="event">
+			<xsl:sort select="@name"/>
+		</xsl:apply-templates>
+	</xsl:template>
+
+	<!-- accessor -->
+	<xsl:template match="event/methods">
+		<xsl:apply-templates select="method">
 			<xsl:sort select="@name"/>
 		</xsl:apply-templates>
 	</xsl:template>

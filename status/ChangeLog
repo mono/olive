@@ -1,3 +1,10 @@
+2008-05-21  Gert Driesen  <drieseng@users.sourceforge.net>
+
+	* Makefile: added target for creating masterinfos.
+	* mono-api.xsl: updated from mcs tree.
+	* mono-api-info.cs: updated from mcs tree.
+	* mono-api-diff.cs: updated from mcs tree.
+
 2008-03-31  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* mono-api.xsl : ... and some path difference from mono tree.
