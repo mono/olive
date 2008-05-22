@@ -47,7 +47,7 @@ namespace MonoTests.Features
 			Run (runServer, runClient);			
 		}
 
-		public void TestWsdlImpl () {
+		public void CheckWsdlImpl () {
 			string goldWsdl;
 			try {
 				Assembly _assembly = Assembly.GetExecutingAssembly ();

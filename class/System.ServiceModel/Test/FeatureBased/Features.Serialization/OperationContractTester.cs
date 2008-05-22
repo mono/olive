@@ -40,7 +40,7 @@ namespace MonoTests.Features.Serialization
 		[Test]
 		[Category ("NotWorking")]
 		public void TestWsdl () {
-			TestWsdlImpl ();
+			CheckWsdlImpl ();
 		}
 	}
 }
