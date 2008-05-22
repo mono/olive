@@ -1,3 +1,7 @@
+2008-05-22  Noam Lampert <noaml@mainsoft.com>
+	* ServiceDebugBehavior.cs: Correctly propagate IncludeExceptionDetailsInFaults. Previous code
+	  overwrote values set in ServiceBehaviorAttribute.
+	  
 2008-05-22  Roei Erez  <roeie@mainsoft.com>
 	* fix ContractDescription.GetContract implementation
 	* Refactor Request processing

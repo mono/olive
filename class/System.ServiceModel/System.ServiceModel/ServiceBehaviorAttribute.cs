@@ -154,6 +154,8 @@ namespace System.ServiceModel
 				ChannelDispatcher cd = cdb as ChannelDispatcher;
 				if (cd == null)
 					continue;
+				if (IncludeExceptionDetailInFaults) // may be set also in ServiceDebugBehaviorAttribute
+					cd.IncludeExceptionDetailInFaults = true;
 				foreach (EndpointDispatcher ed in cd.Endpoints)
 					ed.DispatchRuntime.InstanceContextProvider = CreateInstanceContextProvider (serviceHostBase);
 			}

@@ -350,10 +350,22 @@ namespace System.ServiceModel
 				inspections [i] = runtime.MessageInspectors [i].BeforeSendRequest (ref req, this);
 
 			Message res = Request (req);
-			if (res.IsFault)
-				// FIXME: depending on FaultCode, it might
-				// create different kinds of exception.
-				throw new FaultException (MessageFault.CreateFault (res, runtime.MaxFaultSize));
+			if (res.IsFault) {
+				MessageFault fault = MessageFault.CreateFault (res, runtime.MaxFaultSize);
+				if (fault.HasDetail && fault is MessageFault.SimpleMessageFault) {
+					MessageFault.SimpleMessageFault simpleFault = fault as MessageFault.SimpleMessageFault;
+					object detail = simpleFault.Detail;
+					Type t = detail.GetType ();
+					Type faultType = typeof (FaultException<>).MakeGenericType (t);
+					object [] constructorParams = new object [] { detail, fault.Reason, fault.Code, fault.Actor };
+					FaultException fe = (FaultException) Activator.CreateInstance (faultType, constructorParams);
+					throw fe;
+				}
+				else {
+					// given a MessageFault, it is hard to figure out the type of the embedded detail
+					throw new FaultException(fault);
+				}
+			}
 
 			for (int i = 0; i < inspections.Length; i++)
 				runtime.MessageInspectors [i].AfterReceiveReply (ref res, inspections [i]);

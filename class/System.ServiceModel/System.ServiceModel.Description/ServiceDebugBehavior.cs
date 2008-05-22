@@ -84,8 +84,8 @@ namespace System.ServiceModel.Description
 			ServiceMetadataExtension sme = ServiceMetadataExtension.EnsureServiceMetadataExtension (description, serviceHostBase);
 
 			foreach (ChannelDispatcher dispatcher in serviceHostBase.ChannelDispatchers)
-				dispatcher.IncludeExceptionDetailInFaults =
-					IncludeExceptionDetailInFaults;
+				if (IncludeExceptionDetailInFaults) // may be set also in ServiceBehaviorAttribute
+					dispatcher.IncludeExceptionDetailInFaults = true;
 
 			if (HttpHelpPageEnabled) {
 				Uri uri = serviceHostBase.CreateUri ("http", HttpHelpPageUrl);

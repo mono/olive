@@ -1,3 +1,8 @@
+2008-05-22  Noam Lampert <noaml@mainsoft.com>
+
+	* MessageFault.cs: Correctly serialize ExceptionDetails. Expose SimpleMessageFault to allow
+	  internal users to know the type of the detail. 
+	
 2008-05-20  Noam Lampert <noaml@mainsoft.com>
 
 	* Message.c: Use private setter for state private variable to ease debugging.

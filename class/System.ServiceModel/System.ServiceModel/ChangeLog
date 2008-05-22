@@ -1,3 +1,8 @@
+2008-05-22  Noam Lampert <noaml@mainsoft.com>
+	* ServiceBehaviorAttribute.cs: Propagate IncludeExceptionDetailsInFaults
+	* ExceptionDetail.cs: Modify implementation so that deserialized instance will also work
+	* ClientRuntimeChannel.cs: Throw correct fault exception
+	
 2008-05-01  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ClientProxyGenerator.cs: Add explicit casts for allowing boxing.

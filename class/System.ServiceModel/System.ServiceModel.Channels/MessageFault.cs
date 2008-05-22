@@ -37,7 +37,6 @@ namespace System.ServiceModel.Channels
 	{
 		// type members
 
-		[MonoTODO]
 		public static MessageFault CreateFault (Message message, int maxBufferSize)
 		{
 			if (message.Version.Envelope == EnvelopeVersion.Soap11)
@@ -66,6 +65,10 @@ namespace System.ServiceModel.Channels
 					fr = new FaultReason (r.ReadElementContentAsString ("faultstring", ns));
 					break;
 				case "detail":
+					//BUGBUG: Handle children of type other than ExceptionDetail, in order to comply with 
+					//        FaultContractAttribute.
+					r.ReadStartElement ();
+					r.MoveToContent();
 					details = new DataContractSerializer (typeof (ExceptionDetail)).ReadObject (r);
 					break;
 				case "faultactor":
@@ -219,7 +222,7 @@ if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
 		}
 
 		// pretty simple implementation class
-		class SimpleMessageFault : MessageFault
+		internal class SimpleMessageFault : MessageFault
 		{
 			bool has_detail;
 			string actor, node;
@@ -286,6 +289,10 @@ if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
 			protected override void OnWriteDetailContents (XmlDictionaryWriter writer)
 			{
 				formatter.WriteObject (writer, detail);
+			}
+
+			public object Detail {
+				get { return detail; }
 			}
 		}
 

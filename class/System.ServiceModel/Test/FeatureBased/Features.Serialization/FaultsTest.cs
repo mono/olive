@@ -26,7 +26,6 @@ namespace MonoTests.Features.Serialization
 	}
 
 	[TestFixture]
-	[Category ("NotWorking")] // Failure on client side to deserialize the FaultException
     public class FaultsTestIncludeDetails : TestFixtureBase<FaultsTesterContractClientIncludeDetails, MonoTests.Features.Contracts.FaultsTesterIncludeDetails, MonoTests.Features.Contracts.IFaultsTesterContractIncludeDetails>
 	{
 		[Test]
@@ -35,9 +34,15 @@ namespace MonoTests.Features.Serialization
 			try {
 				Client.FaultMethod ("heh");
 			}
-			catch (Exception e) {
+			catch (FaultException<ExceptionDetail> e) {
 				Assert.AreEqual ("heh", e.Message);
+				return;
 			}
+			catch (Exception e) {
+				Assert.Fail ("Incorrect exception was thrown: " + e.GetType ().FullName);
+			}
+
+			Assert.Fail ("No exception was thrown");
 		}
 	}
 }

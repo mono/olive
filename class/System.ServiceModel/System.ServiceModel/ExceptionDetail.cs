@@ -38,53 +38,51 @@ namespace System.ServiceModel
 	[DataContract]
 	public class ExceptionDetail
 	{
-		Exception ex;
-		ExceptionDetail inner;
-
+		
 		public ExceptionDetail (Exception exception)
 		{
 			if (exception == null)
 				throw new ArgumentNullException ("exception");
-			ex = exception;
-			if (ex.InnerException != null)
-				inner = new ExceptionDetail (ex.InnerException);
+			Message = exception.Message;
+			StackTrace = exception.StackTrace;
+			Type = exception.GetType ().FullName;
+			if (exception.InnerException != null)
+				InnerException = new ExceptionDetail (exception.InnerException);
 		}
 
 		[DataMember]
 		public string HelpLink {
-			get { return null; }
-			private set { } // dummy
+			get; 
+			private set;
 		}
 
-// FIXME: currently it causes StackOverflow (bug in our S.R.Serialization.dll)
-//		[DataMember]
-		[MonoTODO]
+		//[DataMember]
 		public ExceptionDetail InnerException {
-			get { return inner; }
-			private set { } // dummy
+			get;
+			private set;
 		}
 
 		[DataMember]
 		public string Message {
-			get { return ex.Message; }
-			private set { } // dummy
+			get;
+			private set;
 		}
 
 		[DataMember]
 		public string StackTrace {
-			get { return ex.StackTrace; }
-			private set { } // dummy
+			get;
+			private set;
 		}
 
 		[DataMember]
 		public string Type {
-			get { return null; }
-			private set { } // dummy
+			get;
+			private set;
 		}
 
 		public override string ToString ()
 		{
-			return ex.ToString ();
+			return Message;
 		}
 	}
 }

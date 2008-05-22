@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.ServiceModel.Channels;
 using System.ServiceModel;
+using System.Reflection;
 
 namespace System.ServiceModel.Dispatcher
 {
@@ -18,8 +19,8 @@ namespace System.ServiceModel.Dispatcher
 				DoProcessRequest (mrc);
 				if (!operation.Invoker.IsSynchronous)
 					return true;
-			} catch (Exception ex) {
-				mrc.ReplyMessage = BuildExceptionMessage (mrc.IncomingMessage, ex, 
+			} catch (TargetInvocationException ex) {
+				mrc.ReplyMessage = BuildExceptionMessage (mrc.IncomingMessage, ex.InnerException, 
 					dispatchRuntime.ChannelDispatcher.IncludeExceptionDetailInFaults);
 			}
 			return false;
