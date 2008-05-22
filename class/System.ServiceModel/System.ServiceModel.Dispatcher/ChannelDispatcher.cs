@@ -398,36 +398,13 @@ namespace System.ServiceModel.Dispatcher
 					if (rc == null)
 						throw new InvalidOperationException ("The reply channel didn't return RequestContext");
 
-					EndpointDispatcher candidate = null;
-					ChannelDispatcherCollection cdcol = owner.host.ChannelDispatchers;
-					for (int i = 0; i < owner.Endpoints.Count; i++) {
-						if (owner.IsMessageMatchesEndpointDispatcher (rc.RequestMessage, owner.Endpoints [i]))
-							candidate = owner.Endpoints [i];
-					}
-					if (candidate == null)
-						throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", rc.RequestMessage.Headers.To));
-
-					IContextChannel cch = new ServiceRuntimeChannel (reply, owner.timeouts);
-					OperationContext octx = new OperationContext (cch);
-					using (OperationContextScope scope = new OperationContextScope (octx)) {
-						OperationContext.Current.EndpointDispatcher = candidate;
-						OperationContext.Current.RequestContext = rc;
-						try {
-							candidate.ProcessRequest (rc, octx, owner.timeouts.SendTimeout);
-						}
-						catch (Exception ex) {
-							owner.HandleError (ex);
-							FaultConverter fc = FaultConverter.GetDefaultFaultConverter (owner.MessageVersion);
-							Message res;
-							if (!fc.TryCreateFaultMessage (ex, out res))
-								throw;
-							rc.Reply (res, owner.timeouts.SendTimeout);
-						}
-					}
+					EndpointDispatcher candidate = FindEndpointDispatcher (rc.RequestMessage);
+					new InputOrReplyRequestProcessor (candidate.DispatchRuntime, reply, owner.timeouts).
+						ProcessReply (rc);
 				}
-				catch (Exception ex) {
-					//FIXME: handle EndpointNotFoundException ?
-					throw;
+				catch (Exception ex) {										
+				    //FIXME: handle EndpointNotFoundException ?
+				    throw;
 				}
 			}
 
@@ -437,29 +414,27 @@ namespace System.ServiceModel.Dispatcher
 				EndpointDispatcher candidate = null;
 
 				try {
-					for (int i = 0; i < owner.Endpoints.Count; i++) {
-						if (owner.IsMessageMatchesEndpointDispatcher (message, owner.Endpoints [i]))
-							candidate = owner.Endpoints [i];
-					}
-					if (candidate == null)
-						throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", message.Headers.To));
-
-					IContextChannel cch = new ServiceRuntimeChannel (input, owner.timeouts);
-					OperationContext octx = new OperationContext (cch);
-					using (OperationContextScope scope = new OperationContextScope (octx)) {
-						OperationContext.Current.EndpointDispatcher = candidate;
-						try {
-							candidate.ProcessInput (message);
-						}
-						catch (Exception ex) {
-							owner.HandleError (ex);
-						}
-					}
+					candidate = FindEndpointDispatcher (message);
+					new InputOrReplyRequestProcessor (candidate.DispatchRuntime, reply, owner.timeouts).
+						ProcessInput(message);
 				}
 				catch (Exception ex) {
 					//FIXME: handle EndpointNotFoundException ?
 					throw;
 				}
+			}
+
+			EndpointDispatcher FindEndpointDispatcher (Message message) {
+				EndpointDispatcher candidate = null;
+				for (int i = 0; i < owner.Endpoints.Count; i++) {
+					if (owner.IsMessageMatchesEndpointDispatcher (message, owner.Endpoints [i])) {
+						candidate = owner.Endpoints [i];
+						break;
+					}
+				}
+				if (candidate == null)
+					throw new EndpointNotFoundException (String.Format ("The request message has the target '{0}' which is not reachable in this service contract", message.Headers.To));
+				return candidate;
 			}
 
 			void StopLoop ()

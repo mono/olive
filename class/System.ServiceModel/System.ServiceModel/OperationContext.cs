@@ -38,6 +38,8 @@ namespace System.ServiceModel
 	{
 		// generated guid (no special meaning)
 		const string operation_context_name = "c15795e2-bb44-4cfb-a89c-8529feb170cb";
+		Message incoming_message;
+		IDefaultCommunicationTimeouts timeouts;
 
 		public static OperationContext Current {
 			get { return Thread.GetData (Thread.GetNamedDataSlot (operation_context_name)) as OperationContext; }
@@ -50,6 +52,7 @@ namespace System.ServiceModel
 		ExtensionCollection<OperationContext> extensions;
 		MessageHeaders outgoing_headers;
 		MessageProperties outgoing_properties;
+		InstanceContext instance_context;
 
 		public OperationContext (IContextChannel channel)
 		{
@@ -99,28 +102,11 @@ namespace System.ServiceModel
 
 		[MonoTODO]
 		public InstanceContext InstanceContext {
-			get {
-				if (EndpointDispatcher == null)
-					return null;
-				IInstanceContextProvider p = EndpointDispatcher.DispatchRuntime.InstanceContextProvider;
-				InstanceContext i = p.GetExistingInstanceContext (request_ctx.RequestMessage, channel);
-				// FIXME: I guess GetExistingInstanceContext()
-				// subsequently creates a new InstanceContext,
-				// but it is documented as possible to return
-				// null, while InitializeInstanceContext() is
-				// documented as subsequently invoked when there
-				// is no existing instance.
-				if (i == null) {
-					// FIXME: consider ServiceThrottle.
-					// FIXME: is there no way to pass service instance?
-					i = new InstanceContext (Host);
-					p.InitializeInstanceContext (i, request_ctx.RequestMessage, channel);
-
-					// There is no public way to set
-					// instance to the provider...
-					throw new NotImplementedException ();
-				}
-				return i;
+			get {				
+				return instance_context;
+			}
+			internal set {
+				instance_context = value;
 			}
 		}
 
@@ -181,6 +167,25 @@ namespace System.ServiceModel
 		public void SetTransactionComplete ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		internal Message IncomingMessage {
+			get {
+				return incoming_message;
+			}
+			set {
+				incoming_message = value;
+			}
+		}
+
+		internal IDefaultCommunicationTimeouts CommunicationTimeouts
+		{
+			get {
+				return timeouts;
+			}
+			set {
+				timeouts = value;
+			}
 		}
 	}
 }

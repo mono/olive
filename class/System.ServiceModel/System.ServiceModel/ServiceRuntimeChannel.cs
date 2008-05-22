@@ -34,16 +34,20 @@ using System.ServiceModel.Dispatcher;
 
 namespace System.ServiceModel
 {
-	internal class ServiceRuntimeChannel : CommunicationObject, IContextChannel
+	internal class ServiceRuntimeChannel : CommunicationObject, IContextChannel, IClientChannel
 	{
 		IExtensionCollection<IContextChannel> extensions;
-		readonly IChannel channel;
-		readonly IDefaultCommunicationTimeouts timeouts;
+		readonly IChannel channel;		
+		bool _allowInitializationUI;
+		Uri _via;
+		readonly TimeSpan _openTimeout;
+		readonly TimeSpan _closeTimeout;
 
-		public ServiceRuntimeChannel (IChannel channel, IDefaultCommunicationTimeouts timeouts)
+		public ServiceRuntimeChannel (IChannel channel, TimeSpan openTimeout, TimeSpan closeTimeout)
 		{
 			this.channel = channel;
-			this.timeouts = timeouts;
+			this._openTimeout = openTimeout;
+			this._closeTimeout = closeTimeout;
 		}
 
 		#region IContextChannel
@@ -104,11 +108,11 @@ namespace System.ServiceModel
 
 		// CommunicationObject
 		protected internal override TimeSpan DefaultOpenTimeout {
-			get { return timeouts.OpenTimeout; }
+			get { return _openTimeout; }
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {
-			get { return timeouts.CloseTimeout; }
+			get { return _closeTimeout; }
 		}
 
 		protected override void OnAbort ()
@@ -163,5 +167,48 @@ namespace System.ServiceModel
 			}
 		}
 
+
+		#region IClientChannel Members
+
+		public bool AllowInitializationUI {
+			get {
+				return _allowInitializationUI;
+			}
+			set {
+				_allowInitializationUI = value;
+			}
+		}
+
+		public bool DidInteractiveInitialization {
+			get { throw new NotImplementedException (); }
+		}
+
+		public Uri Via {
+			get { return _via; }
+		}
+
+		public IAsyncResult BeginDisplayInitializationUI (AsyncCallback callback, object state) {
+			throw new NotImplementedException ();
+		}
+
+		public void EndDisplayInitializationUI (IAsyncResult result) {
+			throw new NotImplementedException ();
+		}
+
+		public void DisplayInitializationUI () {
+			throw new NotImplementedException ();
+		}
+
+		public event EventHandler<UnknownMessageReceivedEventArgs> UnknownMessageReceived;
+
+		#endregion
+
+		#region IDisposable Members
+
+		public void Dispose () {
+			throw new NotImplementedException ();
+		}
+
+		#endregion
 	}
 }

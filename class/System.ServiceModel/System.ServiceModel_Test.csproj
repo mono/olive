@@ -193,6 +193,8 @@
     <Compile Include="Test\System.ServiceModel.Description\OperationDescriptionTest.cs" />
     <Compile Include="Test\System.ServiceModel.Description\ServiceAuthorizationBehaviorTest.cs" />
     <Compile Include="Test\System.ServiceModel.Description\ServiceCredentialsTest.cs" />
+    <Compile Include="Test\System.ServiceModel.Description\ServiceDebugBehaviorTest.cs" />
+    <Compile Include="Test\System.ServiceModel.Description\ServiceMetadataBehaviorTest.cs" />
     <Compile Include="Test\System.ServiceModel.Description\TypedMessageConverterTest.cs" />
     <Compile Include="Test\System.ServiceModel.Description\WsdlExporterTest.cs" />
     <Compile Include="Test\System.ServiceModel.Description\WsdlImporterTest.cs" />

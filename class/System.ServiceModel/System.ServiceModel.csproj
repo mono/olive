@@ -34,6 +34,7 @@
     <DefineConstants>TRACE;NET_2_0,TARGET_DOTNET</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -813,6 +814,9 @@
     <Compile Include="System.ServiceModel.Diagnostics\PerformanceCounterScope.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ActionMessageFilter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ActionMessageFilterTable.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\InputOrReplyRequestProcessor.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\OperationContextScopeHandler.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\PostReceiveRequestHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\BaseMessagesFormatter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcher.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ChannelDispatcherBase.cs" />
@@ -820,14 +824,17 @@
     <Compile Include="System.ServiceModel.Dispatcher\ClientOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ClientRuntime.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DataContractSerializerServiceBehavior.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\DefaultInstanceContextProvider.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchOperation.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\DispatchRuntime.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\EndpointAddressMessageFilter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\EndpointAddressMessageFilterTable.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\EndpointDispatcher.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\ErrorProcessingHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ExceptionHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\FaultContractInfo.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\FilterInvalidBodyAccessException.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\FinalizeProcessingHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ICallContextInitializer.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\IChannelInitializer.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\IClientMessageFormatter.cs" />
@@ -843,6 +850,9 @@
     <Compile Include="System.ServiceModel.Dispatcher\IInstanceProvider.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\IInteractiveChannelInitializer.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\IMessageFilterTable.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\BaseRequestProcessorHandler.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\InstanceBehavior.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\InitializingHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\InstanceContextIdleCallback.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\InvalidBodyAccessException.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\IOperationInvoker.cs" />
@@ -852,10 +862,15 @@
     <Compile Include="System.ServiceModel.Dispatcher\MessageFilter.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\MessageFilterNodeQuotaExceededException.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\MessageFilterTable.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\MessageProcessingContext.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\BaseRequestProcessor.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\MexInstanceContextProvider.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\MultipleMessageFilterMatchesException.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\NavigatorInvalidBodyAccessException.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\OperationInvokerHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\PrefixEndpointAddressMessageFilter.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\ReplyHandler.cs" />
+    <Compile Include="System.ServiceModel.Dispatcher\SecurityHandler.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\SeekableXPathNavigator.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\ServiceThrottle.cs" />
     <Compile Include="System.ServiceModel.Dispatcher\SingletonInstanceContextProvider.cs" />
@@ -1108,7 +1123,8 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>@rem "C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe" /i "$(TargetPath)" /f
+    <PostBuildEvent>@echo on
+@rem "C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe" /i "$(TargetPath)" /f
 @rem "C:\Program Files\Mono-1.2.6\bin\gacutil.bat" -i "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

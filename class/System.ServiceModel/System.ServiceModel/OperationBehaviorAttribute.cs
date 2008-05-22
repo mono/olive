@@ -61,11 +61,12 @@ namespace System.ServiceModel
 			set { tx_scope_required = value; }
 		}
 
+		[MonoTODO]
 		void IOperationBehavior.AddBindingParameters (
 			OperationDescription description,
 			BindingParameterCollection parameters)
 		{
-			throw new NotImplementedException ();
+			//throw new NotImplementedException ();
 		}
 
 		void IOperationBehavior.ApplyDispatchBehavior (
@@ -85,17 +86,19 @@ namespace System.ServiceModel
 			dispatch.TransactionRequired = tx_scope_required;
 		}
 
+		[MonoTODO]
 		void IOperationBehavior.ApplyClientBehavior (
 			OperationDescription description,
 			ClientOperation proxy)
 		{
-			throw new NotImplementedException ();
+			//throw new NotImplementedException ();
 		}
 
+		[MonoTODO]
 		void IOperationBehavior.Validate (
 			OperationDescription description)
 		{
-			throw new NotImplementedException ();
+			
 		}
 	}
 }

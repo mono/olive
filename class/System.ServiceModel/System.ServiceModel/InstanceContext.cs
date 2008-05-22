@@ -39,6 +39,11 @@ namespace System.ServiceModel
 		ServiceHostBase host;
 		object implementation;
 		int manual_flow_limit;
+		InstanceBehavior _behavior;
+		bool is_user_instance_provider;
+		bool is_user_context_provider;
+
+		static InstanceContextIdleCallback idle_callback = new InstanceContextIdleCallback(NotifyIdle);
 
 		public InstanceContext (object implementation)
 			: this (null, implementation)
@@ -51,10 +56,36 @@ namespace System.ServiceModel
 		}
 
 		public InstanceContext (ServiceHostBase host,
-			object implementation)
+			object implementation) : this(host, implementation, true)
+		{}
+
+		internal InstanceContext(ServiceHostBase host, 
+			object implementation, bool userContextProvider)
 		{
 			this.host = host;
 			this.implementation = implementation;
+			is_user_context_provider = userContextProvider;
+		}
+
+		internal bool IsUserProvidedInstance {
+			get {
+				return is_user_instance_provider;
+			}
+		}
+
+		internal bool IsUserProvidedContext {
+			get {
+				return is_user_context_provider;				
+			}
+		}
+
+		internal InstanceBehavior Behavior {
+			get {
+				return _behavior;
+			}
+			set {
+				_behavior = value;
+			}
 		}
 
 		protected internal override TimeSpan DefaultCloseTimeout {
@@ -88,12 +119,15 @@ namespace System.ServiceModel
 
 		public object GetServiceInstance ()
 		{
-			return implementation;
+			return GetServiceInstance (null);
 		}
 
 		public object GetServiceInstance (Message message)
 		{
-			throw new NotImplementedException ();
+			if (implementation == null && Behavior != null) {
+				implementation = Behavior.GetServiceInstance (this, message, ref is_user_instance_provider);				
+			}
+			return implementation;				
 		}
 
 		public void IncrementManualFlowControlLimit (int incrementBy)
@@ -101,9 +135,32 @@ namespace System.ServiceModel
 			throw new NotImplementedException ();
 		}
 
+		internal void CloseIfIdle () {
+			if (Behavior.InstanceContextProvider != null && !IsUserProvidedContext) {
+				if (!Behavior.InstanceContextProvider.IsIdle (this)) {
+					Behavior.InstanceContextProvider.NotifyIdle (IdleCallback, this);
+				}
+				else {
+					if (State != CommunicationState.Closed)
+						Close ();
+				}
+			}
+		}
+
+		static void NotifyIdle (InstanceContext ctx) {
+			ctx.CloseIfIdle ();
+		}		
+
+		internal InstanceContextIdleCallback IdleCallback {
+			get {
+				return idle_callback;
+			}
+		}
+
 		public void ReleaseServiceInstance ()
-		{
-			throw new NotImplementedException ();
+		{			
+			Behavior.ReleaseServiceInstance (this, implementation);
+			implementation = null;
 		}
 
 		protected override void OnAbort ()
@@ -116,6 +173,12 @@ namespace System.ServiceModel
 
 		protected override void OnOpened ()
 		{
+		}
+
+		protected override void OnOpening () {
+			if (Behavior != null)
+				Behavior.Initialize (this);
+			base.OnOpening ();
 		}
 
 		protected override IAsyncResult OnBeginOpen (
@@ -144,6 +207,6 @@ namespace System.ServiceModel
 
 		protected override void OnClose (TimeSpan timeout)
 		{
-		}
+		}		
 	}
 }

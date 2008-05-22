@@ -38,12 +38,12 @@ using System.ServiceModel.Channels;
 namespace System.ServiceModel.Description
 {
 	public class ContractDescription
-	{
+	{		
 		[MonoTODO]
 		public static ContractDescription GetContract (
 			Type contractType)
 		{
-			return ContractDescriptionGenerator.GetContract (contractType, (Type) null);
+			return ContractDescriptionGenerator.GetContract (contractType);
 		}
 
 		[MonoTODO]

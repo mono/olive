@@ -36,6 +36,9 @@ using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 using System.Xml;
 using NUnit.Framework;
+using System.Collections.ObjectModel;
+using SMMessage = System.ServiceModel.Channels.Message;
+using System.Threading;
 
 namespace MonoTests.System.ServiceModel.Dispatcher
 {
@@ -87,5 +90,302 @@ namespace MonoTests.System.ServiceModel.Dispatcher
 			Assert.AreEqual ("*", udo.ReplyAction, "#24-4");
 			Assert.IsFalse (udo.IsOneWay, "#24-5");
 		}
+
+		[Test]
+		public void TestInstanceBehavior1()
+		{
+			
+			Result res = new Result ();
+			MessageInspectBehavior b = new MessageInspectBehavior ();
+			b.instanceCtxInitializer = new MyInstanceContextInitializer (res);
+			b.instanceCtxProvider = new MyInstanceContextProvider (null, res);
+			//b.instanceProvider = new MyInstanceProvider (null, res);
+			b.msgInspect = new MyMessageInspector (res);
+			string expected = "GetExistingInstanceContext , InitializeInstanceContext , OperationContext , InstanceContext = Opening , Initialize , OperationContext , InstanceContext = Opening , AfterReceiveRequest , OperationContext , InstanceContext = Opened , BeforeSendReply , OperationContext , InstanceContext = Opened , IsIdle , OperationContext , InstanceContext = Opened , NotifyIdle , OperationContext , InstanceContext = Opened , ";
+			TestInstanceBehavior (b, expected, res, 1);
+		}
+
+		[Test]		
+		public void TestInstanceBehavior2 () {
+
+			Result res = new Result ();
+			MessageInspectBehavior b = new MessageInspectBehavior ();
+			b.instanceCtxInitializer = new MyInstanceContextInitializer (res);
+			b.instanceCtxProvider = new MyInstanceContextProvider (null, res);
+			b.instanceProvider = new MyInstanceProvider (new AllActions (res), res);
+			b.msgInspect = new MyMessageInspector (res);
+			string expected = "GetExistingInstanceContext , InitializeInstanceContext , OperationContext , InstanceContext = Opening , Initialize , OperationContext , InstanceContext = Opening , AfterReceiveRequest , OperationContext , InstanceContext = Opened , GetInstance1 , OperationContext , InstanceContext = Opened , BeforeSendReply , OperationContext , InstanceContext = Opened , ReleaseInstance , OperationContext , InstanceContext = Opened , IsIdle , OperationContext , InstanceContext = Opened , NotifyIdle , OperationContext , InstanceContext = Opened , ";
+			TestInstanceBehavior (b, expected, res, 1);
+		}
+
+		[Test]		
+		public void TestInstanceBehavior3 () {
+
+			Result res = new Result ();
+			MessageInspectBehavior b = new MessageInspectBehavior ();
+			b.instanceCtxInitializer = new MyInstanceContextInitializer (res);
+
+			InstanceContext c = new InstanceContext (new AllActions (res));
+			
+			b.instanceCtxProvider = new MyInstanceContextProvider (c, res);
+			b.instanceProvider = new MyInstanceProvider (new AllActions (res), res);
+			b.msgInspect = new MyMessageInspector (res);
+			string expected = "GetExistingInstanceContext , InitializeInstanceContext , OperationContext , InstanceContext = Opening , Initialize , OperationContext , InstanceContext = Opening , AfterReceiveRequest , OperationContext , InstanceContext = Opened , BeforeSendReply , OperationContext , InstanceContext = Opened , ";
+			TestInstanceBehavior (b, expected, res, 1);			
+		}
+
+		[Test]		
+		public void TestInstanceBehavior4 () {
+
+			Result res = new Result ();
+			MessageInspectBehavior b = new MessageInspectBehavior ();
+			b.instanceCtxInitializer = new MyInstanceContextInitializer (res);	
+		
+			b.instanceCtxProvider = new MyInstanceContextProvider (null, res);
+			b.instanceProvider = new MyInstanceProvider (new AllActions (res), res);
+			b.msgInspect = new MyMessageInspector (res);
+			string expected = "GetExistingInstanceContext , InitializeInstanceContext , OperationContext , InstanceContext = Opening , Initialize , OperationContext , InstanceContext = Opening , AfterReceiveRequest , OperationContext , InstanceContext = Opened , GetInstance1 , OperationContext , InstanceContext = Opened , BeforeSendReply , OperationContext , InstanceContext = Opened , ReleaseInstance , OperationContext , InstanceContext = Opened , IsIdle , OperationContext , InstanceContext = Opened , NotifyIdle , OperationContext , InstanceContext = Opened , GetExistingInstanceContext , InitializeInstanceContext , OperationContext , InstanceContext = Opening , Initialize , OperationContext , InstanceContext = Opening , AfterReceiveRequest , OperationContext , InstanceContext = Opened , GetInstance1 , OperationContext , InstanceContext = Opened , BeforeSendReply , OperationContext , InstanceContext = Opened , ReleaseInstance , OperationContext , InstanceContext = Opened , IsIdle , OperationContext , InstanceContext = Opened , NotifyIdle , OperationContext , InstanceContext = Opened , ";
+			TestInstanceBehavior (b, expected, res, 2);			
+		}
+
+		void TestInstanceBehavior (MessageInspectBehavior b, string expected, Result actual, int invocations) {
+			ServiceHost h = new ServiceHost (typeof (AllActions), new Uri ("http://localhost:8080"));
+			try {
+				h.AddServiceEndpoint (typeof (IAllActions).FullName, new BasicHttpBinding (), "AllActions");
+				h.Description.Behaviors.Add (b);
+				ServiceDebugBehavior db = h.Description.Behaviors.Find<ServiceDebugBehavior> ();
+				db.IncludeExceptionDetailInFaults = true;
+				h.Open ();
+				AllActionsProxy p = new AllActionsProxy (new BasicHttpBinding (), new EndpointAddress ("http://localhost:8080/AllActions"));
+
+				for (int i = 0; i < invocations; ++i)
+					p.Get (10);
+
+				//let ther server finish his work
+				Thread.Sleep (100);
+				Assert.AreEqual (expected, actual.string_res);
+			}
+			finally {				
+				h.Close ();
+			}
+		}
 	}
+
+
+#region helpers
+
+	#region message inspectors
+
+	public class MessageInspectBehavior : IServiceBehavior
+	{
+		public MyMessageInspector msgInspect;
+		public MyInstanceContextProvider instanceCtxProvider;
+		public MyInstanceProvider instanceProvider;
+		public MyInstanceContextInitializer instanceCtxInitializer;
+
+		public void AddBindingParameters (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) {
+			
+		}
+
+		public void ApplyDispatchBehavior (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+			ChannelDispatcher d = serviceHostBase.ChannelDispatchers [0] as ChannelDispatcher;
+			d.Endpoints [0].DispatchRuntime.MessageInspectors.Add (msgInspect);
+			d.Endpoints [0].DispatchRuntime.InstanceContextProvider = instanceCtxProvider;
+			d.Endpoints [0].DispatchRuntime.InstanceProvider = instanceProvider;
+			d.Endpoints [0].DispatchRuntime.InstanceContextInitializers.Add (instanceCtxInitializer);
+		}
+
+		public void Validate (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+			
+		}
+	}
+
+	public class MyMessageInspector : IDispatchMessageInspector
+	{
+		Result res;
+
+		public MyMessageInspector (Result result) {
+			res = result;
+		}
+		#region IDispatchMessageInspector Members
+
+		public object AfterReceiveRequest (ref Message request, IClientChannel channel, InstanceContext instanceContext) {
+			res.string_res += "AfterReceiveRequest , ";
+			res.AddCurrentOperationContextInfo ();
+			return null;
+		}
+
+		public void BeforeSendReply (ref Message reply, object correlationState) {
+			res.string_res += "BeforeSendReply , ";
+			res.AddCurrentOperationContextInfo ();
+		}
+
+		#endregion
+	}
+
+	#endregion
+
+	#region InstanceProvider
+
+	public class MyInstanceProvider : IInstanceProvider
+	{		
+		object instance;
+		Result res;
+
+		public MyInstanceProvider (object obj, Result result) {
+			instance = obj;
+			res = result;
+		}
+
+		#region IInstanceProvider Members
+
+		public object GetInstance (InstanceContext instanceContext, Message message) {
+			res.string_res += "GetInstance1 , ";
+			res.AddCurrentOperationContextInfo ();
+			return instance;
+		}
+
+		public object GetInstance (InstanceContext instanceContext) {
+			res.string_res += "GetInstance2 , ";
+			res.AddCurrentOperationContextInfo ();
+			return instance;
+		}
+
+		public void ReleaseInstance (InstanceContext instanceContext, object instance) {
+			res.string_res += "ReleaseInstance , ";
+			res.AddCurrentOperationContextInfo ();
+		}
+
+		#endregion
+	}
+
+	#endregion
+
+	#region InstanceContextProvider
+
+	public class MyInstanceContextProvider : IInstanceContextProvider
+	{
+
+		InstanceContext existing;
+		Result res;
+
+		public MyInstanceContextProvider (InstanceContext exist, Result result) {
+			existing = exist;
+			res = result;
+		}
+
+		#region IInstanceContextProvider Members
+
+		public InstanceContext GetExistingInstanceContext (Message message, IContextChannel channel) {
+			res.string_res += "GetExistingInstanceContext , ";
+			res.AddCurrentOperationContextInfo ();
+			return existing;
+		}
+
+		public void InitializeInstanceContext (InstanceContext instanceContext, Message message, IContextChannel channel) {
+			res.string_res += "InitializeInstanceContext , ";
+			res.AddCurrentOperationContextInfo ();
+		}
+
+		public bool IsIdle (InstanceContext instanceContext) {
+			res.string_res += "IsIdle , ";
+			res.AddCurrentOperationContextInfo ();
+			return false;
+		}
+
+		public void NotifyIdle (InstanceContextIdleCallback callback, InstanceContext instanceContext) {
+			res.string_res += "NotifyIdle , ";
+			res.AddCurrentOperationContextInfo ();			
+		}
+
+		#endregion
+	}
+
+	#endregion
+
+	#region InstanceContextInitializer
+
+	public class MyInstanceContextInitializer : IInstanceContextInitializer
+	{
+		Result res;
+
+		public MyInstanceContextInitializer (Result result) {
+			res = result;
+		}
+
+		public void Initialize (InstanceContext instanceContext, Message message) {
+			res.string_res += "Initialize , ";
+			res.AddCurrentOperationContextInfo ();
+		}
+	}
+
+	#endregion
+
+	#region Helpers
+
+	public class Result
+	{
+		public string string_res = "";
+
+		public void AddCurrentOperationContextInfo()
+		{
+			if (OperationContext.Current != null) {
+				string_res += "OperationContext , ";
+				if (OperationContext.Current.InstanceContext != null) {
+					string_res += ("InstanceContext = " + OperationContext.Current.InstanceContext.State + " , ");
+					//if (OperationContext.Current.InstanceContext != null)
+					//    string_res += ("Instance = " + OperationContext.Current.InstanceContext.GetServiceInstance () + " , ");
+				}
+			}
+		}
+	}
+
+	class AllActions : IAllActions, IDisposable
+	{
+		Result res;
+
+		public AllActions () { }
+
+		public AllActions (Result result) {
+			res = result;
+		}
+
+		[OperationBehavior (ReleaseInstanceMode = ReleaseInstanceMode.BeforeAndAfterCall)]
+		public int Get(int i)
+		{
+			return i;
+		}
+
+		public void Dispose () {
+			if (res != null)
+				res.string_res += "Disposed , ";
+		}
+	}
+
+	[ServiceContract (Namespace = "http://MonoTests.System.ServiceModel.Dispatcher")]
+	public interface IAllActions
+	{		
+		[OperationContract]		
+		int Get(int i);
+	}
+
+	#endregion
+
+	#region ClientProxy
+	
+	public class AllActionsProxy : ClientBase<IAllActions>, IAllActions
+	{
+		public AllActionsProxy (Binding binding, EndpointAddress remoteAddress) :
+			base (binding, remoteAddress)
+		{
+		}
+
+		public int Get (int i) {
+			return base.Channel.Get (i);
+		}
+	}	
+
+	#endregion
+#endregion
+
 }

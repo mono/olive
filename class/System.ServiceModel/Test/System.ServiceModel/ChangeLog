@@ -1,3 +1,11 @@
+2008-05-22  Roei Erez  <roeie@mainsoft.com>
+	* fix ContractDescription.GetContract implementation
+	* Refactor Request processing
+	* Add support for message inspectors
+	* Add support for InstanceContextProvider & InstanceProvider, including lifecycles events
+	like: ReleaseServiceInstance, Open, Close...
+	* Add relevant test cases.
+
 2008-05-07  Eyal Alaluf <eyala@mainsoft.com>
 
 	* ChannelFactory_1Test.cs: Test Enum in/out parameters with code generation.

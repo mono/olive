@@ -391,6 +391,25 @@ namespace MonoTests.System.ServiceModel
 			Assert.AreEqual (0, md.Body.Parts.Count);
 		}
 
+		[Test]
+		public void TestContractFromObject () {
+			ContractDescription cd = ContractDescription.GetContract (typeof (Foo));
+			ServiceAssert.AssertContractDescription (typeof (IFoo).Name, "http://tempuri.org/", SessionMode.Allowed, typeof (IFoo), null, cd, "#1");
+			Assert.AreEqual (cd.Operations.Count, 2);
+			OperationBehaviorAttribute op = cd.Operations.Find ("HeyHey").Behaviors.Find<OperationBehaviorAttribute> ();
+			Assert.IsNotNull (op);
+			Assert.AreEqual (
+				op.ReleaseInstanceMode,
+				ReleaseInstanceMode.None, "#2");
+
+			cd = ContractDescription.GetContract (typeof (IFoo), typeof (Foo));
+			ServiceAssert.AssertContractDescription (typeof (IFoo).Name, "http://tempuri.org/", SessionMode.Allowed, typeof (IFoo), null, cd, "#3");
+			Assert.AreEqual (cd.Operations.Count, 2, "#4");
+			Assert.AreEqual (
+				cd.Operations.Find ("HeyHey").Behaviors.Find<OperationBehaviorAttribute> ().ReleaseInstanceMode,
+				ReleaseInstanceMode.AfterCall, "#5");
+		}
+
 		// It is for testing attribute search in interfaces.
 		public class Foo : IFoo
 		{
@@ -399,6 +418,7 @@ namespace MonoTests.System.ServiceModel
 				return null;
 			}
 
+			[OperationBehavior (ReleaseInstanceMode = ReleaseInstanceMode.AfterCall)]
 			public void HeyHey (out string out1, ref string ref1)
 			{
 				out1 = null;
@@ -412,7 +432,7 @@ namespace MonoTests.System.ServiceModel
 			{
 				return null;
 			}
-
+			
 			public void HeyHey (out string out1, ref string ref1)
 			{
 				out1 = null;

@@ -154,12 +154,11 @@ w.Close ();
 			AutoResetEvent wait = new AutoResetEvent (false);
 			try {
 				source.Http.BeginGetContext (HttpContextReceived, wait);
-			}
-			catch (HttpListenerException e) {
+			} catch (HttpListenerException e) {
 				if (e.ErrorCode == 0x80004005) // invalid handle. Happens during shutdown.
-					while (true) Thread.Sleep(1000); // thread is about to be terminated.
+					while (true) Thread.Sleep (1000); // thread is about to be terminated.
 				throw;
-			}
+			} catch (ObjectDisposedException) { return false; }
 			// FIXME: we might want to take other approaches.
 			if (timeout.Ticks > int.MaxValue)
 				timeout = TimeSpan.FromDays (20);

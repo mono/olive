@@ -40,15 +40,15 @@ namespace System.ServiceModel.Description
 	internal static class ContractDescriptionGenerator
 	{
 		public static ServiceContractAttribute 
-			GetServiceContractAttribute (ref Type contractType)
+			GetServiceContractAttribute (Type serviceType, out Type contractType)
 		{
 			Dictionary<Type,ServiceContractAttribute> table =
 				new Dictionary<Type,ServiceContractAttribute> ();
-			GetServiceContractAttribute (contractType, table);
+			GetServiceContractAttribute (serviceType, table);
 			if (table.Count == 0)
-				throw new InvalidOperationException (String.Format ("Attempted to get contract type from '{0}' which neither is a service contract nor does it inherit service contract.", contractType));
+				throw new InvalidOperationException (String.Format ("Attempted to get contract type from '{0}' which neither is a service contract nor does it inherit service contract.", serviceType));
 			if (table.Count != 1)
-				throw new InvalidOperationException (String.Format ("Type '{0}' contains two or more service contracts at equivalent priority.", contractType));
+				throw new InvalidOperationException (String.Format ("Type '{0}' contains two or more service contracts at equivalent priority.", serviceType));
 			IEnumerator<KeyValuePair<Type,ServiceContractAttribute>> en = table.GetEnumerator ();
 			en.MoveNext ();
 			// Here contractType is set the actual interface type.
@@ -80,15 +80,13 @@ namespace System.ServiceModel.Description
 
 		[MonoTODO]
 		public static ContractDescription GetContract (
-			Type contractType)
-		{
+			Type contractType) {
 			return GetContract (contractType, (Type) null);
 		}
 
 		[MonoTODO]
 		public static ContractDescription GetContract (
-			Type contractType, object serviceImplementation)
-		{
+			Type contractType, object serviceImplementation) {
 			if (serviceImplementation == null)
 				throw new ArgumentNullException ("serviceImplementation");
 			return GetContract (contractType,
@@ -108,30 +106,39 @@ namespace System.ServiceModel.Description
 
 		[MonoTODO]
 		public static ContractDescription GetContract (
-			Type contractType, Type serviceType)
+			Type givenContractType, Type givenServiceType)
 		{
 			// FIXME: serviceType should be used for specifying attributes like OperationBehavior.
 
-			ServiceContractAttribute sca = GetServiceContractAttribute (ref contractType);
+			Type exactContractType = null;
+			ServiceContractAttribute sca = GetServiceContractAttribute (givenContractType, out exactContractType);
 
-			string name = sca.Name != null ? sca.Name : contractType.Name;
+			string name = sca.Name != null ? sca.Name : exactContractType.Name;
 			string ns = sca.Namespace != null ? sca.Namespace : "http://tempuri.org/";
 
 			ContractDescription cd =
 				new ContractDescription (name, ns);
-			cd.ContractType = contractType;
+			cd.ContractType = exactContractType;
 			cd.CallbackContractType = sca.CallbackContract;
 			cd.SessionMode = sca.SessionMode;
 			if (sca.ConfigurationName != null)
 				cd.ConfigurationName = sca.ConfigurationName;
 			else
-				cd.ConfigurationName = contractType.FullName;
+				cd.ConfigurationName = exactContractType.FullName;
 			if (sca.HasProtectionLevel)
 				cd.ProtectionLevel = sca.ProtectionLevel;
 
 			// FIXME: load Behaviors
+			MethodInfo [] contractMethods = exactContractType.GetMethods ();
+			MethodInfo [] serviceMethods = contractMethods;
+			if (givenServiceType != null && exactContractType.IsInterface) {
+				serviceMethods = givenServiceType.GetInterfaceMap (exactContractType).TargetMethods;
+			}
+			
+			for (int i = 0; i < contractMethods.Length; ++i)
+			{
 
-			foreach (MethodInfo mi in contractType.GetMethods ()) {
+				MethodInfo mi = contractMethods [i];
 				OperationContractAttribute oca = GetOperationContractAttribute (mi);
 				if (oca == null)
 					continue;
@@ -139,13 +146,17 @@ namespace System.ServiceModel.Description
 				if (oca.AsyncPattern) {
 					if (String.Compare ("Begin", 0, mi.Name,0, 5) != 0)
 						throw new InvalidOperationException ("For async operation contract patterns, the initiator method name must start with 'Begin'.");
-					end = contractType.GetMethod ("End" + mi.Name.Substring (5));
+					end = givenContractType.GetMethod ("End" + mi.Name.Substring (5));
 					if (end == null)
 						throw new InvalidOperationException ("For async operation contract patterns, corresponding End method is required for each Begin method.");
 					if (GetOperationContractAttribute (end) != null)
 						throw new InvalidOperationException ("Async 'End' method must not have OperationContractAttribute. It is automatically treated as the EndMethod of the corresponding 'Begin' method.");
 				}
-				OperationDescription od = GetOrCreateOperation (cd, mi, oca, end != null ? end.ReturnType : null);
+				OperationDescription od = GetOrCreateOperation (cd, 
+																mi, 
+																serviceMethods [i], 
+																oca, 
+																end != null ? end.ReturnType : null);
 				if (end != null)
 					od.EndMethod = end;
 			}
@@ -159,7 +170,7 @@ namespace System.ServiceModel.Description
 		}
 
 		static OperationDescription GetOrCreateOperation (
-			ContractDescription cd, MethodInfo mi,
+			ContractDescription cd, MethodInfo mi, MethodInfo serviceMethod,
 			OperationContractAttribute oca,
 			Type asyncReturnType)
 		{
@@ -193,10 +204,13 @@ namespace System.ServiceModel.Description
 			od.IsInitiating = oca.IsInitiating;
 			od.IsTerminating = oca.IsTerminating;
 
-			foreach (object obj in mi.GetCustomAttributes (true))
-				if (obj is IOperationBehavior)
-					od.Behaviors.Add ((IOperationBehavior) obj);
-
+			if (serviceMethod != null) {
+				foreach (object obj in serviceMethod.GetCustomAttributes (true))
+					if (obj is IOperationBehavior)
+						od.Behaviors.Add ((IOperationBehavior) obj);
+			}
+			if (od.Behaviors.Find<OperationBehaviorAttribute>() == null)
+				od.Behaviors.Add (new OperationBehaviorAttribute ());
 			// FIXME: fill KnownTypes, Behaviors and Faults.
 
 			return od;

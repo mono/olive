@@ -276,19 +276,16 @@ namespace MonoTests.System.ServiceModel
 				_host = h;
 			}
 
-			public void AddBindingParameters (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, global::System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) {
-				Console.WriteLine ("MyServiceBehavior - AddBindingParameters " + _host.ChannelDispatchers.Count);
+			public void AddBindingParameters (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, global::System.Collections.ObjectModel.Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) {				
 				_state.CurrentStage += ", IServiceBehavior.AddBindingParameters";				
 				bindingParameters.Add (this);
 			}
 
-			public void ApplyDispatchBehavior (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
-				Console.WriteLine ("MyServiceBehavior - ApplyDispatchBehavior " + _host.ChannelDispatchers.Count);
+			public void ApplyDispatchBehavior (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {				
 				_state.CurrentStage += ", IServiceBehavior.ApplyDispatchBehavior";				
 			}
 
 			public void Validate (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
-				Console.WriteLine ("MyServiceBehavior - Validate " + _host.ChannelDispatchers.Count);
 				_state.CurrentStage += ", IServiceBehavior.Validate";
 				Assert.AreEqual (_host.ChannelDispatchers.Count, 0);
 			}
