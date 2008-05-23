@@ -39,7 +39,7 @@ namespace System.Windows.Automation.Provider
 
 		IRawElementProviderSimple[] GetEmbeddedFragmentRoots();
 		int[] GetRuntimeId ();
-		IRawElementProviderSimple Navigate (NavigateDirection direction);
+		IRawElementProviderFragment Navigate (NavigateDirection direction);
 		void SetFocus ();
 	}
 }

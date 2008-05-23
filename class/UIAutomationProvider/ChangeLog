@@ -1,3 +1,9 @@
+2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation.Provider/IRawElementProviderFragment.cs:
+	  Navigate returns IRawElementProviderFragment, not
+	  IRawElementProviderSimple.
+
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomation.mds: Add UIAutomationBridge solution.
