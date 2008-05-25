@@ -53,6 +53,9 @@ namespace MonoTests.Features.Contracts
 
 		[OperationContract]
 		float? NullableFloat (float? x);
+
+		[OperationContract]
+		TimeSpan AddTimeSpan (TimeSpan t1, TimeSpan t2);
 	}
 	
 	public class PrimitiveTester : IPrimitiveTesterContract
@@ -114,6 +117,10 @@ namespace MonoTests.Features.Contracts
 
 		public float? NullableFloat (float? x) {
 			return x == null ? x : x + 1;
+		}
+
+		public TimeSpan AddTimeSpan (TimeSpan t1, TimeSpan t2) {
+			return t1.Add (t2);
 		}
 	}	
 }
