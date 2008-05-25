@@ -78,12 +78,13 @@ Console.WriteLine (error);
 					"FIXME_InternalError",
 					version.Addressing.Namespace);
 
-			ExceptionDetail detail = 
-				ctx.EndpointDispatcher.ChannelDispatcher.IncludeExceptionDetailInFaults ?
-				new ExceptionDetail (error) : null;
 			// FIXME: set correct fault reason.
-			return Message.CreateMessage (version, fc,
-				"error occured", detail, ctx.IncomingMessageHeaders.Action);
+			if (ctx.EndpointDispatcher.ChannelDispatcher.IncludeExceptionDetailInFaults) {
+				ExceptionDetail detail = new ExceptionDetail (error);
+				return Message.CreateMessage (version, fc,
+					"error occured", detail, ctx.IncomingMessageHeaders.Action);
+			}
+			return Message.CreateMessage (version, fc, "error occured", ctx.IncomingMessageHeaders.Action);
 		}
 
 		class SimpleFaultConverter : FaultConverter
