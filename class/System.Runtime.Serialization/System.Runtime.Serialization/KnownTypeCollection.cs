@@ -151,15 +151,17 @@ namespace System.Runtime.Serialization
 			if (type.IsEnum)
 				return QName.Empty;
 
-			if (type == typeof (object))
-				return any_type;
-			if (type == typeof (Guid))
-				return guid_type;
 			switch (Type.GetTypeCode (type)) {
 			case TypeCode.Object: // other than System.Object
 			case TypeCode.DBNull: // it is natively mapped, but not in ms serialization namespace.
 			case TypeCode.Empty:
 			default:
+				if (type == typeof (object))
+					return any_type;
+				if (type == typeof (Guid))
+					return guid_type;
+				if (type == typeof (TimeSpan))
+					return duration_type;
 				return QName.Empty;
 			case TypeCode.Boolean:
 				return bool_type;
@@ -197,15 +199,17 @@ namespace System.Runtime.Serialization
 		internal static string PredefinedTypeObjectToString (object obj)
 		{
 			Type type = obj.GetType ();
-			if (type == typeof (object))
-				return String.Empty;
-			if (type == typeof (Guid))
-				return XmlConvert.ToString ((Guid) obj);
 			switch (Type.GetTypeCode (type)) {
 			case TypeCode.Object: // other than System.Object
 			case TypeCode.Empty:
 			default:
-				return null;
+				if (type == typeof (object))
+					return String.Empty;
+				if (type == typeof (Guid))
+					return XmlConvert.ToString ((Guid) obj);
+				if (type == typeof (TimeSpan))
+					return XmlConvert.ToString ((TimeSpan) obj);
+				throw new Exception ("Internal error: missing predefined type serialization for type " + type.FullName);
 			case TypeCode.DBNull: // predefined, but not primitive
 				return String.Empty;
 			case TypeCode.Boolean:
@@ -490,7 +494,7 @@ namespace System.Runtime.Serialization
 				return false;
 			if (Type.GetTypeCode (type) != TypeCode.Object) // explicitly primitive
 				return true;
-			if (type == typeof (Guid) || type == typeof (object)) // special primitives
+			if (type == typeof (Guid) || type == typeof (object) || type == typeof(TimeSpan)) // special primitives
 				return true;
 			// nullable
 			if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))
