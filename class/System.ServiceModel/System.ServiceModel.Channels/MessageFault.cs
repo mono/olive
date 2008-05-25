@@ -54,15 +54,14 @@ namespace System.ServiceModel.Channels
 			XmlDictionaryReader r = message.GetReaderAtBodyContents ();
 			r.ReadStartElement ("Fault", message.Version.Envelope.Namespace);
 			r.MoveToContent ();
-			string ns = message.Version.Envelope.Namespace;
 
 			while (r.NodeType != XmlNodeType.EndElement) {
 				switch (r.LocalName) {
 				case "faultcode":
-					fc = ReadFaultCode11 (r, ns);
+					fc = ReadFaultCode11 (r);
 					break;
 				case "faultstring":
-					fr = new FaultReason (r.ReadElementContentAsString ("faultstring", ns));
+					fr = new FaultReason (r.ReadElementContentAsString());
 					break;
 				case "detail":
 					//BUGBUG: Handle children of type other than ExceptionDetail, in order to comply with 
@@ -110,7 +109,7 @@ namespace System.ServiceModel.Channels
 			return CreateFault (fc, fr);
 		}
 
-		static FaultCode ReadFaultCode11 (XmlDictionaryReader r, string ns)
+		static FaultCode ReadFaultCode11 (XmlDictionaryReader r)
 		{
 			FaultCode subcode = null;
 			XmlQualifiedName value = XmlQualifiedName.Empty;
@@ -118,12 +117,11 @@ namespace System.ServiceModel.Channels
 			if (r.IsEmptyElement)
 				throw new ArgumentException ("Fault Code is mandatory in SOAP fault message.");
 
-if (r.NamespaceURI != ns) throw new Exception ("BAHHH: " + r + r.NodeType);
-			r.ReadStartElement ("faultcode", ns);
+			r.ReadStartElement ("faultcode");
 			r.MoveToContent ();
 			while (r.NodeType != XmlNodeType.EndElement) {
 				if (r.NodeType == XmlNodeType.Element)
-					subcode = ReadFaultCode11 (r, ns);
+					subcode = ReadFaultCode11 (r);
 				else
 					value = (XmlQualifiedName) r.ReadContentAs (typeof (XmlQualifiedName), r as IXmlNamespaceResolver);
 				r.MoveToContent ();

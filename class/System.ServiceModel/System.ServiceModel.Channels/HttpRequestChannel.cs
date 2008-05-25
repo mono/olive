@@ -127,7 +127,13 @@ namespace System.ServiceModel.Channels
 				requestStream.Close ();
 			}
 
-			WebResponse res = web_request.GetResponse ();
+			WebResponse res;
+			try {
+				res = web_request.GetResponse ();
+			}
+			catch (WebException we) {
+				res = we.Response;
+			}
 			try {
 				using (Stream responseStream = res.GetResponseStream ()) {
 					MemoryStream ms = new MemoryStream ();
