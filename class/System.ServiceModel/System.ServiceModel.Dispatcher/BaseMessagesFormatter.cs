@@ -355,7 +355,7 @@ namespace System.ServiceModel.Dispatcher
 					r.Skip ();
 			}
 
-			if (md.Body.WrapperName != null)
+			if (md.Body.WrapperName != null && !r.EOF)
 				r.ReadEndElement ();
 
 			return parts;

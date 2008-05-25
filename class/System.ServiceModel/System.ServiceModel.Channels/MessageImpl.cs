@@ -28,6 +28,7 @@
 using System;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.IO;
 
 namespace System.ServiceModel.Channels
 {
@@ -42,6 +43,9 @@ namespace System.ServiceModel.Channels
 		MessageProperties properties = new MessageProperties ();
 		bool is_empty, is_fault, body_started, body_consumed;
 		int max_headers;
+
+		string body;
+
 		public XmlReaderMessage (MessageVersion version, XmlDictionaryReader reader, int maxSizeOfHeaders)
 		{
 			this.version = version;
@@ -52,6 +56,13 @@ namespace System.ServiceModel.Channels
 			// Headers and IsEmpty are consumed at this stage.
 			// Body content is not.
 			ReadBodyStart ();
+
+			StringWriter sw = new StringWriter ();
+			using (XmlDictionaryWriter bodyXml = XmlDictionaryWriter.CreateDictionaryWriter (XmlWriter.Create (sw))) {
+				while (!reader.EOF && reader.NodeType != XmlNodeType.EndElement)
+					bodyXml.WriteNode (reader, false);
+			}
+			this.body = sw.ToString ();
 		}
 
 		public override MessageHeaders Headers {
@@ -96,15 +107,9 @@ namespace System.ServiceModel.Channels
 
 		protected override XmlDictionaryReader OnGetReaderAtBodyContents ()
 		{
-			if (IsEmpty)
-				throw new InvalidOperationException ("XmlReader at body contents cannot be returned since the message body is empty.");
-			if (body_consumed)
-				throw new InvalidOperationException ("XmlReader at body contents is already consumed.");
-
-			if (!body_started)
-				ReadBodyStart ();
-			body_consumed = true;
-			return reader;
+			XmlDictionaryReader newReader = XmlDictionaryReader.CreateDictionaryReader (XmlReader.Create (new StringReader (this.body)));
+			newReader.MoveToContent();
+			return newReader;
 		}
 
 		protected override void OnWriteBodyContents (
