@@ -100,10 +100,10 @@ namespace MonoTests.Features.Serialization
 
 		[Test]
 		public void TestTimeSpan () {
-			TimeSpan t1 = new TimeSpan (10);
-			TimeSpan t2 = new TimeSpan (20);
+			TimeSpan t1 = new TimeSpan (12345);
+			TimeSpan t2 = new TimeSpan (12345);
 			TimeSpan t3 = Client.AddTimeSpan (t1, t2);
-			Assert.AreEqual (t3.Ticks, 30);
+			Assert.AreEqual (t3.Ticks, 24690);
 		}
 	}
 }
