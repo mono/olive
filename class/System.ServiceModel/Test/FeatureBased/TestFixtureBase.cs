@@ -11,6 +11,8 @@ using System.Configuration;
 using System.IO;
 using System.Net;
 using MonoTests.stand_alone.WebHarness;
+using System.ServiceModel.Dispatcher;
+using System.Collections.ObjectModel;
 
 namespace MonoTests.Features
 {
@@ -22,13 +24,54 @@ namespace MonoTests.Features
 			endpointBase = ConfigurationManager.AppSettings ["endpointBase"] ?? "http://localhost:9999/";
 			if (!endpointBase.EndsWith ("/"))
 				endpointBase = endpointBase + '/';
+			logMessages = Boolean.Parse (ConfigurationManager.AppSettings ["logMessages"] ?? "false");
 		}
 		public static bool onlyServers;
 		public static bool onlyClients;
 		public static string endpointBase;
+		public static bool logMessages;
 		public static bool IsLocal { get { return !onlyServers && !onlyClients; } }
 	}
 
+	class LoggerMessageInspector : IDispatchMessageInspector
+	{
+		#region IDispatchMessageInspector Members
+
+		public object AfterReceiveRequest (ref Message request, IClientChannel channel, InstanceContext instanceContext) {
+			Console.WriteLine ("****Begin message received by host:");
+			Console.WriteLine (request);
+			Console.WriteLine ("****End message received by host:");
+			return new object ();
+		}
+
+		public void BeforeSendReply (ref Message reply, object correlationState) {
+			Console.WriteLine ("****Begin message reply from host:");
+			Console.WriteLine (reply);
+			Console.WriteLine ("****End message reply from host:");
+		}
+
+		#endregion
+	}
+	class LoggerBehavior : IServiceBehavior
+	{
+
+		#region IServiceBehavior Members
+
+		public void AddBindingParameters (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase, Collection<ServiceEndpoint> endpoints, BindingParameterCollection bindingParameters) {
+
+		}
+
+		public void ApplyDispatchBehavior (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+			ChannelDispatcher dispatcher = serviceHostBase.ChannelDispatchers [0] as ChannelDispatcher;
+			dispatcher.Endpoints [0].DispatchRuntime.MessageInspectors.Add (new LoggerMessageInspector ());
+		}
+
+		public void Validate (ServiceDescription serviceDescription, ServiceHostBase serviceHostBase) {
+
+		}
+
+		#endregion
+	}
 
 	public abstract class TestFixtureBase<TClient, TServer, IServer> where TClient : new() where TServer: new()
 	{
@@ -138,6 +181,8 @@ namespace MonoTests.Features
 			smb.HttpGetEnabled = true;
 			smb.HttpGetUrl = new Uri (getMexEndpoint ());
 			host.Description.Behaviors.Add (smb);
+			if (Configuration.logMessages)
+				host.Description.Behaviors.Add (new LoggerBehavior ());
             return host;
 		}
 
