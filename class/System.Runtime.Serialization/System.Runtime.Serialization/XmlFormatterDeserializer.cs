@@ -112,7 +112,7 @@ namespace System.Runtime.Serialization
 			if (reader.NodeType == XmlNodeType.EndElement)
 				reader.ReadEndElement ();
 			else if (reader.NodeType != XmlNodeType.None)
-				throw new SerializationException (String.Format ("Expecting state 'EndElement'. Encountered state '{0}' with name '{1}' with namespace '{2}'.", reader.NodeType, reader.Name, reader.NamespaceURI));
+				throw new SerializationException (String.Format ("Deserializing type '{3}'. Expecting state 'EndElement'. Encountered state '{0}' with name '{1}' with namespace '{2}'.", reader.NodeType, reader.Name, reader.NamespaceURI, type.FullName));
 			return res;
 		}
 
