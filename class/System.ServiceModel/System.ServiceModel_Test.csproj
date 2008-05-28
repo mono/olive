@@ -105,6 +105,7 @@
     <Compile Include="Test\FeatureBased\Features.Client\UntypedMessageTesterProxy.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\AsyncCallTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\AsyncPatternContract.cs" />
+    <Compile Include="Test\FeatureBased\Features.Contracts\DualContract.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\DataContractTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\ExitpProcessHelper.cs" />
     <Compile Include="Test\FeatureBased\Features.Contracts\FaultsTester.cs" />
@@ -118,6 +119,7 @@
     </Compile>
     <Compile Include="Test\FeatureBased\Features.Serialization\AsyncPatternTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\DataContractSerializerTest.cs" />
+    <Compile Include="Test\FeatureBased\Features.Serialization\DualContractTester.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\ExitProcessHelper.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\FaultsTest.cs" />
     <Compile Include="Test\FeatureBased\Features.Serialization\KnownTypeTest.cs" />

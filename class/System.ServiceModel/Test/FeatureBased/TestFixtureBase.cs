@@ -137,8 +137,6 @@ namespace MonoTests.Features
 				_hostBase.Open ();
 			}
 
-			if (runClient)
-				_client = InitializeClient ();			
 		}
 
         string getEndpoint()
@@ -163,6 +161,8 @@ namespace MonoTests.Features
 
 		public TClient ClientProxy {
 			get {
+				if (_client == null)
+					_client = InitializeClient ();			
 				return _client;
 			}			
 		}

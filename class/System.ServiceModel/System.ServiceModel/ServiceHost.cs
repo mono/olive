@@ -118,13 +118,14 @@ namespace System.ServiceModel
 			contracts = new Dictionary<string,ContractDescription> ();
 			implementedContracts = contracts;
 			ServiceDescription sd;
-			ContractDescription cd = GetServiceContractDescription();
+			foreach (ContractDescription cd in GetServiceContractDescriptions())
+				contracts.Add (cd.ContractType.FullName, cd);
+
 			if (SingletonInstance != null) {
 				sd = ServiceDescription.GetService (instance);				
 			} else {
 				sd = ServiceDescription.GetService (service_type);				
 			}
-			contracts.Add (cd.ContractType.FullName, cd);
 
 			ServiceBehaviorAttribute sba = PopulateAttribute<ServiceBehaviorAttribute> ();
 			if (SingletonInstance != null)
@@ -134,10 +135,13 @@ namespace System.ServiceModel
 			return sd;
 		}
 
-		ContractDescription GetServiceContractDescription () {
+		IEnumerable<ContractDescription> GetServiceContractDescriptions () {
+			List<ContractDescription> contracts = new List<ContractDescription> ();
 			Type contractType = null;
-			ContractDescriptionGenerator.GetServiceContractAttribute (service_type, out contractType);
-			return ContractDescriptionGenerator.GetContract (contractType, service_type);
+			Dictionary<Type, ServiceContractAttribute> contractAttributes = ContractDescriptionGenerator.GetServiceContractAttributes (service_type);
+			foreach (Type contract in contractAttributes.Keys)
+				contracts.Add( ContractDescriptionGenerator.GetContract (contract, service_type));
+			return contracts;
 		}
 
 		TAttr PopulateAttribute<TAttr> ()

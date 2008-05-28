@@ -135,9 +135,11 @@ FeatureBased/TestFixtureBase.cs
 FeatureBased/Features.Client/DataContractTesterProxy.cs
 FeatureBased/Features.Client/PrimitiveTester.cs
 FeatureBased/Features.Contracts/DataContractTester.cs
+FeatureBased/Features.Contracts/DualContract.cs
 FeatureBased/Features.Contracts/MessageContractTester.cs
 FeatureBased/Features.Contracts/PrimitiveTester.cs
 FeatureBased/Features.Serialization/DataContractSerializerTest.cs
+FeatureBased/Features.Serialization/DualContractTester.cs
 FeatureBased/Features.Serialization/PrimitiveTesterTest.cs
 FeatureBased/Features.Client/FaultsTesterProxy.cs
 FeatureBased/Features.Client/KnownTypeTesterProxy.cs

@@ -1123,8 +1123,7 @@
   </Target>
   -->
   <PropertyGroup>
-    <PostBuildEvent>@echo on
-@rem "C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe" /i "$(TargetPath)" /f
-@rem "C:\Program Files\Mono-1.2.6\bin\gacutil.bat" -i "$(TargetPath)"</PostBuildEvent>
+    <PostBuildEvent>"C:\Program Files\Microsoft SDKs\Windows\v6.0A\bin\gacutil.exe" /i "$(TargetPath)" /f
+"C:\Program Files\Mono-1.2.6\bin\gacutil.bat" -i "$(TargetPath)"</PostBuildEvent>
   </PropertyGroup>
 </Project>

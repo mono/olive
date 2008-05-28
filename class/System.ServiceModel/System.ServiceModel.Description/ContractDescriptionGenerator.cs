@@ -39,23 +39,6 @@ namespace System.ServiceModel.Description
 {
 	internal static class ContractDescriptionGenerator
 	{
-		public static ServiceContractAttribute 
-			GetServiceContractAttribute (Type serviceType, out Type contractType)
-		{
-			Dictionary<Type,ServiceContractAttribute> table =
-				new Dictionary<Type,ServiceContractAttribute> ();
-			GetServiceContractAttribute (serviceType, table);
-			if (table.Count == 0)
-				throw new InvalidOperationException (String.Format ("Attempted to get contract type from '{0}' which neither is a service contract nor does it inherit service contract.", serviceType));
-			if (table.Count != 1)
-				throw new InvalidOperationException (String.Format ("Type '{0}' contains two or more service contracts at equivalent priority.", serviceType));
-			IEnumerator<KeyValuePair<Type,ServiceContractAttribute>> en = table.GetEnumerator ();
-			en.MoveNext ();
-			// Here contractType is set the actual interface type.
-			contractType = en.Current.Key;
-			return en.Current.Value;
-		}
-
 		public static OperationContractAttribute
 			GetOperationContractAttribute (MethodBase method)
 		{
@@ -76,6 +59,12 @@ namespace System.ServiceModel.Description
 				foreach (Type t in type.GetInterfaces ())
 					GetServiceContractAttribute (t, table);
 			}
+		}
+		public static Dictionary<Type, ServiceContractAttribute> GetServiceContractAttributes (Type type) 
+		{
+			Dictionary<Type, ServiceContractAttribute> table = new Dictionary<Type, ServiceContractAttribute> ();
+			GetServiceContractAttribute (type, table);
+			return table;
 		}
 
 		[MonoTODO]
@@ -111,7 +100,14 @@ namespace System.ServiceModel.Description
 			// FIXME: serviceType should be used for specifying attributes like OperationBehavior.
 
 			Type exactContractType = null;
-			ServiceContractAttribute sca = GetServiceContractAttribute (givenContractType, out exactContractType);
+			ServiceContractAttribute sca = null;
+			Dictionary<Type, ServiceContractAttribute> contracts = 
+				GetServiceContractAttributes (givenServiceType ?? givenContractType);
+			foreach (Type t in contracts.Keys)
+				if (givenContractType.IsAssignableFrom(t)) {
+					exactContractType = t;
+					sca = contracts [t];
+				}
 
 			string name = sca.Name != null ? sca.Name : exactContractType.Name;
 			string ns = sca.Namespace != null ? sca.Namespace : "http://tempuri.org/";

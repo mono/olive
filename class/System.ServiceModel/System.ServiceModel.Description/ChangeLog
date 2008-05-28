@@ -1,3 +1,6 @@
+2008-05-28  Noam Lampert <noaml@mainsoft.com>
+	* ContractDescriptionGenerator.cs: Allow services to implement more than one contract.
+	  
 2008-05-22  Noam Lampert <noaml@mainsoft.com>
 	* ServiceDebugBehavior.cs: Correctly propagate IncludeExceptionDetailsInFaults. Previous code
 	  overwrote values set in ServiceBehaviorAttribute.
