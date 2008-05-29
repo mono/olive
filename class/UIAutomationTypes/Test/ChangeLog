@@ -1,3 +1,20 @@
+2008-05-29  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation.Text/AnimationStyleTest.cs: Tests AnimationStyle
+	enumeration.
+	* System.Windows.Automation.Text/BulletStyleTest.cs: Tests BulletStyle
+	enumeration.
+	* System.Windows.Automation.Text/CapStyleTest.cs: Tests CapStyle 
+	enumeration.
+	* System.Windows.Automation.Text/FlowDirectionsTest.cs: Tests FlowDirections
+	enumeration.
+	* System.Windows.Automation.Text/HorizontalTextAlignmentTest.cs: Tests
+	HorizontalTextAlignment enumeration.
+	* System.Windows.Automation.Text/OutlineStylesTest.cs: Tests OutlineStyles
+	enumeration.
+	* System.Windows.Automation.Text/TextDecorationLineStyleTest.cs: Tests
+	TextDecorationLineStyle enumeration.
+
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* UIAutomationTypesTests.csproj: Add VS 2008 project.

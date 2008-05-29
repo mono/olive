@@ -44,9 +44,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="System.Windows.Automation\ChangeLog" />
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="System.Windows.Automation.Text\AnimationStyleTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\BulletStyleTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\CapStyleTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\FlowDirectionsTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\HorizontalTextAlignmentTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\OutlineStylesTest.cs" />
+    <Compile Include="System.Windows.Automation.Text\TextDecorationLineStyleTest.cs" />
     <Compile Include="System.Windows.Automation.Text\TextPatternRangeEndpointTest.cs" />
     <Compile Include="System.Windows.Automation.Text\TextUnitTest.cs" />
     <Compile Include="System.Windows.Automation\AutomationElementIdentifiersTest.cs" />
