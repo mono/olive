@@ -43,6 +43,13 @@
     <File name="Test/System.Windows.Automation/TransformPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/ValuePatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/WindowPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/AnimationStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/BulletStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/CapStyleTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/FlowDirectionsTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/HorizontalTextAlignmentTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/OutlineStylesTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation.Text/TextDecorationLineStyleTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />

@@ -1,3 +1,19 @@
+2008-05-29  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation.Text/FlowDirections.cs: Enumeration added.
+	* System.Windows.Automation.Text/HorizontalTextAlignment.cs: Enumeration
+	added.
+	* System.Windows.Automation.Text/AnimationStyle.cs: Enumeration added.
+	* System.Windows.Automation.Text/OutlineStyles.cs: Enumeration added.
+	* System.Windows.Automation.Text/CapStyle.cs: Enumeration added.
+	* System.Windows.Automation.Text/TextDecorationLineStyle.cs: Enumeration
+	added.
+	* System.Windows.Automation.Text/BulletStyle.cs: Enumeration added.
+	* UIAutomationTypes.dll.sources: Updated to build added files.
+	* UIAutomationTypes.mdp: Updated to build added files.
+	* UIAutomationTypesTests.mdp: Updated to build test files.
+	* UIAutomationTypes_test.dll.sources: Updated to build test files.
+
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/AutomationTextAttribute.cs: Add

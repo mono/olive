@@ -23,5 +23,12 @@ System.Windows.Automation/ValuePatternIdentifiersTest.cs
 System.Windows.Automation/WindowInteractionStateTest.cs
 System.Windows.Automation/WindowPatternIdentifiersTest.cs
 System.Windows.Automation/WindowVisualStateTest.cs
+System.Windows.Automation.Text/AnimationStyleTest.cs
+System.Windows.Automation.Text/BulletStyleTest.cs
+System.Windows.Automation.Text/CapStyleTest.cs
+System.Windows.Automation.Text/FlowDirectionsTest.cs
+System.Windows.Automation.Text/HorizontalTextAlignmentTest.cs
+System.Windows.Automation.Text/OutlineStylesTest.cs
+System.Windows.Automation.Text/TextDecorationLineStyleTest.cs
 System.Windows.Automation.Text/TextPatternRangeEndpointTest.cs
 System.Windows.Automation.Text/TextUnitTest.cs

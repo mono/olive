@@ -30,8 +30,6 @@
     <File name="System.Windows.Automation/ToggleState.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/WindowInteractionState.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/WindowVisualState.cs" subtype="Code" buildaction="Compile" />
-    <File name="System.Windows.Automation.Text/TextPatternRangeEndpoint.cs" subtype="Code" buildaction="Compile" />
-    <File name="System.Windows.Automation.Text/TextUnit.cs" subtype="Code" buildaction="Compile" />
     <File name="Assembly/AssemblyInfo.cs" subtype="Code" buildaction="Compile" />
     <File name="UIAutomationTypes.dll.sources" subtype="Code" buildaction="Nothing" />
     <File name="System.Windows.Automation/ControlType.cs" subtype="Code" buildaction="Compile" />
@@ -52,6 +50,15 @@
     <File name="System.Windows.Automation/TextPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/TransformPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/AutomationTextAttribute.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextPatternRangeEndpoint.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextUnit.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/AnimationStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/BulletStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/CapStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/FlowDirections.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/HorizontalTextAlignment.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/OutlineStyles.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation.Text/TextDecorationLineStyle.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />
