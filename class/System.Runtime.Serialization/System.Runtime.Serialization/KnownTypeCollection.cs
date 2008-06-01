@@ -162,6 +162,8 @@ namespace System.Runtime.Serialization
 					return guid_type;
 				if (type == typeof (TimeSpan))
 					return duration_type;
+				if (type == typeof (byte []))
+					return base64_type;
 				return QName.Empty;
 			case TypeCode.Boolean:
 				return bool_type;
@@ -209,6 +211,8 @@ namespace System.Runtime.Serialization
 					return XmlConvert.ToString ((Guid) obj);
 				if (type == typeof (TimeSpan))
 					return XmlConvert.ToString ((TimeSpan) obj);
+				if (type == typeof (byte []))
+					return Convert.ToBase64String ((byte []) obj);
 				throw new Exception ("Internal error: missing predefined type serialization for type " + type.FullName);
 			case TypeCode.DBNull: // predefined, but not primitive
 				return String.Empty;
@@ -494,7 +498,7 @@ namespace System.Runtime.Serialization
 				return false;
 			if (Type.GetTypeCode (type) != TypeCode.Object) // explicitly primitive
 				return true;
-			if (type == typeof (Guid) || type == typeof (object) || type == typeof(TimeSpan)) // special primitives
+			if (type == typeof (Guid) || type == typeof (object) || type == typeof(TimeSpan) || type == typeof(byte[])) // special primitives
 				return true;
 			// nullable
 			if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))

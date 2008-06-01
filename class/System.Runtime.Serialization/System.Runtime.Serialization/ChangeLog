@@ -1,3 +1,6 @@
+2008-06-01  Noam Lampert <noaml@mainsoft.com>
+	
+	* KnownTypeCollection.cs: Implement byte[] serialization.
 
 2008-05-19  Noam Lampert <noaml@mainsoft.com>
 	

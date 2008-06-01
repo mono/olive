@@ -56,6 +56,9 @@ namespace MonoTests.Features.Contracts
 
 		[OperationContract]
 		TimeSpan AddTimeSpan (TimeSpan t1, TimeSpan t2);
+
+		[OperationContract]
+		byte [] AddByteArray (byte [] b1, byte [] b2);
 	}
 	
 	public class PrimitiveTester : IPrimitiveTesterContract
@@ -121,6 +124,13 @@ namespace MonoTests.Features.Contracts
 
 		public TimeSpan AddTimeSpan (TimeSpan t1, TimeSpan t2) {
 			return t1.Add (t2);
+		}
+
+		public byte [] AddByteArray (byte [] b1, byte [] b2) {
+			byte [] ret = new byte [b1.Length];
+			for (int i = 0; i < b1.Length; i++)
+				ret [i] = (byte) (b1 [i] + b2 [i]);
+			return ret;
 		}
 	}	
 }

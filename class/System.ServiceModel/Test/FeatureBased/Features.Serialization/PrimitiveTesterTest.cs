@@ -105,5 +105,14 @@ namespace MonoTests.Features.Serialization
 			TimeSpan t3 = Client.AddTimeSpan (t1, t2);
 			Assert.AreEqual (t3.Ticks, 24690);
 		}
+
+		[Test]
+		public void TestByteArray () {
+			byte [] b1 = new byte [] { 1, 2, 3, 4, 5 };
+			byte [] b2 = new byte [] { 6, 7, 8, 9, 10 };
+			byte [] sum = Client.AddByteArray (b1, b2);
+			Assert.AreEqual (sum.Length, b1.Length, "Length of return array");
+			Assert.AreEqual (sum [4], b1 [4] + b2 [4], "fourth element in return array");
+		}
 	}
 }
