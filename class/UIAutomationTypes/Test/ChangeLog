@@ -1,6 +1,7 @@
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* WindowPatternIdentifiersTest.cs: Finished property and event fields.
+	* TextPatternIdentifiersTest.cs: Make sure test method names end in "Test".
 
 2008-06-02  Mario Carrion <mcarrion@novell.com> 
 
