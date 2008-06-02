@@ -103,14 +103,23 @@ namespace System.ServiceModel.Description
 			ServiceContractAttribute sca = null;
 			Dictionary<Type, ServiceContractAttribute> contracts = 
 				GetServiceContractAttributes (givenServiceType ?? givenContractType);
-			foreach (Type t in contracts.Keys)
-				if (givenContractType.IsAssignableFrom(t)) {
-					exactContractType = t;
-					sca = contracts [t];
-				}
-
-			string name = sca.Name != null ? sca.Name : exactContractType.Name;
-			string ns = sca.Namespace != null ? sca.Namespace : "http://tempuri.org/";
+			if (contracts.ContainsKey(givenContractType)) {
+				exactContractType = givenContractType;
+				sca = contracts[givenContractType];
+			} else {
+				foreach (Type t in contracts.Keys)
+					if (t.IsAssignableFrom(givenContractType)) {
+						if (sca != null)
+							throw new InvalidOperationException("The contract type of " + givenContractType + " is ambiguous: can be either " + exactContractType + " or " + t);
+						exactContractType = t;
+						sca = contracts [t];
+					}
+			}
+			if (sca == null) {
+				throw new InvalidOperationException (String.Format ("Attempted to get contract type from '{0}' which neither is a service contract nor does it inherit service contract.", givenContractType));
+			}
+			string name = sca.Name ?? exactContractType.Name;
+			string ns = sca.Namespace ?? "http://tempuri.org/";
 
 			ContractDescription cd =
 				new ContractDescription (name, ns);
