@@ -43,5 +43,85 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void WindowClosedEventTest ()
+		{
+			AutomationEvent automationEvent = WindowPatternIdentifiers.WindowClosedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20017, automationEvent.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.WindowClosedProperty", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
+		[Test]
+		public void WindowOpenedEventTest ()
+		{
+			AutomationEvent automationEvent = WindowPatternIdentifiers.WindowOpenedEvent;
+			Assert.IsNotNull (automationEvent, "Property field must not be null");
+			Assert.AreEqual (20016, automationEvent.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.WindowOpenedProperty", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
+		[Test]
+		public void CanMaximizePropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.CanMaximizeProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30073, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.CanMaximizeProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void CanMinimizePropertyPropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.CanMinimizeProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30074, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.CanMinimizeProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void IsModalPropertyPropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.IsModalProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30077, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.IsModalProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void IsTopmostPropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.IsTopmostProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30078, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.IsTopmostProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void WindowInteractionStatePropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.WindowInteractionStateProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30076, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.WindowInteractionStateProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void WindowVisualStatePropertyTest ()
+		{
+			AutomationProperty property = WindowPatternIdentifiers.WindowVisualStateProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30075, property.Id, "Id");
+			Assert.AreEqual ("WindowPatternIdentifiers.WindowVisualStateProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
 	}
 }

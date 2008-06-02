@@ -44,7 +44,7 @@ namespace MonoTests.System.Windows.Automation {
 		}
 
 		[Test]
-		public void TextChangedEvent ()
+		public void TextChangedEventTest ()
 		{
 			AutomationEvent automationEvent = TextPatternIdentifiers.TextChangedEvent;
 			Assert.IsNotNull (automationEvent, "Property field must not be null");
@@ -54,7 +54,7 @@ namespace MonoTests.System.Windows.Automation {
 		}
 
 		[Test]
-		public void TextSelectionChangedEvent ()
+		public void TextSelectionChangedEventTest ()
 		{
 			AutomationEvent automationEvent = TextPatternIdentifiers.TextSelectionChangedEvent;
 			Assert.IsNotNull (automationEvent, "Property field must not be null");

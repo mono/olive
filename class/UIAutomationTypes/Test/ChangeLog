@@ -1,3 +1,7 @@
+2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* WindowPatternIdentifiersTest.cs: Finished property and event fields.
+
 2008-06-02  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/ScrollPatternIdentifiersTest.cs: Missing 
