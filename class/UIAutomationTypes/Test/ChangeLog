@@ -1,3 +1,8 @@
+2008-06-02  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/ScrollPatternIdentifiersTest.cs: Missing 
+	propierties added.
+
 2008-05-29  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation.Text/AnimationStyleTest.cs: Tests AnimationStyle

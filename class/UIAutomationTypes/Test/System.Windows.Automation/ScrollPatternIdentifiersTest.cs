@@ -41,7 +41,73 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (10004, pattern.Id, "Id");
 			Assert.AreEqual ("ScrollPatternIdentifiers.Pattern", pattern.ProgrammaticName, "ProgrammaticName");
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
-		}
+        }
+
+        [Test]
+        public void HorizontallyScrollablePropertyTest ()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.HorizontallyScrollableProperty;
+
+            Assert.IsNotNull (property, "Property field must not be null");
+            Assert.AreEqual (30057, property.Id, "Id");
+            Assert.AreEqual ("ScrollPatternIdentifiers.HorizontallyScrollableProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+        }
+
+        [Test]
+        public void HorizontalScrollPercentPropertyTest()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.HorizontalScrollPercentProperty;
+
+            Assert.IsNotNull(property, "Property field must not be null");
+            Assert.AreEqual(30053, property.Id, "Id");
+            Assert.AreEqual("ScrollPatternIdentifiers.HorizontalScrollPercentProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual(property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
+        [Test]
+        public void HorizontalViewSizePropertyTest()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.HorizontalViewSizeProperty;
+
+            Assert.IsNotNull (property, "Property field must not be null");
+            Assert.AreEqual (30054, property.Id, "Id");
+            Assert.AreEqual ("ScrollPatternIdentifiers.HorizontalViewSizeProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
+        [Test]
+        public void VerticallyScrollablePropertyTest ()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.VerticallyScrollableProperty;
+
+            Assert.IsNotNull (property, "Property field must not be null");
+            Assert.AreEqual (30058, property.Id, "Id");
+            Assert.AreEqual ("ScrollPatternIdentifiers.VerticallyScrollableProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
+        [Test]
+        public void VerticalScrollPercentPropertyTest ()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.VerticalScrollPercentProperty;
+
+            Assert.IsNotNull (property, "Property field must not be null");
+            Assert.AreEqual (30055, property.Id, "Id");
+            Assert.AreEqual ("ScrollPatternIdentifiers.VerticalScrollPercentProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
+        [Test]
+        public void VerticalViewSizePropertyTest ()
+        {
+            AutomationProperty property = ScrollPatternIdentifiers.VerticalViewSizeProperty;
+
+            Assert.IsNotNull (property, "Property field must not be null");
+            Assert.AreEqual (30056, property.Id, "Id");
+            Assert.AreEqual ("ScrollPatternIdentifiers.VerticalViewSizeProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
 
 	}
 }
