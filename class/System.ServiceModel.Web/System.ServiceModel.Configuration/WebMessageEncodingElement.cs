@@ -153,7 +153,7 @@ namespace System.ServiceModel.Configuration
 		}
 
 		[MonoTODO]
-		protected override BindingElement CreateBindingElement ()
+		protected internal override BindingElement CreateBindingElement ()
 		{
 			throw new NotImplementedException ();
 		}

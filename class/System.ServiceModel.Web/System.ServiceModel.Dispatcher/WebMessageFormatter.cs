@@ -189,7 +189,7 @@ namespace System.ServiceModel.Description
 
 				Uri to = UriTemplate.BindByName (Endpoint.Address.Uri, c);
 
-				Message ret = Message.CreateMessage (messageVersion, null);
+				Message ret = Message.CreateMessage (messageVersion, (string) null);
 				ret.Headers.To = to;
 
 				var hp = new HttpRequestMessageProperty ();

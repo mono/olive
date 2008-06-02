@@ -72,7 +72,7 @@ namespace System.ServiceModel.Configuration
 			get { return (Type) base [behavior_type]; }
 		}
 
-		protected override object CreateBehavior ()
+		protected internal override object CreateBehavior ()
 		{
 			return new WebHttpBehavior ();
 		}
