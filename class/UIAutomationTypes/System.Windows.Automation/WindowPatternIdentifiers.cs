@@ -37,6 +37,9 @@ namespace System.Windows.Automation
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "WindowPatternIdentifiers.Pattern");
+			WindowVisualStateProperty =
+				new AutomationProperty (12345, // TODO: Fix this ID
+				                        "WindowPatternIdentifiers.WindowVisualStateProperty");
 		}
 		
 #endregion
