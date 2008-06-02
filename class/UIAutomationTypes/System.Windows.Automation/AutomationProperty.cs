@@ -150,19 +150,29 @@ namespace System.Windows.Automation
 				return RangeValuePatternIdentifiers.SmallChangeProperty;
 			else if (id == RangeValuePatternIdentifiers.ValueProperty.Id)
 				return RangeValuePatternIdentifiers.ValueProperty;
+			else if (id == WindowPatternIdentifiers.CanMaximizeProperty.Id)
+				return WindowPatternIdentifiers.CanMaximizeProperty;
+			else if (id == WindowPatternIdentifiers.CanMinimizeProperty.Id)
+				return WindowPatternIdentifiers.CanMinimizeProperty;
+			else if (id == WindowPatternIdentifiers.IsModalProperty.Id)
+				return WindowPatternIdentifiers.IsModalProperty;
+			else if (id == WindowPatternIdentifiers.IsTopmostProperty.Id)
+				return WindowPatternIdentifiers.IsTopmostProperty;
+			else if (id == WindowPatternIdentifiers.WindowInteractionStateProperty.Id)
+				return WindowPatternIdentifiers.WindowInteractionStateProperty;
 			else if (id == WindowPatternIdentifiers.WindowVisualStateProperty.Id)
 				return WindowPatternIdentifiers.WindowVisualStateProperty;
-			else if (id == ScrollPatternIdentifiers.HorizontallyScrollablePropertyId)
+			else if (id == ScrollPatternIdentifiers.HorizontallyScrollableProperty.Id)
 				return ScrollPatternIdentifiers.HorizontallyScrollableProperty;
-			else if (id == ScrollPatternIdentifiers.HorizontalScrollPercentPropertyId)
+			else if (id == ScrollPatternIdentifiers.HorizontalScrollPercentProperty.Id)
 				return ScrollPatternIdentifiers.HorizontalScrollPercentProperty;
-			else if (id == ScrollPatternIdentifiers.HorizontalViewSizePropertyId)
+			else if (id == ScrollPatternIdentifiers.HorizontalViewSizeProperty.Id)
 				return ScrollPatternIdentifiers.HorizontalViewSizeProperty;
-			else if (id == ScrollPatternIdentifiers.VerticallyScrollablePropertyId)
+			else if (id == ScrollPatternIdentifiers.VerticallyScrollableProperty.Id)
 				return ScrollPatternIdentifiers.VerticallyScrollableProperty;
-			else if (id == ScrollPatternIdentifiers.VerticalScrollPercentPropertyId)
+			else if (id == ScrollPatternIdentifiers.VerticalScrollPercentProperty.Id)
 				return ScrollPatternIdentifiers.VerticalScrollPercentProperty;
-			else if (id == ScrollPatternIdentifiers.VerticalViewSizePropertyId)
+			else if (id == ScrollPatternIdentifiers.VerticalViewSizeProperty.Id)
 				return ScrollPatternIdentifiers.VerticalViewSizeProperty;
 			else
 				return null;

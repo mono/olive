@@ -31,12 +31,12 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10004;
-		internal const int HorizontallyScrollablePropertyId = 30057;
-		internal const int HorizontalScrollPercentPropertyId = 30053;
-		internal const int HorizontalViewSizePropertyId = 30054;
-		internal const int VerticallyScrollablePropertyId = 30058;
-		internal const int VerticalScrollPercentPropertyId = 30055;
-		internal const int VerticalViewSizePropertyId = 30056;
+		private const int HorizontallyScrollablePropertyId = 30057;
+		private const int HorizontalScrollPercentPropertyId = 30053;
+		private const int HorizontalViewSizePropertyId = 30054;
+		private const int VerticallyScrollablePropertyId = 30058;
+		private const int VerticalScrollPercentPropertyId = 30055;
+		private const int VerticalViewSizePropertyId = 30056;
 		
 		static ScrollPatternIdentifiers ()
 		{

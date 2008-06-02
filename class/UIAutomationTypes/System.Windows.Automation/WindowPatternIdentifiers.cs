@@ -31,16 +31,44 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10009;
-		private const int WindowVisualStatePropertyId = 12345; // TODO: Fix this ID
+		private const int CanMaximizePropertyId = 30073;
+		private const int CanMinimizePropertyId = 30074;
+		private const int IsModalPropertyId = 30077;
+		private const int IsTopmostPropertyId = 30078;
+		private const int WindowInteractionStatePropertyId = 30076;
+		private const int WindowVisualStatePropertyId = 30075;
+		private const int WindowClosedEventId = 20017;
+		private const int WindowOpenedEventId = 20016;
 		
 		static WindowPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "WindowPatternIdentifiers.Pattern");
+			CanMaximizeProperty =
+				new AutomationProperty (CanMaximizePropertyId,
+				                        "WindowPatternIdentifiers.CanMaximizeProperty");
+			CanMinimizeProperty =
+				new AutomationProperty (CanMinimizePropertyId,
+				                        "WindowPatternIdentifiers.CanMinimizeProperty");
+			IsModalProperty =
+				new AutomationProperty (IsModalPropertyId,
+				                        "WindowPatternIdentifiers.IsModalProperty");
+			IsTopmostProperty =
+				new AutomationProperty (IsTopmostPropertyId,
+				                        "WindowPatternIdentifiers.IsTopmostProperty");
+			WindowInteractionStateProperty =
+				new AutomationProperty (WindowInteractionStatePropertyId,
+				                        "WindowPatternIdentifiers.WindowInteractionStateProperty");
 			WindowVisualStateProperty =
 				new AutomationProperty (WindowVisualStatePropertyId,
 				                        "WindowPatternIdentifiers.WindowVisualStateProperty");
+			WindowClosedEvent =
+				new AutomationEvent (WindowClosedEventId,
+				                     "WindowPatternIdentifiers.WindowClosedProperty");
+			WindowOpenedEvent =
+				new AutomationEvent (WindowOpenedEventId,
+				                     "WindowPatternIdentifiers.WindowOpenedProperty");
 		}
 		
 #endregion

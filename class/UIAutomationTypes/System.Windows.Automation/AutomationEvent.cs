@@ -72,6 +72,10 @@ namespace System.Windows.Automation
 				return TextPatternIdentifiers.TextChangedEvent;
 			else if (id == TextPatternIdentifiers.TextSelectionChangedEvent.Id)
 				return TextPatternIdentifiers.TextSelectionChangedEvent;
+			else if (id == WindowPatternIdentifiers.WindowClosedEvent.Id)
+				return WindowPatternIdentifiers.WindowClosedEvent;
+			else if (id == WindowPatternIdentifiers.WindowOpenedEvent.Id)
+				return WindowPatternIdentifiers.WindowOpenedEvent;
 			else
 				return null;
 		}

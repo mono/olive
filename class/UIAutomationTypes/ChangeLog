@@ -1,5 +1,14 @@
 2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Make internal
+	  id fields private.
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/WindowPatternIdentifiers.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Implement
+	  WindowPatternIdentifiers properties and events.
+
+2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/InvokePatternIdentifiers.cs,
 	  System.Windows.Automation/ScrollPatternIdentifiers.cs,
 	  System.Windows.Automation/ControlType.cs,
