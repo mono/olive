@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class TablePatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10012;
+		private const int PatternId = 10012;
 		
 		static TablePatternIdentifiers ()
 		{

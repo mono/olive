@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class SelectionPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10001;
+		private const int PatternId = 10001;
 		
 		static SelectionPatternIdentifiers ()
 		{

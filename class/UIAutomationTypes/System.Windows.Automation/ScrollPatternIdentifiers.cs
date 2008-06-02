@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class ScrollPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10004;
+		private const int PatternId = 10004;
 		internal const int HorizontallyScrollablePropertyId = 30057;
 		internal const int HorizontalScrollPercentPropertyId = 30053;
 		internal const int HorizontalViewSizePropertyId = 30054;

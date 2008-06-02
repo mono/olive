@@ -30,9 +30,9 @@ namespace System.Windows.Automation
 	public static class TextPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10014;
-		internal const int TextChangedEventId = 20015;
-		internal const int TextSelectionChangedEventId = 20014;
+		private const int PatternId = 10014;
+		private const int TextChangedEventId = 20015;
+		private const int TextSelectionChangedEventId = 20014;
 		
 		static TextPatternIdentifiers ()
 		{

@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class MultipleViewPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10008;
+		private const int PatternId = 10008;
 		
 		static MultipleViewPatternIdentifiers ()
 		{

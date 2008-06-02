@@ -30,13 +30,13 @@ namespace System.Windows.Automation
 	public static class RangeValuePatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10003;
-		internal const int IsReadOnlyPropertyId = 30048;
-		internal const int LargeChangePropertyId = 30051;
-		internal const int MaximumPropertyId = 30050;
-		internal const int MinimumPropertyId = 30049;
-		internal const int SmallChangePropertyId = 30052;
-		internal const int ValuePropertyId = 30047;
+		private const int PatternId = 10003;
+		private const int IsReadOnlyPropertyId = 30048;
+		private const int LargeChangePropertyId = 30051;
+		private const int MaximumPropertyId = 30050;
+		private const int MinimumPropertyId = 30049;
+		private const int SmallChangePropertyId = 30052;
+		private const int ValuePropertyId = 30047;
 		
 		static RangeValuePatternIdentifiers ()
 		{

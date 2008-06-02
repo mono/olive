@@ -30,12 +30,12 @@ namespace System.Windows.Automation
 	public static class SelectionItemPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10010;
-		internal const int ElementAddedToSelectionEventId = 20010;
-		internal const int ElementRemovedFromSelectionEventId = 20011;
-		internal const int ElementSelectedEventId = 20012;
-		internal const int IsSelectedPropertyId = 30079;
-		internal const int SelectionContainerPropertyId = 30080;
+		private const int PatternId = 10010;
+		private const int ElementAddedToSelectionEventId = 20010;
+		private const int ElementRemovedFromSelectionEventId = 20011;
+		private const int ElementSelectedEventId = 20012;
+		private const int IsSelectedPropertyId = 30079;
+		private const int SelectionContainerPropertyId = 30080;
 		
 		static SelectionItemPatternIdentifiers ()
 		{

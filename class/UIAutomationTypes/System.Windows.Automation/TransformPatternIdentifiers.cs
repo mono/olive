@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class TransformPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10016;
+		private const int PatternId = 10016;
 		
 		static TransformPatternIdentifiers ()
 		{

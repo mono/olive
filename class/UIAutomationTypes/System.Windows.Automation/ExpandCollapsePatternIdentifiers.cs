@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class ExpandCollapsePatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10005;
+		private const int PatternId = 10005;
 		
 		static ExpandCollapsePatternIdentifiers ()
 		{

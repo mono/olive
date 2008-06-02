@@ -42,35 +42,35 @@ namespace System.Windows.Automation
 		
 		public static AutomationEvent LookupById (int id)
 		{
-			if (id == InvokePatternIdentifiers.InvokedEventId)
+			if (id == InvokePatternIdentifiers.InvokedEvent.Id)
 				return InvokePatternIdentifiers.InvokedEvent;
-			else if (id == AutomationElementIdentifiers.AsyncContentLoadedEventId)
+			else if (id == AutomationElementIdentifiers.AsyncContentLoadedEvent.Id)
 				return AutomationElementIdentifiers.AsyncContentLoadedEvent;
-			else if (id == AutomationElementIdentifiers.AutomationFocusChangedEventId)
+			else if (id == AutomationElementIdentifiers.AutomationFocusChangedEvent.Id)
 				return AutomationElementIdentifiers.AutomationFocusChangedEvent;
-			else if (id == AutomationElementIdentifiers.AutomationPropertyChangedEventId)
+			else if (id == AutomationElementIdentifiers.AutomationPropertyChangedEvent.Id)
 				return AutomationElementIdentifiers.AutomationPropertyChangedEvent;
-			else if (id == AutomationElementIdentifiers.LayoutInvalidatedEventId)
+			else if (id == AutomationElementIdentifiers.LayoutInvalidatedEvent.Id)
 				return AutomationElementIdentifiers.LayoutInvalidatedEvent;
-			else if (id == AutomationElementIdentifiers.MenuClosedEventId)
+			else if (id == AutomationElementIdentifiers.MenuClosedEvent.Id)
 				return AutomationElementIdentifiers.MenuClosedEvent;
-			else if (id == AutomationElementIdentifiers.MenuOpenedEventId)
+			else if (id == AutomationElementIdentifiers.MenuOpenedEvent.Id)
 				return AutomationElementIdentifiers.MenuOpenedEvent;
-			else if (id == AutomationElementIdentifiers.StructureChangedEventId)
+			else if (id == AutomationElementIdentifiers.StructureChangedEvent.Id)
 				return AutomationElementIdentifiers.StructureChangedEvent;
-			else if (id == AutomationElementIdentifiers.ToolTipClosedEventId)
+			else if (id == AutomationElementIdentifiers.ToolTipClosedEvent.Id)
 				return AutomationElementIdentifiers.ToolTipClosedEvent;
-			else if (id == AutomationElementIdentifiers.ToolTipOpenedEventId)
+			else if (id == AutomationElementIdentifiers.ToolTipOpenedEvent.Id)
 				return AutomationElementIdentifiers.ToolTipOpenedEvent;
-			else if (id == SelectionItemPatternIdentifiers.ElementAddedToSelectionEventId)
+			else if (id == SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent.Id)
 				return SelectionItemPatternIdentifiers.ElementAddedToSelectionEvent;
-			else if (id == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEventId)
+			else if (id == SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent.Id)
 				return SelectionItemPatternIdentifiers.ElementRemovedFromSelectionEvent;
-			else if (id == SelectionItemPatternIdentifiers.ElementSelectedEventId)
+			else if (id == SelectionItemPatternIdentifiers.ElementSelectedEvent.Id)
 				return SelectionItemPatternIdentifiers.ElementSelectedEvent;
-			else if (id == TextPatternIdentifiers.TextChangedEventId)
+			else if (id == TextPatternIdentifiers.TextChangedEvent.Id)
 				return TextPatternIdentifiers.TextChangedEvent;
-			else if (id == TextPatternIdentifiers.TextSelectionChangedEventId)
+			else if (id == TextPatternIdentifiers.TextSelectionChangedEvent.Id)
 				return TextPatternIdentifiers.TextSelectionChangedEvent;
 			else
 				return null;

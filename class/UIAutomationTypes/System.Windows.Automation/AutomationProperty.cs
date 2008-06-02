@@ -42,114 +42,116 @@ namespace System.Windows.Automation
 		
 		public static AutomationProperty LookupById (int id)
 		{
-			if (id == AutomationElementIdentifiers.AcceleratorKeyPropertyId)
+			if (id == AutomationElementIdentifiers.AcceleratorKeyProperty.Id)
 				return AutomationElementIdentifiers.AcceleratorKeyProperty;
-			else if (id == AutomationElementIdentifiers.AccessKeyPropertyId)
+			else if (id == AutomationElementIdentifiers.AccessKeyProperty.Id)
 				return AutomationElementIdentifiers.AccessKeyProperty;
-			else if (id == AutomationElementIdentifiers.AutomationIdPropertyId)
+			else if (id == AutomationElementIdentifiers.AutomationIdProperty.Id)
 				return AutomationElementIdentifiers.AutomationIdProperty;
-			else if (id == AutomationElementIdentifiers.BoundingRectanglePropertyId)
+			else if (id == AutomationElementIdentifiers.BoundingRectangleProperty.Id)
 				return AutomationElementIdentifiers.BoundingRectangleProperty;
-			else if (id == AutomationElementIdentifiers.ClassNamePropertyId)
+			else if (id == AutomationElementIdentifiers.ClassNameProperty.Id)
 				return AutomationElementIdentifiers.ClassNameProperty;
-			else if (id == AutomationElementIdentifiers.ClickablePointPropertyId)
+			else if (id == AutomationElementIdentifiers.ClickablePointProperty.Id)
 				return AutomationElementIdentifiers.ClickablePointProperty;
-			else if (id == AutomationElementIdentifiers.ControlTypePropertyId)
+			else if (id == AutomationElementIdentifiers.ControlTypeProperty.Id)
 				return AutomationElementIdentifiers.ControlTypeProperty;
-			else if (id == AutomationElementIdentifiers.CulturePropertyId)
+			else if (id == AutomationElementIdentifiers.CultureProperty.Id)
 				return AutomationElementIdentifiers.CultureProperty;
-			else if (id == AutomationElementIdentifiers.FrameworkIdPropertyId)
+			else if (id == AutomationElementIdentifiers.FrameworkIdProperty.Id)
 				return AutomationElementIdentifiers.FrameworkIdProperty;
-			else if (id == AutomationElementIdentifiers.HasKeyboardFocusPropertyId)
+			else if (id == AutomationElementIdentifiers.HasKeyboardFocusProperty.Id)
 				return AutomationElementIdentifiers.HasKeyboardFocusProperty;
-			else if (id == AutomationElementIdentifiers.HelpTextPropertyId)
+			else if (id == AutomationElementIdentifiers.HelpTextProperty.Id)
 				return AutomationElementIdentifiers.HelpTextProperty;
-			else if (id == AutomationElementIdentifiers.IsContentElementPropertyId)
+			else if (id == AutomationElementIdentifiers.IsContentElementProperty.Id)
 				return AutomationElementIdentifiers.IsContentElementProperty;
-			else if (id == AutomationElementIdentifiers.IsControlElementPropertyId)
+			else if (id == AutomationElementIdentifiers.IsControlElementProperty.Id)
 				return AutomationElementIdentifiers.IsControlElementProperty;
-			else if (id == AutomationElementIdentifiers.IsDockPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsDockPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsDockPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsEnabledPropertyId)
+			else if (id == AutomationElementIdentifiers.IsEnabledProperty.Id)
 				return AutomationElementIdentifiers.IsEnabledProperty;
-			else if (id == AutomationElementIdentifiers.IsExpandCollapsePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsExpandCollapsePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsGridItemPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsGridItemPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsGridItemPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsGridPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsGridPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsGridPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsInvokePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsInvokePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsInvokePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsKeyboardFocusablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsKeyboardFocusableProperty.Id)
 				return AutomationElementIdentifiers.IsKeyboardFocusableProperty;
-			else if (id == AutomationElementIdentifiers.IsMultipleViewPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsMultipleViewPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsOffscreenPropertyId)
+			else if (id == AutomationElementIdentifiers.IsOffscreenProperty.Id)
 				return AutomationElementIdentifiers.IsOffscreenProperty;
-			else if (id == AutomationElementIdentifiers.IsPasswordPropertyId)
+			else if (id == AutomationElementIdentifiers.IsPasswordProperty.Id)
 				return AutomationElementIdentifiers.IsPasswordProperty;
-			else if (id == AutomationElementIdentifiers.IsRangeValuePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsRangeValuePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsRequiredForFormPropertyId)
+			else if (id == AutomationElementIdentifiers.IsRequiredForFormProperty.Id)
 				return AutomationElementIdentifiers.IsRequiredForFormProperty;
-			else if (id == AutomationElementIdentifiers.IsScrollItemPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsScrollItemPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsScrollPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsScrollPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsScrollPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsSelectionItemPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsSelectionItemPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsSelectionPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsSelectionPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsSelectionPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsTableItemPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsTableItemPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsTableItemPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsTablePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsTablePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsTablePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsTextPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsTextPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsTextPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsTogglePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsTogglePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsTogglePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsTransformPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsTransformPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsTransformPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsValuePatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsValuePatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsValuePatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.IsWindowPatternAvailablePropertyId)
+			else if (id == AutomationElementIdentifiers.IsWindowPatternAvailableProperty.Id)
 				return AutomationElementIdentifiers.IsWindowPatternAvailableProperty;
-			else if (id == AutomationElementIdentifiers.ItemStatusPropertyId)
+			else if (id == AutomationElementIdentifiers.ItemStatusProperty.Id)
 				return AutomationElementIdentifiers.ItemStatusProperty;
-			else if (id == AutomationElementIdentifiers.ItemTypePropertyId)
+			else if (id == AutomationElementIdentifiers.ItemTypeProperty.Id)
 				return AutomationElementIdentifiers.ItemTypeProperty;
-			else if (id == AutomationElementIdentifiers.LabeledByPropertyId)
+			else if (id == AutomationElementIdentifiers.LabeledByProperty.Id)
 				return AutomationElementIdentifiers.LabeledByProperty;
-			else if (id == AutomationElementIdentifiers.LocalizedControlTypePropertyId)
+			else if (id == AutomationElementIdentifiers.LocalizedControlTypeProperty.Id)
 				return AutomationElementIdentifiers.LocalizedControlTypeProperty;
-			else if (id == AutomationElementIdentifiers.NamePropertyId)
+			else if (id == AutomationElementIdentifiers.NameProperty.Id)
 				return AutomationElementIdentifiers.NameProperty;
-			else if (id == AutomationElementIdentifiers.NativeWindowHandlePropertyId)
+			else if (id == AutomationElementIdentifiers.NativeWindowHandleProperty.Id)
 				return AutomationElementIdentifiers.NativeWindowHandleProperty;
-			else if (id == AutomationElementIdentifiers.OrientationPropertyId)
+			else if (id == AutomationElementIdentifiers.OrientationProperty.Id)
 				return AutomationElementIdentifiers.OrientationProperty;
-			else if (id == AutomationElementIdentifiers.ProcessIdPropertyId)
+			else if (id == AutomationElementIdentifiers.ProcessIdProperty.Id)
 				return AutomationElementIdentifiers.ProcessIdProperty;
-			else if (id == AutomationElementIdentifiers.RuntimeIdPropertyId)
+			else if (id == AutomationElementIdentifiers.RuntimeIdProperty.Id)
 				return AutomationElementIdentifiers.RuntimeIdProperty;
-			else if (id == TogglePatternIdentifiers.ToggleStatePropertyId)
+			else if (id == TogglePatternIdentifiers.ToggleStateProperty.Id)
 				return TogglePatternIdentifiers.ToggleStateProperty;
-			else if (id == SelectionItemPatternIdentifiers.IsSelectedPropertyId)
+			else if (id == SelectionItemPatternIdentifiers.IsSelectedProperty.Id)
 				return SelectionItemPatternIdentifiers.IsSelectedProperty;
-			else if (id == SelectionItemPatternIdentifiers.SelectionContainerPropertyId)
+			else if (id == SelectionItemPatternIdentifiers.SelectionContainerProperty.Id)
 				return SelectionItemPatternIdentifiers.SelectionContainerProperty;
-			else if (id == RangeValuePatternIdentifiers.IsReadOnlyPropertyId)
+			else if (id == RangeValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return RangeValuePatternIdentifiers.IsReadOnlyProperty;
-			else if (id == RangeValuePatternIdentifiers.LargeChangePropertyId)
+			else if (id == RangeValuePatternIdentifiers.LargeChangeProperty.Id)
 				return RangeValuePatternIdentifiers.LargeChangeProperty;
-			else if (id == RangeValuePatternIdentifiers.MaximumPropertyId)
+			else if (id == RangeValuePatternIdentifiers.MaximumProperty.Id)
 				return RangeValuePatternIdentifiers.MaximumProperty;
-			else if (id == RangeValuePatternIdentifiers.MinimumPropertyId)
+			else if (id == RangeValuePatternIdentifiers.MinimumProperty.Id)
 				return RangeValuePatternIdentifiers.MinimumProperty;
-			else if (id == RangeValuePatternIdentifiers.SmallChangePropertyId)
+			else if (id == RangeValuePatternIdentifiers.SmallChangeProperty.Id)
 				return RangeValuePatternIdentifiers.SmallChangeProperty;
-			else if (id == RangeValuePatternIdentifiers.ValuePropertyId)
+			else if (id == RangeValuePatternIdentifiers.ValueProperty.Id)
 				return RangeValuePatternIdentifiers.ValueProperty;
+			else if (id == WindowPatternIdentifiers.WindowVisualStateProperty.Id)
+				return WindowPatternIdentifiers.WindowVisualStateProperty;
 			else if (id == ScrollPatternIdentifiers.HorizontallyScrollablePropertyId)
 				return ScrollPatternIdentifiers.HorizontallyScrollableProperty;
 			else if (id == ScrollPatternIdentifiers.HorizontalScrollPercentPropertyId)

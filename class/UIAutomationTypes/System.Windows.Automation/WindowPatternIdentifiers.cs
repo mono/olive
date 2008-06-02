@@ -30,7 +30,8 @@ namespace System.Windows.Automation
 	public static class WindowPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10009;
+		private const int PatternId = 10009;
+		private const int WindowVisualStatePropertyId = 12345; // TODO: Fix this ID
 		
 		static WindowPatternIdentifiers ()
 		{
@@ -38,7 +39,7 @@ namespace System.Windows.Automation
 				new AutomationPattern (PatternId,
 				                       "WindowPatternIdentifiers.Pattern");
 			WindowVisualStateProperty =
-				new AutomationProperty (12345, // TODO: Fix this ID
+				new AutomationProperty (WindowVisualStatePropertyId,
 				                        "WindowPatternIdentifiers.WindowVisualStateProperty");
 		}
 		

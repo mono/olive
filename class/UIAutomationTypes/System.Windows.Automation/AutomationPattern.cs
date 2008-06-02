@@ -42,33 +42,33 @@ namespace System.Windows.Automation
 		
 		public static AutomationPattern LookupById (int id)
 		{
-			if (id == ExpandCollapsePatternIdentifiers.PatternId)
+			if (id == ExpandCollapsePatternIdentifiers.Pattern.Id)
 				return ExpandCollapsePatternIdentifiers.Pattern;
-			else if (id == GridPatternIdentifiers.PatternId)
+			else if (id == GridPatternIdentifiers.Pattern.Id)
 				return GridPatternIdentifiers.Pattern;
-			else if (id == InvokePatternIdentifiers.PatternId)
+			else if (id == InvokePatternIdentifiers.Pattern.Id)
 				return InvokePatternIdentifiers.Pattern;
-			else if (id == MultipleViewPatternIdentifiers.PatternId)
+			else if (id == MultipleViewPatternIdentifiers.Pattern.Id)
 				return MultipleViewPatternIdentifiers.Pattern;
-			else if (id == RangeValuePatternIdentifiers.PatternId)
+			else if (id == RangeValuePatternIdentifiers.Pattern.Id)
 				return RangeValuePatternIdentifiers.Pattern;
-			else if (id == ScrollPatternIdentifiers.PatternId)
+			else if (id == ScrollPatternIdentifiers.Pattern.Id)
 				return ScrollPatternIdentifiers.Pattern;
-			else if (id == SelectionItemPatternIdentifiers.PatternId)
+			else if (id == SelectionItemPatternIdentifiers.Pattern.Id)
 				return SelectionItemPatternIdentifiers.Pattern;
-			else if (id == SelectionPatternIdentifiers.PatternId)
+			else if (id == SelectionPatternIdentifiers.Pattern.Id)
 				return SelectionPatternIdentifiers.Pattern;
-			else if (id == TablePatternIdentifiers.PatternId)
+			else if (id == TablePatternIdentifiers.Pattern.Id)
 				return TablePatternIdentifiers.Pattern;
-			else if (id == TextPatternIdentifiers.PatternId)
+			else if (id == TextPatternIdentifiers.Pattern.Id)
 				return TextPatternIdentifiers.Pattern;
-			else if (id == TogglePatternIdentifiers.PatternId)
+			else if (id == TogglePatternIdentifiers.Pattern.Id)
 				return TogglePatternIdentifiers.Pattern;
-			else if (id == TransformPatternIdentifiers.PatternId)
+			else if (id == TransformPatternIdentifiers.Pattern.Id)
 				return TransformPatternIdentifiers.Pattern;
-			else if (id == ValuePatternIdentifiers.PatternId)
+			else if (id == ValuePatternIdentifiers.Pattern.Id)
 				return ValuePatternIdentifiers.Pattern;
-			else if (id == WindowPatternIdentifiers.PatternId)
+			else if (id == WindowPatternIdentifiers.Pattern.Id)
 				return WindowPatternIdentifiers.Pattern;
 			else
 				return null;

@@ -30,8 +30,8 @@ namespace System.Windows.Automation
 	public static class InvokePatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10000;		
-		internal const int InvokedEventId = 20009;
+		private const int PatternId = 10000;		
+		private const int InvokedEventId = 20009;
 		
 		static InvokePatternIdentifiers ()
 		{

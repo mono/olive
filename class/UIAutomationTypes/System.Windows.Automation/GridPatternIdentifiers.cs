@@ -30,7 +30,7 @@ namespace System.Windows.Automation
 	public static class GridPatternIdentifiers
 	{
 #region Constructor
-		internal const int PatternId = 10006;
+		private const int PatternId = 10006;
 		
 		static GridPatternIdentifiers ()
 		{
