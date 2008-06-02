@@ -287,7 +287,7 @@ namespace System.ServiceModel.Channels
 			XmlDictionaryWriter writer)
 		{
 			writer.WriteStartElement ("s", "Envelope", Version.Envelope.Namespace);
-			if (Headers.Action != null)
+			if (Headers.Action != null && Version.Addressing.Namespace != MessageVersion.None.Addressing.Namespace)
 				writer.WriteXmlnsAttribute ("a", Version.Addressing.Namespace);
 			foreach (MessageHeaderInfo h in Headers)
 				if (h.Id != null) {

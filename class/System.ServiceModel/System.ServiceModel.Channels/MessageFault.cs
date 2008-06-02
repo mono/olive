@@ -349,7 +349,7 @@ namespace System.ServiceModel.Channels
 			EnvelopeVersion version, FaultCode code)
 		{
 			if (version == EnvelopeVersion.Soap11) {
-				writer.WriteStartElement ("faultcode", version.Namespace);
+				writer.WriteStartElement ("", "faultcode", version.Namespace);
 				if (code.Namespace.Length > 0)
 					writer.WriteXmlnsAttribute ("a", code.Namespace);
 				writer.WriteQualifiedName (code.Name, code.Namespace);
@@ -372,7 +372,7 @@ namespace System.ServiceModel.Channels
 		{
 			if (version == EnvelopeVersion.Soap11) {
 				foreach (FaultReasonText t in Reason.Translations) {
-					writer.WriteStartElement ("faultstring", version.Namespace);
+					writer.WriteStartElement ("", "faultstring", version.Namespace);
 					if (t.XmlLang != null)
 						writer.WriteAttributeString ("xml", "lang", null, t.XmlLang);
 					writer.WriteString (t.Text);
