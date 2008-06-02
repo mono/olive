@@ -1,3 +1,10 @@
+2008-06-02  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Added missing
+	properties to pass tests.
+	* System.Windows.Automation/AutomationProperty.cs: Update LookupById to
+	return ScrollPatternIdentifiers propierties.
+
 2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	

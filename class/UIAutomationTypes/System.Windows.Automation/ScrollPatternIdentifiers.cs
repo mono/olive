@@ -31,22 +31,57 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		internal const int PatternId = 10004;
+		internal const int HorizontallyScrollablePropertyId = 30057;
+		internal const int HorizontalScrollPercentPropertyId = 30053;
+		internal const int HorizontalViewSizePropertyId = 30054;
+		internal const int VerticallyScrollablePropertyId = 30058;
+		internal const int VerticalScrollPercentPropertyId = 30055;
+		internal const int VerticalViewSizePropertyId = 30056;
 		
 		static ScrollPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "ScrollPatternIdentifiers.Pattern");
+			HorizontallyScrollableProperty = 
+				new AutomationProperty (HorizontallyScrollablePropertyId, 
+				                        "ScrollPatternIdentifiers.HorizontallyScrollableProperty");
+			HorizontalScrollPercentProperty = 
+				new AutomationProperty (HorizontalScrollPercentPropertyId, 
+				                        "ScrollPatternIdentifiers.HorizontalScrollPercentProperty");
+			HorizontalViewSizeProperty = 
+				new AutomationProperty (HorizontalViewSizePropertyId,
+				                        "ScrollPatternIdentifiers.HorizontalViewSizeProperty");
+			VerticallyScrollableProperty =
+				new AutomationProperty (VerticallyScrollablePropertyId,
+				                        "ScrollPatternIdentifiers.VerticallyScrollableProperty");
+			VerticalScrollPercentProperty = 
+				new AutomationProperty (VerticalScrollPercentPropertyId,
+				                        "ScrollPatternIdentifiers.VerticalScrollPercentProperty");
+			VerticalViewSizeProperty =
+				new AutomationProperty (VerticalViewSizePropertyId,
+				                        "ScrollPatternIdentifiers.VerticalViewSizeProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		
+		public static readonly AutomationProperty HorizontallyScrollableProperty;
+		
+		public static readonly AutomationProperty HorizontalScrollPercentProperty;
+		
+		public static readonly AutomationProperty HorizontalViewSizeProperty;
+		
+		public static readonly AutomationProperty VerticallyScrollableProperty;
+		
+		public static readonly AutomationProperty VerticalScrollPercentProperty;
+		
+		public static readonly AutomationProperty VerticalViewSizeProperty;
 		
 #endregion
 	}
 }
+

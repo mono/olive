@@ -150,6 +150,18 @@ namespace System.Windows.Automation
 				return RangeValuePatternIdentifiers.SmallChangeProperty;
 			else if (id == RangeValuePatternIdentifiers.ValuePropertyId)
 				return RangeValuePatternIdentifiers.ValueProperty;
+			else if (id == ScrollPatternIdentifiers.HorizontallyScrollablePropertyId)
+				return ScrollPatternIdentifiers.HorizontallyScrollableProperty;
+			else if (id == ScrollPatternIdentifiers.HorizontalScrollPercentPropertyId)
+				return ScrollPatternIdentifiers.HorizontalScrollPercentProperty;
+			else if (id == ScrollPatternIdentifiers.HorizontalViewSizePropertyId)
+				return ScrollPatternIdentifiers.HorizontalViewSizeProperty;
+			else if (id == ScrollPatternIdentifiers.VerticallyScrollablePropertyId)
+				return ScrollPatternIdentifiers.VerticallyScrollableProperty;
+			else if (id == ScrollPatternIdentifiers.VerticalScrollPercentPropertyId)
+				return ScrollPatternIdentifiers.VerticalScrollPercentProperty;
+			else if (id == ScrollPatternIdentifiers.VerticalViewSizePropertyId)
+				return ScrollPatternIdentifiers.VerticalViewSizeProperty;
 			else
 				return null;
 		}
