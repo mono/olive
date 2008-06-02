@@ -18,10 +18,8 @@ namespace MonoTests.Features.Serialization
 				Client.FaultMethod ("heh");
 			}
 			catch (FaultException e) {
-            } 
-            catch (Exception e) {
-                Assert.Fail("Exception is not FaultException");
-			}
+            }
+			Assert.Fail ("No exception was thrown");
 		}
 	}
 
@@ -38,10 +36,6 @@ namespace MonoTests.Features.Serialization
 				Assert.AreEqual ("heh", e.Message);
 				return;
 			}
-			catch (Exception e) {
-				Assert.Fail ("Incorrect exception was thrown: " + e.GetType ().FullName);
-			}
-
 			Assert.Fail ("No exception was thrown");
 		}
 	}
