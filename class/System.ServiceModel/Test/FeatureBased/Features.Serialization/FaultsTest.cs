@@ -18,7 +18,8 @@ namespace MonoTests.Features.Serialization
 				Client.FaultMethod ("heh");
 			}
 			catch (FaultException e) {
-            }
+				return;
+            		}
 			Assert.Fail ("No exception was thrown");
 		}
 	}
