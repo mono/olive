@@ -249,6 +249,13 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
+		public void ReadFrom_SyndicationFeed () {
+			SyndicationFeed f = SyndicationFeed.Load (CreateReader ("<rss version='2.0'><channel><title>test</title></channel></rss>"));
+			Assert.IsNotNull (f.Title);
+		}
+
+
+		[Test]
 		public void ReadXml_TitleOnly ()
 		{
 			Rss20FeedFormatter f = new Rss20FeedFormatter ();

@@ -49,6 +49,8 @@ namespace System.ServiceModel.Syndication
 			reader.MoveToContent ();
 			if (reader.NodeType != XmlNodeType.Element)
 				throw new XmlException ("An element is expected for syndication item");
+			if (reader.IsStartElement ("rss", String.Empty) && reader.GetAttribute ("version") == "2.0")
+				return SyndicationVersions.Rss20;
 			if (reader.IsStartElement ("entry", AtomNamespace))
 				return SyndicationVersions.Atom10;
 			else if (reader.IsStartElement ("item", String.Empty))
