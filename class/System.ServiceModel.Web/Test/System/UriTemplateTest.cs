@@ -290,5 +290,14 @@ namespace MonoTests.System
 			Assert.AreEqual ("v", m.QueryParameters ["p2"], "#4");
 			Assert.AreEqual ("vv", m.QueryParameters ["p1"], "#5");
 		}
+
+		[Test]
+		public void SimpleWebGet () {
+			UriTemplate t = new UriTemplate ("GetBlog");
+			Assert.IsNotNull(t.Match(new Uri("http://localhost:8000/BlogService"),
+				new Uri("http://localhost:8000/BlogService/GetBlog")), "Matches simple WebGet method");
+			Assert.IsNull(t.Match (new Uri ("http://localhost:8000/BlogService"),
+				new Uri ("http://localhost:8000/BlogService/GetData")), "Doesn't match wrong WebGet method");
+		}
 	}
 }

@@ -152,6 +152,9 @@ namespace System
 			if (candidate == null)
 				throw new ArgumentNullException ("candidate");
 
+			if (!baseAddress.AbsoluteUri.EndsWith ("/"))
+				baseAddress = new Uri (baseAddress.AbsoluteUri + "/");
+
 			if (Uri.Compare (baseAddress, candidate, UriComponents.StrongAuthority, UriFormat.SafeUnescaped, StringComparison.Ordinal) != 0)
 				return null;
 
@@ -162,7 +165,10 @@ namespace System
 			m.RequestUri = candidate;
 			var vc = m.BoundVariables;
 
-			string cp = candidate.AbsolutePath;
+			string cp = baseAddress.MakeRelativeUri(candidate).ToString();
+			int tEndCp = cp.IndexOf ('?');
+			if (tEndCp >= 0)
+				cp = cp.Substring (0, tEndCp);
 
 			if (template.Length > 0 && template [0] == '/')
 				i++;
