@@ -209,10 +209,13 @@ namespace System.ServiceModel.Description
 			od.IsInitiating = oca.IsInitiating;
 			od.IsTerminating = oca.IsTerminating;
 
+			if (mi != serviceMethod)
+				foreach (object obj in mi.GetCustomAttributes (typeof (IOperationBehavior), true))
+					od.Behaviors.Add ((IOperationBehavior) obj);
+
 			if (serviceMethod != null) {
-				foreach (object obj in serviceMethod.GetCustomAttributes (true))
-					if (obj is IOperationBehavior)
-						od.Behaviors.Add ((IOperationBehavior) obj);
+				foreach (object obj in serviceMethod.GetCustomAttributes (typeof(IOperationBehavior),true))
+					od.Behaviors.Add ((IOperationBehavior) obj);
 			}
 			if (od.Behaviors.Find<OperationBehaviorAttribute>() == null)
 				od.Behaviors.Add (new OperationBehaviorAttribute ());

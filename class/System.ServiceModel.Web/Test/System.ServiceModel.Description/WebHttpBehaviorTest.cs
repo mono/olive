@@ -82,5 +82,22 @@ namespace MonoTests.System.ServiceModel.Description
 			[WebGet]
 			string Echo (string input);
 		}
+
+		public class MyService: IMyService
+		{
+			[OperationBehavior]
+			public string Echo (string input)
+			{
+				return input;
+			}
+		}
+		
+		[Test]
+		public void TestWebGetExists()
+		{
+			ContractDescription cd = ContractDescription.GetContract (typeof(IMyService), typeof (MyService));
+			OperationDescription od = cd.Operations[0];
+			Assert.AreEqual (2, od.Behaviors.Count, "Operation is recognized as WebGet");
+		}
 	}
 }
