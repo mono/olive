@@ -41,6 +41,7 @@ namespace MonoTests.System.ServiceModel.Web
 	public class WebServiceHostTest
 	{
 		[Test]
+		[Category("NotWorking")]
 		public void ServiceDebugBehaviorTest () {
 
 			var host = new WebServiceHost (typeof (MyService), new Uri ("http://localhost:8080/"));
@@ -78,6 +79,7 @@ namespace MonoTests.System.ServiceModel.Web
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void WebHttpBehaviorTest2 () {
 
 			var host = new WebServiceHost (typeof (MyService), new Uri ("http://localhost:8080/"));

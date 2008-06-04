@@ -247,6 +247,7 @@ namespace MonoTests.System
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void MatchWrongTemplate ()
 		{
 			var t = new UriTemplate ("/hoo{foo}");

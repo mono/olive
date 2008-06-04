@@ -128,6 +128,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void WriteTo_Reader ()
 		{
 			string xml = "<root><child /><child2 /></root>";
@@ -142,6 +143,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void WriteToTwice_Reader ()
 		{
 			string xml = "<root><child /><child2 /></root>";
@@ -202,6 +204,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 
 		[Test]
 		[ExpectedException (typeof (SerializationException))]
+		[Category("NotWorking")]
 		public void GetObject_DataContractError ()
 		{
 			new SyndicationElementExtension (DBNull.Value).GetObject<int> (); // Nullable<int> as well

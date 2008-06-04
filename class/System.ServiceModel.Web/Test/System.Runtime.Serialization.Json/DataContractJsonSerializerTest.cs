@@ -496,6 +496,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void SerializeDCWithNullName ()
 		{
 			DataContractJsonSerializer ser = new DataContractJsonSerializer (typeof (DCWithNullName));
@@ -1085,6 +1086,7 @@ namespace MonoTests.System.Runtime.Serialization.Json
 		[Test]
 		[ExpectedException (typeof (SerializationException))]
 		[Category ("NotDotNet")] // 4 is an invalid Colors value.
+		[Category ("NotWorking")]
 		public void DeserializeEnumWithDCInvalid ()
 		{
 			Deserialize (

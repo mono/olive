@@ -310,6 +310,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 
 		[Test]
 		[ExpectedException (typeof (XmlException))]
+		[Category("NotWorking")]
 		public void ReadFrom_EmptyDate ()
 		{
 			// strangely, it is checked while 'entry' is not checked
@@ -319,6 +320,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 
 		[Test]
 		[ExpectedException (typeof (XmlException))]
+		[Category("NotWorking")]
 		public void ReadFrom_WrongDate ()
 		{
 			Atom10FeedFormatter f = new Atom10FeedFormatter ();

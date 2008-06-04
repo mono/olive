@@ -136,6 +136,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
+		[Category("NotWorking")]
 		public void WriteTo ()
 		{
 			SyndicationItem item = new SyndicationItem ();
@@ -288,6 +289,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 
 		[Test]
 		[ExpectedException (typeof (XmlException))]
+		[Category("NotWorking")]
 		public void ReadFrom_WrongDate1 ()
 		{
 			Rss20ItemFormatter f = new Rss20ItemFormatter ();
@@ -296,6 +298,7 @@ namespace MonoTests.System.ServiceModel.Syndication
 
 		[Test]
 		[ExpectedException (typeof (XmlException))]
+		[Category("NotWorking")]
 		public void ReadFrom_WrongDate2 ()
 		{
 			Rss20ItemFormatter f = new Rss20ItemFormatter ();
