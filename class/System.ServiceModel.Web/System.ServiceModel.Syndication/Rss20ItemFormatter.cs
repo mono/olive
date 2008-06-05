@@ -138,6 +138,7 @@ namespace System.ServiceModel.Syndication
 		{
 			if (reader == null)
 				throw new ArgumentNullException ("reader");
+			
 			SetItem (CreateItemInstance ());
 
 			reader.MoveToContent ();
@@ -370,6 +371,7 @@ namespace System.ServiceModel.Syndication
 						else
 							reader.Skip ();
 					}
+					reader.Read ();
 				}
 				link.Uri = CreateUri (url);
 			}
@@ -527,7 +529,10 @@ namespace System.ServiceModel.Syndication
 					WriteElementExtensions (writer, category, Version);
 					writer.WriteEndElement ();
 				}
-			if (Item.Summary != null)
+
+			if (Item.Content != null) {
+				Item.Content.WriteTo (writer, "description", String.Empty);
+			} else if (Item.Summary != null)
 				Item.Summary.WriteTo (writer, "description", String.Empty);
 			else if (Item.Title == null) { // according to the RSS 2.0 spec, either of title or description must exist.
 				writer.WriteStartElement ("description");
@@ -589,15 +594,16 @@ namespace System.ServiceModel.Syndication
 				if (!Item.LastUpdatedTime.Equals (default (DateTimeOffset))) {
 					writer.WriteStartElement ("updated", AtomNamespace);
 					// FIXME: how to handle offset part?
-					writer.WriteString (XmlConvert.ToString (Item.LastUpdatedTime.DateTime, XmlDateTimeSerializationMode.RoundtripKind));
+					writer.WriteString (XmlConvert.ToString (Item.LastUpdatedTime.DateTime, XmlDateTimeSerializationMode.Local));
 					writer.WriteEndElement ();
 				}
 
 				if (Item.Copyright != null)
 					Item.Copyright.WriteTo (writer, "rights", AtomNamespace);
-
+#if false
 				if (Item.Content != null)
 					Item.Content.WriteTo (writer, "content", AtomNamespace);
+#endif
 			}
 
 			WriteElementExtensions (writer, Item, Version);

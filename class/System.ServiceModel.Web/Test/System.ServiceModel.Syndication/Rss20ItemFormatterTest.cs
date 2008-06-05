@@ -231,6 +231,16 @@ namespace MonoTests.System.ServiceModel.Syndication
 		}
 
 		[Test]
+		public void ReadFrom2 () {
+			SyndicationItem item = new SyndicationItem ();
+			Rss20ItemFormatter f = new Rss20ItemFormatter (item);
+			Assert.IsTrue (object.ReferenceEquals (item, f.Item), "Item #1");
+			f.ReadFrom (CreateReader ("<item><title>test</title></item>"));
+			Assert.IsFalse (object.ReferenceEquals(item, f.Item), "Item #2");
+		}
+
+
+		[Test]
 		public void ReadXml_TitleOnly ()
 		{
 			Rss20ItemFormatter f = new Rss20ItemFormatter ();

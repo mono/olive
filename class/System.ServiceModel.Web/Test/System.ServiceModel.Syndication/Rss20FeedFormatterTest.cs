@@ -344,5 +344,14 @@ namespace MonoTests.System.ServiceModel.Syndication
 		{
 			Assert.IsNull (((IXmlSerializable) new Rss20FeedFormatter ()).GetSchema ());
 		}
+
+		[Test]
+		public void ReadFrom_Feed () {
+			string feed =
+			@"<rss version=""2.0"" xmlns:a10=""http://www.w3.org/2005/Atom""><channel><title>My Blog Feed</title><link>http://someuri/</link><description>This is a how to sample that demonstrates how to expose a feed using RSS with WCF</description><managingEditor>someone@microsoft.com</managingEditor><category>How To Sample Code</category><item><guid isPermaLink=""false"">ItemOneID</guid><link>http://localhost/Content/One</link><title>Item One</title><description>This is the content for item one</description><a10:updated>2008-06-02T10:13:13+03:00</a10:updated></item><item><guid isPermaLink=""false"">ItemTwoID</guid><link>http://localhost/Content/Two</link><title>Item Two</title><description>This is the content for item two</description><a10:updated>2008-06-02T10:13:13+03:00</a10:updated></item><item><guid isPermaLink=""false"">ItemThreeID</guid><link>http://localhost/Content/three</link><title>Item Three</title><description>This is the content for item three</description><a10:updated>2008-06-02T10:13:13+03:00</a10:updated></item></channel></rss>";
+			Rss20FeedFormatter f = new Rss20FeedFormatter ();
+			f.ReadFrom (CreateReader (feed));
+			Assert.IsNotNull (f.Feed, "#1");
+		}
 	}
 }

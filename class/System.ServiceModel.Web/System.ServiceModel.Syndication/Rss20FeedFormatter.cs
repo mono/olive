@@ -315,6 +315,7 @@ namespace System.ServiceModel.Syndication
 						else
 							reader.Skip ();
 					}
+					reader.Read ();
 				}
 			}
 			reader.Read (); // </category> or <category ... />
@@ -345,6 +346,7 @@ namespace System.ServiceModel.Syndication
 						else
 							reader.Skip ();
 					}
+					reader.Read ();
 				}
 				link.Uri = CreateUri (url);
 			}
@@ -375,6 +377,7 @@ namespace System.ServiceModel.Syndication
 						else
 							reader.Skip ();
 					}
+					reader.Read ();
 				}
 			}
 			reader.Read (); // end element or empty element
