@@ -31,8 +31,8 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10006;
-        private const int ColumnCountPropertyId = 0;
-        private const int RowCountPropertyId = 0;
+		private const int ColumnCountPropertyId = 0;
+		private const int RowCountPropertyId = 0;
 		
 		static GridPatternIdentifiers ()
 		{
@@ -40,13 +40,13 @@ namespace System.Windows.Automation
 				new AutomationPattern (PatternId,
 				                       "GridPatternIdentifiers.Pattern");
 
-            ColumnCountProperty =
-                new AutomationPattern (ColumnCountPropertyId,
-                                       "GridPatternIdentifiers.ColumnCountProperty");
+			ColumnCountProperty =
+				new AutomationPattern (ColumnCountPropertyId,
+				                       "GridPatternIdentifiers.ColumnCountProperty");
 
-            RowCountProperty =
-                new AutomationPattern (RowCountPropertyId,
-                                       "GridPatternIdentifiers.RowCountProperty");
+			RowCountProperty =
+				new AutomationPattern (RowCountPropertyId,
+				                       "GridPatternIdentifiers.RowCountProperty");
 		}
 		
 #endregion
@@ -54,8 +54,8 @@ namespace System.Windows.Automation
 #region Public Fields
 		
 		public static readonly AutomationPattern Pattern;
-        public static readonly AutomationPattern ColumnCountProperty;
-        public static readonly AutomationPattern RowCountProperty;
+		public static readonly AutomationPattern ColumnCountProperty;
+		public static readonly AutomationPattern RowCountProperty;
 		
 #endregion
 	}

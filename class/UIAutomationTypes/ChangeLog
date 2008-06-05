@@ -1,3 +1,8 @@
+2008-06-05  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Fixing
+	  whitespace.
+
 2008-06-06	Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridPatternIdentifiers.cs: Added properties.
