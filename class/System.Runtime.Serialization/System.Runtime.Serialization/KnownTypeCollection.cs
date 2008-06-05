@@ -35,6 +35,7 @@ using System.Xml;
 using System.Xml.Schema;
 
 using QName = System.Xml.XmlQualifiedName;
+using System.Xml.Serialization;
 
 namespace System.Runtime.Serialization
 {
@@ -488,8 +489,17 @@ namespace System.Runtime.Serialization
 
 		private QName GetSerializableQName (Type type)
 		{
-			return new QName (XmlConvert.EncodeLocalName (type.Name),
-				XmlObjectSerializer.DefaultNamespaceBase + type.Namespace);
+			string xmlName = type.Name;
+			string xmlNamespace = XmlObjectSerializer.DefaultNamespaceBase + type.Namespace;
+			object [] xmlRootAttributes = type.GetCustomAttributes (typeof (XmlRootAttribute), false);
+			if (xmlRootAttributes.Length > 1)
+				throw new Exception ("Only one XmlRoot namespace allowed on type " + type.Name);
+			if (xmlRootAttributes.Length == 1) {
+				XmlRootAttribute rootAttribute = (XmlRootAttribute) xmlRootAttributes [0];
+				xmlName = rootAttribute.ElementName;
+				xmlNamespace = rootAttribute.Namespace;
+			}
+			return new QName (XmlConvert.EncodeLocalName (xmlName),	xmlNamespace);
 		}
 
 		internal bool IsPrimitiveNotEnum (Type type)

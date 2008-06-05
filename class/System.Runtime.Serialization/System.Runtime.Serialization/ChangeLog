@@ -1,3 +1,7 @@
+2008-06-05  Noam Lampert <noaml@mainsoft.com>
+	
+	* KnownTypeCollection.cs: Support XmlRoot attribute
+
 2008-06-01  Noam Lampert <noaml@mainsoft.com>
 	
 	* KnownTypeCollection.cs: Implement byte[] serialization.

@@ -42,6 +42,8 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Xml;
 using NUnit.Framework;
+using System.Xml.Serialization;
+using System.Xml.Schema;
 
 namespace MonoTests.System.Runtime.Serialization
 {
@@ -290,6 +292,14 @@ namespace MonoTests.System.Runtime.Serialization
 		}
 
 		[Test]
+		public void SerializeSimpleXml ()
+		{
+			DataContractSerializer ser =
+				new DataContractSerializer (typeof (SimpleXml));
+			SerializeSimpleClass1 (ser, @"<simple i:type=""d1p1:DCSimple1"" xmlns:d1p1=""http://schemas.datacontract.org/2004/07/MonoTests.System.Runtime.Serialization"" xmlns:i=""http://www.w3.org/2001/XMLSchema-instance""><d1p1:Foo>TEST</d1p1:Foo></simple>");
+		}
+
+		[Test]
 		[Category ("NotWorking")]
 		public void NetSerializeSimpleClass1 ()
 		{
@@ -304,6 +314,7 @@ namespace MonoTests.System.Runtime.Serialization
 			using (XmlWriter w = XmlWriter.Create (sw, settings)) {
 				ser.WriteObject (w, new DCSimple1 ());
 			}
+			Console.WriteLine(sw.ToString());
 			Assert.AreEqual (expected, sw.ToString ());
 		}
 
@@ -1221,6 +1232,25 @@ namespace MonoTests.System.Runtime.Serialization
 
 		public string GetMember() { return Member1; }
 	}
+
+	[XmlRoot(ElementName = "simple", Namespace = "")]
+	public class SimpleXml : IXmlSerializable 
+	{
+		void IXmlSerializable.ReadXml (XmlReader reader)
+		{
+		}
+
+		void IXmlSerializable.WriteXml (XmlWriter writer)
+		{
+		}
+
+		XmlSchema IXmlSerializable.GetSchema ()
+		{
+			return null;
+		}
+
+	}
+
 }
 
 [DataContract]
