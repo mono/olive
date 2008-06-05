@@ -31,21 +31,31 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10006;
+        private const int ColumnCountPropertyId = 0;
+        private const int RowCountPropertyId = 0;
 		
 		static GridPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "GridPatternIdentifiers.Pattern");
+
+            ColumnCountProperty =
+                new AutomationPattern (ColumnCountPropertyId,
+                                       "GridPatternIdentifiers.ColumnCountProperty");
+
+            RowCountProperty =
+                new AutomationPattern (RowCountPropertyId,
+                                       "GridPatternIdentifiers.RowCountProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+        public static readonly AutomationPattern ColumnCountProperty;
+        public static readonly AutomationPattern RowCountProperty;
 		
 #endregion
 	}

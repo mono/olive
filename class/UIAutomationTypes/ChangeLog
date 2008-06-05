@@ -1,3 +1,7 @@
+2008-06-06	Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Added properties.
+
 2008-06-02  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Make internal
