@@ -33,8 +33,8 @@ namespace System.Windows.Automation
 		private const int PatternId = 10001;
 		private const int CanSelectMultiplePropertyId = 30060;
 		private const int IsSelectionRequiredPropertyId = 30061;
-		private const int SelectionPropertyId = 20013;
-		private const int InvalidatedEventId = 30059;
+		private const int SelectionPropertyId = 30059;
+		private const int InvalidatedEventId = 20013;
 		
 		static SelectionPatternIdentifiers ()
 		{

@@ -1,5 +1,13 @@
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
+	* System.Windows.Automation/AutomationProperty.cs,
+	  System.Windows.Automation/AutomationEvent.cs: Add lookup support
+	  for SelectionPatternIdentifiers.
+	* System.Windows.Automation/SelectionPatternIdentifiers.cs: Fix
+	  property/event IDs.
+
+2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
 	* System.Windows.Automation/SelectionPatternIdentifiers.cs: Implement
 	  missing properties.
 
