@@ -43,5 +43,45 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void CanSelectMultiplePropertyTest ()
+		{
+			AutomationProperty property = SelectionPatternIdentifiers.CanSelectMultipleProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30060, property.Id, "Id");
+			Assert.AreEqual ("SelectionPatternIdentifiers.CanSelectMultipleProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void IsSelectionRequiredPropertyTest ()
+		{
+			AutomationProperty property = SelectionPatternIdentifiers.IsSelectionRequiredProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30061, property.Id, "Id");
+			Assert.AreEqual ("SelectionPatternIdentifiers.IsSelectionRequiredProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void SelectionPropertyTest ()
+		{
+			AutomationProperty property = SelectionPatternIdentifiers.SelectionProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30059, property.Id, "Id");
+			Assert.AreEqual ("SelectionPatternIdentifiers.SelectionProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void InvalidatedEventTest ()
+		{
+			AutomationEvent automationEvent = SelectionPatternIdentifiers.InvalidatedEvent;
+			Assert.IsNotNull (automationEvent, "Event field must not be null");
+			Assert.AreEqual (20013, automationEvent.Id, "Id");
+			Assert.AreEqual ("SelectionPatternIdentifiers.InvalidatedEvent", automationEvent.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (automationEvent, AutomationEvent.LookupById (automationEvent.Id), "LookupById");
+		}
+
 	}
 }
