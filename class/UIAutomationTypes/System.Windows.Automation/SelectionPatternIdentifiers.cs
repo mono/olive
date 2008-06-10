@@ -31,21 +31,39 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10001;
+		private const int CanSelectMultiplePropertyId = 30060;
+		private const int IsSelectionRequiredPropertyId = 30061;
+		private const int SelectionPropertyId = 20013;
+		private const int InvalidatedEventId = 30059;
 		
 		static SelectionPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "SelectionPatternIdentifiers.Pattern");
+			CanSelectMultipleProperty =
+				new AutomationProperty (CanSelectMultiplePropertyId,
+				                        "SelectionPatternIdentifiers.CanSelectMultipleProperty");
+			IsSelectionRequiredProperty =
+				new AutomationProperty (IsSelectionRequiredPropertyId,
+				                        "SelectionPatternIdentifiers.IsSelectionRequiredProperty");
+			SelectionProperty =
+				new AutomationProperty (SelectionPropertyId,
+				                        "SelectionPatternIdentifiers.SelectionProperty");
+			InvalidatedEvent =
+				new AutomationEvent (InvalidatedEventId,
+				                     "SelectionPatternIdentifiers.InvalidatedEvent");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty CanSelectMultipleProperty;
+		public static readonly AutomationProperty IsSelectionRequiredProperty;
+		public static readonly AutomationProperty SelectionProperty;
+		public static readonly AutomationEvent InvalidatedEvent;
 		
 #endregion
 	}
