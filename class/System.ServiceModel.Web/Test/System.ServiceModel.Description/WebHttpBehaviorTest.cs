@@ -97,7 +97,7 @@ namespace MonoTests.System.ServiceModel.Description
 		{
 			ContractDescription cd = ContractDescription.GetContract (typeof(IMyService), typeof (MyService));
 			OperationDescription od = cd.Operations[0];
-			Assert.AreEqual (2, od.Behaviors.Count, "Operation is recognized as WebGet");
+			Assert.IsTrue (od.Behaviors.Contains (typeof (WebGetAttribute)), "Operation is recognized as WebGet");
 		}
 	}
 }
