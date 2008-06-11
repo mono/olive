@@ -1,3 +1,7 @@
+2008-06-11  Noam Lampert <noaml@mainsoft.com>
+
+	* WebServiceHost.cs: Open endpoint on BaseAddress if necessary
+
 2008-04-21  Igor Zelmanovich <igorz@mainsoft.com>
 
 	* WebServiceHost.cs: disable http and https help page support on opening.

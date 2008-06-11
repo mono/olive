@@ -39,6 +39,7 @@ namespace System.ServiceModel.Web
 {
 	public class WebServiceHost : ServiceHost
 	{
+		Type serviceType = null;
 		public WebServiceHost ()
 			: base ()
 		{
@@ -52,14 +53,22 @@ namespace System.ServiceModel.Web
 		public WebServiceHost (Type serviceType, params Uri [] baseAddresses)
 			: base (serviceType, baseAddresses)
 		{
+			this.serviceType = serviceType;
 		}
 
 		protected override void OnOpening ()
 		{
-			// FIXME: WebHttpBehavior must me added only to webHttpBinding endpoints.
-			foreach (ServiceEndpoint se in Description.Endpoints)
-				if (se.Behaviors.Find<WebHttpBehavior> () == null)
-					se.Behaviors.Add (new WebHttpBehavior ());
+			foreach (Uri baseAddress in BaseAddresses) {
+				bool found = false;
+				foreach (ServiceEndpoint se in Description.Endpoints)
+					if (se.Address.Uri == baseAddress)
+						found = true;
+				if (!found)
+					if (SingletonInstance != null)
+						AddServiceEndpoint (SingletonInstance.GetType(), new WebHttpBinding (), baseAddress.ToString());
+					else
+						AddServiceEndpoint (serviceType, new WebHttpBinding (), baseAddress);
+			}
 
 			// disable help page.
 			ServiceDebugBehavior serviceDebugBehavior = Description.Behaviors.Find<ServiceDebugBehavior> ();
