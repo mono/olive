@@ -180,6 +180,8 @@ namespace System.Windows.Automation
 				return ScrollPatternIdentifiers.VerticalScrollPercentProperty;
 			else if (id == ScrollPatternIdentifiers.VerticalViewSizeProperty.Id)
 				return ScrollPatternIdentifiers.VerticalViewSizeProperty;
+			else if (id == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
+				return ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty;
 			else
 				return null;
 		}

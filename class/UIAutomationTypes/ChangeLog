@@ -1,3 +1,10 @@
+2008-06-11  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs: Added lookup support
+	for ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty field.
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs: Added
+	missing property: ExpandCollapseStateProperty.
+
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/AutomationProperty.cs,

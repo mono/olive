@@ -31,21 +31,26 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10005;
+		private const int ExpandCollapseStatePropertyId = 30070;
 		
 		static ExpandCollapsePatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "ExpandCollapsePatternIdentifiers.Pattern");
+			
+			ExpandCollapseStateProperty =
+				new AutomationProperty (ExpandCollapseStatePropertyId, 
+			                        "ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		
+		public static readonly AutomationProperty ExpandCollapseStateProperty;
 		
 #endregion
 	}
