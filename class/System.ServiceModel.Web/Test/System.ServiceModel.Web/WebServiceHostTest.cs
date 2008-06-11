@@ -99,6 +99,16 @@ namespace MonoTests.System.ServiceModel.Web
 			host.Close ();
 		}
 
+		[Test]
+		public void ServiceBaseUriTest () {
+
+			var host = new WebServiceHost (typeof (MyService), new Uri ("http://localhost:8080/"));
+			Assert.AreEqual (0, host.Description.Endpoints.Count, "no endpoints yet");
+			host.Open ();
+			Assert.AreEqual (1, host.Description.Endpoints.Count, "default endpoint after open");
+			host.Close ();
+		}
+
 		class MyWebHttpBehavior : WebHttpBehavior
 		{
 			public event EventHandler ApplyDispatchBehaviorBegin;
