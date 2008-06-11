@@ -43,5 +43,15 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+        [Test]
+        public void ExpandCollapseStatePropertyTest ()
+        {
+            AutomationProperty property = ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30070, property.Id, "Id");
+            Assert.AreEqual ("ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
 	}
 }

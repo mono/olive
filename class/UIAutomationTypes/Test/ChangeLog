@@ -1,3 +1,8 @@
+2008-06-11  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs: Test 
+	added to implement missing field.
+
 2008-06-10  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* SelectionPatternIdentifiersTest.cs: Finished property and event fields.
