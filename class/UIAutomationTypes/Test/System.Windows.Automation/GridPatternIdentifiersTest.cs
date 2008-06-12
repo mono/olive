@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Neville Gao <nevillegao@gmail.com>
 // 
 
 using System;
@@ -28,20 +29,60 @@ using System.Windows.Automation;
 
 using NUnit.Framework;
 
-namespace MonoTests.System.Windows.Automation {
+namespace MonoTests.System.Windows.Automation
+{
 
 	[TestFixture]
-	public class GridPatternIdentifiersTest {
+	public class GridPatternIdentifiersTest
+        {
 
 		[Test]
 		public void PatternTest ()
 		{
 			AutomationPattern pattern = GridPatternIdentifiers.Pattern;
-			Assert.IsNotNull (pattern, "Pattern field must not be null");
-			Assert.AreEqual (10006, pattern.Id, "Id");
-			Assert.AreEqual ("GridPatternIdentifiers.Pattern", pattern.ProgrammaticName, "ProgrammaticName");
-			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
+			Assert.IsNotNull (pattern,
+					"Pattern field must not be null");
+			Assert.AreEqual (10006,
+					pattern.Id,
+					"Id");
+			Assert.AreEqual ("GridPatternIdentifiers.Pattern",
+					pattern.ProgrammaticName,
+					"ProgrammaticName");
+			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id),
+					"LookupById");
 		}
 
-	}
+                [Test]
+                public void RowPropertyTest()
+                {
+                        AutomationProperty property = GridItemPatternIdentifiers.RowProperty;
+                        Assert.IsNotNull (property,
+					"Property field must not be null");
+                        Assert.AreEqual (30064,
+					property.Id,
+					"Id");
+                        Assert.AreEqual ("GridItemPatternIdentifiers.RowProperty",
+					property.ProgrammaticName,
+					"ProgrammaticName");
+                        Assert.AreEqual (property,
+					AutomationProperty.LookupById (property.Id),
+					"LookupById");
+                }
+
+                [Test]
+                public void ColumnPropertyTest()
+                {
+                        AutomationProperty property = GridItemPatternIdentifiers.ColumnProperty;
+                        Assert.IsNotNull (property,
+					"Property field must not be null");
+                        Assert.AreEqual (30065,
+					property.Id,
+					"Id");
+                        Assert.AreEqual ("GridItemPatternIdentifiers.ColumnProperty",
+					property.ProgrammaticName,
+					"ProgrammaticName");
+                        Assert.AreEqual (property, AutomationProperty.LookupById (property.Id),
+					"LookupById");
+                }
+        }
 }
