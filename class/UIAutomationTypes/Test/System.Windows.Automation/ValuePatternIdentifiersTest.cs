@@ -43,5 +43,24 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+        [Test]
+        public void IsReadOnlyPropertyTest()
+        {
+            AutomationProperty property = ValuePatternIdentifiers.IsReadOnlyProperty;
+            Assert.IsNotNull (property, "IsReadOnlyProperty field must not be null");
+            Assert.AreEqual (30046, property.Id, "Id");
+            Assert.AreEqual ("ValuePatternIdentifiers.IsReadOnlyProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
+        }
+
+        [Test]
+        public void ValuePropertyTest ()
+        {
+            AutomationProperty property = ValuePatternIdentifiers.ValueProperty;
+			Assert.IsNotNull (property, "ValueProperty field must not be null");
+			Assert.AreEqual (30045, property.Id, "Id");
+			Assert.AreEqual ("ValuePatternIdentifiers.ValueProperty", property.ProgrammaticName, "ProgrammaticName");
+            Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+        }
 	}
 }
