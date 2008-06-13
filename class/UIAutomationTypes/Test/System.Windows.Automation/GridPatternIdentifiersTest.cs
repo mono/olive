@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining 
+// Permission is hereby granted, free of charge, to any person obtaining 
 // a copy of this software and associated documentation files (the 
 // "Software"), to deal in the Software without restriction, including 
 // without limitation the rights to use, copy, modify, merge, publish, 
@@ -55,7 +55,7 @@ namespace MonoTests.System.Windows.Automation
                 [Test]
                 public void RowPropertyTest()
                 {
-                        AutomationProperty property = GridItemPatternIdentifiers.RowProperty;
+                        AutomationProperty property = GridPatternIdentifiers.RowProperty;
                         Assert.IsNotNull (property,
 					"Property field must not be null");
                         Assert.AreEqual (30064,
@@ -72,7 +72,7 @@ namespace MonoTests.System.Windows.Automation
                 [Test]
                 public void ColumnPropertyTest()
                 {
-                        AutomationProperty property = GridItemPatternIdentifiers.ColumnProperty;
+                        AutomationProperty property = GridPatternIdentifiers.ColumnProperty;
                         Assert.IsNotNull (property,
 					"Property field must not be null");
                         Assert.AreEqual (30065,

@@ -1,3 +1,9 @@
+2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Fix typo
+	  that was causing build errors.  Testing GridPatternIdentifiers, not
+	  GridItemPatternIdentifiers.
+
 2008-06-13  Mario Carrion <mcarrion@novell.com>
 
 	* System.Windows.Automation/ValuePatternIdentifiersTest.cs: Test added to

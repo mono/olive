@@ -1,3 +1,8 @@
+2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Properties have
+	  type AutomationProperty, not AutomationPattern.
+
 2008-06-12  Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridPatternIdentifiers.cs: Determined

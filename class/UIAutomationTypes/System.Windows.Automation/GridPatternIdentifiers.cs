@@ -42,11 +42,11 @@ namespace System.Windows.Automation
 				                       "GridPatternIdentifiers.Pattern");
 
 			RowProperty =
-				new AutomationPattern (RowPropertyId,
+				new AutomationProperty (RowPropertyId,
 				                       "GridPatternIdentifiers.RowCountProperty");
 
 			ColumnProperty =
-				new AutomationPattern (ColumnPropertyId,
+				new AutomationProperty (ColumnPropertyId,
 				                       "GridPatternIdentifiers.ColumnCountProperty");
 		}
 		
@@ -55,8 +55,8 @@ namespace System.Windows.Automation
 #region Public Fields
 		
 		public static readonly AutomationPattern Pattern;
-		public static readonly AutomationPattern RowProperty;
-		public static readonly AutomationPattern ColumnProperty;
+		public static readonly AutomationProperty RowProperty;
+		public static readonly AutomationProperty ColumnProperty;
 		
 #endregion
 	}
