@@ -182,6 +182,10 @@ namespace System.Windows.Automation
 				return ScrollPatternIdentifiers.VerticalViewSizeProperty;
 			else if (id == ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty.Id)
 				return ExpandCollapsePatternIdentifiers.ExpandCollapseStateProperty;
+			else if (id == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
+				return ValuePatternIdentifiers.IsReadOnlyProperty;
+			else if (id == ValuePatternIdentifiers.ValueProperty.Id)
+				return ValuePatternIdentifiers.ValueProperty;			
 			else
 				return null;
 		}

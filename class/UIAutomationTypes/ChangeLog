@@ -1,3 +1,10 @@
+2008-06-13  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs: Added 
+	ValuePatternIdentifiers properties to LookUp.
+	* System.Windows.Automation/ValuePatternIdentifiers.cs: Added
+	IsReadOnlyProperty and ValueProperty.
+
 2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/GridPatternIdentifiers.cs: Properties have

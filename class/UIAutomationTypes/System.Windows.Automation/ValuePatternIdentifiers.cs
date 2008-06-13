@@ -31,21 +31,31 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10002;
+		private const int ValuePropertyId = 30045;
+		private const int IsReadOnlyPropertyId = 30046;
 		
 		static ValuePatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId, 
 				                       "ValuePatternIdentifiers.Pattern");
+
+			IsReadOnlyProperty = 
+				new AutomationProperty (IsReadOnlyPropertyId,
+				                        "ValuePatternIdentifiers.IsReadOnlyProperty");
+			
+			ValueProperty = 
+				new AutomationProperty (ValuePropertyId,
+				                        "ValuePatternIdentifiers.ValueProperty");
 		}
 		
 #endregion
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty IsReadOnlyProperty;
+		public static readonly AutomationProperty ValueProperty;
 		
 #endregion
 	}
