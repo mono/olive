@@ -390,6 +390,18 @@ namespace System.ServiceModel.Dispatcher
 				}
 			}
 
+			void sendEndpointNotFound (RequestContext rc, EndpointNotFoundException ex) 
+			{
+				try {
+
+					MessageVersion version = rc.RequestMessage.Version;
+					FaultCode fc = new FaultCode ("DestinationUnreachable", version.Addressing.Namespace);
+					Message res = Message.CreateMessage (version, fc, "error occured", rc.RequestMessage.Headers.Action);
+					rc.Reply (res);
+				}
+				catch (Exception e) { }
+			}
+
 			void ProcessRequest ()
 			{
 				RequestContext rc = null;
@@ -402,9 +414,8 @@ namespace System.ServiceModel.Dispatcher
 					new InputOrReplyRequestProcessor (candidate.DispatchRuntime, reply, owner.timeouts).
 						ProcessReply (rc);
 				}
-				catch (Exception ex) {										
-				    //FIXME: handle EndpointNotFoundException ?
-				    throw;
+				catch (EndpointNotFoundException ex) {
+					sendEndpointNotFound (rc, ex);
 				}
 			}
 
@@ -418,9 +429,8 @@ namespace System.ServiceModel.Dispatcher
 					new InputOrReplyRequestProcessor (candidate.DispatchRuntime, reply, owner.timeouts).
 						ProcessInput(message);
 				}
-				catch (Exception ex) {
-					//FIXME: handle EndpointNotFoundException ?
-					throw;
+				catch (EndpointNotFoundException ex) {
+					// silently ignore
 				}
 			}
 

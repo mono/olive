@@ -1,3 +1,7 @@
+2008-06-18  Noam Lampert <noaml@mainsoft.com>
+
+	* ChannelDispatcher.cs: Avoid aborting host process on faulty input message.
+
 2008-05-22  Noam Lampert <noaml@mainsoft.com>
 
 	* OperationInvokeHandler.cs: Only return fault reply when TargetInvocation occured (not other internal
