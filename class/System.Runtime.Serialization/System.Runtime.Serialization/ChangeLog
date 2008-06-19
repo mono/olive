@@ -1,3 +1,7 @@
+2008-06-19  Noam Lampert <noaml@mainsoft.com>
+	
+	* KnownTypeCollection.cs: Support anyUri type
+
 2008-06-05  Noam Lampert <noaml@mainsoft.com>
 	
 	* KnownTypeCollection.cs: Support XmlRoot attribute

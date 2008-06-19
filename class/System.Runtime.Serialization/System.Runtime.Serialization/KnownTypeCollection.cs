@@ -165,6 +165,8 @@ namespace System.Runtime.Serialization
 					return duration_type;
 				if (type == typeof (byte []))
 					return base64_type;
+				if (type == typeof (Uri))
+					return any_uri_type;
 				return QName.Empty;
 			case TypeCode.Boolean:
 				return bool_type;
@@ -214,6 +216,8 @@ namespace System.Runtime.Serialization
 					return XmlConvert.ToString ((TimeSpan) obj);
 				if (type == typeof (byte []))
 					return Convert.ToBase64String ((byte []) obj);
+				if (type == typeof (Uri))
+					return ((Uri) obj).ToString ();
 				throw new Exception ("Internal error: missing predefined type serialization for type " + type.FullName);
 			case TypeCode.DBNull: // predefined, but not primitive
 				return String.Empty;
@@ -287,7 +291,7 @@ namespace System.Runtime.Serialization
 		{
 			switch (name) {
 			case "anyURI":
-				return s;
+				return new Uri(s,UriKind.RelativeOrAbsolute);
 			case "boolean":
 				return XmlConvert.ToBoolean (s);
 			case "base64Binary":
@@ -508,7 +512,7 @@ namespace System.Runtime.Serialization
 				return false;
 			if (Type.GetTypeCode (type) != TypeCode.Object) // explicitly primitive
 				return true;
-			if (type == typeof (Guid) || type == typeof (object) || type == typeof(TimeSpan) || type == typeof(byte[])) // special primitives
+			if (type == typeof (Guid) || type == typeof (object) || type == typeof(TimeSpan) || type == typeof(byte[]) || type==typeof(Uri)) // special primitives
 				return true;
 			// nullable
 			if (type.IsGenericType && type.GetGenericTypeDefinition () == typeof (Nullable<>))
