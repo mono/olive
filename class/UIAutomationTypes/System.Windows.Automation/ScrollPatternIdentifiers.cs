@@ -81,6 +81,8 @@ namespace System.Windows.Automation
 		
 		public static readonly AutomationProperty VerticalViewSizeProperty;
 		
+		public const double NoScroll = -1;
+		
 #endregion
 	}
 }

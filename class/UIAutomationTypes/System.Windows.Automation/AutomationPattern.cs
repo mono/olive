@@ -70,6 +70,8 @@ namespace System.Windows.Automation
 				return ValuePatternIdentifiers.Pattern;
 			else if (id == WindowPatternIdentifiers.Pattern.Id)
 				return WindowPatternIdentifiers.Pattern;
+			else if (id == ScrollItemPatternIdentifiers.Pattern.Id)
+				return ScrollItemPatternIdentifiers.Pattern;
 			else
 				return null;
 		}

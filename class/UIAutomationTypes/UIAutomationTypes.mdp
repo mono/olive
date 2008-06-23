@@ -1,4 +1,4 @@
-<Project name="UIAutomationTypes" fileversion="2.0" DefaultNamespace="System.Windows.Automation" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationTypes" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assemblyKeyFile="." assembly="UIAutomationTypes" />
@@ -59,6 +59,7 @@
     <File name="System.Windows.Automation.Text/HorizontalTextAlignment.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Text/OutlineStyles.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Text/TextDecorationLineStyle.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/ScrollItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />

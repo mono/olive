@@ -1,3 +1,22 @@
+2008-06-23  Mario Carrion <mcarrion@novell.com>
+
+	* UIAutomationTypes.dll.sources: Added file
+	ScrollItemPatternIdentifiers.cs to build process.
+	* UIAutomationTypes.mdp: Added file: ScrollItemPatternIdentifiers.cs.
+	* UIAutomationTypesTests.mdp: Adde file: 
+	ScrollItemPatternIdentifiersTest test.
+	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Added NoScroll
+	field.
+	* System.Windows.Automation/AutomationProperty.cs: Added
+	GridPatternIdentifiers fields.
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Fixed values to
+	match with Vista implementation.
+	* System.Windows.Automation/AutomationPattern.cs: Returning 
+	ScrollItemPatternIdentifiers pattern.
+	* System.Windows.Automation/ScrollItemPatternIdentifiers.cs: File added.
+	* UIAutomationTypes_test.dll.sources: File added 
+	ScrollItemPatternIdentifiersTest.cs.
+
 2008-06-13  Mario Carrion <mcarrion@novell.com>
 
 	* System.Windows.Automation/AutomationProperty.cs: Added 

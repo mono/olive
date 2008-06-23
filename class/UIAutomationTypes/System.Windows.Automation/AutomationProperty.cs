@@ -185,7 +185,11 @@ namespace System.Windows.Automation
 			else if (id == ValuePatternIdentifiers.IsReadOnlyProperty.Id)
 				return ValuePatternIdentifiers.IsReadOnlyProperty;
 			else if (id == ValuePatternIdentifiers.ValueProperty.Id)
-				return ValuePatternIdentifiers.ValueProperty;			
+				return ValuePatternIdentifiers.ValueProperty;
+			else if (id == GridPatternIdentifiers.ColumnCountProperty.Id)
+				return GridPatternIdentifiers.ColumnCountProperty;
+			else if (id == GridPatternIdentifiers.RowCountProperty.Id)
+				return GridPatternIdentifiers.RowCountProperty;			
 			else
 				return null;
 		}

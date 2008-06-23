@@ -24,6 +24,7 @@ System.Windows.Automation/MultipleViewPatternIdentifiers.cs
 System.Windows.Automation/RangeValuePatternIdentifiers.cs
 System.Windows.Automation/ScrollAmount.cs
 System.Windows.Automation/ScrollPatternIdentifiers.cs
+System.Windows.Automation/ScrollItemPatternIdentifiers.cs
 System.Windows.Automation/SelectionItemPatternIdentifiers.cs
 System.Windows.Automation/SelectionPatternIdentifiers.cs
 System.Windows.Automation/StructureChangeType.cs

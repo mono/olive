@@ -10,6 +10,7 @@ System.Windows.Automation/RangeValuePatternIdentifiersTest.cs
 System.Windows.Automation/RowOrColumnMajorTest.cs
 System.Windows.Automation/ScrollAmountTest.cs
 System.Windows.Automation/ScrollPatternIdentifiersTest.cs
+System.Windows.Automation/ScrollItemPatternIdentifiersTest.cs
 System.Windows.Automation/SelectionItemPatternIdentifiersTest.cs
 System.Windows.Automation/SelectionPatternIdentifiersTest.cs
 System.Windows.Automation/StructureChangeTypeTest.cs

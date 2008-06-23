@@ -20,44 +20,32 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
-//      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//	Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
 
 namespace System.Windows.Automation
 {
-	public static class GridPatternIdentifiers
+
+	public static class ScrollItemPatternIdentifiers
 	{
 #region Constructor
+		private const int PatternId = 10017;
 
-		private const int PatternId = 10006;
-		private const int RowCountPropertyId = 30062;
-		private const int ColumnCountPropertyId = 30063;
-		
-		static GridPatternIdentifiers ()
+		static ScrollItemPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
-				                       "GridPatternIdentifiers.Pattern");
-
-			RowCountProperty =
-				new AutomationProperty (RowCountPropertyId,
-				                       "GridPatternIdentifiers.RowCountProperty");
-
-			ColumnCountProperty =
-				new AutomationProperty (ColumnCountPropertyId,
-				                       "GridPatternIdentifiers.ColumnCountProperty");
+				                       "ScrollItemPatternIdentifiers.Pattern");
 		}
-		
+
 #endregion
 		
 #region Public Fields
 		
 		public static readonly AutomationPattern Pattern;
-		public static readonly AutomationProperty RowCountProperty;
-		public static readonly AutomationProperty ColumnCountProperty;
-		
+
 #endregion
 	}
 }
