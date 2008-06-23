@@ -109,5 +109,11 @@ namespace MonoTests.System.Windows.Automation {
             Assert.AreEqual (property, AutomationProperty.LookupById(property.Id), "LookupById");
         }
 
+        [Test]
+        public void NoScrollField ()
+        {
+            Assert.AreEqual(-1, ScrollPatternIdentifiers.NoScroll, "NoScroll");
+        }
+
 	}
 }

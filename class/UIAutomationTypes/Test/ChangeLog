@@ -1,3 +1,13 @@
+2008-06-23  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Didn't build in
+	Vista.
+	* System.Windows.Automation/ScrollItemPatternIdentifiersTest.cs: File added.
+	Tests ScrollItemPatternIdentifies class.
+	* System.Windows.Automation/ScrollPatternIdentifiersTest.cs: File updated,
+	new test added for NoScroll.
+	* UIAutomationTypesTests.csproj: Updated: Added file.
+
 2008-06-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Fix typo

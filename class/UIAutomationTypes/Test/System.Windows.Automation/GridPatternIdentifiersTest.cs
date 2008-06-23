@@ -20,6 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com) 
 // 
 // Authors: 
+//      Mario Carrion <mcarrion@novell.com>
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
 //      Neville Gao <nevillegao@gmail.com>
 // 
@@ -55,13 +56,13 @@ namespace MonoTests.System.Windows.Automation
                 [Test]
                 public void RowPropertyTest()
                 {
-                        AutomationProperty property = GridPatternIdentifiers.RowProperty;
+                        AutomationProperty property = GridPatternIdentifiers.RowCountProperty;
                         Assert.IsNotNull (property,
 					"Property field must not be null");
-                        Assert.AreEqual (30064,
+                        Assert.AreEqual (30062,
 					property.Id,
 					"Id");
-                        Assert.AreEqual ("GridItemPatternIdentifiers.RowProperty",
+                        Assert.AreEqual("GridPatternIdentifiers.RowCountProperty",
 					property.ProgrammaticName,
 					"ProgrammaticName");
                         Assert.AreEqual (property,
@@ -72,13 +73,13 @@ namespace MonoTests.System.Windows.Automation
                 [Test]
                 public void ColumnPropertyTest()
                 {
-                        AutomationProperty property = GridPatternIdentifiers.ColumnProperty;
+                        AutomationProperty property = GridPatternIdentifiers.ColumnCountProperty;
                         Assert.IsNotNull (property,
 					"Property field must not be null");
-                        Assert.AreEqual (30065,
+                        Assert.AreEqual (30063,
 					property.Id,
 					"Id");
-                        Assert.AreEqual ("GridItemPatternIdentifiers.ColumnProperty",
+                        Assert.AreEqual("GridPatternIdentifiers.ColumnCountProperty",
 					property.ProgrammaticName,
 					"ProgrammaticName");
                         Assert.AreEqual (property, AutomationProperty.LookupById (property.Id),

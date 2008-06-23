@@ -64,6 +64,7 @@
     <Compile Include="System.Windows.Automation\RangeValuePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\RowOrColumnMajorTest.cs" />
     <Compile Include="System.Windows.Automation\ScrollAmountTest.cs" />
+    <Compile Include="System.Windows.Automation\ScrollItemPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\ScrollPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\SelectionItemPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\SelectionPatternIdentifiersTest.cs" />
