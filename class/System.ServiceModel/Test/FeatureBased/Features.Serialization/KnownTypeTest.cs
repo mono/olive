@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 using NUnit.Framework;
-using Proxy.MonoTests.Features.Client;
+using MonoTests.Features.Contracts;
 
 namespace MonoTests.Features.Serialization
 {
 	[TestFixture]
-    public class KnownTypeTest : TestFixtureBase<KnownTypeTesterContractClient, MonoTests.Features.Contracts.KnownTypeTester, MonoTests.Features.Contracts.IKnownTypeTesterContract>
+    public class KnownTypeTest : TestFixtureBase<object, MonoTests.Features.Contracts.KnownTypeTester, MonoTests.Features.Contracts.IKnownTypeTesterContract>
 	{
 		[Test]
 		public void TestKnownType ()
@@ -20,11 +20,16 @@ namespace MonoTests.Features.Serialization
 			p2.X = 2;
 			p2.Y = 3;
 
-			Point2D r = ClientProxy.Move (p1, p2);
+			Point2D r = Client.Move (p1, p2);
 			Assert.IsNotNull (r, "#1");
 			Assert.IsTrue (r is AdvPoint2D, "#2");
 			Assert.AreEqual (((AdvPoint2D) r).ZeroDistance, 5, "#3");
 
+		}
+
+		[Test]
+		public void TestKnowType2 () {
+			BaseContract [] x = Client.foo ();
 		}
 	}
 }

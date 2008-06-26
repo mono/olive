@@ -14,6 +14,9 @@ namespace MonoTests.Features.Contracts
 
 		[OperationContract]
 		double Distance (Point2D point1, Point2D point2);
+
+		[OperationContract]
+		BaseContract [] foo ();
 	}
 
 	public class KnownTypeTester : IKnownTypeTesterContract
@@ -28,6 +31,11 @@ namespace MonoTests.Features.Contracts
 			return Math.Sqrt (Math.Abs (point1.X - point2.X) +
 				Math.Abs (point1.Y - point2.Y));
 		}
+
+		public BaseContract [] foo () {
+			return new BaseContract[] {new DerivedContract ()};
+		}
+
 	}
 
 	[DataContract (Namespace = "http://MonoTests.Features.Contracts")]
@@ -36,6 +44,7 @@ namespace MonoTests.Features.Contracts
 	{
 		int x;
 		int y;
+		public Point2D () { }
 
 		public Point2D (int x, int y)
 		{
@@ -73,4 +82,21 @@ namespace MonoTests.Features.Contracts
 			set { }
 		}
 	}
+
+	[DataContract]
+	[KnownType (typeof (DerivedContract))]
+	public class BaseContract
+	{
+		[DataMember]
+		string name;
+	}
+
+	[DataContract]
+	public class DerivedContract : BaseContract
+	{
+		[DataMember]
+		bool blah;
+	}
+
+
 }

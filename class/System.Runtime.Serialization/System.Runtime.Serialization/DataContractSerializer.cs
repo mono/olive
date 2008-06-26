@@ -189,8 +189,12 @@ namespace System.Runtime.Serialization
 					known_types.TryRegister (t);
 			}
 
+			Type elementType = type;
+			if (type.HasElementType)
+				elementType = type.GetElementType ();
+
 			/* Get all KnownTypeAttribute-s, including inherited ones */
-			object [] attrs = type.GetCustomAttributes (typeof (KnownTypeAttribute), true);
+			object [] attrs = elementType.GetCustomAttributes (typeof (KnownTypeAttribute), true);
 			for (int i = 0; i < attrs.Length; i ++) {
 				KnownTypeAttribute kt = (KnownTypeAttribute) attrs [i];
 				known_types.TryRegister (kt.Type);
