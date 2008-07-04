@@ -1,3 +1,7 @@
+2008-07-04  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridPatternIdentifiers.cs: Minor changes.
+
 2008-06-23  Mario Carrion <mcarrion@novell.com>
 
 	* UIAutomationTypes.dll.sources: Added file
