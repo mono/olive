@@ -54,7 +54,7 @@ namespace MonoTests.System.Windows.Automation
 		}
 
                 [Test]
-                public void RowPropertyTest()
+                public void RowCountPropertyTest ()
                 {
                         AutomationProperty property = GridPatternIdentifiers.RowCountProperty;
                         Assert.IsNotNull (property,
@@ -71,7 +71,7 @@ namespace MonoTests.System.Windows.Automation
                 }
 
                 [Test]
-                public void ColumnPropertyTest()
+                public void ColumnCountPropertyTest ()
                 {
                         AutomationProperty property = GridPatternIdentifiers.ColumnCountProperty;
                         Assert.IsNotNull (property,
