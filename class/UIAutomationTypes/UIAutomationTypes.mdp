@@ -60,6 +60,7 @@
     <File name="System.Windows.Automation.Text/OutlineStyles.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation.Text/TextDecorationLineStyle.cs" subtype="Code" buildaction="Compile" />
     <File name="System.Windows.Automation/ScrollItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
+    <File name="System.Windows.Automation/GridItemPatternIdentifiers.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />

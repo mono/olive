@@ -44,6 +44,8 @@ namespace System.Windows.Automation
 		{
 			if (id == ExpandCollapsePatternIdentifiers.Pattern.Id)
 				return ExpandCollapsePatternIdentifiers.Pattern;
+			else if (id == GridItemPatternIdentifiers.Pattern.Id)
+      				return GridItemPatternIdentifiers.Pattern;
 			else if (id == GridPatternIdentifiers.Pattern.Id)
 				return GridPatternIdentifiers.Pattern;
 			else if (id == InvokePatternIdentifiers.Pattern.Id)

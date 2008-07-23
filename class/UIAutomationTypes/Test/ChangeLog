@@ -1,3 +1,9 @@
+2008-07-23  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridItemPatternIdentifiersTest.cs: File added.
+	* UIAutomationTypesTests.csproj: Added file
+	GridItemPatternIdentifiersTest.cs.
+
 2008-07-04  Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridPatternIdentifiersTest.cs: Minor

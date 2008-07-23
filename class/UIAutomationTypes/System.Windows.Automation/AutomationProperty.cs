@@ -190,6 +190,16 @@ namespace System.Windows.Automation
 				return GridPatternIdentifiers.ColumnCountProperty;
 			else if (id == GridPatternIdentifiers.RowCountProperty.Id)
 				return GridPatternIdentifiers.RowCountProperty;			
+			else if (id == GridItemPatternIdentifiers.RowProperty.Id)
+				return GridItemPatternIdentifiers.RowProperty;
+			else if (id == GridItemPatternIdentifiers.ColumnProperty.Id)
+				return GridItemPatternIdentifiers.ColumnProperty;
+			else if (id == GridItemPatternIdentifiers.RowSpanProperty.Id)
+				return GridItemPatternIdentifiers.RowSpanProperty;
+			else if (id == GridItemPatternIdentifiers.ColumnSpanProperty.Id)
+				return GridItemPatternIdentifiers.ColumnSpanProperty;
+			else if (id == GridItemPatternIdentifiers.ContainingGridProperty.Id)
+				return GridItemPatternIdentifiers.ContainingGridProperty;
 			else
 				return null;
 		}

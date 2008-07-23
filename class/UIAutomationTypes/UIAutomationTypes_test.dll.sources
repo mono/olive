@@ -3,6 +3,7 @@ System.Windows.Automation/ControlTypeTest.cs
 System.Windows.Automation/DockPositionTest.cs
 System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs
 System.Windows.Automation/ExpandCollapseStateTest.cs
+System.Windows.Automation/GridItemPatternIdentifiersTest.cs
 System.Windows.Automation/GridPatternIdentifiersTest.cs
 System.Windows.Automation/InvokePatternIdentifiersTest.cs
 System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs

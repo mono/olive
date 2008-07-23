@@ -19,6 +19,7 @@ System.Windows.Automation/ControlType.cs
 System.Windows.Automation/ElementNotEnabledException.cs
 System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs
 System.Windows.Automation/GridPatternIdentifiers.cs
+System.Windows.Automation/GridItemPatternIdentifiers.cs
 System.Windows.Automation/InvokePatternIdentifiers.cs
 System.Windows.Automation/MultipleViewPatternIdentifiers.cs
 System.Windows.Automation/RangeValuePatternIdentifiers.cs

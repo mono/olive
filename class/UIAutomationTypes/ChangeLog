@@ -1,3 +1,18 @@
+2008-07-23  Neville Gao <nevillegao@gmail.com>
+
+	* System.Windows.Automation/GridItemPatternIdentifiers.cs: File added.
+	* System.Windows.Automation/AutomationProperty.cs: Added
+	GridItemPatternIdentifiers fields.
+	* System.Windows.Automation/AutomationPattern.cs: Returning
+	GridItemPatternIdentifiers pattern.
+	* UIAutomationTypes.mdp: Added file GridItemPatternIdentifiers.
+	* UIAutomationTypesTests.mdp: Added file
+	GridItemPatternIdentifiersTest.
+	* UIAutomationTypes.dll.sources: Added file
+	GridItemPatternIdentifiers.cs.
+	* UIAutomationTypes_test.dll.sources: Added file
+	GridItemPatternIdentifiersTest.cs.
+
 2008-07-04  Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridPatternIdentifiers.cs: Minor changes.
@@ -7,7 +22,7 @@
 	* UIAutomationTypes.dll.sources: Added file
 	ScrollItemPatternIdentifiers.cs to build process.
 	* UIAutomationTypes.mdp: Added file: ScrollItemPatternIdentifiers.cs.
-	* UIAutomationTypesTests.mdp: Adde file: 
+	* UIAutomationTypesTests.mdp: Added file: 
 	ScrollItemPatternIdentifiersTest test.
 	* System.Windows.Automation/ScrollPatternIdentifiers.cs: Added NoScroll
 	field.
