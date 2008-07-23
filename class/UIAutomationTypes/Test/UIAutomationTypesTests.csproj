@@ -58,6 +58,7 @@
     <Compile Include="System.Windows.Automation\DockPositionTest.cs" />
     <Compile Include="System.Windows.Automation\ExpandCollapsePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\ExpandCollapseStateTest.cs" />
+    <Compile Include="System.Windows.Automation\GridItemPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\GridPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\InvokePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\MultipleViewPatternIdentifiersTest.cs" />
