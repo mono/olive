@@ -1,3 +1,7 @@
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
 2008-07-23  Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridItemPatternIdentifiers.cs: File added.
