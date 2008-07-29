@@ -1,3 +1,7 @@
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
 2008-05-13  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Assembly, Assembly/AssemblyInfo.cs, Mono.UIAutomation.Bridge,
