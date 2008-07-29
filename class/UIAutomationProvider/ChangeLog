@@ -1,3 +1,7 @@
+2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* Makefile: Add to 'accessibility' package.
+
 2008-05-23  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation.Provider/IRawElementProviderFragment.cs:
