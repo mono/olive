@@ -1,3 +1,8 @@
+2008-07-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile, mono-uia.pc.in: Add .pc file for UIA assemblies, and link
+	them to $(prefix)/lib/mono/accessibility/.
+
 2008-04-13  Jb Evain  <jbevain@novell.com>
 
 	* agmono.pc.in, agmonosilver.pc.in, silver.pc.in,
