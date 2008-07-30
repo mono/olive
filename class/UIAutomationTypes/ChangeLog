@@ -1,3 +1,13 @@
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypes.dll.sources: Updated to include OrientationType
+	  enumeration.
+	* UIAutomationTypes.mdp: Updated to include OrientationType enumeration
+	  file.
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources:
+	  Updated to include OrientationType Test file.
+	* System.Windows.Automation/OrientationType.cs: File added.
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile: Add to 'accessibility' package.

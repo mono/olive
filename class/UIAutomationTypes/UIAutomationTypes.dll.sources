@@ -1,10 +1,3 @@
-System.Windows.Automation.Text/AnimationStyle.cs
-System.Windows.Automation.Text/BulletStyle.cs
-System.Windows.Automation.Text/CapStyle.cs
-System.Windows.Automation.Text/FlowDirections.cs
-System.Windows.Automation.Text/HorizontalTextAlignment.cs
-System.Windows.Automation.Text/OutlineStyles.cs
-System.Windows.Automation.Text/TextDecorationLineStyle.cs
 System.Windows.Automation/AutomationTextAttribute.cs
 System.Windows.Automation/RowOrColumnMajor.cs
 System.Windows.Automation/WindowVisualState.cs
@@ -22,6 +15,7 @@ System.Windows.Automation/GridPatternIdentifiers.cs
 System.Windows.Automation/GridItemPatternIdentifiers.cs
 System.Windows.Automation/InvokePatternIdentifiers.cs
 System.Windows.Automation/MultipleViewPatternIdentifiers.cs
+System.Windows.Automation/OrientationType.cs
 System.Windows.Automation/RangeValuePatternIdentifiers.cs
 System.Windows.Automation/ScrollAmount.cs
 System.Windows.Automation/ScrollPatternIdentifiers.cs
@@ -41,6 +35,13 @@ System.Windows.Automation/AutomationEventArgs.cs
 System.Windows.Automation/WindowInteractionState.cs
 System.Windows.Automation/WindowPatternIdentifiers.cs
 System.Windows.Automation/AutomationElementIdentifiers.cs
+System.Windows.Automation.Text/AnimationStyle.cs
+System.Windows.Automation.Text/BulletStyle.cs
+System.Windows.Automation.Text/CapStyle.cs
+System.Windows.Automation.Text/FlowDirections.cs
+System.Windows.Automation.Text/HorizontalTextAlignment.cs
+System.Windows.Automation.Text/OutlineStyles.cs
+System.Windows.Automation.Text/TextDecorationLineStyle.cs
 System.Windows.Automation.Text/TextPatternRangeEndpoint.cs
 System.Windows.Automation.Text/TextUnit.cs
 ../../build/common/MonoTODOAttribute.cs
