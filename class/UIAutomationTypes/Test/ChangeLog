@@ -1,3 +1,10 @@
+2008-07-30  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypesTests.csproj: File updated added file: 
+	OrientationTypeTest
+	* System.Windows.Automation/OrientationTypeTest.cs: Added file, test for
+	OrientationType.
+
 2008-07-23  Neville Gao <nevillegao@gmail.com>
 
 	* System.Windows.Automation/GridItemPatternIdentifiersTest.cs: File added.

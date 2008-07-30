@@ -62,6 +62,7 @@
     <Compile Include="System.Windows.Automation\GridPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\InvokePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\MultipleViewPatternIdentifiersTest.cs" />
+    <Compile Include="System.Windows.Automation\OrientationTypeTest.cs" />
     <Compile Include="System.Windows.Automation\RangeValuePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\RowOrColumnMajorTest.cs" />
     <Compile Include="System.Windows.Automation\ScrollAmountTest.cs" />
