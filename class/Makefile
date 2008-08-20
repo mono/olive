@@ -11,25 +11,17 @@ net_3_0_dirs = \
 	WindowsBase			\
 	PresentationCore		\
 	PresentationFramework		\
-	System.Runtime.Serialization	\
-	System.IdentityModel		\
-	System.IdentityModel.Selectors	\
-	System.ServiceModel 		\
 	UIAutomationTypes		\
 	UIAutomationBridge		\
 	UIAutomationProvider
 
-net_3_5_dirs = \
-	System.ServiceModel.Web
-
 net_3_0_SUBDIRS := $(net_3_0_dirs)
-net_3_5_SUBDIRS := $(net_3_5_dirs)
 
-SUBDIRS = $(net_3_0_dirs) $(net_3_5_dirs)
+SUBDIRS = $(net_3_0_dirs)
 
 include ../build/rules.make
 
-DIST_PROFILE_DIRS = net_3_0 net_3_5
+DIST_PROFILE_DIRS = net_3_0
 
 dist-local: dist-default
 	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
