@@ -3,9 +3,9 @@ SUBDIRS =
 include ../../build/rules.make
 
 LOCAL_MCS_FLAGS = \
-	-r:$(topdir)/class/lib/net_3_0/System.Runtime.Serialization.dll \
-	-r:$(topdir)/class/lib/net_3_0/System.IdentityModel.dll \
-	-r:$(topdir)/class/lib/net_3_0/System.ServiceModel.dll
+	-r:System.Runtime.Serialization.dll \
+	-r:System.IdentityModel.dll \
+	-r:System.ServiceModel.dll
 PROGRAM = sts.exe
 
 run-server:
