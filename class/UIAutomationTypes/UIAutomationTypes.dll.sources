@@ -1,4 +1,5 @@
 System.Windows.Automation/AutomationTextAttribute.cs
+System.Windows.Automation/AsyncContentLoadedEventArgs.cs
 System.Windows.Automation/RowOrColumnMajor.cs
 System.Windows.Automation/WindowVisualState.cs
 System.Windows.Automation/StructureChangedEventArgs.cs

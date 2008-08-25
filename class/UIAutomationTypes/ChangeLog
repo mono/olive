@@ -1,3 +1,8 @@
+2008-08-25  Stephen Shaw <sshaw@decriptor.com> 
+
+	* System.Windows.Automation/AsyncContentLoadedEventArgs.cs: Added
+	  AsyncContentLoadedEventArgs to System.Windows.Automation
+
 2008-07-30  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationTypes.dll.sources: Updated to include OrientationType

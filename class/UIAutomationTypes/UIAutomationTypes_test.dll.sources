@@ -1,4 +1,6 @@
 System.Windows.Automation/AutomationElementIdentifiersTest.cs
+System.Windows.Automation/AsyncContentLoadedEventArgsTest.cs
+System.Windows.Automation/AsyncContentLoadedStateTest.cs
 System.Windows.Automation/ControlTypeTest.cs
 System.Windows.Automation/DockPositionTest.cs
 System.Windows.Automation/ExpandCollapsePatternIdentifiersTest.cs

@@ -9,7 +9,7 @@
       <Entry build="True" name="UIAutomationTypesTests" configuration="Release" />
     </Configuration>
   </Configurations>
-  <StartMode startupentry="UIAutomationTypesTests" single="True">
+  <StartMode startupentry="UIAutomationTypes" single="True">
     <Execute type="None" entry="UIAutomationTypes" />
     <Execute type="None" entry="UIAutomationTypesTests" />
   </StartMode>
