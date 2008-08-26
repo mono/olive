@@ -27,6 +27,14 @@ using System;
 
 namespace System.Windows.Automation
 {
+#region delegates
+	public delegate void AutomationEventHandler( object sender, AutomationEventArgs e);
+	
+	public delegate void AutomationPropertyChangedEventHandler( object sender, AutomationPropertyChangedEventArgs e);
+	
+	public delegate void StructureChangedEventHandler( object sender, StructureChangedEventArgs e);
+#endregion
+	
 	public class AutomationEvent : AutomationIdentifier
 	{
 #region Internal Constructor

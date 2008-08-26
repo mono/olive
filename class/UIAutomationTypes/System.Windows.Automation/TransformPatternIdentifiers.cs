@@ -43,8 +43,12 @@ namespace System.Windows.Automation
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
-		
+		public static readonly AutomationProperty CanMoveProperty;
+
+		public static readonly AutomationProperty CanResizeProperty;
+
+		public static readonly AutomationProperty CanRotateProperty;
+				
 		public static readonly AutomationPattern Pattern;
 		
 #endregion

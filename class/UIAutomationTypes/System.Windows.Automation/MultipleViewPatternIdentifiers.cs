@@ -42,10 +42,10 @@ namespace System.Windows.Automation
 #endregion
 		
 #region Public Fields
-		
-		// TODO: Add missing fields
-		
+
 		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationProperty CurrentViewProperty;
+		public static readonly AutomationProperty SupportedViewsProperty;
 		
 #endregion
 	}

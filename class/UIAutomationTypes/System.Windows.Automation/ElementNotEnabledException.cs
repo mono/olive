@@ -40,7 +40,7 @@ namespace System.Windows.Automation
 		{
 		}
 		
-		public ElementNotEnabledException(SerializationInfo info, StreamingContext context) : base (info, context)
+		protected ElementNotEnabledException(SerializationInfo info, StreamingContext context) : base (info, context)
 		{
 		}
 		

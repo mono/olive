@@ -43,9 +43,14 @@ namespace System.Windows.Automation
 		
 #region Public Fields
 		
-		// TODO: Add missing fields
+		
+		public static readonly AutomationProperty ColumnHeadersProperty;
 		
 		public static readonly AutomationPattern Pattern;
+		
+		public static readonly AutomationProperty RowHeadersProperty;
+		
+		public static readonly AutomationProperty RowOrColumnMajorProperty;
 		
 #endregion
 	}

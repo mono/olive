@@ -1,3 +1,8 @@
+2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
+
+	* System.Windows.Automation/AutomationEvent.cs: Made UIAutomationTypes
+	  API stable.  Add remaining files and completed others.
+
 2008-08-25  Stephen Shaw <sshaw@decriptor.com> 
 
 	* System.Windows.Automation/AsyncContentLoadedEventArgs.cs: Added
