@@ -1,4 +1,4 @@
-<Project name="UIAutomationProvider" fileversion="2.0" DefaultNamespace="System.Windows.Automation.Provider" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationProvider" fileversion="2.0" language="C#" DefaultNamespace="System.Windows.Automation.Provider" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="../lib/net_3_0" assembly="UIAutomationProvider" />
@@ -49,6 +49,7 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationBridge" />
   </References>
   <Deployment.LinuxDeployData generateScript="False" />
+  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile">
     <BuildFilesVar />
     <DeployFilesVar />

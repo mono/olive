@@ -1,4 +1,4 @@
-<Project name="UIAutomationProviderTests" fileversion="2.0" DefaultNamespace="MonoTests.System.Windows.Automation.Provider" language="C#" clr-version="Net_2_0" ctype="DotNetProject">
+<Project name="UIAutomationProviderTests" fileversion="2.0" language="C#" DefaultNamespace="MonoTests.System.Windows.Automation.Provider" clr-version="Net_2_0" ctype="DotNetProject">
   <Configurations active="Debug">
     <Configuration name="Debug" ctype="DotNetProjectConfiguration">
       <Output directory="." assemblyKeyFile="." assembly="UIAutomationProvider_test_net_3_0" />
@@ -26,6 +26,7 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationProvider" />
   </References>
   <Deployment.LinuxDeployData generatePcFile="False" />
+  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile" BuildTargetName="test" ExecuteTargetName="run-test">
     <BuildFilesVar />
     <DeployFilesVar />

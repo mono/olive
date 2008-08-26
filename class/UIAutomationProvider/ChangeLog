@@ -1,3 +1,7 @@
+2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
+
+	* UIAutomationProvider.mdp: Project files updated
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile: Add to 'accessibility' package.
