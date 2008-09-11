@@ -70,8 +70,7 @@ namespace System.Windows.Markup {
 			string memberName = member.Substring (dot + 1);
 
 			Type type = resolver.Resolve (typeName);
-			if (type == null)
-				throw new Exception ("unresolved type");
+			// we don't check type here for nullness, as WPF raises a NRE
 
 			PropertyInfo pi = type.GetProperty (memberName, BindingFlags.Public | BindingFlags.Static);
 			if (pi != null)
