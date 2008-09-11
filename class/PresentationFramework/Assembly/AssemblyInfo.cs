@@ -43,11 +43,11 @@ using System.Windows.Markup;
 // v3.0 Assembly
 
 //FIXME: Bug with mcs producing CS0433?
-//[assembly: AssemblyCompany (Consts.MonoCompany)]
-//[assembly: AssemblyProduct (Consts.MonoProduct)]
-//[assembly: AssemblyCopyright (Consts.MonoCopyright)]
-//[assembly: AssemblyVersion (Consts.FxVersion)]
-//[assembly: AssemblyFileVersion (Consts.WinFileVersion)]
+[assembly: AssemblyCompany (Consts.MonoCompany)]
+[assembly: AssemblyProduct (Consts.MonoProduct)]
+[assembly: AssemblyCopyright (Consts.MonoCopyright)]
+[assembly: AssemblyVersion (Consts.FxVersion)]
+[assembly: AssemblyFileVersion (Consts.WinFileVersion)]
 
 [assembly: NeutralResourcesLanguage ("en")]
 [assembly: CLSCompliant (true)]
