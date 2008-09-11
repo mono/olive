@@ -51,7 +51,6 @@ namespace MonoTests.System.Windows.Markup {
 
 			public object GetService (Type serviceType)
 			{
-				Console.WriteLine ("looking up service for type {0}", serviceType);
 				return provider;
 			}
 
@@ -114,8 +113,6 @@ namespace MonoTests.System.Windows.Markup {
 
 				public Type Resolve (string typeName)
 				{
-					Console.Error.WriteLine ("RESOLVING TYPE {0}", typeName);
-
 					if (typeName == "Test")
 						return type;
 					return null;
@@ -131,7 +128,6 @@ namespace MonoTests.System.Windows.Markup {
 
 			public object GetService (Type serviceType)
 			{
-				Console.Error.WriteLine ("looking up service for type {0}", serviceType);
 				if (typeof(IXamlTypeResolver).IsAssignableFrom (serviceType))
 					return new TypeResolver (type);
 				return null;
@@ -145,6 +141,17 @@ namespace MonoTests.System.Windows.Markup {
 		public void ProvideValueTest_IXamlTypeResolver_MissingType ()
 		{
 			StaticExtension ne = new StaticExtension ("Tester.Field");
+
+			ProviderPoker2 p = new ProviderPoker2 (typeof (StaticFieldTest));
+
+			ne.ProvideValue (p);
+		}
+
+		[Test]
+		[ExpectedException (typeof (ArgumentException))]
+		public void ProvideValueTest_IXamlTypeResolver_MissingField ()
+		{
+			StaticExtension ne = new StaticExtension ("Test.Field2");
 
 			ProviderPoker2 p = new ProviderPoker2 (typeof (StaticFieldTest));
 
