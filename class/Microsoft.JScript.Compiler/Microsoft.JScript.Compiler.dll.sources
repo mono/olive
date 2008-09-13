@@ -26,6 +26,7 @@ Microsoft.JScript.Compiler/Tokenizer.cs
 Microsoft.JScript.Compiler.ParseTree/ArgumentList.cs
 Microsoft.JScript.Compiler.ParseTree/ArrayLiteralExpression.cs
 Microsoft.JScript.Compiler.ParseTree/BinaryOperatorExpression.cs
+Microsoft.JScript.Compiler.ParseTree/BindingInfo.cs
 Microsoft.JScript.Compiler.ParseTree/BlockStatement.cs
 Microsoft.JScript.Compiler.ParseTree/BreakOrContinueStatement.cs
 Microsoft.JScript.Compiler.ParseTree/CaseClause.cs
