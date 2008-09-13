@@ -13,7 +13,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override void EmitCreation (CodeGen cg)
+		public override void EmitCreation (ILGen cg)
 		{
 			throw new NotImplementedException ();
 		}

@@ -106,7 +106,7 @@ namespace Microsoft.JScript.Runtime {
 			return result;
 		}
 
-		public virtual IList<object> GetCustomMemberNames (CodeContext context)
+		public virtual IList<object> GetMemberNames (CodeContext context)
 		{
 			List<object> result = new List<object> ();
 			foreach (object obj in members.Keys) {

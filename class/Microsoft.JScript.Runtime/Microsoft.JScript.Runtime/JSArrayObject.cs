@@ -40,7 +40,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override IList<object> GetCustomMemberNames (CodeContext context)
+		public override IList<object> GetMemberNames (CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}

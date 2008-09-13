@@ -1,0 +1,59 @@
+//
+// Microsoft.JScript.Compiler
+//
+// Author:
+//   Olivier Dufour (olivier.duff@gmail.com)
+//
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+
+using System;
+using System.Collections.Generic;
+using System.Text;
+using Microsoft.Scripting;
+using Microsoft.JScript.Compiler;
+
+namespace Microsoft.JScript.Runtime
+{
+	public class IdentifierMappingTable
+	{
+		public IdentifierMappingTable()
+		{
+			identifierMapping = new Dictionary<Identifier, SymbolId>();
+		}
+
+		private Dictionary<Identifier, SymbolId> identifierMapping;
+		
+		public SymbolId GetRowanID(Identifier ID)
+		{
+			if (identifierMapping.ContainsKey(ID))
+				return identifierMapping[ID];
+			//else create a symbole and add
+			//TODO : check with nunit test if I am good for int value of symbole
+			SymbolId result = new SymbolId((int)ID.KeywordValue);
+			identifierMapping.Add(ID, result);
+			return result;
+
+		}
+	}
+
+
+}

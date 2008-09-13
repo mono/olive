@@ -6,15 +6,15 @@ using Microsoft.Scripting.Ast;
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSFunctionObjectWithContext : JSFunctionObject {
+	public class JSFunctionObjectWithRuntimeContext : JSFunctionObject {
 
-		public JSFunctionObjectWithContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
+		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor)
 			: base (context, name, length, argNames, isStandardConstructor)
 		{
 		}
 
-		public JSFunctionObjectWithContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
+		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor, bool callWithRuntimeContext)
 			: base (context, name, length, argNames, isStandardConstructor)
 		{

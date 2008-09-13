@@ -5,7 +5,7 @@ using Microsoft.Scripting;
 namespace Microsoft.JScript.Runtime {
 
 	public class JSGlobalObject : JSObject {
-		public JSGlobalObject (ScriptModule scriptModule)
+		public JSGlobalObject (CodeContext context, Scope scope)
 			: base (null)
 		{
 		}
@@ -187,9 +187,9 @@ namespace Microsoft.JScript.Runtime {
 			return base.GetCustomMemberDictionary (context);
 		}
 
-		public override IList<object> GetCustomMemberNames (CodeContext context)
+		public override IList<object> GetMemberNames (CodeContext context)
 		{
-			return base.GetCustomMemberNames (context);
+			return base.GetMemberNames (context);
 		}
 
 		public override IEnumerator<KeyValuePair<object, object>> GetEnumerator ()

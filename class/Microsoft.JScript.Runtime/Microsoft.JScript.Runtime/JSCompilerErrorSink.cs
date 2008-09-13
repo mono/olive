@@ -4,15 +4,15 @@ using Microsoft.Scripting.Hosting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public class JSErrorSink : ErrorSink {
+	public class JSCompilerErrorSink : ErrorSink {
 
 		bool throw_exception_on_error;
 
-		public JSErrorSink ()
+		public JSCompilerErrorSink ()
 		{
 		}
 
-		public JSErrorSink (bool throwExceptionOnError)
+		public JSCompilerErrorSink (bool throwExceptionOnError)
 		{
 			this.throw_exception_on_error = throwExceptionOnError;
 		}

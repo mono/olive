@@ -7,7 +7,7 @@ using Microsoft.Scripting.Ast;
 namespace Microsoft.JScript.Runtime {
 //TODO
 	public sealed class JSContext : LanguageContext {
-		public JSContext () : base ()
+		public JSContext (ScriptDomainManager manager) : base (manager)
 		{
 		}
 
@@ -112,10 +112,6 @@ namespace Microsoft.JScript.Runtime {
 
 		public JSObject ArrayPrototype {
 			get { throw new NotImplementedException (); }
-		}
-
-		public override ActionBinder Binder {
-			get { return base.Binder; }
 		}
 
 		public JSFunctionObject BooleanConstructor {

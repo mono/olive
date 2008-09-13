@@ -30,21 +30,12 @@ namespace Microsoft.JScript.Runtime.Calls {
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
-		public override void EmitConvertFromObject (CodeGen cg, Type paramType)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-
 		protected override StandardRule<T> MakeRule<T> (CodeContext callerContext, DynamicAction action, object [] args)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}
 
 		public override bool PreferConvert (Type t1, Type t2)
-		{
-			throw new Exception ("The method or operation is not implemented.");
-		}
-		public override Expression CheckExpression(Expression expr, Type toType)
 		{
 			throw new Exception ("The method or operation is not implemented.");
 		}

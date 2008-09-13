@@ -2,7 +2,7 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
 
-namespace Microsoft.JScript.Runtime.Calls {
+namespace Microsoft.JScript.Runtime.Actions {
 	
 	public class DoOperationBinderHelper<T> {
 

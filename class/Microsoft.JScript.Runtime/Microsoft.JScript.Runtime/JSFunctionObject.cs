@@ -6,7 +6,7 @@ using Microsoft.Scripting.Actions;
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSFunctionObject : JSObject, /*IActionable,*/ ICallableWithCodeContext, ICallableWithThis, IConstructorWithCodeContext {
+	public class JSFunctionObject : JSObject, /*IActionable,*/ /*ICallableWithCodeContext, ICallableWithThis,*/ IConstructorWithCodeContext {
 
 		public JSFunctionObject (CodeContext context, string name, int length, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
@@ -41,10 +41,10 @@ namespace Microsoft.JScript.Runtime {
 			return callTarget (args);
 		}
 
-		object ICallableWithCodeContext.Call (CodeContext context, object [] args)
+		/*object ICallableWithCodeContext.Call (CodeContext context, object [] args)
 		{
 			return Call (context, null, args);
-		}
+		}*/
 
 		public static object construct (CodeContext context, object self, params object [] arguments)
 		{
