@@ -1,6 +1,5 @@
 thisdir = tools
 SUBDIRS = \
-	xamlc			\
 	client-proxy-gen	\
 	sts			\
 	svcutil
