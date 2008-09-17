@@ -30,3 +30,4 @@ System.Windows.Markup/XmlAttributeProperties.cs
 System.Windows.Markup/XmlnsDictionary.cs
 System.Windows.Markup.Primitives/MarkupWriter.cs
 Assembly/AssemblyInfo.cs
+../../build/common/Consts.cs
