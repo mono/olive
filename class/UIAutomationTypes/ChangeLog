@@ -1,3 +1,10 @@
+2008-09-18  Mike Gorse <mgorse@novell.com>
+
+	* Assembly/AssemblyInfo.cs: Make visible to UIAutomationTypes
+	  and UiaAtkBridge (for internal KeyEvent)
+	  UIAutomationTypes.dll.sources: Added KeyEventArgs.cs.
+	  UIAutomationTypes/AutomationElementIdentifiers.cs: Added KeyEvent.
+
 2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
 
 	* System.Windows.Automation/AutomationEvent.cs: Made UIAutomationTypes

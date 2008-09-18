@@ -32,6 +32,7 @@ namespace System.Windows.Automation
 #region Internal Constants
 		
 		// Event IDs
+		private const int KeyEventId = 30000;	// not in UIA spec
 		private const int AsyncContentLoadedEventId = 20006;
 		private const int AutomationFocusChangedEventId = 20005;
 		private const int AutomationPropertyChangedEventId = 20004;
@@ -235,6 +236,9 @@ namespace System.Windows.Automation
 					"AutomationElementIdentifiers.RuntimeIdProperty");
 			
 			// Automation Events			
+			KeyEvent =
+				new AutomationEvent (KeyEventId,
+				                     "AutomationElementIdentifiers.KeyEvent");
 			AsyncContentLoadedEvent =
 				new AutomationEvent (AsyncContentLoadedEventId,
 				                     "AutomationElementIdentifiers.AsyncContentLoadedEvent");
@@ -272,6 +276,8 @@ namespace System.Windows.Automation
 		
 		public static readonly AutomationProperty AccessKeyProperty;
 		
+		internal static readonly AutomationEvent KeyEvent;
+
 		public static readonly AutomationEvent AsyncContentLoadedEvent;
 		
 		public static readonly AutomationEvent AutomationFocusChangedEvent;

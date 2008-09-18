@@ -17,6 +17,7 @@ System.Windows.Automation/ExpandCollapsePatternIdentifiers.cs
 System.Windows.Automation/GridPatternIdentifiers.cs
 System.Windows.Automation/GridItemPatternIdentifiers.cs
 System.Windows.Automation/InvokePatternIdentifiers.cs
+System.Windows.Automation/KeyEventArgs.cs
 System.Windows.Automation/MultipleViewPatternIdentifiers.cs
 System.Windows.Automation/NoClickablePointException.cs
 System.Windows.Automation/OrientationType.cs
