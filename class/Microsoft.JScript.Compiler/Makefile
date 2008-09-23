@@ -4,7 +4,10 @@ include ../../build/rules.make
 
 LIBRARY = Microsoft.JScript.Compiler.dll
 
-LIB_MCS_FLAGS = -r:Microsoft.Scripting.dll -r:System.dll -r:Microsoft.JScript.Runtime.dll
+LIB_MCS_FLAGS = \
+	-r:Microsoft.Scripting.dll\
+	-r:Microsoft.Scripting.Core.dll\
+       	-r:System.dll
 
 TEST_MCS_FLAGS = $(LIB_MCS_FLAGS)
 
