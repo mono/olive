@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.JScript.Compiler
+namespace Microsoft.JScript.Compiler.Tokens
 {
 	public class NumericLiteralToken : Token
 	{

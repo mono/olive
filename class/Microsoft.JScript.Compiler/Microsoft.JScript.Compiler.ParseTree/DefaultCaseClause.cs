@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using Microsoft.JScript.Compiler.Helpers;
 
 namespace Microsoft.JScript.Compiler.ParseTree
 {

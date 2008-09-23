@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.JScript.Compiler
+namespace Microsoft.JScript.Compiler.Helpers
 {
 	// double linked list because of name so must have a node somewhere
 	public class DList<ElementType, ParentType>

@@ -29,6 +29,8 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.JScript.Compiler.ParseTree;
+using Microsoft.JScript.Compiler.Helpers;
+using Microsoft.JScript.Compiler.Tokens;
 
 namespace Microsoft.JScript.Compiler
 {

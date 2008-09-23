@@ -31,6 +31,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Globalization;
 using Microsoft.Scripting;
+using Microsoft.JScript.Compiler.Tokens;
 
 namespace Microsoft.JScript.Compiler
 {

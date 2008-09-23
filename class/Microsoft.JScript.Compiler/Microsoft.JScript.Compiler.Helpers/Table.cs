@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 
-namespace Microsoft.JScript.Compiler
+namespace Microsoft.JScript.Compiler.Helpers
 {
 	public class Table<KeyType, ValueType> where KeyType : IComparable<KeyType>
 	{
