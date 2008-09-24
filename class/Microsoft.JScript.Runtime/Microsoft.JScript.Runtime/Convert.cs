@@ -18,25 +18,52 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object CoerceT (object value, Type to, bool explicitOk)
+		public static object CoerceT (object value, Type to)
 		{
 			throw new NotImplementedException ();
 		}
+
+		public static object ConvertToDelegate (object fromObject, RuntimeTypeHandle typeHandle)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object ConvertToNullableType (object fromObject, RuntimeTypeHandle typeHandle)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object ConvertToReferenceType (object fromObject, RuntimeTypeHandle typeHandle)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object ConvertToValueType (object fromObject, RuntimeTypeHandle typeHandle)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Type ConvertToType (object value)
+		{
+			throw new NotImplementedException ();
+		}
+		
+		public static Type SelectBestConversionFor (Type actualType, Type candidateOne, Type candidateTwo, NarrowingLevel level)
+		{
+			throw new NotImplementedException ();
+		}
+		
 
 		public static bool ToBoolean (double d)
 		{
 			return Convert.ToBoolean (d, true);
 		}
 
-		[DebuggerHidden]	
-		[DebuggerStepThrough]
 		public static bool ToBoolean (object value)
 		{
 			return ToBoolean (value, true);
 		}
 
-		[DebuggerHidden]
-		[DebuggerStepThrough]
 		public static bool ToBoolean (object value, bool explicitConversion)
 		{
 			IConvertible convertible = value as IConvertible;
@@ -212,18 +239,16 @@ namespace Microsoft.JScript.Runtime {
 			return value;
 		}
 
-		[DebuggerHidden]
-		[DebuggerStepThrough]
 		public static string ToString (object value, bool explicitOk)
 		{
 			throw new NotImplementedException ();
 		}
-
+/*
 		public static object [] VarArgs (object [] args, int offset, int n)
 		{
 			throw new NotImplementedException ();
 		}
-
+*/
 		internal static TypeCode GetTypeCode (object obj, IConvertible convertible)
 		{
 			if (obj == null)

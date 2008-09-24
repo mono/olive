@@ -34,7 +34,7 @@ namespace Microsoft.JScript.Runtime
 {
     
     
-    public class DictionaryGenericWrapper<K, V> : IDictionary<K, V>, ICollection<KeyValuePair<K, V>>, IEnumerable<KeyValuePair<K, V>>, IEnumerable
+    public class DictionaryGenericWrapper<K, V> : IDictionary<K, V>
     {
         
 	private IDictionary<object, object> self;

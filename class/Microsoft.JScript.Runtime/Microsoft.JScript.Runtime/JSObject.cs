@@ -3,12 +3,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSObject : IAttributesCollection, ICustomMembers, IEnumerable, IEnumerable<KeyValuePair<object,object>>/*,
-		IMapping, IPythonContainer*/ {
+	public class JSObject : IAttributesCollection, ICustomMembers, IDynamicObject {
 		
 		internal JSObject prototype;
 		private Dictionary<SymbolId, object> members;
@@ -114,6 +114,13 @@ namespace Microsoft.JScript.Runtime {
 			}
 			return result;
 		}
+
+
+		public virtual StandardRule <T> GetRule <T> (DynamicAction action, CodeContext context, object [] args)
+		{
+			throw new NotImplementedException ();
+		}
+
 
 		public virtual IEnumerator<KeyValuePair<object, object>> GetEnumerator ()
 		{
@@ -306,6 +313,14 @@ namespace Microsoft.JScript.Runtime {
 		public object this [object key] {
 			get { return this[ObjectToId (key)]; }
 			set { this[ObjectToId (key)] = value; }
+		}
+
+		public virtual LanguageContext LanguageContext
+		{
+			get
+			{
+				throw new NotImplementedException ();
+			}
 		}
 	}
 }

@@ -34,7 +34,7 @@ namespace Microsoft.JScript.Runtime
 {
     
     
-    public class IEnumeratorOfTWrapper<T> : IEnumerator<T>, IDisposable, IEnumerator
+    public class IEnumeratorOfTWrapper<T> : IEnumerator<T>
     {
         
 	private IEnumerator enumerator;

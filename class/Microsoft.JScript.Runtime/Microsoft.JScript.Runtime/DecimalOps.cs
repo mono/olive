@@ -32,11 +32,9 @@ namespace Microsoft.JScript.Runtime
 {
     
     
-    public class DecimalOps
-    {
+	public class DecimalOps
+	{
         
-        public DecimalOps()
-        {
-        }
-    }
+		//TODO need to have not the error with ops out of object 
+	}
 }

@@ -34,7 +34,7 @@ namespace Microsoft.JScript.Runtime
 {
     
     
-    public class IEnumerableOfTWrapper<T> : IEnumerable<T>, IEnumerable
+    public class IEnumerableOfTWrapper<T> : IEnumerable<T>
     {
         
         public IEnumerableOfTWrapper(IEnumerable enumerable)
