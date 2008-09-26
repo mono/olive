@@ -43,5 +43,35 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void CanMovePropertyTest ()
+		{
+			AutomationProperty property = TransformPatternIdentifiers.CanMoveProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30087, property.Id, "Id");
+			Assert.AreEqual ("TransformPatternIdentifiers.CanMoveProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");	
+		}
+
+		[Test]
+		public void CanResizePropertyTest ()
+		{
+			AutomationProperty property = TransformPatternIdentifiers.CanResizeProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30088, property.Id, "Id");
+			Assert.AreEqual ("TransformPatternIdentifiers.CanResizeProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void CanRotatePropertyTest ()
+		{
+			AutomationProperty property = TransformPatternIdentifiers.CanRotateProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30089, property.Id, "Id");
+			Assert.AreEqual ("TransformPatternIdentifiers.CanRotateProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
 	}
 }
