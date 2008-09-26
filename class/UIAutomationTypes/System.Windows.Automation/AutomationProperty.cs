@@ -200,6 +200,12 @@ namespace System.Windows.Automation
 				return GridItemPatternIdentifiers.ColumnSpanProperty;
 			else if (id == GridItemPatternIdentifiers.ContainingGridProperty.Id)
 				return GridItemPatternIdentifiers.ContainingGridProperty;
+			else if (id == TransformPatternIdentifiers.CanMoveProperty.Id)
+				return TransformPatternIdentifiers.CanMoveProperty;
+			else if (id == TransformPatternIdentifiers.CanResizeProperty.Id)
+				return TransformPatternIdentifiers.CanResizeProperty;
+			else if (id == TransformPatternIdentifiers.CanRotateProperty.Id)
+				return TransformPatternIdentifiers.CanRotateProperty;
 			else
 				return null;
 		}

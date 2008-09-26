@@ -31,12 +31,24 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10016;
+		private const int CanMovePropertyId = 30087;
+		private const int CanResizePropertyId = 30088;
+		private const int CanRotatePropertyId = 30089;
 		
 		static TransformPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TransformPatternIdentifiers.Pattern");
+			CanMoveProperty = 
+				new AutomationProperty (CanMovePropertyId,
+				                        "TransformPatternIdentifiers.CanMoveProperty");
+			CanResizeProperty = 
+				new AutomationProperty (CanResizePropertyId,
+				                        "TransformPatternIdentifiers.CanResizeProperty");
+			CanRotateProperty = 
+				new AutomationProperty (CanRotatePropertyId,
+				                        "TransformPatternIdentifiers.CanRotateProperty");
 		}
 		
 #endregion
