@@ -1,3 +1,9 @@
+2008-09-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* UIAutomationBridge.dll.sources,
+	  Mono.UIAutomation.Bridge/IHypertext.cs: Added
+	  Mono.UIAutomation.Bridge/IHypertext.cs.
+
 2008-07-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* Makefile: Add to 'accessibility' package.

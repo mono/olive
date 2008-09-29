@@ -1,4 +1,5 @@
 Mono.UIAutomation.Bridge/IAutomationBridge.cs
+Mono.UIAutomation.Bridge/IHypertext.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs
