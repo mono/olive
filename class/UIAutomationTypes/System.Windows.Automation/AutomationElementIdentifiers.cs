@@ -30,9 +30,13 @@ namespace System.Windows.Automation
 	public static class AutomationElementIdentifiers
 	{
 #region Internal Constants
+
+		// IDs for internal use, should not conflict with MS
+		private const int KeyEventId = 60000;
+		private const int HasNativeAccessibilityObjectPropertyId = 60001;
+		private const int NativeAccessibilityObjectPropertyId = 60002;
 		
 		// Event IDs
-		private const int KeyEventId = 30000;	// not in UIA spec
 		private const int AsyncContentLoadedEventId = 20006;
 		private const int AutomationFocusChangedEventId = 20005;
 		private const int AutomationPropertyChangedEventId = 20004;
@@ -99,6 +103,12 @@ namespace System.Windows.Automation
 			NotSupported = new object ();
 			
 			// Automation Properties
+			HasNativeAccessibilityObjectProperty =
+				new AutomationProperty (HasNativeAccessibilityObjectPropertyId,
+					"AutomationElementIdentifiers.HasNativeAccessibilityObjectProperty");
+			NativeAccessibilityObjectProperty =
+				new AutomationProperty (NativeAccessibilityObjectPropertyId,
+					"AutomationElementIdentifiers.NativeAccessibilityObjectProperty");
 			AcceleratorKeyProperty =
 				new AutomationProperty (AcceleratorKeyPropertyId,
 					"AutomationElementIdentifiers.AcceleratorKeyProperty");
@@ -269,14 +279,22 @@ namespace System.Windows.Automation
 		}
 		
 #endregion
+
+#region Internal Fields
+		
+		internal static readonly AutomationEvent KeyEvent;
+
+		internal static readonly AutomationProperty HasNativeAccessibilityObjectProperty;
+
+		internal static readonly AutomationProperty NativeAccessibilityObjectProperty;
+
+#endregion
 		
 #region Public Fields
 		
 		public static readonly AutomationProperty AcceleratorKeyProperty;
 		
 		public static readonly AutomationProperty AccessKeyProperty;
-		
-		internal static readonly AutomationEvent KeyEvent;
 
 		public static readonly AutomationEvent AsyncContentLoadedEvent;
 		
