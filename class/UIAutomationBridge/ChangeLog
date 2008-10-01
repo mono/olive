@@ -1,8 +1,12 @@
+2008-10-01  Mike Gorse <mgorse@novell.com>
+
+	* Mono.UIAutomation.Bridge/IHypertext.cs: Added Enabled method.
+
 2008-09-29  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationBridge.mdp: File included in solution.
 
-2008-09-29  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+2008-09-29  Mike Gorse <mgorse@novell.com>
 
 	* UIAutomationBridge.dll.sources,
 	  Mono.UIAutomation.Bridge/IHypertext.cs: Added

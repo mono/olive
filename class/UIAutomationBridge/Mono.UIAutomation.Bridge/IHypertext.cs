@@ -35,5 +35,6 @@ namespace Mono.UIAutomation.Bridge
 		int Length (int index);
 		string Uri (int index);
 		void Invoke (int index);
+		bool Enabled (int index);
 	}
 }
