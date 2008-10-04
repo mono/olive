@@ -24,5 +24,10 @@ namespace Microsoft.JScript.Runtime {
 		{
 			throw new NotImplementedException ();
 		}
+		
+		public static JSErrorObject GetJSErrorObject (Exception exception)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

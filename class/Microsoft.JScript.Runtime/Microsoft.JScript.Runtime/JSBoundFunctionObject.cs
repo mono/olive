@@ -27,16 +27,222 @@
 //
 
 using System;
+using Microsoft.Scripting;
+using System.Collections;
+using System.Collections.Generic;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
 {
-    
-    
-    public class JSBoundFunctionObject
-    {
-        
-        public JSBoundFunctionObject()
-        {
-        }
-    }
+	
+	
+	public class JSBoundFunctionObject : IAttributesCollection, IConstructorWithCodeContext, ICustomMembers, IDynamicObject
+	{
+		private readonly JSFunctionObject _function;
+
+		private readonly JSObject _instance;
+
+		public JSBoundFunctionObject(JSFunctionObject function, JSObject instance)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void AddObjectKey(object name, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public IDictionary<object, object>  AsObjectKeyedDictionary ()
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public object Call(CodeContext context, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public object Call(CodeContext context, object instance, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public object Construct(CodeContext context,  params object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool ContainsKey(SymbolId name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool ContainsObjectKey(object name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool DeleteCustomMember(CodeContext context, SymbolId name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool DeleteItem(SymbolId name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public virtual bool DeleteItem(object name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public object GetBoundItem(object name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public IDictionary<object, object>  GetCustomMemberDictionary(CodeContext context)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public IEnumerator<KeyValuePair<object, object>>  GetEnumerator ()
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public object GetItem(object name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public IList<object>  GetMemberNames(CodeContext context)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public StandardRule<T>  GetRule<T >(DynamicAction action, CodeContext context, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+	   	void IAttributesCollection.Add(SymbolId name, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool Remove(SymbolId name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool RemoveObjectKey(object name)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public void SetCustomMember(CodeContext context, SymbolId name, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public void SetItem(SymbolId name, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public void SetItem(object key, object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+	   	IEnumerator IEnumerable.GetEnumerator ()
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetBoundCustomMember(CodeContext context, SymbolId name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetBoundItem(SymbolId name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetCustomMember(CodeContext context, SymbolId name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetItem(SymbolId name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetObjectValue(object name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public bool TryGetValue(SymbolId name,  out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public ConstructTargetN ConstructTarget  { get { throw new NotImplementedException (); } }
+
+		public CodeContext Context  {  get { throw new NotImplementedException (); } }
+
+		public int Count  {  get { throw new NotImplementedException (); } }
+
+		public JSFunctionObject Function  {  get { throw new NotImplementedException (); } }
+
+		public JSObject Instance  {  get { throw new NotImplementedException (); } }
+
+		public object this[SymbolId name] {  get { throw new NotImplementedException (); }  set { throw new NotImplementedException (); } }
+
+		public ICollection<object>  Keys  {  get { throw new NotImplementedException (); } }
+
+		public LanguageContext LanguageContext  {  get { throw new NotImplementedException (); } }
+
+		public int Length  {  get { throw new NotImplementedException (); } }
+
+		public IDictionary<SymbolId, object>  SymbolAttributes  {  get { throw new NotImplementedException (); } }
+
+		public Delegate Target  {  get { throw new NotImplementedException (); } }
+
+		public bool UsesArguments  {  get { throw new NotImplementedException (); } }
+	}
 }

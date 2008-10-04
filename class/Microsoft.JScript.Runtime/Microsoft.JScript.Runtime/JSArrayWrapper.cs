@@ -15,19 +15,19 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override object GetValue (object key)
+		public override object GetItem (object key)
 		{
-			return base.GetValue  (key);
+			return base.GetItem  (key);
 		}
 
-		public override void SetCustomMember (CodeContext context, SymbolId name, object value)
+		public override void SetItem (SymbolId name, object value)
 		{
-			base.SetCustomMember (context, name, value);
+			base.SetItem (name, value);
 		}
 
-		public override void SetValue (object key, object value)
+		public override void SetItem (object key, object value)
 		{
-			base.SetValue (key, value);
+			base.SetItem (key, value);
 		}
 
 		public override object length {

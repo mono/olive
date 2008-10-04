@@ -16,9 +16,9 @@ namespace Microsoft.JScript.Runtime {
 			return "string";
 		}
 
-		public override object GetValue (object key)
+		public override object GetItem (object key)
 		{
-			return base.GetValue (key);
+			return base.GetItem (key);
 		}
 
 		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)

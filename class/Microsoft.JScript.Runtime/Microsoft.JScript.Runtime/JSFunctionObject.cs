@@ -8,14 +8,14 @@ namespace Microsoft.JScript.Runtime {
 	[Serializable]
 	public class JSFunctionObject : JSObject, /*IActionable,*/ /*ICallableWithCodeContext, ICallableWithThis,*/ IConstructorWithCodeContext {
 
-		public JSFunctionObject (CodeContext context, string name, int length, CallTargetN callTarget,
+		public JSFunctionObject (CodeContext context, string name, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
 			: base (GetPrototype ())
 		{//ECMA 13.2
 			this.context = context;
 			this.name = name;
 			this.argNames = argNames;
-			SetCustomMember (context, SymbolTable.StringToId ("length"), new JSAttributedProperty(length, JSPropertyAttributes.DontDelete | JSPropertyAttributes.DontEnum | JSPropertyAttributes.ReadOnly));
+			SetCustomMember (context, SymbolTable.StringToId ("length"), new JSAttributedProperty(argNames.Length, JSPropertyAttributes.DontDelete | JSPropertyAttributes.DontEnum | JSPropertyAttributes.ReadOnly));
 			if (isStandardConstructor) {
 				constructTarget = Delegate.CreateDelegate (typeof (ConstructTargetN), context, this.GetType ().GetMethod ("construct"), true) as ConstructTargetN;
 				SetCustomMember (context, SymbolTable.StringToId ("constructor"), new JSAttributedProperty (constructTarget, JSPropertyAttributes.DontEnum));
@@ -23,7 +23,7 @@ namespace Microsoft.JScript.Runtime {
 			SetCustomMember (null, SymbolTable.StringToId ("prototype"), new JSAttributedProperty (prototype, JSPropertyAttributes.DontDelete));
 		}
 
-		protected JSFunctionObject (CodeContext context, string name, int length, string [] argNames,
+		protected JSFunctionObject (CodeContext context, string name, string [] argNames,
 					    bool isStandardConstructor)
 			: base (null)
 		{
@@ -71,12 +71,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static JSFunctionObject MakeFunction (CodeContext context, string name, int length,
+		public static JSFunctionObject MakeFunction (CodeContext context, string name,
 							     Delegate target, string [] argNames, bool isStandardConstructor,
 							     bool usesArguments)
 		{
 			//usesArguments
-			return new JSFunctionObject (context, name, length, (CallTargetN)target, argNames, isStandardConstructor);
+			return new JSFunctionObject (context, name, (CallTargetN)target, argNames, isStandardConstructor);
 		}
 
 		protected CallTargetN CallTarget {

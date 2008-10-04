@@ -19,7 +19,12 @@ namespace Microsoft.JScript.Runtime {
 			members = new Dictionary<SymbolId, object> ();
 		}
 
-		public void Add (SymbolId name, object value)
+		void IAttributesCollection.Add (SymbolId name, object value)
+		{
+			SetItem (name, value);
+		}
+
+		public virtual void SetItem (SymbolId name, object value)
 		{
 			members.Add (name, value);
 		}
@@ -51,15 +56,6 @@ namespace Microsoft.JScript.Runtime {
 			return ContainsKey (ObjectToId (name));
 		}
 
-		public bool ContainsValue (object value)
-		{
-			if (members.ContainsValue (value))
-				return true;
-			if (prototype == null)
-				return false;
-			return prototype.ContainsValue (value);
-		}
-
 		public virtual bool DeleteCustomMember (CodeContext context, SymbolId name)
 		{//8.6.2.5 Delete
 			if (!members.ContainsKey (name))
@@ -69,6 +65,11 @@ namespace Microsoft.JScript.Runtime {
 					return false;
 			}
 			return members.Remove (name);
+		}
+
+		public virtual bool DeleteItem (SymbolId name)
+		{
+			return DeleteCustomMember (null, name);
 		}
 
 		public virtual bool DeleteItem (object key)
@@ -132,20 +133,15 @@ namespace Microsoft.JScript.Runtime {
 			return members.GetEnumerator ();
 		}
 
-		public int GetLength ()
+		public virtual object GetBoundItem (object name)
 		{
-			return members.Count;
+			return GetItem (name);
 		}
 
-		public virtual object GetValue (object key)
-		{
-			return GetValue (key, null);
-		}
-
-		public object GetValue (object key, object defaultValue)
+		public virtual object GetItem (object name)
 		{// inheritence with prototype is done inside TryGetCustomMember
-			object result;
-			if (TryGetCustomMember (null, ObjectToId (key), out result))
+			object result = UnDefined.Value;
+			if (TryGetCustomMember (null, ObjectToId (name), out result))
 				return result;
 			return UnDefined.Value;
 		}
@@ -236,7 +232,7 @@ namespace Microsoft.JScript.Runtime {
 			return prototype.CanSetCustomMember(name);
 		}
 
-		public virtual void SetValue (object key, object value)
+		public virtual void SetItem (object key, object value)
 		{
 			SetCustomMember (null, ObjectToId (key), value);
 		}
@@ -244,6 +240,11 @@ namespace Microsoft.JScript.Runtime {
 		public virtual bool TryGetBoundCustomMember (CodeContext context, SymbolId name, out object value)
 		{
 			throw new NotImplementedException ();
+		}
+
+		public virtual bool TryGetBoundItem (SymbolId name, out object value)
+		{
+			return TryGetBoundCustomMember(null, name, out value);
 		}
 
 		public virtual bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
@@ -257,6 +258,11 @@ namespace Microsoft.JScript.Runtime {
 			return prototype.TryGetCustomMember (context, name,out value);
 		}
 
+		public virtual bool TryGetItem (SymbolId name, out object value)
+		{
+			return TryGetCustomMember(null, name, out value);
+		}
+
 		public bool TryGetObjectValue (object name, out object value)
 		{
 			return TryGetCustomMember (null, ObjectToId (name), out value);
@@ -265,11 +271,6 @@ namespace Microsoft.JScript.Runtime {
 		public bool TryGetValue (SymbolId name, out object value)
 		{
 			return TryGetCustomMember (null, name, out value);
-		}
-
-		public bool TryGetValue (object key, out object value)
-		{
-			return TryGetCustomMember (null, ObjectToId (key), out value);
 		}
 
 		public virtual int Count {
@@ -289,7 +290,6 @@ namespace Microsoft.JScript.Runtime {
 			get { return null; }
 		}
 
-		//TODO : quick hack here
 		public object this [int index] {
 			get {
 				Dictionary<SymbolId, object>.Enumerator en = members.GetEnumerator ();
@@ -305,14 +305,19 @@ namespace Microsoft.JScript.Runtime {
 			}
 		}
 
+		//TODO : quick hack here
 		public object this [SymbolId name] {
-			get { return members[name]; }
-			set { members[name] = value;}
+			get {
+				return GetItem (name);
+			}
+			set {
+				SetItem (name, value);				
+			}
 		}
 
 		public object this [object key] {
-			get { return this[ObjectToId (key)]; }
-			set { this[ObjectToId (key)] = value; }
+			get { return GetItem (key); }
+			set { SetItem (key, value); }
 		}
 
 		public virtual LanguageContext LanguageContext

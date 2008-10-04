@@ -3,7 +3,13 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public static class JSDateConstructor {
+	public class JSDateConstructor : JSFunctionObject {
+		
+		public JSDateConstructor (CodeContext context) : base (context, "", new string []{}, true )
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static object call (CodeContext context, params object [] args)
 		{
 			throw new NotImplementedException ();
@@ -19,11 +25,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object parse (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double parse (string str)
 		{
 			throw new NotImplementedException ();
@@ -31,11 +32,6 @@ namespace Microsoft.JScript.Runtime {
 
 		public static double UTC (object year, object month, object date, object hours, object minutes, object seconds,
 					  object ms)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object UTC (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}

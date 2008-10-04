@@ -11,13 +11,13 @@ namespace Microsoft.JScript.Runtime {
 		{
 		}
 
-		public static JSObject Create (CodeContext context, SymbolId [] paramIds, IAttributesCollection dict,
+		public static JSObject Create (CodeContext context, JSFunctionObject function, SymbolId [] paramIds, IAttributesCollection dict,
 					       object [] actualParameters)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override bool DeleteCustomMember (CodeContext context, SymbolId name)
+		public override bool DeleteItem (SymbolId name)
 		{
 			throw new NotImplementedException ();
 		}
@@ -27,24 +27,24 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override object GetValue (object key)
+		public override object GetItem (object key)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override void SetCustomMember (CodeContext context, SymbolId name, object value)
+		public override void SetItem (SymbolId name, object value)
 		{
-			base.SetCustomMember (context, name, value);
+			base.SetItem (name, value);
 		}
 
-		public override void SetValue (object key, object value)
+		public override void SetItem (object key, object value)
 		{
-			base.SetValue (key, value);
+			base.SetItem (key, value);
 		}
 
-		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
+		public override bool TryGetItem (SymbolId name, out object value)
 		{
-			return base.TryGetCustomMember (context, name, out value);
+			return base.TryGetItem (name, out value);
 		}
 	}
 }

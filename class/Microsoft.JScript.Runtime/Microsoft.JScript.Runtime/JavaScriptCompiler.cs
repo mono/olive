@@ -37,55 +37,18 @@ namespace Microsoft.JScript.Runtime
 {
 	public class JavaScriptCompiler
 	{
-		internal JavaScriptCompiler()
+		private JSContext jsContext;
+		internal JavaScriptCompiler(JSContext context)
 		{
-
+			this.jsContext = context;
 		}
 
-		public CodeBlock ParseExpressionCode(CompilerContext Context)
+		public CodeBlock ParseSourceCode(CompilerContext Context)
 		{
-			Compiler compiler = new Compiler();
+			Compiler compiler = new Compiler (jsContext);
 			List<Diagnostic> diagnostics = null;
-			return compiler.CompileExpression (Context.SourceUnit.GetCode (), ref diagnostics);
+			return compiler.CompileExpression (Context.SourceUnit.GetCode ().ToCharArray(), ref diagnostics);
 		}
-
-		public CodeBlock ParseFile(CompilerContext Context)
-		{
-			Compiler compiler = new Compiler ();
-			List<Diagnostic> diagnostics = null;
-			bool incompleteInput = false;
-			return compiler.CompileProgram (Context.SourceUnit.GetCode ().ToCharArray (), ref diagnostics, ref incompleteInput);
-		}
-
-		public CodeBlock ParseInteractiveCode(CompilerContext cc)
-		{
-			Compiler compiler = new Compiler ();
-			List<Diagnostic> diagnostics = null;
-			bool IncompleteInput = false;
-			CodeBlock result = compiler.CompileProgram (cc.SourceUnit.GetCode ().ToCharArray(), ref diagnostics, ref IncompleteInput, false);
-			//TODO properties
-			//properties = InteractiveCodeProperties.IsEmpty;
-			/*if (allowIncomplete && IncompleteInput) 
-			{
-				throw new Exception ("Incomplete code!");
-			}*/
-			//TODO
-			return result;
-		}
-				
-		public CodeBlock ParseStatementCode(CompilerContext Context)
-		{
-			Compiler compiler = new Compiler ();
-			List<Diagnostic> diagnostics = null;
-			bool IncompleteInput = false;
-			return compiler.CompileProgram (Context.SourceUnit.GetCode ().ToCharArray (), ref diagnostics, ref IncompleteInput, false);
-		}
-
-#if !SILVERLIGHT
-		/*public SourceUnit ParseCodeDom (System.CodeDom.CodeObject codeDom)
-		{
-			throw new NotImplementedException ();
-		}*/
-#endif
 	}
 }
+

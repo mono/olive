@@ -8,15 +8,15 @@ namespace Microsoft.JScript.Runtime {
 	[Serializable]
 	public class JSFunctionObjectWithRuntimeContext : JSFunctionObject {
 
-		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
+		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor)
-			: base (context, name, length, argNames, isStandardConstructor)
+			: base (context, name, argNames, isStandardConstructor)
 		{
 		}
 
-		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, int length, CallTargetWithContextN callTarget,
+		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor, bool callWithRuntimeContext)
-			: base (context, name, length, argNames, isStandardConstructor)
+			: base (context, name, argNames, isStandardConstructor)
 		{
 		}
 

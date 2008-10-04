@@ -20,7 +20,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override bool DeleteCustomMember (CodeContext context, SymbolId name)
+		public override bool DeleteItem (SymbolId name)
 		{
 			throw new NotImplementedException ();
 		}
@@ -55,22 +55,27 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override object GetValue (object key)
+		public override object GetItem (object key)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override void SetCustomMember (CodeContext context, SymbolId name, object value)
+		public object GetItem (long index)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void SetLength (CodeContext context, object value)
+		public override void SetItem (SymbolId name, object value)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override void SetValue (object key, object value)
+		public void SetLength (object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override void SetItem (object key, object value)
 		{
 			throw new NotImplementedException ();
 		}
@@ -81,7 +86,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
+		public override bool TryGetItem (SymbolId name, out object value)
 		{
 			throw new NotImplementedException ();
 		}

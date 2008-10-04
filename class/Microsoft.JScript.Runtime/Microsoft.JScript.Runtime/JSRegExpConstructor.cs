@@ -7,7 +7,7 @@ namespace Microsoft.JScript.Runtime {
 	public class JSRegExpConstructor : JSFunctionObject {
 
 		public JSRegExpConstructor (CodeContext context)
-			: base (context, null, 0, null, false)
+			: base (context, null, null, false)
 		{
 		}
 

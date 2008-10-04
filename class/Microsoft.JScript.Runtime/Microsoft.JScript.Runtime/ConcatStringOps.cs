@@ -33,624 +33,625 @@ namespace Microsoft.JScript.Runtime
 	public static class ConcatStringOps
 	{
 
-		public static ConcatString operator +([NotNull] ConcatString x, [NotNull] JSBooleanObject y)
-		{
-			throw new NotImplementedException ();
-		}
 /*
-		public static ConcatString operator +([NotNull] ConcatString x, [NotNull] JSNumberObject y)
+		public static ConcatString operator + (ConcatString x, JSBooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
+		public static ConcatString operator +(ConcatString x, JSNumberObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
 
-		public static ConcatString operator +([NotNull] ConcatString x, JSObject y)
+		public static ConcatString operator +(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static ConcatString operator +([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static ConcatString operator +(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static ConcatString operator +([NotNull] ConcatString x, bool y)
+		public static ConcatString operator +(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static ConcatString operator +([NotNull] ConcatString x, double y)
+		public static ConcatString operator +(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static ConcatString operator +([NotNull] ConcatString x, [NotNull] string y)
+		public static ConcatString operator +(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator &(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, JSObject y)
+		public static double operator &(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator &(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, bool y)
+		public static double operator &(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, double y)
+		public static double operator &(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator &([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator &(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator |(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, JSObject y)
+		public static double operator |(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator |(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, bool y)
+		public static double operator |(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, double y)
+		public static double operator |(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator |([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator |(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator /(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, JSObject y)
+		public static double operator /(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator /(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, bool y)
+		public static double operator /(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, double y)
+		public static double operator /(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator /([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator /(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator ==(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator ==(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, None y)
+		public static bool operator ==(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, bool y)
+		public static bool operator ==(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, [NotNull] decimal y)
+		public static bool operator ==(ConcatString x, decimal y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, double y)
+		public static bool operator ==(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator ==([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator ==(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator ^(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, JSObject y)
+		public static double operator ^(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator ^(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, bool y)
+		public static double operator ^(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, double y)
+		public static double operator ^(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator ^([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator ^(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator >(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator >(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, None y)
+		public static bool operator >(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, bool y)
+		public static bool operator >(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, double y)
+		public static bool operator >(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator >(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator >=(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator >=(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, None y)
+		public static bool operator >=(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, bool y)
+		public static bool operator >=(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, double y)
+		public static bool operator >=(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator >=([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator >=(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator !=(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator !=(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, None y)
+		public static bool operator !=(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, bool y)
+		public static bool operator !=(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, double y)
+		public static bool operator !=(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator !=([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator !=(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator <<(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, JSObject y)
+		public static double operator <<(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator <<(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, bool y)
+		public static double operator <<(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, double y)
+		public static double operator <<(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator <<([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator <<(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator <(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator <(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, None y)
+		public static bool operator <(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, bool y)
+		public static bool operator <(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, double y)
+		public static bool operator <(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator <(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, [NotNull] JSObject y)
+		public static bool operator <=(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static bool operator <=(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, None y)
+		public static bool operator <=(ConcatString x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, bool y)
+		public static bool operator <=(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, double y)
+		public static bool operator <=(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static bool operator <=([NotNull] ConcatString x, [NotNull] string y)
+		public static bool operator <=(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator %(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, JSObject y)
+		public static double operator %(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator %(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, bool y)
+		public static double operator %(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, double y)
+		public static double operator %(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator %([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator %(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator *(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, JSObject y)
+		public static double operator *(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator *(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, bool y)
+		public static double operator *(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, double y)
+		public static double operator *(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator *([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator *(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator >>(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, JSObject y)
+		public static double operator >>(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator >>(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, bool y)
+		public static double operator >>(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, double y)
+		public static double operator >>(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator >>([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator >>(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double operator -(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, JSObject y)
+		public static double operator -(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double operator -(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, bool y)
+		public static double operator -(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, double y)
+		public static double operator -(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double operator -([NotNull] ConcatString x, [NotNull] string y)
+		public static double operator -(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, [NotNull] ConcatString y)
+		public static double op_UnsignedRightShift(ConcatString x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, JSObject y)
+		public static double op_UnsignedRightShift(ConcatString x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, [NotNull] UnDefined y)
+		public static double op_UnsignedRightShift(ConcatString x, UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, bool y)
+		public static double op_UnsignedRightShift(ConcatString x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, double y)
+		public static double op_UnsignedRightShift(ConcatString x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public static double op_UnsignedRightShift([NotNull] ConcatString x, [NotNull] string y)
+		public static double op_UnsignedRightShift(ConcatString x, string y)
 		{
 			throw new NotImplementedException ();
 		}*/

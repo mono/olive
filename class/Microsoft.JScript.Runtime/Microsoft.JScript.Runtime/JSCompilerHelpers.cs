@@ -14,6 +14,11 @@ namespace Microsoft.JScript.Runtime {
 			return result;
 		}
 
+		public static IAttributesCollection ConstructCatchObject (CodeContext context, SymbolId catchName)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static IAttributesCollection ConstructCatchScopeObject (CodeContext context, SymbolId catchName)
 		{
 			throw new NotImplementedException ();
@@ -21,11 +26,12 @@ namespace Microsoft.JScript.Runtime {
 
 		public static object ConstructObjectFromLiteral (CodeContext context, object [] names, object [] values)
 		{
-			JSObject obj = new JSObject (((JSContext)context.LanguageContext).ObjectPrototype);
+			/*JSObject obj = new JSObject (((JSContext)context.LanguageContext).Prototype);
 			for (int i = 0; i < names.Length; i++) {
 				obj.AddObjectKey (names[i], values[i]);
 			}
-			return obj;
+			return obj;*/
+			throw new NotImplementedException ();
 		}
 
 		public static IAttributesCollection ConstructScopeObject (CodeContext context, object value)
@@ -43,6 +49,11 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		public static bool EqualReturnBool (CodeContext context, object x, object y)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static bool In (object PropertyInstance, object ObjectInstance)
 		{
 			//TODO
@@ -52,6 +63,16 @@ namespace Microsoft.JScript.Runtime {
 		public static bool InstanceOf (object ObjectInstance, object FunctionInstance)
 		{
 			//TODO
+			throw new NotImplementedException ();
+		}
+
+		public static bool IsReturnBool (CodeContext context, object x, object y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static bool IsTrue (object obj)
+		{
 			throw new NotImplementedException ();
 		}
 
@@ -67,7 +88,17 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		public static object PushExceptionHandler (CodeContext context, Exception clrException)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static Exception MakeException (object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static int GetSwitchIndex (object exprVal, int defaultval)
 		{
 			throw new NotImplementedException ();
 		}
@@ -105,6 +136,16 @@ namespace Microsoft.JScript.Runtime {
 		public static string TypeOf (object O)
 		{
 			return O.GetType ().ToString ();
+		}
+
+		public static void ClearDynamicStackFrames ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static void PopExceptionHandler ()
+		{
+			throw new NotImplementedException ();
 		}
 
 		public static object Void (object Operand)

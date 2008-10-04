@@ -27,16 +27,37 @@
 //
 
 using System;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
 {
     
     
-    public class JSFunctionObjectWithThis
+    public class JSFunctionObjectWithThis : JSFunctionObject
     {
         
-        public JSFunctionObjectWithThis()
+        public JSFunctionObjectWithThis(CodeContext context, string name, CallTargetWithThisN callTarget, string[] argNames, bool isStandardConstructor) : base(context, name, argNames, isStandardConstructor)
         {
+		throw new NotImplementedException ();
         }
+
+	public Expression[] CreateArguments<T> (StandardRule<T> rule, int hasInstance, Expression[] preArgs)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public Expression[] GetArgumentsForRule<T> (CallAction callHelper)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public object Call (CodeContext context, object instance, object[] args)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	public Delegate Target { get { throw new NotImplementedException (); } }
     }
 }

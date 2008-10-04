@@ -36,13 +36,10 @@ namespace Microsoft.JScript.Runtime
 {
 	public class Compiler
 	{
-		public Compiler()
+		private JSContext context;
+		public Compiler(JSContext context)
 		{
-		}
-
-		public MSA.CodeBlock CompileExpression (string Input, ref List<Diagnostic> Diagnostics)
-		{
-			return CompileExpression (Input.ToCharArray (), ref Diagnostics);
+			this.context = context;
 		}
 
 		public MSA.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
