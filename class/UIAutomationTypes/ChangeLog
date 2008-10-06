@@ -1,3 +1,9 @@
+2008-10-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
+
+	* System.Windows.Automation/AutomationPropertyChangedEventArgs.cs:
+	  EventId value for AutomationPropertyChangedEventArgs should always
+	  be AutomationElementIdentifiers.AutomationPropertyChangedEvent.
+
 2008-09-30  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/AutomationElementIdentifiers.cs: Added

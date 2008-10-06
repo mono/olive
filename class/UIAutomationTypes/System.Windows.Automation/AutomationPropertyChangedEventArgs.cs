@@ -33,7 +33,8 @@ namespace System.Windows.Automation
 		public object OldValue { get; private set; }
 		public AutomationProperty Property { get; private set; }
 
-		public AutomationPropertyChangedEventArgs (AutomationProperty property, object oldValue, object newValue) : base (AutomationEvent.LookupById(0))
+		public AutomationPropertyChangedEventArgs (AutomationProperty property, object oldValue, object newValue) :
+            base (AutomationElementIdentifiers.AutomationPropertyChangedEvent)
 		{
 			Property = property;
 			OldValue = oldValue;
