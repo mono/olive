@@ -1,3 +1,8 @@
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs: Tests for 
+	Properties added.
+
 2008-09-26  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/TransformPatternIdentifiersTest.cs: Tests for 

@@ -43,5 +43,25 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void CurrentViewPropertyTest ()
+		{
+			AutomationProperty property = MultipleViewPatternIdentifiers.CurrentViewProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30071, property.Id, "Id");
+			Assert.AreEqual ("MultipleViewPatternIdentifiers.CurrentViewProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void SupportedViewsPropertyTest ()
+		{
+			AutomationProperty property = MultipleViewPatternIdentifiers.SupportedViewsProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30072, property.Id, "Id");
+			Assert.AreEqual ("MultipleViewPatternIdentifiers.SupportedViewsProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
 	}
 }
