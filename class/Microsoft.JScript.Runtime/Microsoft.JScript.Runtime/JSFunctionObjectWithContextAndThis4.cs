@@ -25,18 +25,31 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
-
 using System;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
 {
     
     
-    public class JSFunctionObjectWithContextAndThis4
+    public class JSFunctionObjectWithContextAndThis4 : JSFunctionObjectWithContextAndThis
     {
-        
-        public JSFunctionObjectWithContextAndThis4()
+        private CallTargetWithContextAndThis4 callTarget;
+
+        public JSFunctionObjectWithContextAndThis4 (CodeContext context, string name, CallTargetWithContextAndThis4 callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
         {
+		this.callTarget = callTarget;
         }
+
+	public override object Call (CodeContext context, object instance, object [] args)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	public override Delegate Target {
+		get { return callTarget; }
+	}
     }
 }

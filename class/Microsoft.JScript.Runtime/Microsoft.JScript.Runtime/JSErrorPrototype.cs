@@ -3,8 +3,14 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public static class JSErrorPrototype {
-		public static string toString (CodeContext context, params object [] arguments)
+	public class JSErrorPrototype : JSErrorObject {
+
+		public JSErrorPrototype (CodeContext context, JSObject prototype, ErrorType errorType)
+		{
+
+		}
+
+		public static string toString (CodeContext context, object instance)
 		{
 			throw new NotImplementedException ();
 		}

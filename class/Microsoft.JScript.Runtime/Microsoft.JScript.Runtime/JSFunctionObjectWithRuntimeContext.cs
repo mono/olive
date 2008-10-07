@@ -14,20 +14,20 @@ namespace Microsoft.JScript.Runtime {
 		{
 		}
 
-		public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
+		/*public JSFunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
 						    string [] argNames, bool isStandardConstructor, bool callWithRuntimeContext)
 			: base (context, name, argNames, isStandardConstructor)
 		{
 		}
-
+*/
 		public override object Call (CodeContext context, object instance, object [] args)
 		{
 			return base.Call (context, instance, args);
 		}
 
-		protected override Expression [] GetArgumentsForRule<T> (StandardRule<T> rule, CallAction action)
+		protected internal override Expression [] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callhelper)
 		{
-			return base.GetArgumentsForRule<T> (rule, action);
+			return base.GetArgumentsForRule<T> (callhelper);
 		}
 
 		public override Delegate Target {

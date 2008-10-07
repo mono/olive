@@ -27,16 +27,43 @@
 //
 
 using System;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
-{
-    
-    
-    public class JSFunctionObjectWithContextAndThis
+{  
+    public class JSFunctionObjectWithContextAndThis : JSFunctionObject
     {
         
-        public JSFunctionObjectWithContextAndThis()
+	private CallTargetWithContextAndThisN callTarget;
+
+        public JSFunctionObjectWithContextAndThis (CodeContext context, string name, CallTargetWithContextAndThisN callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
         {
+		this.callTarget = callTarget;
         }
+
+	protected JSFunctionObjectWithContextAndThis (CodeContext context, string name, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
+	{
+	}
+
+	protected override Expression [] CreateArguments<T> (StandardRule<T> rule, int hasInstance, params Expression[] preargs)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	protected internal override Expression [] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callHelper)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	public override object Call (CodeContext context, object instance, object [] args)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	public override Delegate Target {
+		get { return callTarget; }
+	}
     }
 }

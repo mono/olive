@@ -27,16 +27,28 @@
 //
 
 using System;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
 {
     
     
-    public class JSFunctionObject3
+        public class JSFunctionObject3 : JSFunctionObject
     {
-        
-        public JSFunctionObject3()
-        {
-        }
+        public JSFunctionObject3 (CodeContext context, string name, CallTarget3 callTarget, string[] argNames, bool isStandardConstructor)
+		: base(context , name, null, argNames, isStandardConstructor)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public override object Call(CodeContext context, object instance, object[] args)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public override Delegate Target { get {throw new NotImplementedException ();}}
+
     }
 }

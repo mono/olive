@@ -37,27 +37,32 @@ namespace Microsoft.JScript.Runtime
     
     public class JSFunctionObjectWithThis : JSFunctionObject
     {
-        
+        private CallTargetWithThisN callTarget;
+
         public JSFunctionObjectWithThis(CodeContext context, string name, CallTargetWithThisN callTarget, string[] argNames, bool isStandardConstructor) : base(context, name, argNames, isStandardConstructor)
         {
-		throw new NotImplementedException ();
+		this.callTarget = callTarget;
         }
+	
+	protected JSFunctionObjectWithThis (CodeContext context, string name, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
+	{
+	}
 
-	public Expression[] CreateArguments<T> (StandardRule<T> rule, int hasInstance, Expression[] preArgs)
+	protected override Expression[] CreateArguments<T> (StandardRule<T> rule, int hasInstance, Expression[] preArgs)
 	{
 		throw new NotImplementedException ();
 	}
 
-	public Expression[] GetArgumentsForRule<T> (CallAction callHelper)
+	protected internal override Expression[] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callHelper)
 	{
 		throw new NotImplementedException ();
 	}
 
-	public object Call (CodeContext context, object instance, object[] args)
+	public override object Call (CodeContext context, object instance, object[] args)
 	{
 		throw new NotImplementedException ();
 	}
 	
-	public Delegate Target { get { throw new NotImplementedException (); } }
+	public override Delegate Target { get { return callTarget; } }
     }
 }

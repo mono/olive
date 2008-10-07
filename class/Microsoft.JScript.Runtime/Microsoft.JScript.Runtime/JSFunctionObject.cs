@@ -6,7 +6,7 @@ using Microsoft.Scripting.Actions;
 namespace Microsoft.JScript.Runtime {
 
 	[Serializable]
-	public class JSFunctionObject : JSObject, /*IActionable,*/ /*ICallableWithCodeContext, ICallableWithThis,*/ IConstructorWithCodeContext {
+	public class JSFunctionObject : JSObject, IConstructorWithCodeContext {
 
 		public JSFunctionObject (CodeContext context, string name, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
@@ -41,10 +41,10 @@ namespace Microsoft.JScript.Runtime {
 			return callTarget (args);
 		}
 
-		/*object ICallableWithCodeContext.Call (CodeContext context, object [] args)
+		public object Call (CodeContext context, object [] args)
 		{
 			return Call (context, null, args);
-		}*/
+		}
 
 		public static object construct (CodeContext context, object self, params object [] arguments)
 		{
@@ -56,7 +56,12 @@ namespace Microsoft.JScript.Runtime {
 			return this.constructTarget (this, args);
 		}
 
-		protected virtual Expression [] GetArgumentsForRule<T> (StandardRule<T> rule, CallAction action)
+		protected virtual Expression [] CreateArguments<T> (StandardRule<T> rule, int hasInstance, params Expression[] preargs)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected internal virtual Expression [] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callHelper)
 		{
 			throw new NotImplementedException ();
 		}
@@ -66,7 +71,12 @@ namespace Microsoft.JScript.Runtime {
 			return "Function";
 		}
 
-		public StandardRule<T> GetRule<T> (DynamicAction action, CodeContext context, object [] args)
+		public virtual object GetDefaultValue ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override StandardRule<T> GetRule<T> (DynamicAction action, CodeContext context, object [] args)
 		{
 			throw new NotImplementedException ();
 		}
@@ -79,14 +89,35 @@ namespace Microsoft.JScript.Runtime {
 			return new JSFunctionObject (context, name, (CallTargetN)target, argNames, isStandardConstructor);
 		}
 
-		protected CallTargetN CallTarget {
-			get { return callTarget; }
-			set { callTarget = value; }
+		public static JSFunctionObject MakeFunction (CodeContext context, string name,
+			Delegate target, string [] argNames, bool isStandardConstructor)
+		{
+			return MakeFunction (context, name, (CallTargetN)target, argNames, isStandardConstructor, false);
+		}
+
+		public ConstructTargetN ConstructTarget {
+			get { return constructTarget; }
 		}
 
 		public CodeContext Context {
 			get { return context; }
-			set { context = value; }
+		}
+
+		public override LanguageContext LanguageContext {
+			get { throw new NotImplementedException (); }
+		}
+
+		public bool UsesArguments {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		public int Length {
+			get { throw new NotImplementedException (); }
+		}
+
+		public string[] ArgNames {
+			get { throw new NotImplementedException (); }
 		}
 
 		public virtual Delegate Target {

@@ -27,16 +27,30 @@
 //
 
 using System;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime
 {
     
     
-    public class JSFunctionObjectWithThis4
+    public class JSFunctionObjectWithThis4 : JSFunctionObjectWithThis
     {
-        
-        public JSFunctionObjectWithThis4()
+        private CallTargetWithThis4 callTarget;
+
+        public JSFunctionObjectWithThis4 (CodeContext context, string name, CallTargetWithThis4 callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
         {
+		this.callTarget = callTarget;
         }
+
+	public override object Call (CodeContext context, object instance, object [] args)
+	{
+		throw new NotImplementedException ();
+	}
+	
+	public override Delegate Target {
+		get { return callTarget; }
+	}
     }
 }
