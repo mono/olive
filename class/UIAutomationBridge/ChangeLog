@@ -1,5 +1,11 @@
 2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
 
+	* UIAutomationBridge.mdp, Mono.UIAutomation.Bridge/IEmbeddedImage.cs,
+	  UIAutomationBridge.dll.sources, Mono.UIAutomation.Bridge/IImage.cs:
+	  Simplified name and API.
+
+2008-10-07  Andrés G. Aragoneses <aaragoneses@novell.com> 
+
 	* Mono.UIAutomation.Bridge/IImage.cs, UIAutomationBridge.mdp,
 	  UIAutomationBridge.dll.sources: Workaround for 4th item in
 	  http://www.mono-project.com/Accessibility:_Specification_Notes#Feature_requests

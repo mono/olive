@@ -29,9 +29,8 @@ using System.Windows.Automation;
 
 namespace Mono.UIAutomation.Bridge
 {
-	public interface IImage
+	public interface IEmbeddedImage
 	{
-		bool HasEmbeddedImage { get; }
 		Rect BoundingRectangle { get; }
 	}
 }
