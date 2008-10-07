@@ -1,3 +1,10 @@
+2008-10-07  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/AutomationProperty.cs: MultipleView Pattern
+	  added.
+	* System.Windows.Automation/MultipleViewPatternIdentifiers.cs:
+	  Properties implemented.
+
 2008-10-06  Sandy Armstrong <sanfordarmstrong@gmail.com> 
 
 	* System.Windows.Automation/AutomationPropertyChangedEventArgs.cs:

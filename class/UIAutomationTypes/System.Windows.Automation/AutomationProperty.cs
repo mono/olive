@@ -206,6 +206,10 @@ namespace System.Windows.Automation
 				return TransformPatternIdentifiers.CanResizeProperty;
 			else if (id == TransformPatternIdentifiers.CanRotateProperty.Id)
 				return TransformPatternIdentifiers.CanRotateProperty;
+			else if (id == MultipleViewPatternIdentifiers.CurrentViewProperty.Id)
+				return MultipleViewPatternIdentifiers.CurrentViewProperty;
+			else if (id == MultipleViewPatternIdentifiers.SupportedViewsProperty.Id)
+				return MultipleViewPatternIdentifiers.SupportedViewsProperty;
 			else
 				return null;
 		}

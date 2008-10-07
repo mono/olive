@@ -31,12 +31,22 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10008;
+		private const int CurrentViewPropertyId = 30071;
+		private const int SupportedViewsPropertyId = 30072;
 		
 		static MultipleViewPatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "MultipleViewPatternIdentifiers.Pattern");
+			
+			CurrentViewProperty =
+				new AutomationProperty (CurrentViewPropertyId,
+				                        "MultipleViewPatternIdentifiers.CurrentViewProperty");
+
+			SupportedViewsProperty =
+				new AutomationProperty (SupportedViewsPropertyId,
+				                        "MultipleViewPatternIdentifiers.SupportedViewsProperty");
 		}
 		
 #endregion
