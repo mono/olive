@@ -27,16 +27,14 @@
 //
 
 using System;
+using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime
 {
-    
-    
-    public class JSModuleContext
+    public sealed class JSModuleContext : ScopeExtension
     {
-        
-        public JSModuleContext()
-        {
-        }
+	internal JSModuleContext (Scope scope) : base (scope)
+	{
+	}
     }
 }

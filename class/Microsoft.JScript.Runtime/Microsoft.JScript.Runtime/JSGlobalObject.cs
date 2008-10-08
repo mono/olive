@@ -12,12 +12,7 @@ namespace Microsoft.JScript.Runtime {
 
 		#region Global members
 
-		public static object addReference (CodeContext context, params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object addReferenceToFile (CodeContext context, params object [] arguments)
+		public static object AddReference (CodeContext context, object assembly)
 		{
 			throw new NotImplementedException ();
 		}
@@ -27,17 +22,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object decodeURI (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static string decodeURIComponent (object encodedURI)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object decodeURIComponent (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -47,27 +32,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object encodeURI (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static string encodeURIComponent (object uriComponent)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object encodeURIComponent (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static string escape (object @string)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object escape (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -82,22 +52,17 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object import (CodeContext context, params object [] arguments)
+		public static object Import (CodeContext context, string container)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object importAlias (CodeContext context, params object [] arguments)
+		public static object ImportAlias (CodeContext context, string container)
 		{
 			throw new NotImplementedException ();
 		}
 
 		public static bool isFinite (double number)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object isFinite (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -108,17 +73,12 @@ namespace Microsoft.JScript.Runtime {
 			return Double.IsNaN (number);
 		}
 
-		public static object isNaN (params object [] arguments)
+		public static object LoadModule (CodeContext context, string module)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object loadModule (CodeContext context, params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object loadModuleFromFile (CodeContext context, params object [] arguments)
+		public static object LoadModuleFromFile (CodeContext context, string module, string language)
 		{
 			throw new NotImplementedException ();
 		}
@@ -140,17 +100,7 @@ namespace Microsoft.JScript.Runtime {
 			}
 		}
 
-		public static object parseFloat (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double parseInt (object @string, object radix)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object parseInt (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -165,11 +115,6 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object unescape (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		#endregion
 
 		public override IDictionary<object, object> AsObjectKeyedDictionary ()
@@ -180,6 +125,11 @@ namespace Microsoft.JScript.Runtime {
 		public override bool DeleteCustomMember (CodeContext context, SymbolId name)
 		{
 			return base.DeleteCustomMember (context, name);
+		}
+
+		public override bool DeleteItem (SymbolId name)
+		{
+			return base.DeleteItem (name);
 		}
 
 		public override IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
@@ -202,6 +152,11 @@ namespace Microsoft.JScript.Runtime {
 			base.SetCustomMember (context, name, value);
 		}
 
+		public override void SetItem (SymbolId name, object value)
+		{
+			base.SetItem (name, value);
+		}
+
 		public override bool TryGetBoundCustomMember (CodeContext context, SymbolId name, out object value)
 		{
 			return base.TryGetBoundCustomMember (context, name, out value);
@@ -210,6 +165,11 @@ namespace Microsoft.JScript.Runtime {
 		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
 		{
 			return base.TryGetCustomMember (context, name, out value);
+		}
+
+		public override bool TryGetItem (SymbolId name, out object value)
+		{
+			return base.TryGetItem (name, out value);
 		}
 
 		public override int Count {

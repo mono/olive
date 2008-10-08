@@ -3,13 +3,20 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public static class JSFunctionPrototype {
-		public static object apply (CodeContext context, params object [] arguments)
+	public class JSFunctionPrototype : JSFunctionObject {
+
+		public JSFunctionPrototype (CodeContext context, JSObject prototype) : base (context, "", new string[] {},
+					    true)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object call (CodeContext context, params object [] arguments)
+		public static object apply (CodeContext context, object instance, params object [] arguments)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object call (CodeContext context, object instance, params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -19,7 +26,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static string toString (params object [] arguments)
+		public static string toString (object instance)
 		{
 			throw new NotImplementedException ();
 		}

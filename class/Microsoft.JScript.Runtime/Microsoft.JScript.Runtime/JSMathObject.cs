@@ -21,14 +21,14 @@ namespace Microsoft.JScript.Runtime {
 		{
 		}
 
+		public JSMathObject (CodeContext context, JSObject prototype)
+			: base (null)
+		{
+		}
+
 		public static double abs (double d)
 		{
 			return Math.Abs (d);
-		}
-
-		public static object abs (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double acos (double x)
@@ -36,19 +36,9 @@ namespace Microsoft.JScript.Runtime {
 			return Math.Acos (x);
 		}
 
-		public static object acos (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double asin (double x)
 		{
 			return Math.Asin (x);
-		}
-
-		public static object asin (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double atan (double x)
@@ -56,19 +46,9 @@ namespace Microsoft.JScript.Runtime {
 			return Math.Atan (x);
 		}
 
-		public static object atan (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double atan2 (double dx, double dy)
 		{
 			return Math.Atan2 (dy, dx);
-		}
-
-		public static object atan2 (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double ceil (double x)
@@ -76,19 +56,9 @@ namespace Microsoft.JScript.Runtime {
 			return Math.Ceiling (x);
 		}
 
-		public static object ceil (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double cos (double x)
 		{
 			return Math.Cos (x);
-		}
-
-		public static object cos (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double exp (double x)
@@ -96,19 +66,9 @@ namespace Microsoft.JScript.Runtime {
 			return Math.Exp (x);
 		}
 
-		public static object exp (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double floor (double x)
 		{
 			return Math.Floor (x);
-		}
-
-		public static object floor (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public override string GetClassName ()
@@ -116,27 +76,12 @@ namespace Microsoft.JScript.Runtime {
 			return base.GetClassName ();
 		}
 
-		public static object GetClassName (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double log (double x)
 		{
 			return Math.Log (x);
 		}
 
-		public static object log (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double max (object x, object y, params object [] args)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object max (params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}
@@ -146,19 +91,9 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object min (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double pow (double dx, double dy)
 		{
 			return Math.Pow (dx, dy);
-		}
-
-		public static object pow (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double random ()
@@ -167,19 +102,9 @@ namespace Microsoft.JScript.Runtime {
 			return r.NextDouble ();
 		}
 
-		public static object random (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double round (double d)
 		{
 			return Math.Round (d);
-		}
-
-		public static object round (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 
 		public static double sin (double x)
@@ -187,29 +112,14 @@ namespace Microsoft.JScript.Runtime {
 			return Math.Sin (x);
 		}
 
-		public static object sin (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double sqrt (double x)
 		{
 			return Math.Sqrt (x);
 		}
 
-		public static object sqrt (params object [] arguments)
-		{
-			throw new NotImplementedException ();
-		}
-
 		public static double tan (double x)
 		{
 			return Math.Tan (x);
-		}
-
-		public static object tan (params object [] arguments)
-		{
-			throw new NotImplementedException ();
 		}
 	}
 }

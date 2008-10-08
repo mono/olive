@@ -290,21 +290,6 @@ namespace Microsoft.JScript.Runtime {
 			get { return null; }
 		}
 
-		public object this [int index] {
-			get {
-				Dictionary<SymbolId, object>.Enumerator en = members.GetEnumerator ();
-				for (int i = 0; i < Math.Max(index,members.Count); i++)
-					en.MoveNext ();
-				return en.Current.Value;		
-			}
-			set {
-				Dictionary<SymbolId, object>.Enumerator en = members.GetEnumerator ();
-				for (int i = 0; i < Math.Max (index, members.Count); i++)
-					en.MoveNext ();
-				members[en.Current.Key] = value;				
-			}
-		}
-
 		//TODO : quick hack here
 		public object this [SymbolId name] {
 			get {

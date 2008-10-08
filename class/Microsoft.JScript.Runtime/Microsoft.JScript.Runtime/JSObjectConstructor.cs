@@ -2,8 +2,14 @@ using System;
 using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
-	public static class JSObjectConstructor {
-		public static object call (CodeContext context, params object [] arguments)
+	public class JSObjectConstructor : JSFunctionObjectWithThis {
+
+		public JSObjectConstructor (CodeContext context) : base (context, "", new string[] {}, true)
+		{
+
+		}
+
+		public static object call (CodeContext context, object instance, params object [] arguments)
 		{
 			throw new NotImplementedException ();
 		}

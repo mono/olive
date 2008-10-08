@@ -55,6 +55,11 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		public static IAttributesCollection GetEnvironmentDictionary (object environment)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public static JSGlobalObject GetGlobalObject (CodeContext context)
 		{
 			throw new NotImplementedException ();

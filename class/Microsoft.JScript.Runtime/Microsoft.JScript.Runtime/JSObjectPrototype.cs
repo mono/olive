@@ -3,34 +3,39 @@ using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public static class JSObjectPrototype {
+	public class JSObjectPrototype : JSObject {
 
-		public static object hasOwnProperty (CodeContext context, params object [] arguments)
+		public JSObjectPrototype (JSObject prototype) : base (prototype)
+		{
+
+		}
+
+		public static object hasOwnProperty (CodeContext context, object instance, object propertyName)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object isPrototypeOf (params object [] arguments)
+		public static object isPrototypeOf (object instance, object value)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object propertyIsEnumerable (CodeContext context, params object [] arguments)
+		public static object propertyIsEnumerable (CodeContext context, object instance, object propertyName)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object toLocaleString (CodeContext context, params object [] arguments)
+		public static object toLocaleString (CodeContext context, object instance)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object toString (params object [] arguments)
+		public static object toString (object instance)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object valueOf (params object [] arguments)
+		public static object valueOf (object instance)
 		{
 			throw new NotImplementedException ();
 		}
