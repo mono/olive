@@ -55,6 +55,12 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
+		public static IList<object> GetAttrNamesHost (CodeContext context, object o)
+		{
+			//TODO
+			throw new NotImplementedException ();
+		}
+
 		public static IAttributesCollection GetEnvironmentDictionary (object environment)
 		{
 			throw new NotImplementedException ();
@@ -71,18 +77,42 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object InPlaceRightShiftUnsigned (object x, object y)
+		public static bool DelIndex (CodeContext context, object obj, object index)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object RightShiftUnsigned (object x, object y)
+		public static bool TryGetAttr (CodeContext context, object o, SymbolId name, out object ret)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static Exception SyntaxError (string msg, string filename, int line, int column, string lineText,
-						     int errorCode, Severity severity)
+		public static Exception TypeError (string format, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Exception ValueError (string format, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object CallWithContext (CodeContext context, object func, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object CallWithContextAndThis (CodeContext context, object func, object instance, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static object GetIndex (CodeContext context, object o, object index)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static void SetIndex (CodeContext context, object o, object index, object value)
 		{
 			throw new NotImplementedException ();
 		}

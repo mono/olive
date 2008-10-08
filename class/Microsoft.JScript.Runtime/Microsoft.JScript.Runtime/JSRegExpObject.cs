@@ -17,6 +17,17 @@ namespace Microsoft.JScript.Runtime {
 		{
 		}
 
+
+		public override void SetItem (SymbolId name, object value)
+		{
+			base.SetItem (name, value);
+		}
+
+		public override bool TryGetItem (SymbolId name, out object value)
+		{
+			return base.TryGetItem (name, out value);
+		}
+
 		public override string GetClassName ()
 		{
 			return base.GetClassName ();

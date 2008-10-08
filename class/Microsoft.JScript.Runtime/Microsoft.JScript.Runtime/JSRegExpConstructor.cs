@@ -36,14 +36,14 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public override void SetCustomMember (CodeContext context, SymbolId name, object value)
+		public override void SetItem (SymbolId name, object value)
 		{
-			base.SetCustomMember (context, name, value);
+			base.SetItem (name, value);
 		}
 
-		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
+		public override bool TryGetItem (SymbolId name, out object value)
 		{
-			return base.TryGetCustomMember (context, name, out value);
+			return base.TryGetItem (name, out value);
 		}
 
 		public object index {

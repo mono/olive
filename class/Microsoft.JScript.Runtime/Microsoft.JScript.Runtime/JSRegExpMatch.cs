@@ -25,9 +25,9 @@ namespace Microsoft.JScript.Runtime {
 			base.SetItem (key, value);
 		}
 
-		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
+		public override bool TryGetItem (SymbolId name, out object value)
 		{
-			return base.TryGetCustomMember (context, name, out value);
+			return base.TryGetItem (name, out value);
 		}
 	}
 }
