@@ -1,3 +1,8 @@
+2008-10-10  Brad Taylor  <brad@getcoded.net>
+	
+	* System.Windows.Automation.Provider/ITextRangeProvider.cs:
+	  GetBoundingRectangles returns a Rect[], not a double[].
+
 2008-08-26  Stephen Shaw <sshaw@decriptor.com> 
 
 	* UIAutomationProvider.mdp: Project files updated

@@ -42,7 +42,7 @@ namespace System.Windows.Automation.Provider
 		ITextRangeProvider FindAttribute (int attribute, object value, bool backward);
 		ITextRangeProvider FindText (string text, bool backward, bool ignoreCase);
 		object GetAttributeValue (int attribute);
-		double[] GetBoundingRectangles ();
+		Rect[] GetBoundingRectangles ();
 		IRawElementProviderSimple[] GetChildren ();
 		IRawElementProviderSimple GetEnclosingElement ();
 		string GetText (int maxLength);
