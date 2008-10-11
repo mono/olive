@@ -36,13 +36,15 @@ namespace Microsoft.JScript.Runtime.Hosting
 {
 	public class TokenCategorizer : Microsoft.Scripting.Hosting.TokenCategorizer
 	{
-		public TokenCategorizer()
+		public TokenCategorizer(JSContext context)
 		{
+			this.context = context;
 		}
 
 		private Tokenizer tokenizer;
 		private object state;
 		private ErrorSink errorSink;
+		private JSContext context;
 
 		public override void Initialize(object state, SourceUnitReader sourceReader, SourceLocation initialLocation)
 		{

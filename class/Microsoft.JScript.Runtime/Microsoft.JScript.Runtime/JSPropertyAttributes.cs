@@ -4,10 +4,10 @@ namespace Microsoft.JScript.Runtime {
 
 	[Flags]
 	public enum JSPropertyAttributes {
-		None,
-		ReadOnly,
-		DontEnum,
-		Internal,
-		DontDelete
+		None = 0,
+		ReadOnly = 1,
+		DontEnum = 2,
+		DontDelete = 4,
+		Internal = 8
 	}
 }

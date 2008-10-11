@@ -27,16 +27,53 @@
 //
 
 using System;
+using Microsoft.JScript.Runtime;
+using Microsoft.Scripting;
+using Microsoft.Scripting.Actions;
+using System.Reflection;
 
 namespace Microsoft.JScript.Runtime.Types
 {
     
     
-    public class BuiltinFunctionObject
+    public class BuiltinFunctionObject : JSFunctionObject
     {
         
-        public BuiltinFunctionObject()
+        internal BuiltinFunctionObject (CodeContext context, string name, string [] argNames,
+					    bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor)
         {
         }
+
+	public override object Call(CodeContext context, object instance, object[] args)
+	{
+		throw new NotImplementedException ();
+	}
+
+	private object GetDefaultParameterValue(Type type)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public override StandardRule<T>  GetRule<T>(DynamicAction action, CodeContext context, object[] args)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public static BuiltinFunctionObject MakeFunction(CodeContext context, string name, MethodBase method, string[] argNames, bool hasContextParameter, bool hasThisParameter, bool hasParamsParameter)
+	{
+		throw new NotImplementedException ();
+	}
+
+	public bool HasContextParameter { get	{throw new NotImplementedException ();} }
+
+	public bool HasParamsParameter { get{throw new NotImplementedException ();} }
+
+	public bool HasThisParameter { get{throw new NotImplementedException ();} }
+
+	public int Id { get{throw new NotImplementedException ();} }
+
+	public MethodBase Method { get{throw new NotImplementedException ();} }
+
+	public string Name { get{throw new NotImplementedException ();} }
     }
 }

@@ -35,7 +35,7 @@ namespace Microsoft.JScript.Runtime
     public class MethodGroupOps
     {
         
-        public MethodGroupOps()
+        internal MethodGroupOps()
         {
         }
     }

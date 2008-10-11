@@ -27,16 +27,28 @@
 //
 
 using System;
+using Microsoft.Scripting.Actions;
+using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class CreateInstanceBinderHelper
+    public class CreateInstanceBinderHelper<T> : CallBinderHelper<T, CreateInstanceAction>
     {
         
-        public CreateInstanceBinderHelper()
+        public CreateInstanceBinderHelper(CodeContext context, CreateInstanceAction action, object[] args) : base(context, action, args)
         {
         }
+
+	protected virtual JSError GetErrorType ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void MakeTarget ()
+	{
+		throw new NotImplementedException ();
+	}
     }
 }

@@ -28,6 +28,7 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 
 namespace Microsoft.JScript.Runtime.Shell
 {
@@ -49,6 +50,16 @@ namespace Microsoft.JScript.Runtime.Shell
 			return 0;
 		}
 
+		protected override int RunFile (string fileName)
+		{
+			if (!File.Exists(fileName))
+			{
+				Console.WriteLine ("File does not exist", Microsoft.Scripting.Shell.Style.Error);
+				return -1;
+			}
+			throw new NotImplementedException ();
+		}
+
 		protected override string Logo {
 			get { return "Mono Java Script Compiler for Moonlight 0.1 " + Environment.NewLine; } 
 		}
@@ -58,13 +69,6 @@ namespace Microsoft.JScript.Runtime.Shell
 		protected override string PromptContinuation {
 			get { return " "; }
 		}
-
-#if !NET_2_1
-		protected override int RunFile (string filename)
-		{
-			throw new NotImplementedException ();
-		}
-#endif
 	}
 
 }

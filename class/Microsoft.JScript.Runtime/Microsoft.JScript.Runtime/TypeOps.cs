@@ -35,7 +35,7 @@ namespace Microsoft.JScript.Runtime
     public class TypeOps
     {
         
-        public TypeOps()
+        internal TypeOps()
         {
         }
     }

@@ -4,38 +4,17 @@ using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Actions {
 	
-	public class DoOperationBinderHelper<T> {
+	public class DoOperationBinderHelper<T> : BinderHelper<T, DoOperationAction> {
 
-		protected DoOperationAction _action;
-
-		public DoOperationBinderHelper (ActionBinder binder, CodeContext context, DoOperationAction action)
+		public DoOperationBinderHelper (CodeContext context, DoOperationAction action, object[] args) : base (context, action)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object DynamicInvokeBinaryOperation (CodeContext context, Operators op, object x, object y)
+		public StandardRule<T> MakeRule ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object DynamicInvokeCompareOperation (CodeContext context, Operators op, object x, object y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public static object DynamicInvokeInplaceOperation (CodeContext context, Operators op, object x, object y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public StandardRule<T> MakeRule (object [] args)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override string ToString ()
-		{
-			return base.ToString ();
-		}
 	}
 }

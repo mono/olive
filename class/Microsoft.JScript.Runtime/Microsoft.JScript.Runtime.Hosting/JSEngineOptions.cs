@@ -39,10 +39,16 @@ namespace Microsoft.JScript.Runtime.Hosting
 		
 		//TODO Default value
 		private int maximumRecursion;
+		private bool ecma3Mode;
 
 		public int MaximumRecursion {
 			get { return maximumRecursion; }
 			set { maximumRecursion = value; }  
+		}
+
+		public bool ECMA3Mode {
+			get { return ecma3Mode; }
+			set { ecma3Mode = value; }  
 		}
 	}
 

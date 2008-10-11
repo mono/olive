@@ -5,8 +5,13 @@ using Microsoft.JScript.Runtime.Calls;
 
 namespace Microsoft.JScript.Runtime.Actions {
 
-	public class GetMemberBinderHelper<T> {
-		public GetMemberBinderHelper (JSBinder binder, GetMemberAction action)
+	public class GetMemberBinderHelper<T> : Microsoft.Scripting.Actions.GetMemberBinderHelper<T> {
+		public GetMemberBinderHelper (CodeContext context, GetMemberAction action, object[] args) : base (context, action, args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public StandardRule<T> MakeRule ()
 		{
 			throw new NotImplementedException ();
 		}

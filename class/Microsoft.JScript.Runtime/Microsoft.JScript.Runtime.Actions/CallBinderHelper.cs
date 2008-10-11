@@ -27,16 +27,69 @@
 //
 
 using System;
+using Microsoft.Scripting.Actions;
+using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class CallBinderHelper
+    public class CallBinderHelper<T, ActionType> : BinderHelper<T, ActionType> where ActionType : CallAction
     {
         
-        public CallBinderHelper()
+        public CallBinderHelper(CodeContext context, ActionType action, object[] args ): base(context, action)
         {
         }
+
+
+	protected virtual JSError GetErrorType ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	public virtual StandardRule<T> MakeErrorRule ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	public virtual StandardRule<T> MakeRule ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void Initialize ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void MakeArgumentsTest ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void MakeLengthTest ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void MakeTarget ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected virtual void MakeTests ()
+	{
+		throw new NotImplementedException ();
+	}
+
+	protected JSFunctionObject FunctionObject
+	{
+		get {throw new NotImplementedException ();}
+	}
+
+	protected object[] Arguments
+	{
+		get {throw new NotImplementedException ();}
+	}
     }
 }

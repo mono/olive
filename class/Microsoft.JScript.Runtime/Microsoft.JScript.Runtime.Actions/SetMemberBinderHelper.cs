@@ -5,14 +5,14 @@ using Microsoft.JScript.Runtime.Calls;
 
 namespace Microsoft.JScript.Runtime.Actions {
 
-	public class SetMemberBinderHelper<T> {
-		public SetMemberBinderHelper (JSBinder binder, SetMemberAction action)
+	public class SetMemberBinderHelper<T> : MemberBinderHelper<T, SetMemberAction> {
+		public SetMemberBinderHelper (CodeContext context, SetMemberAction action, object[] args) : base (context, action, args)
 		{
-			this.action = action;
-			this.binder = binder;
 		}
-		private SetMemberAction action;
-		private JSBinder binder;
+		public StandardRule<T> MakeRule ()
+		{
+			throw new NotImplementedException ();
+		}
 		//TODO must have here internal thing here
 	}
 }
