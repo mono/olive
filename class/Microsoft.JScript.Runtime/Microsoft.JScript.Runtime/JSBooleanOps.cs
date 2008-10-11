@@ -6,582 +6,591 @@ namespace Microsoft.JScript.Runtime {
 	public static class JSBooleanOps {
 
 		[SpecialName]
-		public static double Add (bool x, bool y)
+		public static double op_Addition (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Add (bool x, double y)
+		public static double op_Addition (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Add (bool x, None y)
+		public static double op_Addition (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Add (bool x, [NotNull] JSBooleanObject y)
+		public static double op_Addition (bool x, [NotNull] JSBooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Add (bool x, [NotNull] JSNumberObject y)
+		public static double op_Addition (bool x, [NotNull] JSNumberObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add (bool x, [NotNull] JSObject y)
+		public static string op_Addition (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Add (bool x, [NotNull] UnDefined y)
+		public static double op_Addition (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add (bool x, [NotNull] string y)
+		public static ConcatString op_Addition (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
-
+		[SpecialName]
+		public static ConcatString op_Addition (bool x, [NotNull] ConcatString y)
+		{
+			throw new NotImplementedException ();
+		}
 
 		[SpecialName]
-		public static int BitwiseAnd (bool x, bool y)
+		public static double op_BitwiseAnd (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd (bool x, double y)
+		public static double op_BitwiseAnd (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd (bool x, JSObject y)
+		public static double op_BitwiseAnd (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd (bool x, [NotNull] UnDefined y)
+		public static double op_BitwiseAnd (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd (bool x, [NotNull] string y)
+		public static double op_BitwiseAnd (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int BitwiseOr (bool x, bool y)
+		public static double op_BitwiseOr (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr (bool x, double y)
+		public static double op_BitwiseOr (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr (bool x, JSObject y)
+		public static double op_BitwiseOr (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr (bool x, [NotNull] UnDefined y)
+		public static double op_BitwiseOr (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr (bool x, [NotNull] string y)
+		public static double op_BitwiseOr (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Divide (bool x, bool y)
+		public static double op_Division (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide (bool x, double y)
+		public static double op_Division (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide (bool x, JSObject y)
+		public static double op_Division (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide (bool x, [NotNull] UnDefined y)
+		public static double op_Division (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide (bool x, [NotNull] string y)
+		public static double op_Division (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SpecialName]
+		public static bool op_Equality (bool x, decimal y)
+		{
+			throw new NotImplementedException ();
+		}
 
 		[SpecialName]
-		public static bool Equal (bool x, bool y)
+		public static bool op_Equality (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal (bool x, double y)
+		public static bool op_Equality (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal (bool x, None y)
+		public static bool op_Equality (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal (bool x, [NotNull] JSObject y)
+		public static bool op_Equality (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal (bool x, [NotNull] UnDefined y)
+		public static bool op_Equality (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal (bool x, [NotNull] string y)
+		public static bool op_Equality (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int ExclusiveOr (bool x, bool y)
+		public static double op_ExclusiveOr (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr (bool x, double y)
+		public static double op_ExclusiveOr (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr (bool x, JSObject y)
+		public static double op_ExclusiveOr (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr (bool x, [NotNull] UnDefined y)
+		public static double op_ExclusiveOr (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr (bool x, [NotNull] string y)
+		public static double op_ExclusiveOr (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, bool y)
+		public static bool op_GreaterThan (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, double y)
+		public static bool op_GreaterThan (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, None y)
+		public static bool op_GreaterThan (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, [NotNull] JSObject y)
+		public static bool op_GreaterThan (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, [NotNull] UnDefined y)
+		public static bool op_GreaterThan (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan (bool x, [NotNull] string y)
+		public static bool op_GreaterThan (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, bool y)
+		public static bool op_GreaterThanOrEqual (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, double y)
+		public static bool op_GreaterThanOrEqual (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, None y)
+		public static bool op_GreaterThanOrEqual (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, [NotNull] JSObject y)
+		public static bool op_GreaterThanOrEqual (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, [NotNull] UnDefined y)
+		public static bool op_GreaterThanOrEqual (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual (bool x, [NotNull] string y)
+		public static bool op_GreaterThanOrEqual (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int LeftShift (bool x, bool y)
+		public static double op_LeftShift (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift (bool x, double y)
+		public static double op_LeftShift (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift (bool x, JSObject y)
+		public static double op_LeftShift (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift (bool x, [NotNull] UnDefined y)
+		public static double op_LeftShift (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift (bool x, [NotNull] string y)
+		public static double op_LeftShift (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool LessThan (bool x, bool y)
+		public static bool op_LessThan (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan (bool x, double y)
+		public static bool op_LessThan (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan (bool x, None y)
+		public static bool op_LessThan (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan (bool x, [NotNull] JSObject y)
+		public static bool op_LessThan (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan (bool x, [NotNull] UnDefined y)
+		public static bool op_LessThan (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan (bool x, [NotNull] string y)
+		public static bool op_LessThan (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, bool y)
+		public static bool op_LessThanOrEqual (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, double y)
+		public static bool op_LessThanOrEqual (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, None y)
+		public static bool op_LessThanOrEqual (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, [NotNull] JSObject y)
+		public static bool op_LessThanOrEqual (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, [NotNull] UnDefined y)
+		public static bool op_LessThanOrEqual (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual (bool x, [NotNull] string y)
+		public static bool op_LessThanOrEqual (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Mod (bool x, bool y)
+		public static double op_Modulus (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod (bool x, double y)
+		public static double op_Modulus (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod (bool x, JSObject y)
+		public static double op_Modulus (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod (bool x, [NotNull] UnDefined y)
+		public static double op_Modulus (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod (bool x, [NotNull] string y)
+		public static double op_Modulus (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Multiply (bool x, bool y)
+		public static double op_Multiply (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply (bool x, double y)
+		public static double op_Multiply (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply (bool x, JSObject y)
+		public static double op_Multiply (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply (bool x, [NotNull] UnDefined y)
+		public static double op_Multiply (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply (bool x, [NotNull] string y)
+		public static double op_Multiply (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool NotEqual (bool x, bool y)
+		public static bool op_Inequality (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual (bool x, double y)
+		public static bool op_Inequality (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual (bool x, None y)
+		public static bool op_Inequality (bool x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual (bool x, [NotNull] JSObject y)
+		public static bool op_Inequality (bool x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual (bool x, [NotNull] UnDefined y)
+		public static bool op_Inequality (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual (bool x, [NotNull] string y)
+		public static bool op_Inequality (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int RightShift (bool x, bool y)
+		public static double op_RightShift (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift (bool x, double y)
+		public static double op_RightShift (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift (bool x, JSObject y)
+		public static double op_RightShift (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift (bool x, [NotNull] UnDefined y)
+		public static double op_RightShift (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift (bool x, [NotNull] string y)
+		public static double op_RightShift (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static uint RightShiftUnsigned (bool x, bool y)
+		public static double op_UnsignedRightShift (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned (bool x, double y)
+		public static double op_UnsignedRightShift (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned (bool x, JSObject y)
+		public static double op_UnsignedRightShift (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned (bool x, [NotNull] UnDefined y)
+		public static double op_UnsignedRightShift (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned (bool x, [NotNull] string y)
+		public static double op_UnsignedRightShift (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Subtract (bool x, bool y)
+		public static double op_Subtraction (bool x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract (bool x, double y)
+		public static double op_Subtraction (bool x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract (bool x, JSObject y)
+		public static double op_Subtraction (bool x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract (bool x, [NotNull] UnDefined y)
+		public static double op_Subtraction (bool x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract (bool x, [NotNull] string y)
+		public static double op_Subtraction (bool x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}

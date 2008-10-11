@@ -39,12 +39,12 @@ namespace Microsoft.JScript.Runtime
 	public class JSBoundFunctionObject : IAttributesCollection, IConstructorWithCodeContext, ICustomMembers, IDynamicObject
 	{
 		private readonly JSFunctionObject _function;
-
 		private readonly JSObject _instance;
 
 		public JSBoundFunctionObject(JSFunctionObject function, JSObject instance)
 		{
-			throw new NotImplementedException ();
+			_function = function;
+			_instance = instance;
 		}
 
 		public void AddObjectKey(object name, object value)
@@ -227,9 +227,9 @@ namespace Microsoft.JScript.Runtime
 
 		public int Count  {  get { throw new NotImplementedException (); } }
 
-		public JSFunctionObject Function  {  get { throw new NotImplementedException (); } }
+		public JSFunctionObject Function  {  get { return _function; } }
 
-		public JSObject Instance  {  get { throw new NotImplementedException (); } }
+		public JSObject Instance  {  get { return _instance; } }
 
 		public object this[SymbolId name] {  get { throw new NotImplementedException (); }  set { throw new NotImplementedException (); } }
 

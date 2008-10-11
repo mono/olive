@@ -7,576 +7,583 @@ namespace Microsoft.JScript.Runtime {
 	public static class JSStringOps {
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, bool y)
+		public static ConcatString op_Addition ([NotNull] string x, ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, double y)
+		public static ConcatString op_Addition ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, [NotNull] JSBooleanObject y)
+		public static ConcatString op_Addition ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, [NotNull] JSNumberObject y)
+		public static ConcatString op_Addition ([NotNull] string x, [NotNull] JSBooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, JSObject y)
+		public static ConcatString op_Addition ([NotNull] string x, [NotNull] JSNumberObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, [NotNull] UnDefined y)
+		public static ConcatString op_Addition ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string Add ([NotNull] string x, [NotNull] string y)
+		public static ConcatString op_Addition ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
-
+		[SpecialName]
+		public static ConcatString op_Addition ([NotNull] string x, [NotNull] string y)
+		{
+			throw new NotImplementedException ();
+		}
 
 		[SpecialName]
-		public static int BitwiseAnd ([NotNull] string x, bool y)
+		public static double op_BitwiseAnd ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd ([NotNull] string x, double y)
+		public static double op_BitwiseAnd ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd ([NotNull] string x, JSObject y)
+		public static double op_BitwiseAnd ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_BitwiseAnd ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseAnd ([NotNull] string x, [NotNull] string y)
+		public static double op_BitwiseAnd ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int BitwiseOr ([NotNull] string x, bool y)
+		public static double op_BitwiseOr ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr ([NotNull] string x, double y)
+		public static double op_BitwiseOr ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr ([NotNull] string x, JSObject y)
+		public static double op_BitwiseOr ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_BitwiseOr ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int BitwiseOr ([NotNull] string x, [NotNull] string y)
+		public static double op_BitwiseOr ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Divide ([NotNull] string x, bool y)
+		public static double op_Division ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide ([NotNull] string x, double y)
+		public static double op_Division ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide ([NotNull] string x, JSObject y)
+		public static double op_Division ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_Division ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Divide ([NotNull] string x, [NotNull] string y)
+		public static double op_Division ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, bool y)
+		public static bool op_Equality ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, double y)
+		public static bool op_Equality ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, None y)
+		public static bool op_Equality ([NotNull] string x, decimal y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_Equality ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_Equality ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool Equal ([NotNull] string x, [NotNull] string y)
+		public static bool op_Equality ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[SpecialName]
+		public static bool op_Equality ([NotNull] string x, [NotNull] string y)
+		{
+			throw new NotImplementedException ();
+		}
 
 		[SpecialName]
-		public static int ExclusiveOr ([NotNull] string x, bool y)
+		public static double op_ExclusiveOr ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr ([NotNull] string x, double y)
+		public static double op_ExclusiveOr ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr ([NotNull] string x, JSObject y)
+		public static double op_ExclusiveOr ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_ExclusiveOr ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int ExclusiveOr ([NotNull] string x, [NotNull] string y)
+		public static double op_ExclusiveOr ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, bool y)
+		public static bool op_GreaterThan ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, double y)
+		public static bool op_GreaterThan ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, None y)
+		public static bool op_GreaterThan ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_GreaterThan ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_GreaterThan ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThan ([NotNull] string x, [NotNull] string y)
+		public static bool op_GreaterThan ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
-
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, bool y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, double y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, None y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool GreaterThanOrEqual ([NotNull] string x, [NotNull] string y)
+		public static bool op_GreaterThanOrEqual ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int LeftShift ([NotNull] string x, bool y)
+		public static double op_LeftShift ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift ([NotNull] string x, double y)
+		public static double op_LeftShift ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift ([NotNull] string x, JSObject y)
+		public static double op_LeftShift ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_LeftShift ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int LeftShift ([NotNull] string x, [NotNull] string y)
+		public static double op_LeftShift ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, bool y)
+		public static bool op_LessThan ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, double y)
+		public static bool op_LessThan ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, None y)
+		public static bool op_LessThan ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_LessThan ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_LessThan ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThan ([NotNull] string x, [NotNull] string y)
+		public static bool op_LessThan ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, bool y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, double y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, None y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool LessThanOrEqual ([NotNull] string x, [NotNull] string y)
+		public static bool op_LessThanOrEqual ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Mod ([NotNull] string x, bool y)
+		public static double op_Modulus ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod ([NotNull] string x, double y)
+		public static double op_Modulus ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod ([NotNull] string x, JSObject y)
+		public static double op_Modulus ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_Modulus ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Mod ([NotNull] string x, [NotNull] string y)
+		public static double op_Modulus ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
-
 
 		[SpecialName]
-		public static double Multiply ([NotNull] string x, bool y)
+		public static double op_Multiply ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply ([NotNull] string x, double y)
+		public static double op_Multiply ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply ([NotNull] string x, JSObject y)
+		public static double op_Multiply ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_Multiply ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Multiply ([NotNull] string x, [NotNull] string y)
+		public static double op_Multiply ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, bool y)
+		public static bool op_Inequality ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, double y)
+		public static bool op_Inequality ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, None y)
+		public static bool op_Inequality ([NotNull] string x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, [NotNull] JSObject y)
+		public static bool op_Inequality ([NotNull] string x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, [NotNull] UnDefined y)
+		public static bool op_Inequality ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool NotEqual ([NotNull] string x, [NotNull] string y)
+		public static bool op_Inequality ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static int RightShift ([NotNull] string x, bool y)
+		public static double op_RightShift ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift ([NotNull] string x, double y)
+		public static double op_RightShift ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift ([NotNull] string x, JSObject y)
+		public static double op_RightShift ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_RightShift ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static int RightShift ([NotNull] string x, [NotNull] string y)
+		public static double op_RightShift ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static uint RightShiftUnsigned ([NotNull] string x, bool y)
+		public static double op_UnsignedRightShift ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned ([NotNull] string x, double y)
+		public static double op_UnsignedRightShift ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned ([NotNull] string x, JSObject y)
+		public static double op_UnsignedRightShift ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_UnsignedRightShift ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static uint RightShiftUnsigned ([NotNull] string x, [NotNull] string y)
+		public static double op_UnsignedRightShift ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static double Subtract ([NotNull] string x, bool y)
+		public static double op_Subtraction ([NotNull] string x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract ([NotNull] string x, double y)
+		public static double op_Subtraction ([NotNull] string x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract ([NotNull] string x, JSObject y)
+		public static double op_Subtraction ([NotNull] string x, JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract ([NotNull] string x, [NotNull] UnDefined y)
+		public static double op_Subtraction ([NotNull] string x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double Subtract ([NotNull] string x, [NotNull] string y)
+		public static double op_Subtraction ([NotNull] string x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}

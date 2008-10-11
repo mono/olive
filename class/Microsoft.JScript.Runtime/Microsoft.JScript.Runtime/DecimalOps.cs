@@ -1,4 +1,4 @@
-// ConcatString.cs
+// decimal.cs
 //
 // Authors:
 //   Olivier Dufour <olivier.duff@gmail.com>
@@ -27,14 +27,655 @@
 //
 
 using System;
+using System.Runtime.CompilerServices;
+using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime
 {
     
     
-	public class DecimalOps
+	public static class DecimalOps
 	{
-        
-		//TODO need to have not the error with ops out of object 
+ 		[SpecialName]
+		public static double op_Addition (decimal x, JSBooleanObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Addition(decimal x, JSNumberObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static string op_Addition(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Addition(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Addition(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Addition(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Addition(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static ConcatString op_Addition(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static ConcatString op_Addition(decimal x, ConcatString y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_BitwiseAnd(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseAnd(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseAnd(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseAnd(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseAnd(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_BitwiseOr(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseOr(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseOr(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseOr(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_BitwiseOr(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Division(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Division(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Division(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Division(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Division(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Equality(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_ExclusiveOr(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_ExclusiveOr(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_ExclusiveOr(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_ExclusiveOr(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_ExclusiveOr(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThan(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_GreaterThanOrEqual(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_LeftShift(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_LeftShift(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_LeftShift(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_LeftShift(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_LeftShift(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Modulus(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Modulus(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Modulus(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Modulus(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Modulus(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Multiply(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Multiply(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Multiply(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Multiply(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Multiply(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_RightShift(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_RightShift(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_RightShift(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_RightShift(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_RightShift(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_Subtraction(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Subtraction(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Subtraction(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Subtraction(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_Subtraction(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static double op_UnsignedRightShift(decimal x, JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_UnsignedRightShift(decimal x, UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_UnsignedRightShift(decimal x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_UnsignedRightShift(decimal x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static double op_UnsignedRightShift(decimal x, string y)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

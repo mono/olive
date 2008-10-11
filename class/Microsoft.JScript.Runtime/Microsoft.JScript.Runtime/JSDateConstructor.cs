@@ -15,7 +15,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static JSObject construct (CodeContext context, object self, params object [] args)
+		public static new JSObject construct (CodeContext context, object self, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}

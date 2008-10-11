@@ -43,7 +43,7 @@ namespace Microsoft.JScript.Runtime
 		this.callTarget = callTarget;
         }
 
-	protected JSFunctionObjectWithContextAndThis (CodeContext context, string name, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
+	internal JSFunctionObjectWithContextAndThis (CodeContext context, string name, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
 	{
 	}
 
@@ -52,7 +52,7 @@ namespace Microsoft.JScript.Runtime
 		throw new NotImplementedException ();
 	}
 	
-	protected internal override Expression [] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callHelper)
+	protected internal override Expression [] GetArgumentsForRule<T> (Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, CallAction> callHelper)
 	{
 		throw new NotImplementedException ();
 	}

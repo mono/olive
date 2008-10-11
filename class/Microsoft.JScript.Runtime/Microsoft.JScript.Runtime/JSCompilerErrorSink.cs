@@ -6,8 +6,6 @@ namespace Microsoft.JScript.Runtime {
 
 	public class JSCompilerErrorSink : ErrorSink {
 
-		bool throw_exception_on_error;
-
 		public JSCompilerErrorSink ()
 		{
 		}

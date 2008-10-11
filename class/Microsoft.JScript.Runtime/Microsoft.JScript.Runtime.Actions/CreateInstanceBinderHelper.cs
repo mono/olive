@@ -41,12 +41,12 @@ namespace Microsoft.JScript.Runtime.Actions
         {
         }
 
-	protected virtual JSError GetErrorType ()
+	protected override JSError GetErrorType ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected virtual void MakeTarget ()
+	protected override void MakeTarget ()
 	{
 		throw new NotImplementedException ();
 	}

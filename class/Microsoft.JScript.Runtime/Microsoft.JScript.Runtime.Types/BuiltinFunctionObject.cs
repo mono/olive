@@ -49,11 +49,6 @@ namespace Microsoft.JScript.Runtime.Types
 		throw new NotImplementedException ();
 	}
 
-	private object GetDefaultParameterValue(Type type)
-	{
-		throw new NotImplementedException ();
-	}
-
 	public override StandardRule<T>  GetRule<T>(DynamicAction action, CodeContext context, object[] args)
 	{
 		throw new NotImplementedException ();

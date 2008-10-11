@@ -33,9 +33,7 @@ using System.Collections.Generic;
 namespace Microsoft.JScript.Runtime
 {
 	 
-	 
-	 public class ConcatString : IFormattable, IComparable, IConvertible, IComparable <string>, IEnumerable <char>, IEquatable <string>
-
+	 public sealed class ConcatString : IFormattable, IComparable, IConvertible, IComparable <string>, IEnumerable <char>, IEquatable <string>
 	 {
 		  
 		public ConcatString(ConcatString string1, string string2)

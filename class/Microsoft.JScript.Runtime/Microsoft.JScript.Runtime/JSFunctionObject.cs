@@ -61,7 +61,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		protected internal virtual Expression [] GetArgumentsForRule<T> (CallBinderHelper<T, CallAction> callHelper)
+		protected internal virtual Expression[] GetArgumentsForRule<T>(Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, CallAction> callHelper)
 		{
 			throw new NotImplementedException ();
 		}

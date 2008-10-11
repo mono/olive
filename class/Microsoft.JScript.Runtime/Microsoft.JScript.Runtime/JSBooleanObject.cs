@@ -5,7 +5,7 @@ namespace Microsoft.JScript.Runtime {
 	[Serializable]
 	public class JSBooleanObject : JSObject {
 		
-		bool value;
+		internal bool value;
 
 		public JSBooleanObject (JSObject prototype, bool val)
 			: base (prototype)

@@ -20,7 +20,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static object construct (CodeContext context, object self, params object [] args)
+		public static new object construct (CodeContext context, object self, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}

@@ -32,8 +32,10 @@ namespace Microsoft.JScript.Runtime
 {
     
     
-    internal class BoundMemberTrackerOps
+    public class BoundMemberTrackerOps
     {
-        
+        internal BoundMemberTrackerOps()
+	{
+	}
     }
 }

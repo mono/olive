@@ -42,27 +42,27 @@ namespace Microsoft.JScript.Runtime.Actions
         {
         }
 
-	protected virtual JSError GetErrorType ()
+	protected override JSError GetErrorType ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected virtual void MakeArgumentsTest ()
+	protected override void MakeArgumentsTest ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected virtual void MakeLengthTest ()
+	protected override void MakeLengthTest ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected virtual void MakeTarget ()
+	protected override void MakeTarget ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected BuiltinFunctionObject FunctionObject
+	protected new BuiltinFunctionObject FunctionObject
 	{
 		get {throw new NotImplementedException ();}
 	}

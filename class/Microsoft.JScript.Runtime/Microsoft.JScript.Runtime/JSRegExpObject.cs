@@ -12,9 +12,13 @@ namespace Microsoft.JScript.Runtime {
 		bool _multiline;
 		string _source;
 
-		JSRegExpObject ()
+		internal JSRegExpObject (bool global, bool ignoreCase, bool multiline, string source)
 			: base (null)
 		{
+			_global = global;
+			_ignore_case = ignoreCase;
+			_multiline = multiline;
+			_source = source;
 		}
 
 
