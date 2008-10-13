@@ -1,3 +1,9 @@
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/DockPatternIdentifiersTest.cs: Tests for 
+	DockPatternIdentifiers.
+	* UIAutomationTypesTests.csproj: File updated.
+
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/MultipleViewPatternIdentifiersTest.cs: Tests for 
