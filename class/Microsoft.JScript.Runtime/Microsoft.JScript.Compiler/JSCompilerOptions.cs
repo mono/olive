@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// JSCompilerOptions
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)

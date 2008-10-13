@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// JSCompiler
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -33,9 +33,9 @@ using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Compiler
 {
-	public class JavaScriptCompiler
+	public class JSCompiler
 	{
 		private JSContext jsContext;
 		internal JavaScriptCompiler(JSContext context)

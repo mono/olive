@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// RowanGenerator
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -38,7 +38,7 @@ using MSO = Microsoft.Scripting.Operators;
 using Microsoft.JScript.Runtime;
 using Microsoft.JScript.Compiler;
 
-namespace Microsoft.JScript.Runtime.AstConverter
+namespace Microsoft.JScript.Compiler
 {
 	/// <summary>
 	/// what I understand is that class is mainly a translator from compiler ast to runtime ast

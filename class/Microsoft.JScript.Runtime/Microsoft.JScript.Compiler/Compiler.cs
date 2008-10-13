@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// Compiler
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -32,7 +32,7 @@ using Microsoft.JScript.Compiler;
 using Microsoft.JScript.Compiler.ParseTree;
 using MSA = Microsoft.Scripting.Ast;
 using Microsoft.JScript.Runtime.AstConverter;
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Compiler
 {
 	public class Compiler
 	{

@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// IdentifierMappingTable
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -31,7 +31,7 @@ using System.Text;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Compiler
 {
 	public class IdentifierMappingTable
 	{
