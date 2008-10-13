@@ -1,3 +1,14 @@
+2008-10-13  Mario Carrion <mcarrion@novell.com> 
+
+	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources: File
+	  added: DockPatternIdentifiersTest.cs
+	* System.Windows.Automation/AutomationProperty.cs:
+	  DockPatternIdentifiers.DockPositionProperty added.
+	* System.Windows.Automation/DockPatternIdentifiers.cs: Properties and
+	  Pattern implementation.
+	* System.Windows.Automation/AutomationPattern.cs:
+	  DockPatternIdentifiers.Pattern added.
+
 2008-10-07  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/AutomationProperty.cs: MultipleView Pattern

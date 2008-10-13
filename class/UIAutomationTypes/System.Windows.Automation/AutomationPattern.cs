@@ -45,7 +45,7 @@ namespace System.Windows.Automation
 			if (id == ExpandCollapsePatternIdentifiers.Pattern.Id)
 				return ExpandCollapsePatternIdentifiers.Pattern;
 			else if (id == GridItemPatternIdentifiers.Pattern.Id)
-      				return GridItemPatternIdentifiers.Pattern;
+				return GridItemPatternIdentifiers.Pattern;
 			else if (id == GridPatternIdentifiers.Pattern.Id)
 				return GridPatternIdentifiers.Pattern;
 			else if (id == InvokePatternIdentifiers.Pattern.Id)
@@ -74,6 +74,8 @@ namespace System.Windows.Automation
 				return WindowPatternIdentifiers.Pattern;
 			else if (id == ScrollItemPatternIdentifiers.Pattern.Id)
 				return ScrollItemPatternIdentifiers.Pattern;
+			else if (id == DockPatternIdentifiers.Pattern.Id)
+				return DockPatternIdentifiers.Pattern;
 			else
 				return null;
 		}

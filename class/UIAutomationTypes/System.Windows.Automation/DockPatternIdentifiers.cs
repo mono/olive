@@ -31,9 +31,18 @@ namespace System.Windows.Automation
 	public static class DockPatternIdentifiers
 	{
 #region Constructor
-		static DockPatternIdentifiers()
+		
+		private const int PatternId = 10011;
+		private const int DockPositionPropertyId = 30069;
+		
+		static DockPatternIdentifiers ()
 		{
-			
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "DockPatternIdentifiers.Pattern");
+			DockPositionProperty = 
+				new AutomationProperty (DockPositionPropertyId,
+				                        "DockPatternIdentifiers.DockPositionProperty");
 		}
 
 #endregion

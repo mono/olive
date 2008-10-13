@@ -210,6 +210,8 @@ namespace System.Windows.Automation
 				return MultipleViewPatternIdentifiers.CurrentViewProperty;
 			else if (id == MultipleViewPatternIdentifiers.SupportedViewsProperty.Id)
 				return MultipleViewPatternIdentifiers.SupportedViewsProperty;
+			else if (id == DockPatternIdentifiers.DockPositionProperty.Id)
+				return DockPatternIdentifiers.DockPositionProperty;
 			else
 				return null;
 		}
