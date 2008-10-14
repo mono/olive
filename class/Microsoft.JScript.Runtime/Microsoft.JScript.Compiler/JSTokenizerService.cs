@@ -34,9 +34,9 @@ using Microsoft.JScript.Compiler;
     
 namespace Microsoft.JScript.Runtime.Hosting
 {
-	public class TokenCategorizer : Microsoft.Scripting.Hosting.TokenCategorizer
+	public class JSTokenizerService : Microsoft.Scripting.Runtime.TokenizerService
 	{
-		public TokenCategorizer(JSContext context)
+		public JSTokenizerService(JSContext context)
 		{
 			this.context = context;
 		}
@@ -213,7 +213,7 @@ namespace Microsoft.JScript.Runtime.Hosting
 					return TokenTriggers.MemberSelect;
 				case Token.Type.Comma:
 					return TokenTriggers.ParameterNext;
-				//TODO : not found wher e we can use TokenTriggers.Parameter
+				//TODO : not found where we can use TokenTriggers.Parameter
 				case Token.Type.None:
 				case Token.Type.EndOfInput:
 				case Token.Type.Semicolon:

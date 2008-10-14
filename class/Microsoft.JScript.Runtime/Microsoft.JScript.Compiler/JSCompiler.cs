@@ -38,7 +38,7 @@ namespace Microsoft.JScript.Compiler
 	public class JSCompiler
 	{
 		private JSContext jsContext;
-		internal JavaScriptCompiler(JSContext context)
+		internal JSCompiler(JSContext context)
 		{
 			this.jsContext = context;
 		}
