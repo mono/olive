@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Runtime
+// URIErrorException.cs
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -29,7 +29,7 @@ using System;
 using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 
-namespace Microsoft.JScript.Runtime {
+namespace Microsoft.JScript.Runtime.Errors {
 
 	[Serializable]
 	public class URIErrorException : Exception {
