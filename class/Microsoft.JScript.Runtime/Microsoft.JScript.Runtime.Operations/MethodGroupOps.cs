@@ -28,7 +28,7 @@
 
 using System;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Operations
 {
     
     

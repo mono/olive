@@ -1,4 +1,4 @@
-// decimal.cs
+// DecimalOps.cs
 //
 // Authors:
 //   Olivier Dufour <olivier.duff@gmail.com>
@@ -30,7 +30,7 @@ using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Scripting;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Operations
 {
     
     
