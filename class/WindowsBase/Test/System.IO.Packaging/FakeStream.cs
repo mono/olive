@@ -27,39 +27,35 @@
 using System;
 using System.Collections.Generic;
 
-namespace System.IO.Packaging.Tests
-{
-    public class FakeStream : MemoryStream
-    {
+namespace System.IO.Packaging.Tests {
+
+    public class FakeStream : MemoryStream {
         public bool canRead;
         public bool canSeek;
         public bool canWrite;
 
-        public FakeStream()
-            : this(true, true, true)
+        public FakeStream ()
+            : this (true, true, true)
         {
 
         }
 
-        public FakeStream(bool canread, bool canWrite, bool canSeek)
+        public FakeStream (bool canread, bool canWrite, bool canSeek)
         {
             this.canRead = canread;
             this.canSeek = canSeek;
             this.canWrite = canWrite;
         }
 
-        public override bool CanRead
-        {
+        public override bool CanRead {
             get { return canRead; }
         }
 
-        public override bool CanSeek
-        {
+        public override bool CanSeek {
             get { return canSeek; }
         }
 
-        public override bool CanWrite
-        {
+        public override bool CanWrite {
             get { return canWrite; }
         }
     }

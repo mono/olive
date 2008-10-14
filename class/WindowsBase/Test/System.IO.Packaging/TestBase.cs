@@ -28,31 +28,30 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace System.IO.Packaging.Tests
-{
-    public abstract class TestBase
-    {
+namespace System.IO.Packaging.Tests {
+	
+    public abstract class TestBase {
         protected Package package;
         protected FakeStream stream;
-        protected Uri[] uris = { new Uri("/file1.png", UriKind.Relative),
-                       new Uri("/file2.png", UriKind.Relative),
-                       new Uri("/file3.png", UriKind.Relative) };
+        protected Uri [] uris = { new Uri ("/file1.png", UriKind.Relative),
+                       new Uri ("/file2.png", UriKind.Relative),
+                       new Uri ("/file3.png", UriKind.Relative) };
 
         [TestFixtureSetUp]
-        public virtual void FixtureSetup()
+        public virtual void FixtureSetup ()
         {
             
         }
 
         [SetUp]
-        public virtual void Setup()
+        public virtual void Setup ()
         {
-            stream = new FakeStream();
-            package = Package.Open(stream, FileMode.Create);
+            stream = new FakeStream ();
+            package = Package.Open (stream, FileMode.Create);
         }
 
         [TestFixtureTearDown]
-        public virtual void FixtureTeardown()
+        public virtual void FixtureTeardown ()
         {
             
         }

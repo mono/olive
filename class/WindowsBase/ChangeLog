@@ -1,5 +1,15 @@
 2008-10-14  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/PackageTest.cs,
+	Test/System.IO.Packaging/PackageRelationshipTests.cs,
+	Test/System.IO.Packaging/PackagePartTest.cs,
+	Test/System.IO.Packaging/FakePackage.cs,
+	Test/System.IO.Packaging/FakeStream.cs,
+	Test/System.IO.Packaging/TestBase.cs: Cosmetic changes to follow
+	coding guidelines
+
+2008-10-14  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging
 	* Test/System.IO.Packaging/PackageTest.cs
 	* Test/System.IO.Packaging/PackageRelationshipTests.cs

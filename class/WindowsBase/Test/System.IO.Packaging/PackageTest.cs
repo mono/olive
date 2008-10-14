@@ -28,76 +28,76 @@ using System;
 using System.Collections.Generic;
 using NUnit.Framework;
 
-namespace System.IO.Packaging.Tests
-{
+namespace System.IO.Packaging.Tests {
+	
     [TestFixture]
-    [Category("NotWorking")]
-    public class PackageTest : TestBase
-    {
+    [Category ("NotWorking")]
+    public class PackageTest : TestBase {
+		
         string path = "test.package";
 
         [Test]
-        [ExpectedException (typeof(IOException))]
-        public void ClosedStream()
+        [ExpectedException  (typeof (IOException))]
+        public void ClosedStream ()
         {
-            stream = new FakeStream (false, false, false);
-            package = Package.Open(stream);
+            stream = new FakeStream  (false, false, false);
+            package = Package.Open (stream);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ReadableStream()
+        [ExpectedException (typeof (ArgumentException))]
+        public void ReadableStream ()
         {
-            stream = new FakeStream(true, false, false);
-            package = Package.Open(stream);
+            stream = new FakeStream (true, false, false);
+            package = Package.Open (stream);
         }
 
         [Test]
-        [ExpectedException(typeof(FileFormatException))]
-        public void ReadableSeekableStream()
+        [ExpectedException (typeof (FileFormatException))]
+        public void ReadableSeekableStream ()
         {
-            stream = new FakeStream(true, false, true);
-            package = Package.Open(stream);
+            stream = new FakeStream (true, false, true);
+            package = Package.Open (stream);
         }
 
         [Test]
-        [ExpectedException(typeof(IOException))]
-        public void SetFileModeOnStream()
+        [ExpectedException (typeof (IOException))]
+        public void SetFileModeOnStream ()
         {
-            stream = new FakeStream(true, false, true);
-            package = Package.Open(stream, FileMode.Truncate);
+            stream = new FakeStream (true, false, true);
+            package = Package.Open (stream, FileMode.Truncate);
         }
 
         [Test]
-        [ExpectedException(typeof(FileFormatException))]
-        public void WriteOnlyAccess()
+        [ExpectedException (typeof (FileFormatException))]
+        public void WriteOnlyAccess ()
         {
-            stream = new FakeStream(true, false, true);
-            package = Package.Open("path", FileMode.OpenOrCreate, FileAccess.Write);
+            stream = new FakeStream (true, false, true);
+            package = Package.Open ("path", FileMode.OpenOrCreate, FileAccess.Write);
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ReadOnlyAccess()
+        [ExpectedException (typeof (ArgumentException))]
+        public void ReadOnlyAccess ()
         {
-            stream = new FakeStream(true, false, true);
-            package = Package.Open("path", FileMode.CreateNew, FileAccess.Read);
+            stream = new FakeStream (true, false, true);
+            package = Package.Open ("path", FileMode.CreateNew, FileAccess.Read);
         }
 
         [Test]
-        [ExpectedException(typeof(FileFormatException))]
-        public void CorruptStream()
+        [ExpectedException (typeof (FileFormatException))]
+        public void CorruptStream ()
         {
-            FakeStream stream = new FakeStream(true, true, true);
-            stream.Write(new byte[1024], 0, 1024);
-            Package p = Package.Open(stream);
+            FakeStream stream = new FakeStream (true, true, true);
+            stream.Write (new byte[1024], 0, 1024);
+            Package p = Package.Open (stream);
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
-        public void FileShareReadWrite()
+        [ExpectedException (typeof (NotSupportedException))]
+        public void FileShareReadWrite ()
         {
-            package = Package.Open(path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
     }
 }

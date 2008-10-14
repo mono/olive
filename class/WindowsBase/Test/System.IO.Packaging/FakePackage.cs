@@ -27,39 +27,38 @@
 using System;
 using System.Collections.Generic;
 
-namespace System.IO.Packaging.Tests
-{
-    public class FakePackage : Package
-    {
-        public FakePackage(FileAccess access, bool streaming)
-            : base(FileAccess.Read, streaming)
+namespace System.IO.Packaging.Tests {
+	
+    public class FakePackage : Package {
+        public FakePackage (FileAccess access, bool streaming)
+            : base (FileAccess.Read, streaming)
         {
 
         }
 
-        protected override PackagePart CreatePartCore(Uri partUri, string contentType, CompressionOption compressionOption)
+        protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
 
-        protected override void DeletePartCore(Uri partUri)
+        protected override void DeletePartCore (Uri partUri)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
 
-        protected override void FlushCore()
+        protected override void FlushCore ()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
 
-        protected override PackagePart GetPartCore(Uri partUri)
+        protected override PackagePart GetPartCore (Uri partUri)
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
 
-        protected override PackagePart[] GetPartsCore()
+        protected override PackagePart [] GetPartsCore ()
         {
-            throw new NotImplementedException();
+            throw new NotImplementedException ();
         }
     }
 }

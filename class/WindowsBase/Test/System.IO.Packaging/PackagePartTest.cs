@@ -29,189 +29,188 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using System.Linq;
 
-namespace System.IO.Packaging.Tests
-{
+namespace System.IO.Packaging.Tests {
+
     [TestFixture]
-    [Category("NotWorking")]
-    public class PackagePartTest : TestBase
-    {
+    [Category ("NotWorking")]
+    public class PackagePartTest : TestBase {
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void AddAbsoluteUri()
+        [ExpectedException (typeof (ArgumentException))]
+        public void AddAbsoluteUri ()
         {
-            package.CreatePart(new Uri("file://lo/asd.asm", UriKind.Absolute), "aa/aa");
+            package.CreatePart (new Uri ("file://lo/asd.asm", UriKind.Absolute), "aa/aa");
         }
 
         [Test]
-        public void AddInvalidPartTwice()
+        public void AddInvalidPartTwice ()
         {
             try
             {
-                package.CreatePart(new Uri("/file1.bmp", UriKind.Relative), "bmp");
+                package.CreatePart (new Uri ("/file1.bmp", UriKind.Relative), "bmp");
             }
-            catch (ArgumentException)
+            catch  (ArgumentException)
             {
                 try
                 {
-                    package.CreatePart(new Uri("/file1.bmp", UriKind.Relative), "bmp");
+                    package.CreatePart (new Uri ("/file1.bmp", UriKind.Relative), "bmp");
                 }
-                catch(InvalidOperationException)
+                catch (InvalidOperationException)
                 {
-                    Assert.AreEqual(1, package.GetParts().Count(), "Need to be buggy and return null");
-                    Assert.AreEqual(null, package.GetParts().ToArray()[0], "Be buggy and add null to the internal list");
+                    Assert.AreEqual (1, package.GetParts ().Count (), "Need to be buggy and return null");
+                    Assert.AreEqual (null, package.GetParts ().ToArray () [0], "Be buggy and add null to the internal list");
                     
                     return; // Success
                 }
             }
 
-            Assert.Fail("Should have thrown an ArgumentException then InvalidOperationException");
+            Assert.Fail ("Should have thrown an ArgumentException then InvalidOperationException");
         }
 
         [Test]
-        public void AddThreeParts()
+        public void AddThreeParts ()
         {
-            foreach (Uri u in uris)
-                package.CreatePart(u, "mime/type");
+            foreach  (Uri u in uris)
+                package.CreatePart (u, "mime/type");
 
-            Assert.AreEqual(3, package.GetParts().Count(), "Should be three parts");
+            Assert.AreEqual (3, package.GetParts ().Count (), "Should be three parts");
         }
 
         [Test]
-        public void CheckPartProperties()
+        public void CheckPartProperties ()
         {
-            AddThreeParts();
-            PackagePart part = package.GetPart(uris[0]);
-            Assert.AreEqual(CompressionOption.NotCompressed, part.CompressionOption, "Compress option wrong");
-            Assert.AreEqual("mime/type", part.ContentType, "Content type wrong");
-            Assert.AreEqual(package, part.Package, "Wrong package");
-            Assert.AreEqual(uris[0], part.Uri, "Wrong package selected");
+            AddThreeParts ();
+            PackagePart part = package.GetPart (uris [0]);
+            Assert.AreEqual (CompressionOption.NotCompressed, part.CompressionOption, "Compress option wrong");
+            Assert.AreEqual ("mime/type", part.ContentType, "Content type wrong");
+            Assert.AreEqual (package, part.Package, "Wrong package");
+            Assert.AreEqual (uris [0], part.Uri, "Wrong package selected");
         }
 
         [Test]
-        public void CheckPartRelationships()
+        public void CheckPartRelationships ()
         {
-            AddThreeParts();
-            Assert.AreEqual(3, package.GetParts().Count(), "#a");
-            PackagePart part = package.GetPart(uris[0]);
-            PackageRelationship r1 = part.CreateRelationship(part.Uri, TargetMode.Internal, "self");
-            PackageRelationship r2 = package.CreateRelationship(part.Uri, TargetMode.Internal, "fake");
-            PackageRelationship r3 = package.CreateRelationship(new Uri("/fake/uri", UriKind.Relative), TargetMode.Internal, "self");
+            AddThreeParts ();
+            Assert.AreEqual (3, package.GetParts ().Count (), "#a");
+            PackagePart part = package.GetPart (uris [0]);
+            PackageRelationship r1 = part.CreateRelationship (part.Uri, TargetMode.Internal, "self");
+            PackageRelationship r2 = package.CreateRelationship (part.Uri, TargetMode.Internal, "fake");
+            PackageRelationship r3 = package.CreateRelationship (new Uri ("/fake/uri", UriKind.Relative), TargetMode.Internal, "self");
             
-            Assert.AreEqual(5, package.GetParts().Count(), "#b");
-            Assert.AreEqual(1, part.GetRelationships().Count(), "#1");
-            Assert.AreEqual(1, part.GetRelationshipsByType("self").Count(), "#2");
-            Assert.AreEqual(r1, part.GetRelationship(r1.Id), "#3");
-            Assert.AreEqual(2, package.GetRelationships().Count(), "#4");
-            Assert.AreEqual(1, package.GetRelationshipsByType("self").Count(), "#5");
-            Assert.AreEqual(r3, package.GetRelationship(r3.Id), "#6");
+            Assert.AreEqual (5, package.GetParts ().Count (), "#b");
+            Assert.AreEqual (1, part.GetRelationships ().Count (), "#1");
+            Assert.AreEqual (1, part.GetRelationshipsByType ("self").Count (), "#2");
+            Assert.AreEqual (r1, part.GetRelationship (r1.Id), "#3");
+            Assert.AreEqual (2, package.GetRelationships ().Count (), "#4");
+            Assert.AreEqual (1, package.GetRelationshipsByType ("self").Count (), "#5");
+            Assert.AreEqual (r3, package.GetRelationship (r3.Id), "#6");
 
-            Assert.AreEqual(5, package.GetParts().Count(), "#c");
-            Assert.AreEqual(part.Uri, r1.SourceUri, "#7");
-            Assert.AreEqual(new Uri("/", UriKind.Relative), r3.SourceUri, "#8");
+            Assert.AreEqual (5, package.GetParts ().Count (), "#c");
+            Assert.AreEqual (part.Uri, r1.SourceUri, "#7");
+            Assert.AreEqual (new Uri ("/", UriKind.Relative), r3.SourceUri, "#8");
 
-            PackageRelationship r4 = part.CreateRelationship(uris[2], TargetMode.Internal, "other");
-            Assert.AreEqual(part.Uri, r4.SourceUri);
+            PackageRelationship r4 = part.CreateRelationship (uris [2], TargetMode.Internal, "other");
+            Assert.AreEqual (part.Uri, r4.SourceUri);
 
-            PackageRelationshipCollection relations = package.GetPart(uris[2]).GetRelationships();
-            Assert.AreEqual(0, relations.Count());
-            Assert.AreEqual(5, package.GetParts().Count(), "#d");
+            PackageRelationshipCollection relations = package.GetPart (uris [2]).GetRelationships ();
+            Assert.AreEqual (0, relations.Count ());
+            Assert.AreEqual (5, package.GetParts ().Count (), "#d");
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void DeletePartsAfterAddingRelationships()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void DeletePartsAfterAddingRelationships ()
         {
-            CheckPartRelationships();
-            foreach (PackagePart p in new List<PackagePart>(package.GetParts()))
-                package.DeletePart(p.Uri);
+            CheckPartRelationships ();
+            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+                package.DeletePart (p.Uri);
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void DeleteRelsThenParts()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void DeleteRelsThenParts ()
         {
-            CheckPartRelationships();
-            foreach (PackageRelationship r in new List<PackageRelationship>(package.GetRelationships()))
-                package.DeleteRelationship(r.Id);
-            foreach (PackagePart p in new List<PackagePart>(package.GetParts()))
-                package.DeletePart(p.Uri);
+            CheckPartRelationships ();
+            foreach  (PackageRelationship r in new List<PackageRelationship> (package.GetRelationships ()))
+                package.DeleteRelationship (r.Id);
+            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+                package.DeletePart (p.Uri);
         }
 
         [Test]
-        public void CreateValidPart()
+        public void CreateValidPart ()
         {
-            PackagePart part = package.CreatePart(uris[0], "img/bmp");
+            PackagePart part = package.CreatePart (uris [0], "img/bmp");
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void CreateDuplicatePart()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void CreateDuplicatePart ()
         {
-            CreateValidPart();
-            CreateValidPart();
+            CreateValidPart ();
+            CreateValidPart ();
         }
 
         [Test]
-        public void CreateValidPartTwice()
+        public void CreateValidPartTwice ()
         {
-            CreateValidPart();
-            package.DeletePart(uris[0]);
-            CreateValidPart();
+            CreateValidPart ();
+            package.DeletePart (uris [0]);
+            CreateValidPart ();
 
-            Assert.AreEqual(1, package.GetParts().Count(), "#1");
-            Assert.AreEqual(uris[0], package.GetParts().ToArray()[0].Uri, "#2");
-            package.DeletePart(uris[0]);
-            package.DeletePart(uris[0]);
-            package.DeletePart(uris[0]);
+            Assert.AreEqual (1, package.GetParts ().Count (), "#1");
+            Assert.AreEqual (uris [0], package.GetParts ().ToArray () [0].Uri, "#2");
+            package.DeletePart (uris [0]);
+            package.DeletePart (uris [0]);
+            package.DeletePart (uris [0]);
         }
 
         [Test]
-        public void IterateParts()
+        public void IterateParts ()
         {
-            List<PackagePart> parts = new List<PackagePart>();
-            parts.Add(package.CreatePart(new Uri("/a", UriKind.Relative), "mime/type"));
-            parts.Add(package.CreatePart(new Uri("/b", UriKind.Relative), "mime/type"));
-            List<PackagePart> found = new List<PackagePart>(package.GetParts());
-            Assert.AreEqual(parts.Count, found.Count, "Invalid number of parts");
-            Assert.IsTrue(found.Contains(parts[0]), "Doesn't contain first part");
-            Assert.IsTrue(found.Contains(parts[1]), "Doesn't contain second part");
+            List<PackagePart> parts = new List<PackagePart> ();
+            parts.Add (package.CreatePart (new Uri ("/a", UriKind.Relative), "mime/type"));
+            parts.Add (package.CreatePart (new Uri ("/b", UriKind.Relative), "mime/type"));
+            List<PackagePart> found = new List<PackagePart> (package.GetParts ());
+            Assert.AreEqual (parts.Count, found.Count, "Invalid number of parts");
+            Assert.IsTrue (found.Contains (parts [0]), "Doesn't contain first part");
+            Assert.IsTrue (found.Contains (parts [1]), "Doesn't contain second part");
 
-            Assert.IsTrue(found[0] == parts[0] || found[0] == parts[1], "Same object reference should be used");
-            Assert.IsTrue(found[1] == parts[0] || found[1] == parts[1], "Same object reference should be used");
+            Assert.IsTrue (found [0] == parts [0] || found [0] == parts [1], "Same object reference should be used");
+            Assert.IsTrue (found [1] == parts [0] || found [1] == parts [1], "Same object reference should be used");
         }
 
         [Test]
-        [ExpectedException(typeof(ArgumentException))]
-        public void NoStartingSlashPartialUri()
+        [ExpectedException (typeof (ArgumentException))]
+        public void NoStartingSlashPartialUri ()
         {
-            PackagePart part = package.CreatePart(new Uri("file1.bmp", UriKind.Relative), "bmp");
+            PackagePart part = package.CreatePart (new Uri ("file1.bmp", UriKind.Relative), "bmp");
         }
 
         [Test]
-        public void PartExists()
+        public void PartExists ()
         {
-            CreateValidPart();
-            Assert.IsNotNull(package.GetPart(uris[0]), "Part could not be found");
-            Assert.IsTrue(package.PartExists(uris[0]), "Part didn't exist");
-            Assert.AreEqual(1, package.GetParts().Count(), "Only one part");
+            CreateValidPart ();
+            Assert.IsNotNull (package.GetPart (uris [0]), "Part could not be found");
+            Assert.IsTrue (package.PartExists (uris [0]), "Part didn't exist");
+            Assert.AreEqual (1, package.GetParts ().Count (), "Only one part");
         }
 
         [Test]
-        public void RemoveThreeParts()
+        public void RemoveThreeParts ()
         {
-            AddThreeParts();
-            foreach (PackagePart p in new List<PackagePart>(package.GetParts()))
-                package.DeletePart(p.Uri);
-            Assert.AreEqual(0, package.GetParts().Count(), "Should contain no parts");
+            AddThreeParts ();
+            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+                package.DeletePart (p.Uri);
+            Assert.AreEqual (0, package.GetParts ().Count (), "Should contain no parts");
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
-        public void RemoveThreePartsBreak()
+        [ExpectedException (typeof (InvalidOperationException))]
+        public void RemoveThreePartsBreak ()
         {
-            AddThreeParts();
-            foreach (PackagePart p in package.GetParts())
-                package.DeletePart(p.Uri);
+            AddThreeParts ();
+            foreach  (PackagePart p in package.GetParts ())
+                package.DeletePart (p.Uri);
         }
     }
 }
