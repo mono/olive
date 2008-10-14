@@ -1,4 +1,4 @@
-// ConcatString.cs
+// DictionaryGenericWrapper.cs
 //
 // Authors:
 //   Olivier Dufour <olivier.duff@gmail.com>
@@ -30,7 +30,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Conversions
 {
     
     
