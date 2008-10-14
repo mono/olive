@@ -28,10 +28,8 @@
 
 using System;
 using Microsoft.Scripting;
-using Microsoft.Scripting.Shell;
-using Microsoft.JScript.Runtime.Hosting;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Hosting
 {
     
     

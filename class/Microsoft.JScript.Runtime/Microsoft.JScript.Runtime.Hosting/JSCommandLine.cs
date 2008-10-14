@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// JSCommandLine.cs
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -30,7 +30,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.IO;
 
-namespace Microsoft.JScript.Runtime.Shell
+namespace Microsoft.JScript.Runtime.Hosting
 {
 	public sealed class JSCommandLine : Microsoft.Scripting.Shell.CommandLine
 	{

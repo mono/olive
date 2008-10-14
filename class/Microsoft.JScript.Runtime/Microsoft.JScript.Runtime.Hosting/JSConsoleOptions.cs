@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// JSConsoleOptions.cs
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
@@ -29,7 +29,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Hosting
 {
 	public sealed class JSConsoleOptions : Microsoft.Scripting.Shell.ConsoleOptions
 	{

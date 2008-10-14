@@ -1,5 +1,5 @@
 //
-// Microsoft.JScript.Compiler
+// JSEngineOptions.cs
 //
 // Author:
 //   Olivier Dufour (olivier.duff@gmail.com)
