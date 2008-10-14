@@ -1,3 +1,15 @@
+2008-10-14  Alan McGovern  <amcgovern@novell.com>
+
+	* Test/System.IO.Packaging
+	* Test/System.IO.Packaging/PackageTest.cs
+	* Test/System.IO.Packaging/PackageRelationshipTests.cs
+	* Test/System.IO.Packaging/PackagePartTest.cs
+	* Test/System.IO.Packaging/FakePackage.cs
+	* Test/System.IO.Packaging/FakeStream.cs
+	* Test/System.IO.Packaging/TestBase.cs
+	* WindowsBase_test.dll.sources: Implemented some NUnit tests for
+	the System.IO.Packaging API.
+
 2007-11-18  Chris Toshok  <toshok@ximian.com>
 
 	* System.Windows/DependencyObjectType.cs: implement such that it
