@@ -1,5 +1,14 @@
 2008-10-15  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/PackageRelationship.cs:
+	* System.IO.Packaging/PackageRelationshipCollection.cs: Began
+	implementing the PackageRelationship code
+
+	* System.IO.Packaging/Check.cs: Added check for SourceUri
+
+2008-10-15  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/Check.cs: Created class for doing argument checks
 
 	* System.IO.Packaging/Package.cs:

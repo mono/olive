@@ -31,13 +31,26 @@ namespace System.IO.Packaging {
 
 	public class PackageRelationshipCollection : IEnumerable<PackageRelationship>, IEnumerable
 	{
-		internal PackageRelationshipCollection ()
+		private Predicate<PackageRelationship> predicate;
+		private IEnumerable<PackageRelationship> relationships;
+		
+		internal PackageRelationshipCollection (IEnumerable<PackageRelationship> relationships)
 		{
+			this.relationships = relationships;
 		}
+
+		internal PackageRelationshipCollection (IEnumerable<PackageRelationship> relationships,
+		                                        Predicate<PackageRelationship> predicate)
+		{
+			this.relationships = relationships;
+			this.predicate = predicate;
+		} 
 
 		public IEnumerator<PackageRelationship> GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			foreach (PackageRelationship r in relationships)
+				if (predicate == null || predicate (r))
+					yield return r;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

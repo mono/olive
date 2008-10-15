@@ -35,7 +35,7 @@ namespace System.IO.Packaging {
 		private CompressionOption compressionOption;
 		private string contentType;
 		private Package package;
-		private List<PackageRelationship> relationships;
+		private Dictionary<string, PackageRelationship> relationships;
 		private Uri uri;
 		
 		protected PackagePart (Package package, Uri partUri)
@@ -61,7 +61,7 @@ namespace System.IO.Packaging {
 			this.contentType = contentType;
 			this.compressionOption = compressionOption;
 
-			relationships = new List<PackageRelationship> ();
+			relationships = new Dictionary<string, PackageRelationship> ();
 		}
 
 		public CompressionOption CompressionOption {
@@ -85,38 +85,42 @@ namespace System.IO.Packaging {
 			return CreateRelationship (targetUri, targetMode, relationshipType, null);
 		}
 
-		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationship, string id)
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
 		{
 			Check.TargetUri (targetUri);
-			Check.RelationshipTypeIsValid (relationship);
+			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
 
-			return null;
+			PackageRelationship r = new PackageRelationship (id, package, relationshipType, Uri, targetMode, targetUri);
+			relationships.Add (r.Id, r);
+			return r;
 		}
 
 		public void DeleteRelationship (string id)
 		{
-			throw new NotImplementedException ();
+			relationships.Remove (id);
 		}
 
 		public bool RelationshipExists (string id)
 		{
-			throw new NotImplementedException ();
+			return relationships.ContainsKey (id);
 		}
 
 		public PackageRelationship GetRelationship (string id)
 		{
-			throw new NotImplementedException ();
+			return relationships [id];
 		}
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
-			throw new NotImplementedException ();
+			return new PackageRelationshipCollection (relationships.Values);
 		}
 
 		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
-			throw new NotImplementedException ();
+			return new PackageRelationshipCollection (relationships.Values, delegate (PackageRelationship r) {
+				return r.RelationshipType == relationshipType;
+			});
 		}
 
 		public Stream GetStream ()

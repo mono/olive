@@ -29,27 +29,47 @@ namespace System.IO.Packaging {
 
 	public class PackageRelationship
 	{
-		internal PackageRelationship ()
+		private string id;
+		private Package package;
+		private string relationshipType;
+		private Uri sourceUri;
+		private TargetMode targetMode;
+		private Uri targetUri;
+		
+		internal PackageRelationship (string id, Package package, string relationshipType,
+		                              Uri sourceUri, TargetMode targetMode, Uri targetUri)
 		{
+			Check.IdIsValid (id);
+			Check.Package (package);
+			Check.RelationshipTypeIsValid (relationshipType);
+			Check.SourceUri (sourceUri);
+			Check.TargetUri (targetUri);
+
+			this.id = id;
+			this.package = package;
+			this.relationshipType = relationshipType;
+			this.sourceUri = sourceUri;
+			this.targetMode = targetMode;
+			this.targetUri = targetUri;
 		}
 
 		public string Id {
-			get { throw new NotImplementedException (); }
+			get { return id; }
 		}
 		public Package Package {
-			get { throw new NotImplementedException (); }
+			get { return package; }
 		}
 		public string RelationshipType {
-			get { throw new NotImplementedException (); }
+			get { return relationshipType; }
 		}
 		public Uri SourceUri {
-			get { throw new NotImplementedException (); }
+			get { return sourceUri; }
 		}
 		public TargetMode TargetMode {
-			get { throw new NotImplementedException (); }
+			get { return targetMode; }
 		}
 		public Uri TargetUri  {
-			get { throw new NotImplementedException (); }
+			get { return targetUri; }
 		}
 	}
 }

@@ -80,6 +80,12 @@ namespace System.IO.Packaging
 				throw new ArgumentException ("relationshipType", "Cannot be whitespace or empty");
 		}
 
+		public static void SourceUri (object sourceUri)
+		{
+			if (sourceUri == null)
+				throw new ArgumentNullException ("sourceUri");
+		}
+
 		public static void TargetUri (object targetUri)
 		{
 			if (targetUri == null)
