@@ -33,6 +33,7 @@ namespace System.IO.Packaging {
 		internal ZipPackage (FileAccess access)
 			: base (access)
 		{
+			
 		}
 
 		protected override void Dispose (bool disposing)

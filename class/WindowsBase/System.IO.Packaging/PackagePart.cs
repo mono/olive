@@ -21,54 +21,77 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//  Alan McGovern (amcgovern@novell.com)
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace System.IO.Packaging {
 
 	public abstract class PackagePart
 	{
+		private CompressionOption compressionOption;
+		private string contentType;
+		private Package package;
+		private List<PackageRelationship> relationships;
+		private Uri uri;
+		
 		protected PackagePart (Package package, Uri partUri)
+			: this(package, partUri, null)
 		{
-			throw new NotImplementedException ();
+			
 		}
 
 		protected PackagePart (Package package, Uri partUri, string contentType)
+			: this (package, partUri, contentType, CompressionOption.Normal)
 		{
-			throw new NotImplementedException ();
+			
 		}
 
 		protected PackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
 		{
-			throw new NotImplementedException ();
+			Check.Package (package);
+			Check.PartUri (partUri);
+			Check.ContentTypeIsValid (contentType);
+
+			this.package = package;
+			this.uri = partUri;
+			this.contentType = contentType;
+			this.compressionOption = compressionOption;
+
+			relationships = new List<PackageRelationship> ();
 		}
 
 		public CompressionOption CompressionOption {
-			get { throw new NotImplementedException (); }
+			get { return compressionOption; }
 		}
 
 		public string ContentType {
-			get { throw new NotImplementedException (); }
+			get { return contentType; }
 		}
 
 		public Package Package {
-			get { throw new NotImplementedException (); }
+			get { return package; }
 		}
 
 		public Uri Uri {
-			get { throw new NotImplementedException (); }
+			get { return uri; }
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
 		{
-			throw new NotImplementedException ();
+			return CreateRelationship (targetUri, targetMode, relationshipType, null);
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationship, string id)
 		{
-			throw new NotImplementedException ();
+			Check.TargetUri (targetUri);
+			Check.RelationshipTypeIsValid (relationship);
+			Check.IdIsValid (id);
+
+			return null;
 		}
 
 		public void DeleteRelationship (string id)

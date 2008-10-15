@@ -30,9 +30,11 @@ namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
+		private FileAccess openFileAccess;
+		
 		protected Package (FileAccess openFileAccess)
 		{
-			throw new NotImplementedException ();
+			this.openFileAccess = openFileAccess;
 		}
 
 		protected Package (FileAccess openfileAccess, bool streaming)
@@ -50,7 +52,7 @@ namespace System.IO.Packaging {
 		}
 
 		public FileAccess FileOpenAccess {
-			get { throw new NotImplementedException (); }
+			get { return openFileAccess; }
 		}
 
 		public PackageProperties PackageProperties {
@@ -212,7 +214,8 @@ namespace System.IO.Packaging {
 				else
 					throw new IOException (string.Format("PackageMode.{0} is not supported", packageMode));
 			}
-			return null;
+			
+			return new ZipPackage (packageAccess);
 		}
 	}
 }

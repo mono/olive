@@ -1,5 +1,7 @@
 System.Collections.ObjectModel/ObservableCollectionTest.cs
 System.IO.Packaging/FakePackage.cs
+System.IO.Packaging/FakePackagePart.cs
+System.IO.Packaging/FakePackagePartTests.cs
 System.IO.Packaging/FakeStream.cs
 System.IO.Packaging/PackagePartTest.cs
 System.IO.Packaging/PackageRelationshipTests.cs

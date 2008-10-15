@@ -23,52 +23,33 @@
 //	Alan McGovern (amcgovern@novell.com)
 //
 
-
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-    public abstract class TestBase {
-        protected Package package;
-        protected FakeStream stream;
-        protected Uri [] uris = { new Uri("/file1.png", UriKind.Relative),
-                       new Uri("/file2.png", UriKind.Relative),
-                       new Uri("/file3.png", UriKind.Relative) };
-
-        [TestFixtureSetUp]
-        public virtual void FixtureSetup ()
+    
+    class FakePackagePart : PackagePart {
+        public FakePackagePart (Package package, Uri partUri)
+            : base (package, partUri)
         {
 
         }
 
-        [SetUp]
-        public virtual void Setup ()
+        public FakePackagePart (Package package, Uri partUri, string contentType)
+            : base(package, partUri, contentType)
         {
-            stream = new FakeStream ();
-            package = Package.Open (stream, FileMode.Create);
+
         }
 
-        [TearDown]
-        public virtual void TearDown ()
+        public FakePackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
+            : base (package, partUri, contentType, compressionOption)
         {
-			try {
-	            if (package != null)
-	                package.Close ();
-			} catch {
-				
-			}
-			
-            if (stream != null)
-                stream.Close ();
+
         }
 
-        [TestFixtureTearDown]
-        public virtual void FixtureTeardown ()
+        protected override Stream GetStreamCore (FileMode mode, FileAccess access)
         {
-
+            throw new NotImplementedException ();
         }
     }
 }

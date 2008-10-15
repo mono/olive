@@ -51,9 +51,12 @@ namespace System.IO.Packaging.Tests {
 
         public override void TearDown ()
         {
-            if (package != null)
-                package.Close ();
-
+			try {
+	            if (package != null)
+	                package.Close ();
+			} catch {
+				// FIXME: This shouldn't be required when i implement this
+			}
             if (File.Exists (path))
                 File.Delete (path);
         }

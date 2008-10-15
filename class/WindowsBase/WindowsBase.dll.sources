@@ -23,6 +23,7 @@ System.Diagnostics/PresentationTraceSources.cs
 System.IO/FileFormatException.cs
 System.IO.Packaging/CertificateEmbeddingOption.cs
 System.IO.Packaging/CompressionOption.cs
+System.IO.Packaging/Check.cs
 System.IO.Packaging/EncryptedPackageEnvelope.cs
 System.IO.Packaging/EncryptionOption.cs
 System.IO.Packaging/InvalidSignatureEventHandler.cs
