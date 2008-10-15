@@ -26,21 +26,22 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-	
     public abstract class TestBase {
         protected Package package;
         protected FakeStream stream;
-        protected Uri [] uris = { new Uri ("/file1.png", UriKind.Relative),
-                       new Uri ("/file2.png", UriKind.Relative),
-                       new Uri ("/file3.png", UriKind.Relative) };
+        protected Uri [] uris = { new Uri("/file1.png", UriKind.Relative),
+                       new Uri("/file2.png", UriKind.Relative),
+                       new Uri("/file3.png", UriKind.Relative) };
 
         [TestFixtureSetUp]
         public virtual void FixtureSetup ()
         {
-            
+
         }
 
         [SetUp]
@@ -50,10 +51,19 @@ namespace System.IO.Packaging.Tests {
             package = Package.Open (stream, FileMode.Create);
         }
 
+        [TearDown]
+        public virtual void TearDown ()
+        {
+            if (stream != null)
+                stream.Close ();
+            if (package != null)
+                package.Close ();
+        }
+
         [TestFixtureTearDown]
         public virtual void FixtureTeardown ()
         {
-            
+
         }
     }
 }

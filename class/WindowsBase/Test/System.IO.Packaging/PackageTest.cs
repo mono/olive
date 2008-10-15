@@ -26,22 +26,107 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-	
     [TestFixture]
     [Category ("NotWorking")]
     public class PackageTest : TestBase {
-		
+
+        static void Main (string [] args)
+        {
+            PackageTest t = new PackageTest ();
+            t.FixtureSetup ();
+            t.Setup ();
+            t.UnusableStream ();
+        }
         string path = "test.package";
 
-        [Test]
-        [ExpectedException  (typeof (IOException))]
-        public void ClosedStream ()
+        public override void Setup ()
         {
-            stream = new FakeStream  (false, false, false);
+            if (File.Exists (path))
+                File.Delete (path);
+        }
+
+        public override void TearDown ()
+        {
+            if (package != null)
+                package.Close ();
+
+            if (File.Exists (path))
+                File.Delete (path);
+        }
+
+        [Test]
+        [ExpectedException (typeof (FileFormatException))]
+        public void CorruptStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            stream.Write (new byte [1024], 0, 1024);
             package = Package.Open (stream);
+        }
+
+        [Test]
+        [ExpectedException (typeof (NotSupportedException))]
+        public void FileShareReadWrite ()
+        {
+            package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+        }
+
+        [Test]
+        [ExpectedException (typeof (FileNotFoundException))]
+        public void OpenNonExistantPath ()
+        {
+            package = Package.Open (path, FileMode.Open);
+        }
+
+        [Test]
+        public void NonExistantPath ()
+        {
+            package = Package.Open (path);
+        }
+
+        [Test]
+        public void PreExistingPath ()
+        {
+            package = Package.Open (path);
+            package.Close ();
+            package = Package.Open (path);
+        }
+
+        [Test]
+        public void CreatePath ()
+        {
+            package = Package.Open (path, FileMode.Create);
+            Assert.AreEqual (FileAccess.ReadWrite, package.FileOpenAccess, "#1");
+        }
+
+        [Test]
+        [ExpectedException (typeof (ArgumentException))]
+        public void CreatePathReadonly ()
+        {
+            package = Package.Open (path, FileMode.Create, FileAccess.Read);
+            package.Close ();
+        }
+
+        [Test]
+        public void CreatePathTwice ()
+        {
+            package = Package.Open (path, FileMode.Create);
+            package.Close ();
+            package = Package.Open (path, FileMode.Open);
+            Assert.AreEqual (FileAccess.ReadWrite, package.FileOpenAccess);
+        }
+
+        [Test]
+        public void OpenPathReadonly ()
+        {
+            package = Package.Open (path, FileMode.Create);
+            package.Close ();
+            package = Package.Open (path, FileMode.Open, FileAccess.Read);
+            Assert.AreEqual (FileAccess.Read, package.FileOpenAccess);
         }
 
         [Test]
@@ -61,19 +146,12 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [ExpectedException (typeof (IOException))]
-        public void SetFileModeOnStream ()
-        {
-            stream = new FakeStream (true, false, true);
-            package = Package.Open (stream, FileMode.Truncate);
-        }
-
-        [Test]
         [ExpectedException (typeof (FileFormatException))]
-        public void WriteOnlyAccess ()
+        public void ReadableSeekableFullStream ()
         {
             stream = new FakeStream (true, false, true);
-            package = Package.Open ("path", FileMode.OpenOrCreate, FileAccess.Write);
+            stream.Write (new byte [10], 0, 10);
+            package = Package.Open (stream);
         }
 
         [Test]
@@ -81,23 +159,91 @@ namespace System.IO.Packaging.Tests {
         public void ReadOnlyAccess ()
         {
             stream = new FakeStream (true, false, true);
-            package = Package.Open ("path", FileMode.CreateNew, FileAccess.Read);
+            package = Package.Open (path, FileMode.CreateNew, FileAccess.Read);
         }
 
         [Test]
-        [ExpectedException (typeof (FileFormatException))]
-        public void CorruptStream ()
+        [ExpectedException (typeof (IOException))]
+        public void SetFileModeOnUnwriteableStream ()
         {
-            FakeStream stream = new FakeStream (true, true, true);
-            stream.Write (new byte[1024], 0, 1024);
-            Package p = Package.Open (stream);
+            stream = new FakeStream (true, false, true);
+            package = Package.Open (stream, FileMode.Truncate);
         }
 
         [Test]
         [ExpectedException (typeof (NotSupportedException))]
-        public void FileShareReadWrite ()
+        public void SetAppendOnWriteableStream ()
         {
-            package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Append);
+        }
+
+        [Test]
+        public void SetCreateNewOnWriteableStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.CreateNew);
+        }
+
+        [Test]
+        public void SetCreateOnWriteableStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Create);
+        }
+
+        [Test]
+        [ExpectedException (typeof (FileFormatException))]
+        public void SetOpenOnWriteableStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Open);
+        }
+
+        [Test]
+        public void SetOpenOrCreateOnWriteableStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.OpenOrCreate);
+        }
+
+        [Test]
+        [ExpectedException (typeof (NotSupportedException))]
+        public void SetTruncateOnWriteableStream ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Truncate);
+        }
+
+        [Test]
+        [ExpectedException (typeof (FileFormatException))]
+        public void StreamOpen ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Open);
+        }
+
+        [Test]
+        public void StreamCreate ()
+        {
+            stream = new FakeStream (true, true, true);
+            package = Package.Open (stream, FileMode.Create);
+        }
+
+        [Test]
+        [ExpectedException (typeof (IOException))]
+        public void UnusableStream ()
+        {
+            stream = new FakeStream (false, false, false);
+            package = Package.Open (stream);
+        }
+
+        [Test]
+        [ExpectedException (typeof (ArgumentException))]
+        public void WriteOnlyAccess ()
+        {
+            stream = new FakeStream (true, false, true);
+            package = Package.Open (path, FileMode.OpenOrCreate, FileAccess.Write);
         }
     }
 }
