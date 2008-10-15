@@ -1,5 +1,10 @@
 2008-10-15  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/FakePackagePartTests.cs: Add NotWorking
+	attribute to test.
+
+2008-10-15  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/PackagePart.cs:
 	* System.IO.Packaging/PackageRelationship.cs:
 	* System.IO.Packaging/PackageRelationshipCollection.cs: Began

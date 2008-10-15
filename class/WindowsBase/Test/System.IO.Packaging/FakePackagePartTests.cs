@@ -116,6 +116,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void CreateRelationship4 ()
         {
             part.CreateRelationship (uris [1], TargetMode.External, "blah");
