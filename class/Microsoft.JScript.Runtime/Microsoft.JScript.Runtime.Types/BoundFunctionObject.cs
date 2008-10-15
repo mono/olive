@@ -1,4 +1,4 @@
-// JSBoundFunctionObject.cs
+// BoundFunctionObject.cs
 //
 // Authors:
 //   Olivier Dufour <olivier.duff@gmail.com>
@@ -32,16 +32,14 @@ using System.Collections;
 using System.Collections.Generic;
 using Microsoft.Scripting.Actions;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Types
 {
-	
-	
-	public class JSBoundFunctionObject : IAttributesCollection, IConstructorWithCodeContext, ICustomMembers, IDynamicObject
+	public class BoundFunctionObject : IAttributesCollection, IConstructorWithCodeContext, ICustomMembers, IDynamicObject
 	{
-		private readonly JSFunctionObject _function;
+		private readonly FunctionObject _function;
 		private readonly JSObject _instance;
 
-		public JSBoundFunctionObject(JSFunctionObject function, JSObject instance)
+		public BoundFunctionObject(FunctionObject function, JSObject instance)
 		{
 			_function = function;
 			_instance = instance;
@@ -227,7 +225,7 @@ namespace Microsoft.JScript.Runtime
 
 		public int Count  {  get { throw new NotImplementedException (); } }
 
-		public JSFunctionObject Function  {  get { return _function; } }
+		public FunctionObject Function  {  get { return _function; } }
 
 		public JSObject Instance  {  get { return _instance; } }
 

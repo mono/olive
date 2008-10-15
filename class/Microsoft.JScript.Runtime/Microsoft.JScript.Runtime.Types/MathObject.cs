@@ -1,11 +1,39 @@
+// MathObject.cs
+//
+// Authors:
+//   Olivier Dufour <olivier.duff@gmail.com>
+//
+// Copyright (C) 2008 Olivier Dufour
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//
+
 using System;
 using System.Collections.Generic;
 using Microsoft.Scripting;
 
-namespace Microsoft.JScript.Runtime {
+namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class JSMathObject : JSObject {
+	public class MathObject : JSObject {
 
 		public const double E = 2.71828182845905;
 		public const double LN10 = 2.30258509299405;
@@ -16,12 +44,12 @@ namespace Microsoft.JScript.Runtime {
 		public const double SQRT1_2 = 0.707106781186548;
 		public const double SQRT2 = 1.4142135623731;
 
-		internal JSMathObject ()
+		internal MathObject ()
 			: base (null)
 		{
 		}
 
-		public JSMathObject (CodeContext context, JSObject prototype)
+		public MathObject (CodeContext context, JSObject prototype)
 			: base (null)
 		{
 		}

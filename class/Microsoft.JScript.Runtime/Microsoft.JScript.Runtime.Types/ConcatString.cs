@@ -30,7 +30,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Types
 {
 	 
 	 public sealed class ConcatString : IFormattable, IComparable, IConvertible, IComparable <string>, IEnumerable <char>, IEquatable <string>

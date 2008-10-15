@@ -27,6 +27,6 @@
 //
 
 using System;
-namespace Microsoft.JScript.Runtime {
+namespace Microsoft.JScript.Runtime.Types {
 	public delegate object ConstructTargetN (object function, params object [] arguments);
 }

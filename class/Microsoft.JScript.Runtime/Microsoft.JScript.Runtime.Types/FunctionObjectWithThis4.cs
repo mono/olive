@@ -1,4 +1,4 @@
-// JSFunctionObjectWithThis.cs
+// FunctionObjectWithThis4.cs
 //
 // Authors:
 //   Olivier Dufour <olivier.duff@gmail.com>
@@ -31,15 +31,15 @@ using Microsoft.Scripting;
 using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Actions;
 
-namespace Microsoft.JScript.Runtime
+namespace Microsoft.JScript.Runtime.Types
 {
     
     
-    public class JSFunctionObjectWithThis4 : JSFunctionObjectWithThis
+    public class FunctionObjectWithThis4 : FunctionObjectWithThis
     {
         private CallTargetWithThis4 callTarget;
 
-        public JSFunctionObjectWithThis4 (CodeContext context, string name, CallTargetWithThis4 callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
+        public FunctionObjectWithThis4 (CodeContext context, string name, CallTargetWithThis4 callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
         {
 		this.callTarget = callTarget;
         }

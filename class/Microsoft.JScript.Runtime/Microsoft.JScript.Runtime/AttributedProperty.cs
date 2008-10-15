@@ -1,37 +1,65 @@
+// AttributedProperty.cs
+//
+// Authors:
+//   Olivier Dufour <olivier.duff@gmail.com>
+//
+// Copyright (C) 2008 Olivier Dufour
+//
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+//
+
 using System;
 using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime {
 
-	public class JSAttributedProperty {
+	public class AttributedProperty {
 
 		object value;
-		JSPropertyAttributes attr;
+		PropertyAttributes attr;
 
-		public JSAttributedProperty (object setValue, JSPropertyAttributes setAttributes)
+		public AttributedProperty (object setValue, PropertyAttributes setAttributes)
 		{
 			this.value = setValue;
 			this.attr = setAttributes;
 		}
 
-		public JSPropertyAttributes Attributes {
+		public PropertyAttributes Attributes {
 			get { return attr;  }
 		}
 
 		public bool IsDontDelete {
-			get { return (attr & JSPropertyAttributes.DontDelete) != 0; }
+			get { return (attr & PropertyAttributes.DontDelete) != 0; }
 		}
 
 		public bool IsDontEnum {
-			get { return (attr & JSPropertyAttributes.DontEnum) != 0; }
+			get { return (attr & PropertyAttributes.DontEnum) != 0; }
 		}
 
 		public bool IsInternal {
-			get { return (attr & JSPropertyAttributes.Internal) != 0; }
+			get { return (attr & PropertyAttributes.Internal) != 0; }
 		}
 
 		public bool IsReadOnly {
-			get { return (attr & JSPropertyAttributes.ReadOnly) != 0; }
+			get { return (attr & PropertyAttributes.ReadOnly) != 0; }
 		}
 
 		public object Value {
