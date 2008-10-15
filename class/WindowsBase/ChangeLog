@@ -1,5 +1,13 @@
 2008-10-15  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/PackageTest.cs: Cosmetic fixes and added
+	three new tests
+
+	* System.IO.Packaging/Package.cs: If the file already exists, throw an
+	exception if it's length is zero.
+
+2008-10-15  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/Package.cs:
 	* System.IO/FileFormatException.cs:
 	* Test/System.IO.Packaging/PackageTest.cs: Added more NUnit tests and

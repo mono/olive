@@ -179,7 +179,11 @@ namespace System.IO.Packaging {
 			// Bug - MS.NET appears to test for FileAccess.ReadWrite, not FileAccess.Write
 			if (!System.IO.File.Exists (path) && packageAccess != FileAccess.ReadWrite)
 				throw new ArgumentException ("packageAccess", "Cannot create stream with FileAccess.Read");
-			
+
+			FileInfo info = new FileInfo(path);
+			if (info.Exists && packageMode == FileMode.OpenOrCreate && info.Length == 0)
+				throw new FileFormatException("Stream length cannot be zero with FileMode.Open");
+
 			using (Stream s = System.IO.File.Open(path, packageMode, packageAccess, packageShare))
 				return Open (s, packageMode, packageAccess);
 		}

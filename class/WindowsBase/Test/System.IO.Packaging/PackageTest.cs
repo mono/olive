@@ -31,7 +31,6 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-	
     [TestFixture]
     public class PackageTest : TestBase {
 
@@ -40,7 +39,7 @@ namespace System.IO.Packaging.Tests {
             PackageTest t = new PackageTest ();
             t.FixtureSetup ();
             t.Setup ();
-            t.UnusableStream ();
+            t.FileShareReadWrite ();
         }
         string path = "test.package";
 
@@ -60,8 +59,8 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
+        [Category ("NotWorking")]
         public void CorruptStream ()
         {
             stream = new FakeStream (true, true, true);
@@ -90,7 +89,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
+        [Category ("NotWorking")]
         public void PreExistingPath ()
         {
             package = Package.Open (path);
@@ -99,7 +98,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
+        [Category ("NotWorking")]
         public void CreatePath ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -115,7 +114,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
+        [Category ("NotWorking")]
         public void CreatePathTwice ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -125,7 +124,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
+        [Category ("NotWorking")]
         public void OpenPathReadonly ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -143,6 +142,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
         public void ReadableSeekableStream ()
         {
@@ -151,8 +151,8 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
+        [Category ("NotWorking")]
         public void ReadableSeekableFullStream ()
         {
             stream = new FakeStream (true, false, true);
@@ -222,6 +222,15 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [ExpectedException (typeof (NotSupportedException))]
+        public void SetTruncateOnWriteablePath ()
+        {
+            stream = new FakeStream (true, true, true);
+            File.Create (path).Close ();
+            package = Package.Open (path, FileMode.Truncate);
+        }
+
+        [Test]
         [ExpectedException (typeof (FileFormatException))]
         public void StreamOpen ()
         {
@@ -244,11 +253,25 @@ namespace System.IO.Packaging.Tests {
             package = Package.Open (stream);
         }
 
+        // Bug - I'm passing in FileAccess.Write but it thinks I've passed FileAccess.Read
         [Test]
         [ExpectedException (typeof (ArgumentException))]
-        public void WriteOnlyAccess ()
+        public void WriteAccessDoesntExist ()
         {
-            stream = new FakeStream (true, false, true);
+            package = Package.Open (path, FileMode.OpenOrCreate, FileAccess.Write);
+        }
+
+        [Test]
+        public void ReadWriteAccessDoesntExist ()
+        {
+            package = Package.Open (path, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+        }
+
+        [Test]
+        [ExpectedException (typeof (FileFormatException))]
+        public void WriteOnlyAccessExists ()
+        {
+            System.IO.File.Create (path).Close ();
             package = Package.Open (path, FileMode.OpenOrCreate, FileAccess.Write);
         }
     }
