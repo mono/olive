@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Alan McGovern (amcgovern@novell.com)
 //
 
 using System;
@@ -176,15 +177,17 @@ namespace System.IO.Packaging {
 			if (packageShare != FileShare.Read && packageShare != FileShare.None)
 				throw new NotSupportedException ("FileShare.Read and FileShare.None are the only supported options");
 
+			FileInfo info = new FileInfo (path);
+			
 			// Bug - MS.NET appears to test for FileAccess.ReadWrite, not FileAccess.Write
-			if (!System.IO.File.Exists (path) && packageAccess != FileAccess.ReadWrite)
+			if (packageAccess != FileAccess.ReadWrite && !info.Exists)
 				throw new ArgumentException ("packageAccess", "Cannot create stream with FileAccess.Read");
 
-			FileInfo info = new FileInfo(path);
+			
 			if (info.Exists && packageMode == FileMode.OpenOrCreate && info.Length == 0)
-				throw new FileFormatException("Stream length cannot be zero with FileMode.Open");
+				throw new FileFormatException ("Stream length cannot be zero with FileMode.Open");
 
-			using (Stream s = System.IO.File.Open(path, packageMode, packageAccess, packageShare))
+			using (Stream s = File.Open (path, packageMode, packageAccess, packageShare))
 				return Open (s, packageMode, packageAccess);
 		}
 
