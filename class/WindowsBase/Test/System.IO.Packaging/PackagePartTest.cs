@@ -26,11 +26,11 @@
 
 using System;
 using System.Collections.Generic;
-using NUnit.Framework;
 using System.Linq;
+using System.Text;
+using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-
     [TestFixture]
     [Category ("NotWorking")]
     public class PackagePartTest : TestBase {
@@ -44,21 +44,15 @@ namespace System.IO.Packaging.Tests {
         [Test]
         public void AddInvalidPartTwice ()
         {
-            try
-            {
+            try {
                 package.CreatePart (new Uri ("/file1.bmp", UriKind.Relative), "bmp");
-            }
-            catch  (ArgumentException)
-            {
-                try
-                {
+            } catch (ArgumentException) {
+                try {
                     package.CreatePart (new Uri ("/file1.bmp", UriKind.Relative), "bmp");
-                }
-                catch (InvalidOperationException)
-                {
+                } catch (InvalidOperationException) {
                     Assert.AreEqual (1, package.GetParts ().Count (), "Need to be buggy and return null");
                     Assert.AreEqual (null, package.GetParts ().ToArray () [0], "Be buggy and add null to the internal list");
-                    
+
                     return; // Success
                 }
             }
@@ -69,7 +63,7 @@ namespace System.IO.Packaging.Tests {
         [Test]
         public void AddThreeParts ()
         {
-            foreach  (Uri u in uris)
+            foreach (Uri u in uris)
                 package.CreatePart (u, "mime/type");
 
             Assert.AreEqual (3, package.GetParts ().Count (), "Should be three parts");
@@ -95,7 +89,7 @@ namespace System.IO.Packaging.Tests {
             PackageRelationship r1 = part.CreateRelationship (part.Uri, TargetMode.Internal, "self");
             PackageRelationship r2 = package.CreateRelationship (part.Uri, TargetMode.Internal, "fake");
             PackageRelationship r3 = package.CreateRelationship (new Uri ("/fake/uri", UriKind.Relative), TargetMode.Internal, "self");
-            
+
             Assert.AreEqual (5, package.GetParts ().Count (), "#b");
             Assert.AreEqual (1, part.GetRelationships ().Count (), "#1");
             Assert.AreEqual (1, part.GetRelationshipsByType ("self").Count (), "#2");
@@ -121,7 +115,7 @@ namespace System.IO.Packaging.Tests {
         public void DeletePartsAfterAddingRelationships ()
         {
             CheckPartRelationships ();
-            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+            foreach (PackagePart p in new List<PackagePart> (package.GetParts ()))
                 package.DeletePart (p.Uri);
         }
 
@@ -130,9 +124,9 @@ namespace System.IO.Packaging.Tests {
         public void DeleteRelsThenParts ()
         {
             CheckPartRelationships ();
-            foreach  (PackageRelationship r in new List<PackageRelationship> (package.GetRelationships ()))
+            foreach (PackageRelationship r in new List<PackageRelationship> (package.GetRelationships ()))
                 package.DeleteRelationship (r.Id);
-            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+            foreach (PackagePart p in new List<PackagePart> (package.GetParts ()))
                 package.DeletePart (p.Uri);
         }
 
@@ -199,7 +193,7 @@ namespace System.IO.Packaging.Tests {
         public void RemoveThreeParts ()
         {
             AddThreeParts ();
-            foreach  (PackagePart p in new List<PackagePart> (package.GetParts ()))
+            foreach (PackagePart p in new List<PackagePart> (package.GetParts ()))
                 package.DeletePart (p.Uri);
             Assert.AreEqual (0, package.GetParts ().Count (), "Should contain no parts");
         }
@@ -209,7 +203,7 @@ namespace System.IO.Packaging.Tests {
         public void RemoveThreePartsBreak ()
         {
             AddThreeParts ();
-            foreach  (PackagePart p in package.GetParts ())
+            foreach (PackagePart p in package.GetParts ())
                 package.DeletePart (p.Uri);
         }
     }
