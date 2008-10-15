@@ -31,8 +31,8 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
+	
     [TestFixture]
-    [Category ("NotWorking")]
     public class PackageTest : TestBase {
 
         static void Main (string [] args)
@@ -60,6 +60,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
         public void CorruptStream ()
         {
@@ -89,6 +90,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         public void PreExistingPath ()
         {
             package = Package.Open (path);
@@ -97,6 +99,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         public void CreatePath ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -112,6 +115,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         public void CreatePathTwice ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -121,6 +125,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         public void OpenPathReadonly ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -146,6 +151,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+		[Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
         public void ReadableSeekableFullStream ()
         {

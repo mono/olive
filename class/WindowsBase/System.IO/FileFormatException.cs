@@ -54,7 +54,7 @@ namespace System.IO {
 			if (info == null)
 				throw new ArgumentNullException ("info");
 			
-			info.GetValue ("sourceUri", typeof (Uri));
+			source_uri = (Uri) info.GetValue ("sourceUri", typeof (Uri));
 		}
 
 		public FileFormatException (string message, Exception innerException)

@@ -143,37 +143,69 @@ namespace System.IO.Packaging {
 
 		public static Package Open (Stream stream)
 		{
-			throw new NotImplementedException ();
+			return Open (stream, FileMode.Open);
 		}
 
 		public static Package Open (string path)
 		{
-			throw new NotImplementedException ();
+			return Open (path, FileMode.OpenOrCreate);
 		}
 
 		public static Package Open (Stream stream, FileMode packageMode)
 		{
-			throw new NotImplementedException ();
+			return Open (stream, packageMode, FileAccess.Read);
 		}
 
 		public static Package Open (string path, FileMode packageMode)
 		{
-			throw new NotImplementedException ();
+			return Open (path, packageMode, FileAccess.ReadWrite);
 		}
 
 		public static Package Open (Stream stream, FileMode packageMode, FileAccess packageAccess)
 		{
-			throw new NotImplementedException ();
+			return OpenCore (stream, packageMode, packageAccess);
 		}
 
 		public static Package Open (string path, FileMode packageMode, FileAccess packageAccess)
 		{
-			throw new NotImplementedException ();
+			return Open (path, packageMode, packageAccess, FileShare.None);
 		}
 
 		public static Package Open (string path, FileMode packageMode, FileAccess packageAccess, FileShare packageShare)
 		{
-			throw new NotImplementedException ();
+			if (packageShare != FileShare.Read && packageShare != FileShare.None)
+				throw new NotSupportedException ("FileShare.Read and FileShare.None are the only supported options");
+
+			// Bug - MS.NET appears to test for FileAccess.ReadWrite, not FileAccess.Write
+			if (!System.IO.File.Exists (path) && packageAccess != FileAccess.ReadWrite)
+				throw new ArgumentException ("packageAccess", "Cannot create stream with FileAccess.Read");
+			
+			using (Stream s = System.IO.File.Open(path, packageMode, packageAccess, packageShare))
+				return Open (s, packageMode, packageAccess);
+		}
+
+		private static Package OpenCore (Stream stream, FileMode packageMode, FileAccess packageAccess)
+		{
+			if ((packageAccess & FileAccess.Read) == FileAccess.Read && !stream.CanRead)
+				throw new IOException ("Stream does not support reading");
+
+			if ((packageAccess & FileAccess.Write) == FileAccess.Write && !stream.CanWrite)
+				throw new IOException ("Stream does not support reading");
+			
+			if (!stream.CanSeek)
+				throw new ArgumentException ("stream", "Stream must support seeking");
+			
+			if (packageMode == FileMode.Open && stream.Length == 0)
+				throw new FileFormatException("Stream length cannot be zero with FileMode.Open");
+
+			if (packageMode == FileMode.Append || packageMode == FileMode.Truncate)
+			{
+				if (stream.CanWrite)
+					throw new NotSupportedException (string.Format("PackageMode.{0} is not supported", packageMode));
+				else
+					throw new IOException (string.Format("PackageMode.{0} is not supported", packageMode));
+			}
+			return null;
 		}
 	}
 }

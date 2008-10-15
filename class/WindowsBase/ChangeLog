@@ -1,3 +1,10 @@
+2008-10-15  Alan McGovern  <amcgovern@novell.com>
+
+	* System.IO.Packaging/Package.cs:
+	* System.IO/FileFormatException.cs:
+	* Test/System.IO.Packaging/PackageTest.cs: Added more NUnit tests and
+	implemented the necessary argument checking to pass these tests.
+
 2008-10-14  Alan McGovern  <amcgovern@novell.com>
 
 	* Test/System.IO.Packaging/PackageTest.cs,
