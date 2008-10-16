@@ -31,13 +31,17 @@ namespace System.IO.Packaging {
 
 	public class PackagePartCollection : IEnumerable<PackagePart>, IEnumerable
 	{
-		internal PackagePartCollection ()
+		private PackagePart [] parts;
+		
+		internal PackagePartCollection (PackagePart [] parts)
 		{
+			this.parts = parts;
 		}
 
 		public IEnumerator<PackagePart> GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			foreach (PackagePart p in parts)
+				yield return p;
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

@@ -1,3 +1,15 @@
+2008-10-16  Alan McGovern  <amcgovern@novell.com>
+
+	* System.IO.Packaging/Check.cs:
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/ZipPackage.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/ZipPackagePart.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs:
+	* System.IO.Packaging/PackagePartCollection.cs: Began the implementation
+	of both PackageRelationship and ZipPackagePart. Enabled tests for
+	these classes.
+
 2008-10-15  Alan McGovern  <amcgovern@novell.com>
 
 	* Test/System.IO.Packaging/FakePackagePartTests.cs: Add NotWorking

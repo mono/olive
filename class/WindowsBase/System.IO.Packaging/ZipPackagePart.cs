@@ -35,6 +35,16 @@ namespace System.IO.Packaging {
 		{
 		}
 
+		internal ZipPackagePart (Package package, Uri partUri, string contentType)
+			: base (package, partUri, contentType)
+		{
+		}
+
+		internal ZipPackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption )
+			: base (package, partUri, contentType, compressionOption)
+		{
+		}
+
 		protected override Stream GetStreamCore (FileMode mode, FileAccess access)
 		{
 			throw new NotImplementedException ();

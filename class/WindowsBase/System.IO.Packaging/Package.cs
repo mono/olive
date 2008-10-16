@@ -25,25 +25,35 @@
 //
 
 using System;
+using System.Collections.Generic;
 
 namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
 		private FileAccess openFileAccess;
+		private int relationshipId;
+		private Dictionary<string, PackageRelationship> relationships;
+		private bool streaming;
+		private Uri Uri = new Uri ("/", UriKind.Relative);
 		
 		protected Package (FileAccess openFileAccess)
+			: this (openFileAccess, false)
 		{
-			this.openFileAccess = openFileAccess;
+			
 		}
 
 		protected Package (FileAccess openfileAccess, bool streaming)
 		{
-			throw new NotImplementedException ();
+			this.openFileAccess = openFileAccess;
+			this.streaming = streaming;
+
+			relationships = new Dictionary<string, PackageRelationship> ();
 		}
 
 		void IDisposable.Dispose ()
 		{
+			Dispose (true);
 		}
 
 		protected virtual void Dispose (bool disposing)
@@ -66,24 +76,32 @@ namespace System.IO.Packaging {
 
 		public void Flush ()
 		{
-			throw new NotImplementedException ();
+			FlushCore ();
 		}
 
 		protected abstract void FlushCore ();
 
 		public PackagePart CreatePart (Uri partUri, string contentType)
 		{
-			throw new NotImplementedException ();
+			return CreatePart (partUri, contentType, CompressionOption.NotCompressed);
 		}
 
 		public PackagePart CreatePart (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
-			throw new NotImplementedException ();
+			Check.UriIsRelative (partUri);
+			Check.PartUri (partUri);
+			Check.ContentTypeIsValid (contentType);
+
+			if (PartExists (partUri))
+				throw new InvalidOperationException ("This partUri is already contained in the package");
+			
+			return CreatePartCore (partUri, contentType, compressionOption);
 		}
 
 		public void DeletePart (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			DeletePartCore (partUri);
 		}
 
 		protected abstract PackagePart CreatePartCore (Uri parentUri, string contentType, CompressionOption compressionOption);
@@ -91,57 +109,80 @@ namespace System.IO.Packaging {
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
 		{
-			throw new NotImplementedException ();
+			return CreateRelationship (targetUri, targetMode, relationshipType, null);
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
 		{
-			throw new NotImplementedException ();
+			Check.TargetUri (targetUri);
+			Check.RelationshipTypeIsValid (relationshipType);
+			Check.IdIsValid (id);
+
+			if (id == null)
+				id = NextId ();
+			
+			PackageRelationship r = new PackageRelationship (id, this, relationshipType, Uri, targetMode, targetUri);
+			relationships.Add (r.Id, r);
+			return r;
 		}
 
 		public void DeleteRelationship (string id)
 		{
-			throw new NotImplementedException ();
+			relationships.Remove (id);
 		}
 
 		public PackagePart GetPart (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			return GetPartCore (partUri);
 		}
 
 		protected abstract PackagePart GetPartCore (Uri partUri);
 
 		public PackagePartCollection GetParts ()
 		{
-			throw new NotImplementedException ();
+			return new PackagePartCollection (GetPartsCore());
 		}
 
-		protected abstract PackagePart[] GetPartsCore ();
+		protected abstract PackagePart [] GetPartsCore ();
 
 
 		public virtual bool PartExists (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			return GetPart (partUri) != null;
 		}
 
 		public PackageRelationship GetRelationship (string id)
 		{
-			throw new NotImplementedException ();
+			return relationships [id];
 		}
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
-			throw new NotImplementedException ();
+			return new PackageRelationshipCollection (relationships.Values);
 		}
 
 		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
-			throw new NotImplementedException ();
+			return new PackageRelationshipCollection (relationships.Values,
+			                                          delegate (PackageRelationship r) { return r.RelationshipType == relationshipType; });
 		}
 
 		public bool RelationshipExists (string id)
 		{
-			throw new NotImplementedException ();
+			return relationships.ContainsKey (id);
+		}
+
+		private string NextId ()
+		{
+			while (true)
+			{
+				string s = relationshipId.ToString ();
+				if (!relationships.ContainsKey (s))
+					return s;
+				
+				relationshipId++;
+			}
 		}
 
 		public static Package Open (Stream stream)

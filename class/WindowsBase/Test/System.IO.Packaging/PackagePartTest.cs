@@ -31,8 +31,8 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
+
     [TestFixture]
-    [Category ("NotWorking")]
     public class PackagePartTest : TestBase {
         [Test]
         [ExpectedException (typeof (ArgumentException))]
@@ -42,6 +42,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void AddInvalidPartTwice ()
         {
             try {
@@ -81,6 +82,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void CheckPartRelationships ()
         {
             AddThreeParts ();
@@ -112,6 +114,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
+        [Category ("NotWorking")]
         public void DeletePartsAfterAddingRelationships ()
         {
             CheckPartRelationships ();
@@ -121,6 +124,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
+        [Category ("NotWorking")]
         public void DeleteRelsThenParts ()
         {
             CheckPartRelationships ();
@@ -190,6 +194,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+       // [Category ("NotWorking")]
         public void RemoveThreeParts ()
         {
             AddThreeParts ();
@@ -200,6 +205,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
+        [Category ("NotWorking")]
         public void RemoveThreePartsBreak ()
         {
             AddThreeParts ();

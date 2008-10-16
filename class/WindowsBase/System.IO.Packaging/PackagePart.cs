@@ -35,6 +35,7 @@ namespace System.IO.Packaging {
 		private CompressionOption compressionOption;
 		private string contentType;
 		private Package package;
+		private int relationshipId;
 		private Dictionary<string, PackageRelationship> relationships;
 		private Uri uri;
 		
@@ -44,13 +45,13 @@ namespace System.IO.Packaging {
 			
 		}
 
-		protected PackagePart (Package package, Uri partUri, string contentType)
+		protected internal PackagePart (Package package, Uri partUri, string contentType)
 			: this (package, partUri, contentType, CompressionOption.Normal)
 		{
 			
 		}
 
-		protected PackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
+		protected internal PackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
 		{
 			Check.Package (package);
 			Check.PartUri (partUri);
@@ -91,6 +92,9 @@ namespace System.IO.Packaging {
 			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
 
+			if (id == null)
+				id = NextId ();
+			
 			PackageRelationship r = new PackageRelationship (id, package, relationshipType, Uri, targetMode, targetUri);
 			relationships.Add (r.Id, r);
 			return r;
@@ -143,6 +147,17 @@ namespace System.IO.Packaging {
 		protected virtual string GetContentTypeCore ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		private string NextId ()
+		{
+			while (true)
+			{
+				string s = relationshipId.ToString ();
+				if (!RelationshipExists (s))
+					return s;
+				relationshipId ++;
+			}
 		}
 	}
 }

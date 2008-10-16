@@ -24,12 +24,15 @@
 //
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace System.IO.Packaging {
 
 	public sealed class ZipPackage : Package
 	{
+		private Dictionary<Uri, PackagePart> parts = new Dictionary<Uri, PackagePart> ();
+		
 		internal ZipPackage (FileAccess access)
 			: base (access)
 		{
@@ -46,24 +49,30 @@ namespace System.IO.Packaging {
 			throw new NotImplementedException ();
 		}
 
-		protected override PackagePart CreatePartCore (Uri parentUri, string contentType, CompressionOption compressionOption)
+		protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
-			throw new NotImplementedException ();
+			ZipPackagePart part = new ZipPackagePart (this, partUri, contentType, compressionOption);
+			parts.Add (part.Uri, part);
+			return part;
 		}
 
 		protected override void DeletePartCore (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			parts.Remove (partUri);
 		}
 
 		protected override PackagePart GetPartCore (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			PackagePart part = null;
+			parts.TryGetValue (partUri, out part);
+			return part;
 		}
 
 		protected override PackagePart[] GetPartsCore ()
 		{
-			throw new NotImplementedException ();
+			PackagePart[] p = new PackagePart [parts.Count];
+			parts.Values.CopyTo (p, 0);
+			return p;
 		}
 	}
 

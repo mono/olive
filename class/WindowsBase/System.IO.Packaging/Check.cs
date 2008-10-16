@@ -91,5 +91,11 @@ namespace System.IO.Packaging
 			if (targetUri == null)
 				throw new ArgumentNullException ("targetUri");
 		}
+
+		public static void UriIsRelative (Uri partUri)
+		{
+			if (partUri.IsAbsoluteUri)
+				throw new ArgumentException ("partUri", "Absolute URIs are not supported");
+		}
 	}
 }
