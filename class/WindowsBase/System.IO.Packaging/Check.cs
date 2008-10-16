@@ -80,22 +80,34 @@ namespace System.IO.Packaging
 				throw new ArgumentException ("relationshipType", "Cannot be whitespace or empty");
 		}
 
-		public static void SourceUri (object sourceUri)
+		public static void PartUri (Uri partUri)
+		{
+			if (partUri == null)
+				throw new ArgumentNullException ("partUri");
+			if (partUri.IsAbsoluteUri)
+				throw new ArgumentException ("partUri", "Absolute URIs are not supported");
+			if (string.IsNullOrEmpty (partUri.OriginalString))
+				throw new ArgumentException ("partUri", "Part uri cannot be an empty string");
+		}
+
+		public static void SourceUri (Uri sourceUri)
 		{
 			if (sourceUri == null)
 				throw new ArgumentNullException ("sourceUri");
+			if (sourceUri.IsAbsoluteUri)
+				throw new ArgumentException ("sourceUri", "Absolute URIs are not supported");
+			if (string.IsNullOrEmpty (sourceUri.OriginalString))
+				throw new ArgumentException ("sourceUri", "Part uri cannot be an empty string");
 		}
 
-		public static void TargetUri (object targetUri)
+		public static void TargetUri (Uri targetUri)
 		{
 			if (targetUri == null)
 				throw new ArgumentNullException ("targetUri");
-		}
-
-		public static void UriIsRelative (Uri partUri)
-		{
-			if (partUri.IsAbsoluteUri)
-				throw new ArgumentException ("partUri", "Absolute URIs are not supported");
+			if (targetUri.IsAbsoluteUri)
+				throw new ArgumentException ("targetUri", "Absolute URIs are not supported");
+			if (string.IsNullOrEmpty (targetUri.OriginalString))
+				throw new ArgumentException ("targetUri", "Part uri cannot be an empty string");
 		}
 	}
 }

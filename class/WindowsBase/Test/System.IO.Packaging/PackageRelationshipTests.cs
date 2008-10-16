@@ -31,8 +31,8 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
+	
     [TestFixture]
-    [Category ("NotWorking")]
     public class PackageRelationshipTests : TestBase {
         [Test]
         public void AddInvalidRelationshipTwice ()

@@ -88,7 +88,6 @@ namespace System.IO.Packaging {
 
 		public PackagePart CreatePart (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
-			Check.UriIsRelative (partUri);
 			Check.PartUri (partUri);
 			Check.ContentTypeIsValid (contentType);
 
@@ -115,6 +114,7 @@ namespace System.IO.Packaging {
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
 		{
 			Check.TargetUri (targetUri);
+			
 			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
 
