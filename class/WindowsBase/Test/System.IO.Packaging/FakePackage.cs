@@ -30,20 +30,23 @@ using System.Collections.Generic;
 namespace System.IO.Packaging.Tests {
 	
     public class FakePackage : Package {
+        Dictionary<Uri, PackagePart> parts = new Dictionary<Uri, PackagePart> ();
         public FakePackage (FileAccess access, bool streaming)
-            : base (FileAccess.Read, streaming)
+            : base (access, streaming)
         {
-
+            
         }
 
         protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
         {
-            throw new NotImplementedException ();
+            FakePackagePart p = new FakePackagePart (this, partUri, contentType, compressionOption);
+            parts.Add (p.Uri, p);
+            return p;
         }
 
         protected override void DeletePartCore (Uri partUri)
         {
-            throw new NotImplementedException ();
+            parts.Remove (partUri);
         }
 
         protected override void FlushCore ()
@@ -53,12 +56,14 @@ namespace System.IO.Packaging.Tests {
 
         protected override PackagePart GetPartCore (Uri partUri)
         {
-            throw new NotImplementedException ();
+            return parts.ContainsKey(partUri) ?  parts [partUri] : null;
         }
 
         protected override PackagePart [] GetPartsCore ()
         {
-            throw new NotImplementedException ();
+            PackagePart [] p = new PackagePart [parts.Count];
+            parts.Values.CopyTo (p, 0);
+            return p;
         }
     }
 }

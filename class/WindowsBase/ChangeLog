@@ -1,5 +1,31 @@
 2008-10-16  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/FakePackage.cs: Updated the implementation so
+	it can be used in the NUnit tests
+
+	* System.IO.Packaging/Package.cs: Implemented GetParts and fixed a bug
+	with the constructor
+
+	* Test/System.IO.Packaging/PackageTest.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs: Enabled tests which now
+	pass
+
+	* System.IO.Packaging/PackagePartCollection.cs: Implement
+	PackagePartCollection so that it passes the NUnit tests.
+
+	* Makefile: Need reference to System.Xml
+
+	* System.IO.Packaging/PackagePart.cs: If there's a dupe relationship ID,
+	throw an XmlException
+
+	* System.IO.Packaging/ZipPackage.cs: Implemented Dispose/Close and
+	partial support for PartStreams
+
+	* Test/System.IO.Packaging/FakePackagePartTests.cs: Added new test for
+	Package.GetParts to verify behaviours. Enabled tests which now pass
+
+2008-10-16  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/PackageRelationshipTests.cs: Enable the
 	PackageRelationship tests
 

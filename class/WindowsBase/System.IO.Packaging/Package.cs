@@ -31,38 +31,39 @@ namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
-		private FileAccess openFileAccess;
+		private PackagePartCollection partsCollection = new PackagePartCollection ();
 		private int relationshipId;
-		private Dictionary<string, PackageRelationship> relationships;
+		private Dictionary<string, PackageRelationship> relationships = new Dictionary<string, PackageRelationship> ();
 		private bool streaming;
+		
 		private Uri Uri = new Uri ("/", UriKind.Relative);
 		
-		protected Package (FileAccess openFileAccess)
-			: this (openFileAccess, false)
+		protected Package (FileAccess fileOpenAccess)
+			: this (fileOpenAccess, false)
 		{
 			
 		}
 
-		protected Package (FileAccess openfileAccess, bool streaming)
+		protected Package (FileAccess fileOpenAccess, bool streaming)
 		{
-			this.openFileAccess = openFileAccess;
+			FileOpenAccess = fileOpenAccess;
 			this.streaming = streaming;
-
-			relationships = new Dictionary<string, PackageRelationship> ();
 		}
 
 		void IDisposable.Dispose ()
 		{
+			Flush ();
 			Dispose (true);
 		}
 
 		protected virtual void Dispose (bool disposing)
 		{
-			throw new NotImplementedException ();
+
+			// Nothing here needs to be disposed of
 		}
 
 		public FileAccess FileOpenAccess {
-			get { return openFileAccess; }
+			get; private set;
 		}
 
 		public PackageProperties PackageProperties {
@@ -71,7 +72,9 @@ namespace System.IO.Packaging {
 
 		public void Close ()
 		{
-			throw new NotImplementedException ();
+			// FIXME: Ensure that Flush is actually called before dispose
+			Flush ();
+			Dispose (true);
 		}
 
 		public void Flush ()
@@ -94,13 +97,16 @@ namespace System.IO.Packaging {
 			if (PartExists (partUri))
 				throw new InvalidOperationException ("This partUri is already contained in the package");
 			
-			return CreatePartCore (partUri, contentType, compressionOption);
+			PackagePart part = CreatePartCore (partUri, contentType, compressionOption);
+			partsCollection.Parts.Add (part);
+			return part;
 		}
 
 		public void DeletePart (Uri partUri)
 		{
 			Check.PartUri (partUri);
 			DeletePartCore (partUri);
+			partsCollection.Parts.RemoveAll (p => p.Uri == partUri);
 		}
 
 		protected abstract PackagePart CreatePartCore (Uri parentUri, string contentType, CompressionOption compressionOption);
@@ -141,7 +147,9 @@ namespace System.IO.Packaging {
 
 		public PackagePartCollection GetParts ()
 		{
-			return new PackagePartCollection (GetPartsCore());
+			partsCollection.Parts.Clear ();
+			partsCollection.Parts.AddRange (GetPartsCore());
+			return partsCollection;
 		}
 
 		protected abstract PackagePart [] GetPartsCore ();
@@ -230,8 +238,8 @@ namespace System.IO.Packaging {
 			if (info.Exists && packageMode == FileMode.OpenOrCreate && info.Length == 0)
 				throw new FileFormatException ("Stream length cannot be zero with FileMode.Open");
 
-			using (Stream s = File.Open (path, packageMode, packageAccess, packageShare))
-				return Open (s, packageMode, packageAccess);
+			Stream s = File.Open (path, packageMode, packageAccess, packageShare);
+			return Open (s, packageMode, packageAccess);
 		}
 
 		private static Package OpenCore (Stream stream, FileMode packageMode, FileAccess packageAccess)
@@ -255,8 +263,12 @@ namespace System.IO.Packaging {
 				else
 					throw new IOException (string.Format("PackageMode.{0} is not supported", packageMode));
 			}
-			
-			return new ZipPackage (packageAccess);
+
+			// FIXME: MS docs say that a ZipPackage is returned by default.
+			// It looks like if you create a custom package, you cannot use Package.Open.
+			ZipPackage package = new ZipPackage (packageAccess);
+			package.PackageStream = stream;
+			return package;
 		}
 	}
 }

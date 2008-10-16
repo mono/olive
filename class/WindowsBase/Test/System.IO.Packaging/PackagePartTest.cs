@@ -42,7 +42,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
+		[Ignore ("I don't know how to replicate this behaviour, or if it's worth it. It's very broken")]
         public void AddInvalidPartTwice ()
         {
             try {
@@ -194,7 +194,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-       // [Category ("NotWorking")]
         public void RemoveThreeParts ()
         {
             AddThreeParts ();
@@ -205,7 +204,6 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
-        [Category ("NotWorking")]
         public void RemoveThreePartsBreak ()
         {
             AddThreeParts ();

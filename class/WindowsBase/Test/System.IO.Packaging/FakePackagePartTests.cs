@@ -116,7 +116,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void CreateRelationship4 ()
         {
             part.CreateRelationship (uris [1], TargetMode.External, "blah");
@@ -124,7 +123,6 @@ namespace System.IO.Packaging.Tests {
 
 
         [Test]
-        [Category ("NotWorking")]
         public void CreateRelationship5 ()
         {
             PackageRelationship r = part.CreateRelationship (uris [1], TargetMode.External, "blah", null);
@@ -148,7 +146,6 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (Xml.XmlException))]
-        [Category ("NotWorking")]
         public void CreateDupeRelationship ()
         {
             part.CreateRelationship (uris [1], TargetMode.External, "blah", "asda");
@@ -157,11 +154,34 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (Xml.XmlException))]
-        [Category ("NotWorking")]
         public void CreateDupeRelationshipId ()
         {
             part.CreateRelationship (uris [1], TargetMode.External, "blah", "asda");
             part.CreateRelationship (uris [2], TargetMode.Internal, "aaa", "asda");
+        }
+
+		[Test]
+        public void EnumeratePartsBreak ()
+        {
+            FakePackage package = new FakePackage (FileAccess.ReadWrite, false);
+
+            package.CreatePart (uris [0], "a/a");
+            package.CreatePart (uris [1], "a/a");
+            package.CreatePart (uris [2], "a/a");
+
+            Assert.IsTrue (package.GetParts () == package.GetParts (), "#1");
+            try {
+                foreach (PackagePart part in package.GetParts ())
+                    package.DeletePart (part.Uri);
+                Assert.Fail ("This should throw an exception");
+            } catch {
+            }
+
+            PackagePartCollection c = package.GetParts ();
+            package.CreatePart (new Uri ("/dfds", UriKind.Relative), "a/a");
+            int count = 0;
+            foreach (PackagePart p in c) { count++; }
+            Assert.AreEqual (3, count, "Three added, one deleted, one added");
         }
     }
 }

@@ -27,6 +27,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 
 namespace System.IO.Packaging {
 
@@ -94,6 +95,9 @@ namespace System.IO.Packaging {
 
 			if (id == null)
 				id = NextId ();
+
+			if (relationships.ContainsKey (id))
+				throw new XmlException ("A relationship with this ID already exists");
 			
 			PackageRelationship r = new PackageRelationship (id, package, relationshipType, Uri, targetMode, targetUri);
 			relationships.Add (r.Id, r);

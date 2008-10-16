@@ -63,7 +63,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (FileFormatException))]
-        [Category ("NotWorking")]
+        [Ignore ("Won't work until zip parsing is availabl")]
         public void CorruptStream ()
         {
             stream = new FakeStream (true, true, true);
@@ -77,7 +77,7 @@ namespace System.IO.Packaging.Tests {
         {
             package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
-
+		
         [Test]
         [ExpectedException (typeof (FileNotFoundException))]
         public void OpenNonExistantPath ()
@@ -92,7 +92,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void PreExistingPath ()
         {
             package = Package.Open (path);
@@ -101,7 +100,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void CreatePath ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -117,7 +115,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void CreatePathTwice ()
         {
             package = Package.Open (path, FileMode.Create);
@@ -127,13 +124,12 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void OpenPathReadonly ()
         {
             package = Package.Open (path, FileMode.Create);
             package.Close ();
             package = Package.Open (path, FileMode.Open, FileAccess.Read);
-            Assert.AreEqual (FileAccess.Read, package.FileOpenAccess);
+            Assert.AreEqual (FileAccess.Read, package.FileOpenAccess, "Should be read access");
         }
 
         [Test]
@@ -145,7 +141,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         [ExpectedException (typeof (FileFormatException))]
         public void ReadableSeekableStream ()
         {
@@ -155,7 +150,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (FileFormatException))]
-        [Category ("NotWorking")]
+        [Ignore ("Won't work until zip parsing is availabl")]
         public void ReadableSeekableFullStream ()
         {
             stream = new FakeStream (true, false, true);
