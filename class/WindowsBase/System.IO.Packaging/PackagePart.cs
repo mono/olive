@@ -33,12 +33,8 @@ namespace System.IO.Packaging {
 
 	public abstract class PackagePart
 	{
-		private CompressionOption compressionOption;
-		private string contentType;
-		private Package package;
 		private int relationshipId;
 		private Dictionary<string, PackageRelationship> relationships;
-		private Uri uri;
 		
 		protected PackagePart (Package package, Uri partUri)
 			: this(package, partUri, null)
@@ -58,28 +54,28 @@ namespace System.IO.Packaging {
 			Check.PartUri (partUri);
 			Check.ContentTypeIsValid (contentType);
 
-			this.package = package;
-			this.uri = partUri;
-			this.contentType = contentType;
-			this.compressionOption = compressionOption;
+			Package = package;
+			Uri = partUri;
+			ContentType = contentType;
+			CompressionOption = compressionOption;
 
 			relationships = new Dictionary<string, PackageRelationship> ();
 		}
 
 		public CompressionOption CompressionOption {
-			get { return compressionOption; }
+			get; private set;
 		}
 
 		public string ContentType {
-			get { return contentType; }
+			get; private set;
 		}
 
 		public Package Package {
-			get { return package; }
+			get; private set;
 		}
 
 		public Uri Uri {
-			get { return uri; }
+			get; private set;
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
@@ -99,7 +95,7 @@ namespace System.IO.Packaging {
 			if (relationships.ContainsKey (id))
 				throw new XmlException ("A relationship with this ID already exists");
 			
-			PackageRelationship r = new PackageRelationship (id, package, relationshipType, Uri, targetMode, targetUri);
+			PackageRelationship r = new PackageRelationship (id, Package, relationshipType, Uri, targetMode, targetUri);
 			relationships.Add (r.Id, r);
 			return r;
 		}

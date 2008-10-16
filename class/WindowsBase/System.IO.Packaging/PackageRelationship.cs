@@ -29,13 +29,6 @@ namespace System.IO.Packaging {
 
 	public class PackageRelationship
 	{
-		private string id;
-		private Package package;
-		private string relationshipType;
-		private Uri sourceUri;
-		private TargetMode targetMode;
-		private Uri targetUri;
-		
 		internal PackageRelationship (string id, Package package, string relationshipType,
 		                              Uri sourceUri, TargetMode targetMode, Uri targetUri)
 		{
@@ -45,31 +38,31 @@ namespace System.IO.Packaging {
 			Check.SourceUri (sourceUri);
 			Check.TargetUri (targetUri);
 
-			this.id = id;
-			this.package = package;
-			this.relationshipType = relationshipType;
-			this.sourceUri = sourceUri;
-			this.targetMode = targetMode;
-			this.targetUri = targetUri;
+			Id = id;
+			Package = package;
+			RelationshipType = relationshipType;
+			SourceUri = sourceUri;
+			TargetMode = targetMode;
+			TargetUri = targetUri;
 		}
 
 		public string Id {
-			get { return id; }
+			get; private set;
 		}
 		public Package Package {
-			get { return package; }
+			get; private set;
 		}
 		public string RelationshipType {
-			get { return relationshipType; }
+			get; private set;
 		}
 		public Uri SourceUri {
-			get { return sourceUri; }
+			get; private set;
 		}
 		public TargetMode TargetMode {
-			get { return targetMode; }
+			get; private set;
 		}
 		public Uri TargetUri  {
-			get { return targetUri; }
+			get; private set;
 		}
 	}
 }

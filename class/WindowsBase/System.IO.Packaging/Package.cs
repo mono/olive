@@ -32,9 +32,7 @@ namespace System.IO.Packaging {
 	public abstract class Package : IDisposable
 	{
 		private PackagePartCollection partsCollection = new PackagePartCollection ();
-		private int relationshipId;
 		private Dictionary<string, PackageRelationship> relationships = new Dictionary<string, PackageRelationship> ();
-		private bool streaming;
 		
 		private Uri Uri = new Uri ("/", UriKind.Relative);
 		
@@ -47,7 +45,7 @@ namespace System.IO.Packaging {
 		protected Package (FileAccess fileOpenAccess, bool streaming)
 		{
 			FileOpenAccess = fileOpenAccess;
-			this.streaming = streaming;
+			Streaming = streaming;
 		}
 
 		void IDisposable.Dispose ()
@@ -67,7 +65,15 @@ namespace System.IO.Packaging {
 		}
 
 		public PackageProperties PackageProperties {
-			get { throw new NotImplementedException (); }
+			get; private set;
+		}
+
+		private int RelationshipId {
+			get; set;
+		}
+
+		private bool Streaming {
+			get; set;
 		}
 
 		public void Close ()
@@ -185,11 +191,11 @@ namespace System.IO.Packaging {
 		{
 			while (true)
 			{
-				string s = relationshipId.ToString ();
+				string s = RelationshipId.ToString ();
 				if (!relationships.ContainsKey (s))
 					return s;
 				
-				relationshipId++;
+				RelationshipId++;
 			}
 		}
 

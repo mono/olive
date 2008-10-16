@@ -1,5 +1,11 @@
 2008-10-16  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/PackageRelationship.cs: Use automatic properties
+
+2008-10-16  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/FakePackage.cs: Updated the implementation so
 	it can be used in the NUnit tests
 
