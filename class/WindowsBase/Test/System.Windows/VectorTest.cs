@@ -31,6 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows {
 
 	[TestFixture]
+	[Category ("NotWorking")]
 	public class VectorTest
 	{
 		[Test]

@@ -60,6 +60,7 @@ namespace MonoTests.System.Windows {
 	}
 
 	[TestFixture]
+	[Category ("NotWorking")]
 	public class DependencyObjectTest {
 		[Test]
 		public void TestAttachedProperty()

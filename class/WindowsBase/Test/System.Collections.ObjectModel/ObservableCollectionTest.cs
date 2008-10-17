@@ -31,6 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Collections.ObjectModel {
 
 	[TestFixture]
+	[Category ("NotWorking")]
 	public class ObservableCollectionTest {
 		[Test]
 		public void InsertItem ()
