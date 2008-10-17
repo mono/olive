@@ -32,9 +32,9 @@ using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Actions {
 	
-	public class DoOperationBinderHelper<T> : BinderHelper<T, DoOperationAction> {
+	public class DoOperationBinderHelper<T> : BinderHelper<T, OldDoOperationAction> {
 
-		public DoOperationBinderHelper (CodeContext context, DoOperationAction action, object[] args) : base (context, action)
+		public DoOperationBinderHelper (CodeContext context, OldDoOperationAction action, object[] args) : base (context, action)
 		{
 			throw new NotImplementedException ();
 		}

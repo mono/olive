@@ -35,10 +35,10 @@ namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class BuiltinCallBinderHelper<T> : CallBinderHelper<T, CallAction>
+    public class BuiltinCallBinderHelper<T> : CallBinderHelper<T, OldCallAction>
     {
         
-        public BuiltinCallBinderHelper(CodeContext context, CallAction action, object[] args ) : base (context, action, args)
+        public BuiltinCallBinderHelper(CodeContext context, OldCallAction action, object[] args ) : base (context, action, args)
         {
         }
 

@@ -34,10 +34,10 @@ namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class DeleteMemberBinderHelper<T> : MemberBinderHelper<T, DeleteMemberAction>
+    public class DeleteMemberBinderHelper<T> : MemberBinderHelper<T, OldDeleteMemberAction>
     {
         
-        public DeleteMemberBinderHelper(CodeContext context, DeleteMemberAction action, object[] args ) : base (context, action, args)
+        public DeleteMemberBinderHelper(CodeContext context, OldDeleteMemberAction action, object[] args ) : base (context, action, args)
         {
         }
 

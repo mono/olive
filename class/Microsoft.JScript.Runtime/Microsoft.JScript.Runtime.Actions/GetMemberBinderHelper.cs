@@ -34,7 +34,7 @@ using Microsoft.JScript.Runtime.Calls;
 namespace Microsoft.JScript.Runtime.Actions {
 
 	public class GetMemberBinderHelper<T> : Microsoft.Scripting.Actions.GetMemberBinderHelper<T> {
-		public GetMemberBinderHelper (CodeContext context, GetMemberAction action, object[] args) : base (context, action, args)
+		public GetMemberBinderHelper (CodeContext context, OldGetMemberAction action, object[] args) : base (context, action, args)
 		{
 			throw new NotImplementedException ();
 		}

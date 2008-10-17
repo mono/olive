@@ -33,8 +33,8 @@ using Microsoft.JScript.Runtime.Calls;
 
 namespace Microsoft.JScript.Runtime.Actions {
 
-	public class SetMemberBinderHelper<T> : MemberBinderHelper<T, SetMemberAction> {
-		public SetMemberBinderHelper (CodeContext context, SetMemberAction action, object[] args) : base (context, action, args)
+	public class SetMemberBinderHelper<T> : MemberBinderHelper<T, OldSetMemberAction> {
+		public SetMemberBinderHelper (CodeContext context, OldSetMemberAction action, object[] args) : base (context, action, args)
 		{
 		}
 		public StandardRule<T> MakeRule ()

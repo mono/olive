@@ -34,10 +34,10 @@ namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class CreateInstanceBinderHelper<T> : CallBinderHelper<T, CreateInstanceAction>
+    public class CreateInstanceBinderHelper<T> : CallBinderHelper<T, OldCreateInstanceAction>
     {
         
-        public CreateInstanceBinderHelper(CodeContext context, CreateInstanceAction action, object[] args) : base(context, action, args)
+        public CreateInstanceBinderHelper(CodeContext context, OldCreateInstanceAction action, object[] args) : base(context, action, args)
         {
         }
 

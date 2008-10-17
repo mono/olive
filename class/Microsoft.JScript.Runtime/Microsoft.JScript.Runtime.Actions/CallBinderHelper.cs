@@ -34,7 +34,7 @@ namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class CallBinderHelper<T, ActionType> : BinderHelper<T, ActionType> where ActionType : CallAction
+    public class CallBinderHelper<T, ActionType> : BinderHelper<T, ActionType> where ActionType : OldCallAction
     {
         
         public CallBinderHelper(CodeContext context, ActionType action, object[] args ): base(context, action)
