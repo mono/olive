@@ -1,5 +1,16 @@
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
+	* WindowsBase_test.dll.sources:
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* Test/System.IO.Packaging/PackageTest.cs:
+	* Test/System.IO.Packaging/FakePackagePart.cs:
+	* Test/System.IO.Packaging/FakePackagePartTests.cs: Add more tests to
+	check the behaviour of PackagePart.GetStream () and also
+	PacakageParts which are automatically added.
+
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/FakePackageTests.cs: Added test to see what
 	parts are automatically added/removed
 

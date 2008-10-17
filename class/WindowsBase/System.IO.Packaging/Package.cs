@@ -211,7 +211,8 @@ namespace System.IO.Packaging {
 
 		public static Package Open (Stream stream, FileMode packageMode)
 		{
-			return Open (stream, packageMode, FileAccess.Read);
+			FileAccess access = packageMode == FileMode.Open ? FileAccess.Read : FileAccess.ReadWrite;
+			return Open (stream, packageMode, access);
 		}
 
 		public static Package Open (string path, FileMode packageMode)

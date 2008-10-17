@@ -29,27 +29,39 @@ using System.Collections.Generic;
 namespace System.IO.Packaging.Tests {
     
     class FakePackagePart : PackagePart {
+
+        public List<FileAccess> Accesses { get; private set; }
+        public List<FileMode> Modes { get; private set; }
+
         public FakePackagePart (Package package, Uri partUri)
             : base (package, partUri)
         {
-
+            Init ();
         }
 
         public FakePackagePart (Package package, Uri partUri, string contentType)
             : base(package, partUri, contentType)
         {
-
+            Init ();
         }
 
         public FakePackagePart (Package package, Uri partUri, string contentType, CompressionOption compressionOption)
             : base (package, partUri, contentType, compressionOption)
         {
+            Init ();
+        }
 
+        private void Init ()
+        {
+            Accesses = new List<FileAccess> ();
+            Modes = new List<FileMode> ();
         }
 
         protected override Stream GetStreamCore (FileMode mode, FileAccess access)
         {
-            throw new NotImplementedException ();
+            Accesses.Add (access);
+            Modes.Add (mode);
+            return new MemoryStream ();
         }
     }
 }

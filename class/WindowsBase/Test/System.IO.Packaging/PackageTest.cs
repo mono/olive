@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining
+// Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
@@ -34,13 +34,13 @@ namespace System.IO.Packaging.Tests {
     [TestFixture]
     public class PackageTest : TestBase {
 
-        static void Main (string [] args)
-        {
-            PackageTest t = new PackageTest ();
-            t.FixtureSetup ();
-            t.Setup ();
-            t.RelationshipPartGetStream ();
-        }
+        //static void Main (string [] args)
+        //{
+        //    PackageTest t = new PackageTest ();
+        //    t.FixtureSetup ();
+        //    t.Setup ();
+        //    t.RelationshipPartGetStream ();
+        //}
         string path = "test.package";
 
         public override void Setup ()
@@ -167,11 +167,13 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void RelationshipPartGetStream ()
         {
             package = Package.Open (path);
             package.CreateRelationship (uris [0], TargetMode.External, "rel");
             PackagePart p = package.GetPart (relationshipUri);
+            Assert.IsNotNull (p, "#0");
             Stream s = p.GetStream ();
             Assert.AreEqual (0, s.Length, "#1");
             Assert.IsTrue (s.CanRead, "#2");

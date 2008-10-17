@@ -33,8 +33,10 @@ namespace System.IO.Packaging {
 
 	public abstract class PackagePart
 	{
+		private string contentType;
 		private int relationshipId;
 		private Dictionary<string, PackageRelationship> relationships;
+		private Stream PartStream { get; set;  }
 		
 		protected PackagePart (Package package, Uri partUri)
 			: this(package, partUri, null)
@@ -67,7 +69,14 @@ namespace System.IO.Packaging {
 		}
 
 		public string ContentType {
-			get; private set;
+			get {
+				if (contentType == null && (contentType = GetContentTypeCore()) == null)
+					throw new NotSupportedException ("If contentType is not supplied in the constructor, GetContentTypeCore must be overridden");
+				return contentType;
+			}
+			private set {
+				contentType = value;
+			}
 		}
 
 		public Package Package {
@@ -76,6 +85,13 @@ namespace System.IO.Packaging {
 
 		public Uri Uri {
 			get; private set;
+		}
+
+		private void CheckIsRelationship ()
+		{
+			foreach (PackageRelationship r in Package.GetRelationships ())
+				if (r.TargetUri == Uri)
+					throw new InvalidOperationException ("A relationship cannot have relationships to other parts"); 
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)
@@ -102,26 +118,31 @@ namespace System.IO.Packaging {
 
 		public void DeleteRelationship (string id)
 		{
+			CheckIsRelationship ();
 			relationships.Remove (id);
 		}
 
 		public bool RelationshipExists (string id)
 		{
+			CheckIsRelationship ();
 			return relationships.ContainsKey (id);
 		}
 
 		public PackageRelationship GetRelationship (string id)
 		{
+			CheckIsRelationship ();
 			return relationships [id];
 		}
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
+			CheckIsRelationship ();
 			return new PackageRelationshipCollection (relationships.Values);
 		}
 
 		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
+			CheckIsRelationship ();
 			return new PackageRelationshipCollection (relationships.Values, delegate (PackageRelationship r) {
 				return r.RelationshipType == relationshipType;
 			});
@@ -129,24 +150,26 @@ namespace System.IO.Packaging {
 
 		public Stream GetStream ()
 		{
-			throw new NotImplementedException ();
+			// FIXME: Need to find out what kind of access the streams are usually opened with
+			// Appears to be read/write/seek == true.
+			return GetStream (Package.FileOpenAccess == FileAccess.Read ? FileMode.Open : FileMode.OpenOrCreate);
 		}
 
 		public Stream GetStream (FileMode mode)
 		{
-			throw new NotImplementedException ();
+			return GetStream (mode, Package.FileOpenAccess);
 		}
 
 		public Stream GetStream (FileMode mode, FileAccess access)
 		{
-			throw new NotImplementedException ();
+			return GetStreamCore (mode, access);
 		}
 
 		protected abstract Stream GetStreamCore (FileMode mode, FileAccess access);
 
 		protected virtual string GetContentTypeCore ()
 		{
-			throw new NotImplementedException ();
+			return null;
 		}
 
 		private string NextId ()

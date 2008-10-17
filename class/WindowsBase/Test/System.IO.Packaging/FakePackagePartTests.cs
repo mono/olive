@@ -32,19 +32,19 @@ namespace System.IO.Packaging.Tests {
     [TestFixture]
     public class FakePackagePartTests : TestBase {
 
-        //static void Main (string [] args)
-        //{
-        //    FakePackagePartTests t = new FakePackagePartTests ();
-        //    t.FixtureSetup ();
-        //    t.Setup ();
-        //    t.CreateRelationship2 ();
-        //}
+        static void Main (string [] args)
+        {
+            FakePackagePartTests t = new FakePackagePartTests ();
+            t.FixtureSetup ();
+            t.Setup ();
+            t.GetStream2 ();
+        }
 
         FakePackagePart part;
         public override void Setup ()
         {
             base.Setup ();
-            part = new FakePackagePart (package, uris [0]);
+            part = (FakePackagePart) new FakePackagePart(package, uris [0], contentType);
         }
 
         [Test]
@@ -160,7 +160,7 @@ namespace System.IO.Packaging.Tests {
             part.CreateRelationship (uris [2], TargetMode.Internal, "aaa", "asda");
         }
 
-		[Test]
+        [Test]
         public void EnumeratePartsBreak ()
         {
             FakePackage package = new FakePackage (FileAccess.ReadWrite, false);
@@ -182,6 +182,53 @@ namespace System.IO.Packaging.Tests {
             int count = 0;
             foreach (PackagePart p in c) { count++; }
             Assert.AreEqual (3, count, "Three added, one deleted, one added");
+        }
+
+        [Test]
+        public void GetStream1 ()
+        {
+            part.GetStream ();
+            Assert.AreEqual (FileMode.OpenOrCreate, part.Modes [0], "#1");
+            Assert.AreEqual (package.FileOpenAccess, part.Accesses [0], "#2");
+        }
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void PackagePartNoContentType ()
+        {
+            string s = new FakePackagePart (package, uris [0]).ContentType;
+        }
+
+        [Test]
+		[Category ("NotWorking")]
+        public void GetStream2 ()
+        {
+            package.CreatePart (uris[1], contentType);
+            package.Flush ();
+
+            using (Package p = Package.Open (new MemoryStream (stream.ToArray ()))) {
+                PackagePart part = new List<PackagePart>(p.GetParts ())[0];
+                Stream s = part.GetStream ();
+                Assert.IsTrue (s.CanRead, "#1");
+                Assert.IsTrue (s.CanSeek, "#2");
+                Assert.IsFalse (s.CanWrite, "#3");
+            }
+
+            using (Package p = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.OpenOrCreate)) {
+                PackagePart part = new List<PackagePart> (p.GetParts ()) [0];
+                Stream s = part.GetStream ();
+                Assert.IsTrue (s.CanRead, "#4");
+                Assert.IsTrue (s.CanSeek, "#5");
+                Assert.IsTrue (s.CanWrite, "#6");
+            }
+
+            using (Package p = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.OpenOrCreate, FileAccess.ReadWrite)) {
+                PackagePart part = new List<PackagePart> (p.GetParts ()) [0];
+                Stream s = part.GetStream ();
+                Assert.IsTrue (s.CanRead, "#7");
+                Assert.IsTrue (s.CanSeek, "#8");
+                Assert.IsTrue (s.CanWrite, "#9");
+            }
         }
     }
 }
