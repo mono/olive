@@ -136,23 +136,23 @@ namespace System.IO.Packaging.Tests {
         }
 
 		// Uncommenting this results in mono exploding...
-//        [Test]
-//        public void FlushThenTruncate ()
-//        {
-//            Parts [0].GetStream ().Write (buffer, 0, buffer.Length);
-//            package.Flush ();
-//            Assert.IsTrue (stream.Length > buffer.Length, "#1");
-//            
-//            Parts [0].GetStream ().SetLength (0);
-//            package.Flush ();
-//            Assert.IsTrue (stream.Length < buffer.Length, "#2");
-//
-//            long length = stream.Length;
-//            foreach (PackagePart p in package.GetParts ().ToArray ())
-//                package.DeletePart (p.Uri);
-//            package.Flush ();
-//
-//            Assert.IsTrue (stream.Length < length, "#3");
-//        }
+        [Test]
+        public void FlushThenTruncate ()
+        {
+            Parts [0].GetStream ().Write (buffer, 0, buffer.Length);
+            package.Flush ();
+            Assert.IsTrue (stream.Length > buffer.Length, "#1");
+            
+            Parts [0].GetStream ().SetLength (0);
+            package.Flush ();
+            Assert.IsTrue (stream.Length < buffer.Length, "#2");
+
+            long length = stream.Length;
+            foreach (PackagePart p in package.GetParts ().ToArray ())
+                package.DeletePart (p.Uri);
+            package.Flush ();
+
+            Assert.IsTrue (stream.Length < length, "#3");
+        }
     }
 }

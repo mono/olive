@@ -1,5 +1,10 @@
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Uncomment the test
+	as compiling with mono-head fixes the issue.
+
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/FakePackageTests.cs: Add missing license
 	header
 
