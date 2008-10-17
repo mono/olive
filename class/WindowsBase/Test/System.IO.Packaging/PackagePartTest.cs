@@ -86,13 +86,13 @@ namespace System.IO.Packaging.Tests {
         public void CheckPartRelationships ()
         {
             AddThreeParts ();
-            Assert.AreEqual (3, package.GetParts ().Count (), "#a");
+            Assert.AreEqual (4, package.GetParts ().Count (), "#a");
             PackagePart part = package.GetPart (uris [0]);
             PackageRelationship r1 = part.CreateRelationship (part.Uri, TargetMode.Internal, "self");
             PackageRelationship r2 = package.CreateRelationship (part.Uri, TargetMode.Internal, "fake");
             PackageRelationship r3 = package.CreateRelationship (new Uri ("/fake/uri", UriKind.Relative), TargetMode.Internal, "self");
 
-            Assert.AreEqual (5, package.GetParts ().Count (), "#b");
+            Assert.AreEqual (6, package.GetParts ().Count (), "#b");
             Assert.AreEqual (1, part.GetRelationships ().Count (), "#1");
             Assert.AreEqual (1, part.GetRelationshipsByType ("self").Count (), "#2");
             Assert.AreEqual (r1, part.GetRelationship (r1.Id), "#3");
@@ -100,7 +100,7 @@ namespace System.IO.Packaging.Tests {
             Assert.AreEqual (1, package.GetRelationshipsByType ("self").Count (), "#5");
             Assert.AreEqual (r3, package.GetRelationship (r3.Id), "#6");
 
-            Assert.AreEqual (5, package.GetParts ().Count (), "#c");
+            Assert.AreEqual (6, package.GetParts ().Count (), "#c");
             Assert.AreEqual (part.Uri, r1.SourceUri, "#7");
             Assert.AreEqual (new Uri ("/", UriKind.Relative), r3.SourceUri, "#8");
 
@@ -109,7 +109,7 @@ namespace System.IO.Packaging.Tests {
 
             PackageRelationshipCollection relations = package.GetPart (uris [2]).GetRelationships ();
             Assert.AreEqual (0, relations.Count ());
-            Assert.AreEqual (5, package.GetParts ().Count (), "#d");
+            Assert.AreEqual (6, package.GetParts ().Count (), "#d");
         }
 
         [Test]
