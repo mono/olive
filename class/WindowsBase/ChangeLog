@@ -1,5 +1,10 @@
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/FakePackageTests.cs: Make the test cover all
+	Relationship based methods
+
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/FakePackageTests.cs: Enable the
 	FakePackageTests
 

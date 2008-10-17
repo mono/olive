@@ -16,7 +16,7 @@ namespace System.IO.Packaging.Tests {
         //    t.Setup ();
         //    t.RelationshipPartGetStream ();
         //}
-		
+        
         private new FakePackage package;
         public override void Setup ()
         {
@@ -49,12 +49,52 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [ExpectedException(typeof(InvalidOperationException))]
         public void RelationshipPartGetRelationships ()
         {
             CheckAutomaticParts2 ();
             PackagePart p = package.GetPart (relationshipUri);
-            p.GetRelationships ();
+
+            try {
+                p.CreateRelationship (uris[0], TargetMode.Internal, "asdas");
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+
+            }
+
+            try {
+                p.DeleteRelationship("aa");
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+
+            }
+
+            try {
+                p.GetRelationship ("id");
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+
+            }
+
+            try {
+                p.GetRelationships ();
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+
+            }
+
+            try {
+                p.GetRelationshipsByType ("type");
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+
+            }
+            
+            try {
+                p.RelationshipExists ("id");
+                Assert.Fail ("This should fail");
+            } catch (InvalidOperationException) {
+                
+            }
         }
     }
 }
