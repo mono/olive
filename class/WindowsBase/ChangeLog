@@ -1,5 +1,16 @@
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/FakePackageTests.cs: Enable the
+	FakePackageTests
+
+	* System.IO.Packaging/Package.cs: Automatically add the relationship
+	PackagePart as per unit test.
+
+	* System.IO.Packaging/PackagePart.cs: A part which is a relationship
+	should throw when trying to access it's relationships.
+
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
 	* WindowsBase_test.dll.sources:
 	* System.IO.Packaging/Package.cs:
 	* System.IO.Packaging/PackagePart.cs:

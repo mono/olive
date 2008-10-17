@@ -31,6 +31,9 @@ namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
+		private static readonly string RelationshipContentType = "application/vnd.openxmlformats-package.relationships+xml";
+		private static readonly Uri RelationshipUri = new Uri ("/_rels/.rels", UriKind.Relative);
+		
 		private PackagePartCollection partsCollection = new PackagePartCollection ();
 		private Dictionary<string, PackageRelationship> relationships = new Dictionary<string, PackageRelationship> ();
 		
@@ -56,7 +59,6 @@ namespace System.IO.Packaging {
 
 		protected virtual void Dispose (bool disposing)
 		{
-
 			// Nothing here needs to be disposed of
 		}
 
@@ -132,8 +134,12 @@ namespace System.IO.Packaging {
 
 			if (id == null)
 				id = NextId ();
-			
+
 			PackageRelationship r = new PackageRelationship (id, this, relationshipType, Uri, targetMode, targetUri);
+
+			if (!PartExists (RelationshipUri))
+				CreatePart (RelationshipUri, RelationshipContentType).IsRelationship = true;
+
 			relationships.Add (r.Id, r);
 			return r;
 		}

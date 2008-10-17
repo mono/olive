@@ -34,6 +34,7 @@ namespace System.IO.Packaging {
 	public abstract class PackagePart
 	{
 		private string contentType;
+		internal bool IsRelationship { get; set; } 
 		private int relationshipId;
 		private Dictionary<string, PackageRelationship> relationships;
 		private Stream PartStream { get; set;  }
@@ -89,9 +90,8 @@ namespace System.IO.Packaging {
 
 		private void CheckIsRelationship ()
 		{
-			foreach (PackageRelationship r in Package.GetRelationships ())
-				if (r.TargetUri == Uri)
-					throw new InvalidOperationException ("A relationship cannot have relationships to other parts"); 
+			if (IsRelationship)
+				throw new InvalidOperationException ("A relationship cannot have relationships to other parts"); 
 		}
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType)

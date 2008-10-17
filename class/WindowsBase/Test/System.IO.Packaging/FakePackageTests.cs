@@ -1,11 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-    class FakePackageTests : TestBase {
+
+    [TestFixture]
+    public class FakePackageTests : TestBase {
 
         //static void Main (string [] args)
         //{
@@ -14,6 +16,7 @@ namespace System.IO.Packaging.Tests {
         //    t.Setup ();
         //    t.RelationshipPartGetStream ();
         //}
+		
         private new FakePackage package;
         public override void Setup ()
         {
