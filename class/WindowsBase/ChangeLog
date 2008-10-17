@@ -1,5 +1,14 @@
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/FakePackageTests.cs: Add missing license
+	header
+
+	* WindowsBase_test.dll.sources:
+	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Added new tests
+	for the PackagePart stream code
+
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.IO.Packaging/FakePackageTests.cs: Make the test cover all
 	Relationship based methods
 

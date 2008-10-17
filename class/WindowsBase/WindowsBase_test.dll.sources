@@ -4,6 +4,7 @@ System.IO.Packaging/FakePackagePart.cs
 System.IO.Packaging/FakePackagePartTests.cs
 System.IO.Packaging/FakePackageTests.cs
 System.IO.Packaging/FakeStream.cs
+System.IO.Packaging/PackagePartStreamTests.cs
 System.IO.Packaging/PackagePartTest.cs
 System.IO.Packaging/PackageRelationshipTests.cs
 System.IO.Packaging/PackageTest.cs
