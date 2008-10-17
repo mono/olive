@@ -1,3 +1,20 @@
+2008-10-17  Alan McGovern  <amcgovern@novell.com>
+
+	* Test/System.IO.Packaging/FakePackageTests.cs: Added test to see what
+	parts are automatically added/removed
+
+	* Test/System.IO.Packaging/TestBase.cs:
+	* Test/System.IO.Packaging/FakeStream.cs:
+	* Test/System.IO.Packaging/PackageTest.cs:
+	* Test/System.IO.Packaging/FakePackagePart.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs:
+	* Test/System.IO.Packaging/FakePackagePartTests.cs:
+	* Test/System.IO.Packaging/PackageRelationshipTests.cs: fixing
+	whitespace
+
+	* Test/System.IO.Packaging/FakePackage.cs: Monitor what parts are
+	added/removed from the package.
+
 2008-10-16  Alan McGovern  <amcgovern@novell.com>
 
 	* System.IO.Packaging/Package.cs:

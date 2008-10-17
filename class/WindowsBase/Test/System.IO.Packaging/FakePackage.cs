@@ -30,39 +30,46 @@ using System.Collections.Generic;
 namespace System.IO.Packaging.Tests {
 	
     public class FakePackage : Package {
-        Dictionary<Uri, PackagePart> parts = new Dictionary<Uri, PackagePart> ();
+        Dictionary<Uri, PackagePart> Parts { get; set; }
+        public List<Uri> CreatedParts { get; private set; }
+        public List<Uri> DeletedParts { get; private set; }
+
         public FakePackage (FileAccess access, bool streaming)
             : base (access, streaming)
         {
-            
+            CreatedParts = new List<Uri> ();
+            DeletedParts = new List<Uri> ();
+            Parts = new Dictionary<Uri, PackagePart> ();
         }
 
         protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
         {
             FakePackagePart p = new FakePackagePart (this, partUri, contentType, compressionOption);
-            parts.Add (p.Uri, p);
+            Parts.Add (p.Uri, p);
+            CreatedParts.Add (partUri);
             return p;
         }
 
         protected override void DeletePartCore (Uri partUri)
         {
-            parts.Remove (partUri);
+            DeletedParts.Add (partUri);
+            Parts.Remove (partUri);
         }
 
         protected override void FlushCore ()
         {
             throw new NotImplementedException ();
         }
-
+        
         protected override PackagePart GetPartCore (Uri partUri)
         {
-            return parts.ContainsKey(partUri) ?  parts [partUri] : null;
+            return Parts.ContainsKey(partUri) ?  Parts [partUri] : null;
         }
 
         protected override PackagePart [] GetPartsCore ()
         {
-            PackagePart [] p = new PackagePart [parts.Count];
-            parts.Values.CopyTo (p, 0);
+            PackagePart [] p = new PackagePart [Parts.Count];
+            Parts.Values.CopyTo (p, 0);
             return p;
         }
     }

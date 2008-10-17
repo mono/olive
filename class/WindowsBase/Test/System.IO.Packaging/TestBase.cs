@@ -32,7 +32,10 @@ using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
     public abstract class TestBase {
+
+        protected string contentType = "mime/type";
         protected Package package;
+        protected Uri relationshipUri = new Uri ("/_rels/.rels", UriKind.Relative);
         protected FakeStream stream;
         protected Uri [] uris = { new Uri("/file1.png", UriKind.Relative),
                        new Uri("/file2.png", UriKind.Relative),

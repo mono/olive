@@ -1,4 +1,4 @@
-// Permission is hereby granted, free of charge, to any person obtaining
+﻿// Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
@@ -31,9 +31,18 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-
     [TestFixture]
+    [Category ("NotWorking")]
     public class PackagePartTest : TestBase {
+
+        //static void Main (string [] args)
+        //{
+        //    PackagePartTest t = new PackagePartTest ();
+        //    t.FixtureSetup ();
+        //    t.Setup ();
+
+        //    t.AddThreeParts ();
+        //}
         [Test]
         [ExpectedException (typeof (ArgumentException))]
         public void AddAbsoluteUri ()
@@ -42,7 +51,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Ignore ("I don't know how to replicate this behaviour, or if it's worth it. It's very broken")]
         public void AddInvalidPartTwice ()
         {
             try {
@@ -68,6 +76,10 @@ namespace System.IO.Packaging.Tests {
                 package.CreatePart (u, "mime/type");
 
             Assert.AreEqual (3, package.GetParts ().Count (), "Should be three parts");
+            PackagePartCollection c1 = package.GetParts ();
+            package.CreatePart (new Uri ("/asdasdas", UriKind.Relative), "asa/s");
+            PackagePartCollection c2 = package.GetParts ();
+            bool eq = c1 == c2;
         }
 
         [Test]
@@ -82,7 +94,6 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
         public void CheckPartRelationships ()
         {
             AddThreeParts ();
@@ -114,7 +125,6 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
-        [Category ("NotWorking")]
         public void DeletePartsAfterAddingRelationships ()
         {
             CheckPartRelationships ();
@@ -124,7 +134,6 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
-        [Category ("NotWorking")]
         public void DeleteRelsThenParts ()
         {
             CheckPartRelationships ();

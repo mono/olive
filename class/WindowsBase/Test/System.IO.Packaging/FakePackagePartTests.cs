@@ -32,13 +32,13 @@ namespace System.IO.Packaging.Tests {
     [TestFixture]
     public class FakePackagePartTests : TestBase {
 
-        static void Main (string [] args)
-        {
-            FakePackagePartTests t = new FakePackagePartTests ();
-            t.FixtureSetup ();
-            t.Setup ();
-            t.CreateRelationship2 ();
-        }
+        //static void Main (string [] args)
+        //{
+        //    FakePackagePartTests t = new FakePackagePartTests ();
+        //    t.FixtureSetup ();
+        //    t.Setup ();
+        //    t.CreateRelationship2 ();
+        //}
 
         FakePackagePart part;
         public override void Setup ()
