@@ -30,11 +30,14 @@ using System;
 using Microsoft.Scripting;
 using System.Collections;
 using System.Collections.Generic;
+using System.Scripting.Actions;
 using Microsoft.Scripting.Actions;
+using Microsoft.Scripting.Runtime;
+using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime.Types
 {
-	public class BoundFunctionObject : IAttributesCollection, IConstructorWithCodeContext, ICustomMembers, IDynamicObject
+	public class BoundFunctionObject : IAttributesCollection, IMembersList, IDynamicObject, IOldDynamicObject
 	{
 		private readonly FunctionObject _function;
 		private readonly JSObject _instance;
@@ -110,36 +113,25 @@ namespace Microsoft.JScript.Runtime.Types
 			throw new NotImplementedException ();
 		}
 
-
-		public IDictionary<object, object>  GetCustomMemberDictionary(CodeContext context)
-		{
-			throw new NotImplementedException ();
-		}
-
-
 		public IEnumerator<KeyValuePair<object, object>>  GetEnumerator ()
 		{
 			throw new NotImplementedException ();
 		}
-
 
 		public object GetItem(object name)
 		{
 			throw new NotImplementedException ();
 		}
 
-
 		public IList<object>  GetMemberNames(CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}
 
-
-		public StandardRule<T>  GetRule<T >(DynamicAction action, CodeContext context, object[] args)
+		public RuleBuilder<T>  GetRule<T >(OldDynamicAction action, CodeContext context, object[] args) where T: class
 		{
 			throw new NotImplementedException ();
 		}
-
 
 	   	void IAttributesCollection.Add(SymbolId name, object value)
 		{

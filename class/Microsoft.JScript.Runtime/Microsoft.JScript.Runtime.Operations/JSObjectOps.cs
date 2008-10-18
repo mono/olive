@@ -29,6 +29,8 @@
 using System;
 using Microsoft.Scripting;
 using System.Runtime.CompilerServices;
+using Microsoft.JScript.Runtime.Types;
+using System.Scripting;
 
 namespace Microsoft.JScript.Runtime.Operations {
 

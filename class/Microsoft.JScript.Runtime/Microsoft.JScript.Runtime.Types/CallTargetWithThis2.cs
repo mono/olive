@@ -1,7 +1,7 @@
-// FunctionObjectWithThis2.cs
+// CallTargetWithThis2.cs
 //
 // Authors:
-//   Olivier Dufour <olivier.duff@gmail.com>
+//	Olivier Dufour <olivier.duff@gmail.com>
 //
 // Copyright (C) 2008 Olivier Dufour
 //
@@ -25,32 +25,8 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 //
+
 using System;
-using Microsoft.Scripting;
-using Microsoft.Scripting.Ast;
-using Microsoft.Scripting.Actions;
-using Microsoft.Scripting.Runtime;
-
-namespace Microsoft.JScript.Runtime.Types
-{
-    
-    
-    public class FunctionObjectWithThis2 : FunctionObjectWithThis
-    {
-        private CallTargetWithThis2 callTarget;
-
-        public FunctionObjectWithThis2 (CodeContext context, string name, CallTargetWithThis2 callTarget, string[] argNames, bool isStandardConstructor) : base (context, name, argNames, isStandardConstructor )
-        {
-		this.callTarget = callTarget;
-        }
-
-	public override object Call (CodeContext context, object instance, object [] args)
-	{
-		throw new NotImplementedException ();
-	}
-	
-	public override Delegate Target {
-		get { return callTarget; }
-	}
-    }
+namespace Microsoft.JScript.Runtime.Types {
+	public delegate object CallTargetWithThis2 (object instance, object arg0, object arg1);
 }

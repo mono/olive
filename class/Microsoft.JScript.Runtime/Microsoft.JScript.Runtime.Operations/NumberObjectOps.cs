@@ -29,289 +29,291 @@
 using System;
 using Microsoft.Scripting;
 using System.Runtime.CompilerServices;
+using Microsoft.JScript.Runtime.Types;
+using System.Scripting;
 
 namespace Microsoft.JScript.Runtime.Operations {
 
 	public static class NumberObjectOps {
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, bool y)
+		public static double op_Addition ([NotNull] NumberObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, double y)
+		public static double op_Addition ([NotNull] NumberObject x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, None y)
+		public static double op_Addition ([NotNull] NumberObject x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, [NotNull] JSBooleanObject y)
+		public static double op_Addition ([NotNull] NumberObject x, [NotNull] JSBooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, [NotNull] JSNumberObject y)
+		public static double op_Addition ([NotNull] NumberObject x, [NotNull] NumberObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string op_Addition ([NotNull] JSNumberObject x, [NotNull] JSObject y)
+		public static string op_Addition ([NotNull] NumberObject x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
+		public static double op_Addition ([NotNull] NumberObject x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static ConcatString op_Addition ([NotNull] JSNumberObject x, [NotNull] ConcatString y)
+		public static ConcatString op_Addition ([NotNull] NumberObject x, [NotNull] ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static ConcatString op_Addition ([NotNull] JSNumberObject x, [NotNull] string y)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, bool y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, double y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, None y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, [NotNull] JSObject y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_Equality ([NotNull] JSNumberObject x, [NotNull] string y)
+		public static ConcatString op_Addition ([NotNull] NumberObject x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, bool y)
+		public static bool op_Equality ([NotNull] NumberObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, double y)
+		public static bool op_Equality ([NotNull] NumberObject x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, None y)
+		public static bool op_Equality ([NotNull] NumberObject x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, [NotNull] JSObject y)
+		public static bool op_Equality ([NotNull] NumberObject x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
+		public static bool op_Equality ([NotNull] NumberObject x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_GreaterThan ([NotNull] JSNumberObject x, [NotNull] string y)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, bool y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, double y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, None y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, [NotNull] JSObject y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_GreaterThanOrEqual ([NotNull] JSNumberObject x, [NotNull] string y)
+		public static bool op_Equality ([NotNull] NumberObject x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, bool y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, double y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, None y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, [NotNull] JSObject y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_LessThan ([NotNull] JSNumberObject x, [NotNull] string y)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, bool y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, double y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, None y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, [NotNull] JSObject y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
-		{
-			throw new NotImplementedException ();
-		}
-
-		[SpecialName]
-		public static bool op_LessThanOrEqual ([NotNull] JSNumberObject x, [NotNull] string y)
+		public static bool op_GreaterThan ([NotNull] NumberObject x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, bool y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, double y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, int y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, None y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, [NotNull] JSObject y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, [NotNull] UnDefined y)
+		public static bool op_GreaterThanOrEqual ([NotNull] NumberObject x, [NotNull] string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThan ([NotNull] NumberObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static bool op_Inequality ([NotNull] JSNumberObject x, [NotNull] string y)
+		public static bool op_LessThan ([NotNull] NumberObject x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThan ([NotNull] NumberObject x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThan ([NotNull] NumberObject x, [NotNull] JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThan ([NotNull] NumberObject x, [NotNull] UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThan ([NotNull] NumberObject x, [NotNull] string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, [NotNull] JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, [NotNull] UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_LessThanOrEqual ([NotNull] NumberObject x, [NotNull] string y)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, bool y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, double y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, int y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, None y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, [NotNull] JSObject y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, [NotNull] UnDefined y)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[SpecialName]
+		public static bool op_Inequality ([NotNull] NumberObject x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}

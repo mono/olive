@@ -28,11 +28,12 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class NumberPrototype : JSNumberObject {
+	public class NumberPrototype : NumberObject {
 
 		public NumberPrototype (CodeContext context, JSObject prototype)
 			: base (prototype, 0d)

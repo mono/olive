@@ -29,6 +29,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Scripting;
+using Microsoft.JScript.Runtime.Types;
+using System.Scripting;
 
 namespace Microsoft.JScript.Runtime.Operations
 {
@@ -37,13 +39,13 @@ namespace Microsoft.JScript.Runtime.Operations
 	public static class DecimalOps
 	{
  		[SpecialName]
-		public static double op_Addition (decimal x, JSBooleanObject y)
+		public static double op_Addition (decimal x, BooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition(decimal x, JSNumberObject y)
+		public static double op_Addition(decimal x, NumberObject y)
 		{
 			throw new NotImplementedException ();
 		}

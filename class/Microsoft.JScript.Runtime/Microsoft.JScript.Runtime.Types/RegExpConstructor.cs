@@ -28,6 +28,7 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -54,12 +55,12 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSRegExpObject CreateInstance (CodeContext context, params object [] args)
+		public static RegExpObject CreateInstance (CodeContext context, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static JSRegExpObject Invoke (CodeContext context, params object [] args)
+		public static RegExpObject Invoke (CodeContext context, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}

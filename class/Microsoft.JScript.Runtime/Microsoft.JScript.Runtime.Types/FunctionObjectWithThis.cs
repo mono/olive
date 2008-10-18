@@ -30,6 +30,8 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Actions;
+using Microsoft.Scripting.Runtime;
+using System.Linq.Expressions;
 
 namespace Microsoft.JScript.Runtime.Types
 {
@@ -48,12 +50,12 @@ namespace Microsoft.JScript.Runtime.Types
 	{
 	}
 
-	protected override Expression[] CreateArguments<T> (StandardRule<T> rule, int hasInstance, Expression[] preArgs)
+	protected override Expression[] CreateArguments<T> (RuleBuilder<T> rule, int hasInstance, Expression[] preArgs)
 	{
 		throw new NotImplementedException ();
 	}
 
-	protected internal override Expression[] GetArgumentsForRule<T> (Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, CallAction> callHelper)
+	protected internal override Expression[] GetArgumentsForRule<T> (Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, OldCallAction> callHelper)
 	{
 		throw new NotImplementedException ();
 	}

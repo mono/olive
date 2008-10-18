@@ -5,6 +5,7 @@ LIBRARY = Microsoft.JScript.Runtime.dll
 
 LIB_MCS_FLAGS = \
 	-r:/home/dufoli/MS\ SILVERLIGHT/Microsoft.Scripting.dll \
+	-r:/home/dufoli/MS\ SILVERLIGHT/Microsoft.Scripting.Core.dll \
 	-r:../lib/net_2_1/Microsoft.JScript.Compiler.dll \
 	-r:System.dll
 

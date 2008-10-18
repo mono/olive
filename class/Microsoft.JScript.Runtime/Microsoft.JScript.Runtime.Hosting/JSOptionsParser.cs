@@ -28,12 +28,13 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Hosting.Shell;
 
 namespace Microsoft.JScript.Runtime.Hosting
 {
     
     
-    public class JSOptionsParser : OptionsParser
+    public class JSOptionsParser : OptionsParser<JSConsoleOptions>
     {
         private JSConsoleOptions consoleOptions;
         private JSEngineOptions engineOptions;

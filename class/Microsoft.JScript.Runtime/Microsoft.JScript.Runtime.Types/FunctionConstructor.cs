@@ -28,10 +28,11 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
-	public class FunctionConstructor : JSFunctionObject {
+	public class FunctionConstructor : FunctionObject {
 
 		public FunctionConstructor (CodeContext context) : base (context, "", new string []{}, true )
 		{

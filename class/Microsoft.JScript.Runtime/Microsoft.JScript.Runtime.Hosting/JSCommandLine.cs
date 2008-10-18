@@ -32,7 +32,7 @@ using System.IO;
 
 namespace Microsoft.JScript.Runtime.Hosting
 {
-	public sealed class JSCommandLine : Microsoft.Scripting.Shell.CommandLine
+	public sealed class JSCommandLine : Microsoft.Scripting.Hosting.Shell.CommandLine
 	{
 		public JSCommandLine ()
 		{

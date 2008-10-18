@@ -31,7 +31,7 @@ using System.Text;
 
 namespace Microsoft.JScript.Runtime.Hosting
 {
-	public sealed class JSConsoleOptions : Microsoft.Scripting.Shell.ConsoleOptions
+	public sealed class JSConsoleOptions : Microsoft.Scripting.Hosting.Shell.ConsoleOptions
 	{
 		public JSConsoleOptions()
 		{

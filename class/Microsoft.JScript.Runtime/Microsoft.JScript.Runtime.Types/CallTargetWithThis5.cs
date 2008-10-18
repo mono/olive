@@ -1,7 +1,7 @@
-// UndefinedCompilerConstant.cs
+// CallTargetWithThis5.cs
 //
 // Authors:
-//   Olivier Dufour <olivier.duff@gmail.com>
+//	Olivier Dufour <olivier.duff@gmail.com>
 //
 // Copyright (C) 2008 Olivier Dufour
 //
@@ -27,31 +27,6 @@
 //
 
 using System;
-using Microsoft.Scripting;
-using Microsoft.Scripting.Generation;
-
 namespace Microsoft.JScript.Runtime.Types {
-	public class UndefinedCompilerConstant : CompilerConstant {
-		public UndefinedCompilerConstant ()
-		{
-		}
-
-		public override object Create ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override void EmitCreation (ILGen cg)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override string Name {
-			get { throw new NotImplementedException (); }
-		}
-
-		public override Type Type {
-			get { throw new NotImplementedException (); }
-		}
-	}
+	public delegate object CallTargetWithThis5 (object instance, object arg0, object arg1, object arg2, object arg3, object arg4);
 }

@@ -32,6 +32,7 @@ using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
+using Microsoft.JScript.Runtime;
 
 namespace Microsoft.JScript.Compiler
 {

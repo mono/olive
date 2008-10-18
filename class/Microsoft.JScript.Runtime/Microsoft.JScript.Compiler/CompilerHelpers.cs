@@ -28,6 +28,7 @@
 using System;
 using System.Collections;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Compiler {
 

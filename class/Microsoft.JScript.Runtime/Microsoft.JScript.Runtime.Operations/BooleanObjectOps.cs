@@ -27,63 +27,64 @@
 //
 
 using System;
-using Microsoft.Scripting;
+using System.Scripting;
 using System.Runtime.CompilerServices;
+using Microsoft.JScript.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime.Operations {
 
 	public static class BooleanObjectOps {
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, bool y)
+		public static double op_Addition ([NotNull] BooleanObject x, bool y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, double y)
+		public static double op_Addition ([NotNull] BooleanObject x, double y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, None y)
+		public static double op_Addition ([NotNull] BooleanObject x, None y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, [NotNull] JSBooleanObject y)
+		public static double op_Addition ([NotNull] BooleanObject x, [NotNull] BooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, [NotNull] JSNumberObject y)
+		public static double op_Addition ([NotNull] BooleanObject x, [NotNull] NumberObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string op_Addition ([NotNull] JSBooleanObject x, [NotNull] JSObject y)
+		public static string op_Addition ([NotNull] BooleanObject x, [NotNull] JSObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] JSBooleanObject x, [NotNull] UnDefined y)
+		public static double op_Addition ([NotNull] BooleanObject x, [NotNull] UnDefined y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string op_Addition ([NotNull] JSBooleanObject x, [NotNull] string y)
+		public static string op_Addition ([NotNull] BooleanObject x, [NotNull] string y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static string op_Addition ([NotNull] JSBooleanObject x, [NotNull] ConcatString y)
+		public static string op_Addition ([NotNull] BooleanObject x, [NotNull] ConcatString y)
 		{
 			throw new NotImplementedException ();
 		}

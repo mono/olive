@@ -31,7 +31,6 @@ using System.Text;
 using Microsoft.JScript.Compiler;
 using Microsoft.JScript.Compiler.ParseTree;
 using MSA = Microsoft.Scripting.Ast;
-using Microsoft.JScript.Runtime.AstConverter;
 namespace Microsoft.JScript.Compiler
 {
 	public class Compiler

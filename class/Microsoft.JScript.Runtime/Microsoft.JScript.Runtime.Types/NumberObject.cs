@@ -34,8 +34,7 @@ using Microsoft.Scripting;
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class NumberObject : JSObject, IAttributesCollection, ICustomMembers, IEnumerable,
-		IEnumerable<KeyValuePair<object, object>> {
+	public class NumberObject : JSObject {
 
 		public NumberObject (JSObject prototype, double val)
 			: base (prototype)

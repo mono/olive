@@ -28,6 +28,8 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
+using Microsoft.JScript.Runtime.Errors;
 
 namespace Microsoft.JScript.Runtime.Types {
 

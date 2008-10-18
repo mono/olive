@@ -30,19 +30,22 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
 using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Runtime;
+using System.Linq.Expressions;
+using Microsoft.JScript.Runtime.Actions;
 
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
 	public class FunctionObjectWithRuntimeContext : FunctionObject {
 
-		public FunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
+		public FunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetEval callTarget,
 						    string [] argNames, bool isStandardConstructor)
 			: base (context, name, argNames, isStandardConstructor)
 		{
 		}
 
-		internal FunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetWithContextN callTarget,
+		internal FunctionObjectWithRuntimeContext (CodeContext context, string name, CallTargetEval callTarget,
 						    string [] argNames, bool isStandardConstructor, bool callWithRuntimeContext)
 			: base (context, name, argNames, isStandardConstructor)
 		{
@@ -53,7 +56,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			return base.Call (context, instance, args);
 		}
 
-		protected internal override Expression [] GetArgumentsForRule<T> (Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, CallAction> callhelper)
+		protected internal override Expression [] GetArgumentsForRule<T> (Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, OldCallAction> callhelper)
 		{
 			return base.GetArgumentsForRule<T> (callhelper);
 		}

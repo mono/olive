@@ -28,6 +28,7 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -138,7 +139,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSArrayObject split (CodeContext context, object thisob, object separator, object limit)
+		public static ArrayObject split (CodeContext context, object thisob, object separator, object limit)
 		{
 			throw new NotImplementedException ();
 		}

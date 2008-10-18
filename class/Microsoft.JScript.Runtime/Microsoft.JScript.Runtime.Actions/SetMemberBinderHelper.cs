@@ -29,7 +29,6 @@
 using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
-using Microsoft.JScript.Runtime.Calls;
 
 namespace Microsoft.JScript.Runtime.Actions {
 

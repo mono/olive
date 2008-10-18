@@ -28,10 +28,11 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
-	public class NumberConstructor : JSFunctionObject {
+	public class NumberConstructor : FunctionObject {
 
 		public const double MAX_VALUE = double.MaxValue;
 		public const double MIN_VALUE = 4.94065645841247E-324;

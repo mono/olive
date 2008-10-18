@@ -31,6 +31,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -51,7 +52,7 @@ namespace Microsoft.JScript.Runtime.Types {
 
 		public static readonly string DefaultJoinSeparator;
 
-		public static JSArrayObject concat (CodeContext context, object thisob, params object [] args)
+		public static ArrayObject concat (CodeContext context, object thisob, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}
@@ -81,7 +82,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSArrayObject slice (CodeContext context, object thisob, double start, object end)
+		public static ArrayObject slice (CodeContext context, object thisob, double start, object end)
 		{
 			throw new NotImplementedException ();
 		}
@@ -91,7 +92,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSArrayObject splice (CodeContext context, object thisob, double start, double deleteCnt,
+		public static ArrayObject splice (CodeContext context, object thisob, double start, double deleteCnt,
 						    params object [] args)
 		{
 			throw new NotImplementedException ();

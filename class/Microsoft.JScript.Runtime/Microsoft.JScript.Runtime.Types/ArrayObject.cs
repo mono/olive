@@ -31,12 +31,12 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class ArrayObject : JSObject, IAttributesCollection, ICustomMembers, IEnumerable,
-		IEnumerable<KeyValuePair<object, object>> {
+	public class ArrayObject : JSObject {
 
 		internal ArrayObject ()
 			: base (null)
@@ -45,7 +45,7 @@ namespace Microsoft.JScript.Runtime.Types {
 
 		public override IDictionary<object, object> AsObjectKeyedDictionary ()
 		{
-			throw new NotImplementedException ();
+			return base.AsObjectKeyedDictionary ();
 		}
 
 		public override bool DeleteItem (SymbolId name)
@@ -59,11 +59,6 @@ namespace Microsoft.JScript.Runtime.Types {
 		}
 
 		public override string GetClassName ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}
@@ -109,7 +104,7 @@ namespace Microsoft.JScript.Runtime.Types {
 		}
 
 		protected void SpliceSlowly (CodeContext context, uint start, uint deleteCount, object [] args,
-					     JSArrayObject outArray, uint oldLength, uint newLength)
+					     ArrayObject outArray, uint oldLength, uint newLength)
 		{
 			throw new NotImplementedException ();
 		}

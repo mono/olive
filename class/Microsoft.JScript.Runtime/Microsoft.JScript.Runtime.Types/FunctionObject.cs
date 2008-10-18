@@ -30,11 +30,13 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Actions;
+using Microsoft.Scripting.Runtime;
+using System.Linq.Expressions;
 
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class FunctionObject : JSObject, IConstructorWithCodeContext {
+	public class FunctionObject : JSObject {
 
 		public FunctionObject (CodeContext context, string name, CallTargetN callTarget,
 					 string [] argNames, bool isStandardConstructor)
@@ -71,7 +73,7 @@ namespace Microsoft.JScript.Runtime.Types {
 
 		public object Call (CodeContext context, object [] args)
 		{
-			return Call (context, null, args);
+			return Call (context, JSOps.GetGlobalObject(context), args);
 		}
 
 		public static object construct (CodeContext context, object self, params object [] arguments)
@@ -104,20 +106,20 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public override StandardRule<T> GetRule<T> (DynamicAction action, CodeContext context, object [] args)
+		public override RuleBuilder<T> GetRule<T> (OldDynamicAction action, CodeContext context, object [] args) where T : class
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static JSFunctionObject MakeFunction (CodeContext context, string name,
+		public static FunctionObject MakeFunction (CodeContext context, string name,
 							     Delegate target, string [] argNames, bool isStandardConstructor,
 							     bool usesArguments)
 		{
 			//usesArguments
-			return new JSFunctionObject (context, name, (CallTargetN)target, argNames, isStandardConstructor);
+			return new FunctionObject (context, name, (CallTargetN)target, argNames, isStandardConstructor);
 		}
 
-		public static JSFunctionObject MakeFunction (CodeContext context, string name,
+		public static FunctionObject MakeFunction (CodeContext context, string name,
 			Delegate target, string [] argNames, bool isStandardConstructor)
 		{
 			return MakeFunction (context, name, (CallTargetN)target, argNames, isStandardConstructor, false);

@@ -28,6 +28,7 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -43,7 +44,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSArrayObject Construct (CodeContext context)
+		public static ArrayObject Construct (CodeContext context)
 		{
 			throw new NotImplementedException ();
 		}
@@ -53,7 +54,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public static JSArrayObject CreateInstance (CodeContext context, params object [] args)
+		public static ArrayObject CreateInstance (CodeContext context, params object [] args)
 		{
 			throw new NotImplementedException ();
 		}

@@ -28,8 +28,9 @@
 
 
 using System;
-using Microsoft.Scripting;
+using System.Scripting;
 using System.Runtime.CompilerServices;
+using Microsoft.JScript.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime.Operations {
 
@@ -54,13 +55,13 @@ namespace Microsoft.JScript.Runtime.Operations {
 		}
 
 		[SpecialName]
-		public static double op_Addition (None x, [NotNull] JSBooleanObject y)
+		public static double op_Addition (None x, [NotNull] BooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}
 
 		[SpecialName]
-		public static double op_Addition (None x, [NotNull] JSNumberObject y)
+		public static double op_Addition (None x, [NotNull] NumberObject y)
 		{
 			throw new NotImplementedException ();
 		}

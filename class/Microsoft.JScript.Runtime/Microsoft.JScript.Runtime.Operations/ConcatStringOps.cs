@@ -29,6 +29,8 @@
 using System;
 using System.Runtime.CompilerServices;
 using Microsoft.Scripting;
+using Microsoft.JScript.Runtime.Types;
+using System.Scripting;
 
 namespace Microsoft.JScript.Runtime.Operations
 {
@@ -36,13 +38,13 @@ namespace Microsoft.JScript.Runtime.Operations
 	{
 
 		[SpecialName]
-		public static ConcatString op_Addition (ConcatString x, JSBooleanObject y)
+		public static ConcatString op_Addition (ConcatString x, BooleanObject y)
 		{
 			return new ConcatString(x, Convert.ToString(y));
 		}
 
 		[SpecialName]
-		public static ConcatString op_Addition(ConcatString x, JSNumberObject y)
+		public static ConcatString op_Addition(ConcatString x, NumberObject y)
 		{
 			throw new NotImplementedException ();
 		}

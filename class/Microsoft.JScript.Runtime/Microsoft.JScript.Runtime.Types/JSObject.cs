@@ -31,45 +31,132 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Text;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
+using System.Scripting.Actions;
 using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Types {
 
 	[Serializable]
-	public class JSObject : IAttributesCollection, ICustomMembers, IDynamicObject {
+	public class JSObject : IAttributesCollection, IMembersList, IOldDynamicObject, IDynamicObject {
 		
 		internal JSObject prototype;
-		private Dictionary<SymbolId, object> members;
+		private SymbolDictionnary members;
 
 		public JSObject (JSObject prototype)
 		{
 			this.prototype = prototype;
-			members = new Dictionary<SymbolId, object> ();
+			members = new SymbolDictionnary ();
 		}
 
+#region put
 		void IAttributesCollection.Add (SymbolId name, object value)
 		{
 			SetItem (name, value);
 		}
 
 		public virtual void SetItem (SymbolId name, object value)
-		{
-			SetCustomMember (null, name, value);
+		{//ECMA 8.6.2.2 Put
+			if (!CanSetItem (name))
+				return;
+			if (members.ContainsKey (name))
+				members[name] = value;
+			else
+				members.Add (name, value);
 		}
 
 		public void AddObjectKey (object name, object value)
 		{
-			SetCustomMember (null, ObjectToId (name), value);
+			SetItem (ObjectToId (name), value);
 		}
 
-		public virtual IDictionary<object, object> AsObjectKeyedDictionary ()
-		{//TODO test if must include inheritence with prototype?
-			Dictionary<object, object> result = new Dictionary<object, object> ();
-			foreach (KeyValuePair<SymbolId, object> k in members)
-				result.Add (SymbolTable.IdToString (k.Key), k.Value);
+		private bool CanSetItem (SymbolId name) 
+		{//ECMA 8.6.2.3 CanPut
+			object obj;
+			if (members.TryGetValue (name,out obj)) {
+				if ( obj is JSAttributedProperty) {
+					return !((JSAttributedProperty)obj).IsReadOnly;
+				}
+				return true;
+			}
+			if (prototype == null)
+				return true;
+			return prototype.CanSetItem(name);
+		}
+
+		public virtual void SetItem (object key, object value)
+		{
+			SetCustomMember (null, ObjectToId (key), value);
+		}
+
+#endregion
+#region get
+
+		public virtual IList<object> GetMemberNames (CodeContext context)
+		{
+			List<object> result;
+			if (prototype != null) {
+				result = prototype.GetMemberNames (context);
+			} else {
+				result = new List<object> ();
+			}
+			foreach (object obj in members.Keys) {
+				result.Add (obj);
+			}
 			return result;
 		}
 
+		public virtual object GetBoundItem (object name)
+		{//TODO check here 
+			return GetItem (name);
+		}
+
+		public virtual object GetItem (object name)
+		{// inheritence with prototype is done inside TryGetItem
+			object result = UnDefined.Value;
+			if (TryGetItem (ObjectToId (name), out result))
+				return result;
+			return UnDefined.Value;
+		}
+
+
+		public virtual bool TryGetBoundItem (SymbolId name, out object value)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public virtual bool TryGetBoundItem (SymbolId name, out object value)
+		{
+			return TryGetBoundItem(name, out value);
+		}
+
+		public virtual bool TryGetItem (SymbolId name, out object value)
+		{//ECMA 8.6.2.1 Get
+			if (members.TryGetValue (name, out value))
+				return true;
+			if (prototype == null) {
+				value = UnDefined.Value;
+				return false;
+			}
+			return prototype.TryGetItem (context, name,out value);
+		}
+
+		public bool TryGetObjectValue (object name, out object value)
+		{
+			return TryGetItem (ObjectToId (name), out value);
+		}
+
+		public bool TryGetValue (SymbolId name, out object value)
+		{
+			return TryGetItem (name, out value);
+		}
+
+#endregion
+		public virtual IDictionary<object, object> AsObjectKeyedDictionary ()
+		{
+			return members.AsObjectKeyedDictionary ();
+		}
+#region has property
 		public bool ContainsKey (SymbolId name)
 		{//ECAM 8.6.2.4 HasProperty
 			if (members.ContainsKey (name))
@@ -83,8 +170,9 @@ namespace Microsoft.JScript.Runtime.Types {
 		{
 			return ContainsKey (ObjectToId (name));
 		}
-
-		public virtual bool DeleteCustomMember (CodeContext context, SymbolId name)
+#endregion
+#region delete
+		public virtual bool DeleteItem (SymbolId name)
 		{//8.6.2.5 Delete
 			if (!members.ContainsKey (name))
 				return true;
@@ -95,21 +183,33 @@ namespace Microsoft.JScript.Runtime.Types {
 			return members.Remove (name);
 		}
 
-		public virtual bool DeleteItem (SymbolId name)
-		{
-			return DeleteCustomMember (null, name);
-		}
-
 		public virtual bool DeleteItem (object key)
 		{
-			return DeleteCustomMember (null, ObjectToId (key));
+			return DeleteItem (null, ObjectToId (key));
 		}
 
+		public bool Remove (SymbolId name)
+		{
+			return members.Remove (name);
+		}
+
+		public bool RemoveObjectKey (object name)
+		{
+			return Remove (ObjectToId (name));
+		}
+
+#endregion
 		public IList<object> GetAllNames (CodeContext context)
 		{
-			List<object> result = new List<object> ();
+			List<object> result;
+			if (prototype != null) {
+				result = prototype.GetAllNames (context);
+			} else {
+				result = new List<object> ();
+			}
+
 			foreach (object obj in members.Keys) {
-				result.Add (obj);
+				result.Add (obj);//TODO check if need idToObject
 			}
 			return result;
 		}
@@ -119,35 +219,26 @@ namespace Microsoft.JScript.Runtime.Types {
 			return "object";
 		}
 		
-		public virtual IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
+
+		public virtual RuleBuilder <T> GetRule <T> (OldDynamicAction action, CodeContext context, object [] args) where T : class
 		{
-			IDictionary<object, object> result;
-			//inheritence
-			if (prototype != null) {
-				result = prototype.GetCustomMemberDictionary (context);
-			} else {
-				result = new Dictionary<object, object> ();
+			switch (action.Kind)
+			{
+				case DynamicActionKind.Call:
+					return new CallBinderHelper<T> (context, (OldCallAction)action, args).MakeRule ();
+				case DynamicActionKind.CreateInstance:
+					return new CreateInstanceBinderHelper<T> (context, (OldCreateInstanceAction)action, args).MakeRule ();
+				case DynamicActionKind.DeleteMember:
+					return new DeleteMemberBinderHelper<T> (context, (OldDeleteMemberAction)action, args).MakeRule ();
+				case DynamicActionKind.DoOperation:
+					return new DoOperationBinderHelper<T> (context, (OldDoOperationAction)action, args).MakeRule ();
+				case DynamicActionKind.GetMember:
+					return new GetMemberBinderHelper<T> (context, (OldGetMemberAction)action, args).MakeRule ();
+				case DynamicActionKind.SetMember:
+					return new SetMemberBinderHelper<T> (context, (OldSetMemberAction)action, args).MakeRule ();
+				default: 
+					throw new NotImplementedException ();
 			}
-			//local
-			foreach (KeyValuePair<SymbolId, object> k in members)
-				result.Add (SymbolTable.IdToString(k.Key), k.Value);
-
-			return result;
-		}
-
-		public virtual IList<object> GetMemberNames (CodeContext context)
-		{
-			List<object> result = new List<object> ();
-			foreach (object obj in members.Keys) {
-				result.Add (obj);
-			}
-			return result;
-		}
-
-
-		public virtual StandardRule <T> GetRule <T> (DynamicAction action, CodeContext context, object [] args)
-		{
-			throw new NotImplementedException ();
 		}
 
 
@@ -158,20 +249,8 @@ namespace Microsoft.JScript.Runtime.Types {
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
+//TODO custom enumerator to get all prototype members too
 			return members.GetEnumerator ();
-		}
-
-		public virtual object GetBoundItem (object name)
-		{
-			return GetItem (name);
-		}
-
-		public virtual object GetItem (object name)
-		{// inheritence with prototype is done inside TryGetCustomMember
-			object result = UnDefined.Value;
-			if (TryGetCustomMember (null, ObjectToId (name), out result))
-				return result;
-			return UnDefined.Value;
 		}
 
 		internal object GetDefaultValue (CodeContext context, TypeCode hint)
@@ -221,84 +300,9 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new TypeErrorException ();
 		}
 
-		public bool Remove (SymbolId name)
-		{
-			return members.Remove (name);
-		}
-
-		public bool RemoveObjectKey (object name)
-		{
-			return Remove (ObjectToId (name));
-		}
-
 		private SymbolId ObjectToId (object key)
 		{
 			return SymbolTable.StringToId (key.ToString ());
-		}
-
-		public virtual void SetCustomMember (CodeContext context, SymbolId name, object value)
-		{//ECMA 8.6.2.2 Put
-			if (!CanSetCustomMember (name))
-				return;
-			if (members.ContainsKey (name))
-				members[name] = value;
-			else
-				members.Add (name, value);
-		}
-
-		private bool CanSetCustomMember (SymbolId name) 
-		{//ECMA 8.6.2.3 CanPut
-			object obj;
-			if (members.TryGetValue (name,out obj)) {
-				if ( obj is JSAttributedProperty) {
-					return !((JSAttributedProperty)obj).IsReadOnly;
-				}
-				return true;
-			}
-			if (prototype == null)
-				return true;
-			return prototype.CanSetCustomMember(name);
-		}
-
-		public virtual void SetItem (object key, object value)
-		{
-			SetCustomMember (null, ObjectToId (key), value);
-		}
-
-		public virtual bool TryGetBoundCustomMember (CodeContext context, SymbolId name, out object value)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public virtual bool TryGetBoundItem (SymbolId name, out object value)
-		{
-			return TryGetBoundCustomMember(null, name, out value);
-		}
-
-		public virtual bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
-		{//ECMA 8.6.2.1 Get
-			if (members.TryGetValue (name, out value))
-				return true;
-			if (prototype == null) {
-				value = UnDefined.Value;
-				return false;
-			}
-			return prototype.TryGetCustomMember (context, name,out value);
-		}
-
-		public virtual bool TryGetItem (SymbolId name, out object value)
-		{
-			return TryGetCustomMember(null, name, out value);
-		}
-
-		public bool TryGetObjectValue (object name, out object value)
-		{
-			return TryGetCustomMember (null, ObjectToId (name), out value);
-		}
-
-		public bool TryGetValue (SymbolId name, out object value)
-		{
-			return TryGetCustomMember (null, name, out value);
 		}
 
 		public virtual int Count {
@@ -307,10 +311,7 @@ namespace Microsoft.JScript.Runtime.Types {
 
 		public virtual ICollection<object> Keys {
 			get {
-				ICollection<object> result = new List<object> ();
-				foreach (KeyValuePair<SymbolId, object> k in members)
-					result.Add (SymbolTable.IdToString (k.Key));
-				return result;
+				return members.Keys;
 			}
 		}
 
@@ -318,7 +319,6 @@ namespace Microsoft.JScript.Runtime.Types {
 			get { return null; }
 		}
 
-		//TODO : quick hack here
 		public object this [SymbolId name] {
 			get {
 				return GetItem (name);
@@ -337,7 +337,7 @@ namespace Microsoft.JScript.Runtime.Types {
 		{
 			get
 			{
-				throw new NotImplementedException ();
+				return JSContext.GetContext (null);
 			}
 		}
 	}

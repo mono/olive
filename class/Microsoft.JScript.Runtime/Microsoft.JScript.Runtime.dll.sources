@@ -64,6 +64,15 @@ Microsoft.JScript.Runtime.Types/BooleanObject.cs
 Microsoft.JScript.Runtime.Types/BooleanPrototype.cs
 Microsoft.JScript.Runtime.Types/BoundFunctionObject.cs
 Microsoft.JScript.Runtime.Types/BuiltinFunctionObject.cs
+Microsoft.JScript.Runtime.Types/CallTargetEval.cs
+Microsoft.JScript.Runtime.Types/CallTargetN.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis0.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis1.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis2.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis3.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis4.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThis5.cs
+Microsoft.JScript.Runtime.Types/CallTargetWithThisN.cs
 Microsoft.JScript.Runtime.Types/ConcatString.cs
 Microsoft.JScript.Runtime.Types/ConstructTargetN.cs
 Microsoft.JScript.Runtime.Types/DateConstructor.cs
@@ -105,6 +114,5 @@ Microsoft.JScript.Runtime.Types/StringObject.cs
 Microsoft.JScript.Runtime.Types/StringPrototype.cs
 Microsoft.JScript.Runtime.Types/SyntaxErrorObject.cs
 Microsoft.JScript.Runtime.Types/TypeErrorObject.cs
-Microsoft.JScript.Runtime.Types/UndefinedCompilerConstant.cs
 Microsoft.JScript.Runtime.Types/UnDefined.cs
 Microsoft.JScript.Runtime.Types/URIErrorObject.cs

@@ -31,12 +31,13 @@ using Microsoft.JScript.Runtime;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Actions;
 using System.Reflection;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types
 {
     
     
-    public class BuiltinFunctionObject : JSFunctionObject
+    public class BuiltinFunctionObject : FunctionObject
     {
         
         internal BuiltinFunctionObject (CodeContext context, string name, string [] argNames,
@@ -49,7 +50,7 @@ namespace Microsoft.JScript.Runtime.Types
 		throw new NotImplementedException ();
 	}
 
-	public override StandardRule<T>  GetRule<T>(DynamicAction action, CodeContext context, object[] args)
+	public override RuleBuilder<T>  GetRule<T>(OldDynamicAction action, CodeContext context, object[] args) where T: class
 	{
 		throw new NotImplementedException ();
 	}

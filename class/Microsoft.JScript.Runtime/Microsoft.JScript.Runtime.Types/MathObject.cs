@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 

@@ -29,6 +29,7 @@ using System;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Ast;
 using Microsoft.Scripting.Actions;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types
 {

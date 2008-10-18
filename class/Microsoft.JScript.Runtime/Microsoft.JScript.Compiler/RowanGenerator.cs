@@ -34,7 +34,6 @@ using MSA = Microsoft.Scripting.Ast;
 using MJCP = Microsoft.JScript.Compiler.ParseTree;
 using MJR = Microsoft.JScript.Runtime;
 using MSAc = Microsoft.Scripting.Actions;
-using MSO = Microsoft.Scripting.Operators;
 using Microsoft.JScript.Runtime;
 using Microsoft.JScript.Compiler;
 

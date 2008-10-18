@@ -29,6 +29,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -150,19 +151,14 @@ namespace Microsoft.JScript.Runtime.Types {
 			return base.AsObjectKeyedDictionary ();
 		}
 
-		public override bool DeleteCustomMember (CodeContext context, SymbolId name)
+		public override bool DeleteItem (object key)
 		{
-			return base.DeleteCustomMember (context, name);
+			return base.DeleteItem (key);
 		}
 
 		public override bool DeleteItem (SymbolId name)
 		{
 			return base.DeleteItem (name);
-		}
-
-		public override IDictionary<object, object> GetCustomMemberDictionary (CodeContext context)
-		{
-			return base.GetCustomMemberDictionary (context);
 		}
 
 		public override IList<object> GetMemberNames (CodeContext context)
@@ -175,9 +171,9 @@ namespace Microsoft.JScript.Runtime.Types {
 			return base.GetEnumerator ();
 		}
 
-		public override void SetCustomMember (CodeContext context, SymbolId name, object value)
+		public override void SetItem (object key, object value)
 		{
-			base.SetCustomMember (context, name, value);
+			base.SetItem (key, value);
 		}
 
 		public override void SetItem (SymbolId name, object value)
@@ -185,14 +181,9 @@ namespace Microsoft.JScript.Runtime.Types {
 			base.SetItem (name, value);
 		}
 
-		public override bool TryGetBoundCustomMember (CodeContext context, SymbolId name, out object value)
+		public override bool TryGetBoundItem (SymbolId name, out object value)
 		{
-			return base.TryGetBoundCustomMember (context, name, out value);
-		}
-
-		public override bool TryGetCustomMember (CodeContext context, SymbolId name, out object value)
-		{
-			return base.TryGetCustomMember (context, name, out value);
+			return base.TryGetBoundItem (name, out value);
 		}
 
 		public override bool TryGetItem (SymbolId name, out object value)
