@@ -27,6 +27,7 @@
 //
 
 using System;
+using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Operations {
 

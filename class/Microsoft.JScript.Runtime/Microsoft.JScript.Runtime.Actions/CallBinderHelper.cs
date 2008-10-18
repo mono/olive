@@ -29,12 +29,15 @@
 using System;
 using Microsoft.Scripting.Actions;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
+using Microsoft.JScript.Runtime.Errors;
+using Microsoft.JScript.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class CallBinderHelper<T, ActionType> : BinderHelper<T, ActionType> where ActionType : OldCallAction
+    public class CallBinderHelper<T, ActionType> : BinderHelper<T, ActionType> where ActionType : OldCallAction where T : class
     {
         
         public CallBinderHelper(CodeContext context, ActionType action, object[] args ): base(context, action)
@@ -42,17 +45,17 @@ namespace Microsoft.JScript.Runtime.Actions
         }
 
 
-	protected virtual JSError GetErrorType ()
+	protected virtual ErrorCode GetErrorType ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	public virtual StandardRule<T> MakeErrorRule ()
+	public virtual RuleBuilder<T> MakeErrorRule ()
 	{
 		throw new NotImplementedException ();
 	}
 
-	public virtual StandardRule<T> MakeRule ()
+	public virtual RuleBuilder<T> MakeRule ()
 	{
 		throw new NotImplementedException ();
 	}
@@ -82,7 +85,7 @@ namespace Microsoft.JScript.Runtime.Actions
 		throw new NotImplementedException ();
 	}
 
-	protected JSFunctionObject FunctionObject
+	protected FunctionObject FunctionObject
 	{
 		get {throw new NotImplementedException ();}
 	}

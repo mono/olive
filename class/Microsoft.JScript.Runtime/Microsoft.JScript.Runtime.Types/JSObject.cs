@@ -41,12 +41,12 @@ namespace Microsoft.JScript.Runtime.Types {
 	public class JSObject : IAttributesCollection, IMembersList, IOldDynamicObject, IDynamicObject {
 		
 		internal JSObject prototype;
-		private SymbolDictionnary members;
+		private SymbolDictionary members;
 
 		public JSObject (JSObject prototype)
 		{
 			this.prototype = prototype;
-			members = new SymbolDictionnary ();
+			members = new SymbolDictionary ();
 		}
 
 #region put
@@ -123,11 +123,6 @@ namespace Microsoft.JScript.Runtime.Types {
 		public virtual bool TryGetBoundItem (SymbolId name, out object value)
 		{
 			throw new NotImplementedException ();
-		}
-
-		public virtual bool TryGetBoundItem (SymbolId name, out object value)
-		{
-			return TryGetBoundItem(name, out value);
 		}
 
 		public virtual bool TryGetItem (SymbolId name, out object value)
@@ -220,7 +215,7 @@ namespace Microsoft.JScript.Runtime.Types {
 		}
 		
 
-		public virtual RuleBuilder <T> GetRule <T> (OldDynamicAction action, CodeContext context, object [] args) where T : class
+		public virtual RuleBuilder<T> GetRule <T> (OldDynamicAction action, CodeContext context, object [] args) where T : class
 		{
 			switch (action.Kind)
 			{

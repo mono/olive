@@ -28,9 +28,15 @@
 
 using System;
 using System.Collections.Generic;
-using Microsoft.Scripting;
+using Microsoft.JScript.Runtime.Conversions;
+using Microsoft.JScript.Runtime.Operations;
+using Microsoft.JScript.Runtime.Types;
+
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting.Actions;
-using Microsoft.Scripting.Ast;
+using System.Linq.Expressions;
+using System.Scripting.Actions;
+using System.Scripting;
 using Microsoft.Scripting.Generation;
 
 namespace Microsoft.JScript.Runtime.Actions {
@@ -42,7 +48,7 @@ namespace Microsoft.JScript.Runtime.Actions {
 		{
 		}
 		
-		public override MemberGroup GetMember (DynamicAction action, Type type, string name)
+		public override MemberGroup GetMember (OldDynamicAction action, Type type, string name)
 		{
 			throw new NotImplementedException ();
 		}
@@ -57,17 +63,17 @@ namespace Microsoft.JScript.Runtime.Actions {
 			throw new NotImplementedException ();
 		}
 
-		public override Expression MakeMissingMemberError<T> (StandardRule <T> rule, Type type, string name)
+		public override ErrorInfo MakeMissingMemberError (Type type, string name)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override Expression ConvertExpression (Expression expr, Type toType)
+		public override Expression ConvertExpression (Expression expr, Type toType, ConversionResultKind kind, Expression context)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override StandardRule<T> MakeRule<T> (CodeContext callerContext, DynamicAction action, object [] args)
+		protected override RuleBuilder<T> MakeRule<T> (OldDynamicAction action, object [] args)
 		{
 			throw new NotImplementedException ();
 		}
@@ -82,7 +88,7 @@ namespace Microsoft.JScript.Runtime.Actions {
 			throw new NotImplementedException ();
 		}
 		
-		protected override IList<Type> GetExtensionTypes (Type t)
+		public override IList<Type> GetExtensionTypes (Type t)
 		{
 			throw new NotImplementedException ();
 		}

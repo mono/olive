@@ -27,6 +27,7 @@
 
 using System;
 using Microsoft.Scripting;
+using System.Scripting;
 
 namespace Microsoft.JScript.Runtime.Hosting {
 

@@ -28,20 +28,21 @@
 
 using System;
 using Microsoft.Scripting.Actions;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting;
 
 namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class DeleteMemberBinderHelper<T> : MemberBinderHelper<T, OldDeleteMemberAction>
+    public class DeleteMemberBinderHelper<T> : MemberBinderHelper<T, OldDeleteMemberAction> where T : class
     {
         
         public DeleteMemberBinderHelper(CodeContext context, OldDeleteMemberAction action, object[] args ) : base (context, action, args)
         {
         }
 
-	public StandardRule<T> MakeRule ()
+	public RuleBuilder<T> MakeRule ()
 	{
 		throw new NotImplementedException ();
 	}

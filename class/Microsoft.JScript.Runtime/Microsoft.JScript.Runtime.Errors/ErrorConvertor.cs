@@ -28,6 +28,7 @@
 using System;
 using Microsoft.Scripting;
 using System.Text;
+using Microsoft.JScript.Runtime.Types;
 
 namespace Microsoft.JScript.Runtime.Errors {
 
@@ -47,12 +48,12 @@ namespace Microsoft.JScript.Runtime.Errors {
 			return builder.ToString ();
 		}
 
-		public static string GetErrorText (JSError key)
+		public static string GetErrorText (ErrorCode key)
 		{
 			throw new NotImplementedException ();
 		}
 		
-		public static JSErrorObject GetJSErrorObject (Exception exception)
+		public static ErrorObject GetErrorObject (Exception exception)
 		{
 			throw new NotImplementedException ();
 		}

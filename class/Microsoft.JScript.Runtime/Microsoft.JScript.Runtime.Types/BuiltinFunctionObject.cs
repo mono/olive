@@ -50,7 +50,7 @@ namespace Microsoft.JScript.Runtime.Types
 		throw new NotImplementedException ();
 	}
 
-	public override RuleBuilder<T>  GetRule<T>(OldDynamicAction action, CodeContext context, object[] args) where T: class
+	public override RuleBuilder<T> GetRule<T>(OldDynamicAction action, CodeContext context, object[] args)
 	{
 		throw new NotImplementedException ();
 	}

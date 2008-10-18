@@ -28,17 +28,18 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Actions {
 
-	public class GetMemberBinderHelper<T> : Microsoft.Scripting.Actions.GetMemberBinderHelper<T> {
+	public class GetMemberBinderHelper<T> : Microsoft.Scripting.Actions.GetMemberBinderHelper<T> where T : class{
 		public GetMemberBinderHelper (CodeContext context, OldGetMemberAction action, object[] args) : base (context, action, args)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public StandardRule<T> MakeRule ()
+		public RuleBuilder<T> MakeRule ()
 		{
 			throw new NotImplementedException ();
 		}

@@ -28,6 +28,7 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Types {
 
@@ -39,7 +40,7 @@ namespace Microsoft.JScript.Runtime.Types {
 		{
 		}
 
-		public static JSObject Create (CodeContext context, JSFunctionObject function, SymbolId [] paramIds, IAttributesCollection dict,
+		public static JSObject Create (CodeContext context, FunctionObject function, SymbolId [] paramIds, IAttributesCollection dict,
 					       object [] actualParameters)
 		{
 			throw new NotImplementedException ();

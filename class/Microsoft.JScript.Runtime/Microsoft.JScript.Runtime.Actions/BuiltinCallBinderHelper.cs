@@ -29,20 +29,22 @@
 using System;
 using Microsoft.Scripting.Actions;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 using Microsoft.JScript.Runtime.Types;
+using Microsoft.JScript.Runtime.Errors;
 
 namespace Microsoft.JScript.Runtime.Actions
 {
     
     
-    public class BuiltinCallBinderHelper<T> : CallBinderHelper<T, OldCallAction>
+    public class BuiltinCallBinderHelper<T> : CallBinderHelper<T, OldCallAction> where T : class
     {
         
         public BuiltinCallBinderHelper(CodeContext context, OldCallAction action, object[] args ) : base (context, action, args)
         {
         }
 
-	protected override JSError GetErrorType ()
+	protected override ErrorCode GetErrorType ()
 	{
 		throw new NotImplementedException ();
 	}

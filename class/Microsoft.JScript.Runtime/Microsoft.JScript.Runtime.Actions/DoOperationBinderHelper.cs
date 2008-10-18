@@ -28,18 +28,19 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Actions {
 	
-	public class DoOperationBinderHelper<T> : BinderHelper<T, OldDoOperationAction> {
+	public class DoOperationBinderHelper<T> : BinderHelper<T, OldDoOperationAction>  where T : class {
 
 		public DoOperationBinderHelper (CodeContext context, OldDoOperationAction action, object[] args) : base (context, action)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public StandardRule<T> MakeRule ()
+		public RuleBuilder<T> MakeRule ()
 		{
 			throw new NotImplementedException ();
 		}

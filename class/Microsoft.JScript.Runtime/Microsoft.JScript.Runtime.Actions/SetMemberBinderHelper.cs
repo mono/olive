@@ -28,15 +28,16 @@
 
 using System;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting.Actions;
 
 namespace Microsoft.JScript.Runtime.Actions {
 
-	public class SetMemberBinderHelper<T> : MemberBinderHelper<T, OldSetMemberAction> {
+	public class SetMemberBinderHelper<T> : MemberBinderHelper<T, OldSetMemberAction> where T: class {
 		public SetMemberBinderHelper (CodeContext context, OldSetMemberAction action, object[] args) : base (context, action, args)
 		{
 		}
-		public StandardRule<T> MakeRule ()
+		public RuleBuilder<T> MakeRule ()
 		{
 			throw new NotImplementedException ();
 		}

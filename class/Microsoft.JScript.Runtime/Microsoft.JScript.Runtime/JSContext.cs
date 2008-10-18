@@ -91,11 +91,6 @@ namespace Microsoft.JScript.Runtime {
 			return base.EqualReturnBool (context, x, y);
 		}
 
-		public override bool IsTrue (object obj)
-		{
-			return base.IsTrue (obj);
-		}
-
 		public override bool RemoveName (CodeContext context, SymbolId name)
 		{
 			return base.RemoveName (context, name);

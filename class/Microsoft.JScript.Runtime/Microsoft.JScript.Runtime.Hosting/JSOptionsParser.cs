@@ -34,28 +34,16 @@ namespace Microsoft.JScript.Runtime.Hosting
 {
     
     
-    public class JSOptionsParser : OptionsParser<JSConsoleOptions>
+    public sealed class JSOptionsParser : OptionsParser<JSConsoleOptions>
     {
-        private JSConsoleOptions consoleOptions;
-        private JSEngineOptions engineOptions;
-
         public override void GetHelp(out string commandLine, out string[,] options, out string[,] environmentVariables, out string comments)
         {
 		throw new NotImplementedException();
         }
-	
-	public override void Parse(string[] args)
-	{
-		throw new NotImplementedException();
-	}
 
 	protected override void ParseArgument(string arg)
 	{
 		throw new NotImplementedException();
 	}
-
-	public override EngineOptions EngineOptions { get { return engineOptions;} set {engineOptions = (JSEngineOptions)value;} }
-
-	public override ConsoleOptions ConsoleOptions { get {return consoleOptions;} set {consoleOptions = (JSConsoleOptions)value;} }
     }
 }

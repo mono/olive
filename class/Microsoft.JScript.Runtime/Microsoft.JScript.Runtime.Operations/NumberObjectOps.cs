@@ -55,7 +55,7 @@ namespace Microsoft.JScript.Runtime.Operations {
 		}
 
 		[SpecialName]
-		public static double op_Addition ([NotNull] NumberObject x, [NotNull] JSBooleanObject y)
+		public static double op_Addition ([NotNull] NumberObject x, [NotNull] BooleanObject y)
 		{
 			throw new NotImplementedException ();
 		}

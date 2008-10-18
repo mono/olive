@@ -29,6 +29,8 @@
 using System;
 using System.Diagnostics;
 using Microsoft.Scripting;
+using Microsoft.Scripting.Generation;
+using Microsoft.Scripting.Runtime;
 
 namespace Microsoft.JScript.Runtime.Conversions {
 	public sealed class ConvertHelper {

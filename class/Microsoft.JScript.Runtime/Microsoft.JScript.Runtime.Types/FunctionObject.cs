@@ -86,12 +86,12 @@ namespace Microsoft.JScript.Runtime.Types {
 			return this.constructTarget (this, args);
 		}
 
-		protected virtual Expression [] CreateArguments<T> (StandardRule<T> rule, int hasInstance, params Expression[] preargs)
+		protected virtual Expression [] CreateArguments<T> (RuleBuilder<T> rule, int hasInstance, params Expression[] preargs) where T : class
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected internal virtual Expression[] GetArgumentsForRule<T>(Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, CallAction> callHelper)
+		protected internal virtual Expression[] GetArgumentsForRule<T>(Microsoft.JScript.Runtime.Actions.CallBinderHelper<T, OldCallAction>  callHelper) where T : class
 		{
 			throw new NotImplementedException ();
 		}
@@ -106,7 +106,7 @@ namespace Microsoft.JScript.Runtime.Types {
 			throw new NotImplementedException ();
 		}
 
-		public override RuleBuilder<T> GetRule<T> (OldDynamicAction action, CodeContext context, object [] args) where T : class
+		public override RuleBuilder<T> GetRule<T> (OldDynamicAction action, CodeContext context, object [] args)
 		{
 			throw new NotImplementedException ();
 		}
