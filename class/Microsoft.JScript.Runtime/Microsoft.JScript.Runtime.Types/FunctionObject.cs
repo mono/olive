@@ -46,12 +46,12 @@ namespace Microsoft.JScript.Runtime.Types {
 			this.name = name;
 			this.argNames = argNames;
 			this.callTarget = callTarget;
-			SetItem (SymbolTable.StringToId ("length"), new JSAttributedProperty(argNames.Length, JSPropertyAttributes.DontDelete | JSPropertyAttributes.DontEnum | JSPropertyAttributes.ReadOnly));
+			SetItem (SymbolTable.StringToId ("length"), new AttributedProperty(argNames.Length, PropertyAttributes.DontDelete | PropertyAttributes.DontEnum | PropertyAttributes.ReadOnly));
 			if (isStandardConstructor) {
 				constructTarget = Delegate.CreateDelegate (typeof (ConstructTargetN), context, this.GetType ().GetMethod ("construct"), true) as ConstructTargetN;
-				SetItem (SymbolTable.StringToId ("constructor"), new JSAttributedProperty (constructTarget, JSPropertyAttributes.DontEnum));
+				SetItem (SymbolTable.StringToId ("constructor"), new AttributedProperty (constructTarget, PropertyAttributes.DontEnum));
 			}
-			SetItem (SymbolTable.StringToId ("prototype"), new JSAttributedProperty (prototype, JSPropertyAttributes.DontDelete));
+			SetItem (SymbolTable.StringToId ("prototype"), new AttributedProperty (prototype, PropertyAttributes.DontDelete));
 		}
 
 		protected FunctionObject (CodeContext context, string name, string [] argNames,

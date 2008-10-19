@@ -33,8 +33,7 @@ using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
 using Microsoft.JScript.Compiler.Tokens;
-
-
+using SS = System.Scripting;
 namespace Microsoft.JScript.Runtime.Hosting
 {
 	public class JSTokenizerService : Microsoft.Scripting.Runtime.TokenizerService
@@ -50,10 +49,10 @@ namespace Microsoft.JScript.Runtime.Hosting
 		private object state;
 		private ErrorSink errorSink = null;
 
-		public override void Initialize(object state, TextReader textreader, SourceUnit sourceUnit, System.Scripting.SourceLocation initialLocation)
+		public override void Initialize(object state, TextReader textreader, SourceUnit sourceUnit, SS.SourceLocation initialLocation)
 		{
 			tokenizer = new Tokenizer (textreader.ReadToEnd ().ToCharArray (), new IdentifierTable ());
-			tokenizer.Position = initialLocation;
+			tokenizer.Position = ConvertToMJCSrcLocation(initialLocation);
 			this.sourceUnit = sourceUnit;
 			this.state = state;
 		}
@@ -62,7 +61,7 @@ namespace Microsoft.JScript.Runtime.Hosting
 		{
 			Token token = tokenizer.GetNext ();
 			SourceLocation location = new SourceLocation(token.StartPosition,token.StartLine,token.StartColumn);
-			SourceSpan span = new SourceSpan (location, tokenizer.Position);
+			SS.SourceSpan span = new SS.SourceSpan (ConvertToSSSrcLocation(location), ConvertToSSSrcLocation(tokenizer.Position));
 			TokenTriggers trigger = GetTrigger(token.Kind);
 			TokenCategory category = GetCategory (token.Kind);
 			return new TokenInfo (span, category, trigger);
@@ -345,8 +344,18 @@ namespace Microsoft.JScript.Runtime.Hosting
 			return (token.Kind != Token.Type.EndOfInput && token.Kind != Token.Type.Bad);
 		}
 
-		public override System.Scripting.SourceLocation CurrentPosition {
-			get { return sourceUnit.MakeLocation(tokenizer.Position.Index,tokenizer.Position.Line,tokenizer.Position.Column); }
+		public override SS.SourceLocation CurrentPosition {
+			get { return ConvertToSSSrcLocation(tokenizer.Position); }
+		}
+		
+		private SS.SourceLocation ConvertToSSSrcLocation(SourceLocation location)
+		{
+			return sourceUnit.MakeLocation(location.Index, location.Line, location.Column);
+		}
+
+		private SourceLocation ConvertToMJCSrcLocation(SS.SourceLocation location)
+		{
+			return new SourceLocation (location.Index, location.Line, location.Column);
 		}
 
 		public override object CurrentState {
