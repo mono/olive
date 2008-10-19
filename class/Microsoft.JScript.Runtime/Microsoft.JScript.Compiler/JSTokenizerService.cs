@@ -28,30 +28,34 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.IO;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
-    
+using Microsoft.JScript.Compiler.Tokens;
+
+
 namespace Microsoft.JScript.Runtime.Hosting
 {
 	public class JSTokenizerService : Microsoft.Scripting.Runtime.TokenizerService
 	{
-		public JSTokenizerService(JSContext context)
+		public JSTokenizerService(bool ecma3Mode)
 		{
-			this.context = context;
+			this.ecma3Mode = ecma3Mode;
 		}
 
 		private Tokenizer tokenizer;
+		private SourceUnit sourceUnit;
+		private bool ecma3Mode;
 		private object state;
-		private ErrorSink errorSink;
-		private JSContext context;
+		private ErrorSink errorSink = null;
 
-		public override void Initialize(object state, SourceUnitReader sourceReader, SourceLocation initialLocation)
+		public override void Initialize(object state, TextReader textreader, SourceUnit sourceUnit, System.Scripting.SourceLocation initialLocation)
 		{
-			tokenizer = new Tokenizer (sourceReader.ReadToEnd ().ToCharArray (), new IdentifierTable ());
+			tokenizer = new Tokenizer (textreader.ReadToEnd ().ToCharArray (), new IdentifierTable ());
 			tokenizer.Position = initialLocation;
+			this.sourceUnit = sourceUnit;
 			this.state = state;
-			errorSink = new ErrorSink ();
 		}
 
 		public override TokenInfo ReadToken()
@@ -341,8 +345,8 @@ namespace Microsoft.JScript.Runtime.Hosting
 			return (token.Kind != Token.Type.EndOfInput && token.Kind != Token.Type.Bad);
 		}
 
-		public override SourceLocation CurrentPosition {
-			get { return tokenizer.Position; }
+		public override System.Scripting.SourceLocation CurrentPosition {
+			get { return sourceUnit.MakeLocation(tokenizer.Position.Index,tokenizer.Position.Line,tokenizer.Position.Column); }
 		}
 
 		public override object CurrentState {

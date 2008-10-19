@@ -96,7 +96,7 @@ namespace Microsoft.JScript.Runtime {
 			return base.RemoveName (context, name);
 		}
 
-		public override CodeBlock ParseSourceCode (CompilerContext context)
+		protected override ScriptCode CompileSourceCode (SourceUnit sourceUnit, CompilerOptions options, ErrorSink errorSink)
 		{
 			throw new NotImplementedException ();
 		}

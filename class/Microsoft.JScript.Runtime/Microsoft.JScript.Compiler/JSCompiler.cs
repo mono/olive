@@ -28,11 +28,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.Scripting.Ast;
+using Microsoft.Scripting.Runtime;
 using Microsoft.Scripting.Hosting;
 using Microsoft.Scripting;
 using Microsoft.JScript.Compiler;
 using Microsoft.JScript.Runtime;
+using System.Linq.Expressions;
 
 namespace Microsoft.JScript.Compiler
 {
@@ -44,7 +45,7 @@ namespace Microsoft.JScript.Compiler
 			this.jsContext = context;
 		}
 
-		public CodeBlock ParseSourceCode(CompilerContext Context)
+		public LambdaExpression ParseSourceCode(CompilerContext Context)
 		{
 			Compiler compiler = new Compiler (jsContext);
 			List<Diagnostic> diagnostics = null;

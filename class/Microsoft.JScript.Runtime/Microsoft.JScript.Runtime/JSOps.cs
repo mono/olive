@@ -30,6 +30,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Runtime;
+using Microsoft.JScript.Runtime.Types;
 using Microsoft.Scripting.Hosting;
 
 namespace Microsoft.JScript.Runtime {
@@ -95,7 +96,7 @@ namespace Microsoft.JScript.Runtime {
 			throw new NotImplementedException ();
 		}
 
-		public static JSGlobalObject GetGlobalObject (CodeContext context)
+		public static GlobalObject GetGlobalObject (CodeContext context)
 		{
 			throw new NotImplementedException ();
 			//return new JSGlobalObject (((JSContext)context.LanguageContext).);//get scriptModule somewhere

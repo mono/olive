@@ -28,9 +28,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Microsoft.JScript.Compiler;
+using Microsoft.JScript.Runtime;
 using Microsoft.JScript.Compiler.ParseTree;
-using MSA = Microsoft.Scripting.Ast;
+using SLE = System.Linq.Expressions;
+using Microsoft.JScript.Compiler.Helpers;
+
 namespace Microsoft.JScript.Compiler
 {
 	public class Compiler
@@ -41,7 +43,7 @@ namespace Microsoft.JScript.Compiler
 			this.context = context;
 		}
 
-		public MSA.CodeBlock CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
+		public SLE.LambdaExpression CompileExpression (char[] Input, ref List<Diagnostic> Diagnostics)
 		{
 			IdentifierMappingTable idmtable = new IdentifierMappingTable ();
 			IdentifierTable idtable = new IdentifierTable ();
@@ -54,13 +56,13 @@ namespace Microsoft.JScript.Compiler
 			return gen.BindAndTransform (expr, bindinginfo);
 		}
 
-		public MSA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
+		public SLE.LambdaExpression CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput)
 		{
 			return CompileProgram (Input, ref Diagnostics, ref IncompleteInput, false);
 		}
 
 		[MonoTODO]
-		public MSA.CodeBlock CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
+		public SLE.LambdaExpression CompileProgram (char[] Input, ref List<Diagnostic> Diagnostics, ref bool IncompleteInput, bool PrintExpressions)
 		{
 			IdentifierMappingTable idmtable = new IdentifierMappingTable ();
 			IdentifierTable idtable = new IdentifierTable ();

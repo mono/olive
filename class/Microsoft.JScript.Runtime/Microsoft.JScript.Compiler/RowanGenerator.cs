@@ -37,6 +37,7 @@ using MJR = Microsoft.JScript.Runtime;
 using MSAc = Microsoft.Scripting.Actions;
 using Microsoft.JScript.Runtime;
 using Microsoft.JScript.Compiler;
+using Microsoft.JScript.Compiler.Helpers;
 
 namespace Microsoft.JScript.Compiler
 {
@@ -57,33 +58,33 @@ namespace Microsoft.JScript.Compiler
 		private Identifier thisIdent;
 		private Identifier arguments;
 		private int withinFunction;//TODO make a queue to have the last function
-		private SLE.CodeBlock globalBlock;
+		private Microsoft.Scripting.Ast.LambdaBuilder builder;
 		
 		/*public void Bind()
 		{
 			throw new NotImplementedException();
 		}*/
 		
-		public SLE.CodeBlock BindAndTransform (MJCP.Expression expression, MJCP.BindingInfo bindingInfo)
+		public SLE.LambdaExpression BindAndTransform (MJCP.Expression expression, MJCP.BindingInfo bindingInfo)
 		{
 			Init ();
 			//TODO test to know the internal of this and know the use of bindinginfo
-			globalBlock.Body = SLE.Ast.Block (Generate (expression));
-			return globalBlock;
+			builder.Body = SLE.Ast.Block (Generate (expression));
+			return builder.MakeLambda ();
 		}
 
-		public SLE.CodeBlock BindAndTransform (DList<MJCP.Statement, MJCP.BlockStatement> statements, MJCP.BindingInfo bindingInfo, bool Print)
+		public SLE.LambdaExpression BindAndTransform (DList<MJCP.Statement, MJCP.BlockStatement> statements, MJCP.BindingInfo bindingInfo, bool Print)
 		{
 			Init ();
 			//TODO test to know the internal of this and know the use of bindinginfo
-			globalBlock.Body = SLE.Ast.Block (Generate (statements, bindingInfo, Print));
-			return globalBlock;
+			builder.Body = SLE.Ast.Block (Generate (statements, bindingInfo, Print));
+			return builder.MakeLambda ();
 		}
 
 		private void Init ()
 		{
-			globalBlock = Microsoft.Scripting.Ast.Ast.CodeBlock ("");
-			globalBlock.IsGlobal = true;
+			builder = Microsoft.Scripting.Ast.Ast.CodeBlock ("");
+			builder.IsGlobal = true;
 			withinFunction = 0;
 		}
 		# region AST Converter
@@ -117,7 +118,7 @@ namespace Microsoft.JScript.Compiler
 				case MJCP.Expression.Operation.@this :
 					//TODO this must not be a variable!
 					if (withinFunction > 1)//if this is call inside a function
-						result = SLE.Ast.Read (globalBlock.CreateVariable (GetSymbolId(thisIdent), SLE.Variable.VariableKind.Global, null));
+						result = SLE.Ast.Read (builder.CreateVariable (GetSymbolId(thisIdent), SLE.Variable.VariableKind.Global, null));
 					else {//if this is call ouside of function
 						arguments = new List<SLE.Expression> ();
 						arguments.Add (SLE.Ast.CodeContext ());
@@ -132,7 +133,7 @@ namespace Microsoft.JScript.Compiler
 					break;
 				case MJCP.Expression.Operation.Identifier :
 						Identifier id = ((MJCP.IdentifierExpression)Input).ID;//TODO make a tree of variable and allow to get it 
-						result = SLE.Ast.Read (globalBlock.CreateVariable (GetSymbolId(id), SLE.Variable.VariableKind.Global, null));
+						result = SLE.Ast.Read (builder.CreateVariable (GetSymbolId(id), SLE.Variable.VariableKind.Global, null));
 						break;
 				case MJCP.Expression.Operation.NumericLiteral :
 					double val = 0;
@@ -490,7 +491,7 @@ namespace Microsoft.JScript.Compiler
 			SLE.Expression body = this.Generate (Input.Body);//must be that but not tested
 			withinFunction--;
 			SLE.CodeBlock block = SLE.Ast.CodeBlock (name);
-			block.Parent= globalBlock;
+			block.Parent= builder;
 			block.Body = body;
 			List<SLE.Variable> parameters = this.Generate (Input.Parameters, block);
 			arguments.Add (SLE.Ast.CodeBlockExpression (block, false));//TODO maybe use other ones with more 
@@ -502,6 +503,7 @@ namespace Microsoft.JScript.Compiler
 			return SLE.Ast.Call (typeof (MJR.JSFunctionObject).GetMethod ("MakeFunction"), arguments.ToArray());
 		}
 
+/*
 		private List<SLE.Variable> Generate (List<MJCP.Parameter> parameters, SLE.CodeBlock sblock)
 		{
 			List<SLE.Variable> result = new List<SLE.Variable> ();
@@ -510,7 +512,7 @@ namespace Microsoft.JScript.Compiler
 			//TODO type of param but no type in parameters so jsobject 
 			return result;
 		}
-
+*/
 		#region Statement
 
 		private SLE.Block Generate (DList<MJCP.Statement, MJCP.BlockStatement> Input, MJCP.BindingInfo bindingInfo, bool PrintExpressions)
@@ -803,9 +805,11 @@ namespace Microsoft.JScript.Compiler
 		//TODO when variable is ever created we must get it back
 		// so will search in current block and parent block if not field
 		// else will search in object tree if contain this member 
+/*
 		private SLE.Variable GetVar(Identifier ID)
 		{
 			throw new NotImplementedException();
 		}
+*/
 	}
 }

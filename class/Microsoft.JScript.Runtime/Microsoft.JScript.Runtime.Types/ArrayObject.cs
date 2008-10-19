@@ -72,12 +72,12 @@ namespace Microsoft.JScript.Runtime.Types {
 		{
 			throw new NotImplementedException ();
 		}
-
-		IEnumerator IEnumerable.GetEnumerator ()
+/*
+		IEnumerator IEnumerable.GetEnumerator()
 		{
 			throw new NotImplementedException ();
 		}
-
+*/
 		public override object GetItem (object key)
 		{
 			throw new NotImplementedException ();

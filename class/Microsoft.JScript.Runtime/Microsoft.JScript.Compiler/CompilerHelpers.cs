@@ -29,13 +29,16 @@ using System;
 using System.Collections;
 using Microsoft.Scripting;
 using Microsoft.Scripting.Runtime;
+using Microsoft.JScript.Runtime.Types;
+using Microsoft.JScript.Runtime.Conversions;
+
 
 namespace Microsoft.JScript.Compiler {
 
 	public static class CompilerHelpers {
-		public static JSArrayObject ConstructArrayFromArrayLiteral (CodeContext context, object [] values)
+		public static ArrayObject ConstructArrayFromArrayLiteral (CodeContext context, object [] values)
 		{
-			JSArrayObject result = new JSArrayObject ();
+			ArrayObject result = new ArrayObject ();
 			foreach (object obj in values) {
 				result.AddObjectKey (obj.ToString (), obj);
 			}
@@ -131,29 +134,29 @@ namespace Microsoft.JScript.Compiler {
 			throw new NotImplementedException ();
 		}
 
-		public static JSRegExpObject MakeRegex (CodeContext context, string source, string flags)
+		public static RegExpObject MakeRegex (CodeContext context, string source, string flags)
 		{
 			throw new NotImplementedException ();
 		}
 
 		public static double Negate (object x)
 		{
-			return (-1) * Convert.ToNumber (x);
+			return (-1) * ConvertHelper.ToNumber (x);
 		}
 
 		public static bool Not (object x)
 		{
-			return !Convert.ToBoolean (x);
+			return !ConvertHelper.ToBoolean (x);
 		}
 
 		public static int OnesComplement (object x)
 		{
-			return ~Convert.ToInt32 (x);
+			return ~ConvertHelper.ToInt32 (x);
 		}
 
 		public static double Positive (object x)
 		{
-			return Convert.ToNumber (x);
+			return ConvertHelper.ToNumber (x);
 		}
 
 		public static void PrintExpressionValue (object o)

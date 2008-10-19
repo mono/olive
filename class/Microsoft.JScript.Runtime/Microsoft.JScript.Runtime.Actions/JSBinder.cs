@@ -43,8 +43,8 @@ namespace Microsoft.JScript.Runtime.Actions {
 
 	public class JSBinder : ActionBinder {
 
-		public JSBinder (CodeContext context)
-			: base (context)
+		public JSBinder (ScriptDomainManager manager)
+			: base (manager)
 		{
 		}
 		
