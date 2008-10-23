@@ -43,5 +43,34 @@ namespace MonoTests.System.Windows.Automation {
 			Assert.AreEqual (pattern, AutomationPattern.LookupById (pattern.Id), "LookupById");
 		}
 
+		[Test]
+		public void ColumnHeadersPropertyTest ()
+		{
+			AutomationProperty property = TablePatternIdentifiers.ColumnHeadersProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30082, property.Id, "Id");
+			Assert.AreEqual ("TablePatternIdentifiers.ColumnHeadersProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void RowHeadersPropertyTest ()
+		{
+			AutomationProperty property = TablePatternIdentifiers.RowHeadersProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30081, property.Id, "Id");
+			Assert.AreEqual ("TablePatternIdentifiers.RowHeadersProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
+
+		[Test]
+		public void RowOrColumnMajorPropertyTest ()
+		{
+			AutomationProperty property = TablePatternIdentifiers.RowOrColumnMajorProperty;
+			Assert.IsNotNull (property, "Property field must not be null");
+			Assert.AreEqual (30083, property.Id, "Id");
+			Assert.AreEqual ("TablePatternIdentifiers.RowOrColumnMajorProperty", property.ProgrammaticName, "ProgrammaticName");
+			Assert.AreEqual (property, AutomationProperty.LookupById (property.Id), "LookupById");
+		}
 	}
 }
