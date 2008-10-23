@@ -212,6 +212,12 @@ namespace System.Windows.Automation
 				return MultipleViewPatternIdentifiers.SupportedViewsProperty;
 			else if (id == DockPatternIdentifiers.DockPositionProperty.Id)
 				return DockPatternIdentifiers.DockPositionProperty;
+			else if (id == TablePatternIdentifiers.ColumnHeadersProperty.Id)
+				return TablePatternIdentifiers.ColumnHeadersProperty;
+			else if (id == TablePatternIdentifiers.RowHeadersProperty.Id)
+				return TablePatternIdentifiers.RowHeadersProperty;
+			else if (id == TablePatternIdentifiers.RowOrColumnMajorProperty.Id)
+				return TablePatternIdentifiers.RowOrColumnMajorProperty;
 			else
 				return null;
 		}

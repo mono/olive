@@ -1,3 +1,10 @@
+2008-10-23  Mario Carrion  <mcarrion@novell.com>
+
+	* System.Windows.Automation/AutomationProperty.cs:
+	* System.Windows.Automation/TablePatternIdentifiers.cs: Implementation:
+	ColumnHeadersProperty, RowHeadersProperty and
+	RowOrColumnMajorProperty.
+
 2008-10-13  Mario Carrion <mcarrion@novell.com> 
 
 	* UIAutomationTypesTests.mdp, UIAutomationTypes_test.dll.sources: File

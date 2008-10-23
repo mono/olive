@@ -31,12 +31,27 @@ namespace System.Windows.Automation
 	{
 #region Constructor
 		private const int PatternId = 10012;
+		private const int ColumnHeadersPropertyId = 30082;
+		private const int RowHeadersPropertyId = 30081;
+		private const int RowOrColumnMajorPropertyId = 30083;
 		
 		static TablePatternIdentifiers ()
 		{
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TablePatternIdentifiers.Pattern");
+
+			ColumnHeadersProperty =
+				new AutomationProperty (ColumnHeadersPropertyId,
+						"TablePatternIdentifiers.ColumnHeadersProperty");
+
+			RowHeadersProperty =
+				new AutomationProperty (RowHeadersPropertyId,
+						"TablePatternIdentifiers.RowHeadersProperty");
+
+			RowOrColumnMajorProperty =
+				new AutomationProperty (RowOrColumnMajorPropertyId,
+						"TablePatternIdentifiers.RowOrColumnMajorProperty");
 		}
 		
 #endregion
