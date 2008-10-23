@@ -1,3 +1,8 @@
+2008-10-23  Brad Taylor  <brad@getcoded.net>
+	
+	* Makefile:
+	* UIAutomationClient/: Add a new UIA dll.
+
 2008-05-13  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Moved IAutomationBridge interface to a new

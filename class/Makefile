@@ -13,7 +13,8 @@ net_3_0_dirs = \
 	PresentationFramework		\
 	UIAutomationTypes		\
 	UIAutomationBridge		\
-	UIAutomationProvider
+	UIAutomationProvider		\
+	UIAutomationClient
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
 
