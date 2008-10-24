@@ -59,75 +59,71 @@ namespace System.Windows.Automation
 #endregion
 		
 #region Public Fields
-		public static readonly AutomationTextAttribute AnimationStyleAttribute;
+		public static readonly AutomationTextAttribute AnimationStyleAttribute = TextPatternIdentifiers.AnimationStyleAttribute;
 
-		public static readonly AutomationTextAttribute BackgroundColorAttribute;
+		public static readonly AutomationTextAttribute BackgroundColorAttribute = TextPatternIdentifiers.BackgroundColorAttribute;
 
-		public static readonly AutomationTextAttribute BulletStyleAttribute;
+		public static readonly AutomationTextAttribute BulletStyleAttribute = TextPatternIdentifiers.BulletStyleAttribute;
 
-		public static readonly AutomationTextAttribute CapStyleAttribute;
+		public static readonly AutomationTextAttribute CapStyleAttribute = TextPatternIdentifiers.CapStyleAttribute;
 
-		public static readonly AutomationTextAttribute CultureAttribute;
+		public static readonly AutomationTextAttribute CultureAttribute = TextPatternIdentifiers.CultureAttribute;
 
-		public static readonly AutomationTextAttribute FontNameAttribute;
+		public static readonly AutomationTextAttribute FontNameAttribute = TextPatternIdentifiers.FontNameAttribute;
 
-		public static readonly AutomationTextAttribute FontSizeAttribute;
+		public static readonly AutomationTextAttribute FontSizeAttribute = TextPatternIdentifiers.FontSizeAttribute;
 
-		public static readonly AutomationTextAttribute FontWeightAttribute;
+		public static readonly AutomationTextAttribute FontWeightAttribute = TextPatternIdentifiers.FontWeightAttribute;
 
-		public static readonly AutomationTextAttribute ForegroundColorAttribute;
+		public static readonly AutomationTextAttribute ForegroundColorAttribute = TextPatternIdentifiers.ForegroundColorAttribute;
 
-		public static readonly AutomationTextAttribute HorizontalTextAlignmentAttribute;
+		public static readonly AutomationTextAttribute HorizontalTextAlignmentAttribute = TextPatternIdentifiers.HorizontalTextAlignmentAttribute;
 
-		public static readonly AutomationTextAttribute IndentationFirstLineAttribute;
+		public static readonly AutomationTextAttribute IndentationFirstLineAttribute = TextPatternIdentifiers.IndentationFirstLineAttribute;
 
-		public static readonly AutomationTextAttribute IndentationLeadingAttribute;
+		public static readonly AutomationTextAttribute IndentationLeadingAttribute = TextPatternIdentifiers.IndentationLeadingAttribute;
 
-		public static readonly AutomationTextAttribute IndentationTrailingAttribute;
+		public static readonly AutomationTextAttribute IndentationTrailingAttribute = TextPatternIdentifiers.IndentationTrailingAttribute;
 
-		public static readonly AutomationTextAttribute IsHiddenAttribute;
+		public static readonly AutomationTextAttribute IsHiddenAttribute = TextPatternIdentifiers.IsHiddenAttribute;
 
-		public static readonly AutomationTextAttribute IsItalicAttribute;
+		public static readonly AutomationTextAttribute IsItalicAttribute = TextPatternIdentifiers.IsItalicAttribute;
 
-		public static readonly AutomationTextAttribute IsReadOnlyAttribute;
+		public static readonly AutomationTextAttribute IsReadOnlyAttribute = TextPatternIdentifiers.IsReadOnlyAttribute;
 
-		public static readonly AutomationTextAttribute IsSubscriptAttribute;
+		public static readonly AutomationTextAttribute IsSubscriptAttribute = TextPatternIdentifiers.IsSubscriptAttribute;
 
-		public static readonly AutomationTextAttribute IsSuperscriptAttribute;
+		public static readonly AutomationTextAttribute IsSuperscriptAttribute = TextPatternIdentifiers.IsSuperscriptAttribute;
 
-		public static readonly AutomationTextAttribute MarginBottomAttribute;
+		public static readonly AutomationTextAttribute MarginBottomAttribute = TextPatternIdentifiers.MarginBottomAttribute;
 
-		public static readonly AutomationTextAttribute MarginLeadingAttribute;
+		public static readonly AutomationTextAttribute MarginLeadingAttribute = TextPatternIdentifiers.MarginLeadingAttribute;
 
-		public static readonly AutomationTextAttribute MarginTopAttribute;
+		public static readonly AutomationTextAttribute MarginTopAttribute = TextPatternIdentifiers.MarginTopAttribute;
 
-		public static readonly AutomationTextAttribute MarginTrailingAttribute;
+		public static readonly AutomationTextAttribute MarginTrailingAttribute = TextPatternIdentifiers.MarginTrailingAttribute;
 
-		public static readonly Object MixedAttributeValue;
+		public static readonly Object MixedAttributeValue = TextPatternIdentifiers.MixedAttributeValue;
 
-		public static readonly AutomationTextAttribute OutlineStylesAttribute;
+		public static readonly AutomationTextAttribute OutlineStylesAttribute = TextPatternIdentifiers.OutlineStylesAttribute;
 
-		public static readonly AutomationTextAttribute OverlineColorAttribute;
+		public static readonly AutomationTextAttribute OverlineColorAttribute = TextPatternIdentifiers.OverlineColorAttribute;
 
-		public static readonly AutomationTextAttribute OverlineStyleAttribute;
+		public static readonly AutomationTextAttribute OverlineStyleAttribute = TextPatternIdentifiers.OverlineStyleAttribute;
 
-		public static readonly AutomationPattern Pattern;
+		public static readonly AutomationPattern Pattern = TextPatternIdentifiers.Pattern;
 		
-		public static readonly AutomationTextAttribute StrikethroughColorAttribute;
+		public static readonly AutomationTextAttribute StrikethroughColorAttribute = TextPatternIdentifiers.StrikethroughColorAttribute;
 
-		public static readonly AutomationTextAttribute StrikethroughStyleAttribute;
+		public static readonly AutomationTextAttribute StrikethroughStyleAttribute = TextPatternIdentifiers.StrikethroughStyleAttribute;
 
-		public static readonly AutomationTextAttribute TabsAttribute;
+		public static readonly AutomationTextAttribute TabsAttribute = TextPatternIdentifiers.TabsAttribute;
 
-		public static readonly AutomationEvent TextChangedEvent;
+		public static readonly AutomationTextAttribute TextFlowDirectionsAttribute = TextPatternIdentifiers.TextFlowDirectionsAttribute;
 
-		public static readonly AutomationTextAttribute TextFlowDirectionsAttribute;
-		
-		public static readonly AutomationEvent TextSelectionChangedEvent;
+		public static readonly AutomationTextAttribute UnderlineColorAttribute = TextPatternIdentifiers.UnderlineColorAttribute;
 
-		public static readonly AutomationTextAttribute UnderlineColorAttribute;
-
-		public static readonly AutomationTextAttribute UnderlineStyleAttribute;
+		public static readonly AutomationTextAttribute UnderlineStyleAttribute = TextPatternIdentifiers.UnderlineStyleAttribute;
 #endregion
 	}
 }

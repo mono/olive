@@ -33,9 +33,43 @@ namespace System.Windows.Automation
 		private const int PatternId = 10014;
 		private const int TextChangedEventId = 20015;
 		private const int TextSelectionChangedEventId = 20014;
+
+		private const int AnimationStyleAttributeId = 40000;
+		private const int BackgroundColorAttributeId = 40001;
+		private const int BulletStyleAttributeId = 40002;
+		private const int CapStyleAttributeId = 40003;
+		private const int CultureAttributeId = 40004;
+		private const int FontNameAttributeId = 40005;
+		private const int FontSizeAttributeId = 40006;
+		private const int FontWeightAttributeId = 40007;
+		private const int ForegroundColorAttributeId = 40008;
+		private const int HorizontalTextAlignmentAttributeId = 40009;
+		private const int IndentationFirstLineAttributeId = 40010;
+		private const int IndentationLeadingAttributeId = 40011;
+		private const int IndentationTrailingAttributeId = 40012;
+		private const int IsHiddenAttributeId = 40013;
+		private const int IsItalicAttributeId = 40014;
+		private const int IsReadOnlyAttributeId = 40015;
+		private const int IsSubscriptAttributeId = 40016;
+		private const int IsSuperscriptAttributeId = 40017;
+		private const int MarginBottomAttributeId = 40018;
+		private const int MarginLeadingAttributeId = 40019;
+		private const int MarginTopAttributeId = 40020;
+		private const int MarginTrailingAttributeId = 40021;
+		private const int OutlineStylesAttributeId = 40022;
+		private const int OverlineColorAttributeId = 40023;
+		private const int OverlineStyleAttributeId = 40024;
+		private const int StrikethroughColorAttributeId = 40025;
+		private const int StrikethroughStyleAttributeId = 40026;
+		private const int TabsAttributeId = 40027;
+		private const int TextFlowDirectionsAttributeId = 40028;
+		private const int UnderlineColorAttributeId = 40029;
+		private const int UnderlineStyleAttributeId = 40030;
 		
 		static TextPatternIdentifiers ()
 		{
+			MixedAttributeValue = new object ();
+
 			Pattern =
 				new AutomationPattern (PatternId,
 				                       "TextPatternIdentifiers.Pattern");
@@ -45,6 +79,100 @@ namespace System.Windows.Automation
 			TextSelectionChangedEvent = 
 				new AutomationEvent (TextSelectionChangedEventId,
 				                     "TextPatternIdentifiers.TextSelectionChangedEvent");
+
+			AnimationStyleAttribute =
+				new AutomationTextAttribute (AnimationStyleAttributeId,
+			                                     "TextPatternIdentifiers.AnimationStyleAttribute");
+			BackgroundColorAttribute =
+				new AutomationTextAttribute (BackgroundColorAttributeId,
+			                                     "TextPatternIdentifiers.BackgroundColorAttribute");
+			BulletStyleAttribute =
+				new AutomationTextAttribute (BulletStyleAttributeId,
+			                                     "TextPatternIdentifiers.BulletStyleAttribute");
+			CapStyleAttribute =
+				new AutomationTextAttribute (CapStyleAttributeId,
+			                                     "TextPatternIdentifiers.CapStyleAttribute");
+			CultureAttribute =
+				new AutomationTextAttribute (CultureAttributeId,
+			                                     "TextPatternIdentifiers.CultureAttribute");
+			FontNameAttribute =
+				new AutomationTextAttribute (FontNameAttributeId,
+			                                     "TextPatternIdentifiers.FontNameAttribute");
+			FontSizeAttribute =
+				new AutomationTextAttribute (FontSizeAttributeId,
+			                                     "TextPatternIdentifiers.FontSizeAttribute");
+			FontWeightAttribute =
+				new AutomationTextAttribute (FontWeightAttributeId,
+			                                     "TextPatternIdentifiers.FontWeightAttribute");
+			ForegroundColorAttribute =
+				new AutomationTextAttribute (ForegroundColorAttributeId,
+			                                     "TextPatternIdentifiers.ForegroundColorAttribute");
+			HorizontalTextAlignmentAttribute =
+				new AutomationTextAttribute (HorizontalTextAlignmentAttributeId,
+			                                     "TextPatternIdentifiers.HorizontalTextAlignmentAttribute");
+			IndentationFirstLineAttribute =
+				new AutomationTextAttribute (IndentationFirstLineAttributeId,
+			                                     "TextPatternIdentifiers.IndentationFirstLineAttribute");
+			IndentationLeadingAttribute =
+				new AutomationTextAttribute (IndentationLeadingAttributeId,
+			                                     "TextPatternIdentifiers.IndentationLeadingAttribute");
+			IndentationTrailingAttribute =
+				new AutomationTextAttribute (IndentationTrailingAttributeId,
+			                                     "TextPatternIdentifiers.IndentationTrailingAttribute");
+			IsHiddenAttribute =
+				new AutomationTextAttribute (IsHiddenAttributeId,
+			                                     "TextPatternIdentifiers.IsHiddenAttribute");
+			IsItalicAttribute =
+				new AutomationTextAttribute (IsItalicAttributeId,
+			                                     "TextPatternIdentifiers.IsItalicAttribute");
+			IsReadOnlyAttribute =
+				new AutomationTextAttribute (IsReadOnlyAttributeId,
+			                                     "TextPatternIdentifiers.IsReadOnlyAttribute");
+			IsSubscriptAttribute =
+				new AutomationTextAttribute (IsSubscriptAttributeId,
+			                                     "TextPatternIdentifiers.IsSubscriptAttribute");
+			IsSuperscriptAttribute =
+				new AutomationTextAttribute (IsSuperscriptAttributeId,
+			                                     "TextPatternIdentifiers.IsSuperscriptAttribute");
+			MarginBottomAttribute =
+				new AutomationTextAttribute (MarginBottomAttributeId,
+			                                     "TextPatternIdentifiers.MarginBottomAttribute");
+			MarginLeadingAttribute =
+				new AutomationTextAttribute (MarginLeadingAttributeId,
+			                                     "TextPatternIdentifiers.MarginLeadingAttribute");
+			MarginTopAttribute =
+				new AutomationTextAttribute (MarginTopAttributeId,
+			                                     "TextPatternIdentifiers.MarginTopAttribute");
+			MarginTrailingAttribute =
+				new AutomationTextAttribute (MarginTrailingAttributeId,
+			                                     "TextPatternIdentifiers.MarginTrailingAttribute");
+			OutlineStylesAttribute =
+				new AutomationTextAttribute (OutlineStylesAttributeId,
+			                                     "TextPatternIdentifiers.OutlineStylesAttribute");
+			OverlineColorAttribute =
+				new AutomationTextAttribute (OverlineColorAttributeId,
+			                                     "TextPatternIdentifiers.OverlineColorAttribute");
+			OverlineStyleAttribute =
+				new AutomationTextAttribute (OverlineStyleAttributeId,
+			                                     "TextPatternIdentifiers.OverlineStyleAttribute");
+			StrikethroughColorAttribute =
+				new AutomationTextAttribute (StrikethroughColorAttributeId,
+			                                     "TextPatternIdentifiers.StrikethroughColorAttribute");
+			StrikethroughStyleAttribute =
+				new AutomationTextAttribute (StrikethroughStyleAttributeId,
+			                                     "TextPatternIdentifiers.StrikethroughStyleAttribute");
+			TabsAttribute =
+				new AutomationTextAttribute (TabsAttributeId,
+			                                     "TextPatternIdentifiers.TabsAttribute");
+			TextFlowDirectionsAttribute =
+				new AutomationTextAttribute (TextFlowDirectionsAttributeId,
+			                                     "TextPatternIdentifiers.TextFlowDirectionsAttribute");
+			UnderlineColorAttribute =
+				new AutomationTextAttribute (UnderlineColorAttributeId,
+			                                     "TextPatternIdentifiers.UnderlineColorAttribute");
+			UnderlineStyleAttribute =
+				new AutomationTextAttribute (UnderlineStyleAttributeId,
+			                                     "TextPatternIdentifiers.UnderlineStyleAttribute");
 		}
 		
 #endregion
