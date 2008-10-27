@@ -521,5 +521,23 @@ namespace MonoTests.System.Windows {
 			r.Intersect (new Rect (-25, 5, 1, 1));
 			Assert.AreEqual (Rect.Empty, r);
 		}
+
+
+		[Test]
+		public void Equals_Operator ()
+		{
+			Rect r1 = new Rect (1, 2, 30, 30);
+			Rect r2 = new Rect (1, 2, 30, 30);
+
+			Assert.AreEqual (true,  r1 == r2);
+			Assert.AreEqual (false, r1 != r2);
+
+			r2 = new Rect (10, 20, 30, 30);
+
+			Assert.AreEqual (false, r1 == r2);
+			Assert.AreEqual (true,  r1 != r2);
+
+		}
+
 	}
 }

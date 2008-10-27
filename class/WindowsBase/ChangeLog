@@ -1,3 +1,8 @@
+2008-10-27  Mario Carrion <mcarrion@novell.com>
+
+	* System.Windows/Rect.cs: Operator != and == implementation.
+	* Test/System.Windows/RectTest.cs: New test: Equals_Operator.
+
 2008-10-17  Alan McGovern  <amcgovern@novell.com>
 
 	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Uncomment the test

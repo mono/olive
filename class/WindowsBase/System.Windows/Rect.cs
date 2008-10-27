@@ -96,12 +96,12 @@ namespace System.Windows {
 
 		public static bool operator != (Rect rect1, Rect rect2)
 		{
-			throw new NotImplementedException ();
+			return !(rect1.Location == rect2.Location && rect1.Size == rect2.Size);
 		}
 
 		public static bool operator == (Rect rect1, Rect rect2)
 		{
-			throw new NotImplementedException ();
+			return rect1.Location == rect2.Location && rect1.Size == rect2.Size;
 		}
 
 		public override bool Equals (object o)
