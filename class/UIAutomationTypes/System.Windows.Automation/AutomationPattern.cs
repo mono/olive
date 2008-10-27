@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Sandy Armstrong <sanfordarmstrong@gmail.com>
+//      Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
@@ -76,6 +77,8 @@ namespace System.Windows.Automation
 				return ScrollItemPatternIdentifiers.Pattern;
 			else if (id == DockPatternIdentifiers.Pattern.Id)
 				return DockPatternIdentifiers.Pattern;
+			else if (id == TableItemPatternIdentifiers.Pattern.Id)
+				return TableItemPatternIdentifiers.Pattern;
 			else
 				return null;
 		}

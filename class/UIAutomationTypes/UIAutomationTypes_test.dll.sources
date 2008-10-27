@@ -20,6 +20,7 @@ System.Windows.Automation/SelectionItemPatternIdentifiersTest.cs
 System.Windows.Automation/SelectionPatternIdentifiersTest.cs
 System.Windows.Automation/StructureChangeTypeTest.cs
 System.Windows.Automation/SupportedTextSelectionTest.cs
+System.Windows.Automation/TableItemPatternIdentifiersTest.cs
 System.Windows.Automation/TablePatternIdentifiersTest.cs
 System.Windows.Automation/TextPatternIdentifiersTest.cs
 System.Windows.Automation/TogglePatternIdentifiersTest.cs

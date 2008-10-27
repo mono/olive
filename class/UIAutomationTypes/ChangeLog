@@ -1,3 +1,14 @@
+2008-10-27  Mario Carrion  <mcarrion@novell.com>
+
+	* UIAutomationTypesTests.mdp:
+	* UIAutomationTypes_test.dll.sources: Test file added:
+	TableItemPatternIdentifiersTest.
+
+	* System.Windows.Automation/AutomationPattern.cs:
+	* System.Windows.Automation/AutomationProperty.cs:
+	* System.Windows.Automation/TableItemPatternIdentifiers.cs:
+	TableItemPattern support.
+
 2008-10-24  Brad Taylor  <brad@getcoded.net>
 	
 	* System.Windows.Automation/TextPatternIdentifiers.cs: Implement Ids

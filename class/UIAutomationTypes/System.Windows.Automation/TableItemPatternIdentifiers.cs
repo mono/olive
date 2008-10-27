@@ -21,6 +21,7 @@
 //// 
 //// Authors: 
 ////      Stephen Shaw <sshaw@decriptor.com>
+////      Mario Carrion <mcarrion@novell.com>
 //// 
 //
 
@@ -30,10 +31,24 @@ namespace System.Windows.Automation
 {
 	public static class TableItemPatternIdentifiers
 	{
+		private const int PatternId = 10013;
+		private const int ColumnHeaderItemsPropertyId = 30085;
+		private const int RowHeaderItemsPropertyId = 30084;
+		
 #region Constructor
 		static TableItemPatternIdentifiers()
 		{
-			
+			Pattern =
+				new AutomationPattern (PatternId,
+				                       "TableItemPatternIdentifiers.Pattern");
+
+			ColumnHeaderItemsProperty =
+				new AutomationProperty (ColumnHeaderItemsPropertyId,
+						"TableItemPatternIdentifiers.ColumnHeaderItemsProperty");
+
+			RowHeaderItemsProperty =
+				new AutomationProperty (RowHeaderItemsPropertyId,
+						"TableItemPatternIdentifiers.RowHeaderItemsProperty");
 		}
 
 #endregion

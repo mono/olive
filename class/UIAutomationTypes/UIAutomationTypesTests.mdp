@@ -54,6 +54,7 @@
     <File name="Test/System.Windows.Automation/GridItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/OrientationTypeTest.cs" subtype="Code" buildaction="Compile" />
     <File name="Test/System.Windows.Automation/DockPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
+    <File name="Test/System.Windows.Automation/TableItemPatternIdentifiersTest.cs" subtype="Code" buildaction="Compile" />
   </Contents>
   <References>
     <ProjectReference type="Gac" localcopy="True" refto="nunit.core, Version=2.2.0.0, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77" />
@@ -62,6 +63,7 @@
     <ProjectReference type="Project" localcopy="True" refto="UIAutomationTypes" />
   </References>
   <Deployment.LinuxDeployData generatePcFile="False" />
+  <GtkDesignInfo />
   <MonoDevelop.Autotools.MakefileInfo IntegrationEnabled="True" RelativeMakefileName="Makefile" BuildTargetName="test" ExecuteTargetName="run-test">
     <BuildFilesVar />
     <DeployFilesVar />

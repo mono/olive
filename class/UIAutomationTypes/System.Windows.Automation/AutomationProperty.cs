@@ -21,6 +21,7 @@
 // 
 // Authors: 
 //      Calvin Gaisford <calvinrg@gmail.com>
+//      Mario Carrion <mcarrion@novell.com>
 // 
 
 using System;
@@ -218,6 +219,10 @@ namespace System.Windows.Automation
 				return TablePatternIdentifiers.RowHeadersProperty;
 			else if (id == TablePatternIdentifiers.RowOrColumnMajorProperty.Id)
 				return TablePatternIdentifiers.RowOrColumnMajorProperty;
+			else if (id == TableItemPatternIdentifiers.ColumnHeaderItemsProperty.Id)
+				return TableItemPatternIdentifiers.ColumnHeaderItemsProperty;
+			else if (id == TableItemPatternIdentifiers.RowHeaderItemsProperty.Id)
+				return TableItemPatternIdentifiers.RowHeaderItemsProperty;
 			else
 				return null;
 		}
