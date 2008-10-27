@@ -75,6 +75,7 @@
     <Compile Include="System.Windows.Automation\SelectionPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\StructureChangeTypeTest.cs" />
     <Compile Include="System.Windows.Automation\SupportedTextSelectionTest.cs" />
+    <Compile Include="System.Windows.Automation\TableItemPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\TablePatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\TextPatternIdentifiersTest.cs" />
     <Compile Include="System.Windows.Automation\TogglePatternIdentifiersTest.cs" />

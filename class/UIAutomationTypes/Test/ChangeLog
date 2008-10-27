@@ -1,3 +1,9 @@
+2008-10-27  Mario Carrion <mcarrion@novell.com> 
+
+	* System.Windows.Automation/TableItemPatternIdentifiersTest.cs: Test added,
+	tests TableItemPatternIdentifiers class.
+	* UIAutomationTypesTests.csproj: File updated.
+
 2008-10-23  Mario Carrion <mcarrion@novell.com> 
 
 	* System.Windows.Automation/TablePatternIdentifiersTest.cs: Test added:
