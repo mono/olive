@@ -1,3 +1,30 @@
+2008-10-28  Alan McGovern  <amcgovern@novell.com>
+
+	* System.IO.Packaging/ZipPackage.cs:
+	* System.IO.Packaging/ZipPartStream.cs:
+	* System.IO.Packaging/ZipPackagePart.cs:
+	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Implement the
+	PartStream logic.
+
+	* Makefile: Need unsafe code to build the zip wrapper. Review this later
+	maybe.
+
+	* ZipSharp:
+	* ZipSharp/ZipTime.cs:
+	* ZipSharp/ZipHandle.cs:
+	* ZipSharp/ZipStream.cs:
+	* ZipSharp/NativeZip.cs:
+	* ZipSharp/ZipArchive.cs:
+	* ZipSharp/UnzipHandle.cs:
+	* ZipSharp/IOFunctions.cs:
+	* ZipSharp/NativeUnzip.cs:
+	* WindowsBase.dll.sources:
+	* ZipSharp/ZipFileInfo.cs:
+	* ZipSharp/UnzipArchive.cs:
+	* ZipSharp/UnzipFileInfo.cs:
+	* ZipSharp/ZipWriteStream.cs:
+	* ZipSharp/UnzipReadStream.cs: Add the minizip binding to SVN.
+
 2008-10-27  Mario Carrion <mcarrion@novell.com>
 
 	* System.Windows/Rect.cs: Operator != and == implementation.

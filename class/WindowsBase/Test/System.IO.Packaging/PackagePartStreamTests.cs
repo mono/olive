@@ -33,7 +33,6 @@ using NUnit.Framework;
 namespace System.IO.Packaging.Tests {
     
     [TestFixture]
-    [Category ("NotWorking")]
     public class PackagePartStreamTests : TestBase {
 
         byte [] buffer;
@@ -43,7 +42,7 @@ namespace System.IO.Packaging.Tests {
             PackagePartStreamTests t = new PackagePartStreamTests ();
             t.FixtureSetup ();
             t.Setup ();
-            //t.FlushThenTruncate ();
+            t.CheckFlushTest ();
         }
 
         public override void FixtureSetup ()
@@ -74,7 +73,6 @@ namespace System.IO.Packaging.Tests {
             Stream s1 = Parts [0].GetStream ();
             Stream s2 = Parts [0].GetStream ();
             Assert.IsFalse (s1 == s2, "#1");
-
             s1.WriteByte (5);
             Assert.AreEqual (1, s1.Position, "#2");
             Assert.AreEqual (0, s2.Position, "#3");
@@ -107,7 +105,7 @@ namespace System.IO.Packaging.Tests {
 
             long count = stream.Length;
             package.Flush ();
-            Assert.IsTrue (stream.Length > count);
+            Assert.IsTrue (stream.Length > count, "#1");
         }
 
         [Test]
@@ -119,7 +117,7 @@ namespace System.IO.Packaging.Tests {
             TearDown ();
             Setup ();
             FlushPackageTest1 ();
-            Assert.AreEqual (count, stream.Length);
+            Assert.AreEqual (count, stream.Length, "#1");
         }
 
         [Test]
@@ -135,8 +133,8 @@ namespace System.IO.Packaging.Tests {
             long position = stream.Length;
         }
 
-		// Uncommenting this results in mono exploding...
         [Test]
+        [Category ("NotWorking")]
         public void FlushThenTruncate ()
         {
             Parts [0].GetStream ().Write (buffer, 0, buffer.Length);
@@ -153,6 +151,37 @@ namespace System.IO.Packaging.Tests {
             package.Flush ();
 
             Assert.IsTrue (stream.Length < length, "#3");
+        }
+
+        [Test]
+        public void CheckFlushTest ()
+        {
+            buffer = new byte [1024 * 1024];
+            Assert.AreEqual (0, stream.Length, "#1");
+            Parts [0].GetStream ().Write (buffer, 0, buffer.Length);
+            Assert.AreEqual (0, stream.Length, "#2");
+            Assert.AreEqual (Parts[0].GetStream ().Length, buffer.Length, "#2b");
+            Parts [1].GetStream ().Write (buffer, 0, buffer.Length);
+            Assert.AreEqual (0, stream.Length, "#3");
+            Assert.AreEqual (Parts[1].GetStream ().Length, buffer.Length, "#3b");
+            Parts [0].GetStream ().Flush ();
+            Assert.IsTrue (stream.Length > buffer.Length * 2, "#4");
+            long count = stream.Length;
+            package.Flush ();
+            Assert.IsTrue (count < stream.Length, "#5");
+        }
+
+        [Test]
+        public void CheckFlushTest2 ()
+        {
+            buffer = new byte [1024 * 1024];
+            Assert.AreEqual (0, stream.Length, "#1");
+            Parts [0].GetStream ().Write (buffer, 0, buffer.Length);
+            Assert.AreEqual (0, stream.Length, "#2");
+            Parts [1].GetStream ().Write (buffer, 0, buffer.Length);
+            Assert.AreEqual (0, stream.Length, "#3");
+            package.Flush ();
+            Assert.IsTrue (stream.Length > buffer.Length * 2, "#4");
         }
     }
 }

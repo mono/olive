@@ -26,13 +26,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using zipsharp;
 
 namespace System.IO.Packaging {
 
 	public sealed class ZipPackage : Package
 	{
-		private Dictionary<Uri, PackagePart> parts = new Dictionary<Uri, PackagePart> ();
-		private List<Stream> partStreams = new List<Stream> ();
+		private Dictionary<Uri, ZipPackagePart> parts = new Dictionary<Uri, ZipPackagePart> ();
+		internal Dictionary<Uri, MemoryStream> PartStreams = new Dictionary<Uri, MemoryStream> ();
 
 		internal Stream PackageStream { get; set; }
 		
@@ -47,27 +48,45 @@ namespace System.IO.Packaging {
 		{
 
 		}
-
-		internal void AddPartStream (Stream partStream)
-		{
-			partStreams.Add (partStream);
-		}
 		
 		protected override void Dispose (bool disposing)
 		{
-			foreach (Stream s in partStreams)
+			foreach (Stream s in PartStreams.Values)
 				s.Close ();
 			
-			// FIXME: Simulate writing the zip header so the tests pass.
-			PackageStream.Write (new byte[100], 0, 100);
 			PackageStream.Close ();
 		}
 
 		protected override void FlushCore ()
 		{
-			foreach (Stream s in partStreams)
-				s.Flush ();
-			PackageStream.Flush ();
+			// Ensure that all the data has been read out of the package
+			// stream already. Otherwise we'll lose data when we recreate the zip
+			foreach (ZipPackagePart part in parts.Values)
+				part.GetStream ().Dispose ();
+
+			// Empty the package stream
+			PackageStream.Position = 0;
+			PackageStream.SetLength (0);
+
+			// Recreate the zip file
+			using (ZipArchive archive = new ZipArchive(PackageStream, Append.Create, false)) {
+
+				// Write all the part streams
+				foreach (ZipPackagePart part in parts.Values) {
+					Stream partStream = part.GetStream ();
+					partStream.Seek (0, SeekOrigin.Begin);
+					
+					using (Stream destination = archive.GetStream (part.Uri.ToString ())) {
+						int count = (int) Math.Min (2048, partStream.Length);
+						byte[] buffer = new byte [count];
+
+						while ((count = partStream.Read (buffer, 0, buffer.Length)) != 0)
+							destination.Write (buffer, 0, count);
+					}
+				}
+				
+				// Write relationships file
+			}
 		}
 
 		protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
@@ -84,14 +103,14 @@ namespace System.IO.Packaging {
 
 		protected override PackagePart GetPartCore (Uri partUri)
 		{
-			PackagePart part = null;
+			ZipPackagePart part = null;
 			parts.TryGetValue (partUri, out part);
 			return part;
 		}
 
 		protected override PackagePart[] GetPartsCore ()
 		{
-			PackagePart[] p = new PackagePart [parts.Count];
+			ZipPackagePart[] p = new ZipPackagePart [parts.Count];
 			parts.Values.CopyTo (p, 0);
 			return p;
 		}

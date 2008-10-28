@@ -46,6 +46,7 @@ System.IO.Packaging/TargetMode.cs
 System.IO.Packaging/VerifyResult.cs
 System.IO.Packaging/ZipPackage.cs
 System.IO.Packaging/ZipPackagePart.cs
+System.IO.Packaging/ZipPartStream.cs
 System.Security.Permissions/MediaPermission.cs
 System.Security.Permissions/MediaPermissionAttribute.cs
 System.Security.Permissions/MediaPermissionAudio.cs
@@ -166,6 +167,19 @@ System.Windows.Threading/DispatcherUnhandledExceptionEventArgs.cs
 System.Windows.Threading/DispatcherUnhandledExceptionEventHandler.cs
 System.Windows.Threading/DispatcherUnhandledExceptionFilterEventArgs.cs
 System.Windows.Threading/DispatcherUnhandledExceptionFilterEventHandler.cs
+ZipSharp/IOFunctions.cs
+ZipSharp/ZipArchive.cs
+ZipSharp/UnzipArchive.cs
+ZipSharp/NativeUnzip.cs
+ZipSharp/UnzipFileInfo.cs
+ZipSharp/UnzipReadStream.cs
+ZipSharp/ZipHandle.cs
+ZipSharp/UnzipHandle.cs
+ZipSharp/ZipStream.cs
+ZipSharp/ZipFileInfo.cs
+ZipSharp/NativeZip.cs
+ZipSharp/ZipTime.cs
+ZipSharp/ZipWriteStream.cs
 ../../build/common/MonoTODOAttribute.cs
 Assembly/AssemblyInfo.cs
 ../../build/common/Consts.cs
