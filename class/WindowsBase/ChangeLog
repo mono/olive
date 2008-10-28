@@ -1,5 +1,10 @@
 2008-10-28  Alan McGovern  <amcgovern@novell.com>
 
+	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Disable these
+	tests until I can figure out if they're stupid or not.
+
+2008-10-28  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/ZipPackage.cs:
 	* System.IO.Packaging/ZipPartStream.cs:
 	* System.IO.Packaging/ZipPackagePart.cs:

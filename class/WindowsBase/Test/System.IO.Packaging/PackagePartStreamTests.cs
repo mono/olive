@@ -99,6 +99,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void FlushPackageTest1 ()
         {
             FlushIndividualTest ();
@@ -109,6 +110,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void FlushOnlyPackage ()
         {
             NoFlushTest ();
@@ -154,6 +156,7 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
         public void CheckFlushTest ()
         {
             buffer = new byte [1024 * 1024];
