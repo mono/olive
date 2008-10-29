@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining
+// Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Alan McGovern (amcgovern@novell.com)
+//    Alan McGovern (amcgovern@novell.com)
 //
 
 
@@ -28,10 +28,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Xml;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-	
+    
     [TestFixture]
     public class PackageRelationshipTests : TestBase {
         [Test]
@@ -102,6 +103,39 @@ namespace System.IO.Packaging.Tests {
             AddThreeRelationShips ();
             foreach (PackageRelationship p in package.GetRelationships ())
                 package.DeleteRelationship (p.Id);
+        }
+
+        [Test]
+        public void CheckRelationshipData ()
+        {
+            AddThreeRelationShips ();
+            PackagePart part = package.GetPart (new Uri ("/_rels/.rels", UriKind.Relative));
+            package.Flush ();
+            Assert.IsNotNull (part, "#1");
+
+            Stream stream = part.GetStream ();
+            Assert.IsTrue (stream.Length > 0, "#2a");
+
+            XmlDocument doc = new XmlDocument ();
+            XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+            manager.AddNamespace("rel", "http://schemas.openxmlformats.org/package/2006/relationships");
+            doc.Load (new StreamReader (stream));
+
+            Assert.IsNotNull (doc.SelectSingleNode ("/rel:Relationships", manager), "#2b");
+
+            XmlNodeList list = doc.SelectNodes ("/rel:Relationships/*", manager);
+            Assert.AreEqual (3, list.Count);
+
+            List<PackageRelationship> relationships = new List<PackageRelationship>(package.GetRelationships ());
+            foreach (XmlNode node in list) {
+                Assert.AreEqual (3, node.Attributes.Count, "#3");
+                Assert.IsNotNull (node.Attributes ["Id"], "#4");
+                Assert.IsNotNull (node.Attributes ["Target"], "#5");
+                Assert.IsNotNull (node.Attributes ["Type"], "#6");
+                Assert.IsTrue(relationships.Exists(d => d.Id == node.Attributes["Id"].InnerText &&
+                                                        d.TargetUri == new Uri (node.Attributes["Target"].InnerText, UriKind.Relative) &&
+                                                        d.RelationshipType == node.Attributes["Type"].InnerText));
+            }
         }
     }
 }

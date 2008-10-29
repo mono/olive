@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Alan McGovern (amcgovern@novell.com)
+//    Alan McGovern (amcgovern@novell.com)
 //
 
 
@@ -51,12 +51,12 @@ namespace System.IO.Packaging.Tests {
 
         public override void TearDown ()
         {
-			try {
-	            if (package != null)
-	                package.Close ();
-			} catch {
-				// FIXME: This shouldn't be required when i implement this
-			}
+            try {
+                if (package != null)
+                    package.Close ();
+            } catch {
+                // FIXME: This shouldn't be required when i implement this
+            }
             if (File.Exists (path))
                 File.Delete (path);
         }
@@ -77,7 +77,7 @@ namespace System.IO.Packaging.Tests {
         {
             package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
-		
+        
         [Test]
         [ExpectedException (typeof (FileNotFoundException))]
         public void OpenNonExistantPath ()
@@ -168,6 +168,7 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [Category ("NotWorking")]
+        [Ignore ("I'm not supposed to write to the relation stream unless i'm flushing")]
         public void RelationshipPartGetStream ()
         {
             package = Package.Open (path);

@@ -54,10 +54,11 @@ namespace System.IO.Packaging {
 
 		protected override Stream GetStreamCore (FileMode mode, FileAccess access)
 		{
+			ZipPartStream zps;
 			MemoryStream stream;
 			if (Package.PartStreams.TryGetValue (Uri, out stream))
-				return new ZipPartStream (Package, stream);
-
+				return new ZipPartStream (Package, stream, access);
+			
 			stream = new MemoryStream ();
 
 			try
@@ -84,7 +85,7 @@ namespace System.IO.Packaging {
 			}
 
 			Package.PartStreams.Add (Uri, stream);
-			return new ZipPartStream (Package, stream);
+			return new ZipPartStream (Package, stream, access);
 		}
 	}
 

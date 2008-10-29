@@ -53,7 +53,6 @@ namespace zipsharp
 
 		public static unsafe void Write (ZipHandle handle, byte[] buffer, int offset, uint count)
 		{
-			Console.WriteLine ("Writing zip stream: {0} - {1}", offset, count);
 			fixed (byte* b = &buffer[offset])
 				zipWriteInFileInZip (handle, b, count);
 		}

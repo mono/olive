@@ -1,5 +1,22 @@
 2008-10-29  Alan McGovern  <amcgovern@novell.com>
 
+	* ZipSharp/NativeZip.cs: Remove a Console.WriteLine
+
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/ZipPackage.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/ZipPartStream.cs:
+	* System.IO.Packaging/ZipPackagePart.cs:
+	* Test/System.IO.Packaging/PackageTest.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs:
+	* Test/System.IO.Packaging/FakePackagePartTests.cs:
+	* Test/System.IO.Packaging/PackagePartStreamTests.cs:
+	* Test/System.IO.Packaging/PackageRelationshipTests.cs: Implement
+	parsing of PackageParts and PackageRelationships when loading
+	existing packages and write that data when creating a package.
+
+2008-10-29  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/Package.cs:
 	* System.IO.Packaging/ZipPackage.cs: Write relationships to the zipfile
 

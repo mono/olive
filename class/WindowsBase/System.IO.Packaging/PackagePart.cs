@@ -152,12 +152,12 @@ namespace System.IO.Packaging {
 		{
 			// FIXME: Need to find out what kind of access the streams are usually opened with
 			// Appears to be read/write/seek == true.
-			return GetStream (Package.FileOpenAccess == FileAccess.Read ? FileMode.Open : FileMode.OpenOrCreate);
+			return GetStream (Package.FileOpenAccess == FileAccess.Read && !IsRelationship ? FileMode.Open : FileMode.OpenOrCreate);
 		}
 
 		public Stream GetStream (FileMode mode)
 		{
-			return GetStream (mode, Package.FileOpenAccess);
+			return GetStream (mode, IsRelationship ? FileAccess.ReadWrite : Package.FileOpenAccess);
 		}
 
 		public Stream GetStream (FileMode mode, FileAccess access)

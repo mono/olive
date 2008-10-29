@@ -32,7 +32,7 @@ namespace System.IO.Packaging
 		}
 
 		public override bool CanWrite {
-			get { return BaseStream.CanWrite; }
+			get { return Writeable; }
 		}
 
 		public override long Length {
@@ -40,6 +40,10 @@ namespace System.IO.Packaging
 		}
 		
 		public override long Position {
+			get; set;
+		}
+
+		public bool Writeable {
 			get; set;
 		}
 
@@ -61,10 +65,11 @@ namespace System.IO.Packaging
 			}
 		}
 
-		public ZipPartStream (ZipPackage package, MemoryStream stream)
+		public ZipPartStream (ZipPackage package, MemoryStream stream, FileAccess access)
 		{
 			BaseStream = stream;
 			Package = package;
+			Writeable = access != FileAccess.Read;
 		}
 
 		public override void Flush ()

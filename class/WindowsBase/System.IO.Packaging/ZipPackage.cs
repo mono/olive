@@ -33,11 +33,21 @@ namespace System.IO.Packaging {
 
 	public sealed class ZipPackage : Package
 	{
-		private Dictionary<Uri, ZipPackagePart> parts = new Dictionary<Uri, ZipPackagePart> ();
+		private const string ContentNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
+		private const string ContentUri = "[Content_Types].xml";
+		
+		Dictionary<Uri, ZipPackagePart> parts;
 		internal Dictionary<Uri, MemoryStream> PartStreams = new Dictionary<Uri, MemoryStream> ();
 
 		internal Stream PackageStream { get; set; }
-		
+
+		Dictionary<Uri, ZipPackagePart> Parts {
+			get {
+				if (parts == null)
+					LoadParts ();
+				return parts;
+			}
+		}
 		internal ZipPackage (FileAccess access)
 			: base (access)
 		{
@@ -62,7 +72,7 @@ namespace System.IO.Packaging {
 		{
 			// Ensure that all the data has been read out of the package
 			// stream already. Otherwise we'll lose data when we recreate the zip
-			foreach (ZipPackagePart part in parts.Values)
+			foreach (ZipPackagePart part in Parts.Values)
 				part.GetStream ().Dispose ();
 
 			// Empty the package stream
@@ -73,7 +83,8 @@ namespace System.IO.Packaging {
 			using (ZipArchive archive = new ZipArchive(PackageStream, Append.Create, false)) {
 
 				// Write all the part streams
-				foreach (ZipPackagePart part in parts.Values) {
+				foreach (ZipPackagePart part in Parts.Values) {
+					Console.WriteLine ("Flushing: {0}", part.Uri);
 					Stream partStream = part.GetStream ();
 					partStream.Seek (0, SeekOrigin.Begin);
 					
@@ -85,33 +96,118 @@ namespace System.IO.Packaging {
 							destination.Write (buffer, 0, count);
 					}
 				}
+
+				using (Stream s = archive.GetStream (ContentUri))
+					WriteContentType (s);
 			}
 		}
 
 		protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
+			Console.WriteLine ("Creating Part: {0}", partUri);
 			ZipPackagePart part = new ZipPackagePart (this, partUri, contentType, compressionOption);
-			parts.Add (part.Uri, part);
+			Parts.Add (part.Uri, part);
 			return part;
 		}
 
 		protected override void DeletePartCore (Uri partUri)
 		{
-			parts.Remove (partUri);
+			Console.WriteLine ("Deleting Part: {0}", partUri);
+			Parts.Remove (partUri);
 		}
 
 		protected override PackagePart GetPartCore (Uri partUri)
 		{
+			Console.WriteLine ("Getting Part: {0}", partUri);
 			ZipPackagePart part = null;
-			parts.TryGetValue (partUri, out part);
+			Parts.TryGetValue (partUri, out part);
 			return part;
 		}
 
 		protected override PackagePart[] GetPartsCore ()
 		{
-			ZipPackagePart[] p = new ZipPackagePart [parts.Count];
-			parts.Values.CopyTo (p, 0);
+			ZipPackagePart[] p = new ZipPackagePart [Parts.Count];
+			Parts.Values.CopyTo (p, 0);
 			return p;
+		}
+		
+		void LoadParts ()
+		{
+			Console.WriteLine ("Loading parts");
+			parts = new Dictionary<Uri, ZipPackagePart> ();
+			try {
+				using (UnzipArchive archive = new UnzipArchive (PackageStream)) {
+
+					// Load the content type map file
+					XmlDocument doc = new XmlDocument ();
+					using (Stream s = archive.GetStream (ContentUri))
+						doc.Load (s);
+					
+					XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+					manager.AddNamespace ("content", ContentNamespace);
+
+					foreach (string file in archive.GetFiles ()) {
+						XmlNode node;
+
+						Console.WriteLine ("Found file: {0}", file);
+						
+						if (file == RelationshipUri.ToString ())
+						{
+							CreatePart (RelationshipUri, RelationshipContentType);
+							continue;
+						}
+
+						string xPath = string.Format ("/content:Types/content:Override[@PartName='{0}']", file);
+						node = doc.SelectSingleNode (xPath, manager);
+
+						if (node == null)
+						{
+							string ext = Path.GetExtension (file);
+							xPath = string.Format("/content:Types/content:Default[@Extension='{0}']", ext);
+							node = doc.SelectSingleNode (xPath, manager);
+						}
+
+						// What do i do if the node is null? This means some has tampered with the
+						// package file manually
+						if (node != null)
+							CreatePart (new Uri (file, UriKind.Relative), node.Attributes["ContentType"].Value);
+					}
+				}
+			} catch {
+				Console.WriteLine ("The package was invalid...");
+				// The archive is invalid - therfefore no parts
+			}
+		}
+
+		void WriteContentType (Stream s)
+		{
+			XmlDocument doc = new XmlDocument ();
+			XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+			manager.AddNamespace ("content", ContentNamespace);
+
+			doc.AppendChild(doc.CreateNode (XmlNodeType.XmlDeclaration, "", ""));
+			
+			XmlNode root = doc.CreateNode (XmlNodeType.Element, "Types", ContentNamespace);
+			doc.AppendChild (root);
+			foreach (ZipPackagePart part in Parts.Values)
+			{
+				XmlNode node = doc.CreateNode (XmlNodeType.Element, "Override", ContentNamespace);
+				
+				XmlAttribute contentType = doc.CreateAttribute ("ContentType");
+				contentType.Value = part.ContentType;
+				
+				XmlAttribute name = doc.CreateAttribute ("PartName");
+				name.Value = part.Uri.ToString ();
+				
+
+				node.Attributes.Append (contentType);
+				node.Attributes.Append (name);
+
+				root.AppendChild (node);				
+			}
+
+			using (XmlTextWriter writer = new XmlTextWriter (s, System.Text.Encoding.UTF8))
+				doc.WriteTo (writer);
 		}
 	}
 }

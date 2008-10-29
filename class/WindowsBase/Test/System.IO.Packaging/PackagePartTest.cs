@@ -1,4 +1,4 @@
-﻿// Permission is hereby granted, free of charge, to any person obtaining
+// Permission is hereby granted, free of charge, to any person obtaining
 // a copy of this software and associated documentation files (the
 // "Software"), to deal in the Software without restriction, including
 // without limitation the rights to use, copy, modify, merge, publish,
@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Alan McGovern (amcgovern@novell.com)
+//    Alan McGovern (amcgovern@novell.com)
 //
 
 
@@ -29,10 +29,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using NUnit.Framework;
+using System.Xml;
 
 namespace System.IO.Packaging.Tests {
+
     [TestFixture]
-    [Category ("NotWorking")]
     public class PackagePartTest : TestBase {
 
         //static void Main (string [] args)
@@ -51,6 +52,8 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [Category ("NotWorking")]
+        [Ignore ("This is a bug in the MS implementation. I don't think i can/should replicate it")]
         public void AddInvalidPartTwice ()
         {
             try {
@@ -218,6 +221,40 @@ namespace System.IO.Packaging.Tests {
             AddThreeParts ();
             foreach (PackagePart p in package.GetParts ())
                 package.DeletePart (p.Uri);
+        }
+
+        [Test]
+        [Category ("NotWorking")]
+        [Ignore ("Content_Type is never added as a part - need to test this indirectly")]
+        public void CheckContentTypes ()
+        {
+            Uri contentUri = new Uri ("/[Content_Types].xml", UriKind.Relative);
+            string contentNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
+            AddThreeParts ();
+
+            // FIXME: This isn't actually created as a PackagePart
+            Assert.IsTrue (package.PartExists (contentUri), "#0");
+            XmlDocument doc = new XmlDocument ();
+            XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+            manager.AddNamespace ("content", contentNamespace);
+            doc.Load (package.GetPart (contentUri).GetStream ());
+
+            Assert.IsNotNull (doc.SelectSingleNode ("/content:Types", manager), "#1");
+
+            XmlNodeList nodes = doc.SelectNodes ("/content:Types/*", manager);
+            Assert.AreEqual (2, nodes.Count, "#2");
+
+            foreach (XmlNode node in nodes) {
+                if (node.Name == "Default") {
+                    Assert.AreEqual (node.Attributes["Extension"].Value, "png", "#3");
+                    Assert.AreEqual (node.Attributes["ContentType"].Value, "mime/type", "#4");
+                } else if (node.Name == "Override") {
+                    Assert.AreEqual (node.Attributes["PartName"].Value, "/asdasdas", "#5");
+                    Assert.AreEqual (node.Attributes["ContentType"].Value, "asa/s", "#6");
+                } else {
+                    Assert.Fail ("Invalid node found");
+                }
+            }
         }
     }
 }

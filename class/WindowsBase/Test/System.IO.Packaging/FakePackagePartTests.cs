@@ -20,7 +20,7 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Alan McGovern (amcgovern@novell.com)
+//    Alan McGovern (amcgovern@novell.com)
 //
 
 using System;
@@ -200,12 +200,12 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-		[Category ("NotWorking")]
         public void GetStream2 ()
         {
-            package.CreatePart (uris[1], contentType);
+            Assert.IsNotNull (package.CreatePart (uris[1], contentType));
+            Assert.AreEqual (1, new List<PackagePart> (package.GetParts()).Count, "#0a");
             package.Flush ();
-
+            
             using (Package p = Package.Open (new MemoryStream (stream.ToArray ()))) {
                 PackagePart part = new List<PackagePart>(p.GetParts ())[0];
                 Stream s = part.GetStream ();
