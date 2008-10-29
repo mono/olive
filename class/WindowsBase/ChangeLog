@@ -1,3 +1,8 @@
+2008-10-29  Alan McGovern  <amcgovern@novell.com>
+
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/ZipPackage.cs: Write relationships to the zipfile
+
 2008-10-28  Alan McGovern  <amcgovern@novell.com>
 
 	* Test/System.IO.Packaging/PackagePartStreamTests.cs: Disable these

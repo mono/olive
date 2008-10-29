@@ -26,6 +26,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using zipsharp;
 
 namespace System.IO.Packaging {
@@ -84,8 +85,6 @@ namespace System.IO.Packaging {
 							destination.Write (buffer, 0, count);
 					}
 				}
-				
-				// Write relationships file
 			}
 		}
 
@@ -115,5 +114,4 @@ namespace System.IO.Packaging {
 			return p;
 		}
 	}
-
 }

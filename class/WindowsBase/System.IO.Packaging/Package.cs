@@ -26,18 +26,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Xml;
 
 namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
-		private static readonly string RelationshipContentType = "application/vnd.openxmlformats-package.relationships+xml";
-		private static readonly Uri RelationshipUri = new Uri ("/_rels/.rels", UriKind.Relative);
+		static readonly string RelationshipContentType = "application/vnd.openxmlformats-package.relationships+xml";
+		static readonly string RelationshipNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
+		static readonly Uri RelationshipUri = new Uri ("/_rels/.rels", UriKind.Relative);
 		
-		private PackagePartCollection partsCollection = new PackagePartCollection ();
-		private Dictionary<string, PackageRelationship> relationships = new Dictionary<string, PackageRelationship> ();
+		PackagePartCollection partsCollection = new PackagePartCollection ();
+		Dictionary<string, PackageRelationship> relationships = new Dictionary<string, PackageRelationship> ();
 		
-		private Uri Uri = new Uri ("/", UriKind.Relative);
+		Uri Uri = new Uri ("/", UriKind.Relative);
 		
 		protected Package (FileAccess fileOpenAccess)
 			: this (fileOpenAccess, false)
@@ -141,12 +143,23 @@ namespace System.IO.Packaging {
 				CreatePart (RelationshipUri, RelationshipContentType).IsRelationship = true;
 
 			relationships.Add (r.Id, r);
+
+			if (!PartExists (RelationshipUri))
+				CreatePart (RelationshipUri, relationshipType);
+			
+			WriteRelationships (GetPart (RelationshipUri).GetStream ());
+			
 			return r;
 		}
 
 		public void DeleteRelationship (string id)
 		{
 			relationships.Remove (id);
+			
+			if (relationships.Count > 0)
+				WriteRelationships (GetPart (RelationshipUri).GetStream ());
+			else
+				DeletePart (RelationshipUri);
 		}
 
 		public PackagePart GetPart (Uri partUri)
@@ -282,6 +295,33 @@ namespace System.IO.Packaging {
 			ZipPackage package = new ZipPackage (packageAccess);
 			package.PackageStream = stream;
 			return package;
+		}
+
+		private void WriteRelationships (Stream stream)
+		{
+			if (relationships.Count == 0)
+				return;
+			
+			XmlDocument doc = new XmlDocument ();
+			XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+			manager.AddNamespace ("rel", RelationshipNamespace);
+
+			XmlNode relationsNode = doc.CreateNode (XmlNodeType.Element, "Relations", RelationshipNamespace);
+			foreach (PackageRelationship relationship in relationships.Values)
+			{
+				XmlNode node = doc.CreateNode (XmlNodeType.Element, "Relationship", "");
+				XmlAttribute idAtt = doc.CreateAttribute ("Id");
+				XmlAttribute targetAtt = doc.CreateAttribute ("Target");
+				XmlAttribute typeAtt = doc.CreateAttribute ("Type");
+				
+				idAtt.Value = relationship.Id;
+				targetAtt.Value = relationship.TargetUri.ToString ();
+				typeAtt.Value = relationship.RelationshipType;
+
+				relationsNode.AppendChild (node);
+			}
+
+			doc.WriteTo (new XmlTextWriter (stream, System.Text.Encoding.UTF8));
 		}
 	}
 }
