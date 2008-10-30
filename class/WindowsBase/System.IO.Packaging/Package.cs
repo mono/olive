@@ -130,8 +130,22 @@ namespace System.IO.Packaging {
 		public void DeletePart (Uri partUri)
 		{
 			Check.PartUri (partUri);
-			DeletePartCore (partUri);
-			partsCollection.Parts.RemoveAll (p => p.Uri == partUri);
+
+			PackagePart part = GetPart (partUri);
+			if (part != null)
+			{
+				if (part.Package == null)
+					throw new InvalidOperationException ("This part has already been removed");
+				
+				// FIXME: MS.NET doesn't remove the relationship part
+				// Instead it throws an exception if you try to use it
+				if (PartExists (part.RelationshipsPartUri))
+					GetPart (part.RelationshipsPartUri).Package = null;
+
+				part.Package = null;
+				DeletePartCore (partUri);
+				partsCollection.Parts.RemoveAll (p => p.Uri == partUri);
+			}
 		}
 
 		protected abstract PackagePart CreatePartCore (Uri parentUri, string contentType, CompressionOption compressionOption);

@@ -34,7 +34,9 @@ namespace System.IO.Packaging {
 	public abstract class PackagePart
 	{
 		string contentType;
-		internal bool IsRelationship { get; set; } 
+		
+		internal bool IsRelationship { get; set; }
+		
 		int relationshipId;
 		Dictionary<string, PackageRelationship> relationships;
 		PackageRelationshipCollection relationshipsCollection = new PackageRelationshipCollection ();
@@ -43,8 +45,8 @@ namespace System.IO.Packaging {
 			get {
 				if (relationships == null) {
 					relationships = new Dictionary<string, PackageRelationship> ();
-					if (Package.PartExists (RelationshipsUri))
-						using (Stream s = Package.GetPart (RelationshipsUri).GetStream ())
+					if (Package.PartExists (RelationshipsPartUri))
+						using (Stream s = Package.GetPart (RelationshipsPartUri).GetStream ())
 							LoadRelationships (relationships, s);
 				}
 
@@ -53,7 +55,7 @@ namespace System.IO.Packaging {
 		}
 		Stream PartStream { get; set;  }
 
-		Uri RelationshipsUri {
+		internal Uri RelationshipsPartUri {
 			get; set;
 		}
 		
@@ -79,7 +81,7 @@ namespace System.IO.Packaging {
 			Uri = partUri;
 			ContentType = contentType;
 			CompressionOption = compressionOption;
-			RelationshipsUri = new Uri ("/_rels" + Uri.ToString () + ".rels", UriKind.Relative);
+			RelationshipsPartUri = new Uri ("/_rels" + Uri.ToString () + ".rels", UriKind.Relative);
 		}
 
 		public CompressionOption CompressionOption {
@@ -98,7 +100,7 @@ namespace System.IO.Packaging {
 		}
 
 		public Package Package {
-			get; private set;
+			get; internal set;
 		}
 
 		public Uri Uri {
@@ -229,17 +231,19 @@ namespace System.IO.Packaging {
 
 		void WriteRelationships ()
 		{
-			bool exists = Package.PartExists (RelationshipsUri);
+			bool exists = Package.PartExists (RelationshipsPartUri);
 			if (exists && Relationships.Count == 0)
 			{
-				Package.DeletePart (RelationshipsUri);
+				Package.DeletePart (RelationshipsPartUri);
 				return;
 			}
 			
 			if (!exists)
-				Package.CreatePart (RelationshipsUri, Package.RelationshipContentType);
-			
-			using (Stream s = Package.GetPart (RelationshipsUri).GetStream ())
+			{
+				PackagePart part = Package.CreatePart (RelationshipsPartUri, Package.RelationshipContentType);
+				part.IsRelationship = true;
+			}
+			using (Stream s = Package.GetPart (RelationshipsPartUri).GetStream ())
 				Package.WriteRelationships (Relationships, s);
 		}
 	}

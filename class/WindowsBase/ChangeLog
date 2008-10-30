@@ -1,5 +1,13 @@
 2008-10-28  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/PackagePart.cs: Cosmetic changes
+
+	* System.IO.Packaging/Package.cs: Do not remove the relationship part
+	from the package if it exists, just mark it disposed. All NUnit tests
+	pass now.
+
+2008-10-28  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/Package.cs:
 	* System.IO.Packaging/ZipPackage.cs:
 	* System.IO.Packaging/PackagePart.cs:
