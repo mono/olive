@@ -82,42 +82,42 @@ namespace System.IO.Packaging.Tests {
 
             try {
                 p.CreateRelationship (uris[0], TargetMode.Internal, "asdas");
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 1");
             } catch (InvalidOperationException) {
 
             }
 
             try {
                 p.DeleteRelationship("aa");
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 2");
             } catch (InvalidOperationException) {
 
             }
 
             try {
                 p.GetRelationship ("id");
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 3");
             } catch (InvalidOperationException) {
 
             }
 
             try {
                 p.GetRelationships ();
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 4");
             } catch (InvalidOperationException) {
 
             }
 
             try {
                 p.GetRelationshipsByType ("type");
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 5");
             } catch (InvalidOperationException) {
 
             }
             
             try {
                 p.RelationshipExists ("id");
-                Assert.Fail ("This should fail");
+                Assert.Fail ("This should fail 6");
             } catch (InvalidOperationException) {
                 
             }

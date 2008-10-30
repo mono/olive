@@ -126,6 +126,19 @@ namespace System.IO.Packaging.Tests {
             Assert.AreEqual (6, package.GetParts ().Count (), "#d");
         }
 
+		[Test]
+        public void CheckIndividualRelationships ()
+        {
+            PackagePart part = package.CreatePart (uris [0], contentType);
+            part.CreateRelationship (uris [1], TargetMode.Internal, "relType");
+            part.CreateRelationship (uris [2], TargetMode.External, "relType");
+
+            package.Flush ();
+            Assert.AreEqual (2, package.GetParts ().Count(), "#1");
+            part = package.GetPart (new Uri ("/_rels" + uris [0].ToString () + ".rels", UriKind.Relative));
+            Assert.IsNotNull (part);
+        }
+
         [Test]
         [ExpectedException (typeof (InvalidOperationException))]
         public void DeletePartsAfterAddingRelationships ()

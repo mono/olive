@@ -119,7 +119,7 @@ namespace System.IO.Packaging {
 		protected override PackagePart GetPartCore (Uri partUri)
 		{
 			Console.WriteLine ("Getting Part: {0}", partUri);
-			ZipPackagePart part = null;
+			ZipPackagePart part;
 			Parts.TryGetValue (partUri, out part);
 			return part;
 		}

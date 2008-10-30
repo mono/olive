@@ -33,11 +33,29 @@ namespace System.IO.Packaging {
 
 	public abstract class PackagePart
 	{
-		private string contentType;
+		string contentType;
 		internal bool IsRelationship { get; set; } 
-		private int relationshipId;
-		private Dictionary<string, PackageRelationship> relationships;
-		private Stream PartStream { get; set;  }
+		int relationshipId;
+		Dictionary<string, PackageRelationship> relationships;
+		PackageRelationshipCollection relationshipsCollection = new PackageRelationshipCollection ();
+		
+		Dictionary<string, PackageRelationship> Relationships {
+			get {
+				if (relationships == null) {
+					relationships = new Dictionary<string, PackageRelationship> ();
+					if (Package.PartExists (RelationshipsUri))
+						using (Stream s = Package.GetPart (RelationshipsUri).GetStream ())
+							LoadRelationships (relationships, s);
+				}
+
+				return relationships;
+			}
+		}
+		Stream PartStream { get; set;  }
+
+		Uri RelationshipsUri {
+			get; set;
+		}
 		
 		protected PackagePart (Package package, Uri partUri)
 			: this(package, partUri, null)
@@ -61,8 +79,7 @@ namespace System.IO.Packaging {
 			Uri = partUri;
 			ContentType = contentType;
 			CompressionOption = compressionOption;
-
-			relationships = new Dictionary<string, PackageRelationship> ();
+			RelationshipsUri = new Uri ("/_rels" + Uri.ToString () + ".rels", UriKind.Relative);
 		}
 
 		public CompressionOption CompressionOption {
@@ -108,44 +125,71 @@ namespace System.IO.Packaging {
 			if (id == null)
 				id = NextId ();
 
-			if (relationships.ContainsKey (id))
+			if (Relationships.ContainsKey (id))
 				throw new XmlException ("A relationship with this ID already exists");
 			
 			PackageRelationship r = new PackageRelationship (id, Package, relationshipType, Uri, targetMode, targetUri);
-			relationships.Add (r.Id, r);
+			Relationships.Add (r.Id, r);
+			WriteRelationships ();
 			return r;
 		}
 
 		public void DeleteRelationship (string id)
 		{
 			CheckIsRelationship ();
-			relationships.Remove (id);
+			Relationships.Remove (id);
+			WriteRelationships ();
+		}
+
+		void LoadRelationships (Dictionary<string, PackageRelationship> relationships, Stream stream)
+		{
+			XmlDocument doc = new XmlDocument ();
+			doc.Load (stream);
+			XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+			manager.AddNamespace ("rel", Package.RelationshipNamespace);
+
+			foreach (XmlNode node in doc.SelectNodes ("/rel:Relationships/*", manager))
+			{
+				TargetMode mode = TargetMode.Internal;
+				if (node.Attributes["TargetMode"] != null)
+					mode = (TargetMode) Enum.Parse (typeof(TargetMode), node.Attributes ["TargetMode"].Value);
+				
+				CreateRelationship (new Uri (node.Attributes["Target"].ToString()),
+				                    mode,
+				                    node.Attributes["Type"].ToString (),
+				                    node.Attributes["Id"].ToString ());
+			}
 		}
 
 		public bool RelationshipExists (string id)
 		{
 			CheckIsRelationship ();
-			return relationships.ContainsKey (id);
+			return Relationships.ContainsKey (id);
 		}
 
 		public PackageRelationship GetRelationship (string id)
 		{
 			CheckIsRelationship ();
-			return relationships [id];
+			return Relationships [id];
 		}
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
 			CheckIsRelationship ();
-			return new PackageRelationshipCollection (relationships.Values);
+			relationshipsCollection.Relationships.Clear ();
+			relationshipsCollection.Relationships.AddRange (Relationships.Values);
+			return relationshipsCollection;
 		}
 
 		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
 			CheckIsRelationship ();
-			return new PackageRelationshipCollection (relationships.Values, delegate (PackageRelationship r) {
-				return r.RelationshipType == relationshipType;
-			});
+			PackageRelationshipCollection collection = new PackageRelationshipCollection ();
+			foreach (PackageRelationship r in Relationships.Values)
+				if (r.RelationshipType == relationshipType)
+					collection.Relationships.Add (r);
+			
+			return collection;
 		}
 
 		public Stream GetStream ()
@@ -181,6 +225,22 @@ namespace System.IO.Packaging {
 					return s;
 				relationshipId ++;
 			}
+		}
+
+		void WriteRelationships ()
+		{
+			bool exists = Package.PartExists (RelationshipsUri);
+			if (exists && Relationships.Count == 0)
+			{
+				Package.DeletePart (RelationshipsUri);
+				return;
+			}
+			
+			if (!exists)
+				Package.CreatePart (RelationshipsUri, Package.RelationshipContentType);
+			
+			using (Stream s = Package.GetPart (RelationshipsUri).GetStream ())
+				Package.WriteRelationships (Relationships, s);
 		}
 	}
 }

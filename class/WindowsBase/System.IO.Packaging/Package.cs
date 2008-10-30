@@ -32,17 +32,24 @@ namespace System.IO.Packaging {
 
 	public abstract class Package : IDisposable
 	{
-		internal static readonly string RelationshipContentType = "application/vnd.openxmlformats-package.relationships+xml";
-		static readonly string RelationshipNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
+		internal const string RelationshipContentType = "application/vnd.openxmlformats-package.relationships+xml";
+		internal const string RelationshipNamespace = "http://schemas.openxmlformats.org/package/2006/relationships";
 		internal static readonly Uri RelationshipUri = new Uri ("/_rels/.rels", UriKind.Relative);
 		
 		PackagePartCollection partsCollection = new PackagePartCollection ();
+		PackageRelationshipCollection relationshipsCollection = new PackageRelationshipCollection ();
+		
 		Dictionary<string, PackageRelationship> relationships;
 		
 		Dictionary<string, PackageRelationship> Relationships {
 			get {
-				if (relationships == null)
-					LoadRelationships ();
+				if (relationships == null) {
+					relationships = new Dictionary<string, PackageRelationship> ();
+					
+					if (PartExists (RelationshipUri))
+						using (Stream stream = GetPart (RelationshipUri).GetStream ())
+							LoadRelationships (relationships, stream);
+				}
 				return relationships;
 			}
 		}
@@ -151,9 +158,10 @@ namespace System.IO.Packaging {
 				CreatePart (RelationshipUri, RelationshipContentType).IsRelationship = true;
 			
 			Relationships.Add (r.Id, r);
-
+			relationshipsCollection.Relationships.Add (r);
+			
 			using (Stream s = GetPart (RelationshipUri).GetStream ())
-				WriteRelationships (s);
+				WriteRelationships (relationships, s);
 			
 			return r;
 		}
@@ -161,10 +169,11 @@ namespace System.IO.Packaging {
 		public void DeleteRelationship (string id)
 		{
 			Relationships.Remove (id);
-			
+
+			relationshipsCollection.Relationships.RemoveAll (r => r.Id == id);
 			if (Relationships.Count > 0)
 				using (Stream s = GetPart (RelationshipUri).GetStream ())
-					WriteRelationships (s);
+					WriteRelationships (relationships, s);
 			else
 				DeletePart (RelationshipUri);
 		}
@@ -199,13 +208,19 @@ namespace System.IO.Packaging {
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
-			return new PackageRelationshipCollection (Relationships.Values);
+			relationshipsCollection.Relationships.Clear ();
+			relationshipsCollection.Relationships.AddRange (Relationships.Values);
+			return relationshipsCollection;
 		}
 
 		public PackageRelationshipCollection GetRelationshipsByType (string relationshipType)
 		{
-			return new PackageRelationshipCollection (Relationships.Values,
-			                                          delegate (PackageRelationship r) { return r.RelationshipType == relationshipType; });
+			PackageRelationshipCollection collection = new PackageRelationshipCollection ();
+			foreach (PackageRelationship r in Relationships.Values)
+				if (r.RelationshipType == relationshipType)
+					collection.Relationships.Add (r);
+			
+			return collection;
 		}
 
 		public bool RelationshipExists (string id)
@@ -213,33 +228,26 @@ namespace System.IO.Packaging {
 			return Relationships.ContainsKey (id);
 		}
 
-		void LoadRelationships ()
+		void LoadRelationships (Dictionary<string, PackageRelationship> relationships, Stream stream)
 		{
-			relationships = new Dictionary<string, PackageRelationship> ();
-			Console.WriteLine ("Does the part exist in the stream?");
-			
-			if (PartExists (RelationshipUri))
-			{
-				Console.WriteLine ("Yes it does");
-				Stream s = GetPart (RelationshipUri).GetStream ();
-				XmlDocument doc = new XmlDocument ();
-				doc.Load (s);
-				XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
-				manager.AddNamespace ("rel", RelationshipNamespace);
+			XmlDocument doc = new XmlDocument ();
+			doc.Load (stream);
+			XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
+			manager.AddNamespace ("rel", RelationshipNamespace);
 
-				Console.WriteLine ("Starting to decode relationships");
-				foreach (XmlNode node in doc.SelectNodes ("/rel:Relationships/*", manager))
-				{
-					Console.WriteLine ("Doing one");
-					CreateRelationship (new Uri (node.Attributes["Target"].ToString()),
-					                    TargetMode.Internal,
-					                    node.Attributes["Type"].ToString (),
-					                    node.Attributes["Id"].ToString ());
-				}
-				Console.WriteLine ("Finished decoding all relationships");
+			foreach (XmlNode node in doc.SelectNodes ("/rel:Relationships/*", manager))
+			{
+				TargetMode mode = TargetMode.Internal;
+				if (node.Attributes["TargetMode"] != null)
+					mode = (TargetMode) Enum.Parse (typeof(TargetMode), node.Attributes ["TargetMode"].Value);
+				
+				CreateRelationship (new Uri (node.Attributes["Target"].ToString()),
+				                    mode,
+				                    node.Attributes["Type"].ToString (),
+				                    node.Attributes["Id"].ToString ());
 			}
-			Console.WriteLine ("Done trying");
 		}
+		
 		private string NextId ()
 		{
 			while (true)
@@ -331,7 +339,7 @@ namespace System.IO.Packaging {
 			return package;
 		}
 
-		private void WriteRelationships (Stream stream)
+		internal static void WriteRelationships (Dictionary <string, PackageRelationship> relationships, Stream stream)
 		{
 			XmlDocument doc = new XmlDocument ();
 			XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
@@ -342,7 +350,7 @@ namespace System.IO.Packaging {
 			XmlNode root = doc.CreateNode (XmlNodeType.Element, "Relationships", RelationshipNamespace);
 			doc.AppendChild (root);
 			
-			foreach (PackageRelationship relationship in Relationships.Values)
+			foreach (PackageRelationship relationship in relationships.Values)
 			{
 				XmlNode node = doc.CreateNode (XmlNodeType.Element, "Relationship", RelationshipNamespace);
 				
@@ -361,14 +369,8 @@ namespace System.IO.Packaging {
 				root.AppendChild (node);
 			}
 
-			using (XmlTextWriter writer = new XmlTextWriter (Console.Out))
-				doc.WriteTo (writer);
-			
 			using (XmlTextWriter writer = new XmlTextWriter (stream, System.Text.Encoding.UTF8))
-			{
 				doc.WriteTo (writer);
-				stream.Flush ();
-			}
 		}
 	}
 }

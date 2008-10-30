@@ -20,7 +20,8 @@
 // Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
 //
 // Authors:
-//	Chris Toshok (toshok@ximian.com)
+// Chris Toshok (toshok@ximian.com)
+// Alan McGovern (amcgovern@novell.com)
 //
 
 using System;
@@ -31,26 +32,16 @@ namespace System.IO.Packaging {
 
 	public class PackageRelationshipCollection : IEnumerable<PackageRelationship>, IEnumerable
 	{
-		private Predicate<PackageRelationship> predicate;
-		private IEnumerable<PackageRelationship> relationships;
+		internal List<PackageRelationship> Relationships { get; private set; }
 		
-		internal PackageRelationshipCollection (IEnumerable<PackageRelationship> relationships)
+		internal PackageRelationshipCollection ()
 		{
-			this.relationships = relationships;
+			Relationships = new List<PackageRelationship> ();
 		}
-
-		internal PackageRelationshipCollection (IEnumerable<PackageRelationship> relationships,
-		                                        Predicate<PackageRelationship> predicate)
-		{
-			this.relationships = relationships;
-			this.predicate = predicate;
-		} 
 
 		public IEnumerator<PackageRelationship> GetEnumerator ()
 		{
-			foreach (PackageRelationship r in relationships)
-				if (predicate == null || predicate (r))
-					yield return r;
+			return Relationships.GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()

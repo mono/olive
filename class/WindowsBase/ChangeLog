@@ -1,3 +1,15 @@
+2008-10-28  Alan McGovern  <amcgovern@novell.com>
+
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/ZipPackage.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs:
+	* System.IO.Packaging/PackagePartCollection.cs:
+	* Test/System.IO.Packaging/FakePackageTests.cs:
+	* System.IO.Packaging/PackageRelationshipCollection.cs: Implemented
+	loading/saving of relationships from PackageParts. Removed excess
+	debug spew.
+
 2008-10-29  Alan McGovern  <amcgovern@novell.com>
 
 	* ZipSharp/NativeZip.cs: Remove a Console.WriteLine
