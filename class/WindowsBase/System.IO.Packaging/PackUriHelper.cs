@@ -33,42 +33,74 @@ namespace System.IO.Packaging {
 
 		public static int ComparePackUri (Uri firstPackUri, Uri secondPackUri)
 		{
-			throw new NotImplementedException ();
+			// FIXME: Do i need to do validation that it is a pack:// uri?
+			if (firstPackUri == null)
+				return secondPackUri == null ? 0 : -1;
+			if (secondPackUri == null)
+				return 1;
+
+			// FIXME: What exactly is compared. Lets assume originalstring
+			return firstPackUri.OriginalString.CompareTo (secondPackUri.OriginalString);
 		}
 
 		public static int ComparePartUri (Uri firstPartUri, Uri secondPartUri)
 		{
-			throw new NotImplementedException ();
+			// FIXME: Do i need to do validation that it is a part URI?
+			if (firstPartUri == null)
+				return secondPartUri == null ? 0 : -1;
+			if (secondPartUri == null)
+				return 1;
+
+			return firstPartUri.OriginalString.CompareTo (secondPartUri.OriginalString);
 		}
 
 		public static Uri Create (Uri packageUri)
 		{
-			throw new NotImplementedException ();
+			return Create (packageUri, null, null);
 		}
 
 		public static Uri Create (Uri packageUri, Uri partUri)
 		{
-			throw new NotImplementedException ();
+			return Create (packageUri, partUri, null);
 		}
 
 		public static Uri Create (Uri packageUri, Uri partUri, string fragment)
 		{
-			throw new NotImplementedException ();
+			//Check.PackageUri (packageUri);
+			
+			if (fragment != null && (fragment.Length == 0 || fragment[0] != '#'))
+				throw new ArgumentException ("Fragment", "Fragment must not be empty and must start with '#'");
+
+			// FIXME: Validate that partUri is a valid one? Must be relative, must start with '/'
+			if (partUri != null)
+				packageUri = new Uri(packageUri, partUri);
+
+			if (fragment != null)
+				packageUri = new Uri(packageUri, fragment);
+
+			return packageUri;
 		}
 
 		public static Uri CreatePartUri (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			
+			if (partUri.OriginalString[0] != '/')
+				partUri = new Uri(new Uri ("/", UriKind.Relative), partUri);
+			return partUri;
 		}
 
 		public static Uri GetNormalizedPartUri (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			return new Uri (partUri.ToString ().ToUpperInvariant (), UriKind.Relative);
 		}
 
 		public static Uri GetPackageUri (Uri packUri)
 		{
-			throw new NotImplementedException ();
+			//Check.PackUri (packUri);
+			string s = packUri.Host.Replace (',', '/');
+			return new Uri (s, UriKind.Relative);
 		}
 
 		public static Uri GetPartUri (Uri packUri)
@@ -78,30 +110,36 @@ namespace System.IO.Packaging {
 
 		public static Uri GetRelationshipPartUri (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			return new Uri ("/_rels" + partUri.OriginalString + ".rels");
 		}
 
 		public static Uri GetRelativeUri (Uri sourcePartUri, Uri targetPartUri)
 		{
-			throw new NotImplementedException ();
+			//Check.SourcePartUri (sourcePartUri);
+			//Check.TargetPartUri (targetPartUri);
+
+			return sourcePartUri;
 		}
 
 		public static Uri GetSourcePartUriFromRelationshipPartUri (Uri relationshipPartUri)
 		{
-			throw new NotImplementedException ();
+			//Check.RelationshipPartUri (relationshipPartUri);
+			if (!IsRelationshipPartUri (relationshipPartUri))
+				throw new Exception  ("is not a relationship part!?");
+			return null;
 		}
 
 		public static bool IsRelationshipPartUri (Uri partUri)
 		{
-			throw new NotImplementedException ();
+			Check.PartUri (partUri);
+			return partUri.OriginalString.StartsWith ("/_rels") && partUri.OriginalString.EndsWith (".rels");
 		}
 
 		public static Uri ResolvePartUri (Uri sourcePartUri, Uri targetUri)
 		{
 			throw new NotImplementedException ();
 		}
-
-
 	}
 
 }

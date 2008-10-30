@@ -8,6 +8,7 @@ System.IO.Packaging/PackagePartStreamTests.cs
 System.IO.Packaging/PackagePartTest.cs
 System.IO.Packaging/PackageRelationshipTests.cs
 System.IO.Packaging/PackageTest.cs
+System.IO.Packaging/PackUriHelperTests.cs
 System.IO.Packaging/TestBase.cs
 System.Windows/DependencyObjectTest.cs
 System.Windows/DependencyObjectTypeTest.cs
