@@ -1,3 +1,8 @@
+2008-11-03  Alan McGovern  <alan.mcgovern@gmail.com>
+
+	* System.IO.Packaging/Package.cs: Fix build and also test that the
+	archive is valid when loading an existing archive.
+
 2008-11-03  Alan McGovern  <amcgovern@novell.com>
 
 	* System.IO.Packaging/Check.cs:

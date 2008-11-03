@@ -361,6 +361,9 @@ namespace System.IO.Packaging {
 			if (packageMode == FileMode.Open && stream.Length == 0)
 				throw new FileFormatException("Stream length cannot be zero with FileMode.Open");
 
+			if (packageMode == FileMode.CreateNew && stream.Length > 0)
+				throw new IOException ("Cannot use CreateNew when stream contains data");
+
 			if (packageMode == FileMode.Append || packageMode == FileMode.Truncate)
 			{
 				if (stream.CanWrite)
@@ -369,13 +372,21 @@ namespace System.IO.Packaging {
 					throw new IOException (string.Format("PackageMode.{0} is not supported", packageMode));
 			}
 
+			// Test to see if archive is valid
+			if (stream.Length > 0 && packageAccess == FileAccess.Read) {
+				try {
+					using (zipsharp.UnzipArchive a = new zipsharp.UnzipArchive (stream)) {
+					}
+				} catch (Exception ex) {
+					Console.WriteLine ("WRONG!");
+					Console.WriteLine (ex);
+					throw new FileFormatException ("The specified archive is invalid.");
+				}
+			}
+			
 			// FIXME: MS docs say that a ZipPackage is returned by default.
 			// It looks like if you create a custom package, you cannot use Package.Open.
 			ZipPackage package = new ZipPackage (packageAccess);
-
-			// Test to see if archive is valid
-			using (zipsharp.ZipArchive a = new zipsharp.ZipArchive(stream)) {
-			}
 			package.PackageStream = stream;
 			return package;
 		}
