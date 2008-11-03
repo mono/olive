@@ -64,7 +64,6 @@ namespace System.IO.Packaging.Tests {
 
         [Test]
         [ExpectedException (typeof (FileFormatException))]
-        [Ignore ("Won't work until zip parsing is availabl")]
         public void CorruptStream ()
         {
             stream = new FakeStream (true, true, true);
