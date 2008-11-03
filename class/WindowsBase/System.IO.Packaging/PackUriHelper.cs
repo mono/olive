@@ -29,8 +29,15 @@ namespace System.IO.Packaging {
 
 	public static class PackUriHelper
 	{
-		public static readonly string UriSchemePack;
-
+		internal const string PackScheme = "pack";
+		static readonly Uri PackSchemeUri = new Uri("pack://", UriKind.Absolute);
+		
+		static PackUriHelper ()
+		{
+			if (!UriParser.IsKnownScheme (PackScheme))
+				UriParser.Register (new PackUriParser (), PackScheme, -1);
+		}
+		
 		public static int ComparePackUri (Uri firstPackUri, Uri secondPackUri)
 		{
 			// FIXME: Do i need to do validation that it is a pack:// uri?
@@ -66,19 +73,30 @@ namespace System.IO.Packaging {
 
 		public static Uri Create (Uri packageUri, Uri partUri, string fragment)
 		{
-			//Check.PackageUri (packageUri);
+			Check.PackageUri (packageUri);
+			Check.PackageUriIsValid (packageUri);
+			
+			if (partUri != null)
+				Check.PartUriIsValid (partUri);
 			
 			if (fragment != null && (fragment.Length == 0 || fragment[0] != '#'))
 				throw new ArgumentException ("Fragment", "Fragment must not be empty and must start with '#'");
 
 			// FIXME: Validate that partUri is a valid one? Must be relative, must start with '/'
+
+			// First replace the slashes, then escape the special characters
+			string orig = packageUri.OriginalString.Replace ('/', ',');
+			
 			if (partUri != null)
-				packageUri = new Uri(packageUri, partUri);
+				orig += partUri.OriginalString;
+
+//			if (sb[sb.Length - 1] != '/')
+//				sb.Append ('/');
 
 			if (fragment != null)
-				packageUri = new Uri(packageUri, fragment);
-
-			return packageUri;
+				orig += fragment;
+			
+			return new Uri ("pack://" + orig);
 		}
 
 		public static Uri CreatePartUri (Uri partUri)

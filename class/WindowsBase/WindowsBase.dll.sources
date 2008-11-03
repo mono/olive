@@ -38,6 +38,7 @@ System.IO.Packaging/PackageRelationship.cs
 System.IO.Packaging/PackageRelationshipCollection.cs
 System.IO.Packaging/PackageRelationshipSelector.cs
 System.IO.Packaging/PackageRelationshipSelectorType.cs
+System.IO.Packaging/PackUriParser.cs
 System.IO.Packaging/RightsManagementInformation.cs
 System.IO.Packaging/SignatureVerificationEventArgs.cs
 System.IO.Packaging/StorageInfo.cs

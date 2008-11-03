@@ -9,7 +9,10 @@ using System.IO.Packaging;
 using NUnit.Framework;
 
 namespace WindowsBase {
+	
     [TestFixture]
+    [Category ("NotWorking")]
+    [Ignore ("This depends on a fix to System.Uri to support the UriParser API")]
     public class PackUriHelperTests {
         static void Main (string [] args)
         {
@@ -18,12 +21,21 @@ namespace WindowsBase {
         }
 
 
-        Uri a = PackUriHelper.Create (new Uri ("http://www.test.com/pack1.pkg"));
-        Uri b = PackUriHelper.Create (new Uri ("http://www.test.com/pack2.pkg"));
+        Uri a;
+        Uri b;
         Uri part1 = new Uri ("/file1", UriKind.Relative);
         Uri part2 = new Uri ("/file2", UriKind.Relative);
         Uri main = new Uri ("/main.html", UriKind.Relative);
 
+		[SetUpAttribute]
+		public void Setup()
+		{
+			a = PackUriHelper.Create (new Uri ("http://www.test.com/pack1.pkg"));
+			b = PackUriHelper.Create (new Uri ("http://www.test.com/pack2.pkg"));
+			Console.WriteLine ("A is: {0}", a);
+			Console.WriteLine("B is: {0}", b);
+		}
+		
         [Test]
         public void ComparePackUriTest ()
         {
@@ -73,14 +85,16 @@ namespace WindowsBase {
         [Test]
         public void CreateTest ()
         {
-            Assert.AreEqual (new Uri ("pack://http:,,www.test.com,pack.pkg"),
-                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg")), "#1");
-            Assert.AreEqual (new Uri ("pack://http:,,www.test.com,pack.pkg"),
-                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"), null, null), "#2");
-            Assert.AreEqual (new Uri ("pack://http:,,www.test.com,pack.pkg/main.html#frag"),
-                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"), new Uri ("/main.html", UriKind.Relative), "#frag"), "#3");
-            Assert.AreEqual (new Uri ("pack://http:,,www.test.com,pack.pkg/main.html#frag"),
-                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"), new Uri ("/main.html", UriKind.Relative), "#frag"), "#3");
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg",
+                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg")).ToString (), "#1");
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg",
+                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"), null, null).ToString (), "#2");
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg/main.html#frag",
+                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"),
+			                                       new Uri ("/main.html", UriKind.Relative), "#frag").ToString (), "#3");
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg/main.html#frag",
+                             PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"),
+			                                       new Uri ("/main.html", UriKind.Relative), "#frag").ToString (), "#3");
         }
 
         [Test]

@@ -29,6 +29,12 @@ namespace System.IO.Packaging
 {
 	internal static class Check
 	{
+		static void NotNull (object o, string name)
+		{
+			if (o == null)
+				throw new ArgumentNullException (name);
+		}
+		
 		public static void ContentTypeIsValid (string contentType)
 		{
 			if (string.IsNullOrEmpty (contentType))
@@ -66,10 +72,40 @@ namespace System.IO.Packaging
 				throw new ArgumentNullException ("package");
 		}
 
-		public static void PartUri(object partUri)
+
+		public static void PackageUri (object packageUri)
+		{
+			NotNull (packageUri, "packageUri");
+		}
+
+		public static void PackageUriIsValid (Uri packageUri)
+		{
+			if (!packageUri.IsAbsoluteUri)
+				throw new ArgumentException ("packageUri", "Uri must be absolute");
+		}
+		
+		public static void PackUriIsValid (Uri packUri)
+		{
+			if (packUri.Scheme != PackUriHelper.PackScheme)
+				throw new ArgumentException ("packUri", "Uri scheme is not a valid PackUri scheme");
+			    
+			if (!packUri.IsAbsoluteUri)
+				throw new ArgumentException ("packUri", "PackUris must be absolute");
+		}
+
+		public static void PartUri (object partUri)
 		{
 			if (partUri == null)
 				throw new ArgumentNullException ("partUri");
+		}
+
+		public static void PartUriIsValid (Uri partUri)
+		{
+			if (!partUri.OriginalString.StartsWith ("/"))
+				throw new UriFormatException ("PartUris must start with '/'");
+
+			if (partUri.IsAbsoluteUri)
+				throw new UriFormatException ("PartUris cannot be absolute");
 		}
 
 		public static void RelationshipTypeIsValid (string relationshipType)
