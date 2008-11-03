@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 
 namespace zipsharp
 {
-	internal static class NativeZip
+	static class NativeZip
 	{
 		const int DEFAULT_COMPRESSION = 0;
 		const int Z_DEFLATED = 8;

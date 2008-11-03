@@ -12,7 +12,7 @@ using System.Text;
 
 namespace zipsharp
 {
-	internal static class NativeUnzip
+	static class NativeUnzip
 	{
 		enum ZipStringComparison
 		{

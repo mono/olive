@@ -39,14 +39,14 @@ namespace System.IO.Packaging {
 			Parts = new List<PackagePart> ();
 		}
 
-		public IEnumerator<PackagePart> GetEnumerator ()
+		IEnumerator<PackagePart> IEnumerable<PackagePart>.GetEnumerator ()
 		{
 			return Parts.GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			return GetEnumerator();
+			return Parts.GetEnumerator ();
 		}
 	}
 }

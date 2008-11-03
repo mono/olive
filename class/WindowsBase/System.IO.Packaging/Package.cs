@@ -163,7 +163,7 @@ namespace System.IO.Packaging {
 			return CreateRelationship (targetUri, targetMode, relationshipType, id, false);
 		}
 
-		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
+		internal PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
 		{
 			Check.TargetUri (targetUri);
 			

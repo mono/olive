@@ -27,7 +27,7 @@ using System.IO;
 
 namespace zipsharp
 {
-	public class UnzipArchive : IDisposable
+	class UnzipArchive : IDisposable
 	{
 		string[] files;
 		

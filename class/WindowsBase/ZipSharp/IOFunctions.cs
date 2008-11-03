@@ -10,7 +10,7 @@ using System.Runtime.InteropServices;
 namespace zipsharp
 {
 	// this matches a native 'enum', don't modify
-	public enum Append
+	enum Append
 	{
 		Create = 0,
 		CreateAfter = 1,

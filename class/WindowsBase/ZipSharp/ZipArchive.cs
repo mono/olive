@@ -9,7 +9,7 @@ using System.IO;
 
 namespace zipsharp
 {
-	public class ZipArchive : IDisposable
+	class ZipArchive : IDisposable
 	{
 		internal bool FileActive { get; set; }
 		internal ZipHandle Handle { get; private set; }
