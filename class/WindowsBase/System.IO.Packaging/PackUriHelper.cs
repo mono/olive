@@ -129,7 +129,12 @@ namespace System.IO.Packaging {
 		public static Uri GetRelationshipPartUri (Uri partUri)
 		{
 			Check.PartUri (partUri);
-			return new Uri ("/_rels" + partUri.OriginalString + ".rels");
+			Check.PartUriIsValid (partUri);
+			
+			int index = partUri.OriginalString.LastIndexOf ("/");
+			string s = partUri.OriginalString.Substring (0, index);
+			s += "/_rels" + partUri.OriginalString.Substring (index) + ".rels";
+			return new Uri (s, UriKind.Relative);
 		}
 
 		public static Uri GetRelativeUri (Uri sourcePartUri, Uri targetPartUri)
@@ -156,7 +161,14 @@ namespace System.IO.Packaging {
 
 		public static Uri ResolvePartUri (Uri sourcePartUri, Uri targetUri)
 		{
-			throw new NotImplementedException ();
+			Check.SourcePartUri (sourcePartUri);
+			Check.TargetUri (targetUri);
+			
+			Check.PartUriIsValid (sourcePartUri);
+			Check.PartUriIsValid (targetUri);
+
+			Console.WriteLine ("Merged to: {0}", new Uri (sourcePartUri, targetUri).OriginalString.Substring(7));
+			return new Uri (new Uri(sourcePartUri, targetUri).OriginalString.Substring(7), UriKind.Relative);
 		}
 	}
 

@@ -31,13 +31,26 @@ using zipsharp;
 
 namespace System.IO.Packaging {
 
+	class UriComparer : IEqualityComparer<Uri>
+	{
+		public int GetHashCode(Uri uri)
+		{
+			return 1;
+		}
+		
+		public bool Equals(Uri x, Uri y)
+		{
+			return x.OriginalString.Equals (y.OriginalString, StringComparison.OrdinalIgnoreCase);
+		}
+	}
+	
 	public sealed class ZipPackage : Package
 	{
 		private const string ContentNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
 		private const string ContentUri = "[Content_Types].xml";
 		
 		Dictionary<Uri, ZipPackagePart> parts;
-		internal Dictionary<Uri, MemoryStream> PartStreams = new Dictionary<Uri, MemoryStream> ();
+		internal Dictionary<Uri, MemoryStream> PartStreams = new Dictionary<Uri, MemoryStream> (new  UriComparer());
 
 		internal Stream PackageStream { get; set; }
 
@@ -84,7 +97,6 @@ namespace System.IO.Packaging {
 
 				// Write all the part streams
 				foreach (ZipPackagePart part in Parts.Values) {
-					Console.WriteLine ("Flushing: {0}", part.Uri);
 					Stream partStream = part.GetStream ();
 					partStream.Seek (0, SeekOrigin.Begin);
 					
@@ -104,7 +116,6 @@ namespace System.IO.Packaging {
 
 		protected override PackagePart CreatePartCore (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
-			Console.WriteLine ("Creating Part: {0}", partUri);
 			ZipPackagePart part = new ZipPackagePart (this, partUri, contentType, compressionOption);
 			Parts.Add (part.Uri, part);
 			return part;
@@ -112,13 +123,11 @@ namespace System.IO.Packaging {
 
 		protected override void DeletePartCore (Uri partUri)
 		{
-			Console.WriteLine ("Deleting Part: {0}", partUri);
 			Parts.Remove (partUri);
 		}
 
 		protected override PackagePart GetPartCore (Uri partUri)
 		{
-			Console.WriteLine ("Getting Part: {0}", partUri);
 			ZipPackagePart part;
 			Parts.TryGetValue (partUri, out part);
 			return part;
@@ -133,8 +142,7 @@ namespace System.IO.Packaging {
 		
 		void LoadParts ()
 		{
-			Console.WriteLine ("Loading parts");
-			parts = new Dictionary<Uri, ZipPackagePart> ();
+			parts = new Dictionary<Uri, ZipPackagePart> (new  UriComparer());
 			try {
 				using (UnzipArchive archive = new UnzipArchive (PackageStream)) {
 
@@ -142,15 +150,14 @@ namespace System.IO.Packaging {
 					XmlDocument doc = new XmlDocument ();
 					using (Stream s = archive.GetStream (ContentUri))
 						doc.Load (s);
-					
+
+					doc.WriteContentTo (new XmlTextWriter (Console.Out));
 					XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
 					manager.AddNamespace ("content", ContentNamespace);
 
 					foreach (string file in archive.GetFiles ()) {
 						XmlNode node;
 
-						Console.WriteLine ("Found file: {0}", file);
-						
 						if (file == RelationshipUri.ToString ().Substring (1))
 						{
 							CreatePart (RelationshipUri, RelationshipContentType);
@@ -163,6 +170,8 @@ namespace System.IO.Packaging {
 						if (node == null)
 						{
 							string ext = Path.GetExtension (file);
+							if (ext.StartsWith("."))
+								ext = ext.Substring (1);
 							xPath = string.Format("/content:Types/content:Default[@Extension='{0}']", ext);
 							node = doc.SelectSingleNode (xPath, manager);
 						}
@@ -170,7 +179,7 @@ namespace System.IO.Packaging {
 						// What do i do if the node is null? This means some has tampered with the
 						// package file manually
 						if (node != null)
-							CreatePart (new Uri (file, UriKind.Relative), node.Attributes["ContentType"].Value);
+							CreatePart (new Uri ("/" + file, UriKind.Relative), node.Attributes["ContentType"].Value);
 					}
 				}
 			} catch {
@@ -196,7 +205,7 @@ namespace System.IO.Packaging {
 				contentType.Value = part.ContentType;
 				
 				XmlAttribute name = doc.CreateAttribute ("PartName");
-				name.Value = part.Uri.ToString ();
+				name.Value = part.Uri.ToString ().Substring(1);
 				
 
 				node.Attributes.Append (contentType);

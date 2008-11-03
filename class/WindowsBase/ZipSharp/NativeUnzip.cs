@@ -100,7 +100,7 @@ namespace zipsharp
 
 		public static void OpenFile (UnzipHandle handle, string name)
 		{
-			if (unzLocateFile (handle, name, (int) ZipStringComparison.OSDefault) != 0)
+			if (unzLocateFile (handle, name, (int) ZipStringComparison.CaseInsensitive) != 0)
 				throw new Exception ("The file doesn't exist");
 			if (unzOpenCurrentFile (handle) != 0)
 				throw new Exception ("The file could not be opened");

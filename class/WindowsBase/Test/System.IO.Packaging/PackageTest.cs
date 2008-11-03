@@ -31,6 +31,7 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
+	
     [TestFixture]
     public class PackageTest : TestBase {
 

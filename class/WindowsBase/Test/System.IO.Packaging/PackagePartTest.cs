@@ -83,6 +83,8 @@ namespace System.IO.Packaging.Tests {
             package.CreatePart (new Uri ("/asdasdas", UriKind.Relative), "asa/s");
             PackagePartCollection c2 = package.GetParts ();
             bool eq = c1 == c2;
+ 
+			Assert.IsNotNull (package.GetPart (new Uri (uris[0].ToString ().ToUpper (), UriKind.Relative)));
         }
 
         [Test]

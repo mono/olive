@@ -1,5 +1,20 @@
 2008-11-03  Alan McGovern  <amcgovern@novell.com>
 
+	* ZipSharp/NativeUnzip.cs:
+	* ZipSharp/UnzipArchive.cs:
+	* System.IO.Packaging/Check.cs:
+	* System.IO.Packaging/ZipPackage.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/PackUriHelper.cs:
+	* Test/System.IO.Packaging/PackageTest.cs:
+	* Test/System.IO.Packaging/PackagePartTest.cs:
+	* Test/System.IO.Packaging/FakePackagePartTests.cs:
+	* Test/System.IO.Packaging/PackageRelationshipTests.cs: Filenames should
+	be case insensitive. Fixed issues generating the correct relationship
+	uri for package parts.
+
+2008-11-03  Alan McGovern  <amcgovern@novell.com>
+
 	* System.IO.Packaging/Package.cs:
 	* System.IO.Packaging/ZipPackage.cs:
 	* System.IO.Packaging/ZipPackagePart.cs: Files are stored in the zip

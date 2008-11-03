@@ -44,7 +44,7 @@ namespace System.IO.Packaging {
 		Dictionary<string, PackageRelationship> Relationships {
 			get {
 				if (relationships == null) {
-					relationships = new Dictionary<string, PackageRelationship> ();
+					relationships = new Dictionary<string, PackageRelationship> (StringComparer.OrdinalIgnoreCase);
 					if (Package.PartExists (RelationshipsPartUri))
 						using (Stream s = Package.GetPart (RelationshipsPartUri).GetStream ())
 							LoadRelationships (relationships, s);
@@ -81,7 +81,7 @@ namespace System.IO.Packaging {
 			Uri = partUri;
 			ContentType = contentType;
 			CompressionOption = compressionOption;
-			RelationshipsPartUri = new Uri ("/_rels" + Uri.ToString () + ".rels", UriKind.Relative);
+			RelationshipsPartUri = PackUriHelper.GetRelationshipPartUri(Uri);
 		}
 
 		public CompressionOption CompressionOption {
@@ -120,6 +120,11 @@ namespace System.IO.Packaging {
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
 		{
+			return CreateRelationship (targetUri, targetMode, relationshipType, id, false);
+		}
+
+		private PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
+		{
 			Check.TargetUri (targetUri);
 			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
@@ -132,7 +137,9 @@ namespace System.IO.Packaging {
 			
 			PackageRelationship r = new PackageRelationship (id, Package, relationshipType, Uri, targetMode, targetUri);
 			Relationships.Add (r.Id, r);
-			WriteRelationships ();
+
+			if (!loading)
+				WriteRelationships ();
 			return r;
 		}
 
@@ -156,10 +163,11 @@ namespace System.IO.Packaging {
 				if (node.Attributes["TargetMode"] != null)
 					mode = (TargetMode) Enum.Parse (typeof(TargetMode), node.Attributes ["TargetMode"].Value);
 				
-				CreateRelationship (new Uri (node.Attributes["Target"].ToString()),
+				CreateRelationship (new Uri ("/" + node.Attributes["Target"].Value.ToString(), UriKind.Relative),
 				                    mode,
-				                    node.Attributes["Type"].ToString (),
-				                    node.Attributes["Id"].ToString ());
+				                    node.Attributes["Type"].Value.ToString (),
+				                    node.Attributes["Id"].Value.ToString (),
+				                    true);
 			}
 		}
 

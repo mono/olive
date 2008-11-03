@@ -82,10 +82,16 @@ namespace zipsharp
 
 		public Stream GetStream (string name)
 		{
-			if (Array.IndexOf (Files, name) == -1)
-				throw new Exception ("The file doesn't exist in the zip archive");
-			NativeUnzip.OpenFile (Handle, name);
-			return new UnzipReadStream (this);
+			foreach (string file in Files)
+			{
+				if (name.Equals(file, StringComparison.OrdinalIgnoreCase))
+				{
+					NativeUnzip.OpenFile (Handle, name);
+					return new UnzipReadStream (this);
+				}
+			}
+			
+			throw new Exception ("The file doesn't exist in the zip archive");
 		}
 	}
 }

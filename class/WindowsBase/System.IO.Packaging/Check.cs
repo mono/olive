@@ -126,6 +126,10 @@ namespace System.IO.Packaging
 				throw new ArgumentException ("partUri", "Part uri cannot be an empty string");
 		}
 
+		public static void SourcePartUri (Uri sourcePartUri)
+		{
+			NotNull(sourcePartUri, "sourcePartUri");
+		}
 		public static void SourceUri (Uri sourceUri)
 		{
 			if (sourceUri == null)

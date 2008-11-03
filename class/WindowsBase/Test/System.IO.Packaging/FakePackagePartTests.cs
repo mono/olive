@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
 
@@ -205,15 +206,16 @@ namespace System.IO.Packaging.Tests {
             Assert.IsNotNull (package.CreatePart (uris[1], contentType));
             Assert.AreEqual (1, new List<PackagePart> (package.GetParts()).Count, "#0a");
             package.Flush ();
-            
+			package.Close ();
+
             using (Package p = Package.Open (new MemoryStream (stream.ToArray ()))) {
-                PackagePart part = new List<PackagePart>(p.GetParts ())[0];
+				PackagePart part = new List<PackagePart>(p.GetParts ())[0];
                 Stream s = part.GetStream ();
                 Assert.IsTrue (s.CanRead, "#1");
                 Assert.IsTrue (s.CanSeek, "#2");
                 Assert.IsFalse (s.CanWrite, "#3");
             }
-
+			
             using (Package p = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.OpenOrCreate)) {
                 PackagePart part = new List<PackagePart> (p.GetParts ()) [0];
                 Stream s = part.GetStream ();
