@@ -133,7 +133,7 @@ namespace System.Windows {
 				throw new NotImplementedException ();
 			}
 
-			public void BeginUse ()
+			private void BeginUse ()
 			{
 				throw new NotImplementedException ();
 			}

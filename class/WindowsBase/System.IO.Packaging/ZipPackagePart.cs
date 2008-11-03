@@ -31,9 +31,10 @@ namespace System.IO.Packaging {
 
 	public sealed class ZipPackagePart : PackagePart
 	{
-		public new ZipPackage Package {
+		new ZipPackage Package {
 			get { return (ZipPackage)base.Package; }
 		}
+		
 		internal ZipPackagePart (Package package, Uri partUri)
 			: base (package, partUri)
 		{
