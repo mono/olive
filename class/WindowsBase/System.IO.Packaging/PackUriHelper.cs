@@ -104,7 +104,7 @@ namespace System.IO.Packaging {
 			Check.PartUri (partUri);
 			
 			if (partUri.OriginalString[0] != '/')
-				partUri = new Uri(new Uri ("/", UriKind.Relative), partUri);
+				partUri = new Uri("/" + partUri.ToString (), UriKind.Relative);
 			return partUri;
 		}
 

@@ -1,5 +1,9 @@
 2008-11-03  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/PackUriHelper.cs: Generate the new Uri properly
+
+2008-11-03  Alan McGovern  <amcgovern@novell.com>
+
 	* ZipSharp/NativeUnzip.cs:
 	* ZipSharp/UnzipArchive.cs:
 	* System.IO.Packaging/Check.cs:
