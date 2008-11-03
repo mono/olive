@@ -111,7 +111,7 @@ namespace System.IO.Packaging {
 		public void Flush ()
 		{
 			// I should have a dirty boolean
-			if (FileOpenAccess == FileAccess.ReadWrite || FileOpenAccess == FileAccess.Write)
+			if (FileOpenAccess != FileAccess.Read)
 				FlushCore ();
 		}
 
@@ -377,17 +377,23 @@ namespace System.IO.Packaging {
 				try {
 					using (zipsharp.UnzipArchive a = new zipsharp.UnzipArchive (stream)) {
 					}
-				} catch (Exception ex) {
-					Console.WriteLine ("WRONG!");
-					Console.WriteLine (ex);
+				} catch {
 					throw new FileFormatException ("The specified archive is invalid.");
 				}
 			}
 			
 			// FIXME: MS docs say that a ZipPackage is returned by default.
 			// It looks like if you create a custom package, you cannot use Package.Open.
+
+			// FIXME: This is a horrible hack. If a package is opened in readonly mode, i
+			// need to pretend i have read/write mode so i can load the PackageParts
+			// and PackageRelations. I think the 'streaming' boolean might be used for this.
 			ZipPackage package = new ZipPackage (packageAccess);
 			package.PackageStream = stream;
+			package.FileOpenAccess = FileAccess.ReadWrite;
+			package.GetParts ();
+			package.GetRelationships();
+			package.FileOpenAccess = packageAccess;
 			return package;
 		}
 
