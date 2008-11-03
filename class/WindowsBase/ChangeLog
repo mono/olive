@@ -1,5 +1,14 @@
 2008-11-03  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/Check.cs:
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/PackagePart.cs:
+	* System.IO.Packaging/ZipPartStream.cs:
+	* Test/System.IO.Packaging/PackageTest.cs: Add tests to ensure that if a
+	package is readonly it won't be written to
+
+2008-11-03  Alan McGovern  <amcgovern@novell.com>
+
 	* ZipSharp/NativeZip.cs:
 	* ZipSharp/ZipArchive.cs:
 	* ZipSharp/NativeUnzip.cs:

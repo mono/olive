@@ -31,7 +31,7 @@ using System.Text;
 using NUnit.Framework;
 
 namespace System.IO.Packaging.Tests {
-	
+
     [TestFixture]
     public class PackageTest : TestBase {
 
@@ -78,7 +78,7 @@ namespace System.IO.Packaging.Tests {
         {
             package = Package.Open (path, FileMode.Create, FileAccess.ReadWrite, FileShare.ReadWrite);
         }
-        
+
         [Test]
         [ExpectedException (typeof (FileNotFoundException))]
         public void OpenNonExistantPath ()
@@ -131,6 +131,33 @@ namespace System.IO.Packaging.Tests {
             package.Close ();
             package = Package.Open (path, FileMode.Open, FileAccess.Read);
             Assert.AreEqual (FileAccess.Read, package.FileOpenAccess, "Should be read access");
+            try {
+                package.CreatePart (uris [0], contentType);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
+
+            try {
+                package.CreateRelationship (uris [0], TargetMode.Internal, contentType);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
+
+            try {
+                package.DeletePart (uris [0]);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
+
+            try {
+                package.DeleteRelationship (contentType);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
         }
 
         [Test]
@@ -147,11 +174,17 @@ namespace System.IO.Packaging.Tests {
         {
             stream = new FakeStream (true, false, true);
             package = Package.Open (stream);
+
+            try {
+                package.DeleteRelationship (contentType);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
         }
 
         [Test]
         [ExpectedException (typeof (FileFormatException))]
-        [Ignore ("Won't work until zip parsing is availabl")]
         public void ReadableSeekableFullStream ()
         {
             stream = new FakeStream (true, false, true);
@@ -165,6 +198,13 @@ namespace System.IO.Packaging.Tests {
         {
             stream = new FakeStream (true, false, true);
             package = Package.Open (path, FileMode.CreateNew, FileAccess.Read);
+
+            try {
+                package.DeleteRelationship (contentType);
+                Assert.Fail ("Cannot modify a read-only package");
+            } catch (IOException) {
+
+            }
         }
 
         [Test]
@@ -203,8 +243,17 @@ namespace System.IO.Packaging.Tests {
         [Test]
         public void SetCreateNewOnWriteableStream ()
         {
-            stream = new FakeStream (true, true, true);
             package = Package.Open (stream, FileMode.CreateNew);
+        }
+
+        [Test]
+        [ExpectedException(typeof(IOException))]
+        public void SetCreateNewOnWriteableStream2 ()
+        {
+            stream = new FakeStream (true, true, true);
+            stream.Write (new byte [1000], 0, 1000);
+            package = Package.Open (stream, FileMode.CreateNew);
+            Assert.AreEqual (0, stream.Length, "#1");
         }
 
         [Test]

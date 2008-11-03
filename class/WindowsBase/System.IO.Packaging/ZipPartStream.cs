@@ -98,11 +98,17 @@ namespace System.IO.Packaging
 
 		public override void SetLength (long value)
 		{
+			if (!CanWrite)
+				throw new InvalidOperationException ("Stream is not writeable");
+			
 			BaseStream.SetLength (value);
 		}
 
 		public override void Write(byte[] buffer, int offset, int count)
 		{
+			if (!CanWrite)
+				throw new InvalidOperationException ("Stream is not writeable");
+			
 			Seek (Position, SeekOrigin.Begin);
 			BaseStream.Write (buffer, offset, count);
 			Position += count;

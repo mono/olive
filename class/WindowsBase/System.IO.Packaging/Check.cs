@@ -48,6 +48,11 @@ namespace System.IO.Packaging
 				throw new ArgumentException ("contentType", "contentType must be in the form of 'type/subtype'");
 		}
 
+		public static void Id (object id)
+		{
+			NotNull (id, "id");
+		}
+		
 		public static void IdIsValid (string id)
 		{
 			if (id == null)

@@ -125,6 +125,7 @@ namespace System.IO.Packaging {
 
 		private PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
 		{
+			Package.CheckIsReadOnly ();
 			Check.TargetUri (targetUri);
 			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
@@ -145,6 +146,7 @@ namespace System.IO.Packaging {
 
 		public void DeleteRelationship (string id)
 		{
+			Package.CheckIsReadOnly ();
 			CheckIsRelationship ();
 			Relationships.Remove (id);
 			WriteRelationships ();

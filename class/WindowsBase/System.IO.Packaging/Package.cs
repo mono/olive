@@ -95,6 +95,12 @@ namespace System.IO.Packaging {
 			get; set;
 		}
 
+		internal void CheckIsReadOnly ()
+		{
+			if (FileOpenAccess == FileAccess.Read)
+				throw new IOException ("Operation not valid when package is read-only");
+		}
+		
 		public void Close ()
 		{
 			// FIXME: Ensure that Flush is actually called before dispose
@@ -118,6 +124,7 @@ namespace System.IO.Packaging {
 
 		public PackagePart CreatePart (Uri partUri, string contentType, CompressionOption compressionOption)
 		{
+			CheckIsReadOnly ();
 			Check.PartUri (partUri);
 			Check.ContentTypeIsValid (contentType);
 
@@ -131,6 +138,7 @@ namespace System.IO.Packaging {
 
 		public void DeletePart (Uri partUri)
 		{
+			CheckIsReadOnly ();
 			Check.PartUri (partUri);
 
 			PackagePart part = GetPart (partUri);
@@ -165,6 +173,7 @@ namespace System.IO.Packaging {
 
 		internal PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
 		{
+			CheckIsReadOnly ();
 			Check.TargetUri (targetUri);
 			
 			Check.RelationshipTypeIsValid (relationshipType);
@@ -191,6 +200,9 @@ namespace System.IO.Packaging {
 
 		public void DeleteRelationship (string id)
 		{
+			Check.Id (id);
+			CheckIsReadOnly ();
+			
 			Relationships.Remove (id);
 
 			relationshipsCollection.Relationships.RemoveAll (r => r.Id == id);
@@ -360,6 +372,10 @@ namespace System.IO.Packaging {
 			// FIXME: MS docs say that a ZipPackage is returned by default.
 			// It looks like if you create a custom package, you cannot use Package.Open.
 			ZipPackage package = new ZipPackage (packageAccess);
+
+			// Test to see if archive is valid
+			using (zipsharp.ZipArchive a = new zipsharp.ZipArchive(stream)) {
+			}
 			package.PackageStream = stream;
 			return package;
 		}
