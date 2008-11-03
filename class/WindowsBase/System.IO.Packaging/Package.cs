@@ -104,7 +104,9 @@ namespace System.IO.Packaging {
 
 		public void Flush ()
 		{
-			FlushCore ();
+			// I should have a dirty boolean
+			if (FileOpenAccess == FileAccess.ReadWrite || FileOpenAccess == FileAccess.Write)
+				FlushCore ();
 		}
 
 		protected abstract void FlushCore ();
@@ -158,6 +160,11 @@ namespace System.IO.Packaging {
 
 		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id)
 		{
+			return CreateRelationship (targetUri, targetMode, relationshipType, id, false);
+		}
+
+		public PackageRelationship CreateRelationship (Uri targetUri, TargetMode targetMode, string relationshipType, string id, bool loading)
+		{
 			Check.TargetUri (targetUri);
 			
 			Check.RelationshipTypeIsValid (relationshipType);
@@ -173,9 +180,11 @@ namespace System.IO.Packaging {
 			
 			Relationships.Add (r.Id, r);
 			relationshipsCollection.Relationships.Add (r);
-			
-			using (Stream s = GetPart (RelationshipUri).GetStream ())
-				WriteRelationships (relationships, s);
+
+			if (!loading) {
+				using (Stream s = GetPart (RelationshipUri).GetStream ())
+					WriteRelationships (relationships, s);
+			}
 			
 			return r;
 		}
@@ -251,14 +260,16 @@ namespace System.IO.Packaging {
 
 			foreach (XmlNode node in doc.SelectNodes ("/rel:Relationships/*", manager))
 			{
+				
 				TargetMode mode = TargetMode.Internal;
 				if (node.Attributes["TargetMode"] != null)
 					mode = (TargetMode) Enum.Parse (typeof(TargetMode), node.Attributes ["TargetMode"].Value);
 				
-				CreateRelationship (new Uri (node.Attributes["Target"].ToString()),
+				CreateRelationship (new Uri (node.Attributes ["Target"].Value.ToString(), UriKind.Relative),
 				                    mode,
-				                    node.Attributes["Type"].ToString (),
-				                    node.Attributes["Id"].ToString ());
+				                    node.Attributes["Type"].Value.ToString (),
+				                    node.Attributes["Id"].Value.ToString (),
+				                    true);
 			}
 		}
 		

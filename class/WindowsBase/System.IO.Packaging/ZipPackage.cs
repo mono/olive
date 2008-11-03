@@ -88,7 +88,7 @@ namespace System.IO.Packaging {
 					Stream partStream = part.GetStream ();
 					partStream.Seek (0, SeekOrigin.Begin);
 					
-					using (Stream destination = archive.GetStream (part.Uri.ToString ())) {
+					using (Stream destination = archive.GetStream (part.Uri.ToString ().Substring(1))) {
 						int count = (int) Math.Min (2048, partStream.Length);
 						byte[] buffer = new byte [count];
 
@@ -151,7 +151,7 @@ namespace System.IO.Packaging {
 
 						Console.WriteLine ("Found file: {0}", file);
 						
-						if (file == RelationshipUri.ToString ())
+						if (file == RelationshipUri.ToString ().Substring (1))
 						{
 							CreatePart (RelationshipUri, RelationshipContentType);
 							continue;
@@ -174,8 +174,7 @@ namespace System.IO.Packaging {
 					}
 				}
 			} catch {
-				Console.WriteLine ("The package was invalid...");
-				// The archive is invalid - therfefore no parts
+				// The archive is invalid - therefore no parts
 			}
 		}
 

@@ -65,7 +65,7 @@ namespace System.IO.Packaging {
 			{
 				using (UnzipArchive archive = new UnzipArchive (Package.PackageStream)) {
 					foreach (string file in archive.GetFiles ()) {
-						if (file != Uri.ToString ())
+						if (file != Uri.ToString ().Substring (1))
 							continue;
 						
 						using (Stream archiveStream = archive.GetStream (file)) {
