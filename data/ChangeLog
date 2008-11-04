@@ -1,3 +1,8 @@
+2008-11-03  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* Makefile, mono-uia.pc.in: Reference WindowsBase in
+	$(prefix)/lib/mono/2.0 instead of 3.0 (new home since move to mcs).
+
 2008-07-29  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* Makefile, mono-uia.pc.in: Add .pc file for UIA assemblies, and link

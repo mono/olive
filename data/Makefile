@@ -9,6 +9,7 @@ else
 	olivedir   = $(prefix)/lib/mono/3.0
 	olive35dir = $(prefix)/lib/mono/3.5
 	silverdir  = $(prefix)/lib/mono/2.1
+	net20dir   = $(prefix)/lib/mono/2.0
 	a11ydir    = $(prefix)/lib/mono/accessibility
 endif
 
@@ -25,7 +26,7 @@ olive.pc: olive.pc.in Makefile
 	rm $@.tmp
 
 mono-uia.pc: mono-uia.pc.in Makefile
-	sed -e "s,@olivedir@,$(olivedir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < mono-uia.pc.in > $@.tmp
+	sed -e "s,@net20dir@,$(net20dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < mono-uia.pc.in > $@.tmp
 	sed -e "s,@a11ydir@,$(a11ydir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
 	mv $@.tmp2 $@
 	rm $@.tmp
