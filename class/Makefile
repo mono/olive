@@ -8,7 +8,6 @@ net_3_0_dirs = \
 	System.Workflow.Runtime		\
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
-	WindowsBase			\
 	PresentationCore		\
 	PresentationFramework		\
 	UIAutomationTypes		\
