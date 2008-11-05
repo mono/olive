@@ -89,7 +89,7 @@ namespace System.Windows.Automation.Provider
 	
 	internal static class BridgeManager
 	{
-		private const string UiaAtkBridgeAssembly =
+		private static string UiaAtkBridgeAssembly =
 			"UiaAtkBridge, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4ceacb585d99812";
 		
 		public static IAutomationBridge GetAutomationBridge ()

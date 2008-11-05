@@ -1,3 +1,9 @@
+2008-11-05  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows.Automation.Provider/AutomationInteropProvider.cs:
+	Change UiaAtkBridgeAssembly string from const to static.  This
+	facilitates a hack in our unit tests.
+
 2008-10-10  Brad Taylor  <brad@getcoded.net>
 	
 	* System.Windows.Automation.Provider/ITextRangeProvider.cs:
