@@ -82,14 +82,15 @@ dist: dist-tarball
 # the installed System.Xml to build properly
 
 distcheck: dist-tarball
-	rm -rf InstallTest Distcheck-MCS ; \
+	rm -rf InstallTest Distcheck-Olive ; \
 	mkdir InstallTest ; \
 	destdir=`cd InstallTest && pwd` ; \
-	mv $(package) Distcheck-MCS ; \
-	(cd Distcheck-MCS && \
+	mv $(package) Distcheck-Olive ; \
+	(cd Distcheck-Olive && \
+	    ./configure --prefix=$(prefix) \
 	    $(MAKE) prefix=$(prefix) && $(MAKE) test && $(MAKE) install DESTDIR="$$destdir" && \
 	    $(MAKE) clean && $(MAKE) dist || exit 1) || exit 1 ; \
-	mv Distcheck-MCS $(package) ; \
+	mv Distcheck-Olive $(package) ; \
 	tar tjf $(package)/$(package).tar.bz2 |sed -e 's,/$$,,' |sort >distdist.list ; \
 	rm $(package)/$(package).tar.bz2 ; \
 	tar tjf $(package).tar.bz2 |sed -e 's,/$$,,' |sort >before.list ; \
