@@ -9,11 +9,7 @@ net_3_0_dirs = \
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
 	PresentationCore		\
-	PresentationFramework		\
-	UIAutomationTypes		\
-	UIAutomationBridge		\
-	UIAutomationProvider		\
-	UIAutomationClient
+	PresentationFramework
 
 net_3_0_SUBDIRS := $(net_3_0_dirs)
 

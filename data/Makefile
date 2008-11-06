@@ -10,13 +10,11 @@ else
 	olive35dir = $(prefix)/lib/mono/3.5
 	silverdir  = $(prefix)/lib/mono/2.1
 	net20dir   = $(prefix)/lib/mono/2.0
-	a11ydir    = $(prefix)/lib/mono/accessibility
 endif
 
-all-local: olive.pc mono-uia.pc
+all-local: olive.pc
 
-DISTFILES = olive.pc.in \
-	mono-uia.pc.in
+DISTFILES = olive.pc.in
 
 REWRITE=
 olive.pc: olive.pc.in Makefile
@@ -25,19 +23,12 @@ olive.pc: olive.pc.in Makefile
 	mv $@.tmp2 $@
 	rm $@.tmp
 
-mono-uia.pc: mono-uia.pc.in Makefile
-	sed -e "s,@net20dir@,$(net20dir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < mono-uia.pc.in > $@.tmp
-	sed -e "s,@a11ydir@,$(a11ydir),g" -e "s,@VERSION@,$(MONO_VERSION),g" < $@.tmp > $@.tmp2
-	mv $@.tmp2 $@
-	rm $@.tmp
-
-install-local: olive.pc mono-uia.pc
+install-local: olive.pc
 	$(MKINSTALLDIRS) $(DESTDIR)$(prefix)/lib/pkgconfig
 	$(INSTALL_DATA) olive.pc $(DESTDIR)$(prefix)/lib/pkgconfig
-	$(INSTALL_DATA) mono-uia.pc $(DESTDIR)$(prefix)/lib/pkgconfig
 
 clean-local:
-	rm -rf olive.pc mono-uia.pc
+	rm -rf olive.pc
 
 test-local:
 
