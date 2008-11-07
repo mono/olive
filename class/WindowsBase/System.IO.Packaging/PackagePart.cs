@@ -206,8 +206,6 @@ namespace System.IO.Packaging {
 
 		public Stream GetStream ()
 		{
-			// FIXME: Need to find out what kind of access the streams are usually opened with
-			// Appears to be read/write/seek == true.
 			return GetStream (Package.FileOpenAccess == FileAccess.Read && !IsRelationship ? FileMode.Open : FileMode.OpenOrCreate);
 		}
 

@@ -423,8 +423,6 @@ namespace System.IO.Packaging {
 				}
 			}
 			
-			// FIXME: MS docs say that a ZipPackage is returned by default.
-			// It looks like if you create a custom package, you cannot use Package.Open.
 			return new ZipPackage (packageAccess, stream);
 		}
 		

@@ -1,5 +1,11 @@
 2008-11-07  Alan McGovern  <amcgovern@novell.com>
 
+	* System.IO.Packaging/Package.cs:
+	* System.IO.Packaging/PackagePart.cs: Remove FIXMEs which have been
+	dealt with.
+
+2008-11-07  Alan McGovern  <amcgovern@novell.com>
+
 	* ZipSharp/ZipArchive.cs:
 	* ZipSharp/NativeUnzip.cs:
 	* ZipSharp/UnzipArchive.cs:
