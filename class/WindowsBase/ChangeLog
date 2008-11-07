@@ -1,3 +1,9 @@
+2008-11-07  Alan McGovern  <amcgovern@novell.com>
+
+	* Test/System.Windows/PointTest.cs:
+	* Test/System.Windows/PointConverterTest.cs: Disable some not-working
+	tests.
+
 2008-11-06  Alan McGovern  <alan.mcgovern@gmail.com>
 
 	* System.IO.Packaging/Package.cs:

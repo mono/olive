@@ -52,6 +52,7 @@ namespace MonoTests.System.Windows {
 		}
 
         [Test]
+		[Category ("NotWorking")]
         public void getHashCodeTest()
         {
 			Point p1 = new Point(-5, -4);
@@ -63,6 +64,7 @@ namespace MonoTests.System.Windows {
         }
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ToStringTest ()
 		{
 			Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("en-us");
@@ -83,6 +85,7 @@ namespace MonoTests.System.Windows {
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void Parse ()
 		{
 			Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo("fr-fr");

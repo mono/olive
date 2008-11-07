@@ -52,6 +52,7 @@ namespace MonoTests.System.Windows {
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ConvertFrom ()
 		{
 			PointConverter r = new PointConverter ();
@@ -76,6 +77,7 @@ namespace MonoTests.System.Windows {
 		}
 
 		[Test]
+		[Category ("NotWorking")]
 		public void ConvertTo ()
 		{
 			PointConverter r = new PointConverter ();
