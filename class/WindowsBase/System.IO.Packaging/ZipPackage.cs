@@ -101,7 +101,7 @@ namespace System.IO.Packaging {
 					Stream partStream = part.GetStream ();
 					partStream.Seek (0, SeekOrigin.Begin);
 					
-					using (Stream destination = archive.GetStream (part.Uri.ToString ().Substring(1))) {
+					using (Stream destination = archive.GetStream (part.Uri.ToString ().Substring(1), part.CompressionOption)) {
 						int count = (int) Math.Min (2048, partStream.Length);
 						byte[] buffer = new byte [count];
 
@@ -110,7 +110,7 @@ namespace System.IO.Packaging {
 					}
 				}
 
-				using (Stream s = archive.GetStream (ContentUri))
+				using (Stream s = archive.GetStream (ContentUri, CompressionOption.Maximum))
 					WriteContentType (s);
 			}
 		}
@@ -157,11 +157,11 @@ namespace System.IO.Packaging {
 
 					foreach (string file in archive.GetFiles ()) {
 						XmlNode node;
+						CompressionOption compression = archive.GetCompressionLevel (file);
 
 						if (file == RelationshipUri.ToString ().Substring (1))
 						{
-							// FIXME: I shouldn't use CompressionOption.NotCompressed - i should read it from the zip archive
-							CreatePartCore (RelationshipUri, RelationshipContentType, CompressionOption.NotCompressed);
+							CreatePartCore (RelationshipUri, RelationshipContentType, compression);
 							continue;
 						}
 
@@ -179,10 +179,8 @@ namespace System.IO.Packaging {
 
 						// What do i do if the node is null? This means some has tampered with the
 						// package file manually
-						
-						// FIXME: I shouldn't use CompressionOption.NotCompressed - i should read it from the zip archive
 						if (node != null)
-							CreatePartCore (new Uri ("/" + file, UriKind.Relative), node.Attributes["ContentType"].Value, CompressionOption.NotCompressed);
+							CreatePartCore (new Uri ("/" + file, UriKind.Relative), node.Attributes["ContentType"].Value, compression);
 					}
 				}
 			} catch {

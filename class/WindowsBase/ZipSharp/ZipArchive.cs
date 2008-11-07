@@ -6,6 +6,7 @@
 
 using System;
 using System.IO;
+using System.IO.Packaging;
 
 namespace zipsharp
 {
@@ -33,12 +34,35 @@ namespace zipsharp
 			Handle = NativeZip.OpenArchive (Stream.IOFunctions, append);
 		}
 
-		public Stream GetStream (string filename)
+		
+		static int ConvertCompression (System.IO.Packaging.CompressionOption option)
+		{
+			switch (option)
+			{
+			case CompressionOption.SuperFast:
+				return 2;
+				
+			case CompressionOption.Fast:
+				return 4;
+				
+			case CompressionOption.Normal:
+				return 6;
+				
+			case CompressionOption.Maximum:
+				return 9;
+
+			default:
+				return 0;
+			}
+		}
+
+
+		public Stream GetStream (string filename, System.IO.Packaging.CompressionOption option)
 		{
 			if (FileActive)
 				throw new InvalidOperationException ("A file is already open");
 			
-			NativeZip.OpenFile (Handle, filename);
+			NativeZip.OpenFile (Handle, filename, ConvertCompression (option));
 			return new ZipWriteStream (this);
 		}
 

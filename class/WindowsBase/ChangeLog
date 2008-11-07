@@ -1,5 +1,13 @@
 2008-11-07  Alan McGovern  <amcgovern@novell.com>
 
+	* ZipSharp/ZipArchive.cs:
+	* ZipSharp/NativeUnzip.cs:
+	* ZipSharp/UnzipArchive.cs:
+	* System.IO.Packaging/ZipPackage.cs: Make sure the compression option is
+	preserved between loading/saving files in an archive.
+
+2008-11-07  Alan McGovern  <amcgovern@novell.com>
+
 	* Test/System.Windows/PointTest.cs:
 	* Test/System.Windows/PointConverterTest.cs: Disable some not-working
 	tests.

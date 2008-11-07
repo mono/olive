@@ -7,6 +7,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Packaging;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -33,6 +34,44 @@ namespace zipsharp
 				throw new Exception ("Could not close the active file");
 		}
 
+		static CompressionOption ConvertCompression (int compressionLevel)
+		{
+			switch (compressionLevel)
+			{
+			case 1:
+			case 2:
+				return CompressionOption.SuperFast;
+				
+			case 3:
+			case 4:
+				return CompressionOption.Fast;
+				
+			case 5:
+			case 6:
+				return CompressionOption.Normal;
+				
+			case 7:
+			case 8:
+			case 9:
+				return CompressionOption.Maximum;
+
+			default:
+				return CompressionOption.NotCompressed;
+			}
+		}
+		
+		public static CompressionOption CurrentFileCompressionLevel (UnzipHandle handle)
+		{
+			UnzipFileInfo info;
+			StringBuilder sbName = new StringBuilder (128);
+			int result = unzGetCurrentFileInfo (handle, out info, sbName, new IntPtr (sbName.Capacity), IntPtr.Zero, IntPtr.Zero, null,  IntPtr.Zero);
+			
+			if (result != 0)
+				return CompressionOption.NotCompressed;
+			else
+				return ConvertCompression ((int) info.CompressionMethod);
+		}
+		
 		public static long CurrentFilePosition (UnzipHandle handle)
 		{
 			return unztell(handle).ToInt64 ();

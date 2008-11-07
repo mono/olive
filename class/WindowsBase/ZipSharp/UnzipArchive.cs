@@ -75,6 +75,11 @@ namespace zipsharp
 			Stream.Close ();
 		}
 
+		public System.IO.Packaging.CompressionOption GetCompressionLevel (string file)
+		{
+			return NativeUnzip.CurrentFileCompressionLevel (Handle);
+		}
+
 		public string[] GetFiles ()
 		{
 			return (string []) Files.Clone ();
