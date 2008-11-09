@@ -53,6 +53,9 @@ endif
 clean-local:
 	-rm -f $(executable_CLEAN_FILES) $(CLEAN_FILES)
 
+distclean-local: clean-local
+	-rm -f $(executable_DISTCLEAN_FILES) $(DISTCLEAN_FILES)
+
 test-local:
 	@:
 run-test-local:

@@ -102,7 +102,7 @@ else
 all: do-all
 endif
 
-STD_TARGETS = test run-test run-test-ondotnet clean install uninstall
+STD_TARGETS = test run-test run-test-ondotnet clean distclean install uninstall
 
 ifdef OVERRIDE_STD_TARGETS
 $(STD_TARGETS): %: %.override
@@ -166,6 +166,9 @@ dist-default:
 	    dest=`dirname $(distdir)/$$f` ; \
 	    $(MKINSTALLDIRS) $$dest && cp -p $$f $$dest || exit 1 ; \
 	done
+
+distclean-default:
+	@:
 
 %/.stamp:
 	$(MKINSTALLDIRS) $(@D)

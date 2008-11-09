@@ -23,6 +23,7 @@ DIST_PROFILE_DIRS = net_3_0
 dist-local: dist-default
 	-$(MKINSTALLDIRS) $(DIST_PROFILE_DIRS:%=$(distdir)/lib/%)
 
+CLEAN_FILES=$(DIST_PROFILE_DIRS:%=lib/%/.stamp)
 
 DISTFILES = msfinal.pub winfx3.pub mono.snk mono.pub ecma.pub
 

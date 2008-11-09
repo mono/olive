@@ -7,6 +7,9 @@ API_INFO = MONO_PATH=../class/lib/$(PROFILE) $(RUNTIME) ./mono-api-info.exe
 API_DIFF = MONO_PATH=../class/lib/$(PROFILE) $(RUNTIME) ./mono-api-diff.exe
 
 OBJECTS = \
+	deploy/PresentationCore.html			\
+	deploy/PresentationFramework.html		\
+	deploy/WindowsBase.html				\
 	deploy/System.Runtime.Serialization.html	\
 	deploy/System.IdentityModel.html		\
 	deploy/System.IdentityModel.Selectors.html	\

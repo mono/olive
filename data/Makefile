@@ -33,3 +33,4 @@ clean-local:
 test-local:
 
 dist-local: dist-default
+distclean-local: distclean-default

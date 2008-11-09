@@ -1,14 +1,18 @@
 thisdir := .
 
-SUBDIRS := build class tools data scripts nunit20
+# build is listed both at the beginning and end because the "clean"
+# recursive target ends up *creating* files in build/deps, which need
+# to be cleaned up during distcheck.
 
-net_3_0_SUBDIRS := build class tools data scripts nunit20
+SUBDIRS := build class tools data scripts nunit20 build
 
-include build/config.make
+net_3_0_SUBDIRS := build class tools data scripts nunit20 build
+
+-include build/config.make
 
 PROFILES = net_3_0
 
-STD_TARGETS_OVERRIDE = all clean install uninstall run-test
+STD_TARGETS_OVERRIDE = all clean install uninstall test distclean
 
 ifndef PROFILE
 OVERRIDE_STD_TARGETS = yes
@@ -87,9 +91,9 @@ distcheck: dist-tarball
 	destdir=`cd InstallTest && pwd` ; \
 	mv $(package) Distcheck-Olive ; \
 	(cd Distcheck-Olive && \
-	    ./configure --prefix=$(prefix) \
+	    ./configure --prefix=$(prefix) && \
 	    $(MAKE) prefix=$(prefix) && $(MAKE) test && $(MAKE) install DESTDIR="$$destdir" && \
-	    $(MAKE) clean && $(MAKE) dist || exit 1) || exit 1 ; \
+	    $(MAKE) clean && $(MAKE) dist && $(MAKE) distclean || exit 1) || exit 1 ; \
 	mv Distcheck-Olive $(package) ; \
 	tar tjf $(package)/$(package).tar.bz2 |sed -e 's,/$$,,' |sort >distdist.list ; \
 	rm $(package)/$(package).tar.bz2 ; \
@@ -98,7 +102,8 @@ distcheck: dist-tarball
 	cmp before.list after.list || exit 1 ; \
 	cmp before.list distdist.list || exit 1 ; \
 	rm -f before.list after.list distdist.list ; \
-	rm -rf $(package) InstallTest
+	rm -rf $(package) InstallTest ; \
+	echo "Distcheck of $(package) successful"
 
 monocharge:
 	chargedir=monocharge-`date -u +%Y%m%d` ; \

@@ -70,18 +70,20 @@ library_CLEAN_FILES += TestResult*.xml
 test_lib = $(LIBRARY:.dll=_test_$(PROFILE).dll)
 test_sourcefile = $(LIBRARY:.dll=_test.dll.sources)
 test_pdb = $(test_lib:.dll=.pdb)
+test_mdb = $(test_lib).mdb
 test_response = $(depsdir)/$(test_lib).response
 test_makefrag = $(depsdir)/$(test_lib).makefrag
 test_flags = -r:$(the_lib) $(test_nunit_ref) $(TEST_MCS_FLAGS)
-library_CLEAN_FILES += $(LIBRARY:.dll=_test*.dll) $(LIBRARY:.dll=_test*.pdb) $(test_response) $(test_makefrag)
+library_CLEAN_FILES += $(test_lib) $(test_pdb) $(test_mdb) $(est_response) $(test_makefrag)
 
 btest_lib = $(LIBRARY:.dll=_btest_$(PROFILE).dll)
 btest_sourcefile = $(LIBRARY:.dll=_btest.dll.sources)
 btest_pdb = $(btest_lib:.dll=.pdb)
+btest_mdb = $(btest_lib).mdb
 btest_response = $(depsdir)/$(btest_lib).response
 btest_makefrag = $(depsdir)/$(btest_lib).makefrag
 btest_flags = -r:$(the_lib) $(test_nunit_ref) $(TEST_MBAS_FLAGS)
-library_CLEAN_FILES += $(LIBRARY:.dll=_btest*.dll) $(LIBRARY:.dll=_btest*.pdb) $(btest_response) $(btest_makefrag)
+library_CLEAN_FILES += $(btest_lib) $(btest_pdb) $(btest_mdb) $(btest_response) $(btest_makefrag)
 
 ifndef HAVE_CS_TESTS
 HAVE_CS_TESTS := $(wildcard $(test_sourcefile))
@@ -174,6 +176,9 @@ endif
 clean-local:
 	-rm -f $(library_CLEAN_FILES) $(CLEAN_FILES)
 
+distclean-local: clean-local
+	-rm -f $(library_DISTCLEAN_FILES) $(DISTCLEAN_FILES)
+
 test-local run-test-local run-test-ondotnet-local:
 	@:
 
@@ -201,17 +206,17 @@ test-local: $(test_assemblies)
 run-test-local: run-test-lib
 run-test-ondotnet-local: run-test-ondotnet-lib
 
-TEST_HARNESS_EXCLUDES = /exclude:NotWorking,ValueAdd,CAS,InetAccess
-TEST_HARNESS_EXCLUDES_ONDOTNET = /exclude:NotDotNet,CAS
+TEST_HARNESS_EXCLUDES = -exclude=NotWorking,ValueAdd,CAS,InetAccess
+TEST_HARNESS_EXCLUDES_ONDOTNET = -exclude=NotDotNet,CAS
 
 ifdef TEST_HARNESS_VERBOSE
-TEST_HARNESS_OUTPUT = /labels
-TEST_HARNESS_OUTPUT_ONDOTNET = /labels
+TEST_HARNESS_OUTPUT = -labels
+TEST_HARNESS_OUTPUT_ONDOTNET = -labels
 TEST_HARNESS_POSTPROC = :
 TEST_HARNESS_POSTPROC_ONDOTNET = :
 else
-TEST_HARNESS_OUTPUT = /output:TestResult-$(PROFILE).log
-TEST_HARNESS_OUTPUT_ONDOTNET = /output:TestResult-ondotnet-$(PROFILE).log
+TEST_HARNESS_OUTPUT = -output=TestResult-$(PROFILE).log
+TEST_HARNESS_OUTPUT_ONDOTNET = -output=TestResult-ondotnet-$(PROFILE).log
 TEST_HARNESS_POSTPROC = (echo ''; cat TestResult-$(PROFILE).log) | sed '1,/^Tests run: /d'
 TEST_HARNESS_POSTPROC_ONDOTNET = (echo ''; cat TestResult-ondotnet-$(PROFILE).log) | sed '1,/^Tests run: /d'
 endif
@@ -219,12 +224,12 @@ endif
 ## FIXME: i18n problem in the 'sed' command below
 run-test-lib: test-local
 	ok=:; \
-	MONO_REGISTRY_PATH="$(HOME)/.mono/registry" $(TEST_RUNTIME) $(RUNTIME_FLAGS) $(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) $(TEST_HARNESS_EXCLUDES) $(TEST_HARNESS_OUTPUT) /xml:TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	MONO_REGISTRY_PATH="$(HOME)/.mono/registry" $(TEST_RUNTIME) $(RUNTIME_FLAGS) $(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_FLAGS) $(TEST_HARNESS_EXCLUDES) $(TEST_HARNESS_OUTPUT) -xml=TestResult-$(PROFILE).xml $(test_assemblies) || ok=false; \
 	$(TEST_HARNESS_POSTPROC) ; $$ok
 
 run-test-ondotnet-lib: test-local
 	ok=:; \
-	$(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) $(TEST_HARNESS_EXCLUDES_ONDOTNET) $(TEST_HARNESS_OUTPUT_ONDOTNET) /xml:TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
+	$(TEST_HARNESS) $(TEST_HARNESS_FLAGS) $(LOCAL_TEST_HARNESS_ONDOTNET_FLAGS) $(TEST_HARNESS_EXCLUDES_ONDOTNET) $(TEST_HARNESS_OUTPUT_ONDOTNET) -xml=TestResult-ondotnet-$(PROFILE).xml $(test_assemblies) || ok=false; \
 	$(TEST_HARNESS_POSTPROC_ONDOTNET) ; $$ok
 endif
 
@@ -298,6 +303,8 @@ endif
 # The library
 
 $(the_lib): $(the_libdir)/.stamp
+
+library_CLEAN_FILES += $(the_libdir)/.stamp
 
 $(build_lib): $(response) $(sn) $(BUILT_SOURCES) $(build_libdir:=/.stamp)
 ifdef LIBRARY_USE_INTERMEDIATE_FILE

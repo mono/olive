@@ -8,7 +8,11 @@ all-local install-local test-local run-test-local run-test-ondotnet-local uninst
 	@:
 
 clean-local:
-	-rm -f $(BUILT_FILES) deps/*
+	-rm -f $(BUILT_FILES)
+
+
+distclean-local: clean-local
+	rm -f config.make deps/* deps/.stamp
 
 common/Consts.cs: common/Consts.cs.in $(wildcard config.make)
 	test -n '$(MONO_VERSION)'

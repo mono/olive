@@ -51,4 +51,7 @@ install-local:
 clean-local:
 	rm -f $(scripts_3_0)
 
+test-local:
+
 dist-local: dist-default
+distclean-local: distclean-default
