@@ -9,6 +9,8 @@ Atsushi Enomoto (atsushi@ximian.com)
 	
 Chris Toshok (toshok@ximian.com)
 	PresentationCore
+	PresentationFramework
+	WindowsBase
 
 Ian McCoy (iain@mccoy.id.au)
 	XAML Parser in 
