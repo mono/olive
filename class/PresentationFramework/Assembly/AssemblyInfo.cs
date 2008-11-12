@@ -42,7 +42,6 @@ using System.Windows.Markup;
 // General Information about the PresentationFramework assembly
 // v3.0 Assembly
 
-//FIXME: Bug with mcs producing CS0433?
 [assembly: AssemblyCompany (Consts.MonoCompany)]
 [assembly: AssemblyProduct (Consts.MonoProduct)]
 [assembly: AssemblyCopyright (Consts.MonoCopyright)]
@@ -59,7 +58,6 @@ using System.Windows.Markup;
 
 [assembly: CompilationRelaxations (CompilationRelaxations.NoStringInterning)]
 [assembly: Debuggable (DebuggableAttribute.DebuggingModes.IgnoreSymbolStoreSequencePoints)]
-[assembly: RuntimeCompatibility (WrapNonExceptionThrows = true)]
 
 [assembly: Dependency ("mscorlib,", LoadHint.Always)]
 [assembly: Dependency ("System,", LoadHint.Always)]
