@@ -79,6 +79,7 @@ namespace System.Workflow.Runtime
 		public void AddService (object service_toadd)
 		{
 			WorkflowRuntimeService runtime_service = service_toadd as WorkflowRuntimeService;
+			WorkflowPersistenceService persistence_service = service_toadd as WorkflowPersistenceService;
 
 			if (service_toadd == null) {
 				throw new ArgumentNullException ("service is a null reference ");
@@ -87,6 +88,10 @@ namespace System.Workflow.Runtime
 			foreach (object service in services) {
 				if (service == service_toadd) {
 					throw new InvalidOperationException ("Cannot add a service that already exists.");
+				}
+				if ((persistence_service != null) &&
+				    (service is WorkflowPersistenceService)) {
+					throw new InvalidOperationException ("There can be only one persistence service.");
 				}
 			}
 

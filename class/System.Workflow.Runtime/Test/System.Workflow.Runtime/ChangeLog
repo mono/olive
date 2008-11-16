@@ -1,3 +1,8 @@
+2008-11-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* WorkflowPersistenceServiceTest.cs, PersistenceExceptionTest.cs:
+	  new tests by Anton Kytmanov.
+
 2006-10-29  Joel Reed <joelwreed@gmail.com>
 
 	* WorkflowRuntimeSectionTest.cs: Added

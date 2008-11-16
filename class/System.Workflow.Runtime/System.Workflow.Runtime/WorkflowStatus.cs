@@ -19,32 +19,17 @@
 //
 // Authors:
 //
-//	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
+//	Copyright (C) 2008 Anton Kytmanov <carga@mail.ru>
 //
 
 using System;
 
-namespace System.Workflow.Runtime
-{
-	public sealed class CorrelationTokenEventArgs : EventArgs
-	{
-		private CorrelationToken token;
-		private bool initializing;
-
-		public CorrelationTokenEventArgs (CorrelationToken token, bool initializing)
-		{
-			this.token = token;
-			this.initializing = initializing;
-		}
-
-		// Properties
-		public CorrelationToken CorrelationToken {
-			get { return token; }
-		}
-
-		public bool IsInitializing {
-			get { return initializing; }
-		}
+namespace System.Workflow.Runtime {
+	public enum WorkflowStatus {
+		Running = 0,
+		Completed = 1,
+		Suspended = 2,
+		Terminated = 3,
+		Created = 4
 	}
 }
-

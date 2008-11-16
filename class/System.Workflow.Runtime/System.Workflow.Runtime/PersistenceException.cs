@@ -19,32 +19,37 @@
 //
 // Authors:
 //
-//	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
+//	Copyright (C) 2008 Anton Kytmanov <carga@mail.ru>
 //
 
 using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Runtime.Serialization;
 
-namespace System.Workflow.Runtime
-{
-	public sealed class CorrelationTokenEventArgs : EventArgs
-	{
-		private CorrelationToken token;
-		private bool initializing;
-
-		public CorrelationTokenEventArgs (CorrelationToken token, bool initializing)
-		{
-			this.token = token;
-			this.initializing = initializing;
+namespace System.Workflow.Runtime.Hosting {
+	/// <summary>
+	/// The exception to be thrown when PersistenceService fails to complete operation.
+	/// </summary>
+	[Serializable]
+	public class PersistenceException : SystemException {
+		#region .ctors
+		public PersistenceException ()
+			: base () {
 		}
 
-		// Properties
-		public CorrelationToken CorrelationToken {
-			get { return token; }
+		public PersistenceException (string message)
+			: base (message) {
 		}
 
-		public bool IsInitializing {
-			get { return initializing; }
+		[MonoTODO ("Implement inner details of deserialization process")]
+		public PersistenceException (SerializationInfo serializationInfo, StreamingContext context)
+			: base (serializationInfo, context) {
 		}
+
+		public PersistenceException (string message, Exception innerException)
+			: base (message, innerException) {
+		}
+		#endregion .ctors
 	}
 }
-

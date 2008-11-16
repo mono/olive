@@ -1,3 +1,11 @@
+2008-11-16  Atsushi Enomoto  <atsushi@ximian.com>
+
+	Patch by Anton Kytmanov:
+	* WorkflowStatus.cs, WorkflowPersistenceService.cs,
+	  PersistenceException.cs : new files.
+	* WorkflowRuntime.cs : handle persistence service stuff.
+	* CorrelationTokenEventArgs.cs : fix field initialization.
+
 2006-10-29  Joel Reed <joelwreed@gmail.com>
 
 	* System.Workflow.Runtime/WorkflowRuntimeSection.cs
