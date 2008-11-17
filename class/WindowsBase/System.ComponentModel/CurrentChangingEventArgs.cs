@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Brian O'Keefe (zer0keefie@gmail.com)
 //
 
 using System;
@@ -30,21 +31,31 @@ namespace System.ComponentModel {
 
 	public class CurrentChangingEventArgs : EventArgs
 	{
+		private bool canCancelEvent;
+		private bool canceled;
+	
 		public CurrentChangingEventArgs ()
+			:this(true)
 		{
 		}
 
 		public CurrentChangingEventArgs (bool isCancelable)
 		{
+			canCancelEvent = isCancelable;
+			canceled = false;
 		}
 
 		public bool Cancel {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return canceled; }
+			set {
+				if(!IsCancelable && value)
+					throw new InvalidOperationException("Cannot cancel an event that is not Cancelable.");
+				canceled = value; 
+			}
 		}
 
 		public bool IsCancelable {
-			get { throw new NotImplementedException (); }
+			get { return canCancelEvent; }
 		}
 		
 	}

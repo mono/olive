@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Brian O'Keefe (zer0keefie@gmail.com)
 //
 
 using System;
@@ -29,43 +30,74 @@ namespace System.ComponentModel {
 
 	public struct SortDescription
 	{
+		private string sortPropertyName;
+		private ListSortDirection sortDirection;
+		private bool isSealed;
+
 		public SortDescription (string propertyName, ListSortDirection direction)
 		{
-			throw new NotImplementedException ();
+			if(direction != ListSortDirection.Ascending && direction != ListSortDirection.Descending)
+				throw new InvalidEnumArgumentException("direction", (int)direction, typeof(ListSortDirection));
+
+			sortPropertyName = propertyName;
+			sortDirection = direction;
+			isSealed = false;
 		}
 
 		public static bool operator!= (SortDescription sd1, SortDescription sd2)
 		{
-			throw new NotImplementedException ();
+			return !(sd1 == sd2);
 		}
 
 		public static bool operator== (SortDescription sd1, SortDescription sd2)
 		{
-			throw new NotImplementedException ();
+			return sd1.sortDirection == sd2.sortDirection && sd1.sortPropertyName == sd2.sortPropertyName;
 		}
 
 		public ListSortDirection Direction {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return sortDirection; }
+			set { 
+				if(isSealed)
+					throw new InvalidOperationException("Cannot change Direction once the SortDescription has been sealed.");
+				
+				if(value != ListSortDirection.Ascending && value != ListSortDirection.Descending)
+					throw new InvalidEnumArgumentException("direction", (int)value, typeof(ListSortDirection));
+				
+				sortDirection = value; 
+			}
 		}
 
 		public bool IsSealed {
-			get { throw new NotImplementedException (); }
+			get { return isSealed; }
 		}
 
 		public string PropertyName {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return sortPropertyName; }
+			set {
+				if(isSealed)
+					throw new InvalidOperationException("Cannot change Direction once the SortDescription has been sealed.");
+				
+				sortPropertyName = value;
+			}
 		}
 
 		public override bool Equals (object obj)
 		{
-			throw new NotImplementedException ();
+			if (!(obj is SortDescription))
+				return false;
+			return ((SortDescription)obj) == this;
 		}
 
 		public override int GetHashCode ()
 		{
-			throw new NotImplementedException ();
+			if(sortPropertyName == null)
+				return sortDirection.GetHashCode ();
+			return sortPropertyName.GetHashCode () ^ sortDirection.GetHashCode ();
+		}
+
+		internal void Seal()
+		{
+			isSealed = true;
 		}
 	}
 }

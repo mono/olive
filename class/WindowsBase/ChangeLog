@@ -1,3 +1,17 @@
+2008-11-16  Brian O'Keefe <zer0keefie@gmail.com>
+
+	* System.ComponentModel/CurrentChangingEventArgs.cs
+	* System.ComponentModel/PropertyFilterAttribute.cs
+	* System.ComponentModel/SortDescription.cs
+	* System.ComponentModel/SortDescriptionCollection.cs: Implement
+	unimplemented method bodies.
+	
+	* Test/System.ComponentModel/CurrentChangingEventArgsTest.cs
+	* Test/System.ComponentModel/PropertyFilterAttributeTest.cs
+	* Test/System.ComponentModel/SortDescriptionTest.cs
+	* Test/System.ComponentModel/SortDescriptionCollectionTest.cs:
+	Matching NUnit test cases for classes.
+
 2008-11-07  Alan McGovern  <amcgovern@novell.com>
 
 	* System.IO.Packaging/Package.cs:

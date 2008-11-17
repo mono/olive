@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Brian O'Keefe (zer0keefie@gmail.com)
 //
 
 using System;
@@ -29,30 +30,40 @@ namespace System.ComponentModel {
 
 	public sealed class PropertyFilterAttribute : Attribute
 	{
-		public static readonly PropertyFilterAttribute Default;
+		public static readonly PropertyFilterAttribute Default = new PropertyFilterAttribute(PropertyFilterOptions.All);
+
+		private PropertyFilterOptions options;
 
 		public PropertyFilterAttribute (PropertyFilterOptions filter)
 		{
-			throw new NotImplementedException ();
+			options = filter;
 		}
 
 		public PropertyFilterOptions Filter {
-			get { throw new NotImplementedException (); }
+			get { return options; }
 		}
 
 		public override bool Equals (object value)
 		{
-			throw new NotImplementedException ();
+			if (!(value is PropertyFilterAttribute))
+				return false;
+			return ((PropertyFilterAttribute)value).options == options;
 		}
 
 		public override int GetHashCode ()
 		{
-			throw new NotImplementedException ();
+			return options.GetHashCode ();
 		}
 
 		public override bool Match (object value)
 		{
-			throw new NotImplementedException ();
+			if (!(value is PropertyFilterAttribute))
+				return false;
+
+			PropertyFilterOptions other = ((PropertyFilterAttribute)value).options;
+			PropertyFilterOptions common = other & options;	
+
+			return common == options;
 		}
 	}
 }

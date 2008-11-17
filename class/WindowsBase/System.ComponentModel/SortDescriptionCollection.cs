@@ -21,6 +21,7 @@
 //
 // Authors:
 //	Chris Toshok (toshok@ximian.com)
+//	Brian O'Keefe (zer0keefie@gmail.com)
 //
 
 using System;
@@ -46,22 +47,47 @@ namespace System.ComponentModel {
 
 		protected override void ClearItems ()
 		{
-			throw new NotImplementedException ();
+			base.ClearItems ();
+			OnCollectionChanged (NotifyCollectionChangedAction.Reset);
 		}
 
 		protected override void InsertItem (int index, SortDescription item)
 		{
-			throw new NotImplementedException ();
+			item.Seal ();
+			base.InsertItem (index, item);
+			OnCollectionChanged (NotifyCollectionChangedAction.Add, item, index);
 		}
 
 		protected override void RemoveItem (int index)
 		{
-			throw new NotImplementedException ();
+			SortDescription sd = base [index];
+			base.RemoveItem (index);
+			OnCollectionChanged (NotifyCollectionChangedAction.Remove, sd, index);
 		}
 
 		protected override void SetItem (int index, SortDescription item)
 		{
-			throw new NotImplementedException ();
+			SortDescription old = base [index];
+			item.Seal ();
+			base.SetItem (index, item);
+			OnCollectionChanged (NotifyCollectionChangedAction.Remove, old, index);
+			OnCollectionChanged (NotifyCollectionChangedAction.Add, item, index);
+		}
+
+		private void OnCollectionChanged (NotifyCollectionChangedAction action)
+		{
+			NotifyCollectionChangedEventHandler eh = CollectionChanged;
+
+			if (eh != null)
+				eh (this, new NotifyCollectionChangedEventArgs (action));
+		}
+
+		private void OnCollectionChanged (NotifyCollectionChangedAction action, SortDescription item, int index)
+		{
+			NotifyCollectionChangedEventHandler eh = CollectionChanged;
+
+			if (eh != null)
+				eh (this, new NotifyCollectionChangedEventArgs (action, item, index));
 		}
 	}
 
