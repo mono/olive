@@ -145,6 +145,7 @@ System.Windows.Input/RoutedCommand.cs
 System.Windows.Input/RoutedUICommand.cs
 System.Windows.Input/SpeechMode.cs
 System.Windows.Input/StagingAreaInputItem.cs
+System.Windows.Input/Stylus.cs
 System.Windows.Input/StylusButton.cs
 System.Windows.Input/StylusButtonEventArgs.cs
 System.Windows.Input/StylusButtonEventHandler.cs
