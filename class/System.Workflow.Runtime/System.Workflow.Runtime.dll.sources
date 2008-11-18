@@ -25,3 +25,5 @@ System.Workflow.Runtime/WorkflowProcessor.cs
 System.Workflow.Runtime/CorrelationProperty.cs
 System.Workflow.Runtime/CorrelationToken.cs
 System.Workflow.Runtime/CorrelationTokenEventArgs.cs
+System.Workflow.Runtime/WorkflowPersistenceService.cs
+System.Workflow.Runtime/WorkflowStatus.cs
