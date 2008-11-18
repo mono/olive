@@ -40,62 +40,66 @@ namespace System.Windows.Input {
 		public static readonly RoutedEvent TextInputUpdateEvent;
 
 
-		public static void AddPreviewTextInputEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		internal TextCompositionManager ()
+		{
+		}
+
+		public static void AddPreviewTextInputHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void AddPreviewTextInputStartEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void AddPreviewTextInputStartHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void AddPreviewTextInputUpdateEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void AddPreviewTextInputUpdateHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void AddTextInputEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void AddTextInputHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void AddTextInputStartEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void AddTextInputStartHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void AddTextInputUpdateEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void AddTextInputUpdateHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemovePreviewTextInputEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemovePreviewTextInputHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemovePreviewTextInputStartEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemovePreviewTextInputStartHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemovePreviewTextInputUpdateEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemovePreviewTextInputUpdateHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemoveTextInputEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemoveTextInputHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemoveTextInputStartEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemoveTextInputStartHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static void RemoveTextInputUpdateEventHandler (DependencyObject element, TextCompositionEventHandler handler)
+		public static void RemoveTextInputUpdateHandler (DependencyObject element, TextCompositionEventHandler handler)
 		{
 			throw new NotImplementedException ();
 		}

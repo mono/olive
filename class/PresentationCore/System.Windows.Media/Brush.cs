@@ -17,80 +17,65 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System.Windows;
-using System.Windows.Threading;
+using System.Windows.Media.Animation;
 
-namespace System.Windows.Media.Animation {
+namespace System.Windows.Media {
 
-	public sealed class ClockController : DispatcherObject {
+	public abstract class Brush : Animatable, IFormattable
+	{
+		public static readonly DependencyProperty OpacityProperty;
+		public double Opacity {
+			get { return (double)GetValue (OpacityProperty); }
+			set { SetValue (OpacityProperty, value); }
+		}
 
-		internal ClockController ()
+		public static readonly DependencyProperty RelativeTransformProperty;
+		public Transform RelativeTransform {
+		    get { return (Transform)GetValue (RelativeTransformProperty); }
+		    set { SetValue (RelativeTransformProperty, value); }
+		}
+
+		public static readonly DependencyProperty TransformProperty;
+		public Transform Transform {
+		    get { return (Transform)GetValue (TransformProperty); }
+		    set { SetValue (TransformProperty, value); }
+		}
+
+		protected Brush ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Begin ()
+		public Brush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Pause ()
+		public Brush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Remove ()
+		public override string ToString ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Resume ()
+		public string ToString (IFormatProvider provider)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Seek (TimeSpan offset,
-				  TimeSeekOrigin origin)
+		string IFormattable.ToString(string format, IFormatProvider provider)
 		{
 			throw new NotImplementedException ();
-		}
-
-
-		public void SeekAlignedToLastTick (TimeSpan offset,
-						   TimeSeekOrigin origin)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void SkipToFill ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void Stop ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public Clock Clock {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-		public double SpeedRatio {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
 		}
 	}
-
 }

@@ -321,9 +321,12 @@ System.Windows.Media.Imaging/TiffCompressOption.cs
 System.Windows.Media/AlignmentX.cs
 System.Windows.Media/AlignmentY.cs
 System.Windows.Media/BitmapScalingMode.cs
+System.Windows.Media/Brush.cs
+System.Windows.Media/Brushes.cs
 System.Windows.Media/BrushMappingMode.cs
 System.Windows.Media/CachingHint.cs
 System.Windows.Media/Color.cs
+System.Windows.Media/Colors.cs
 System.Windows.Media/ColorContext.cs
 System.Windows.Media/ColorInterpolationMode.cs
 System.Windows.Media/CompositionTarget.cs
@@ -343,6 +346,7 @@ System.Windows.Media/PenLineJoin.cs
 System.Windows.Media/RotateTransform.cs
 System.Windows.Media/ScaleTransform.cs
 System.Windows.Media/SkewTransform.cs
+System.Windows.Media/SolidColorBrush.cs
 System.Windows.Media/Stretch.cs
 System.Windows.Media/StyleSimulations.cs
 System.Windows.Media/SweepDirection.cs

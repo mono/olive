@@ -23,6 +23,7 @@
 //	Chris Toshok (toshok@novell.com)
 //
 
+using System.ComponentModel;
 using System.Windows.Input;
 using System.Windows.Media.Animation;
 
@@ -30,20 +31,20 @@ namespace System.Windows {
 
 	public class ContentElement : DependencyObject, IInputElement, IAnimatable
 	{
-		public static readonly DependencyProperty AllowDropProperty;
-		public static readonly DependencyProperty FocusableProperty;
-		public static readonly DependencyProperty IsEnabledProperty;
-		public static readonly DependencyProperty IsFocusedProperty;
-		public static readonly DependencyProperty IsKeyboardFocusedProperty;
-		public static readonly DependencyProperty IsKeyboardFocusWithinProperty;
-		public static readonly DependencyProperty IsMouseCapturedProperty;
-		public static readonly DependencyProperty IsMouseCaptureWithinProperty;
-		public static readonly DependencyProperty IsMouseDirectlyOverProperty;
-		public static readonly DependencyProperty IsMouseOverProperty;
-		public static readonly DependencyProperty IsStylusCapturedProperty;
-		public static readonly DependencyProperty IsStylusCaptureWithinProperty;
-		public static readonly DependencyProperty IsStylusDirectlyOverProperty;
-		public static readonly DependencyProperty IsStylusOverProperty;
+		public static readonly DependencyProperty AllowDropProperty = UIElement.AllowDropProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty FocusableProperty = UIElement.FocusableProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsEnabledProperty = UIElement.IsEnabledProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsFocusedProperty = UIElement.IsFocusedProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsKeyboardFocusedProperty = UIElement.IsKeyboardFocusedProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsKeyboardFocusWithinProperty = UIElement.IsKeyboardFocusWithinProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsMouseCapturedProperty = UIElement.IsMouseCapturedProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsMouseCaptureWithinProperty = UIElement.IsMouseCaptureWithinProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsMouseDirectlyOverProperty = UIElement.IsMouseDirectlyOverProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsMouseOverProperty = UIElement.IsMouseOverProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsStylusCapturedProperty = UIElement.IsStylusCapturedProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsStylusCaptureWithinProperty = UIElement.IsStylusCaptureWithinProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsStylusDirectlyOverProperty = UIElement.IsStylusDirectlyOverProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsStylusOverProperty = UIElement.IsStylusOverProperty.AddOwner (typeof (ContentElement));
 
 		public static readonly RoutedEvent DragEnterEvent = DragDrop.DragEnterEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent DragLeaveEvent = DragDrop.DragLeaveEvent.AddOwner (typeof (ContentElement));
@@ -774,7 +775,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		public virtual void PredictFocus (FocusNavigationDirection direction)
+		public virtual DependencyObject PredictFocus (FocusNavigationDirection direction)
 		{
 			throw new NotImplementedException ();
 		}
@@ -799,11 +800,13 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool ShouldSerializeCommandBindings ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool ShouldSerializeInputBindings ()
 		{
 			throw new NotImplementedException ();

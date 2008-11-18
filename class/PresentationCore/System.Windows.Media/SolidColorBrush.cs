@@ -17,79 +17,52 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System.Windows;
-using System.Windows.Threading;
+using System.IO;
 
-namespace System.Windows.Media.Animation {
+namespace System.Windows.Media {
 
-	public sealed class ClockController : DispatcherObject {
+	public sealed class SolidColorBrush : Brush {
 
-		internal ClockController ()
+		public static readonly DependencyProperty ColorProperty;
+		public Color Color {
+		    get { return (Color)GetValue (ColorProperty); }
+		    set { SetValue (ColorProperty, value); }
+		}
+
+		public SolidColorBrush ()
+		{
+		}
+
+		public SolidColorBrush (Color color)
+		{
+			this.Color = color;
+		}
+
+		public SolidColorBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Begin ()
+		public SolidColorBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Pause ()
+		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public void Remove ()
+		public static object DeserializeFrom (BinaryReader reader)
 		{
 			throw new NotImplementedException ();
-		}
-
-		public void Resume ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void Seek (TimeSpan offset,
-				  TimeSeekOrigin origin)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		public void SeekAlignedToLastTick (TimeSpan offset,
-						   TimeSeekOrigin origin)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void SkipToFill ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public void Stop ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public Clock Clock {
-			get {
-				throw new NotImplementedException ();
-			}
-		}
-		public double SpeedRatio {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
 		}
 	}
 
