@@ -44,12 +44,13 @@ namespace System.Windows {
 
 		public RoutedEvent AddOwner (Type ownerType)
 		{
-			throw new NotImplementedException ();
+			// XXX more here
+			return this;
 		}
 
 		public override string ToString ()
 		{
-			return name;
+			return string.Format("{0}.{1}", OwnerType.Name, name);
 		}
 
 		public Type HandlerType {

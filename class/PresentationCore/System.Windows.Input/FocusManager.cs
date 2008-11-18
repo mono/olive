@@ -33,8 +33,14 @@ namespace System.Windows.Input {
 		public static readonly DependencyProperty FocusedElementProperty;
 		public static readonly DependencyProperty IsFocusScopeProperty;
 
-		public static readonly RoutedEvent GotFocusEvent;
-		public static readonly RoutedEvent LostFocusEvent;
+		public static readonly RoutedEvent GotFocusEvent = new RoutedEvent ("GotFocus",
+										    typeof (RoutedEventHandler),
+										    typeof (FocusManager),
+										    RoutingStrategy.Bubble);
+		public static readonly RoutedEvent LostFocusEvent = new RoutedEvent ("LostFocus",
+										    typeof (RoutedEventHandler),
+										    typeof (FocusManager),
+										    RoutingStrategy.Bubble);
 
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public static IInputElement GetFocusedElement (DependencyObject element)

@@ -32,13 +32,30 @@ namespace System.Windows.Input {
 
 	public sealed class TextCompositionManager : DispatcherObject
 	{
-		public static readonly RoutedEvent PreviewTextInputEvent;
-		public static readonly RoutedEvent PreviewTextInputStartEvent;
-		public static readonly RoutedEvent PreviewTextInputUpdateEvent;
-		public static readonly RoutedEvent TextInputEvent;
-		public static readonly RoutedEvent TextInputStartEvent;
-		public static readonly RoutedEvent TextInputUpdateEvent;
-
+		public static readonly RoutedEvent PreviewTextInputEvent = new RoutedEvent ("PreviewTextInput",
+											    typeof (TextCompositionEventHandler),
+											    typeof (TextCompositionManager),
+											    RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewTextInputStartEvent = new RoutedEvent ("PreviewTextInputStart",
+												 typeof (TextCompositionEventHandler),
+												 typeof (TextCompositionManager),
+												 RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewTextInputUpdateEvent = new RoutedEvent ("PreviewTextInputUpdate",
+												  typeof (TextCompositionEventHandler),
+												  typeof (TextCompositionManager),
+												  RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent TextInputEvent = new RoutedEvent ("TextInput",
+										     typeof (TextCompositionEventHandler),
+										     typeof (TextCompositionManager),
+										     RoutingStrategy.Bubble);
+		public static readonly RoutedEvent TextInputStartEvent = new RoutedEvent ("TextInputStart",
+											  typeof (TextCompositionEventHandler),
+											  typeof (TextCompositionManager),
+											  RoutingStrategy.Bubble);
+		public static readonly RoutedEvent TextInputUpdateEvent = new RoutedEvent ("TextInputUpdate",
+											  typeof (TextCompositionEventHandler),
+											  typeof (TextCompositionManager),
+											  RoutingStrategy.Bubble);
 
 		internal TextCompositionManager ()
 		{

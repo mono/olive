@@ -98,7 +98,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (UIElement.GotMouseCaptureEvent, Mouse.GotMouseCaptureEvent);
 			Assert.AreSame (UIElement.LostMouseCaptureEvent, Mouse.LostMouseCaptureEvent);
 			Assert.AreSame (UIElement.QueryCursorEvent, Mouse.QueryCursorEvent);
-#if notyet
 			Assert.AreSame (UIElement.PreviewStylusDownEvent, Stylus.PreviewStylusDownEvent);
 			Assert.AreSame (UIElement.StylusDownEvent, Stylus.StylusDownEvent);
 			Assert.AreSame (UIElement.PreviewStylusUpEvent, Stylus.PreviewStylusUpEvent);
@@ -121,7 +120,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (UIElement.StylusButtonUpEvent, Stylus.StylusButtonUpEvent);
 			Assert.AreSame (UIElement.PreviewStylusButtonDownEvent, Stylus.PreviewStylusButtonDownEvent);
 			Assert.AreSame (UIElement.PreviewStylusButtonUpEvent, Stylus.PreviewStylusButtonUpEvent);
-#endif
 			Assert.AreSame (UIElement.PreviewKeyDownEvent, Keyboard.PreviewKeyDownEvent);
 			Assert.AreSame (UIElement.KeyDownEvent, Keyboard.KeyDownEvent);
 			Assert.AreSame (UIElement.PreviewKeyUpEvent, Keyboard.PreviewKeyUpEvent);
@@ -132,7 +130,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (UIElement.LostKeyboardFocusEvent, Keyboard.LostKeyboardFocusEvent);
 			Assert.AreSame (UIElement.PreviewTextInputEvent, TextCompositionManager.PreviewTextInputEvent);
 			Assert.AreSame (UIElement.TextInputEvent, TextCompositionManager.TextInputEvent);
-#if notyet
 			Assert.AreSame (UIElement.PreviewQueryContinueDragEvent, DragDrop.PreviewQueryContinueDragEvent);
 			Assert.AreSame (UIElement.QueryContinueDragEvent, DragDrop.QueryContinueDragEvent);
 			Assert.AreSame (UIElement.PreviewGiveFeedbackEvent, DragDrop.PreviewGiveFeedbackEvent);
@@ -145,7 +142,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (UIElement.DragLeaveEvent, DragDrop.DragLeaveEvent);
 			Assert.AreSame (UIElement.PreviewDropEvent, DragDrop.PreviewDropEvent);
 			Assert.AreSame (UIElement.DropEvent, DragDrop.DropEvent);
-#endif
 			Assert.AreSame (UIElement.GotFocusEvent, FocusManager.GotFocusEvent);
 			Assert.AreSame (UIElement.LostFocusEvent, FocusManager.LostFocusEvent);
 		}

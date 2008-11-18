@@ -59,7 +59,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (ContentElement.GotMouseCaptureEvent, Mouse.GotMouseCaptureEvent);
 			Assert.AreSame (ContentElement.LostMouseCaptureEvent, Mouse.LostMouseCaptureEvent);
 			Assert.AreSame (ContentElement.QueryCursorEvent, Mouse.QueryCursorEvent);
-#if notyet
 			Assert.AreSame (ContentElement.PreviewStylusDownEvent, Stylus.PreviewStylusDownEvent);
 			Assert.AreSame (ContentElement.StylusDownEvent, Stylus.StylusDownEvent);
 			Assert.AreSame (ContentElement.PreviewStylusUpEvent, Stylus.PreviewStylusUpEvent);
@@ -82,7 +81,6 @@ namespace MonoTests.System.Windows {
 			Assert.AreSame (ContentElement.StylusButtonUpEvent, Stylus.StylusButtonUpEvent);
 			Assert.AreSame (ContentElement.PreviewStylusButtonDownEvent, Stylus.PreviewStylusButtonDownEvent);
 			Assert.AreSame (ContentElement.PreviewStylusButtonUpEvent, Stylus.PreviewStylusButtonUpEvent);
-#endif
 			Assert.AreSame (ContentElement.PreviewKeyDownEvent, Keyboard.PreviewKeyDownEvent);
 			Assert.AreSame (ContentElement.KeyDownEvent, Keyboard.KeyDownEvent);
 			Assert.AreSame (ContentElement.PreviewKeyUpEvent, Keyboard.PreviewKeyUpEvent);

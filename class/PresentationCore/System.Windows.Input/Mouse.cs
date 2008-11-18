@@ -32,21 +32,66 @@ namespace System.Windows.Input {
 	public static class Mouse {
 		public const int MouseWheelDeltaForOneLine = 120;
 
-		public static readonly RoutedEvent GotMouseCaptureEvent;
-		public static readonly RoutedEvent LostMouseCaptureEvent;
-		public static readonly RoutedEvent MouseDownEvent;
-		public static readonly RoutedEvent MouseEnterEvent;
-		public static readonly RoutedEvent MouseLeaveEvent;
-		public static readonly RoutedEvent MouseMoveEvent;
-		public static readonly RoutedEvent MouseUpEvent;
-		public static readonly RoutedEvent MouseWheelEvent;
-		public static readonly RoutedEvent PreviewMouseDownEvent;
-		public static readonly RoutedEvent PreviewMouseDownOutsideCapturedElementEvent;
-		public static readonly RoutedEvent PreviewMouseMoveEvent;
-		public static readonly RoutedEvent PreviewMouseUpEvent;
-		public static readonly RoutedEvent PreviewMouseUpOutsideCapturedElementEvent;
-		public static readonly RoutedEvent PreviewMouseWheelEvent;
-		public static readonly RoutedEvent QueryCursorEvent;
+		public static readonly RoutedEvent GotMouseCaptureEvent = new RoutedEvent ("GotMouseCapture",
+											   typeof (MouseEventHandler),
+											   typeof (Mouse),
+											   RoutingStrategy.Bubble);
+		public static readonly RoutedEvent LostMouseCaptureEvent = new RoutedEvent ("LostMouseCapture",
+											    typeof (MouseEventHandler),
+											    typeof (Mouse),
+											    RoutingStrategy.Bubble);
+		public static readonly RoutedEvent MouseDownEvent = new RoutedEvent ("MouseDown",
+										     typeof (MouseButtonEventHandler),
+										     typeof (Mouse),
+										     RoutingStrategy.Bubble);
+		public static readonly RoutedEvent MouseEnterEvent = new RoutedEvent ("MouseEnter",
+										      typeof (MouseEventHandler),
+										      typeof (Mouse),
+										      RoutingStrategy.Direct);
+		public static readonly RoutedEvent MouseLeaveEvent = new RoutedEvent ("MouseLeave",
+										     typeof (MouseEventHandler),
+										     typeof (Mouse),
+										     RoutingStrategy.Direct);
+		public static readonly RoutedEvent MouseMoveEvent = new RoutedEvent ("MouseMove",
+										     typeof (MouseEventHandler),
+										     typeof (Mouse),
+										     RoutingStrategy.Bubble);
+		public static readonly RoutedEvent MouseUpEvent = new RoutedEvent ("MouseUp",
+										   typeof (MouseButtonEventHandler),
+										   typeof (Mouse),
+										   RoutingStrategy.Bubble);
+		public static readonly RoutedEvent MouseWheelEvent = new RoutedEvent ("MouseWheel",
+										      typeof (MouseWheelEventHandler),
+										      typeof (Mouse),
+										      RoutingStrategy.Bubble);
+		public static readonly RoutedEvent PreviewMouseDownEvent = new RoutedEvent ("PreviewMouseDown",
+											    typeof (MouseButtonEventHandler),
+											    typeof (Mouse),
+											    RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewMouseDownOutsideCapturedElementEvent = new RoutedEvent ("PreviewMouseDownOutsideCapturedElement",
+														  typeof (MouseButtonEventHandler),
+														  typeof (Mouse),
+														  RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewMouseMoveEvent = new RoutedEvent ("PreviewMouseMove",
+											    typeof (MouseEventHandler),
+											    typeof (Mouse),
+											    RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewMouseUpEvent = new RoutedEvent ("PreviewMouseUp",
+											  typeof (MouseButtonEventHandler),
+											  typeof (Mouse),
+											  RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewMouseUpOutsideCapturedElementEvent = new RoutedEvent ("PreviewMouseUpOutsideCapturedElement",
+														typeof (MouseButtonEventHandler),
+														typeof (Mouse),
+														RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent PreviewMouseWheelEvent = new RoutedEvent ("PreviewMouseWheel",
+											     typeof (MouseWheelEventHandler),
+											     typeof (Mouse),
+											     RoutingStrategy.Tunnel);
+		public static readonly RoutedEvent QueryCursorEvent = new RoutedEvent ("QueryCursor",
+										       typeof (QueryCursorEventHandler),
+										       typeof (Mouse),
+										       RoutingStrategy.Bubble);
 
 		public static IInputElement Captured {
 			get { return PrimaryDevice.Captured; }
