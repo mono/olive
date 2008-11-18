@@ -1,6 +1,8 @@
 System.Windows/ContentElementTest.cs
+System.Windows/DataObjectTest.cs
 System.Windows/DragDropTest.cs
 System.Windows/UIElementTest.cs
+System.Windows/UIElement3DTest.cs
 System.Windows.Media.Animation/BooleanAnimationBaseTest.cs
 System.Windows.Media.Animation/BooleanAnimationUsingKeyFramesTest.cs
 System.Windows.Media.Animation/BooleanKeyFrameCollectionTest.cs
@@ -122,5 +124,12 @@ System.Windows.Media.Animation/VectorAnimationTest.cs
 System.Windows.Media.Animation/VectorAnimationUsingKeyFramesTest.cs
 System.Windows.Media.Animation/VectorKeyFrameCollectionTest.cs
 System.Windows.Media.Animation/VectorKeyFrameTest.cs
+System.Windows.Input/AccessKeyManager.cs
 System.Windows.Input/ApplicationCommands.cs
+System.Windows.Input/CommandManager.cs
+System.Windows.Input/FocusManager.cs
 System.Windows.Input/InputEventArgs.cs
+System.Windows.Input/Keyboard.cs
+System.Windows.Input/Mouse.cs
+System.Windows.Input/Stylus.cs
+System.Windows.Input/TextCompositingManager.cs
