@@ -37,6 +37,7 @@ namespace MonoTests.System.Windows {
 		[Test]
 		public void TestRoutedEvents ()
 		{
+			Assert.Fail ("UIElement3D class isn't implemented");
 #if notyet
 			Assert.AreSame (UIElement3D.PreviewMouseDownEvent, Mouse.PreviewMouseDownEvent);
 			Assert.AreSame (UIElement3D.MouseDownEvent, Mouse.MouseDownEvent);

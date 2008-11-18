@@ -36,6 +36,7 @@ namespace MonoTests.System.Windows.Input {
 		[Test]
 		public void RoutedEvents ()
 		{
+			Assert.Fail ("Stylus class isn't implemented");
 #if notyet
 			Assert.AreEqual (typeof (Stylus), Stylus.PreviewStylusDownEvent.OwnerType);
 			Assert.AreEqual ("PreviewStylusDown", Stylus.PreviewStylusDownEvent.Name);

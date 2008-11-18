@@ -36,6 +36,7 @@ namespace MonoTests.System.Windows {
 		[Test]
 		public void TestRoutedEvents ()
 		{
+			Assert.Fail ("DataObject class isn't implemented");
 #if notyet
 			Assert.AreEqual (typeof (DataObject), DataObject.CopyingEvent.OwnerType);
 			Assert.AreEqual ("Copying", DataObject.CopyingEvent.Name);
