@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class PointAnimation : PointAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (Point), typeof (PointKeyFrame));
+				= DependencyProperty.Register ("By", typeof (Point?), typeof (PointAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (Point), typeof (PointKeyFrame));
+				= DependencyProperty.Register ("From", typeof (Point?), typeof (PointAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (Point), typeof (PointKeyFrame));
+				= DependencyProperty.Register ("To", typeof (Point?), typeof (PointAnimation));
 
 	public PointAnimation ()
 	{

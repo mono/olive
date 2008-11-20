@@ -31,7 +31,6 @@ namespace System.Windows.Media.Animation {
 	{
 		protected Animatable ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		public void ApplyAnimationClock (DependencyProperty dp,

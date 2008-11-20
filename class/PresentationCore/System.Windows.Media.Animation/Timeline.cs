@@ -44,7 +44,6 @@ namespace System.Windows.Media.Animation {
 
 		protected Timeline ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		protected Timeline (Nullable<TimeSpan> beginTime)

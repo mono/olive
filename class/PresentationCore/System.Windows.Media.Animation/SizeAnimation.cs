@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class SizeAnimation : SizeAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (Size), typeof (SizeKeyFrame));
+				= DependencyProperty.Register ("By", typeof (Size?), typeof (SizeAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (Size), typeof (SizeKeyFrame));
+				= DependencyProperty.Register ("From", typeof (Size?), typeof (SizeAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (Size), typeof (SizeKeyFrame));
+				= DependencyProperty.Register ("To", typeof (Size?), typeof (SizeAnimation));
 
 	public SizeAnimation ()
 	{

@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class DecimalAnimation : DecimalAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (Decimal), typeof (DecimalKeyFrame));
+				= DependencyProperty.Register ("By", typeof (Decimal?), typeof (DecimalAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (Decimal), typeof (DecimalKeyFrame));
+				= DependencyProperty.Register ("From", typeof (Decimal?), typeof (DecimalAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (Decimal), typeof (DecimalKeyFrame));
+				= DependencyProperty.Register ("To", typeof (Decimal?), typeof (DecimalAnimation));
 
 	public DecimalAnimation ()
 	{

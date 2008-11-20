@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class VectorAnimation : VectorAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (Vector), typeof (VectorKeyFrame));
+				= DependencyProperty.Register ("By", typeof (Vector?), typeof (VectorAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (Vector), typeof (VectorKeyFrame));
+				= DependencyProperty.Register ("From", typeof (Vector?), typeof (VectorAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (Vector), typeof (VectorKeyFrame));
+				= DependencyProperty.Register ("To", typeof (Vector?), typeof (VectorAnimation));
 
 	public VectorAnimation ()
 	{

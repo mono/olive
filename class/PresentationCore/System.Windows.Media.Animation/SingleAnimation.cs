@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class SingleAnimation : SingleAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (float), typeof (SingleKeyFrame));
+				= DependencyProperty.Register ("By", typeof (float?), typeof (SingleAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (float), typeof (SingleKeyFrame));
+				= DependencyProperty.Register ("From", typeof (float?), typeof (SingleAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (float), typeof (SingleKeyFrame));
+				= DependencyProperty.Register ("To", typeof (float?), typeof (SingleAnimation));
 
 	public SingleAnimation ()
 	{

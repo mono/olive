@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class Int32Animation : Int32AnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (int), typeof (Int32KeyFrame));
+				= DependencyProperty.Register ("By", typeof (int?), typeof (Int32Animation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (int), typeof (Int32KeyFrame));
+				= DependencyProperty.Register ("From", typeof (int?), typeof (Int32Animation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (int), typeof (Int32KeyFrame));
+				= DependencyProperty.Register ("To", typeof (int?), typeof (Int32Animation));
 
 	public Int32Animation ()
 	{

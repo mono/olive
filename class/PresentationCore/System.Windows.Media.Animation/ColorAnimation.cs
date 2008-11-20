@@ -15,11 +15,11 @@ namespace System.Windows.Media.Animation {
 public class ColorAnimation : ColorAnimationBase
 {
 	public static readonly DependencyProperty ByProperty
-				= DependencyProperty.Register ("By", typeof (Color), typeof (ColorKeyFrame));
+				= DependencyProperty.Register ("By", typeof (Color?), typeof (ColorAnimation));
 	public static readonly DependencyProperty FromProperty
-				= DependencyProperty.Register ("From", typeof (Color), typeof (ColorKeyFrame));
+				= DependencyProperty.Register ("From", typeof (Color?), typeof (ColorAnimation));
 	public static readonly DependencyProperty ToProperty
-				= DependencyProperty.Register ("To", typeof (Color), typeof (ColorKeyFrame));
+				= DependencyProperty.Register ("To", typeof (Color?), typeof (ColorAnimation));
 
 	public ColorAnimation ()
 	{
