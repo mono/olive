@@ -32,30 +32,6 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows {
 
 	[TestFixture]
-	public class DataObjectTest {
-		[Test]
-		public void TestRoutedEvents ()
-		{
-			Assert.Fail ("DataObject class isn't implemented");
-#if notyet
-			Assert.AreEqual (typeof (DataObject), DataObject.CopyingEvent.OwnerType);
-			Assert.AreEqual ("Copying", DataObject.CopyingEvent.Name);
-			Assert.AreEqual ("DataObject.Copying", DataObject.CopyingEvent.ToString());
-			Assert.AreEqual (typeof (DataObjectCopyingEventHandler), DataObject.CopyingEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, DataObject.CopyingEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (DataObject), DataObject.PastingEvent.OwnerType);
-			Assert.AreEqual ("Pasting", DataObject.PastingEvent.Name);
-			Assert.AreEqual ("DataObject.Pasting", DataObject.PastingEvent.ToString());
-			Assert.AreEqual (typeof (DataObjectPastingEventHandler), DataObject.PastingEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, DataObject.PastingEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (DataObject), DataObject.SettingDataEvent.OwnerType);
-			Assert.AreEqual ("SettingData", DataObject.SettingDataEvent.Name);
-			Assert.AreEqual ("DataObject.SettingData", DataObject.SettingDataEvent.ToString());
-			Assert.AreEqual (typeof (DataObjectSettingDataEventHandler), DataObject.SettingDataEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, DataObject.SettingDataEvent.RoutingStrategy);
-#endif
-		}
+	public partial class DataObjectTest {
 	}
 }

@@ -1,3 +1,5 @@
+PresentationCore-DependencyProperties.g.cs
+PresentationCore-RoutedEvents.g.cs
 System.Windows/ContentElementTest.cs
 System.Windows/DataObjectTest.cs
 System.Windows/DragDropTest.cs

@@ -31,35 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Input {
 
 	[TestFixture]
-	public class CommandManagerTest {
-
-		[Test]
-		public void RoutedEvents ()
-		{
-			Assert.AreEqual (typeof (CommandManager), CommandManager.PreviewExecutedEvent.OwnerType);
-			Assert.AreEqual ("PreviewExecuted", CommandManager.PreviewExecutedEvent.Name);
-			Assert.AreEqual ("CommandManager.PreviewExecuted", CommandManager.PreviewExecutedEvent.ToString());
-			Assert.AreEqual (typeof (ExecutedRoutedEventHandler), CommandManager.PreviewExecutedEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, CommandManager.PreviewExecutedEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (CommandManager), CommandManager.ExecutedEvent.OwnerType);
-			Assert.AreEqual ("Executed", CommandManager.ExecutedEvent.Name);
-			Assert.AreEqual ("CommandManager.Executed", CommandManager.ExecutedEvent.ToString());
-			Assert.AreEqual (typeof (ExecutedRoutedEventHandler), CommandManager.ExecutedEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, CommandManager.ExecutedEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (CommandManager), CommandManager.PreviewCanExecuteEvent.OwnerType);
-			Assert.AreEqual ("PreviewCanExecute", CommandManager.PreviewCanExecuteEvent.Name);
-			Assert.AreEqual ("CommandManager.PreviewCanExecute", CommandManager.PreviewCanExecuteEvent.ToString());
-			Assert.AreEqual (typeof (CanExecuteRoutedEventHandler), CommandManager.PreviewCanExecuteEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, CommandManager.PreviewCanExecuteEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (CommandManager), CommandManager.CanExecuteEvent.OwnerType);
-			Assert.AreEqual ("CanExecute", CommandManager.CanExecuteEvent.Name);
-			Assert.AreEqual ("CommandManager.CanExecute", CommandManager.CanExecuteEvent.ToString());
-			Assert.AreEqual (typeof (CanExecuteRoutedEventHandler), CommandManager.CanExecuteEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, CommandManager.CanExecuteEvent.RoutingStrategy);
-		}
+	public partial class CommandManagerTest {
 	}
 
 }

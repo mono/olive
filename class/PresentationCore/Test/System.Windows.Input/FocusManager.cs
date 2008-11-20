@@ -31,23 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Input {
 
 	[TestFixture]
-	public class FocusManagerTest {
-
-		[Test]
-		public void RoutedEvents ()
-		{
-			Assert.AreEqual (typeof (FocusManager), FocusManager.GotFocusEvent.OwnerType);
-			Assert.AreEqual ("GotFocus", FocusManager.GotFocusEvent.Name);
-			Assert.AreEqual ("FocusManager.GotFocus", FocusManager.GotFocusEvent.ToString());
-			Assert.AreEqual (typeof (RoutedEventHandler), FocusManager.GotFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, FocusManager.GotFocusEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (FocusManager), FocusManager.LostFocusEvent.OwnerType);
-			Assert.AreEqual ("LostFocus", FocusManager.LostFocusEvent.Name);
-			Assert.AreEqual ("FocusManager.LostFocus", FocusManager.LostFocusEvent.ToString());
-			Assert.AreEqual (typeof (RoutedEventHandler), FocusManager.LostFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, FocusManager.LostFocusEvent.RoutingStrategy);
-		}
+	public partial class FocusManagerTest {
 	}
 
 }

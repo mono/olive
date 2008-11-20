@@ -31,59 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Input {
 
 	[TestFixture]
-	public class KeyboardTest {
-
-		[Test]
-		public void RoutedEvents ()
-		{
-			Assert.AreEqual (typeof (Keyboard), Keyboard.PreviewKeyDownEvent.OwnerType);
-			Assert.AreEqual ("PreviewKeyDown", Keyboard.PreviewKeyDownEvent.Name);
-			Assert.AreEqual ("Keyboard.PreviewKeyDown", Keyboard.PreviewKeyDownEvent.ToString());
-			Assert.AreEqual (typeof (KeyEventHandler), Keyboard.PreviewKeyDownEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, Keyboard.PreviewKeyDownEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.KeyDownEvent.OwnerType);
-			Assert.AreEqual ("KeyDown", Keyboard.KeyDownEvent.Name);
-			Assert.AreEqual ("Keyboard.KeyDown", Keyboard.KeyDownEvent.ToString());
-			Assert.AreEqual (typeof (KeyEventHandler), Keyboard.KeyDownEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, Keyboard.KeyDownEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.PreviewKeyUpEvent.OwnerType);
-			Assert.AreEqual ("PreviewKeyUp", Keyboard.PreviewKeyUpEvent.Name);
-			Assert.AreEqual ("Keyboard.PreviewKeyUp", Keyboard.PreviewKeyUpEvent.ToString());
-			Assert.AreEqual (typeof (KeyEventHandler), Keyboard.PreviewKeyUpEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, Keyboard.PreviewKeyUpEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.KeyUpEvent.OwnerType);
-			Assert.AreEqual ("KeyUp", Keyboard.KeyUpEvent.Name);
-			Assert.AreEqual ("Keyboard.KeyUp", Keyboard.KeyUpEvent.ToString());
-			Assert.AreEqual (typeof (KeyEventHandler), Keyboard.KeyUpEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, Keyboard.KeyUpEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.PreviewGotKeyboardFocusEvent.OwnerType);
-			Assert.AreEqual ("PreviewGotKeyboardFocus", Keyboard.PreviewGotKeyboardFocusEvent.Name);
-			Assert.AreEqual ("Keyboard.PreviewGotKeyboardFocus", Keyboard.PreviewGotKeyboardFocusEvent.ToString());
-			Assert.AreEqual (typeof (KeyboardFocusChangedEventHandler), Keyboard.PreviewGotKeyboardFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, Keyboard.PreviewGotKeyboardFocusEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.GotKeyboardFocusEvent.OwnerType);
-			Assert.AreEqual ("GotKeyboardFocus", Keyboard.GotKeyboardFocusEvent.Name);
-			Assert.AreEqual ("Keyboard.GotKeyboardFocus", Keyboard.GotKeyboardFocusEvent.ToString());
-			Assert.AreEqual (typeof (KeyboardFocusChangedEventHandler), Keyboard.GotKeyboardFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, Keyboard.GotKeyboardFocusEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.PreviewLostKeyboardFocusEvent.OwnerType);
-			Assert.AreEqual ("PreviewLostKeyboardFocus", Keyboard.PreviewLostKeyboardFocusEvent.Name);
-			Assert.AreEqual ("Keyboard.PreviewLostKeyboardFocus", Keyboard.PreviewLostKeyboardFocusEvent.ToString());
-			Assert.AreEqual (typeof (KeyboardFocusChangedEventHandler), Keyboard.PreviewLostKeyboardFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Tunnel, Keyboard.PreviewLostKeyboardFocusEvent.RoutingStrategy);
-
-			Assert.AreEqual (typeof (Keyboard), Keyboard.LostKeyboardFocusEvent.OwnerType);
-			Assert.AreEqual ("LostKeyboardFocus", Keyboard.LostKeyboardFocusEvent.Name);
-			Assert.AreEqual ("Keyboard.LostKeyboardFocus", Keyboard.LostKeyboardFocusEvent.ToString());
-			Assert.AreEqual (typeof (KeyboardFocusChangedEventHandler), Keyboard.LostKeyboardFocusEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, Keyboard.LostKeyboardFocusEvent.RoutingStrategy);
-		}
+	public partial class KeyboardTest {
 	}
 
 }

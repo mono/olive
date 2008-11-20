@@ -31,17 +31,7 @@ using NUnit.Framework;
 namespace MonoTests.System.Windows.Input {
 
 	[TestFixture]
-	public class AccessKeyManagerTest {
-
-		[Test]
-		public void RoutedEvents ()
-		{
-			Assert.AreEqual (typeof (AccessKeyManager), AccessKeyManager.AccessKeyPressedEvent.OwnerType);
-			Assert.AreEqual ("AccessKeyPressed", AccessKeyManager.AccessKeyPressedEvent.Name);
-			Assert.AreEqual ("AccessKeyManager.AccessKeyPressed", AccessKeyManager.AccessKeyPressedEvent.ToString());
-			Assert.AreEqual (typeof (AccessKeyPressedEventHandler), AccessKeyManager.AccessKeyPressedEvent.HandlerType);
-			Assert.AreEqual (RoutingStrategy.Bubble, AccessKeyManager.AccessKeyPressedEvent.RoutingStrategy);
-		}
+	public partial class AccessKeyManagerTest {
 	}
 
 }
