@@ -33,32 +33,50 @@ namespace System.Windows {
 
 	public class UIElement : Visual, IInputElement, IAnimatable {
 
-		public static readonly DependencyProperty AllowDropProperty;
-		public static readonly DependencyProperty BitmapEffectInputProperty;
-		public static readonly DependencyProperty BitmapEffectProperty;
-		public static readonly DependencyProperty ClipProperty;
-		public static readonly DependencyProperty ClipToBoundsProperty;
-		public static readonly DependencyProperty FocusableProperty;
-		public static readonly DependencyProperty IsEnabledProperty;
-		public static readonly DependencyProperty IsFocusedProperty;
-		public static readonly DependencyProperty IsHitTestVisibleProperty;
-		public static readonly DependencyProperty IsKeyboardFocusedProperty;
-		public static readonly DependencyProperty IsKeyboardFocusWithinProperty;
-		public static readonly DependencyProperty IsMouseCapturedProperty;
-		public static readonly DependencyProperty IsMouseCaptureWithinProperty;
-		public static readonly DependencyProperty IsMouseDirectlyOverProperty;
-		public static readonly DependencyProperty IsMouseOverProperty;
-		public static readonly DependencyProperty IsStylusCapturedProperty;
-		public static readonly DependencyProperty IsStylusCaptureWithinProperty;
-		public static readonly DependencyProperty IsStylusDirectlyOverProperty;
-		public static readonly DependencyProperty IsStylusOverProperty;
-		public static readonly DependencyProperty IsVisibleProperty;
-		public static readonly DependencyProperty OpacityMaskProperty;
-		public static readonly DependencyProperty OpacityProperty;
-		public static readonly DependencyProperty RenderTransformOriginProperty;
-		public static readonly DependencyProperty RenderTransformProperty;
-		public static readonly DependencyProperty SnapsToDevicePixelsProperty;
-		public static readonly DependencyProperty VisibilityProperty;
+		public static readonly DependencyProperty AllowDropProperty = DependencyProperty.Register ("AllowDrop", typeof (bool), typeof (UIElement));
+		public static readonly DependencyProperty BitmapEffectInputProperty; //XXX = DependencyProperty.Register ("BitmapEffectInput", typeof (BitmapEffectInput), typeof (UIElement));
+		public static readonly DependencyProperty BitmapEffectProperty; //XXX = DependencyProperty.Register ("BitmapEffect", typeof (BitmapEffect), typeof (UIElement));
+		public static readonly DependencyProperty ClipProperty; //XXX = DependencyProperty.Register ("Clip", typeof (Geometry), typeof (UIElement));
+		public static readonly DependencyProperty ClipToBoundsProperty = DependencyProperty.Register ("ClipToBounds", typeof (bool), typeof (UIElement));
+		public static readonly DependencyProperty FocusableProperty = DependencyProperty.Register ("Focusable", typeof (bool), typeof (UIElement));
+		public static readonly DependencyProperty IsEnabledProperty = DependencyProperty.Register ("IsEnabled", typeof (bool), typeof (UIElement));
+		internal static readonly DependencyPropertyKey IsFocusedPropertyKey = DependencyProperty.RegisterReadOnly ("IsFocused", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsFocusedProperty = IsFocusedPropertyKey.DependencyProperty;
+		public static readonly DependencyProperty IsHitTestVisibleProperty = DependencyProperty.Register ("IsHitTestVisible", typeof (bool), typeof (UIElement));
+		internal static readonly DependencyPropertyKey IsKeyboardFocusedPropertyKey = DependencyProperty.RegisterReadOnly ("IsKeyboardFocused", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsKeyboardFocusedProperty = IsKeyboardFocusedPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsKeyboardFocusWithinPropertyKey = DependencyProperty.RegisterReadOnly ("IsKeyboardFocusWithin", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsKeyboardFocusWithinProperty = IsKeyboardFocusWithinPropertyKey.DependencyProperty;
+		internal static readonly DependencyPropertyKey IsMouseCapturedPropertyKey = DependencyProperty.RegisterReadOnly ("IsMouseCaptured", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsMouseCapturedProperty = IsMouseCapturedPropertyKey.DependencyProperty;
+		internal static readonly DependencyPropertyKey IsMouseCaptureWithinPropertyKey = DependencyProperty.RegisterReadOnly ("IsMouseCaptureWithin", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsMouseCaptureWithinProperty = IsMouseCaptureWithinPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsMouseDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly ("IsMouseDirectlyOver", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsMouseDirectlyOverProperty = IsMouseDirectlyOverPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsMouseOverPropertyKey = DependencyProperty.RegisterReadOnly ("IsMouseOver", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsMouseOverProperty = IsMouseOverPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsStylusCapturedPropertyKey = DependencyProperty.RegisterReadOnly ("IsStylusCaptured", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsStylusCapturedProperty = IsStylusCapturedPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsStylusCaptureWithinPropertyKey = DependencyProperty.RegisterReadOnly ("IsStylusCaptureWithin", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsStylusCaptureWithinProperty = IsStylusCaptureWithinPropertyKey.DependencyProperty;
+
+		internal static readonly DependencyPropertyKey IsStylusDirectlyOverPropertyKey = DependencyProperty.RegisterReadOnly ("IsStylusDirectlyOver", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsStylusDirectlyOverProperty = IsStylusDirectlyOverPropertyKey.DependencyProperty;
+		internal static readonly DependencyPropertyKey IsStylusOverPropertyKey = DependencyProperty.RegisterReadOnly ("IsStylusOver", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsStylusOverProperty = IsStylusOverPropertyKey.DependencyProperty;
+		internal static readonly DependencyPropertyKey IsVisiblePropertyKey = DependencyProperty.RegisterReadOnly ("IsVisible", typeof (bool), typeof (UIElement), new PropertyMetadata());
+		public static readonly DependencyProperty IsVisibleProperty = IsVisiblePropertyKey.DependencyProperty;
+		public static readonly DependencyProperty OpacityMaskProperty = DependencyProperty.Register ("OpacityMask", typeof (Brush), typeof (UIElement));
+		public static readonly DependencyProperty OpacityProperty = DependencyProperty.Register ("Opacity", typeof (double), typeof (UIElement));
+		public static readonly DependencyProperty RenderTransformOriginProperty = DependencyProperty.Register ("RenderTransformOrigin", typeof (Point), typeof (UIElement));
+		public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register ("RenderTransform", typeof (Transform), typeof (UIElement));
+		public static readonly DependencyProperty SnapsToDevicePixelsProperty = DependencyProperty.Register ("SnapsToDevicePixels", typeof (bool), typeof (UIElement));
+		public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register ("Visibility", typeof (Visibility), typeof (UIElement));
 
 		public static readonly RoutedEvent DragEnterEvent = DragDrop.DragEnterEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent DragLeaveEvent = DragDrop.DragLeaveEvent.AddOwner (typeof (UIElement));
@@ -79,22 +97,22 @@ namespace System.Windows {
 		public static readonly RoutedEvent MouseEnterEvent = Mouse.MouseEnterEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent MouseLeaveEvent = Mouse.MouseLeaveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent MouseLeftButtonDownEvent = new RoutedEvent ("MouseLeftButtonDown",
-											       typeof (MouseButtonEventHandler),
-											       typeof (UIElement),
-											       RoutingStrategy.Direct);
+ 											       typeof (MouseButtonEventHandler),
+ 											       typeof (UIElement),
+ 											       RoutingStrategy.Direct);
 		public static readonly RoutedEvent MouseLeftButtonUpEvent = new RoutedEvent ("MouseLeftButtonUp",
-											       typeof (MouseButtonEventHandler),
-											       typeof (UIElement),
-											       RoutingStrategy.Direct);
+											     typeof (MouseButtonEventHandler),
+											     typeof (UIElement),
+											     RoutingStrategy.Direct);
 		public static readonly RoutedEvent MouseMoveEvent = Mouse.MouseMoveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent MouseRightButtonDownEvent = new RoutedEvent ("MouseRightButtonDown",
-											       typeof (MouseButtonEventHandler),
-											       typeof (UIElement),
-											       RoutingStrategy.Direct);
+												typeof (MouseButtonEventHandler),
+												typeof (UIElement),
+												RoutingStrategy.Direct);
 		public static readonly RoutedEvent MouseRightButtonUpEvent = new RoutedEvent ("MouseRightButtonUp",
-											       typeof (MouseButtonEventHandler),
-											       typeof (UIElement),
-											       RoutingStrategy.Direct);
+											      typeof (MouseButtonEventHandler),
+											      typeof (UIElement),
+											      RoutingStrategy.Direct);
 		public static readonly RoutedEvent MouseUpEvent = Mouse.MouseUpEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent MouseWheelEvent = Mouse.MouseWheelEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewDragEnterEvent =  DragDrop.PreviewDragEnterEvent.AddOwner (typeof (UIElement));
@@ -130,7 +148,7 @@ namespace System.Windows {
 		public static readonly RoutedEvent PreviewStylusButtonDownEvent = Stylus.PreviewStylusButtonDownEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewStylusButtonUpEvent = Stylus.PreviewStylusButtonUpEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewStylusDownEvent = Stylus.PreviewStylusDownEvent.AddOwner (typeof (UIElement));
-		public static readonly RoutedEvent PreviewStylusInAirMoveEvent = Stylus.PreviewStylusInAirEvent.AddOwner (typeof (UIElement));
+		public static readonly RoutedEvent PreviewStylusInAirMoveEvent = Stylus.PreviewStylusInAirMoveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewStylusInRangeEvent = Stylus.PreviewStylusInRangeEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewStylusMoveEvent = Stylus.PreviewStylusMoveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent PreviewStylusOutOfRangeEvent = Stylus.PreviewStylusOutOfRangeEvent.AddOwner (typeof (UIElement));
@@ -143,7 +161,7 @@ namespace System.Windows {
 		public static readonly RoutedEvent StylusButtonUpEvent = Stylus.StylusButtonUpEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent StylusDownEvent = Stylus.StylusDownEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent StylusEnterEvent = Stylus.StylusEnterEvent.AddOwner (typeof (UIElement));
-		public static readonly RoutedEvent StylusInAirMoveEvent = Stylus.StylusInAirEvent.AddOwner (typeof (UIElement));
+		public static readonly RoutedEvent StylusInAirMoveEvent = Stylus.StylusInAirMoveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent StylusInRangeEvent = Stylus.StylusInRangeEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent StylusLeaveEvent = Stylus.StylusLeaveEvent.AddOwner (typeof (UIElement));
 		public static readonly RoutedEvent StylusMoveEvent = Stylus.StylusMoveEvent.AddOwner (typeof (UIElement));

@@ -59,7 +59,7 @@ namespace System.Windows.Input {
 												   typeof (Stylus),
 												   RoutingStrategy.Tunnel);
 		public static readonly RoutedEvent PreviewStylusSystemGestureEvent = new RoutedEvent ("PreviewStylusSystemGesture",
-												      typeof (StylusEventHandler),
+												      typeof (StylusSystemGestureEventHandler),
 												      typeof (Stylus),
 												      RoutingStrategy.Tunnel);
 		public static readonly RoutedEvent PreviewStylusButtonDownEvent = new RoutedEvent ("PreviewStylusButtonDown",
@@ -103,7 +103,7 @@ namespace System.Windows.Input {
 											    typeof (Stylus),
 											    RoutingStrategy.Bubble);
 		public static readonly RoutedEvent StylusSystemGestureEvent = new RoutedEvent ("StylusSystemGesture",
-											       typeof (StylusEventHandler),
+											       typeof (StylusSystemGestureEventHandler),
 											       typeof (Stylus),
 											       RoutingStrategy.Bubble);
 		public static readonly RoutedEvent StylusButtonDownEvent = new RoutedEvent ("StylusButtonDown",
@@ -728,44 +728,49 @@ namespace System.Windows.Input {
 			throw new NotImplementedException ();
 		}
 
+		public static readonly DependencyProperty IsFlicksEnabledProperty = DependencyProperty.RegisterAttached ("IsFlicksEnabled", typeof (bool), typeof (Stylus));
+		public static readonly DependencyProperty IsPressAndHoldEnabledProperty = DependencyProperty.RegisterAttached ("IsPressAndHoldEnabled", typeof (bool), typeof (Stylus));
+		public static readonly DependencyProperty IsTapFeedbackEnabledProperty = DependencyProperty.RegisterAttached ("IsTapFeedbackEnabled", typeof (bool), typeof (Stylus));
+		public static readonly DependencyProperty IsTouchFeedbackEnabledProperty = DependencyProperty.RegisterAttached ("IsTouchFeedbackEnabled", typeof (bool), typeof (Stylus));
+		
 		public static bool GetIsFlicksEnabled (DependencyObject element)
 		{
-			throw new NotImplementedException ();
+			return (bool)element.GetValue (Stylus.IsFlicksEnabledProperty);
 		}
 
 		public static bool GetIsPressAndHoldEnabled (DependencyObject element)
 		{
-			throw new NotImplementedException ();
+			return (bool)element.GetValue (Stylus.IsPressAndHoldEnabledProperty);
 		}
 
 		public static bool GetIsTapFeedbackEnabled (DependencyObject element)
 		{
-			throw new NotImplementedException ();
+			return (bool)element.GetValue (Stylus.IsTapFeedbackEnabledProperty);
 		}
 
 		public static bool GetIsTouchFeedbackEnabled (DependencyObject element)
 		{
-			throw new NotImplementedException ();
+			return (bool)element.GetValue (Stylus.IsTouchFeedbackEnabledProperty);
 		}
 
 		public static void SetIsFlicksEnabled (DependencyObject element, bool enabled)
 		{
-			throw new NotImplementedException ();
+			element.SetValue (Stylus.IsFlicksEnabledProperty, enabled);
 		}
 
 		public static void SetIsPressAndHoldEnabled (DependencyObject element, bool enabled)
 		{
-			throw new NotImplementedException ();
+			element.SetValue (Stylus.IsPressAndHoldEnabledProperty, enabled);
 		}
 
 		public static void SetIsTapFeedbackEnabled (DependencyObject element, bool enabled)
 		{
-			throw new NotImplementedException ();
+			element.SetValue (Stylus.IsTapFeedbackEnabledProperty, enabled);
 		}
 
 		public static void SetIsTouchFeedbackEnabled (DependencyObject element, bool enabled)
 		{
-			throw new NotImplementedException ();
+			element.SetValue (Stylus.IsTouchFeedbackEnabledProperty, enabled);
 		}
 
 		public static void Synchronize ()

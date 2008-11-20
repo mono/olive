@@ -30,8 +30,8 @@ namespace System.Windows.Input {
 
 	public static class FocusManager {
 
-		public static readonly DependencyProperty FocusedElementProperty;
-		public static readonly DependencyProperty IsFocusScopeProperty;
+		public static readonly DependencyProperty FocusedElementProperty = DependencyProperty.Register ("FocusedElement", typeof (IInputElement), typeof (FocusManager));
+		public static readonly DependencyProperty IsFocusScopeProperty = DependencyProperty.Register ("IsFocusScope", typeof (bool), typeof (FocusManager));
 
 		public static readonly RoutedEvent GotFocusEvent = new RoutedEvent ("GotFocus",
 										    typeof (RoutedEventHandler),

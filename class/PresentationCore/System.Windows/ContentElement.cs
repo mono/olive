@@ -34,17 +34,17 @@ namespace System.Windows {
 		public static readonly DependencyProperty AllowDropProperty = UIElement.AllowDropProperty.AddOwner (typeof (ContentElement));
 		public static readonly DependencyProperty FocusableProperty = UIElement.FocusableProperty.AddOwner (typeof (ContentElement));
 		public static readonly DependencyProperty IsEnabledProperty = UIElement.IsEnabledProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsFocusedProperty = UIElement.IsFocusedProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsKeyboardFocusedProperty = UIElement.IsKeyboardFocusedProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsKeyboardFocusWithinProperty = UIElement.IsKeyboardFocusWithinProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsMouseCapturedProperty = UIElement.IsMouseCapturedProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsMouseCaptureWithinProperty = UIElement.IsMouseCaptureWithinProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsMouseDirectlyOverProperty = UIElement.IsMouseDirectlyOverProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsMouseOverProperty = UIElement.IsMouseOverProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsStylusCapturedProperty = UIElement.IsStylusCapturedProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsStylusCaptureWithinProperty = UIElement.IsStylusCaptureWithinProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsStylusDirectlyOverProperty = UIElement.IsStylusDirectlyOverProperty.AddOwner (typeof (ContentElement));
-		public static readonly DependencyProperty IsStylusOverProperty = UIElement.IsStylusOverProperty.AddOwner (typeof (ContentElement));
+		public static readonly DependencyProperty IsFocusedProperty = UIElement.IsFocusedProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsKeyboardFocusedProperty = UIElement.IsKeyboardFocusedProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsKeyboardFocusWithinProperty = UIElement.IsKeyboardFocusWithinProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsMouseCapturedProperty = UIElement.IsMouseCapturedProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsMouseCaptureWithinProperty = UIElement.IsMouseCaptureWithinProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsMouseDirectlyOverProperty = UIElement.IsMouseDirectlyOverProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsMouseOverProperty = UIElement.IsMouseOverProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsStylusCapturedProperty = UIElement.IsStylusCapturedProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsStylusCaptureWithinProperty = UIElement.IsStylusCaptureWithinProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsStylusDirectlyOverProperty = UIElement.IsStylusDirectlyOverProperty; // XXX AddOwner/OverrideMetadata?
+		public static readonly DependencyProperty IsStylusOverProperty = UIElement.IsStylusOverProperty; // XXX AddOwner/OverrideMetadata?
 
 		public static readonly RoutedEvent DragEnterEvent = DragDrop.DragEnterEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent DragLeaveEvent = DragDrop.DragLeaveEvent.AddOwner (typeof (ContentElement));
@@ -54,13 +54,13 @@ namespace System.Windows {
 		public static readonly RoutedEvent GotFocusEvent = FocusManager.GotFocusEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent GotKeyboardFocusEvent = Keyboard.GotKeyboardFocusEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent GotMouseCaptureEvent = Mouse.GotMouseCaptureEvent.AddOwner (typeof (ContentElement));
-		public static readonly RoutedEvent GotStylusCaptureEvent; // XXX
+		public static readonly RoutedEvent GotStylusCaptureEvent = Stylus.GotStylusCaptureEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent KeyDownEvent = Keyboard.KeyDownEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent KeyUpEvent = Keyboard.KeyUpEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent LostFocusEvent = FocusManager.LostFocusEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent LostKeyboardFocusEvent = Keyboard.LostKeyboardFocusEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent LostMouseCaptureEvent = Mouse.LostMouseCaptureEvent.AddOwner (typeof (ContentElement));
-		public static readonly RoutedEvent LostStylusCaptureEvent; // XXX
+		public static readonly RoutedEvent LostStylusCaptureEvent = Stylus.LostStylusCaptureEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent MouseDownEvent = Mouse.MouseDownEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent MouseEnterEvent = Mouse.MouseEnterEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent MouseLeaveEvent = Mouse.MouseLeaveEvent.AddOwner (typeof (ContentElement));
@@ -89,29 +89,29 @@ namespace System.Windows {
 		public static readonly RoutedEvent PreviewMouseUpEvent = Mouse.PreviewMouseUpEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent PreviewMouseWheelEvent = Mouse.PreviewMouseWheelEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent PreviewQueryContinueDragEvent = DragDrop.PreviewQueryContinueDragEvent.AddOwner (typeof (ContentElement));
-		public static readonly RoutedEvent PreviewStylusButtonDownEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusButtonUpEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusDownEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusInAirMoveEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusInRangeEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusMoveEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusOutOfRangeEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusSystemGestureEvent; // XXX
-		public static readonly RoutedEvent PreviewStylusUpEvent; // XXX
+		public static readonly RoutedEvent PreviewStylusButtonDownEvent = Stylus.PreviewStylusButtonDownEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusButtonUpEvent = Stylus.PreviewStylusButtonUpEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusDownEvent = Stylus.PreviewStylusDownEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusInAirMoveEvent = Stylus.PreviewStylusInAirMoveEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusInRangeEvent = Stylus.PreviewStylusInRangeEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusMoveEvent = Stylus.PreviewStylusMoveEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusOutOfRangeEvent = Stylus.PreviewStylusOutOfRangeEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusSystemGestureEvent = Stylus.PreviewStylusSystemGestureEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent PreviewStylusUpEvent = Stylus.PreviewStylusUpEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent PreviewTextInputEvent = TextCompositionManager.PreviewTextInputEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent QueryContinueDragEvent = DragDrop.QueryContinueDragEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent QueryCursorEvent = Mouse.QueryCursorEvent.AddOwner (typeof (ContentElement));
-		public static readonly RoutedEvent StylusButtonDownEvent; // XXX
-		public static readonly RoutedEvent StylusButtonUpEvent; // XXX
-		public static readonly RoutedEvent StylusDownEvent; // XXX
-		public static readonly RoutedEvent StylusEnterEvent; // XXX
-		public static readonly RoutedEvent StylusInAirMoveEvent; // XXX
-		public static readonly RoutedEvent StylusInRangeEvent; // XXX
-		public static readonly RoutedEvent StylusLeaveEvent; // XXX
-		public static readonly RoutedEvent StylusMoveEvent; // XXX
-		public static readonly RoutedEvent StylusOutOfRangeEvent; // XXX
-		public static readonly RoutedEvent StylusSystemGestureEvent; // XXX
-		public static readonly RoutedEvent StylusUpEvent; // XXX
+		public static readonly RoutedEvent StylusButtonDownEvent = Stylus.StylusButtonDownEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusButtonUpEvent = Stylus.StylusButtonUpEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusDownEvent = Stylus.StylusDownEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusEnterEvent = Stylus.StylusEnterEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusInAirMoveEvent = Stylus.StylusInAirMoveEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusInRangeEvent = Stylus.StylusInRangeEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusLeaveEvent = Stylus.StylusLeaveEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusMoveEvent = Stylus.StylusMoveEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusOutOfRangeEvent = Stylus.StylusOutOfRangeEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusSystemGestureEvent = Stylus.StylusSystemGestureEvent.AddOwner (typeof (ContentElement));
+		public static readonly RoutedEvent StylusUpEvent = Stylus.StylusUpEvent.AddOwner (typeof (ContentElement));
 		public static readonly RoutedEvent TextInputEvent = TextCompositionManager.TextInputEvent.AddOwner (typeof (ContentElement));
 
 		public event DragEventHandler DragEnter {

@@ -42,7 +42,7 @@ namespace System.Windows.Input {
 		public static RoutedUICommand CancelPrint {
 			get {
 				if (cancelPrint == null)
-					cancelPrint = new RoutedUICommand ("Cancel Print", "CancelPrint", typeof (ApplicationCommands));
+					cancelPrint = new RoutedUICommand ("Cancel Print", "CancelPrint", typeof (ApplicationCommands), new InputGestureCollection());
 				return cancelPrint;
 			}
 		}
@@ -50,7 +50,7 @@ namespace System.Windows.Input {
 		public static RoutedUICommand Close {
 			get {
 				if (close == null)
-					close = new RoutedUICommand ("Close", "Close", typeof (ApplicationCommands));
+					close = new RoutedUICommand ("Close", "Close", typeof (ApplicationCommands), new InputGestureCollection());
 				return close;
 			}
 		}
@@ -87,7 +87,7 @@ namespace System.Windows.Input {
 			get {
 				if (correctionList == null)
 					correctionList = new RoutedUICommand ("Correction List", "CorrectionList",
-									      typeof (ApplicationCommands));
+									      typeof (ApplicationCommands), new InputGestureCollection());
 				return correctionList;
 			}
 		}
