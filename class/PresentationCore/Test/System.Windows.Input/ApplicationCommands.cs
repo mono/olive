@@ -45,7 +45,7 @@ namespace MonoTests.System.Windows.Input {
 			else {
 				Assert.AreEqual (gestures.Length, cmd.InputGestures.Count);
 				for (int i = 0; i < gestures.Length; i ++) {
-					Assert.AreEqual (gestures[i], cmd.InputGestures[i]);
+					Assert.AreEqual (gestures[i].GetType(), cmd.InputGestures[i].GetType());
 				}
 			}
 		}
