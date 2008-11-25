@@ -24,35 +24,29 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
+	
+	public class LineGeometry : Geometry {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+		public LineGeometry ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
+		public LineGeometry (Point startPoint, Point endPoint, Transform transform)
 		{
-			this.Color = color;
+			StartPoint = startPoint;
+			EndPoint = endPoint;
+			Transform = transform;
 		}
 
-		public SolidColorBrush Clone ()
+		public LineGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public LineGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,10 +56,35 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
+		public override bool MayHaveCurves ()
 		{
 			throw new NotImplementedException ();
 		}
-	}
 
+		public override bool IsEmpty ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public override double GetArea (double flatteningTolerance, ToleranceType tolerance)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly DependencyProperty StartPointProperty;
+		public Point StartPoint {
+		    get { return (Point)GetValue (StartPointProperty); }
+		    set { SetValue (StartPointProperty, value); }
+		}
+
+		public static readonly DependencyProperty EndPointProperty;
+		public Point EndPoint {
+		    get { return (Point)GetValue (EndPointProperty); }
+		    set { SetValue (EndPointProperty, value); }
+		}
+
+		public virtual Rect Bounds {
+			get { throw new NotImplementedException (); }
+		}
+	}
 }

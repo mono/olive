@@ -23,49 +23,60 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System;
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
+using System.Windows.Media.Effects;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
+	public class ContainerVisual : Visual {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+		public ContainerVisual ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		protected virtual Visual GetVisualChild (int childIndex)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
+#if notyet
+		public Geometry Clip { get; set; }
+#endif
 
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
-		}
+		[Obsolete]
+		public BitmapEffect BitmapEffect { get; set; }
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
-		}
+#if notyet
+		[Obsolete]
+		public BitmapEffectInput BitmapEffectInput { get; set; }
+#endif
+
+		public DependencyObject Parent { get; private set; }
+
+		public double Opacity { get; set; }
+
+		public Brush OpacityMask { get; set; }
+
+		public virtual int VisualChildrenCount { get; private set; }
+
+		public Rect DescendentBounds { get; private set; }
+
+		public Transform Transform { get; set; }
+
+#if notyet
+		public DoubleCollection YSnappingGuidelines { get; set; }
+		public DoubleCollection XSnappingGuidelines { get; set; }
+#endif
+
+		public Rect ContentBounds { get; private set; }
+
+#if notyet
+		public VisualCollection Children { get; private set; }
+#endif
+
+		public Vector Offset { get; set; }
 	}
 
 }

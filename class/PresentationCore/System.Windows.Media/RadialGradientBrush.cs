@@ -24,35 +24,30 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+	public class RadialGradientBrush : GradientBrush {
+		public RadialGradientBrush (GradientStopCollection stops)
+			: base (stops)
 		{
 		}
 
-		public SolidColorBrush (Color color)
+		public RadialGradientBrush (Color color1, Color color2)
 		{
-			this.Color = color;
 		}
 
-		public SolidColorBrush Clone ()
+		public RadialGradientBrush ()
+		{
+		}
+
+		public RadialGradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public RadialGradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +57,28 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty CenterProperty;
+		public Point Center {
+		    get { return (Point)GetValue (CenterProperty); }
+		    set { SetValue (CenterProperty, value); }
+		}
+
+		public static readonly DependencyProperty RadiusXProperty;
+		public double RadiusX {
+		    get { return (double)GetValue (RadiusXProperty); }
+		    set { SetValue (RadiusXProperty, value); }
+		}
+
+		public static readonly DependencyProperty RadiusYProperty;
+		public double RadiusY {
+		    get { return (double)GetValue (RadiusYProperty); }
+		    set { SetValue (RadiusYProperty, value); }
+		}
+
+		public static readonly DependencyProperty GradientOriginProperty;
+		public Point GradientOrigin {
+		    get { return (Point)GetValue (GradientOriginProperty); }
+		    set { SetValue (GradientOriginProperty, value); }
 		}
 	}
 

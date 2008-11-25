@@ -24,35 +24,52 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+	public class LinearGradientBrush : GradientBrush
+	{
+		public LinearGradientBrush ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
+		public LinearGradientBrush (Color color1, Color color2, Point startPoint, Point endPoint)
 		{
-			this.Color = color;
+			StartPoint = startPoint;
+			EndPoint = endPoint;
+
+			GradientStops.Add (new GradientStop (color1, 0.0));
+			GradientStops.Add (new GradientStop (color2, 1.0));
 		}
 
-		public SolidColorBrush Clone ()
+		public LinearGradientBrush (GradientStopCollection stops, Point startPoint, Point endPoint)
+			: base (stops)
+		{
+			StartPoint = startPoint;
+			EndPoint = endPoint;
+		}
+
+		public LinearGradientBrush (Color color1, Color color2, double d)
+		{
+		}
+
+		public LinearGradientBrush (GradientStopCollection stops, double d)
+			: base (stops)
+		{
+		}
+
+		public LinearGradientBrush (GradientStopCollection stops)
+			: base (stops)
+		{
+		}
+
+		public LinearGradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public LinearGradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +79,16 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty StartPointProperty;
+		public Point StartPoint {
+		    get { return (Point)GetValue (StartPointProperty); }
+		    set { SetValue (StartPointProperty, value); }
+		}
+
+		public static readonly DependencyProperty EndPointProperty;
+		public Point EndPoint {
+		    get { return (Point)GetValue (EndPointProperty); }
+		    set { SetValue (EndPointProperty, value); }
 		}
 	}
 

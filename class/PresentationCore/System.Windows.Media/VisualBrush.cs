@@ -24,35 +24,27 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+	public class VisualBrush : TileBrush
+	{
+		public VisualBrush (Visual visual)
+		{
+			Visual = visual;
 		}
 
-		public SolidColorBrush ()
+		public VisualBrush ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public VisualBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public VisualBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,10 +54,28 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
+		protected override void OnPropertyChanged (DependencyPropertyChangedEventArgs args)
+		{
+			base.OnPropertyChanged (args);
+		}
+
+		protected override void GetContentBounds (out Rect bounds)
 		{
 			throw new NotImplementedException ();
 		}
+
+		public static readonly DependencyProperty AutoLayoutContentProperty;
+		public bool AutoLayoutContent {
+		    get { return (bool)GetValue (AutoLayoutContentProperty); }
+		    set { SetValue (AutoLayoutContentProperty, value); }
+		}
+
+		public static readonly DependencyProperty VisualProperty;
+		public Visual Visual {
+		    get { return (Visual)GetValue (VisualProperty); }
+		    set { SetValue (VisualProperty, value); }
+		}
+		
 	}
 
 }

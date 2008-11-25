@@ -24,47 +24,53 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Markup;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+	[ContentProperty ("GradientStops")]
+	public abstract class GradientBrush : Brush {
+		protected GradientBrush (GradientStopCollection gradientStops)
+		{
+			GradientStops = gradientStops;
 		}
 
-		public SolidColorBrush ()
+		protected GradientBrush ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public GradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public GradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty GradientStopsProperty;
+		public GradientStopCollection GradientStops {
+		    get { return (GradientStopCollection)GetValue (GradientStopsProperty); }
+		    set { SetValue (GradientStopsProperty, value); }
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty ColorInterpolationModeProperty;
+		public ColorInterpolationMode ColorInterpolationMode {
+		    get { return (ColorInterpolationMode)GetValue (ColorInterpolationModeProperty); }
+		    set { SetValue (ColorInterpolationModeProperty, value); }
+		}
+
+		public static readonly DependencyProperty SpreadMethodProperty;
+		public GradientSpreadMethod SpreadMethod {
+		    get { return (GradientSpreadMethod)GetValue (SpreadMethodProperty); }
+		    set { SetValue (SpreadMethodProperty, value); }
+		}
+
+		public static readonly DependencyProperty MappingModeProperty;
+		public BrushMappingMode MappingMode {
+		    get { return (BrushMappingMode)GetValue (MappingModeProperty); }
+		    set { SetValue (MappingModeProperty, value); }
 		}
 	}
 

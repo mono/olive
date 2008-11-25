@@ -24,35 +24,26 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+	public class GradientStop : Animatable {
+		public GradientStop (Color color, double offset)
+		{
+			Color = color;
+			Offset = offset;
 		}
 
-		public SolidColorBrush ()
+		public GradientStop ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public GradientStop Clone ()
 		{
 			throw new NotImplementedException ();
 		}
-
-		public SolidColorBrush CloneCurrentValue ()
+		public GradientStop CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +53,16 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty OffsetProperty;
+		public double Offset {
+		    get { return (double)GetValue (OffsetProperty); }
+		    set { SetValue (OffsetProperty, value); }
+		}
+
+		public static readonly DependencyProperty ColorProperty;
+		public Color Color {
+		    get { return (Color)GetValue (ColorProperty); }
+		    set { SetValue (ColorProperty, value); }
 		}
 	}
 

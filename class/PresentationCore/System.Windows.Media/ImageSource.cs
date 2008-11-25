@@ -24,48 +24,34 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
+	public abstract class ImageSource : Animatable {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+		internal ImageSource ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public ImageSource Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public ImageSource CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override Freezable CreateInstanceCore ()
+		protected static double PixelsToDIPs (double d, int i)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
-		}
+		public abstract ImageMetadata Metadata { get; }
+		public abstract double Height { get; }
+		public abstract double Width { get; }
 	}
 
 }

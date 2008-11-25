@@ -24,35 +24,27 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
+	public class DrawingBrush : TileBrush {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+		public DrawingBrush (Drawing drawing)
+		{
+			Drawing = drawing;
 		}
 
-		public SolidColorBrush ()
+		public DrawingBrush ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public DrawingBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public DrawingBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +54,15 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
+		protected override void GetContentBounds (out Rect bounds)
 		{
 			throw new NotImplementedException ();
+		}
+
+		public static readonly DependencyProperty DrawingProperty;
+		public Drawing Drawing {
+		    get { return (Drawing)GetValue (DrawingProperty); }
+		    set { SetValue (DrawingProperty, value); }
 		}
 	}
 

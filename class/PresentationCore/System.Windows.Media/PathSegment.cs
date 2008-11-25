@@ -24,47 +24,36 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+	public abstract class PathSegment : Animatable {
+		internal PathSegment ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public PathSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public PathSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty IsStrokedProperty;
+		public bool IsStroked {
+			get { return (bool)GetValue (IsStrokedProperty); }
+			set { SetValue (IsStrokedProperty, value); }
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty IsSmoothJoinProperty;
+		
+		public bool IsSmoothJoin {
+		    get { return (bool)GetValue (IsSmoothJoinProperty); }
+		    set { SetValue (IsSmoothJoinProperty, value); }
 		}
 	}
 

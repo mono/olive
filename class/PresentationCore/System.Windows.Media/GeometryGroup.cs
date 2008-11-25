@@ -24,35 +24,24 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Markup;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
+	[ContentProperty ("Children")]
+	public class GeometryGroup : Geometry {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+		public GeometryGroup ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public GeometryGroup Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public GeometryGroup CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +51,26 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
+		public override bool MayHaveCurves ()
 		{
 			throw new NotImplementedException ();
+		}
+
+		public override bool IsEmpty ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly DependencyProperty ChildrenProperty;
+		public GeometryCollection Children {
+		    get { return (GeometryCollection)GetValue (ChildrenProperty); }
+		    set { SetValue (ChildrenProperty, value); }
+		}
+
+		public static readonly DependencyProperty FillRuleProperty;
+		public FillRule FillRule {
+		    get { return (FillRule)GetValue (FillRuleProperty); }
+		    set { SetValue (FillRuleProperty, value); }
 		}
 	}
 

@@ -23,49 +23,35 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System.Windows;
-using System.IO;
-
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
-		}
-
-		public SolidColorBrush ()
+	public class DrawingVisual : ContainerVisual {
+		public DrawingVisual ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+#if notyet
+		public GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public HitTestResult HitTestCore (PointHitTestParameters hitTestParameters)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
+
+		public DrawingContext RenderOpen ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
+#if notyet
+		public DrawingGroup Drawing {
+			get { throw new NotImplementedException (); }
 		}
-
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
-		}
+#endif
 	}
 
 }

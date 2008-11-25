@@ -24,35 +24,30 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+	public class ArcSegment : PathSegment {
+		public ArcSegment (Point point, Size size, double rotationAngle, bool isLargeArc, SweepDirection sweepDirection, bool isStroked)
+		{
+			Point = point;
+			Size = size;
+			IsLargeArc = isLargeArc;
+			RotationAngle = rotationAngle;
+			SweepDirection = sweepDirection;
 		}
 
-		public SolidColorBrush ()
+		public ArcSegment ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public ArcSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public ArcSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,9 +57,34 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty PointProperty;
+		public Point Point {
+		    get { return (Point)GetValue (PointProperty); }
+		    set { SetValue (PointProperty, value); }
+		}
+
+		public static readonly DependencyProperty IsLargeArcProperty;
+		public bool IsLargeArc {
+			get { return (bool)GetValue (IsLargeArcProperty); }
+			set { SetValue (IsLargeArcProperty, value); }
+		}
+
+		public static readonly DependencyProperty SweepDirectionProperty;
+		public SweepDirection SweepDirection {
+			get { return (SweepDirection)GetValue (SweepDirectionProperty); }
+			set { SetValue (SweepDirectionProperty, value); }
+		}
+
+		public static readonly DependencyProperty SizeProperty;
+		public Size Size {
+			get { return (Size)GetValue (SizeProperty); }
+			set { SetValue (SizeProperty, value); }
+		}
+
+		public static readonly DependencyProperty RotationAngleProperty;
+		public double RotationAngle {
+			get { return (double)GetValue (RotationAngleProperty); }
+			set { SetValue (RotationAngleProperty, value); }
 		}
 	}
 

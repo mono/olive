@@ -24,35 +24,28 @@
 //
 
 using System.Windows;
-using System.IO;
+using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
+	public class ImageDrawing : Drawing {
 
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+		public ImageDrawing (ImageSource imageSource, Rect rect)
+		{
+			ImageSource = imageSource;
+			Rect = rect;
 		}
 
-		public SolidColorBrush ()
+		public ImageDrawing ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public ImageDrawing Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public ImageDrawing CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,10 +55,18 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty RectProperty;
+		public Rect Rect {
+		    get { return (Rect)GetValue (RectProperty); }
+		    set { SetValue (RectProperty, value); }
 		}
+
+		public static readonly DependencyProperty ImageSourceProperty;
+		public ImageSource ImageSource {
+		    get { return (ImageSource)GetValue (ImageSourceProperty); }
+		    set { SetValue (ImageSourceProperty, value); }
+		}
+		
 	}
 
 }

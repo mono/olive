@@ -24,35 +24,27 @@
 //
 
 using System.Windows;
-using System.IO;
 
 namespace System.Windows.Media {
 
-	public sealed class SolidColorBrush : Brush {
-
-		public static readonly DependencyProperty ColorProperty = DependencyProperty.Register ("Color", typeof (Color), typeof (SolidColorBrush),
-												       new PropertyMetadata (Color.FromArgb (0, 255, 255, 255)));
-
-		public Color Color {
-		    get { return (Color)GetValue (ColorProperty); }
-		    set { SetValue (ColorProperty, value); }
+	public class BezierSegment : PathSegment {
+		public BezierSegment (Point point1, Point point2, Point point3, bool isStroked)
+		{
+			Point1 = point1;
+			Point2 = point2;
+			Point3 = point3;
 		}
 
-		public SolidColorBrush ()
+		public BezierSegment ()
 		{
 		}
 
-		public SolidColorBrush (Color color)
-		{
-			this.Color = color;
-		}
-
-		public SolidColorBrush Clone ()
+		public BezierSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public BezierSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -62,10 +54,24 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public static object DeserializeFrom (BinaryReader reader)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty Point1Property;
+		public Point Point1 {
+		    get { return (Point)GetValue (Point1Property); }
+		    set { SetValue (Point1Property, value); }
 		}
+
+		public static readonly DependencyProperty Point2Property;
+		public Point Point2 {
+		    get { return (Point)GetValue (Point2Property); }
+		    set { SetValue (Point2Property, value); }
+		}
+
+		public static readonly DependencyProperty Point3Property;
+		public Point Point3 {
+		    get { return (Point)GetValue (Point3Property); }
+		    set { SetValue (Point3Property, value); }
+		}
+		
 	}
 
 }
