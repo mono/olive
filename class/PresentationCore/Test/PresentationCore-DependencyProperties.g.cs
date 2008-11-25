@@ -14,6 +14,7 @@ using System.Windows.Media.Media3D;
 // Assembly: PresentationCore, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35
 //   Type: System.Windows.Media.Animation.AnimationTimeline
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class AnimationTimelineTest {
 		[Test]
 		public void DependencyProperties () {
@@ -34,11 +35,10 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.ArcSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class ArcSegmentTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (ArcSegment), ArcSegment.PointProperty.OwnerType);
 			Assert.AreEqual ("Point", ArcSegment.PointProperty.Name);
 			Assert.AreEqual ("Point", ArcSegment.PointProperty.ToString());
@@ -68,12 +68,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("SweepDirection", ArcSegment.SweepDirectionProperty.ToString());
 			Assert.AreEqual (typeof (SweepDirection), ArcSegment.SweepDirectionProperty.PropertyType);
 			Assert.IsFalse (ArcSegment.SweepDirectionProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Automation.AutomationProperties
 namespace MonoTests.System.Windows.Automation {
+	[TestFixture]
 	public partial class AutomationPropertiesTest {
 		[Test]
 		public void DependencyProperties () {
@@ -150,6 +150,7 @@ namespace MonoTests.System.Windows.Automation {
 }
 //   Type: System.Windows.Media.Media3D.AxisAngleRotation3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class AxisAngleRotation3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -172,6 +173,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Navigation.BaseUriHelper
 namespace MonoTests.System.Windows.Navigation {
+	[TestFixture]
 	public partial class BaseUriHelperTest {
 		[Test]
 		public void DependencyProperties () {
@@ -188,6 +190,7 @@ namespace MonoTests.System.Windows.Navigation {
 }
 //   Type: System.Windows.Media.Effects.BevelBitmapEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class BevelBitmapEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -228,11 +231,10 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.BezierSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class BezierSegmentTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (BezierSegment), BezierSegment.Point1Property.OwnerType);
 			Assert.AreEqual ("Point1", BezierSegment.Point1Property.Name);
 			Assert.AreEqual ("Point1", BezierSegment.Point1Property.ToString());
@@ -250,12 +252,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("Point3", BezierSegment.Point3Property.ToString());
 			Assert.AreEqual (typeof (Point), BezierSegment.Point3Property.PropertyType);
 			Assert.IsFalse (BezierSegment.Point3Property.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Effects.BitmapEffectGroup
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class BitmapEffectGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -272,6 +274,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Effects.BitmapEffectInput
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class BitmapEffectInputTest {
 		[Test]
 		public void DependencyProperties () {
@@ -300,6 +303,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Imaging.BitmapImage
 namespace MonoTests.System.Windows.Media.Imaging {
+	[TestFixture]
 	public partial class BitmapImageTest {
 		[Test]
 		public void DependencyProperties () {
@@ -364,6 +368,7 @@ namespace MonoTests.System.Windows.Media.Imaging {
 }
 //   Type: System.Windows.Media.Effects.BlurBitmapEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class BlurBitmapEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -386,6 +391,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Effects.BlurEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class BlurEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -434,6 +440,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Brush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class BrushTest {
 		[Test]
 		public void DependencyProperties () {
@@ -506,6 +513,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.Camera
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class CameraTest {
 		[Test]
 		public void DependencyProperties () {
@@ -568,6 +576,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Imaging.ColorConvertedBitmap
 namespace MonoTests.System.Windows.Media.Imaging {
+	[TestFixture]
 	public partial class ColorConvertedBitmapTest {
 		[Test]
 		public void DependencyProperties () {
@@ -622,6 +631,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.CombinedGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class CombinedGeometryTest {
 		[Test]
 		public void DependencyProperties () {
@@ -672,6 +682,7 @@ namespace MonoTests.System.Windows {
 }
 //   Type: System.Windows.Media.Imaging.CroppedBitmap
 namespace MonoTests.System.Windows.Media.Imaging {
+	[TestFixture]
 	public partial class CroppedBitmapTest {
 		[Test]
 		public void DependencyProperties () {
@@ -694,6 +705,7 @@ namespace MonoTests.System.Windows.Media.Imaging {
 }
 //   Type: System.Windows.Interop.D3DImage
 namespace MonoTests.System.Windows.Interop {
+	[TestFixture]
 	public partial class D3DImageTest {
 		[Test]
 		public void DependencyProperties () {
@@ -710,6 +722,7 @@ namespace MonoTests.System.Windows.Interop {
 }
 //   Type: System.Windows.Media.DashStyle
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class DashStyleTest {
 		[Test]
 		public void DependencyProperties () {
@@ -778,6 +791,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.DiffuseMaterial
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class DiffuseMaterialTest {
 		[Test]
 		public void DependencyProperties () {
@@ -806,6 +820,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.DirectionalLight
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class DirectionalLightTest {
 		[Test]
 		public void DependencyProperties () {
@@ -848,6 +863,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.DoubleAnimationUsingPath
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class DoubleAnimationUsingPathTest {
 		[Test]
 		public void DependencyProperties () {
@@ -890,22 +906,21 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.DrawingBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class DrawingBrushTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (DrawingBrush), DrawingBrush.DrawingProperty.OwnerType);
 			Assert.AreEqual ("Drawing", DrawingBrush.DrawingProperty.Name);
 			Assert.AreEqual ("Drawing", DrawingBrush.DrawingProperty.ToString());
 			Assert.AreEqual (typeof (Drawing), DrawingBrush.DrawingProperty.PropertyType);
 			Assert.IsFalse (DrawingBrush.DrawingProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.DrawingGroup
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class DrawingGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -964,6 +979,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.DrawingImage
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class DrawingImageTest {
 		[Test]
 		public void DependencyProperties () {
@@ -980,6 +996,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Effects.DropShadowBitmapEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class DropShadowBitmapEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1026,6 +1043,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Effects.DropShadowEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class DropShadowEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1072,6 +1090,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.EllipseGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class EllipseGeometryTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1100,6 +1119,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Effects.EmbossBitmapEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class EmbossBitmapEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1122,6 +1142,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Media3D.EmissiveMaterial
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class EmissiveMaterialTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1164,6 +1185,7 @@ namespace MonoTests.System.Windows.Input {
 }
 //   Type: System.Windows.Media.Imaging.FormatConvertedBitmap
 namespace MonoTests.System.Windows.Media.Imaging {
+	[TestFixture]
 	public partial class FormatConvertedBitmapTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1198,6 +1220,7 @@ namespace MonoTests.System.Windows.Media.Imaging {
 }
 //   Type: System.Windows.Media.Media3D.GeneralTransform3DGroup
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class GeneralTransform3DGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1214,6 +1237,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.GeneralTransformGroup
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GeneralTransformGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1230,22 +1254,21 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Geometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GeometryTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (Geometry), Geometry.TransformProperty.OwnerType);
 			Assert.AreEqual ("Transform", Geometry.TransformProperty.Name);
 			Assert.AreEqual ("Transform", Geometry.TransformProperty.ToString());
 			Assert.AreEqual (typeof (Transform), Geometry.TransformProperty.PropertyType);
 			Assert.IsFalse (Geometry.TransformProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.GeometryDrawing
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GeometryDrawingTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1274,11 +1297,10 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.GeometryGroup
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GeometryGroupTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (GeometryGroup), GeometryGroup.FillRuleProperty.OwnerType);
 			Assert.AreEqual ("FillRule", GeometryGroup.FillRuleProperty.Name);
 			Assert.AreEqual ("FillRule", GeometryGroup.FillRuleProperty.ToString());
@@ -1290,12 +1312,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("Children", GeometryGroup.ChildrenProperty.ToString());
 			Assert.AreEqual (typeof (GeometryCollection), GeometryGroup.ChildrenProperty.PropertyType);
 			Assert.IsFalse (GeometryGroup.ChildrenProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Media3D.GeometryModel3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class GeometryModel3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1324,6 +1346,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.GlyphRunDrawing
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GlyphRunDrawingTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1346,11 +1369,10 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.GradientBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GradientBrushTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (GradientBrush), GradientBrush.ColorInterpolationModeProperty.OwnerType);
 			Assert.AreEqual ("ColorInterpolationMode", GradientBrush.ColorInterpolationModeProperty.Name);
 			Assert.AreEqual ("ColorInterpolationMode", GradientBrush.ColorInterpolationModeProperty.ToString());
@@ -1374,12 +1396,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("GradientStops", GradientBrush.GradientStopsProperty.ToString());
 			Assert.AreEqual (typeof (GradientStopCollection), GradientBrush.GradientStopsProperty.PropertyType);
 			Assert.IsFalse (GradientBrush.GradientStopsProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.GradientStop
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GradientStopTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1402,6 +1424,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.GuidelineSet
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class GuidelineSetTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1424,6 +1447,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.ImageBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class ImageBrushTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1440,6 +1464,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.ImageDrawing
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class ImageDrawingTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1462,6 +1487,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Input.InputLanguageManager
 namespace MonoTests.System.Windows.Input {
+	[TestFixture]
 	public partial class InputLanguageManagerTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1484,6 +1510,7 @@ namespace MonoTests.System.Windows.Input {
 }
 //   Type: System.Windows.Input.InputMethod
 namespace MonoTests.System.Windows.Input {
+	[TestFixture]
 	public partial class InputMethodTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1668,6 +1695,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.Light
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class LightTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1684,11 +1712,10 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.LinearGradientBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class LinearGradientBrushTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (LinearGradientBrush), LinearGradientBrush.StartPointProperty.OwnerType);
 			Assert.AreEqual ("StartPoint", LinearGradientBrush.StartPointProperty.Name);
 			Assert.AreEqual ("StartPoint", LinearGradientBrush.StartPointProperty.ToString());
@@ -1700,12 +1727,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("EndPoint", LinearGradientBrush.EndPointProperty.ToString());
 			Assert.AreEqual (typeof (Point), LinearGradientBrush.EndPointProperty.PropertyType);
 			Assert.IsFalse (LinearGradientBrush.EndPointProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Animation.LinearQuaternionKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class LinearQuaternionKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1722,11 +1749,10 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.LineGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class LineGeometryTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (LineGeometry), LineGeometry.StartPointProperty.OwnerType);
 			Assert.AreEqual ("StartPoint", LineGeometry.StartPointProperty.Name);
 			Assert.AreEqual ("StartPoint", LineGeometry.StartPointProperty.ToString());
@@ -1738,28 +1764,26 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("EndPoint", LineGeometry.EndPointProperty.ToString());
 			Assert.AreEqual (typeof (Point), LineGeometry.EndPointProperty.PropertyType);
 			Assert.IsFalse (LineGeometry.EndPointProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.LineSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class LineSegmentTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (LineSegment), LineSegment.PointProperty.OwnerType);
 			Assert.AreEqual ("Point", LineSegment.PointProperty.Name);
 			Assert.AreEqual ("Point", LineSegment.PointProperty.ToString());
 			Assert.AreEqual (typeof (Point), LineSegment.PointProperty.PropertyType);
 			Assert.IsFalse (LineSegment.PointProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Media3D.MaterialGroup
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class MaterialGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1776,6 +1800,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Animation.MatrixAnimationUsingPath
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class MatrixAnimationUsingPathTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1810,6 +1835,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.MatrixCamera
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class MatrixCameraTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1852,6 +1878,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.MatrixTransform
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class MatrixTransformTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1868,6 +1895,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.MatrixTransform3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class MatrixTransform3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1884,6 +1912,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.MediaTimeline
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class MediaTimelineTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1900,6 +1929,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.MeshGeometry3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class MeshGeometry3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1934,6 +1964,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.Model3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Model3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1950,6 +1981,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.Model3DGroup
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Model3DGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1966,6 +1998,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.ModelUIElement3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class ModelUIElement3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -1982,6 +2015,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.ModelVisual3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class ModelVisual3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2000,6 +2034,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.NumberSubstitution
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class NumberSubstitutionTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2048,6 +2083,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.OrthographicCamera
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class OrthographicCameraTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2064,6 +2100,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Effects.OuterGlowBitmapEffect
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class OuterGlowBitmapEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2098,6 +2135,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Animation.ParallelTimeline
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class ParallelTimelineTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2114,11 +2152,10 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.PathFigure
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PathFigureTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (PathFigure), PathFigure.StartPointProperty.OwnerType);
 			Assert.AreEqual ("StartPoint", PathFigure.StartPointProperty.Name);
 			Assert.AreEqual ("StartPoint", PathFigure.StartPointProperty.ToString());
@@ -2142,17 +2179,15 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("IsClosed", PathFigure.IsClosedProperty.ToString());
 			Assert.AreEqual (typeof (bool), PathFigure.IsClosedProperty.PropertyType);
 			Assert.IsFalse (PathFigure.IsClosedProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.PathGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PathGeometryTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (PathGeometry), PathGeometry.FillRuleProperty.OwnerType);
 			Assert.AreEqual ("FillRule", PathGeometry.FillRuleProperty.Name);
 			Assert.AreEqual ("FillRule", PathGeometry.FillRuleProperty.ToString());
@@ -2164,17 +2199,15 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("Figures", PathGeometry.FiguresProperty.ToString());
 			Assert.AreEqual (typeof (PathFigureCollection), PathGeometry.FiguresProperty.PropertyType);
 			Assert.IsFalse (PathGeometry.FiguresProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.PathSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PathSegmentTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (PathSegment), PathSegment.IsStrokedProperty.OwnerType);
 			Assert.AreEqual ("IsStroked", PathSegment.IsStrokedProperty.Name);
 			Assert.AreEqual ("IsStroked", PathSegment.IsStrokedProperty.ToString());
@@ -2186,12 +2219,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("IsSmoothJoin", PathSegment.IsSmoothJoinProperty.ToString());
 			Assert.AreEqual (typeof (bool), PathSegment.IsSmoothJoinProperty.PropertyType);
 			Assert.IsFalse (PathSegment.IsSmoothJoinProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Pen
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PenTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2250,6 +2283,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.PerspectiveCamera
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class PerspectiveCameraTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2266,6 +2300,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Effects.PixelShader
 namespace MonoTests.System.Windows.Media.Effects {
+	[TestFixture]
 	public partial class PixelShaderTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2288,6 +2323,7 @@ namespace MonoTests.System.Windows.Media.Effects {
 }
 //   Type: System.Windows.Media.Animation.Point3DAnimation
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Point3DAnimationTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2316,6 +2352,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.Point3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Point3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2364,6 +2401,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.PointAnimationUsingPath
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class PointAnimationUsingPathTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2400,6 +2438,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.PointLightBase
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class PointLightBaseTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2440,6 +2479,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.PolyBezierSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PolyBezierSegmentTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2456,6 +2496,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.PolyLineSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PolyLineSegmentTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2472,6 +2513,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.PolyQuadraticBezierSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class PolyQuadraticBezierSegmentTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2488,6 +2530,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.ProjectionCamera
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class ProjectionCameraTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2528,11 +2571,10 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.QuadraticBezierSegment
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class QuadraticBezierSegmentTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (QuadraticBezierSegment), QuadraticBezierSegment.Point1Property.OwnerType);
 			Assert.AreEqual ("Point1", QuadraticBezierSegment.Point1Property.Name);
 			Assert.AreEqual ("Point1", QuadraticBezierSegment.Point1Property.ToString());
@@ -2544,12 +2586,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("Point2", QuadraticBezierSegment.Point2Property.ToString());
 			Assert.AreEqual (typeof (Point), QuadraticBezierSegment.Point2Property.PropertyType);
 			Assert.IsFalse (QuadraticBezierSegment.Point2Property.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Animation.QuaternionAnimation
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class QuaternionAnimationTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2584,6 +2626,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.QuaternionKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class QuaternionKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2606,6 +2649,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.QuaternionRotation3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class QuaternionRotation3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2622,11 +2666,10 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.RadialGradientBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class RadialGradientBrushTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (RadialGradientBrush), RadialGradientBrush.CenterProperty.OwnerType);
 			Assert.AreEqual ("Center", RadialGradientBrush.CenterProperty.Name);
 			Assert.AreEqual ("Center", RadialGradientBrush.CenterProperty.ToString());
@@ -2650,12 +2693,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("GradientOrigin", RadialGradientBrush.GradientOriginProperty.ToString());
 			Assert.AreEqual (typeof (Point), RadialGradientBrush.GradientOriginProperty.PropertyType);
 			Assert.IsFalse (RadialGradientBrush.GradientOriginProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.RectangleGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class RectangleGeometryTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2730,6 +2773,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.RenderOptions
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class RenderOptionsTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2770,6 +2814,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.RotateTransform
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class RotateTransformTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2796,6 +2841,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.RotateTransform3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class RotateTransform3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2830,6 +2876,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Animation.Rotation3DAnimation
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Rotation3DAnimationTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2858,6 +2905,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.Rotation3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Rotation3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2880,6 +2928,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.ScaleTransform
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class ScaleTransformTest {
 		[Test]
 		public void DependencyProperties () {
@@ -2912,6 +2961,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.ScaleTransform3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class ScaleTransform3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3050,6 +3100,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.SkewTransform
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class SkewTransformTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3082,6 +3133,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.SolidColorBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class SolidColorBrushTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3096,6 +3148,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.SpecularMaterial
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class SpecularMaterialTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3124,6 +3177,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Animation.SplineByteKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineByteKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3138,6 +3192,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineColorKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineColorKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3152,6 +3207,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineDecimalKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineDecimalKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3166,6 +3222,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineDoubleKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineDoubleKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3180,6 +3237,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineInt16KeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineInt16KeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3194,6 +3252,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineInt32KeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineInt32KeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3208,6 +3267,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineInt64KeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineInt64KeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3222,6 +3282,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplinePoint3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplinePoint3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3238,6 +3299,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplinePointKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplinePointKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3252,6 +3314,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineQuaternionKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineQuaternionKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3274,6 +3337,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineRectKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineRectKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3288,6 +3352,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineRotation3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineRotation3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3304,6 +3369,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineSingleKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineSingleKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3318,6 +3384,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineSizeKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineSizeKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3332,6 +3399,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineVector3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineVector3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3348,6 +3416,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.SplineVectorKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class SplineVectorKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3362,6 +3431,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.SpotLight
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class SpotLightTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3390,6 +3460,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.StreamGeometry
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class StreamGeometryTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3458,6 +3529,7 @@ namespace MonoTests.System.Windows.Input {
 }
 //   Type: System.Windows.TextDecoration
 namespace MonoTests.System.Windows {
+	[TestFixture]
 	public partial class TextDecorationTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3498,6 +3570,7 @@ namespace MonoTests.System.Windows {
 }
 //   Type: System.Windows.Media.TextEffect
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class TextEffectTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3538,11 +3611,10 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.TileBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class TileBrushTest {
 		[Test]
 		public void DependencyProperties () {
-			Assert.Fail ("Class not implemented yet");
-#if notyet
 			Assert.AreEqual (typeof (TileBrush), TileBrush.ViewportUnitsProperty.OwnerType);
 			Assert.AreEqual ("ViewportUnits", TileBrush.ViewportUnitsProperty.Name);
 			Assert.AreEqual ("ViewportUnits", TileBrush.ViewportUnitsProperty.ToString());
@@ -3590,12 +3662,12 @@ namespace MonoTests.System.Windows.Media {
 			Assert.AreEqual ("AlignmentY", TileBrush.AlignmentYProperty.ToString());
 			Assert.AreEqual (typeof (AlignmentY), TileBrush.AlignmentYProperty.PropertyType);
 			Assert.IsFalse (TileBrush.AlignmentYProperty.ReadOnly);
-#endif
 		}
 	}
 }
 //   Type: System.Windows.Media.Animation.Timeline
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class TimelineTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3664,6 +3736,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.TimelineGroup
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class TimelineGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3680,6 +3753,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Media3D.Transform3DGroup
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Transform3DGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3696,6 +3770,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Imaging.TransformedBitmap
 namespace MonoTests.System.Windows.Media.Imaging {
+	[TestFixture]
 	public partial class TransformedBitmapTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3718,6 +3793,7 @@ namespace MonoTests.System.Windows.Media.Imaging {
 }
 //   Type: System.Windows.Media.TransformGroup
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class TransformGroupTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3732,6 +3808,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.TranslateTransform
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class TranslateTransformTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3752,6 +3829,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.TranslateTransform3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class TranslateTransform3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -3988,6 +4066,7 @@ namespace MonoTests.System.Windows {
 }
 //   Type: System.Windows.Media.Animation.Vector3DAnimation
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Vector3DAnimationTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4016,6 +4095,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.Animation.Vector3DKeyFrame
 namespace MonoTests.System.Windows.Media.Animation {
+	[TestFixture]
 	public partial class Vector3DKeyFrameTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4084,6 +4164,7 @@ namespace MonoTests.System.Windows.Media.Animation {
 }
 //   Type: System.Windows.Media.VideoDrawing
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class VideoDrawingTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4106,6 +4187,7 @@ namespace MonoTests.System.Windows.Media {
 }
 //   Type: System.Windows.Media.Media3D.Viewport2DVisual3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Viewport2DVisual3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4135,6 +4217,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.Viewport3DVisual
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Viewport3DVisualTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4157,6 +4240,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.Media3D.Visual3D
 namespace MonoTests.System.Windows.Media.Media3D {
+	[TestFixture]
 	public partial class Visual3DTest {
 		[Test]
 		public void DependencyProperties () {
@@ -4173,6 +4257,7 @@ namespace MonoTests.System.Windows.Media.Media3D {
 }
 //   Type: System.Windows.Media.VisualBrush
 namespace MonoTests.System.Windows.Media {
+	[TestFixture]
 	public partial class VisualBrushTest {
 		[Test]
 		public void DependencyProperties () {
