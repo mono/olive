@@ -49,7 +49,6 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting
 		protected virtual GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
@@ -59,7 +58,6 @@ namespace System.Windows.Media {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		public bool IsAncestorOf (DependencyObject descendant)
 		{

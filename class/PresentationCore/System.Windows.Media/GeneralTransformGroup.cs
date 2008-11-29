@@ -17,63 +17,60 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
 using System.Windows;
+using System.Windows.Markup;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	public abstract class GeneralTransform : Animatable, IFormattable {
-		protected GeneralTransform ()
+	[ContentProperty ("Children")]
+	public class GeneralTransformGroup : GeneralTransform {
+		public GeneralTransformGroup ()
 		{
 		}
 
-		public new GeneralTransform Clone ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public new GeneralTransform CloneCurrentValue ()
+		public GeneralTransformGroup Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		string IFormattable.ToString (string format,
-					      IFormatProvider provider)
+		public GeneralTransformGroup CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override string ToString ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public string ToString (IFormatProvider provider)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public Point Transform (Point point)
+		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
 
 
-		public abstract Rect TransformBounds (Rect rect);
+		public override Rect TransformBounds (Rect rect)
+		{
+			throw new NotImplementedException ();
+		}
 
-		public abstract bool TryTransform (Point inPoint,
-						   out Point result);
+		public override bool TryTransform (Point inPoint,
+						   out Point result)
+		{
+			throw new NotImplementedException ();
+		}
 
-		public abstract GeneralTransform Inverse { get; }
+		public override GeneralTransform Inverse {
+			get { throw new NotImplementedException (); }
+		}
+
+		public static readonly DependencyProperty ChildrenProperty;
+		public GeneralTransformCollection Children {
+		    get { return (GeneralTransformCollection)GetValue (ChildrenProperty); }
+		    set { SetValue (ChildrenProperty, value); }
+		}
 	}
 
 }

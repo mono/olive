@@ -17,63 +17,20 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
 using System.Windows;
-using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	public abstract class GeneralTransform : Animatable, IFormattable {
-		protected GeneralTransform ()
+	public abstract class HitTestParameters
+	{
+		internal HitTestParameters ()
 		{
 		}
-
-		public new GeneralTransform Clone ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public new GeneralTransform CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		string IFormattable.ToString (string format,
-					      IFormatProvider provider)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public override string ToString ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public string ToString (IFormatProvider provider)
-		{
-			throw new NotImplementedException ();
-		}
-
-		public Point Transform (Point point)
-		{
-			throw new NotImplementedException ();
-		}
-
-
-		public abstract Rect TransformBounds (Rect rect);
-
-		public abstract bool TryTransform (Point inPoint,
-						   out Point result);
-
-		public abstract GeneralTransform Inverse { get; }
 	}
-
 }

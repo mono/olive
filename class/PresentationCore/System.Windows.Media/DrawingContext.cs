@@ -57,9 +57,9 @@ namespace System.Windows.Media {
 		public abstract void DrawRoundedRectangle (Brush brush, Pen pen, Rect rect, double rx, double ry);
 #if notyet
 		public abstract void DrawText (FormattedText text, Point point);
+#endif
 		public abstract void DrawVideo (MediaPlayer player, Rect rect);
 		public abstract void DrawVideo (MediaPlayer player, Rect rect, AnimationClock clock);
-#endif
 		public abstract void Pop ();
 #if notyet
 		public abstract void PushClip (Geometry geometry);

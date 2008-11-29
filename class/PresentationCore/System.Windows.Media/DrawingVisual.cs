@@ -30,7 +30,6 @@ namespace System.Windows.Media {
 		{
 		}
 
-#if notyet
 		public GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
@@ -40,7 +39,6 @@ namespace System.Windows.Media {
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		public DrawingContext RenderOpen ()
 		{

@@ -17,63 +17,93 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	public abstract class GeneralTransform : Animatable, IFormattable {
-		protected GeneralTransform ()
+	public class EllipseGeometry : Geometry {
+		public EllipseGeometry (Rect rect)
 		{
 		}
 
-		public new GeneralTransform Clone ()
+		public EllipseGeometry (Point center, double radiusX, double radiusY)
 		{
-			throw new NotImplementedException ();
+			Center = center;
+			RadiusX = radiusX;
+			RadiusY = radiusY;
 		}
 
-		public new GeneralTransform CloneCurrentValue ()
+		public EllipseGeometry (Point center, double radiusX, double radiusY, Transform transform)
 		{
-			throw new NotImplementedException ();
+			Transform = transform;
+			Center = center;
+			RadiusX = radiusX;
+			RadiusY = radiusY;
 		}
 
-		string IFormattable.ToString (string format,
-					      IFormatProvider provider)
+		public EllipseGeometry ()
 		{
-			throw new NotImplementedException ();
 		}
 
-		public override string ToString ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public string ToString (IFormatProvider provider)
+		public EllipseGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Point Transform (Point point)
+		public EllipseGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		protected override Freezable CreateInstanceCore ()
+		{
+			throw new NotImplementedException ();
+		}
 
-		public abstract Rect TransformBounds (Rect rect);
+		public override bool MayHaveCurves ()
+		{
+			throw new NotImplementedException ();
+		}
 
-		public abstract bool TryTransform (Point inPoint,
-						   out Point result);
+		public override bool IsEmpty ()
+		{
+			throw new NotImplementedException ();
+		}
 
-		public abstract GeneralTransform Inverse { get; }
+		public override double GetArea (double flatteningTolerance, ToleranceType tolerance)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Rect Bounds {
+			get { throw new NotImplementedException (); }
+		}
+
+		public static readonly DependencyProperty CenterProperty;
+		public Point Center {
+		    get { return (Point)GetValue (CenterProperty); }
+		    set { SetValue (CenterProperty, value); }
+		}
+
+		public static readonly DependencyProperty RadiusXProperty;
+		public double RadiusX {
+		    get { return (double)GetValue (RadiusXProperty); }
+		    set { SetValue (RadiusXProperty, value); }
+		}
+
+		public static readonly DependencyProperty RadiusYProperty;
+		public double RadiusY {
+		    get { return (double)GetValue (RadiusYProperty); }
+		    set { SetValue (RadiusYProperty, value); }
+		}
+		
 	}
 
 }

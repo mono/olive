@@ -17,63 +17,55 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
 using System.Windows;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-	public abstract class GeneralTransform : Animatable, IFormattable {
-		protected GeneralTransform ()
+	public class GuidelineSet : Animatable {
+		public GuidelineSet (double[] guidelinesX, double[] guidelinesY)
+		{
+			GuidelinesX = new DoubleCollection (guidelinesX);
+			GuidelinesY = new DoubleCollection (guidelinesY);
+		}
+
+		public GuidelineSet ()
 		{
 		}
 
-		public new GeneralTransform Clone ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		public new GeneralTransform CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		string IFormattable.ToString (string format,
-					      IFormatProvider provider)
+		public GuidelineSet Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public override string ToString ()
+		public GuidelineSet CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public string ToString (IFormatProvider provider)
+		protected override Freezable CreateInstanceCore ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Point Transform (Point point)
-		{
-			throw new NotImplementedException ();
+		public static readonly DependencyProperty GuidelinesXProperty;
+		public DoubleCollection GuidelinesX {
+		    get { return (DoubleCollection)GetValue (GuidelinesXProperty); }
+		    set { SetValue (GuidelinesXProperty, value); }
 		}
 
-
-		public abstract Rect TransformBounds (Rect rect);
-
-		public abstract bool TryTransform (Point inPoint,
-						   out Point result);
-
-		public abstract GeneralTransform Inverse { get; }
+		public static readonly DependencyProperty GuidelinesYProperty;
+		public DoubleCollection GuidelinesY {
+		    get { return (DoubleCollection)GetValue (GuidelinesYProperty); }
+		    set { SetValue (GuidelinesYProperty, value); }
+		}
+		
 	}
 
 }

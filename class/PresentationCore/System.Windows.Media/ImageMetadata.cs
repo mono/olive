@@ -25,6 +25,10 @@
 
 namespace System.Windows.Media {
 	public abstract class ImageMetadata : Freezable {
+		internal ImageMetadata ()
+		{
+		}
+
 		public ImageMetadata Clone ()
 		{
 			throw new NotImplementedException ();
