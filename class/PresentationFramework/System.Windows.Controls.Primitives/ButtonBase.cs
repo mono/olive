@@ -28,7 +28,7 @@ using System;
 using System.ComponentModel;
 using System.Windows.Input;
 
-namespace System.Windows.Controls.Primitive {
+namespace System.Windows.Controls.Primitives {
 
 	//[LocalizabilityAttribute(LocalizationCategory.Button)] 
 	public abstract class ButtonBase : ContentControl, ICommandSource {
