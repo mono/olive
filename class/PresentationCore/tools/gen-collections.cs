@@ -14,7 +14,8 @@ public class GenCollectionType {
 		Drawing,
 		PathFigure,
 		PathSegment,
-		GradientStop 
+		GradientStop,
+		GeneralTransform
 	};
 
 	static bool IsFreezable (CollectionType t)
