@@ -4,7 +4,7 @@ System.Windows/ThemeInfoAttribute.cs
 System.Windows.Controls/ClickMode.cs
 System.Windows.Controls/Control.cs
 System.Windows.Controls/ContentControl.cs
-System.Windows.Controls.Primitive/ButtonBase.cs
+System.Windows.Controls.Primitives/ButtonBase.cs
 System.Windows.Markup/NamespaceMapEntry.cs
 System.Windows.Markup/ArrayExtension.cs
 System.Windows.Markup/ComponentResourceKeyConverter.cs
