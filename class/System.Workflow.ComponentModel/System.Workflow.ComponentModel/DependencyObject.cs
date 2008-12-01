@@ -28,6 +28,7 @@ using System.Collections;
 
 namespace System.Workflow.ComponentModel
 {
+	[Serializable]
 	public abstract class DependencyObject : IComponent, IDisposable
 	{
 		private IDictionary <DependencyProperty, object> values;

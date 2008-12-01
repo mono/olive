@@ -92,12 +92,24 @@ namespace System.Workflow.ComponentModel
 		}
 
 		// Methods
+
+		/// <summary>
+		/// Method searches for particular DependencyProperty among registered in repository
+		/// using its name and owner type
+		/// </summary>
+		/// <param name="propertyName">property name</param>
+		/// <param name="ownerType">owner type</param>
+		/// <returns>null, if nothing found; property otherwise</returns>
 		public static DependencyProperty FromName (string propertyName, Type ownerType)
 		{
-			DependencyProperty rslt;
+			DependencyProperty result = null;
 
-			rslt = properties [propertyName.GetHashCode() * ownerType.GetHashCode()];
-			return rslt;
+			int key = propertyName.GetHashCode () * ownerType.GetHashCode ();
+			if (properties.ContainsKey (key)) {
+				result = properties [key];
+			}
+
+			return result;
 		}
 
 		public static IList <DependencyProperty> FromType (Type ownerType)
@@ -166,11 +178,29 @@ namespace System.Workflow.ComponentModel
 			return property;
 		}
 
-		[MonoTODO]
-		void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context)
-		{
-			throw new NotImplementedException ();
-		}
+		/// <summary>
+		/// Helper class to incapsulate property name and owner type in single box during serialization
+		/// </summary>
+		[Serializable]
+		private class SerializationStorageBox : IObjectReference {
+			private string property_name;
+			private Type owner_type;
+
+			#region IObjectReference Members
+			public object GetRealObject (StreamingContext context) {
+				return DependencyProperty.FromName (property_name, owner_type);
+			}
+			#endregion
+ 		}
+
+		/// <summary>
+		/// Method is used to put enough information about state of the object in SerializationInfo.
+		/// </summary>
+		void ISerializable.GetObjectData (SerializationInfo info, StreamingContext context) {
+			info.AddValue ("property_name", this.name);
+			info.AddValue ("owner_type", this.owner_type);
+			info.SetType (typeof(SerializationStorageBox));
+ 		}
 
 		public override string ToString ()
 		{

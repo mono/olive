@@ -1,3 +1,17 @@
+2008-12-01  Anton Kytmanov <carga@mail.ru>
+
+	* Activity.cs: Class is marked with [Serializable] attribute;
+	initial extremely naive implementation of Save and Load methods
+	just to satisfy to unit-test; commented Save and Load declarions
+	were removed from code.
+	* DependencyObject.cs: Class is marked with [Serializable] attribute
+	* DependencyProperty.cs: Method GetObjectData was implemented;
+	some xml comments were added.
+
+2008-12-01  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Activity.cs : fix inconsistent line endings.
+
 2006-09-26  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* WorkflowParameterBindingCollection.cs: SetItem call base method

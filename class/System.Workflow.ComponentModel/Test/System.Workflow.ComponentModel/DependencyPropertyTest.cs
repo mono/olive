@@ -30,6 +30,7 @@ using System.Security.Permissions;
 using System.Workflow.ComponentModel;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace MonoTests.System.Workflow.ComponentModel
 {
@@ -68,6 +69,30 @@ namespace MonoTests.System.Workflow.ComponentModel
 			public ClassPropEv ()
 			{
 
+			}
+		}
+
+		[Serializable]
+		public class SerializationTestHelperClass : DependencyObject {
+			public const string propertyName = "Name";
+
+			private static DependencyProperty NameProperty = DependencyProperty.Register (propertyName, typeof (string),
+				typeof (SerializationTestHelperClass), new PropertyMetadata ("some default value"));
+
+			public SerializationTestHelperClass () {
+			}
+
+			public SerializationTestHelperClass (string name) {
+				Name = name;
+			}
+
+			public string Name {
+				get {
+					return (string)GetValue (SerializationTestHelperClass.NameProperty);
+				}
+				set {
+					SetValue (SerializationTestHelperClass.NameProperty, value);
+				}
 			}
 		}
 
@@ -130,6 +155,50 @@ namespace MonoTests.System.Workflow.ComponentModel
 				typeof (ClassProp3), new PropertyMetadata ("someone@example.com"));
 		}
 
+		[Test]
+		public void TestFromNameMethod () {
+			string propertyName = "To";
+			Type ownerType = typeof (ClassProp3);
+			DependencyProperty expected = DependencyProperty.Register (propertyName, typeof (string),
+				ownerType, new PropertyMetadata ("someone@mail.ru"));
+
+			DependencyProperty actual = DependencyProperty.FromName (propertyName, ownerType);
+
+			Assert.IsNotNull (actual, "#K1#1");
+			Assert.AreEqual (expected.Name, actual.Name, "#K1#2");
+			Assert.AreEqual (expected.OwnerType, actual.OwnerType, "#K1#3");
+			Assert.AreEqual (expected.PropertyType, actual.PropertyType, "#K1#4");
+			Assert.AreSame (expected, actual, "#K1#5");
+
+			actual = DependencyProperty.FromName ("garbage", ownerType);
+
+			Assert.IsNull (actual, "#K1#11");
+		}
+
+		[Test]
+		public void TestGetObjectDataMethod () {
+			string activityName = "TestSerialization";
+			string propertyName = SerializationTestHelperClass.propertyName;
+
+			SerializationTestHelperClass expected = new SerializationTestHelperClass (activityName);
+			object actual = null;
+
+			BinaryFormatter formatter = new BinaryFormatter ();
+			using (MemoryStream ms = new MemoryStream ()) {
+				formatter.Serialize (ms, expected);
+				ms.Position = 0;
+				actual = formatter.Deserialize (ms);
+			}
+
+			Assert.IsNotNull (actual, "#K2#1");
+			Assert.IsTrue (actual is SerializationTestHelperClass, "#K2#2");
+
+			DependencyProperty actualDepProp = DependencyProperty.FromName (propertyName, typeof (SerializationTestHelperClass));
+			Assert.IsNotNull (actualDepProp, "#K2#3");
+			Assert.AreEqual (propertyName, actualDepProp.Name, "#K2#4");
+			Assert.AreEqual (typeof (SerializationTestHelperClass), actualDepProp.OwnerType, "#K2#5");
+			Assert.AreEqual (typeof (string), actualDepProp.PropertyType, "#K2#6");
+			Assert.AreEqual (activityName, ((SerializationTestHelperClass)actual).Name, "#K2#7");
+ 		}
 	}
 }
-

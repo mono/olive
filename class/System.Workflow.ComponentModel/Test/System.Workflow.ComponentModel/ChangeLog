@@ -1,3 +1,8 @@
+2008-12-01  Anton Kytmanov <carga@mail.ru>
+
+	* DependencyPropertyTest.cs: Test added for method DependencyProperty.FromName
+	and for method GetObjectData which is used during serialization
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* WorkflowParameterBindingCollectionTest.cs: added

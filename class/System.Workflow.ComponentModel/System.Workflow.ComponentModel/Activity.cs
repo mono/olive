@@ -27,6 +27,8 @@ using System.IO;
 using System.ComponentModel;
 using System.Collections.Generic;
 using System.Workflow.ComponentModel;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
 
 #if RUNTIME_DEP
 using System.Workflow.Runtime;
@@ -34,6 +36,7 @@ using System.Workflow.Runtime;
 
 namespace System.Workflow.ComponentModel
 {
+	[Serializable]
 	public class Activity : DependencyObject
 	{
 		private static DependencyProperty NameProperty;
@@ -255,12 +258,7 @@ namespace System.Workflow.ComponentModel
 			  return ActivityExecutionStatus.Closed;
 		}
 
-		//public static Activity Load(Stream stream, Activity outerActivity)
-
-		//public static Activity Load (Stream stream, Activity outerActivity, IFormatter formatter)
 		//public void RegisterForStatusChange (DependencyProperty dependencyProp, IActivityEventListener<ActivityExecutionStatusChangedEventArgs> activityStatusChangeListener)
-		//public void Save (Stream stream)
-		//public void Save (Stream stream, IFormatter formatter)
 
 		protected internal virtual void OnActivityExecutionContextLoad (IServiceProvider provider)
 		{
@@ -343,6 +341,51 @@ namespace System.Workflow.ComponentModel
 
 			return activity;
 		}
+		
+		/// <summary>
+		/// Save activity to the given stream
+		/// </summary>
+		/// <param name="stream">stream to store data</param>
+		public void Save (Stream stream) {
+			BinaryFormatter formatter = new BinaryFormatter ();
+			Save (stream, formatter);
+		}
+
+		/// <summary>
+		/// Save activity to the given stream using given formmatter
+		/// </summary>
+		/// <param name="stream">stream to store data</param>
+		/// <param name="formatter">formatter to be used during serialization</param>
+		public void Save (Stream stream, IFormatter formatter) {
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+			if (formatter == null)
+				throw new ArgumentNullException ("formatter");
+			formatter.Serialize (stream, this);
+		}
+
+		/// <summary>
+		/// Load activity from the given stream
+		/// </summary>
+		/// <param name="stream">stream with serialized activity</param>
+		/// <returns>deserialized activity</returns>
+		public static Activity Load (Stream stream, Activity outerActivity) {
+			BinaryFormatter formatter = new BinaryFormatter ();
+			return Load (stream, outerActivity, formatter);
+		}
+
+		/// <summary>
+		/// Load activity from the given stream
+		/// </summary>
+		/// <param name="stream">stream with serialized activity</param>
+		/// <param name="formatter">formatter to be used during deserialization</param>
+		/// <returns>deserialized activity</returns>
+		public static Activity Load (Stream stream, Activity outerActivity, IFormatter formatter) {
+			if (stream == null)
+				throw new ArgumentNullException ("stream");
+			if (formatter == null)
+				throw new ArgumentNullException ("formatter");
+			return (Activity)formatter.Deserialize (stream);
+		}
 	}
 }
-
