@@ -256,7 +256,8 @@ namespace System.Workflow.ComponentModel
 		}
 
 		//public static Activity Load(Stream stream, Activity outerActivity)
-		//public static Activity Load (Stream stream, Activity outerActivity, IFormatter formatter)
+
+		//public static Activity Load (Stream stream, Activity outerActivity, IFormatter formatter)
 		//public void RegisterForStatusChange (DependencyProperty dependencyProp, IActivityEventListener<ActivityExecutionStatusChangedEventArgs> activityStatusChangeListener)
 		//public void Save (Stream stream)
 		//public void Save (Stream stream, IFormatter formatter)
