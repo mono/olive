@@ -1,3 +1,8 @@
+2008-12-04  Anton Kytmanov <carga@mail.ru>
+
+	* CodeActivity.cs: is marked as [Serializable] to participate in
+	persistence tests
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* CorrelationAliasAttribute.cs: added

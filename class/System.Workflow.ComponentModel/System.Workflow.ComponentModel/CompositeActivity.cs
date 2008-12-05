@@ -29,6 +29,7 @@ using System.Collections.Generic;
 
 namespace System.Workflow.ComponentModel
 {
+	[Serializable]
 	public class CompositeActivity : Activity
 	{
 		private ActivityCollection activities;

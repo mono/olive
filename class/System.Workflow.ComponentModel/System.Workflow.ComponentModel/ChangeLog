@@ -1,3 +1,8 @@
+2008-12-04  Anton Kytmanov <carga@mail.ru>
+
+	* CompositeActivity.cs: class is marked as [Serializable] to
+	participate in persistence tests
+
 2008-12-01  Anton Kytmanov <carga@mail.ru>
 
 	* Activity.cs: Class is marked with [Serializable] attribute;

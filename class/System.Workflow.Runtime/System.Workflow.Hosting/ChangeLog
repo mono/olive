@@ -1,3 +1,8 @@
+2008-12-04  Anton Kytmanov <carga@mail.ru>
+
+	* WorkflowPersistenceService.cs:
+	implementation of methods GetDefaultSerializedForm/RestoreFromDefaultSerializedForm
+
 2006-09-24  Jordi Mas i Hernandez <jordimash@gmail.com>
 
 	* WorkflowRuntimeService.cs: Added missing properties

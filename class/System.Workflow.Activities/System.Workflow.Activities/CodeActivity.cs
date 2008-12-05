@@ -28,6 +28,7 @@ using System.Workflow.ComponentModel;
 
 namespace System.Workflow.Activities
 {
+	[Serializable]
 	public sealed class CodeActivity : Activity
 	{
 		public static readonly DependencyProperty ExecuteCodeEvent;

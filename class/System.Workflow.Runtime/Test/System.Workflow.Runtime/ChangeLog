@@ -1,7 +1,14 @@
+2008-12-04  Anton Kytmanov <carga@mail.ru>
+
+	* WorkflowPersistenceServiceTest.cs:
+	test to check Save/Load	methods in Activity class;
+	test to check GetDefaultSerializedForm/RestoreFromDefaultSerializedForm
+	in WorkflowPersistenceService class
+
 2008-11-16  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* WorkflowPersistenceServiceTest.cs, PersistenceExceptionTest.cs:
-	  new tests by Anton Kytmanov.
+	  new tests by Anton Kytmanov <carga@mail.ru>.
 
 2006-10-29  Joel Reed <joelwreed@gmail.com>
 
