@@ -33,11 +33,11 @@ namespace System.Windows {
 
 	public abstract class WeakEventManager : DispatcherObject
 	{
-		Dictionary <object, ListenerList> sourceData;
+		Hashtable sourceData;
 
 		protected WeakEventManager ()
 		{
-			sourceData = new HashTable();
+			sourceData = new Hashtable ();
 		}
 
 		protected IDisposable ReadLock {
@@ -60,7 +60,7 @@ namespace System.Windows {
 
 		protected void DeliverEventToList (object sender, EventArgs args, ListenerList list)
 		{
-			foreach (int i = 0; i < list.Count; i ++) {
+			for (int i = 0; i < list.Count; i ++) {
 				IWeakEventListener listener = list[i];
 				listener.ReceiveWeakEvent (GetType(), sender, args);
 			}
@@ -68,15 +68,15 @@ namespace System.Windows {
 
 		protected void ProtectedAddListener (object source, IWeakEventListener listener)
 		{
-			ListenerList list = sourceData[source];
-			if (list == null)
+			ListenerList list = sourceData[source] as ListenerList;
+			if (list != null)
 				list.Add (listener);
 		}
 
 		protected void ProtectedRemoveListener (object source, IWeakEventListener listener)
 		{
-			ListenerList list = sourceData[source];
-			if (list == null)
+			ListenerList list = sourceData[source] as ListenerList;
+			if (list != null)
 				list.Remove (listener);
 		}
 
