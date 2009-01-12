@@ -118,7 +118,19 @@ namespace System.Windows.Threading {
 			if (priority < DispatcherPriority.Inactive || priority > DispatcherPriority.Send)
 				throw new InvalidEnumArgumentException (parameterName);
 		}
+
+		public DispatcherOperation BeginInvoke (Delegate method, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
 		
+		public DispatcherOperation BeginInvoke (Delegate method, DispatcherPriority priority, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -134,6 +146,8 @@ namespace System.Windows.Threading {
 			return op;
 		}
 
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method, object arg)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -150,6 +164,8 @@ namespace System.Windows.Threading {
 			return op;
 		}
 		
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public DispatcherOperation BeginInvoke (DispatcherPriority priority, Delegate method, object arg, params object [] args)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -165,6 +181,28 @@ namespace System.Windows.Threading {
 			return op;
 		}
 
+		public object Invoke (Delegate method, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (Delegate method, TimeSpan timeout, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (Delegate method, TimeSpan timeout, DispatcherPriority priority, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public object Invoke (Delegate method, DispatcherPriority priority, object[] args)
+		{
+			throw new NotImplementedException ();
+		}
+
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, Delegate method)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -181,6 +219,8 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, Delegate method, object arg)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -194,6 +234,8 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 		
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, Delegate method, object arg, params object [] args)
 		{
 			if (priority < 0 || priority > DispatcherPriority.Send)
@@ -208,16 +250,22 @@ namespace System.Windows.Threading {
 			throw new NotImplementedException ();
 		}
 
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method, object arg)
 		{
 			throw new NotImplementedException ();
 		}
 
+		[Browsable (false)]
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public object Invoke (DispatcherPriority priority, TimeSpan timeout, Delegate method, object arg, params object [] args)
 		{
 			throw new NotImplementedException ();

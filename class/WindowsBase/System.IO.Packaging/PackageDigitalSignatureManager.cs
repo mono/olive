@@ -28,6 +28,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Security;
 using System.Security.Cryptography.X509Certificates;
+#if notyet
+using System.Security.Cryptography.Xml;
+#endif
 
 namespace System.IO.Packaging {
 
@@ -77,6 +80,7 @@ namespace System.IO.Packaging {
 
 		public string TimeFormat {
 			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		public Dictionary<string, string> TransformMapping {
@@ -142,8 +146,8 @@ namespace System.IO.Packaging {
 #if notyet
 		public PackageDigitalSignature Sign (IEnumerable<Uri> parts, X509Certificate certificate, IEnumerable<PackageRelationshipSelector> relationshipSelectors,
 						     string signatureId,
-						     IEnumerable<System.Security.Cryptography.Xml.DataObject> signatureObjects,
-						     IEnumerable<System.Security.Cryptography.Xml.Reference> objectReferences)
+						     IEnumerable<DataObject> signatureObjects,
+						     IEnumerable<Reference> objectReferences)
 		{
 			throw new NotImplementedException ();
 		}

@@ -156,6 +156,10 @@ namespace System.ComponentModel {
 			throw new NotImplementedException ();
 		}
 
+		public CoerceValueCallback DesignerCoerceValueCallback {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
 	}
 
 }

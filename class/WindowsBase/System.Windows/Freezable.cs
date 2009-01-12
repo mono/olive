@@ -39,7 +39,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		public new Freezable CloneCurrentValue ()
+		public Freezable CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

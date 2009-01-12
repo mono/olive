@@ -29,13 +29,13 @@ namespace System.IO.Packaging {
 
 	public static class PackUriHelper
 	{
-		internal const string PackScheme = "pack";
+		public static readonly string UriSchemePack = "pack";
 		static readonly Uri PackSchemeUri = new Uri("pack://", UriKind.Absolute);
 		
 		static PackUriHelper ()
 		{
-			if (!UriParser.IsKnownScheme (PackScheme))
-				UriParser.Register (new PackUriParser (), PackScheme, -1);
+			if (!UriParser.IsKnownScheme (UriSchemePack))
+				UriParser.Register (new PackUriParser (), UriSchemePack, -1);
 		}
 		
 		public static int ComparePackUri (Uri firstPackUri, Uri secondPackUri)

@@ -33,6 +33,8 @@ namespace MonoTests.System.Windows {
 	[TestFixture]
 	public class VectorTest
 	{
+		const double DELTA = 0.000000001d;
+
 		[Test]
 		public void Accessors ()
 		{
@@ -100,7 +102,7 @@ namespace MonoTests.System.Windows {
 			Assert.AreEqual (90, angle);
 
 			angle = Vector.AngleBetween (new Vector (1, 0), new Vector (0.5, 0.5));
-			Assert.AreEqual (45, angle);
+			Assert.AreEqual (45, angle, DELTA);
 		}
 
 		[Test]
@@ -166,7 +168,7 @@ namespace MonoTests.System.Windows {
 			v.Normalize ();
 
 			Assert.AreEqual (v.X, v.Y);
-			Assert.AreEqual (1, v.Length);
+			Assert.AreEqual (1, v.Length, DELTA);
 		}
 
 		[Test]

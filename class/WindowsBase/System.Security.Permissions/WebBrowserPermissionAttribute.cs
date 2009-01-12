@@ -28,6 +28,7 @@ using System.Security;
 
 namespace System.Security.Permissions {
 
+	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Struct | AttributeTargets.Class | AttributeTargets.Assembly)]
 	public sealed class WebBrowserPermissionAttribute : CodeAccessSecurityAttribute
 	{
 		public WebBrowserPermissionAttribute (SecurityAction action)

@@ -91,7 +91,7 @@ namespace System.IO.Packaging
 		
 		public static void PackUriIsValid (Uri packUri)
 		{
-			if (packUri.Scheme != PackUriHelper.PackScheme)
+			if (packUri.Scheme != PackUriHelper.UriSchemePack)
 				throw new ArgumentException ("packUri", "Uri scheme is not a valid PackUri scheme");
 			    
 			if (!packUri.IsAbsoluteUri)

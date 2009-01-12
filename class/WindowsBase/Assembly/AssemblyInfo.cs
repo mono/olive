@@ -72,12 +72,16 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Input")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/xps/2005/06", "System.Windows")]
 
+[assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml", "System.Windows.Markup")]
+
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "System.Windows.Media")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "System.Windows.Input")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "System.Windows")]
+[assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml/presentation", "System.Diagnostics")]
 
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/winfx/2006/xaml/composite-font", "System.Windows.Media")]
 
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/netfx/2007/xaml/presentation", "System.Windows.Media")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/netfx/2007/xaml/presentation", "System.Windows.Input")]
 [assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/netfx/2007/xaml/presentation", "System.Windows")]
+[assembly: XmlnsDefinitionAttribute ("http://schemas.microsoft.com/netfx/2007/xaml/presentation", "System.Diagnostics")]

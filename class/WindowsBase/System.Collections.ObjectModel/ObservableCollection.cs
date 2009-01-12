@@ -61,6 +61,11 @@ namespace System.Collections.ObjectModel {
 		{
 		}
 
+		public ObservableCollection(IEnumerable<T> collection)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public ObservableCollection(List<T> list)
 			: base (list)
 		{

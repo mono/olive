@@ -36,14 +36,24 @@ namespace System.Windows.Markup {
 
 		public MarkupExtensionReturnTypeAttribute (Type returnType)
 		{
-			this.returnType = returnType;
+			ReturnType = returnType;
+		}
+
+		public MarkupExtensionReturnTypeAttribute (Type returnType, Type expressionType)
+		{
+			ReturnType = returnType;
+			ExpressionType = expressionType;
 		}
 
 		public Type ReturnType {
-			get { return returnType; }
+			get;
+			private set;
 		}
 
-		Type returnType;
+		public Type ExpressionType {
+			get;
+			private set;
+		}
 	}
 
 }

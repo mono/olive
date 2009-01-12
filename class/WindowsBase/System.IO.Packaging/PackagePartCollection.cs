@@ -39,7 +39,7 @@ namespace System.IO.Packaging {
 			Parts = new List<PackagePart> ();
 		}
 
-		IEnumerator<PackagePart> IEnumerable<PackagePart>.GetEnumerator ()
+		public IEnumerator<PackagePart> GetEnumerator ()
 		{
 			return Parts.GetEnumerator ();
 		}

@@ -19,52 +19,36 @@
 //
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
-//	Brian O'Keefe (zer0keefie@gmail.com)
 //
-
-using System;
 
 namespace System.ComponentModel {
 
-	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Method)]
-	public sealed class PropertyFilterAttribute : Attribute
-	{
-		public static readonly PropertyFilterAttribute Default = new PropertyFilterAttribute(PropertyFilterOptions.All);
+	public interface IEditableCollectionView {
+		void EditItem (object item);
+		object AddNew ();
 
-		private PropertyFilterOptions options;
+		void CancelEdit ();
+		void CancelNew ();
 
-		public PropertyFilterAttribute (PropertyFilterOptions filter)
-		{
-			options = filter;
-		}
+		void CommitEdit ();
+		void CommitNew ();
 
-		public PropertyFilterOptions Filter {
-			get { return options; }
-		}
+		void Remove (object item);
+		void RemoveAt (int index);
 
-		public override bool Equals (object value)
-		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
-			return ((PropertyFilterAttribute)value).options == options;
-		}
+		object CurrentAddItem { get; }
+		object CurrentEditItem { get; }
 
-		public override int GetHashCode ()
-		{
-			return options.GetHashCode ();
-		}
+		bool CanAddNew { get; }
+		bool CanCancelEdit { get; }
+		bool CanRemove { get; }
 
-		public override bool Match (object value)
-		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
+		bool IsAddingNew { get; }
+		bool IsEditingItem { get; }
 
-			PropertyFilterOptions other = ((PropertyFilterAttribute)value).options;
-			PropertyFilterOptions common = other & options;	
-
-			return common == options;
-		}
+		NewItemPlaceholderPosition NewItemPlaceholderPosition { get; set; }
 	}
+
 }

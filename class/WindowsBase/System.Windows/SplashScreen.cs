@@ -19,52 +19,37 @@
 //
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
-//	Brian O'Keefe (zer0keefie@gmail.com)
 //
 
-using System;
+using System.Reflection;
+using System.Security;
 
-namespace System.ComponentModel {
+namespace System.Windows {
+	public class SplashScreen {
 
-	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Method)]
-	public sealed class PropertyFilterAttribute : Attribute
-	{
-		public static readonly PropertyFilterAttribute Default = new PropertyFilterAttribute(PropertyFilterOptions.All);
-
-		private PropertyFilterOptions options;
-
-		public PropertyFilterAttribute (PropertyFilterOptions filter)
+		[SecurityCritical]
+		public SplashScreen (Assembly resourceAssembly, string resourceName)
 		{
-			options = filter;
+			throw new NotImplementedException ();
 		}
 
-		public PropertyFilterOptions Filter {
-			get { return options; }
+		public SplashScreen (string resourceName)
+		{
+			throw new NotImplementedException ();
 		}
 
-		public override bool Equals (object value)
+		[SecurityCritical]
+		public void Show (bool autoClose)
 		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
-			return ((PropertyFilterAttribute)value).options == options;
+			throw new NotImplementedException ();
 		}
 
-		public override int GetHashCode ()
+		[SecurityCritical]
+		public void Close (TimeSpan fadeoutDuration)
 		{
-			return options.GetHashCode ();
-		}
-
-		public override bool Match (object value)
-		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
-
-			PropertyFilterOptions other = ((PropertyFilterAttribute)value).options;
-			PropertyFilterOptions common = other & options;	
-
-			return common == options;
+			throw new NotImplementedException ();
 		}
 	}
 }

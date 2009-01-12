@@ -24,12 +24,11 @@
 //
 
 using System;
+using System.ComponentModel;
 
 namespace System.Windows {
 
-#if notyet
 	[TypeConverter (typeof (ExpressionConverter))]
-#endif
 	public class Expression
 	{
 		internal Expression ()

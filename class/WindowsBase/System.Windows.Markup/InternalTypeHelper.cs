@@ -30,6 +30,7 @@ using System.Reflection;
 
 namespace System.Windows.Markup {
 
+	[EditorBrowsable (EditorBrowsableState.Never)]
 	public abstract class InternalTypeHelper
 	{
 		protected InternalTypeHelper()

@@ -35,6 +35,11 @@ namespace System.IO.Packaging {
 		{
 		}
 
+		protected virtual void Dispose (bool disposing)
+		{
+			throw new NotImplementedException ();
+		}
+
 		public FileAccess FileOpenAccess {
 			get { throw new NotImplementedException (); }
 		}

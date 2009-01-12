@@ -32,15 +32,16 @@ namespace MonoTests.System.Windows.Media {
 
 	[TestFixture]
 	public class MatrixTest {
+		const double DELTA = 0.000000001d;
 
 		void CheckMatrix (Matrix expected, Matrix actual)
 		{
-			Assert.AreEqual (expected.M11, actual.M11);
-			Assert.AreEqual (expected.M12, actual.M12);
-			Assert.AreEqual (expected.M21, actual.M21);
-			Assert.AreEqual (expected.M22, actual.M22);
-			Assert.AreEqual (expected.OffsetX, actual.OffsetX);
-			Assert.AreEqual (expected.OffsetY, actual.OffsetY);
+			Assert.AreEqual (expected.M11, actual.M11, DELTA);
+			Assert.AreEqual (expected.M12, actual.M12, DELTA);
+			Assert.AreEqual (expected.M21, actual.M21, DELTA);
+			Assert.AreEqual (expected.M22, actual.M22, DELTA);
+			Assert.AreEqual (expected.OffsetX, actual.OffsetX, DELTA);
+			Assert.AreEqual (expected.OffsetY, actual.OffsetY, DELTA);
 		}
 
 		[Test]

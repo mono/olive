@@ -31,15 +31,6 @@ using System.Collections.Generic;
 namespace System.Windows {
 	public sealed class DependencyProperty {
 		private Dictionary<Type,PropertyMetadata> metadataByType = new Dictionary<Type,PropertyMetadata>();
-		private PropertyMetadata defaultMetadata;
-		private string name;
-		private Type ownerType;
-		private Type propertyType;
-		private ValidateValueCallback validateValueCallback;
-
-		private bool isReadOnly;
-		private bool isAttached;
-		internal bool IsAttached { get { return isAttached; } }
 
 		public static readonly object UnsetValue = new object ();
 
@@ -47,39 +38,26 @@ namespace System.Windows {
 					    PropertyMetadata defaultMetadata,
 					    ValidateValueCallback validateValueCallback)
 		{
-			this.isAttached = isAttached;
-			this.defaultMetadata = (defaultMetadata == null ? new PropertyMetadata() : defaultMetadata);
-			this.name = name;
-			this.ownerType = ownerType;
-			this.propertyType = propertyType;
-			this.validateValueCallback = validateValueCallback;
+			IsAttached = isAttached;
+			DefaultMetadata = (defaultMetadata == null ? new PropertyMetadata() : defaultMetadata);
+			Name = name;
+			OwnerType = ownerType;
+			PropertyType = propertyType;
+			ValidateValueCallback = validateValueCallback;
 		}
 
-		public PropertyMetadata DefaultMetadata { 
-			get { return defaultMetadata; }
-		}
+		internal bool IsAttached { get; set; }
+		public bool ReadOnly { get; private set; }
+		public PropertyMetadata DefaultMetadata { get; private set; }
+		public string Name { get; private set; }
+		public Type OwnerType { get; private set; }
+		public Type PropertyType { get; private set; }
+		public ValidateValueCallback ValidateValueCallback { get; private set; }
 
-		public int GlobalIndex {
+		public int GlobalIndex {			
 			get { throw new NotImplementedException (); }
 		}
 
-		public string Name {
-			get { return name; }
-		}
-		public Type OwnerType {
-			get { return ownerType; }
-		}
-		public Type PropertyType {
-			get { return propertyType; }
-		}
-
-		public bool ReadOnly {
-			get { return isReadOnly; }
-		}
-
-		public ValidateValueCallback ValidateValueCallback {
-			get { return validateValueCallback; }
-		}
 
 		public DependencyProperty AddOwner(Type ownerType)
 		{
@@ -119,16 +97,16 @@ namespace System.Windows {
 
 		public bool IsValidType(object value)
 		{
-			return propertyType.IsInstanceOfType (value);
+			return PropertyType.IsInstanceOfType (value);
 		}
 
 		public bool IsValidValue(object value)
 		{
 			if (!IsValidType (value))
 				return false;
-			if (validateValueCallback == null)
+			if (ValidateValueCallback == null)
 				return true;
-			return validateValueCallback (value);
+			return ValidateValueCallback (value);
 		}
 		
 		public void OverrideMetadata(Type forType, PropertyMetadata typeMetadata)
@@ -139,7 +117,7 @@ namespace System.Windows {
 				throw new ArgumentNullException ("typeMetadata");
 
 			if (ReadOnly)
-				throw new InvalidOperationException (String.Format ("Cannot override metadata on readonly property '{0}' without using a DependencyPropertyKey", name));
+				throw new InvalidOperationException (String.Format ("Cannot override metadata on readonly property '{0}' without using a DependencyPropertyKey", Name));
 
 			typeMetadata.DoMerge (DefaultMetadata, this, forType);
 			metadataByType.Add (forType, typeMetadata);
@@ -162,12 +140,12 @@ namespace System.Windows {
 
 		public override string ToString ()
 		{
-			throw new NotImplementedException ();
+			return Name;
 		}
 
 		public override int GetHashCode ()
 		{
-			throw new NotImplementedException ();
+			return Name.GetHashCode() ^ PropertyType.GetHashCode() ^ OwnerType.GetHashCode();
 		}
 
 		public static DependencyProperty Register(string name, Type propertyType, Type ownerType)
@@ -243,7 +221,7 @@ namespace System.Windows {
 								     ValidateValueCallback validateValueCallback)
 		{
 			DependencyProperty prop = Register (name, propertyType, ownerType, typeMetadata, validateValueCallback);
-			prop.isReadOnly = true;
+			prop.ReadOnly = true;
 			return new DependencyPropertyKey (prop);
 		}
 

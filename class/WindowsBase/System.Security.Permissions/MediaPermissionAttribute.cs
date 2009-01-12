@@ -28,6 +28,7 @@ using System.Security;
 
 namespace System.Security.Permissions {
 
+	[AttributeUsage (AttributeTargets.Method | AttributeTargets.Constructor | AttributeTargets.Struct | AttributeTargets.Class | AttributeTargets.Assembly)]
 	public class MediaPermissionAttribute : CodeAccessSecurityAttribute
 	{
 		public MediaPermissionAttribute (SecurityAction action)

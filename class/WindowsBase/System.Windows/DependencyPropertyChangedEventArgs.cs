@@ -29,27 +29,23 @@
 namespace System.Windows {
 	public struct DependencyPropertyChangedEventArgs {
 
-		DependencyProperty property;
-		object oldValue;
-		object newValue;
-
 		public DependencyPropertyChangedEventArgs (DependencyProperty property, object oldValue, object newValue)
 		{
-			this.property = property;
-			this.oldValue = oldValue;
-			this.newValue = newValue;
+			this.Property = property;
+			this.OldValue = oldValue;
+			this.NewValue = newValue;
 		}
 
 		public object NewValue {
-			get { return newValue; }
+			get; private set;
 		}
 
 		public object OldValue {
-			get { return oldValue; }
+			get; private set;
 		}
 
 		public DependencyProperty Property {
-			get { return property; }
+			get; private set;
 		}
 
 		public override bool Equals (object obj)
@@ -62,9 +58,9 @@ namespace System.Windows {
 
 		public bool Equals (DependencyPropertyChangedEventArgs args)
 		{
-			return (property == args.Property &&
-				newValue == args.NewValue &&
-				oldValue == args.OldValue);
+			return (Property == args.Property &&
+				NewValue == args.NewValue &&
+				OldValue == args.OldValue);
 		}
 
 		public static bool operator != (DependencyPropertyChangedEventArgs left, DependencyPropertyChangedEventArgs right)

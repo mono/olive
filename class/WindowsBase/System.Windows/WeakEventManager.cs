@@ -26,15 +26,18 @@
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
 
+using System.Collections;
 using System.Windows.Threading;
 
 namespace System.Windows {
 
 	public abstract class WeakEventManager : DispatcherObject
 	{
+		Dictionary <object, ListenerList> sourceData;
+
 		protected WeakEventManager ()
 		{
-			throw new NotImplementedException ();
+			sourceData = new HashTable();
 		}
 
 		protected IDisposable ReadLock {
@@ -46,28 +49,35 @@ namespace System.Windows {
 		}
 
 		protected object this [object source] {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return sourceData[source]; }
+			set { sourceData[source] = value; }
 		}
 
 		protected void DeliverEvent (object sender, EventArgs args)
 		{
-			throw new NotImplementedException ();
+			DeliverEventToList (sender, args, (ListenerList)this[sender]);
 		}
 
-		protected void DeliverEventToList (object sender, EventArgs args, WeakEventManager.ListenerList list)
+		protected void DeliverEventToList (object sender, EventArgs args, ListenerList list)
 		{
-			throw new NotImplementedException ();
+			foreach (int i = 0; i < list.Count; i ++) {
+				IWeakEventListener listener = list[i];
+				listener.ReceiveWeakEvent (GetType(), sender, args);
+			}
 		}
 
 		protected void ProtectedAddListener (object source, IWeakEventListener listener)
 		{
-			throw new NotImplementedException ();
+			ListenerList list = sourceData[source];
+			if (list == null)
+				list.Add (listener);
 		}
 
 		protected void ProtectedRemoveListener (object source, IWeakEventListener listener)
 		{
-			throw new NotImplementedException ();
+			ListenerList list = sourceData[source];
+			if (list == null)
+				list.Remove (listener);
 		}
 
 		protected virtual bool Purge (object source, object data, bool purgeAll)
@@ -116,7 +126,7 @@ namespace System.Windows {
 				get { throw new NotImplementedException (); }
 			}
 
-			public static WeakEventManager.ListenerList Empty {
+			public static ListenerList Empty {
 				get { throw new NotImplementedException (); }
 			}
 
@@ -133,7 +143,7 @@ namespace System.Windows {
 				throw new NotImplementedException ();
 			}
 
-			private void BeginUse ()
+			public bool BeginUse ()
 			{
 				throw new NotImplementedException ();
 			}

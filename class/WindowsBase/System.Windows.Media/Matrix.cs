@@ -25,12 +25,15 @@
 
 using System;
 using System.ComponentModel;
+using System.Windows.Markup;
+using System.Windows.Media.Converters;
 using System.Windows.Threading;
 
 namespace System.Windows.Media {
 
-	[SerializableAttribute] 
-	//[TypeConverterAttribute(typeof(MatrixConverter))] 
+	[Serializable] 
+	[TypeConverter (typeof(MatrixConverter))] 
+	[ValueSerializer (typeof (MatrixValueSerializer))]
 	public struct Matrix : IFormattable {
 
 		double m11;

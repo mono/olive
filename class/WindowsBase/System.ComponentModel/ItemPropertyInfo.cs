@@ -19,52 +19,34 @@
 //
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
-//	Brian O'Keefe (zer0keefie@gmail.com)
 //
-
-using System;
 
 namespace System.ComponentModel {
 
-	[AttributeUsage (AttributeTargets.Property | AttributeTargets.Method)]
-	public sealed class PropertyFilterAttribute : Attribute
-	{
-		public static readonly PropertyFilterAttribute Default = new PropertyFilterAttribute(PropertyFilterOptions.All);
-
-		private PropertyFilterOptions options;
-
-		public PropertyFilterAttribute (PropertyFilterOptions filter)
+	public class ItemPropertyInfo {
+		public ItemPropertyInfo (string name, Type type, object descriptor)
 		{
-			options = filter;
+			Name = name;
+			PropertyType = type;
+			Descriptor = descriptor;
 		}
 
-		public PropertyFilterOptions Filter {
-			get { return options; }
+		public string Name {
+			get;
+			private set;
 		}
 
-		public override bool Equals (object value)
-		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
-			return ((PropertyFilterAttribute)value).options == options;
+		public Type PropertyType {
+			get;
+			private set;
 		}
 
-		public override int GetHashCode ()
-		{
-			return options.GetHashCode ();
-		}
-
-		public override bool Match (object value)
-		{
-			if (!(value is PropertyFilterAttribute))
-				return false;
-
-			PropertyFilterOptions other = ((PropertyFilterAttribute)value).options;
-			PropertyFilterOptions common = other & options;	
-
-			return common == options;
+		public object Descriptor {
+			get;
+			private set;
 		}
 	}
+
 }
