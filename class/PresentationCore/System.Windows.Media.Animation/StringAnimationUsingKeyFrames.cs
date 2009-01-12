@@ -73,7 +73,7 @@ public class StringAnimationUsingKeyFrames : StringAnimationBase, IKeyFrameAnima
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new StringAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

@@ -35,7 +35,7 @@ public class LinearVectorKeyFrame : VectorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearVectorKeyFrame ();
 	}
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)

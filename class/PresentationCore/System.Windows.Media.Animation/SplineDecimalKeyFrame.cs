@@ -51,7 +51,7 @@ public class SplineDecimalKeyFrame : DecimalKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineDecimalKeyFrame ();
 	}
 
 	protected override Decimal InterpolateValueCore (Decimal baseValue, double keyFrameProgress)

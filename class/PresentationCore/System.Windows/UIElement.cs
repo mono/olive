@@ -23,6 +23,7 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.ComponentModel;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
@@ -76,6 +77,7 @@ namespace System.Windows {
 		public static readonly DependencyProperty RenderTransformOriginProperty = DependencyProperty.Register ("RenderTransformOrigin", typeof (Point), typeof (UIElement));
 		public static readonly DependencyProperty RenderTransformProperty = DependencyProperty.Register ("RenderTransform", typeof (Transform), typeof (UIElement));
 		public static readonly DependencyProperty SnapsToDevicePixelsProperty = DependencyProperty.Register ("SnapsToDevicePixels", typeof (bool), typeof (UIElement));
+		public static readonly DependencyProperty UidProperty = DependencyProperty.Register ("Uid", typeof (string), typeof (UIElement));
 		public static readonly DependencyProperty VisibilityProperty = DependencyProperty.Register ("Visibility", typeof (Visibility), typeof (UIElement));
 
 		public static readonly RoutedEvent DragEnterEvent = DragDrop.DragEnterEvent.AddOwner (typeof (UIElement));
@@ -275,15 +277,17 @@ namespace System.Windows {
 		}
 		public bool IsEnabled {
 			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
-		public bool IsEnabledCore {
+		protected virtual bool IsEnabledCore {
 			get { throw new NotImplementedException (); }
 		}
 		public bool IsFocused {
 			get { throw new NotImplementedException (); }
 		}
 		public bool IsHitTestVisible {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue (IsHitTestVisibleProperty); }
+			set { SetValue (IsHitTestVisibleProperty, value); }
 		}
 		public bool IsInputMethodEnabled {
 			get { throw new NotImplementedException (); }
@@ -316,13 +320,67 @@ namespace System.Windows {
 			get { throw new NotImplementedException (); }
 		}
 		public bool IsStylusDirectlyOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue(IsStylusDirectlyOverProperty); }
 		}
 		public bool IsStylusOver {
-			get { throw new NotImplementedException (); }
+			get { return (bool)GetValue(IsStylusOverProperty); }
 		}
 		public bool IsVisible {
+			get { return (bool)GetValue(IsVisibleProperty); }
+		}
+
+		public Visibility Visibility {
+			get { return (Visibility)GetValue(VisibilityProperty); }
+			set { SetValue(VisibilityProperty, value); }
+		}
+
+		public bool SnapsToDevicePixels {
+			get { return (bool)GetValue (SnapsToDevicePixelsProperty); }
+			set { SetValue (SnapsToDevicePixelsProperty, value); }
+		}
+
+		public double Opacity {
+			get { return (double)GetValue (OpacityProperty); }
+			set { SetValue (OpacityProperty, value); }
+		}
+
+		public Brush OpacityMask {
+			get { return (Brush)GetValue (OpacityMaskProperty); }
+			set { SetValue (OpacityMaskProperty, value); }
+		}
+
+		public bool ClipToBounds {
+			get { return (bool)GetValue (ClipToBoundsProperty); }
+			set { SetValue (ClipToBoundsProperty, value); }
+		}
+
+		public Geometry Clip {
+			get { return (Geometry)GetValue (ClipProperty); }
+			set { SetValue (ClipProperty, value); }
+		}
+
+		public Transform RenderTransform {
+			get { return (Transform)GetValue (RenderTransformProperty); }
+			set { SetValue (RenderTransformProperty, value); }
+		}
+
+		public Point RenderTransformOrigin {
+			get { return (Point)GetValue (RenderTransformOriginProperty); }
+			set { SetValue (RenderTransformOriginProperty, value); }
+		}
+
+		public string Uid {
+			get { return (string)GetValue (UidProperty); }
+			set { SetValue (UidProperty, value); }
+		}
+
+		public Size DesiredSize {
 			get { throw new NotImplementedException (); }
+		}
+
+		public Size RenderSize {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
 		}
 
 		public UIElement ()
@@ -777,17 +835,15 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-#if notyet
 		protected virtual void OnRender (DrawingContext drawingContext)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnRenderSizeChanged (SizeChangeInfo info)
+		protected virtual void OnRenderSizeChanged (SizeChangedInfo info)
 		{
 			throw new NotImplementedException ();
 		}
-#endif
 
 		protected virtual void OnStylusButtonDown (StylusButtonEventArgs e)
 		{
@@ -854,7 +910,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual DependencyObject PredictFocus (FocusNavigationDirection direction)
+		public virtual DependencyObject PredictFocus (FocusNavigationDirection direction)
 		{
 			throw new NotImplementedException ();
 		}
@@ -879,11 +935,13 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool ShouldSerializeCommandBindings ()
 		{
 			throw new NotImplementedException ();
 		}
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool ShouldSerializeInputBindings ()
 		{
 			throw new NotImplementedException ();
@@ -895,6 +953,31 @@ namespace System.Windows {
 		}
 
 		public void UpdateLayout ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public IInputElement InputHitTest (Point point)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected virtual Geometry GetLayoutClip (Size size)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override GeometryHitTestResult HitTestCore (GeometryHitTestParameters parameters)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override HitTestResult HitTestCore (PointHitTestParameters parameters)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected virtual DependencyObject GetUIParentCore ()
 		{
 			throw new NotImplementedException ();
 		}

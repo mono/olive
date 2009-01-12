@@ -51,7 +51,7 @@ public class SplineSingleKeyFrame : SingleKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineSingleKeyFrame ();
 	}
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)

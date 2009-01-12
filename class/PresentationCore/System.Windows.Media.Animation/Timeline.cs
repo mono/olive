@@ -23,6 +23,7 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.ComponentModel;
 using System.Windows;
 
 namespace System.Windows.Media.Animation {
@@ -129,6 +130,8 @@ namespace System.Windows.Media.Animation {
 			get { return (double)GetValue (AccelerationRatioProperty); }
 			set { SetValue (AccelerationRatioProperty, value); }
 		}
+
+		[DefaultValue(false)]
 		public bool AutoReverse {
 			get { return (bool)GetValue (AutoReverseProperty); }
 			set { SetValue (AutoReverseProperty, value); }
@@ -149,6 +152,9 @@ namespace System.Windows.Media.Animation {
 			get { return (FillBehavior)GetValue (FillBehaviorProperty); }
 			set { SetValue (FillBehaviorProperty, value); }
 		}
+
+		[DefaultValue (null)]
+		[MergableProperty (false)]
 		public string Name {
 			get { return (string)GetValue (NameProperty); }
 			set { SetValue (NameProperty, value); }
@@ -157,6 +163,8 @@ namespace System.Windows.Media.Animation {
 			get { return (RepeatBehavior)GetValue (RepeatBehaviorProperty); }
 			set { SetValue (RepeatBehaviorProperty, value); }
 		}
+
+		[DefaultValue (1.0)]
 		public double SpeedRatio {
 			get { return (double)GetValue (SpeedRatioProperty); }
 			set { SetValue (SpeedRatioProperty, value); }

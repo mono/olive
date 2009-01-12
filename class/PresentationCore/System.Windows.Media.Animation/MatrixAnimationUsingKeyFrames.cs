@@ -73,7 +73,7 @@ public class MatrixAnimationUsingKeyFrames : MatrixAnimationBase, IKeyFrameAnima
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new MatrixAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

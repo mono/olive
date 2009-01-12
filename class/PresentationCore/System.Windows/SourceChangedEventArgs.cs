@@ -45,7 +45,7 @@ namespace System.Windows {
 
 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			((SourceChangedEventHandler)genericHandler)(genericTarget, this);
 		}
 
 		public IInputElement Element {

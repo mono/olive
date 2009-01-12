@@ -73,7 +73,7 @@ public class Int64Animation : Int64AnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int64Animation ();
 	}
 
 	protected override long GetCurrentValueCore (long defaultOriginValue, long defaultDestinationValue, AnimationClock animationClock)

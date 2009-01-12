@@ -52,19 +52,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public EllipseGeometry Clone ()
+		public new EllipseGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public EllipseGeometry CloneCurrentValue ()
+		public new EllipseGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new EllipseGeometry ();
 		}
 
 		public override bool MayHaveCurves ()
@@ -82,7 +82,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public Rect Bounds {
+		public override Rect Bounds {
 			get { throw new NotImplementedException (); }
 		}
 

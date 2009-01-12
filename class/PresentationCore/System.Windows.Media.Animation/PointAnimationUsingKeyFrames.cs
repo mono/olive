@@ -73,7 +73,7 @@ public class PointAnimationUsingKeyFrames : PointAnimationBase, IKeyFrameAnimati
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new PointAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

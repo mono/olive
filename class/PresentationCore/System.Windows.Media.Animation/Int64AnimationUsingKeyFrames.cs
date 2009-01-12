@@ -73,7 +73,7 @@ public class Int64AnimationUsingKeyFrames : Int64AnimationBase, IKeyFrameAnimati
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int64AnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

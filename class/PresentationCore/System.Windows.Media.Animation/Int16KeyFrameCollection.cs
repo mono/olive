@@ -104,7 +104,7 @@ public class Int16KeyFrameCollection : Freezable, IList, ICollection, IEnumerabl
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int16KeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

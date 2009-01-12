@@ -40,12 +40,12 @@ namespace System.Windows.Media.Effects {
 			throw new NotImplementedException ();
 		}
 
-		public BitmapEffect Clone ()
+		public new BitmapEffect Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public BitmapEffect CloneCurrentValue ()
+		public new BitmapEffect CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

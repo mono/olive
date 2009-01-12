@@ -38,19 +38,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public QuadraticBezierSegment Clone ()
+		public new QuadraticBezierSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public QuadraticBezierSegment CloneCurrentValue ()
+		public new QuadraticBezierSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new QuadraticBezierSegment ();
 		}
 
 		public static readonly DependencyProperty Point1Property;

@@ -47,19 +47,19 @@ namespace System.Windows.Media {
 			this.Color = color;
 		}
 
-		public SolidColorBrush Clone ()
+		public new SolidColorBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public SolidColorBrush CloneCurrentValue ()
+		public new SolidColorBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new SolidColorBrush ();
 		}
 
 		public static object DeserializeFrom (BinaryReader reader)

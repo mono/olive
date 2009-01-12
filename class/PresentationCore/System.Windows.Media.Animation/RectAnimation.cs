@@ -73,7 +73,7 @@ public class RectAnimation : RectAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new RectAnimation ();
 	}
 
 	protected override Rect GetCurrentValueCore (Rect defaultOriginValue, Rect defaultDestinationValue, AnimationClock animationClock)

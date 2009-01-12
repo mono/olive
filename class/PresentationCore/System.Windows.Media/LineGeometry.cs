@@ -34,26 +34,30 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public LineGeometry (Point startPoint, Point endPoint, Transform transform)
+		public LineGeometry (Point startPoint, Point endPoint)
 		{
 			StartPoint = startPoint;
-			EndPoint = endPoint;
+		}
+
+		public LineGeometry (Point startPoint, Point endPoint, Transform transform)
+			: this (startPoint, endPoint)
+		{
 			Transform = transform;
 		}
 
-		public LineGeometry Clone ()
+		public new LineGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public LineGeometry CloneCurrentValue ()
+		public new LineGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new LineGeometry ();
 		}
 
 		public override bool MayHaveCurves ()
@@ -83,7 +87,7 @@ namespace System.Windows.Media {
 		    set { SetValue (EndPointProperty, value); }
 		}
 
-		public virtual Rect Bounds {
+		public override Rect Bounds {
 			get { throw new NotImplementedException (); }
 		}
 	}

@@ -73,7 +73,7 @@ public class RectAnimationUsingKeyFrames : RectAnimationBase, IKeyFrameAnimation
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new RectAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

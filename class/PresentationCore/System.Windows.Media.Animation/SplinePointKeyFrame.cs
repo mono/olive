@@ -51,7 +51,7 @@ public class SplinePointKeyFrame : PointKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplinePointKeyFrame ();
 	}
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)

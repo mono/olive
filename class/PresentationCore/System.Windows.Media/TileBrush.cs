@@ -33,12 +33,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public TileBrush Clone ()
+		public new TileBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public TileBrush CloneCurrentValue ()
+		public new TileBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

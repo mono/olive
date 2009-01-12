@@ -4,13 +4,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
 
-	public class GeometryCollection : Animatable, ICollection<Geometry>, IList<Geometry>, ICollection, IList
+	public class GeometryCollection : Animatable, ICollection<Geometry>, IList<Geometry>, ICollection, IList, IFormattable
 	{
+		List<Geometry> list;
+
 		public struct Enumerator : IEnumerator<Geometry>, IEnumerator
 		{
 			public void Reset()
@@ -38,93 +42,76 @@ namespace System.Windows.Media {
 
 		public GeometryCollection ()
 		{
+			list = new List<Geometry>();
 		}
 
 		public GeometryCollection (IEnumerable<Geometry> values)
 		{
+			list = new List<Geometry> (values);
 		}
 
 		public GeometryCollection (int length)
 		{
+			list = new List<Geometry> (length);
 		}
 
-		public GeometryCollection Clone ()
+		public new GeometryCollection Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GeometryCollection CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCore (Freezable sourceFreezable)
+		public new GeometryCollection CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		public bool Contains (Geometry value)
 		{
-			throw new NotImplementedException ();
+			return list.Contains (value);
 		}
 
 		public bool Remove (Geometry value)
 		{
-			throw new NotImplementedException ();
+			return list.Remove (value);
 		}
 
 		public int IndexOf (Geometry value)
 		{
-			throw new NotImplementedException ();
+			return list.IndexOf (value);
 		}
 
 		public void Add (Geometry value)
 		{
-			throw new NotImplementedException ();
+			list.Add (value);
 		}
 
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			list.Clear ();
 		}
 
-		public void CopyTo (Geometry[] array, int offset)
+		public void CopyTo (Geometry[] array, int arrayIndex)
 		{
-			throw new NotImplementedException ();
+			list.CopyTo (array, arrayIndex);
 		}
 
 		public void Insert (int index, Geometry value)
 		{
-			throw new NotImplementedException ();
+			list.Insert (index, value);
 		}
 
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			list.RemoveAt (index);
 		}
 
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return list.Count; }
 		}
 
 		public Geometry this[int index] {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return list[index]; }
+			set { list[index] = value; }
 		}
 
 		public static GeometryCollection Parse (string str)
@@ -136,14 +123,19 @@ namespace System.Windows.Media {
 			get { return false; }
 		}
 
+		public Enumerator GetEnumerator()
+		{
+			return new Enumerator();
+		}
+
 		IEnumerator<Geometry> IEnumerable<Geometry>.GetEnumerator()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator();
 		}
 
 		bool ICollection.IsSynchronized {
@@ -198,10 +190,57 @@ namespace System.Windows.Media {
 			Remove ((Geometry)value);
 		}
 
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
 
 		protected override bool FreezeCore (bool isChecking)
 		{{
-			throw new NotImplementedException ();
+			if (isChecking) {{
+				return base.FreezeCore (isChecking);
+			}}
+			else {{
+				return true;
+			}}
 		}}
+
+
+
+		protected override Freezable CreateInstanceCore ()
+		{
+			return new GeometryCollection();
+		}
+
+		protected override void GetAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

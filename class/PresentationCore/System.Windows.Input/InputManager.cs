@@ -119,8 +119,10 @@ namespace System.Windows.Input {
 			if (PreNotifyInput != null)
 				PreNotifyInput (this, notifyArgs);
 
+#if notyet
 			if (!preProcessArgs.Canceled)
 				/* XXX route the event */;
+#endif
 
 			if (PostNotifyInput != null)
 				PostNotifyInput (this, notifyArgs);

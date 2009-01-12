@@ -52,19 +52,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public RectangleGeometry Clone ()
+		public new RectangleGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public RectangleGeometry CloneCurrentValue ()
+		public new RectangleGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new RectangleGeometry ();
 		}
 
 		public override bool MayHaveCurves ()
@@ -82,7 +82,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public Rect Bounds {
+		public override Rect Bounds {
 			get { throw new NotImplementedException (); }
 		}
 

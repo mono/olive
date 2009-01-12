@@ -104,7 +104,7 @@ public class ObjectKeyFrameCollection : Freezable, IList, ICollection, IEnumerab
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ObjectKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

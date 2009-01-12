@@ -104,7 +104,7 @@ public class RectKeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new RectKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

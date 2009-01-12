@@ -45,7 +45,7 @@ namespace System.Windows.Media {
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new MediaPlayer ();
 		}
 
 		protected override void GetAsFrozenCore (Freezable sourceFreezable)
@@ -53,12 +53,12 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		protected void ReadPreamble ()
+		protected new void ReadPreamble ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected void WritePreamble ()
+		protected new void WritePreamble ()
 		{
 			throw new NotImplementedException ();
 		}

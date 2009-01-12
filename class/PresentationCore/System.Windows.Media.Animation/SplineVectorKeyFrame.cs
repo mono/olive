@@ -51,7 +51,7 @@ public class SplineVectorKeyFrame : VectorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineVectorKeyFrame ();
 	}
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)

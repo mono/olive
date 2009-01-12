@@ -35,19 +35,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GeneralTransformGroup Clone ()
+		public new GeneralTransformGroup Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GeneralTransformGroup CloneCurrentValue ()
+		public new GeneralTransformGroup CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new GeneralTransformGroup ();
 		}
 
 

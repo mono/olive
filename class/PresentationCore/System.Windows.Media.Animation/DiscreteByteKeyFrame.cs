@@ -35,7 +35,7 @@ public class DiscreteByteKeyFrame : ByteKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteByteKeyFrame ();
 	}
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)

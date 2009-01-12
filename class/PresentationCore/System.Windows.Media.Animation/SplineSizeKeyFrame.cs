@@ -51,7 +51,7 @@ public class SplineSizeKeyFrame : SizeKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineSizeKeyFrame ();
 	}
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)

@@ -64,19 +64,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public LinearGradientBrush Clone ()
+		public new LinearGradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public LinearGradientBrush CloneCurrentValue ()
+		public new LinearGradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new LinearGradientBrush ();
 		}
 
 		public static readonly DependencyProperty StartPointProperty;

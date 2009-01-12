@@ -73,7 +73,7 @@ public class CharAnimationUsingKeyFrames : CharAnimationBase, IKeyFrameAnimation
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new CharAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

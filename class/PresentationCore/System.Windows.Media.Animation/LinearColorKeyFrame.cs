@@ -35,7 +35,7 @@ public class LinearColorKeyFrame : ColorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearColorKeyFrame ();
 	}
 
 	protected override Color InterpolateValueCore (Color baseValue, double keyFrameProgress)

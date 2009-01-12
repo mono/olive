@@ -39,19 +39,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GuidelineSet Clone ()
+		public new GuidelineSet Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GuidelineSet CloneCurrentValue ()
+		public new GuidelineSet CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new GuidelineSet ();
 		}
 
 		public static readonly DependencyProperty GuidelinesXProperty;

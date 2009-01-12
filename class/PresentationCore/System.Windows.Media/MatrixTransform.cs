@@ -42,19 +42,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public MatrixTransform Clone ()
+		public new MatrixTransform Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public MatrixTransform CloneCurrentValue ()
+		public new MatrixTransform CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new MatrixTransform ();
 		}
 
 		public static readonly DependencyProperty MatrixProperty;

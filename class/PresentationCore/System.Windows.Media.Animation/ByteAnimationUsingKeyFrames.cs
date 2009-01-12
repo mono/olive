@@ -73,7 +73,7 @@ public class ByteAnimationUsingKeyFrames : ByteAnimationBase, IKeyFrameAnimation
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ByteAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

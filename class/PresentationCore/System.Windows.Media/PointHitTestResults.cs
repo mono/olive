@@ -36,7 +36,7 @@ namespace System.Windows.Media {
 			this.pointHit = pointHit;
 		}
 
-		public Visual VisualHit {
+		public new Visual VisualHit {
 			get { return visualHit; }
 		}
 

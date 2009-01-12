@@ -73,7 +73,7 @@ public class DecimalAnimation : DecimalAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DecimalAnimation ();
 	}
 
 	protected override Decimal GetCurrentValueCore (Decimal defaultOriginValue, Decimal defaultDestinationValue, AnimationClock animationClock)

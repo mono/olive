@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.ComponentModel;
 using System.Windows;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Effects;
@@ -36,14 +37,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		protected virtual Visual GetVisualChild (int childIndex)
+		protected override Visual GetVisualChild (int childIndex)
 		{
 			throw new NotImplementedException ();
 		}
 
-#if notyet
 		public Geometry Clip { get; set; }
-#endif
 
 		[Obsolete]
 		public BitmapEffect BitmapEffect { get; set; }
@@ -59,24 +58,35 @@ namespace System.Windows.Media {
 
 		public Brush OpacityMask { get; set; }
 
-		public virtual int VisualChildrenCount { get; private set; }
+		protected override int VisualChildrenCount {
+			get { throw new NotImplementedException (); }
+		}
 
 		public Rect DescendentBounds { get; private set; }
 
 		public Transform Transform { get; set; }
 
-#if notyet
+		[DefaultValue (null)]
 		public DoubleCollection YSnappingGuidelines { get; set; }
+
+		[DefaultValue (null)]
 		public DoubleCollection XSnappingGuidelines { get; set; }
-#endif
 
 		public Rect ContentBounds { get; private set; }
 
-#if notyet
 		public VisualCollection Children { get; private set; }
-#endif
 
 		public Vector Offset { get; set; }
+
+		public void HitTest (HitTestFilterCallback filter, HitTestResultCallback result, HitTestParameters parameters)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public HitTestResult HitTest (Point point)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 
 }

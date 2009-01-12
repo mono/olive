@@ -104,7 +104,7 @@ public class ByteKeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ByteKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

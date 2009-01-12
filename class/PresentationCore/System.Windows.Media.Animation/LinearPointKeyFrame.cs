@@ -35,7 +35,7 @@ public class LinearPointKeyFrame : PointKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearPointKeyFrame ();
 	}
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)

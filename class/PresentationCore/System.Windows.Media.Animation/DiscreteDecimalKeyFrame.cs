@@ -35,7 +35,7 @@ public class DiscreteDecimalKeyFrame : DecimalKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteDecimalKeyFrame ();
 	}
 
 	protected override Decimal InterpolateValueCore (Decimal baseValue, double keyFrameProgress)

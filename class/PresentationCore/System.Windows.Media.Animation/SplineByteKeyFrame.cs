@@ -51,7 +51,7 @@ public class SplineByteKeyFrame : ByteKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineByteKeyFrame ();
 	}
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)

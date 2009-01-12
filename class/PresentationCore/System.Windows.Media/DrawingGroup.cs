@@ -37,19 +37,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public DrawingGroup Clone ()
+		public new DrawingGroup Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public DrawingGroup CloneCurrentValue ()
+		public new DrawingGroup CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new DrawingGroup ();
 		}
 
 		public static readonly DependencyProperty ChildrenProperty;

@@ -39,19 +39,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public BezierSegment Clone ()
+		public new BezierSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public BezierSegment CloneCurrentValue ()
+		public new BezierSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new BezierSegment ();
 		}
 
 		public static readonly DependencyProperty Point1Property;

@@ -34,19 +34,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public VideoDrawing Clone ()
+		public new VideoDrawing Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public VideoDrawing CloneCurrentValue ()
+		public new VideoDrawing CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new VideoDrawing ();
 		}
 
 		public static readonly DependencyProperty PlayerProperty;

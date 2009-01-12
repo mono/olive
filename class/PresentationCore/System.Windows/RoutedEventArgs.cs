@@ -32,13 +32,13 @@ namespace System.Windows {
 	{
 		bool handled;
 		RoutedEvent routedEvent;
-		object original_source;
-		object current_source;
+		object originalSource;
+		object currentSource;
 
 		public RoutedEventArgs (RoutedEvent routedEvent, object source)
 		{
 			this.routedEvent = routedEvent;
-			original_source = current_source = source;
+			originalSource = currentSource = source;
 		}
 
 		public RoutedEventArgs (RoutedEvent routedEvent)
@@ -52,7 +52,12 @@ namespace System.Windows {
 
 		protected virtual void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-			throw new NotImplementedException ();
+			if (genericHandler == null)
+				throw new ArgumentNullException ("genericHandler");
+			if (genericTarget == null)
+				throw new ArgumentNullException ("genericTarget");
+
+			genericHandler.DynamicInvoke (genericTarget, this);
 		}
 
 		protected virtual void OnSetSource (object source)
@@ -68,7 +73,7 @@ namespace System.Windows {
 		}
 
 		public object OriginalSource {
-			get { return original_source; }
+			get { return originalSource; }
 		}
 
 		public RoutedEvent RoutedEvent {
@@ -78,11 +83,11 @@ namespace System.Windows {
 
 		public object Source {
 			set {
+				currentSource = value;
 				OnSetSource (value);
-				current_source = value;
 			}
 			get {
-				return current_source;
+				return currentSource;
 			}
 		}
 	}

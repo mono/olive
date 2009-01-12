@@ -104,7 +104,7 @@ public class SizeKeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SizeKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

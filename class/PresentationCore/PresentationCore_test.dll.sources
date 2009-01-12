@@ -3,6 +3,7 @@ PresentationCore-RoutedEvents.g.cs
 System.Windows/ContentElementTest.cs
 System.Windows/DataObjectTest.cs
 System.Windows/DragDropTest.cs
+System.Windows/RoutedEventArgsTest.cs
 System.Windows/UIElementTest.cs
 System.Windows/UIElement3DTest.cs
 System.Windows.Media.Animation/BooleanAnimationBaseTest.cs

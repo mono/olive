@@ -35,7 +35,7 @@ public class LinearByteKeyFrame : ByteKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearByteKeyFrame ();
 	}
 
 	protected override byte InterpolateValueCore (byte baseValue, double keyFrameProgress)

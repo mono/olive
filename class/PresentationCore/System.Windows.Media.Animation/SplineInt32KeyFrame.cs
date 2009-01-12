@@ -51,7 +51,7 @@ public class SplineInt32KeyFrame : Int32KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineInt32KeyFrame ();
 	}
 
 	protected override int InterpolateValueCore (int baseValue, double keyFrameProgress)

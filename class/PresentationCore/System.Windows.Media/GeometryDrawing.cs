@@ -41,19 +41,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GeometryDrawing Clone ()
+		public new GeometryDrawing Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GeometryDrawing CloneCurrentValue ()
+		public new GeometryDrawing CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new GeometryDrawing ();
 		}
 
 		public static readonly DependencyProperty GeometryProperty;

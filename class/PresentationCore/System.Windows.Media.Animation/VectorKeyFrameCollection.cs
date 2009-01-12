@@ -104,7 +104,7 @@ public class VectorKeyFrameCollection : Freezable, IList, ICollection, IEnumerab
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new VectorKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

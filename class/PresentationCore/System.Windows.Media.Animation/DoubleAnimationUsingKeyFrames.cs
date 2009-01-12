@@ -73,7 +73,7 @@ public class DoubleAnimationUsingKeyFrames : DoubleAnimationBase, IKeyFrameAnima
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DoubleAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

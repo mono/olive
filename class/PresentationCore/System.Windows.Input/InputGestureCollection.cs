@@ -30,7 +30,7 @@ namespace System.Windows.Input {
 
 	public sealed class InputGestureCollection : IList, ICollection, IEnumerable
 	{
-		ArrayList list;
+		IList list;
 		bool ro;
 
 		public InputGestureCollection ()
@@ -40,14 +40,15 @@ namespace System.Windows.Input {
 
 		public InputGestureCollection (IList inputGestures)
 		{
+			list = inputGestures;
 		}
 
 		public int Count {
-			get { throw new NotImplementedException(); }
+			get { return list.Count; }
 		}
 
 		public bool IsFixedSize {
-			get { throw new NotImplementedException(); }
+			get { return false; }
 		}
 
 		public bool IsReadOnly {
@@ -63,33 +64,34 @@ namespace System.Windows.Input {
 		}
 
 		object IList.this[int index] {
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return this[index]; }
+			set { this[index] = (InputGesture)value; }
 		}
 
 		public InputGesture this[int index] {
-			get { throw new NotImplementedException(); }
-			set { throw new NotImplementedException(); }
+			get { return (InputGesture)list[index]; }
+			set { list[index] = value; }
 		}
 
 		int IList.Add (object o)
 		{
-			throw new NotImplementedException ();
+			return Add((InputGesture)o);
 		}
 
 		public int Add (InputGesture inputGesture)
 		{
-			return Add(inputGesture);
+			return list.Add (inputGesture);
 		}
 
 		public void AddRange (ICollection collection)
 		{
-			throw new NotImplementedException();
+			foreach (object o in collection)
+				Add ((InputGesture)o);
 		}
 
 		public void Clear ()
 		{
-			throw new NotImplementedException();
+			list.Clear ();
 		}
 
 		bool IList.Contains (object o)
@@ -99,7 +101,7 @@ namespace System.Windows.Input {
 
 		public bool Contains (InputGesture key)
 		{
-			throw new NotImplementedException ();
+			return list.Contains (key);
 		}
 
 		void ICollection.CopyTo (Array array, int index)

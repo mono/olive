@@ -73,7 +73,7 @@ public class ColorAnimationUsingKeyFrames : ColorAnimationBase, IKeyFrameAnimati
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ColorAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

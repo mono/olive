@@ -42,19 +42,19 @@ namespace System.Windows.Media {
 			IsClosed = isClosed;
 		}
 
-		public PathFigure Clone ()
+		public new PathFigure Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public PathFigure CloneCurrentValue ()
+		public new PathFigure CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new PathFigure ();
 		}
 
 		public bool MayHaveCurves()

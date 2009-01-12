@@ -23,12 +23,13 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.ComponentModel;
 using System.Security;
 using System.Windows;
 using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
-	public abstract class Geometry : Animatable {
+	public abstract class Geometry : Animatable, IFormattable {
 		internal Geometry ()
 		{
 		}
@@ -56,6 +57,7 @@ namespace System.Windows.Media {
 		public abstract bool IsEmpty ();
 		public abstract bool MayHaveCurves ();
 
+		[EditorBrowsable (EditorBrowsableState.Never)]
 		public bool ShouldSerializeTransform ()
 		{
 			throw new NotImplementedException ();
@@ -82,12 +84,12 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public Geometry Clone ()
+		public new Geometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Geometry CloneCurrentValue ()
+		public new Geometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -132,6 +134,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public virtual PathGeometry GetFlattenedPathGeometry (double flattingTolerance, ToleranceType tolerance)
 		{
 			throw new NotImplementedException ();
@@ -142,6 +145,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public virtual PathGeometry GetOutlinedPathGeometry (double flatteningTolerance, ToleranceType tolerance)
 		{
 			throw new NotImplementedException ();
@@ -152,6 +156,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
 		public virtual PathGeometry GetWidenedPathGeometry (Pen pen, double flatteningTolerance, ToleranceType tolerance)
 		{
 			throw new NotImplementedException ();
@@ -167,15 +172,30 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public double StandardFlatteningTolerance {
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static double StandardFlatteningTolerance {
 			get { throw new NotImplementedException (); }
 		}
 
-		public Geometry Empty {
+		public static Geometry Empty {
 			get { throw new NotImplementedException (); }
 		}
 
-		public Rect Bounds {
+		public virtual Rect Bounds {
 			get { throw new NotImplementedException (); }
 		}
 

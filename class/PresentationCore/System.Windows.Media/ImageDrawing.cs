@@ -40,19 +40,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public ImageDrawing Clone ()
+		public new ImageDrawing Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public ImageDrawing CloneCurrentValue ()
+		public new ImageDrawing CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new ImageDrawing ();
 		}
 
 		public static readonly DependencyProperty RectProperty;

@@ -53,12 +53,12 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public Brush Clone ()
+		public new Brush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Brush CloneCurrentValue ()
+		public new Brush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

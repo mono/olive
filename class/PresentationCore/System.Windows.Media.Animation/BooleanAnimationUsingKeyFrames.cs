@@ -73,7 +73,7 @@ public class BooleanAnimationUsingKeyFrames : BooleanAnimationBase, IKeyFrameAni
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new BooleanAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

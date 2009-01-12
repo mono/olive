@@ -35,7 +35,7 @@ public class DiscreteCharKeyFrame : CharKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteCharKeyFrame ();
 	}
 
 	protected override char InterpolateValueCore (char baseValue, double keyFrameProgress)

@@ -34,12 +34,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public ImageSource Clone ()
+		public new ImageSource Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public ImageSource CloneCurrentValue ()
+		public new ImageSource CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

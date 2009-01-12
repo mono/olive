@@ -35,7 +35,7 @@ public class LinearInt64KeyFrame : Int64KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearInt64KeyFrame ();
 	}
 
 	protected override long InterpolateValueCore (long baseValue, double keyFrameProgress)

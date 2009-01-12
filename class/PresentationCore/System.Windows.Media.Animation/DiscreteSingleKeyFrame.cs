@@ -35,7 +35,7 @@ public class DiscreteSingleKeyFrame : SingleKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteSingleKeyFrame ();
 	}
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)

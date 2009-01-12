@@ -35,7 +35,7 @@ public class LinearInt16KeyFrame : Int16KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearInt16KeyFrame ();
 	}
 
 	protected override short InterpolateValueCore (short baseValue, double keyFrameProgress)

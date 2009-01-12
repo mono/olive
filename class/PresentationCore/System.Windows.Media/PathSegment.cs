@@ -33,12 +33,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public PathSegment Clone ()
+		public new PathSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public PathSegment CloneCurrentValue ()
+		public new PathSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

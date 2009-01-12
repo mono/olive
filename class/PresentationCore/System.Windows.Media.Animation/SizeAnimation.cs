@@ -73,7 +73,7 @@ public class SizeAnimation : SizeAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SizeAnimation ();
 	}
 
 	protected override Size GetCurrentValueCore (Size defaultOriginValue, Size defaultDestinationValue, AnimationClock animationClock)

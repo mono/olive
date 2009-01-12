@@ -73,7 +73,7 @@ public class ObjectAnimationUsingKeyFrames : ObjectAnimationBase, IKeyFrameAnima
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ObjectAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

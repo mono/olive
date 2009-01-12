@@ -27,9 +27,7 @@ using System;
 using System.Security;
 using System.IO;
 using System.Collections.Specialized;
-#if notyet
 using System.Windows.Media.Imaging;
-#endif
 
 namespace System.Windows {
 

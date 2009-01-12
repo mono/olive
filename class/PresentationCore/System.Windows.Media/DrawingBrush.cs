@@ -39,19 +39,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public DrawingBrush Clone ()
+		public new DrawingBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public DrawingBrush CloneCurrentValue ()
+		public new DrawingBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new DrawingBrush ();
 		}
 
 		protected override void GetContentBounds (out Rect bounds)

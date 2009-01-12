@@ -104,7 +104,7 @@ public class ColorKeyFrameCollection : Freezable, IList, ICollection, IEnumerabl
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ColorKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

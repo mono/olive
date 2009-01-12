@@ -35,7 +35,7 @@ public class DiscreteVectorKeyFrame : VectorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteVectorKeyFrame ();
 	}
 
 	protected override Vector InterpolateValueCore (Vector baseValue, double keyFrameProgress)

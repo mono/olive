@@ -34,12 +34,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public Drawing Clone ()
+		public new Drawing Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Drawing CloneCurrentValue ()
+		public new Drawing CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

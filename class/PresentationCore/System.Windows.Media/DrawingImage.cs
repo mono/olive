@@ -38,19 +38,19 @@ namespace System.Windows.Media {
 			Drawing = drawing;
 		}
 
-		public DrawingImage Clone ()
+		public new DrawingImage Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public DrawingImage CloneCurrentValue ()
+		public new DrawingImage CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new DrawingImage ();
 		}
 
 		public override ImageMetadata Metadata {

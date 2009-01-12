@@ -30,12 +30,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
+		protected override GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public HitTestResult HitTestCore (PointHitTestParameters hitTestParameters)
+		protected override HitTestResult HitTestCore (PointHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
 		}

@@ -104,7 +104,7 @@ public class CharKeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new CharKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

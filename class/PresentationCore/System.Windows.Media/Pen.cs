@@ -40,19 +40,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public Pen Clone ()
+		public new Pen Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Pen CloneCurrentValue ()
+		public new Pen CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new Pen ();
 		}
 
 		public static readonly DependencyProperty LineJoinProperty;

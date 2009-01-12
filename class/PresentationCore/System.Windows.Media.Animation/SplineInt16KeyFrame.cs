@@ -51,7 +51,7 @@ public class SplineInt16KeyFrame : Int16KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineInt16KeyFrame ();
 	}
 
 	protected override short InterpolateValueCore (short baseValue, double keyFrameProgress)

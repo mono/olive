@@ -35,7 +35,7 @@ public class DiscreteColorKeyFrame : ColorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteColorKeyFrame ();
 	}
 
 	protected override Color InterpolateValueCore (Color baseValue, double keyFrameProgress)

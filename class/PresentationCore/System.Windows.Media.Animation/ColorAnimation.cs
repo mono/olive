@@ -73,7 +73,7 @@ public class ColorAnimation : ColorAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ColorAnimation ();
 	}
 
 	protected override Color GetCurrentValueCore (Color defaultOriginValue, Color defaultDestinationValue, AnimationClock animationClock)

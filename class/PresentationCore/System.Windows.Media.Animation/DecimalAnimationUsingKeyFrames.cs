@@ -73,7 +73,7 @@ public class DecimalAnimationUsingKeyFrames : DecimalAnimationBase, IKeyFrameAni
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DecimalAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

@@ -26,12 +26,12 @@
 namespace System.Windows.Media {
 
 	public class HostVisual : ContainerVisual {
-		protected virtual GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
+		protected override GeometryHitTestResult HitTestCore (GeometryHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected virtual HitTestResult HitTestCore (PointHitTestParameters hitTestParameters)
+		protected override HitTestResult HitTestCore (PointHitTestParameters hitTestParameters)
 		{
 			throw new NotImplementedException ();
 		}

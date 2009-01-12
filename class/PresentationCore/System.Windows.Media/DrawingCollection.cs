@@ -4,13 +4,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
 
-	public class DrawingCollection : Animatable, ICollection<Drawing>, IList<Drawing>, ICollection, IList
+	public class DrawingCollection : Animatable, ICollection<Drawing>, IList<Drawing>, ICollection, IList, IFormattable
 	{
+		List<Drawing> list;
+
 		public struct Enumerator : IEnumerator<Drawing>, IEnumerator
 		{
 			public void Reset()
@@ -38,93 +42,76 @@ namespace System.Windows.Media {
 
 		public DrawingCollection ()
 		{
+			list = new List<Drawing>();
 		}
 
 		public DrawingCollection (IEnumerable<Drawing> values)
 		{
+			list = new List<Drawing> (values);
 		}
 
 		public DrawingCollection (int length)
 		{
+			list = new List<Drawing> (length);
 		}
 
-		public DrawingCollection Clone ()
+		public new DrawingCollection Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public DrawingCollection CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCore (Freezable sourceFreezable)
+		public new DrawingCollection CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		public bool Contains (Drawing value)
 		{
-			throw new NotImplementedException ();
+			return list.Contains (value);
 		}
 
 		public bool Remove (Drawing value)
 		{
-			throw new NotImplementedException ();
+			return list.Remove (value);
 		}
 
 		public int IndexOf (Drawing value)
 		{
-			throw new NotImplementedException ();
+			return list.IndexOf (value);
 		}
 
 		public void Add (Drawing value)
 		{
-			throw new NotImplementedException ();
+			list.Add (value);
 		}
 
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			list.Clear ();
 		}
 
-		public void CopyTo (Drawing[] array, int offset)
+		public void CopyTo (Drawing[] array, int arrayIndex)
 		{
-			throw new NotImplementedException ();
+			list.CopyTo (array, arrayIndex);
 		}
 
 		public void Insert (int index, Drawing value)
 		{
-			throw new NotImplementedException ();
+			list.Insert (index, value);
 		}
 
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			list.RemoveAt (index);
 		}
 
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return list.Count; }
 		}
 
 		public Drawing this[int index] {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return list[index]; }
+			set { list[index] = value; }
 		}
 
 		public static DrawingCollection Parse (string str)
@@ -136,14 +123,19 @@ namespace System.Windows.Media {
 			get { return false; }
 		}
 
+		public Enumerator GetEnumerator()
+		{
+			return new Enumerator();
+		}
+
 		IEnumerator<Drawing> IEnumerable<Drawing>.GetEnumerator()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator();
 		}
 
 		bool ICollection.IsSynchronized {
@@ -198,10 +190,57 @@ namespace System.Windows.Media {
 			Remove ((Drawing)value);
 		}
 
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
 
 		protected override bool FreezeCore (bool isChecking)
 		{{
-			throw new NotImplementedException ();
+			if (isChecking) {{
+				return base.FreezeCore (isChecking);
+			}}
+			else {{
+				return true;
+			}}
 		}}
+
+
+
+		protected override Freezable CreateInstanceCore ()
+		{
+			return new DrawingCollection();
+		}
+
+		protected override void GetAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

@@ -73,7 +73,7 @@ public class ByteAnimation : ByteAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new ByteAnimation ();
 	}
 
 	protected override byte GetCurrentValueCore (byte defaultOriginValue, byte defaultDestinationValue, AnimationClock animationClock)

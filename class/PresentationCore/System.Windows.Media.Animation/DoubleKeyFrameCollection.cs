@@ -104,7 +104,7 @@ public class DoubleKeyFrameCollection : Freezable, IList, ICollection, IEnumerab
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DoubleKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

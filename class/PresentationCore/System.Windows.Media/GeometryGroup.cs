@@ -36,19 +36,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GeometryGroup Clone ()
+		public new GeometryGroup Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GeometryGroup CloneCurrentValue ()
+		public new GeometryGroup CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new GeometryGroup ();
 		}
 
 		public override bool MayHaveCurves ()

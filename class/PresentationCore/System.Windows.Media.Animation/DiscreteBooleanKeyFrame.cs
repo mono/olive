@@ -35,7 +35,7 @@ public class DiscreteBooleanKeyFrame : BooleanKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteBooleanKeyFrame ();
 	}
 
 	protected override bool InterpolateValueCore (bool baseValue, double keyFrameProgress)

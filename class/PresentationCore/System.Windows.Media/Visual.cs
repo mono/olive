@@ -24,6 +24,8 @@
 //
 
 using System;
+using System.Windows;
+using System.Windows.Media.Effects;
 using System.Windows.Threading;
 
 namespace System.Windows.Media {
@@ -31,7 +33,6 @@ namespace System.Windows.Media {
 	public abstract class Visual : DependencyObject {
 		protected Visual ()
 		{
-			throw new NotImplementedException ();
 		}
 
 		protected void AddVisualChild (Visual child)
@@ -59,13 +60,23 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
+		[MonoTODO("enable Visual3D case")]
+		[MonoTODO("descendant == null case")]
 		public bool IsAncestorOf (DependencyObject descendant)
 		{
+			if (!(descendant is Visual /*|| descendant is Visual3D*/))
+				throw new ArgumentException (string.Format ("'{0}' is not a Visual or Visual3D", descendant.GetType()));
+
 			throw new NotImplementedException ();
 		}
 
+		[MonoTODO("enable Visual3D case")]
+		[MonoTODO("ancestor == null case")]
 		public bool IsDescendantOf (DependencyObject ancestor)
 		{
+			if (!(ancestor is Visual /*|| ancestor is Visual3D*/))
+				throw new ArgumentException (string.Format ("'{0}' is not a Visual or Visual3D", ancestor.GetType()));
+
 			throw new NotImplementedException ();
 		}
 
@@ -110,7 +121,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-#if waiting
+		[Obsolete ("BitmapEffects are inefficient and will be deprecated in a future release. Use UIElement.Effect and ShaderEffects instead.")]
 		protected internal BitmapEffect VisualBitmapEffect {
 			get {
 				throw new NotImplementedException ();
@@ -120,6 +131,7 @@ namespace System.Windows.Media {
 			}
 		}
 
+#if waiting
 		protected internal BitmapEffectInput VisualBitmapEffectInput {
 			get {
 				throw new NotImplementedException ();
@@ -128,7 +140,7 @@ namespace System.Windows.Media {
 				throw new NotImplementedException ();
 			}
 		}
-
+#endif
 		protected internal BitmapScalingMode VisualBitmapScalingMode {
 			get {
 				throw new NotImplementedException ();
@@ -137,7 +149,6 @@ namespace System.Windows.Media {
 				throw new NotImplementedException ();
 			}
 		}
-#endif
 
 		protected virtual int VisualChildrenCount {
 			get {
@@ -145,7 +156,6 @@ namespace System.Windows.Media {
 			}
 		}
 
-#if waiting
 		protected internal Geometry VisualClip {
 			get {
 				throw new NotImplementedException ();
@@ -172,7 +182,6 @@ namespace System.Windows.Media {
 				throw new NotImplementedException ();
 			}
 		}
-#endif
 
 		protected internal double VisualOpacity {
 			get {
@@ -183,7 +192,6 @@ namespace System.Windows.Media {
 			}
 		}
 
-#if waiting
 		protected internal Brush VisualOpacityMask {
 			get {
 				throw new NotImplementedException ();
@@ -192,7 +200,6 @@ namespace System.Windows.Media {
 				throw new NotImplementedException ();
 			}
 		}
-#endif
 
 		protected DependencyObject VisualParent {
 			get {
@@ -209,7 +216,6 @@ namespace System.Windows.Media {
 			}
 		}
 
-#if waiting
 		protected internal DoubleCollection VisualXSnappingGuidelines {
 			get {
 				throw new NotImplementedException ();
@@ -227,6 +233,5 @@ namespace System.Windows.Media {
 				throw new NotImplementedException ();
 			}
 		}
-#endif
 	}
 }

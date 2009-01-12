@@ -4,13 +4,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
 
-	public class PathFigureCollection : Animatable, ICollection<PathFigure>, IList<PathFigure>, ICollection, IList
+	public class PathFigureCollection : Animatable, ICollection<PathFigure>, IList<PathFigure>, ICollection, IList, IFormattable
 	{
+		List<PathFigure> list;
+
 		public struct Enumerator : IEnumerator<PathFigure>, IEnumerator
 		{
 			public void Reset()
@@ -38,93 +42,76 @@ namespace System.Windows.Media {
 
 		public PathFigureCollection ()
 		{
+			list = new List<PathFigure>();
 		}
 
 		public PathFigureCollection (IEnumerable<PathFigure> values)
 		{
+			list = new List<PathFigure> (values);
 		}
 
 		public PathFigureCollection (int length)
 		{
+			list = new List<PathFigure> (length);
 		}
 
-		public PathFigureCollection Clone ()
+		public new PathFigureCollection Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public PathFigureCollection CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCore (Freezable sourceFreezable)
+		public new PathFigureCollection CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		public bool Contains (PathFigure value)
 		{
-			throw new NotImplementedException ();
+			return list.Contains (value);
 		}
 
 		public bool Remove (PathFigure value)
 		{
-			throw new NotImplementedException ();
+			return list.Remove (value);
 		}
 
 		public int IndexOf (PathFigure value)
 		{
-			throw new NotImplementedException ();
+			return list.IndexOf (value);
 		}
 
 		public void Add (PathFigure value)
 		{
-			throw new NotImplementedException ();
+			list.Add (value);
 		}
 
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			list.Clear ();
 		}
 
-		public void CopyTo (PathFigure[] array, int offset)
+		public void CopyTo (PathFigure[] array, int arrayIndex)
 		{
-			throw new NotImplementedException ();
+			list.CopyTo (array, arrayIndex);
 		}
 
 		public void Insert (int index, PathFigure value)
 		{
-			throw new NotImplementedException ();
+			list.Insert (index, value);
 		}
 
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			list.RemoveAt (index);
 		}
 
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return list.Count; }
 		}
 
 		public PathFigure this[int index] {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return list[index]; }
+			set { list[index] = value; }
 		}
 
 		public static PathFigureCollection Parse (string str)
@@ -136,14 +123,19 @@ namespace System.Windows.Media {
 			get { return false; }
 		}
 
+		public Enumerator GetEnumerator()
+		{
+			return new Enumerator();
+		}
+
 		IEnumerator<PathFigure> IEnumerable<PathFigure>.GetEnumerator()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator();
 		}
 
 		bool ICollection.IsSynchronized {
@@ -198,10 +190,57 @@ namespace System.Windows.Media {
 			Remove ((PathFigure)value);
 		}
 
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
 
 		protected override bool FreezeCore (bool isChecking)
 		{{
-			throw new NotImplementedException ();
+			if (isChecking) {{
+				return base.FreezeCore (isChecking);
+			}}
+			else {{
+				return true;
+			}}
 		}}
+
+
+
+		protected override Freezable CreateInstanceCore ()
+		{
+			return new PathFigureCollection();
+		}
+
+		protected override void GetAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

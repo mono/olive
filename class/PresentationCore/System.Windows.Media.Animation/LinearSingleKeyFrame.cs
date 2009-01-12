@@ -35,7 +35,7 @@ public class LinearSingleKeyFrame : SingleKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearSingleKeyFrame ();
 	}
 
 	protected override float InterpolateValueCore (float baseValue, double keyFrameProgress)

@@ -104,7 +104,7 @@ public class DecimalKeyFrameCollection : Freezable, IList, ICollection, IEnumera
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DecimalKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

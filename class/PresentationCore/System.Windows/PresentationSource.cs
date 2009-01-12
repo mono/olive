@@ -44,6 +44,11 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
+		[SecurityCritical]
+		public static PresentationSource FromDependencyObject (DependencyObject element)
+		{
+			throw new NotImplementedException ();
+		}
 
 		protected void AddSource ()
 		{

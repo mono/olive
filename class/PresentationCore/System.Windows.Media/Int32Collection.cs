@@ -4,13 +4,17 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Globalization;
 using System.Windows.Media.Animation;
 
 namespace System.Windows.Media {
 
 
-	public class Int32Collection : Freezable, ICollection<Int32>, IList<Int32>, ICollection, IList
+	public class Int32Collection : Freezable, ICollection<Int32>, IList<Int32>, ICollection, IList, IFormattable
 	{
+		List<Int32> list;
+
 		public struct Enumerator : IEnumerator<Int32>, IEnumerator
 		{
 			public void Reset()
@@ -38,93 +42,76 @@ namespace System.Windows.Media {
 
 		public Int32Collection ()
 		{
+			list = new List<Int32>();
 		}
 
 		public Int32Collection (IEnumerable<Int32> values)
 		{
+			list = new List<Int32> (values);
 		}
 
 		public Int32Collection (int length)
 		{
+			list = new List<Int32> (length);
 		}
 
-		public Int32Collection Clone ()
+		public new Int32Collection Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public Int32Collection CloneCurrentValue ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override Freezable CreateInstanceCore ()
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected override void CloneCore (Freezable sourceFreezable)
+		public new Int32Collection CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		public bool Contains (int value)
 		{
-			throw new NotImplementedException ();
+			return list.Contains (value);
 		}
 
 		public bool Remove (int value)
 		{
-			throw new NotImplementedException ();
+			return list.Remove (value);
 		}
 
 		public int IndexOf (int value)
 		{
-			throw new NotImplementedException ();
+			return list.IndexOf (value);
 		}
 
 		public void Add (int value)
 		{
-			throw new NotImplementedException ();
+			list.Add (value);
 		}
 
 		public void Clear ()
 		{
-			throw new NotImplementedException ();
+			list.Clear ();
 		}
 
-		public void CopyTo (int[] array, int offset)
+		public void CopyTo (int[] array, int arrayIndex)
 		{
-			throw new NotImplementedException ();
+			list.CopyTo (array, arrayIndex);
 		}
 
 		public void Insert (int index, int value)
 		{
-			throw new NotImplementedException ();
+			list.Insert (index, value);
 		}
 
 		public void RemoveAt (int index)
 		{
-			throw new NotImplementedException ();
+			list.RemoveAt (index);
 		}
 
 		public int Count {
-			get { throw new NotImplementedException (); }
+			get { return list.Count; }
 		}
 
 		public int this[int index] {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+			get { return list[index]; }
+			set { list[index] = value; }
 		}
 
 		public static Int32Collection Parse (string str)
@@ -136,14 +123,19 @@ namespace System.Windows.Media {
 			get { return false; }
 		}
 
+		public Enumerator GetEnumerator()
+		{
+			return new Enumerator();
+		}
+
 		IEnumerator<Int32> IEnumerable<Int32>.GetEnumerator()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator ();
 		}
 
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			return GetEnumerator();
 		}
 
 		bool ICollection.IsSynchronized {
@@ -198,5 +190,45 @@ namespace System.Windows.Media {
 			Remove ((int)value);
 		}
 
+		public override string ToString ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public string ToString (IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+		string IFormattable.ToString (string format, IFormatProvider provider)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		protected override Freezable CreateInstanceCore ()
+		{
+			return new Int32Collection();
+		}
+
+		protected override void GetAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void GetCurrentValueAsFrozenCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCurrentValueCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override void CloneCore (Freezable sourceFreezable)
+		{
+			throw new NotImplementedException ();
+		}
 	}
 }

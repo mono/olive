@@ -844,7 +844,7 @@ namespace System.Windows {
 			set { SetValue (IsEnabledProperty, value); }
 		}
 
-		public virtual bool IsEnabledCore {
+		protected virtual bool IsEnabledCore {
 			get { throw new NotImplementedException (); }
 		}
 		

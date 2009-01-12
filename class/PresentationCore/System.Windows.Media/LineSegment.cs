@@ -38,19 +38,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public LineSegment Clone ()
+		public new LineSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public LineSegment CloneCurrentValue ()
+		public new LineSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException (); 
+			return new LineSegment ();
 		}
 
 		public static readonly DependencyProperty PointProperty;

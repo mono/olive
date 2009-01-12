@@ -42,19 +42,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public RadialGradientBrush Clone ()
+		public new RadialGradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public RadialGradientBrush CloneCurrentValue ()
+		public new RadialGradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new RadialGradientBrush ();
 		}
 
 		public static readonly DependencyProperty CenterProperty;

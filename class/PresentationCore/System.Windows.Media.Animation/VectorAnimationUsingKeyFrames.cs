@@ -73,7 +73,7 @@ public class VectorAnimationUsingKeyFrames : VectorAnimationBase, IKeyFrameAnima
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new VectorAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

@@ -73,7 +73,7 @@ public class Int32AnimationUsingKeyFrames : Int32AnimationBase, IKeyFrameAnimati
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int32AnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

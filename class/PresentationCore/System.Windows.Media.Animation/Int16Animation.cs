@@ -73,7 +73,7 @@ public class Int16Animation : Int16AnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int16Animation ();
 	}
 
 	protected override short GetCurrentValueCore (short defaultOriginValue, short defaultDestinationValue, AnimationClock animationClock)

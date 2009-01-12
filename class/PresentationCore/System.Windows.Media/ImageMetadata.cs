@@ -29,7 +29,7 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public ImageMetadata Clone ()
+		public new ImageMetadata Clone ()
 		{
 			throw new NotImplementedException ();
 		}

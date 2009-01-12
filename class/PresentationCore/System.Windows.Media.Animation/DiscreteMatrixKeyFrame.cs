@@ -35,7 +35,7 @@ public class DiscreteMatrixKeyFrame : MatrixKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteMatrixKeyFrame ();
 	}
 
 	protected override Matrix InterpolateValueCore (Matrix baseValue, double keyFrameProgress)

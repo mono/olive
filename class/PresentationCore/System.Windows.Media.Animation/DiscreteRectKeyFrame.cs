@@ -35,7 +35,7 @@ public class DiscreteRectKeyFrame : RectKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteRectKeyFrame ();
 	}
 
 	protected override Rect InterpolateValueCore (Rect baseValue, double keyFrameProgress)

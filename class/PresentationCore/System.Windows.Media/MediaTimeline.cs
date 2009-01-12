@@ -47,19 +47,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public MediaTimeline Clone ()
+		public new MediaTimeline Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public MediaTimeline CloneCurrentValue ()
+		public new MediaTimeline CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new MediaTimeline ((TimeSpan?)null);
 		}
 
 		protected override void GetAsFrozenCore (Freezable sourceFreezable)

@@ -35,7 +35,7 @@ public class LinearInt32KeyFrame : Int32KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearInt32KeyFrame ();
 	}
 
 	protected override int InterpolateValueCore (int baseValue, double keyFrameProgress)

@@ -35,7 +35,7 @@ public class DiscreteStringKeyFrame : StringKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteStringKeyFrame ();
 	}
 
 	protected override String InterpolateValueCore (String baseValue, double keyFrameProgress)

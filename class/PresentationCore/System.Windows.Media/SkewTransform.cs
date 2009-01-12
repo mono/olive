@@ -97,7 +97,7 @@ namespace System.Windows.Media {
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new SkewTransform ();
 		}
 	}
 }

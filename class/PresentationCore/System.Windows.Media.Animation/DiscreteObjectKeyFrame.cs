@@ -35,7 +35,7 @@ public class DiscreteObjectKeyFrame : ObjectKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteObjectKeyFrame ();
 	}
 
 	protected override object InterpolateValueCore (object baseValue, double keyFrameProgress)

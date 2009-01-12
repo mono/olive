@@ -73,7 +73,7 @@ public class SingleAnimation : SingleAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SingleAnimation ();
 	}
 
 	protected override float GetCurrentValueCore (float defaultOriginValue, float defaultDestinationValue, AnimationClock animationClock)

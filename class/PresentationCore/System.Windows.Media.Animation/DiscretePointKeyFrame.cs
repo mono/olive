@@ -35,7 +35,7 @@ public class DiscretePointKeyFrame : PointKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscretePointKeyFrame ();
 	}
 
 	protected override Point InterpolateValueCore (Point baseValue, double keyFrameProgress)

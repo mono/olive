@@ -35,7 +35,7 @@ public class DiscreteDoubleKeyFrame : DoubleKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteDoubleKeyFrame ();
 	}
 
 	protected override double InterpolateValueCore (double baseValue, double keyFrameProgress)

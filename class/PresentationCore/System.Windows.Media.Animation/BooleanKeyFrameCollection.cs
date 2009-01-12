@@ -104,7 +104,7 @@ public class BooleanKeyFrameCollection : Freezable, IList, ICollection, IEnumera
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new BooleanKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

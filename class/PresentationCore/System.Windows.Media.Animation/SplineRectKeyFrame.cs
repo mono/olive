@@ -51,7 +51,7 @@ public class SplineRectKeyFrame : RectKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineRectKeyFrame ();
 	}
 
 	protected override Rect InterpolateValueCore (Rect baseValue, double keyFrameProgress)

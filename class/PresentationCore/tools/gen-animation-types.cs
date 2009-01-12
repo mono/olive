@@ -246,7 +246,7 @@ public class {0}Animation : {0}AnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new {0}Animation ();
 	}}
 
 	protected override {1} GetCurrentValueCore ({1} defaultOriginValue, {1} defaultDestinationValue, AnimationClock animationClock)
@@ -321,7 +321,7 @@ public class {0}AnimationUsingKeyFrames : {0}AnimationBase, IKeyFrameAnimation, 
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new {0}AnimationUsingKeyFrames ();
 	}}
 
 	protected override bool FreezeCore (bool isChecking)
@@ -527,7 +527,7 @@ public class {0}KeyFrameCollection : Freezable, IList, ICollection, IEnumerable
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new {0}KeyFrameCollection ();
 	}}
 
 	protected override bool FreezeCore (bool isChecking)
@@ -648,7 +648,7 @@ public class Discrete{0}KeyFrame : {0}KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new Discrete{0}KeyFrame ();
 	}}
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
@@ -685,7 +685,7 @@ public class Linear{0}KeyFrame : {0}KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new Linear{0}KeyFrame ();
 	}}
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)
@@ -739,7 +739,7 @@ public class Spline{0}KeyFrame : {0}KeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{{
-		throw new NotImplementedException ();
+		return new Spline{0}KeyFrame ();
 	}}
 
 	protected override {1} InterpolateValueCore ({1} baseValue, double keyFrameProgress)

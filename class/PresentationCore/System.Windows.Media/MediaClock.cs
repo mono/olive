@@ -50,7 +50,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual bool GetCanSlip ()
+		protected override bool GetCanSlip ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -60,7 +60,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		public MediaTimeline Timeline {
+		public new MediaTimeline Timeline {
 			get { return timeline; }
 		}
 

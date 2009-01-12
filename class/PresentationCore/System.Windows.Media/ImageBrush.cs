@@ -39,19 +39,19 @@ namespace System.Windows.Media {
 			ImageSource = imageSource;
 		}
 
-		public ImageBrush Clone ()
+		public new ImageBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public ImageBrush CloneCurrentValue ()
+		public new ImageBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new ImageBrush ();
 		}
 
 		protected override void GetContentBounds (out Rect bounds)

@@ -35,7 +35,7 @@ public class DiscreteSizeKeyFrame : SizeKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DiscreteSizeKeyFrame ();
 	}
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)

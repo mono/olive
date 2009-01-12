@@ -73,7 +73,7 @@ public class DoubleAnimation : DoubleAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new DoubleAnimation ();
 	}
 
 	protected override double GetCurrentValueCore (double defaultOriginValue, double defaultDestinationValue, AnimationClock animationClock)

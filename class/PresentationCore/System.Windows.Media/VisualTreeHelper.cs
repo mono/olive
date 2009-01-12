@@ -1,0 +1,133 @@
+// Permission is hereby granted, free of charge, to any person obtaining
+// a copy of this software and associated documentation files (the
+// "Software"), to deal in the Software without restriction, including
+// without limitation the rights to use, copy, modify, merge, publish,
+// distribute, sublicense, and/or sell copies of the Software, and to
+// permit persons to whom the Software is furnished to do so, subject to
+// the following conditions:
+// 
+// The above copyright notice and this permission notice shall be
+// included in all copies or substantial portions of the Software.
+// 
+// THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+// EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+// MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+// NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE
+// LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION
+// OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
+// WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+//
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
+//
+// Author:
+//	Chris Toshok (toshok@ximian.com)
+//
+
+using System.Windows;
+using System.Windows.Media.Effects;
+#if notyet
+using System.Windows.Media.Media3D;
+#endif
+
+namespace System.Windows.Media {
+
+	public static class VisualTreeHelper {
+		public static void HitTest (Visual visual, HitTestFilterCallback filter, HitTestResultCallback results, HitTestParameters parameters)
+		{
+			throw new NotImplementedException ();
+		}
+		public static HitTestResult HitTest (Visual visual, Point point)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static DependencyObject GetChild (DependencyObject parent, int childIndex)
+		{
+			throw new NotImplementedException ();
+		}
+		public static int GetChildrenCount (DependencyObject parent)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static Rect GetContentBounds (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Rect GetDescendantBounds (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Brush GetOpacityMask (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static DrawingGroup GetDrawing (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static double GetOpacity (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static DoubleCollection GetXSnappingGuidelines (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static DoubleCollection GetYSnappingGuidelines (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static DependencyObject GetParent (DependencyObject child)
+		{
+			throw new NotImplementedException ();
+		}
+		public static EdgeMode GetEdgeMode (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Geometry GetClip (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Vector GetOffset (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Transform GetTransform (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static BitmapEffect GetBitmapEffect (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+#if notyet
+		public static BitmapEffectInput GetBitmapEffectInput (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Effect GetEffect (Visual visual)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
+
+#if notyet
+		public static Rect3D GetDescendantBounds (Visual3D visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static Rect3D GetContentBounds (Visual3D visual)
+		{
+			throw new NotImplementedException ();
+		}
+		public static void HitTest (Visual3D visual, HitTestFilterCallback filter, HitTestResultCallback results, HitTestParameters3D parameters)
+		{
+			throw new NotImplementedException ();
+		}
+#endif
+	}
+
+}

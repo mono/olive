@@ -51,7 +51,7 @@ public class SplineColorKeyFrame : ColorKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SplineColorKeyFrame ();
 	}
 
 	protected override Color InterpolateValueCore (Color baseValue, double keyFrameProgress)

@@ -39,12 +39,12 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GradientBrush Clone ()
+		public new GradientBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public GradientBrush CloneCurrentValue ()
+		public new GradientBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}

@@ -39,19 +39,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public VisualBrush Clone ()
+		public new VisualBrush Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public VisualBrush CloneCurrentValue ()
+		public new VisualBrush CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new VisualBrush ();
 		}
 
 		protected override void OnPropertyChanged (DependencyPropertyChangedEventArgs args)

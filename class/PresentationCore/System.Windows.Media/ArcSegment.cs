@@ -42,19 +42,19 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public ArcSegment Clone ()
+		public new ArcSegment Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public ArcSegment CloneCurrentValue ()
+		public new ArcSegment CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new ArcSegment ();
 		}
 
 		public static readonly DependencyProperty PointProperty;

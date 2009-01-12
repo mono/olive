@@ -48,19 +48,19 @@ namespace System.Windows.Media {
 			Transform = transform;
 		}
 
-		public PathGeometry Clone ()
+		public new PathGeometry Clone ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public PathGeometry CloneCurrentValue ()
+		public new PathGeometry CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new PathGeometry ();
 		}
 
 		public override bool IsEmpty ()
@@ -89,7 +89,7 @@ namespace System.Windows.Media {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnChanged ()
+		protected override void OnChanged ()
 		{
 			throw new NotImplementedException ();
 		}
@@ -111,7 +111,7 @@ namespace System.Windows.Media {
 		    set { SetValue (FiguresProperty, value); }
 		}
 
-		public virtual Rect Bounds {
+		public override Rect Bounds {
 			get { throw new NotImplementedException (); }
 		}
 	}

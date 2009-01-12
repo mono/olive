@@ -104,7 +104,7 @@ public class PointKeyFrameCollection : Freezable, IList, ICollection, IEnumerabl
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new PointKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

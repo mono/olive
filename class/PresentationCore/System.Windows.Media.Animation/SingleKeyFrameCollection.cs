@@ -104,7 +104,7 @@ public class SingleKeyFrameCollection : Freezable, IList, ICollection, IEnumerab
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SingleKeyFrameCollection ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

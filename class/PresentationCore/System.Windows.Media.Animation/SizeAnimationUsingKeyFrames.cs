@@ -73,7 +73,7 @@ public class SizeAnimationUsingKeyFrames : SizeAnimationBase, IKeyFrameAnimation
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new SizeAnimationUsingKeyFrames ();
 	}
 
 	protected override bool FreezeCore (bool isChecking)

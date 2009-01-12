@@ -73,7 +73,7 @@ public class Int32Animation : Int32AnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new Int32Animation ();
 	}
 
 	protected override int GetCurrentValueCore (int defaultOriginValue, int defaultDestinationValue, AnimationClock animationClock)

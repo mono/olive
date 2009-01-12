@@ -73,7 +73,7 @@ public class VectorAnimation : VectorAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new VectorAnimation ();
 	}
 
 	protected override Vector GetCurrentValueCore (Vector defaultOriginValue, Vector defaultDestinationValue, AnimationClock animationClock)

@@ -34,15 +34,15 @@ namespace System.Windows.Media {
 		}
 
 		[SecurityCritical]
-		public void Dispose ()
+		public override void Dispose ()
 		{
 		}
 
-		public Matrix TransformToDevice {
+		public override Matrix TransformToDevice {
 			get { throw new NotImplementedException (); }
 		}
 
-		public Matrix TransformFromDevice {
+		public override Matrix TransformFromDevice {
 			get { throw new NotImplementedException (); }
 		}
 	}

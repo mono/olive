@@ -73,7 +73,7 @@ public class PointAnimation : PointAnimationBase
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new PointAnimation ();
 	}
 
 	protected override Point GetCurrentValueCore (Point defaultOriginValue, Point defaultDestinationValue, AnimationClock animationClock)

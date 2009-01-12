@@ -39,18 +39,18 @@ namespace System.Windows.Media {
 		{
 		}
 
-		public GradientStop Clone ()
+		public new GradientStop Clone ()
 		{
 			throw new NotImplementedException ();
 		}
-		public GradientStop CloneCurrentValue ()
+		public new GradientStop CloneCurrentValue ()
 		{
 			throw new NotImplementedException ();
 		}
 
 		protected override Freezable CreateInstanceCore ()
 		{
-			throw new NotImplementedException ();
+			return new GradientStop ();
 		}
 
 		public static readonly DependencyProperty OffsetProperty;

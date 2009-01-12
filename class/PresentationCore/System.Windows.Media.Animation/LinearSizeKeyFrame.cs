@@ -35,7 +35,7 @@ public class LinearSizeKeyFrame : SizeKeyFrame
 
 	protected override Freezable CreateInstanceCore ()
 	{
-		throw new NotImplementedException ();
+		return new LinearSizeKeyFrame ();
 	}
 
 	protected override Size InterpolateValueCore (Size baseValue, double keyFrameProgress)
