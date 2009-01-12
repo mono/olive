@@ -17,44 +17,62 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System.Windows;
-using System.Windows.Input;
+using System.ComponentModel;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
 
-	public class Control : FrameworkElement {
+	//[TypeConverter (typeof (ThicknessConverter))]
+	public struct Thickness : IEquatable<Thickness> {
+		public Thickness (double left, double top, double right, double bottom)
+		{
+			Left = left;
+			Top = top;
+			Right = right;
+			Bottom = bottom;
+		}
 
-		protected virtual void OnPreviewMouseDoubleClick (MouseButtonEventArgs e)
+		public Thickness (double uniformLength)
+		{
+			Left =
+				Top =
+				Right =
+				Bottom = uniformLength;
+		}
+
+		public double Left { get; set; }
+		public double Top { get; set; }
+		public double Right { get; set; }
+		public double Bottom { get; set; }
+
+		public bool Equals (Thickness thickness)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnMouseDoubleClick (MouseButtonEventArgs e)
+		public override bool Equals (object obj)
+		{
+			return Equals ((Thickness)obj);
+		}
+
+		public override int GetHashCode ()
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static readonly DependencyProperty TemplateProperty =
-			DependencyProperty.Register ("Template", typeof (ControlTemplate), typeof (Control),
-						     new PropertyMetadata (OnTemplateChanged));
-		public ControlTemplate Template {
-		    get { return (ControlTemplate)GetValue (TemplateProperty); }
-		    set { SetValue (TemplateProperty, value); }
-		}
-		
-		private static void OnTemplateChanged (object sender, DependencyPropertyChangedEventArgs e)
+		public static bool operator == (Thickness t1, Thickness t2)
 		{
-			((Control)sender).OnTemplateChanged ((ControlTemplate)e.OldValue, (ControlTemplate)e.NewValue);
+			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnTemplateChanged (ControlTemplate oldTemplate, ControlTemplate newTemplate)
+		public static bool operator != (Thickness t1, Thickness t2)
 		{
+			throw new NotImplementedException ();
 		}
 
 		public override string ToString ()

@@ -17,47 +17,63 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.Collections;
+using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace System.Windows.Controls {
 
-	public class Control : FrameworkElement {
+	[ContentProperty ("Child")]
+	[Localizability (LocalizationCategory.Ignore, Readability = Readability.Unreadable)]
+	public class Decorator : FrameworkElement, IAddChild
+	{
+		public Decorator ()
+		{
+		}
 
-		protected virtual void OnPreviewMouseDoubleClick (MouseButtonEventArgs e)
+		[DefaultValue (null)]
+		public virtual UIElement Child {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		protected internal override IEnumerator LogicalChildren {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override int VisualChildrenCount {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override Visual GetVisualChild (int index)
 		{
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnMouseDoubleClick (MouseButtonEventArgs e)
+		protected override Size ArrangeOverride (Size arrangeSize)
 		{
 			throw new NotImplementedException ();
 		}
 
-		public static readonly DependencyProperty TemplateProperty =
-			DependencyProperty.Register ("Template", typeof (ControlTemplate), typeof (Control),
-						     new PropertyMetadata (OnTemplateChanged));
-		public ControlTemplate Template {
-		    get { return (ControlTemplate)GetValue (TemplateProperty); }
-		    set { SetValue (TemplateProperty, value); }
-		}
-		
-		private static void OnTemplateChanged (object sender, DependencyPropertyChangedEventArgs e)
+		protected override Size MeasureOverride (Size constraint)
 		{
-			((Control)sender).OnTemplateChanged ((ControlTemplate)e.OldValue, (ControlTemplate)e.NewValue);
+			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnTemplateChanged (ControlTemplate oldTemplate, ControlTemplate newTemplate)
+		void IAddChild.AddChild (object child)
 		{
+			throw new NotImplementedException ();
 		}
 
-		public override string ToString ()
+		void IAddChild.AddText (string text)
 		{
 			throw new NotImplementedException ();
 		}

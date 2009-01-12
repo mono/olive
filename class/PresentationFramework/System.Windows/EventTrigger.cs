@@ -17,46 +17,72 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.ComponentModel;
+using System.Windows.Markup;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
+	[ContentProperty ("Actions")]
+	public class EventTrigger : TriggerBase, IAddChild {
 
-		public Button ()
+		public EventTrigger ()
 		{
 		}
 
-		protected override void OnClick ()
+		public EventTrigger (RoutedEvent routedEvent)
 		{
+			this.routedEvent = routedEvent;
+		}
+
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public bool ShouldSerializeActions ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected virtual void AddChild (object child)
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected virtual void AddText (string text)
+		{
+			throw new NotImplementedException ();
+		}
+
+		void IAddChild.AddChild (object child)
+		{
+			AddChild (child);
+		}
+
+		void IAddChild.AddText (string text)
+		{
+			AddText (text);
 		}
 
 #if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
-		{
+		public TriggerActionCollection Actions {
+			get { throw new NotImplementedException (); }
 		}
 #endif
 
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+		public RoutedEvent RoutedEvent {
+			get { return routedEvent; }
+			set { routedEvent = value; }
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public string SourceName {
+			get { return sourceName; }
+			set { sourceName = value; }
 		}
+
+		RoutedEvent routedEvent;
+		string sourceName;
 	}
-
 }

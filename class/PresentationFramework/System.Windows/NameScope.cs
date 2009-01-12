@@ -17,46 +17,49 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.ComponentModel;
+using System.Windows.Markup;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	public class NameScope : INameScope {
+		public NameScope ()
 		{
 		}
 
-		protected override void OnClick ()
+		public object FindName (string name)
 		{
+			throw new NotImplementedException ();
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+		public void RegisterName (string name, object scopedElement)
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+			throw new NotImplementedException ();
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public void UnregisterName (string name)
+		{
+			throw new NotImplementedException ();
 		}
+
+		public static readonly DependencyProperty NameScopeProperty;
+
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		public static INameScope GetNameScope (DependencyObject dependencyObject)
+		{
+			return (INameScope)dependencyObject.GetValue (NameScopeProperty);
+		}
+		
+		public static void SetNameScope (DependencyObject dependencyObject, INameScope value)
+		{
+			dependencyObject.SetValue (NameScopeProperty, value);
+		}
+		
 	}
-
 }

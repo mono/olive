@@ -17,46 +17,30 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
-		{
-		}
-
-		protected override void OnClick ()
-		{
-		}
-
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
-		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
-		}
-
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
-		}
+	[Flags]
+	public enum FrameworkPropertyMetadataOptions {
+		None                           = 0,
+		AffectsMeasure                 = 1<<0,
+		AffectsArrange                 = 1<<1,
+		AffectsParentMeasure           = 1<<2,
+		AffectsParentArrange           = 1<<3,
+		AffectsRender                  = 1<<4,
+		Inherits                       = 1<<5,
+		OverridesInheritanceBehavior   = 1<<6,
+		NotDataBindable                = 1<<7,
+		BindsTwoWayByDefault           = 1<<8,
+		
+		Journal                        = 1<<10,
+		SubPropertiesDoNotAffectRender = 1<<11
 	}
-
 }

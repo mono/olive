@@ -31,14 +31,9 @@ using System.Windows.Markup;
 
 namespace System.Windows.Controls {
 
-// 	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
-// 	[ContentPropertyAttribute("Content")] 
+ 	[LocalizabilityAttribute(LocalizationCategory.None, Readability=Readability.Unreadable)] 
+ 	[ContentPropertyAttribute("Content")] 
 	public class ContentControl : Control, IAddChild {
-
-		public static readonly DependencyProperty ContentProperty;
-		public static readonly DependencyProperty ContentTemplateProperty;
-		public static readonly DependencyProperty ContentTemplateSelectorProperty;
-		public static readonly DependencyProperty HasContentProperty;
 
 		protected virtual void AddChild (object value)
 		{
@@ -50,26 +45,6 @@ namespace System.Windows.Controls {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnContentChanged (object oldContent,
-							 object newContent)
-		{
-			throw new NotImplementedException ();
-		}
-
-#if notyet
-		protected virtual void OnContentTemplateChanged (DataTemplate oldContentTemplate,
-								 DataTemplate newContentTemplate)
-		{
-			throw new NotImplementedException ();
-		}
-
-		protected virtual void OnContentTemplateSelectorChanged (DataTemplateSelector oldContentTemplateSelector,
-									 DataTemplateSelector newContentTemplateSelector)
-		{
-			throw new NotImplementedException ();
-		}
-#endif
-
 		public virtual bool ShouldSerializeContent ()
 		{
 			throw new NotImplementedException ();
@@ -77,44 +52,91 @@ namespace System.Windows.Controls {
 
 		void IAddChild.AddChild (object value)
 		{
-			throw new NotImplementedException ();
+			AddChild (value);
 		}
 
 		void IAddChild.AddText (string text)
 		{
-			throw new NotImplementedException ();
+			AddText (text);
 		}
+
+#region Content Property
+		public static readonly DependencyProperty ContentProperty
+			= DependencyProperty.Register ("Content", typeof (object), typeof (ContentControl),
+						       new PropertyMetadata (OnContentChanged));
 
 		[Bindable (true)] 
 		public object Content {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+		    get { return (object)GetValue (ContentProperty); }
+		    set { SetValue (ContentProperty, value); }
 		}
 
+		private static void OnContentChanged (object sender, DependencyPropertyChangedEventArgs args)
+		{
+			((ContentControl)sender).OnContentChanged (args.OldValue, args.NewValue);
+		}
 
-#if notyet
+		protected virtual void OnContentChanged (object oldContent,
+							 object newContent)
+		{
+		}
+#endregion
+
+#region ContentTemplate Property
+		public static readonly DependencyProperty ContentTemplateProperty
+			= DependencyProperty.Register ("ContentTemplate", typeof (DataTemplate), typeof (ContentControl),
+						       new PropertyMetadata (OnContentTemplateChanged));
+
 		[Bindable (true)] 
 		public DataTemplate ContentTemplate {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+		    get { return (DataTemplate)GetValue (ContentTemplateProperty); }
+		    set { SetValue (ContentTemplateProperty, value); }
 		}
 
-		[Bindable (true)] 
-		public DataTemplateSelector ContentTemplateSelector {
-			get { throw new NotImplementedException (); }
-			set { throw new NotImplementedException (); }
+		private static void OnContentTemplateChanged (object sender, DependencyPropertyChangedEventArgs args)
+		{
+			((ContentControl)sender).OnContentTemplateChanged ((DataTemplate)args.OldValue, (DataTemplate)args.NewValue);
 		}
-#endif
+
+		protected virtual void OnContentTemplateChanged (DataTemplate oldContentTemplate,
+								 DataTemplate newContentTemplate)
+		{
+		}
+#endregion
+
+#region ContentTemplateSelector Property
+		public static readonly DependencyProperty ContentTemplateSelectorProperty =
+			DependencyProperty.Register ("ContentTemplateSelector", typeof (DataTemplateSelector), typeof (ContentControl),
+						     new PropertyMetadata (OnContentTemplateSelectorChanged));
+
+		public DataTemplateSelector ContentTemplateSelector {
+		    get { return (DataTemplateSelector)GetValue (ContentTemplateSelectorProperty); }
+		    set { SetValue (ContentTemplateSelectorProperty, value); }
+		}
+
+		private static void OnContentTemplateSelectorChanged (object sender, DependencyPropertyChangedEventArgs args)
+		{
+			((ContentControl)sender).OnContentTemplateSelectorChanged ((DataTemplateSelector)args.OldValue, (DataTemplateSelector)args.NewValue);
+		}
+
+		protected virtual void OnContentTemplateSelectorChanged (DataTemplateSelector oldContentTemplateSelector,
+									 DataTemplateSelector newContentTemplateSelector)
+		{
+		}
+#endregion
+
+#region HasContent Property
+		public static readonly DependencyProperty HasContentProperty =
+			DependencyProperty.Register ("HasContent", typeof (bool), typeof (ContentControl));
 
 		public bool HasContent {
-			get { throw new NotImplementedException (); }
+		    get { return (bool)GetValue (HasContentProperty); }
 		}
-
-#if notyet
+#endregion
+		
 		protected internal override IEnumerator LogicalChildren {
 			get { throw new NotImplementedException (); }
 		}
-#endif
 	}
 
 }

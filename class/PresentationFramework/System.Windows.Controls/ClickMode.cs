@@ -23,15 +23,12 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-
 namespace System.Windows.Controls {
 
-	// XXX need to verify the values against .net
 	public enum ClickMode {
-		Hover,
+		Release,
 		Press,
-		Release
+		Hover
 	}
 
 }

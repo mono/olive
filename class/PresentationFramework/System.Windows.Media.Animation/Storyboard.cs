@@ -23,227 +23,377 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+using System.ComponentModel;
+
 namespace System.Windows.Media.Animation {
 
 	public class Storyboard : ParallelTimeline {
-		public static readonly DependencyProperty TargetNameProperty;
-		public static readonly DependencyProperty TargetPropertyProperty;
-
 		public Storyboard ()
 		{
 		}
 
 
+		public bool GetIsPaused ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public double GetCurrentGlobalSpeed ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public double GetCurrentProgress ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public int GetCurrentIteration ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public ClockState GetCurrentState ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public TimeSpan GetCurrentTime ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Pause ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Remove ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Resume ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Seek (TimeSpan offset)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Seek (TimeSpan offset, TimeSeekOrigin origin)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public void SeekAlignedToLastTick (TimeSpan offset)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void SeekAlignedToLastTick (TimeSpan offset, TimeSeekOrigin origin)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void SetSpeedRatio (double speedRatio)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void SkipToFill ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Stop ()
+		{
+			throw new NotImplementedException ();
+		}
+
 		public void Begin (FrameworkContentElement containingObject)
 		{
+			throw new NotImplementedException ();
 		}
 
 		public void Begin (FrameworkContentElement containingObject,
 				   bool isControllable)
 		{
+			throw new NotImplementedException ();
 		}
 
 		public void Begin (FrameworkContentElement containingObject,
 				   HandoffBehavior handoffBehavior)
 		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   bool isControllable)
-		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   FrameworkTemplate frameworkTemplate)
-		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   HandoffBehavior handoffBehavior)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Begin (FrameworkContentElement containingObject,
 				   HandoffBehavior handoffBehavior,
 				   bool isControllable)
 		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   FrameworkTemplate frameworkTemplate,
-				   bool isControllable)
-		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   FrameworkTemplate frameworkTemplate,
-				   HandoffBehavior handoffBehavior)
-		{
-		}
-
-
-		public void Begin (FrameworkElement containingObject,
-				   HandoffBehavior handoffBehavior,
-				   bool isControllable)
-		{
-		}
-
-		public void Begin (FrameworkElement containingObject,
-				   FrameworkTemplate frameworkTemplate,
-				   HandoffBehavior handoffBehavior,
-				   bool isControllable)
-		{
-		}
-
-		public Storyboard Clone ()
-		{
-		}
-
-		protected override Freezable CreateInstanceCore ()
-		{
+			throw new NotImplementedException ();
 		}
 
 		public Nullable<double> GetCurrentGlobalSpeed (FrameworkContentElement containingObject)
 		{
-		}
-
-		public Nullable<double> GetCurrentGlobalSpeed (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public Nullable<int> GetCurrentIteration (FrameworkContentElement containingObject)
 		{
-		}
-
-		public Nullable<int> GetCurrentIteration (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public Nullable<double> GetCurrentProgress (FrameworkContentElement containingObject)
 		{
-		}
-
-		public Nullable<double> GetCurrentProgress (FrameworkContentElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public ClockState GetCurrentState (FrameworkContentElement containingObject)
 		{
-		}
-
-		public ClockState GetCurrentState (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public Nullable<TimeSpan> GetCurrentTime (FrameworkContentElement containingObject)
 		{
-		}
-
-		public Nullable<TimeSpan> GetCurrentTime (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public bool GetIsPaused (FrameworkContentElement containingObject)
 		{
-		}
-
-		public bool GetIsPaused (FrameworkElement containingObject)
-		{
-		}
-
-		public static string GetTargetName (DependencyObject element)
-		{
-		}
-
-		public static PropertyPath GetTargetProperty (DependencyObject element)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Pause (FrameworkContentElement containingObject)
 		{
-		}
-
-		public void Pause (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Remove (FrameworkContentElement containingObject)
 		{
-		}
-
-		public void Remove (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Resume (FrameworkContentElement containingObject)
 		{
-		}
-
-		public void Resume (FrameworkElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Seek (FrameworkContentElement containingObject,
 				  TimeSpan offset,
 				  TimeSeekOrigin origin)
 		{
-		}
-
-		public void Seek (FrameworkElement containingObject,
-				  TimeSpan offset,
-				  TimeSeekOrigin origin)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void SeekAlignedToLastTick (FrameworkContentElement containingObject,
 						   TimeSpan offset,
 						   TimeSeekOrigin origin)
 		{
+			throw new NotImplementedException ();
+		}
+
+		public void SetSpeedRatio (FrameworkContentElement containingObject,
+					   double speedRatio)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void SkipToFill (FrameworkContentElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Stop (FrameworkContentElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   bool isControllable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   FrameworkTemplate frameworkTemplate)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   HandoffBehavior handoffBehavior)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   FrameworkTemplate frameworkTemplate,
+				   bool isControllable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   FrameworkTemplate frameworkTemplate,
+				   HandoffBehavior handoffBehavior)
+		{
+			throw new NotImplementedException ();
+		}
+
+
+		public void Begin (FrameworkElement containingObject,
+				   HandoffBehavior handoffBehavior,
+				   bool isControllable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Begin (FrameworkElement containingObject,
+				   FrameworkTemplate frameworkTemplate,
+				   HandoffBehavior handoffBehavior,
+				   bool isControllable)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public new Storyboard Clone ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		protected override Freezable CreateInstanceCore ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Nullable<double> GetCurrentGlobalSpeed (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Nullable<int> GetCurrentIteration (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Nullable<double> GetCurrentProgress (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public ClockState GetCurrentState (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public Nullable<TimeSpan> GetCurrentTime (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public bool GetIsPaused (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+#region Target Property
+		public static readonly DependencyProperty TargetProperty;
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
+		public static DependencyObject GetTarget (DependencyObject obj)
+		{
+		    return (DependencyObject)obj.GetValue (TargetProperty);
+		}
+		
+		public static void SetTarget (DependencyObject obj, DependencyObject value)
+		{
+			obj.SetValue (TargetProperty, value);
+		}
+#endregion
+
+#region TargetName Property
+		public static readonly DependencyProperty TargetNameProperty;
+		public static string GetTargetName (DependencyObject obj)
+		{
+		    return (string)obj.GetValue (TargetNameProperty);
+		}
+		
+		public static void SetTargetName (DependencyObject obj, string value)
+		{
+			obj.SetValue (TargetNameProperty, value);
+		}
+#endregion
+
+#region TargetProperty Property
+		public static readonly DependencyProperty TargetPropertyProperty;
+		public static PropertyPath GetTargetProperty (DependencyObject obj)
+		{
+		    return (PropertyPath)obj.GetValue (TargetPropertyProperty);
+		}
+		
+		public static void SetTargetProperty (DependencyObject obj, PropertyPath value)
+		{
+			obj.SetValue (TargetPropertyProperty, value);
+		}
+#endregion
+		
+		public void Pause (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Remove (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Resume (FrameworkElement containingObject)
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Seek (FrameworkElement containingObject,
+				  TimeSpan offset,
+				  TimeSeekOrigin origin)
+		{
+			throw new NotImplementedException ();
 		}
 
 		public void SeekAlignedToLastTick (FrameworkElement containingObject,
 						   TimeSpan offset,
 						   TimeSeekOrigin origin)
 		{
-		}
-
-
-		public void SetSpeedRatio (FrameworkContentElement containingObject,
-					   double speedRatio)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void SetSpeedRatio (FrameworkElement containingObject,
 					   double speedRatio)
 		{
-		}
-
-		public static void SetTargetName (DependencyObject element,
-						  string name)
-		{
-			element.SetValue (Storyboard.TargetNameProperty, name);
-		}
-
-		public static void SetTargetProperty (DependencyObject element,
-						      PropertyPath path)
-		{
-			element.SetValue (Storyboard.TargetPropertyProperty, name);
-		}
-
-		public void SkipToFill (FrameworkContentElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void SkipToFill (FrameworkElement containingObject)
 		{
-		}
-
-		public void Stop (FrameworkContentElement containingObject)
-		{
+			throw new NotImplementedException ();
 		}
 
 		public void Stop (FrameworkElement containingObject)
 		{
+			throw new NotImplementedException ();
 		}
 	}
 

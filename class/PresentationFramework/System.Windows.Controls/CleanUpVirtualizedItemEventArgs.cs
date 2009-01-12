@@ -23,40 +23,34 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
 namespace System.Windows.Controls {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	public class CleanUpVirtualizedItemEventArgs : RoutedEventArgs {
+		internal CleanUpVirtualizedItemEventArgs (UIElement uielement, object value)
 		{
+			this.uielement = uielement;
+			this.value = value;
 		}
 
-		protected override void OnClick ()
-		{
+		public object Value {
+			get { return value; }
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
-		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+		public UIElement UIElement {
+			get { return uielement; }
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public bool Cancel {
+			set { cancel = value; }
+			get { return cancel; }
 		}
+
+		bool cancel;
+		object value;
+		UIElement uielement;
 	}
 
 }
+

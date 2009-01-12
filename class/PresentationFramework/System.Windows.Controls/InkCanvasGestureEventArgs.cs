@@ -23,40 +23,41 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Ink;
 
 namespace System.Windows.Controls {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	public class InkCanvasGestureEventArgs : RoutedEventArgs {
+		public InkCanvasGestureEventArgs (StrokeCollection strokes, IEnumerable<GestureRecognitionResult> gestureRecognitionResults)
 		{
+			Strokes = strokes;
+			this.gestureRecognitionResults = gestureRecognitionResults;
 		}
 
-		protected override void OnClick ()
+		public ReadOnlyCollection<GestureRecognitionResult> GetGestureRecognitionResults ()
 		{
+			throw new NotImplementedException ();
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+			((InkCanvasGestureEventHandler)genericHandler)(genericTarget, this);
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public bool Cancel {
+			get; set;
 		}
+
+		public StrokeCollection Strokes {
+			get;
+			private set;
+		}
+
+		IEnumerable<GestureRecognitionResult> gestureRecognitionResults;
 	}
 
 }
+

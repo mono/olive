@@ -23,40 +23,39 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Windows.Ink;
+using System.Windows;
 
 namespace System.Windows.Controls {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	public class InkCanvasSelectionChangingEventArgs : CancelEventArgs {
+		internal InkCanvasSelectionChangingEventArgs ()
 		{
 		}
 
-		protected override void OnClick ()
+		public ReadOnlyCollection<UIElement> GetSelectedElements ()
 		{
+			throw new NotImplementedException ();
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+		public void SetSelectedElements (IEnumerable<UIElement> selectedElements)
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+			throw new NotImplementedException ();
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public StrokeCollection GetSelectedStrokes ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void GetSelectedStrokes (StrokeCollection strokes)
+		{
+			throw new NotImplementedException ();
 		}
 	}
 
 }
+

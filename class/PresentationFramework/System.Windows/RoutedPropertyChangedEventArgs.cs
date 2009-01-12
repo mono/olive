@@ -17,45 +17,41 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+namespace System.Windows {
 
-namespace System.Windows.Controls {
+	public class RoutedPropertyChangedEventArgs<T> : RoutedEventArgs {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+		public RoutedPropertyChangedEventArgs (T oldValue, T newValue)
 		{
+			OldValue = oldValue;
+			NewValue = newValue;
 		}
 
-		protected override void OnClick ()
+		public RoutedPropertyChangedEventArgs (T oldValue, T newValue, RoutedEvent routedEvent)
 		{
+			OldValue = oldValue;
+			NewValue = newValue;
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+ 		protected override void InvokeEventHandler (Delegate genericHandler, object genericTarget)
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+			((RoutedPropertyChangedEventHandler<T>)genericHandler)(genericTarget, this);
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public T OldValue {
+			get;
+			private set;
+		}
+
+		public T NewValue {
+			get;
+			private set;
 		}
 	}
 

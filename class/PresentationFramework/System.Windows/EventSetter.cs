@@ -17,45 +17,39 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
 using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.ComponentModel;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	public class EventSetter : SetterBase {
+		public EventSetter ()
 		{
 		}
 
-		protected override void OnClick ()
+		public EventSetter (RoutedEvent routedEvent, Delegate handler)
 		{
+			Event = routedEvent;
+			Handler = handler;
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
-		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+		[EditorBrowsable (EditorBrowsableState.Advanced)]
+		public bool HandledEventsToo {
+			get; set;
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		public Delegate Handler {
+			get; set;
+		}
+
+		public RoutedEvent Event {
+			get; set;
 		}
 	}
 

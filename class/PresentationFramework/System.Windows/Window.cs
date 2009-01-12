@@ -17,46 +17,55 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.Security;
+using System.Windows.Controls;
 
-namespace System.Windows.Controls {
+namespace System.Windows {
+	public class Window : ContentControl {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+		[SecurityCritical]
+		public Window ()
 		{
 		}
 
-		protected override void OnClick ()
+		[SecurityCritical]
+		public bool Activate ()
 		{
+			throw new NotImplementedException ();
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+		[SecurityCritical]
+		public void Close ()
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
+			throw new NotImplementedException ();
 		}
 
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+		[SecurityCritical]
+		public void DragMove ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Show ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public void Hide ()
+		{
+			throw new NotImplementedException ();
+		}
+
+		public static readonly DependencyProperty WindowStateProperty;
+		public WindowState WindowState {
+			get { return (WindowState)GetValue (WindowStateProperty); }
+			set { SetValue (WindowStateProperty, value); }
 		}
 	}
-
 }

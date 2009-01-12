@@ -17,45 +17,46 @@
 // OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION
 // WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 //
-// Copyright (c) 2007 Novell, Inc. (http://www.novell.com)
+// Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
-// Authors:
+// Author:
 //	Chris Toshok (toshok@ximian.com)
 //
 
-using System;
-using System.Windows.Automation;
-using System.Windows.Controls.Primitives;
+using System.Windows.Markup;
+using System.Windows;
+using System.ComponentModel;
 
 namespace System.Windows.Controls {
 
-	public class Button : ButtonBase {
-		public static readonly DependencyProperty IsCancelProperty;
-		public static readonly DependencyProperty IsDefaultedProperty;
-		public static readonly DependencyProperty IsDefaultProperty;
-
-		public Button ()
+	[Localizability (LocalizationCategory.None, Readability = Readability.Unreadable)]
+	[DictionaryKeyProperty ("TargetType")]
+	public class ControlTemplate : FrameworkTemplate {
+		public ControlTemplate ()
 		{
 		}
 
-		protected override void OnClick ()
+		public ControlTemplate (Type targetType)
 		{
+			TargetType = targetType;
 		}
 
-#if notyet
-		protected override AutomationPeer OnCreateAutomationPeer ()
+		[Ambient]
+		[DefaultValue (null)]
+		public Type TargetType {
+			get { throw new NotImplementedException (); }
+			set { throw new NotImplementedException (); }
+		}
+
+		[DependsOn ("VisualTree")]
+		[DesignerSerializationVisibility (DesignerSerializationVisibility.Content)]
+		public TriggerCollection Triggers {
+			get { throw new NotImplementedException (); }
+		}
+
+		protected override void ValidateTemplatedParent (FrameworkElement templatedParent)
 		{
-		}
-#endif
-
-		public bool IsCancel {
-			get { return (bool)GetValue (IsCancelProperty); }
-			set { SetValue (IsCancelProperty, value); }
-		}
-
-		public bool IsDefault {
-			get { return (bool)GetValue (IsDefaultProperty); }
-			set { SetValue (IsDefaultProperty, value); }
+			throw new NotImplementedException ();
 		}
 	}
 
