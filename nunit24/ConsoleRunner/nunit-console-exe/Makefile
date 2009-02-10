@@ -12,4 +12,6 @@ EXTRA_DISTFILES = App.ico \
 	nunit-console.exe.config.net_2_0 \
 	nunit-console.exe.config.net_3_5
 
+NO_INSTALL = yes
+
 include ../../../build/executable.make
