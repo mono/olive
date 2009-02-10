@@ -4,9 +4,9 @@ thisdir := .
 # recursive target ends up *creating* files in build/deps, which need
 # to be cleaned up during distcheck.
 
-SUBDIRS := build class tools data scripts nunit20 build
+SUBDIRS := build class tools data scripts nunit24 build
 
-net_3_0_SUBDIRS := build class tools data scripts nunit20 build
+net_3_0_SUBDIRS := build class tools data scripts nunit24 build
 
 -include build/config.make
 
