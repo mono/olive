@@ -1,3 +1,7 @@
+2009-02-10  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* Makefile : workaround for nunit24 make dist.
+
 2005-11-26  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* App.config, nunit-console.exe.config,
