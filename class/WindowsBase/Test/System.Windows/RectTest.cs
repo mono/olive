@@ -225,6 +225,12 @@ namespace MonoTests.System.Windows {
 		}
 
 		[Test]
+		public void Empty_Size ()
+		{
+			Assert.AreEqual (Size.Empty, Rect.Empty.Size);
+		}
+
+		[Test]
 		public void IsEmpty ()
 		{
 			Assert.IsTrue (Rect.Empty.IsEmpty);
@@ -242,7 +248,7 @@ namespace MonoTests.System.Windows {
 		}
 
 		[Test]
-		public void Size ()
+		public void RectSize ()
 		{
 			Rect r = new Rect (0, 0, 5, 5);
 
@@ -379,7 +385,13 @@ namespace MonoTests.System.Windows {
 			Assert.IsFalse (r1.Equals (r2));
 			r2.Height = r1.Height;
 
-			Assert.IsFalse (r1.Equals (new object()));
+			Assert.IsFalse (r1.Equals (new object ()));
+
+			r1 = Rect.Empty;
+			r2 = Rect.Empty;
+
+			Assert.AreEqual (true, r1.Equals (r2));
+			Assert.AreEqual (true, r2.Equals (r1));
 		}
 
 		[Test]
@@ -548,7 +560,13 @@ namespace MonoTests.System.Windows {
 			Assert.AreEqual (false, r1 == r2);
 			Assert.AreEqual (true,  r1 != r2);
 
+			r1 = Rect.Empty;
+			r2 = Rect.Empty;
+
+			Assert.AreEqual (true, r1 == r2);
+			Assert.AreEqual (false, r1 != r2);
 		}
 
 	}
 }
+

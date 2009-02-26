@@ -1,3 +1,11 @@
+2009-02-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows/Rect.cs: For Rect.Empty, return Size.Empty for Size.
+	Previously this would throw an exception on Size construction.
+	* Test/System.Windows/RectTest.cs: Add Empty_Size test, include
+	Rect.Empty in equality-related tests, rename Size test to RectSize to
+	avoid build error.
+
 2009-01-12  Michael Hutchinson  <mhutchinson@novell.com>
 
 	* System.Windows/WeakEventManager.cs: Fix build.
