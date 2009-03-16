@@ -333,6 +333,10 @@ namespace System.IO.Packaging.Tests {
             package.Flush ();
             // FIXME: This isn't actually created as a PackagePart
             Assert.IsFalse (package.PartExists (contentUri), "#1");
+
+            package.Close ();
+            package = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.Open, FileAccess.Read);
+            Assert.IsFalse (package.PartExists (contentUri), "#2");
         }
     }
 }
