@@ -59,19 +59,7 @@ namespace zipsharp
 				return CompressionOption.NotCompressed;
 			}
 		}
-		
-		public static CompressionOption CurrentFileCompressionLevel (UnzipHandle handle)
-		{
-			UnzipFileInfo info;
-			StringBuilder sbName = new StringBuilder (128);
-			int result = unzGetCurrentFileInfo (handle, out info, sbName, new IntPtr (sbName.Capacity), IntPtr.Zero, IntPtr.Zero, null,  IntPtr.Zero);
-			
-			if (result != 0)
-				return CompressionOption.NotCompressed;
-			else
-				return ConvertCompression ((int) info.CompressionMethod);
-		}
-		
+
 		public static long CurrentFilePosition (UnzipHandle handle)
 		{
 			return unztell(handle).ToInt64 ();
@@ -137,12 +125,17 @@ namespace zipsharp
 			return handle;
 		}
 
-		public static void OpenFile (UnzipHandle handle, string name)
+		public static void OpenFile (UnzipHandle handle, string name, out CompressionOption level)
 		{
 			if (unzLocateFile (handle, name, (int) ZipStringComparison.CaseInsensitive) != 0)
 				throw new Exception ("The file doesn't exist");
-			if (unzOpenCurrentFile (handle) != 0)
+			
+			int method, compression;
+			// '0' means do not open in raw mode (raw == do not decompress)
+			if (unzOpenCurrentFile2 (handle, out method, out compression, 0) != 0)
 				throw new Exception ("The file could not be opened");
+
+			level = ConvertCompression (method == 0 ? 0 : compression);
 		}
 
 		public static unsafe int Read (UnzipHandle handle, byte[] buffer, int offset, int count)
@@ -176,7 +169,10 @@ namespace zipsharp
 		                                         int iCaseSensitivity);
 
 		[DllImport ("MonoPosixHelper")]
-		static extern int unzOpenCurrentFile (UnzipHandle handle);
+		static extern int unzOpenCurrentFile2 (UnzipHandle handle,
+		                                       out int method,
+		                                       out int level,
+		                                       int raw);
 
 		[DllImport ("MonoPosixHelper")]
 		static extern int unzGetCurrentFileInfo (UnzipHandle handle,

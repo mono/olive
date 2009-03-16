@@ -24,6 +24,7 @@
 
 using System;
 using System.IO;
+using System.IO.Packaging;
 
 namespace zipsharp
 {
@@ -49,6 +50,10 @@ namespace zipsharp
 			get { return false; }
 		}
 
+		public CompressionOption CompressionLevel {
+			get; set;
+		}
+
 		public override long Length {
 			get {
 				return length;
@@ -60,11 +65,11 @@ namespace zipsharp
 			set { throw new NotSupportedException (); }
 		}
 		
-		public UnzipReadStream (UnzipArchive archive)
+		public UnzipReadStream (UnzipArchive archive, CompressionOption compressionLevel)
 		{
 			Archive = archive;
 			Archive.FileActive = true;
-
+			CompressionLevel = compressionLevel;
 			length = NativeUnzip.CurrentFileLength (Archive.Handle);
 		}
 

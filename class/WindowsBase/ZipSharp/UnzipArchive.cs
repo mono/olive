@@ -77,7 +77,8 @@ namespace zipsharp
 
 		public System.IO.Packaging.CompressionOption GetCompressionLevel (string file)
 		{
-			return NativeUnzip.CurrentFileCompressionLevel (Handle);
+			using (UnzipReadStream stream = (UnzipReadStream) GetStream (file))
+				return stream.CompressionLevel;
 		}
 
 		public string[] GetFiles ()
@@ -91,8 +92,9 @@ namespace zipsharp
 			{
 				if (name.Equals(file, StringComparison.OrdinalIgnoreCase))
 				{
-					NativeUnzip.OpenFile (Handle, name);
-					return new UnzipReadStream (this);
+					System.IO.Packaging.CompressionOption option;
+					NativeUnzip.OpenFile (Handle, name, out option);
+					return new UnzipReadStream (this, option);
 				}
 			}
 			
