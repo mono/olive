@@ -92,12 +92,32 @@ namespace System.IO.Packaging.Tests {
         [Test]
         public void CheckPartProperties ()
         {
-            AddThreeParts ();
-            PackagePart part = package.GetPart (uris [0]);
-            Assert.AreEqual (CompressionOption.NotCompressed, part.CompressionOption, "Compress option wrong");
-            Assert.AreEqual ("mime/type", part.ContentType, "Content type wrong");
-            Assert.AreEqual (package, part.Package, "Wrong package");
-            Assert.AreEqual (uris [0], part.Uri, "Wrong package selected");
+            package.CreatePart (new Uri ("/first", UriKind.Relative), "my/a");
+            package.CreatePart (new Uri ("/second", UriKind.Relative), "my/b", CompressionOption.Maximum);
+            package.CreatePart (new Uri ("/third", UriKind.Relative), "test/c", CompressionOption.SuperFast);
+            package.Close ();
+            package = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.Open, FileAccess.Read);
+
+            PackagePart[] parts = package.GetParts ().ToArray ();
+            Assert.AreEqual (3, parts.Length);
+
+            PackagePart part = parts[0];
+            Assert.AreEqual (CompressionOption.NotCompressed, part.CompressionOption, "Compress option wrong1");
+            Assert.AreEqual ("my/a", part.ContentType, "Content type wrong1");
+            Assert.AreEqual (package, part.Package, "Wrong package1");
+            Assert.AreEqual ("/first", part.Uri.ToString (), "Wrong package selected1");
+
+            part = parts[1];
+            Assert.AreEqual (CompressionOption.Maximum, part.CompressionOption, "Compress option wrong2");
+            Assert.AreEqual ("my/b", part.ContentType, "Content type wrong2");
+            Assert.AreEqual (package, part.Package, "Wrong package2");
+            Assert.AreEqual ("/second", part.Uri.OriginalString, "Wrong package selected2");
+
+            part = parts[2];
+            Assert.AreEqual (CompressionOption.SuperFast, part.CompressionOption, "Compress option wrong3");
+            Assert.AreEqual ("test/c", part.ContentType, "Content type wrong3");
+            Assert.AreEqual (package, part.Package, "Wrong package3");
+            Assert.AreEqual ("/third", part.Uri.ToString (), "Wrong package selected3");
         }
 
         [Test]

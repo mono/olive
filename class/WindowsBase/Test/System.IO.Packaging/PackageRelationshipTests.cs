@@ -79,6 +79,46 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        public void CreatePackageTest ()
+        {
+            package.CreateRelationship (uris[0], TargetMode.Internal, "a");
+            package.CreateRelationship (uris[1], TargetMode.External, "a");
+            package.CreateRelationship (new Uri ("http://www.example.com", UriKind.Absolute), TargetMode.External, "ex");
+            package.Close ();
+
+            package = Package.Open (new MemoryStream (stream.ToArray ()));
+            PackageRelationship[] rels = package.GetRelationships ().ToArray ();
+            Assert.AreEqual (3, rels.Length, "#1");
+
+            Assert.AreEqual (uris[0], rels[0].TargetUri, "#2");
+            Assert.AreEqual (TargetMode.Internal, rels[0].TargetMode, "#3");
+
+            Assert.AreEqual (uris[1], rels[1].TargetUri, "#4");
+            Assert.AreEqual (TargetMode.External, rels[1].TargetMode, "#5");
+
+            Assert.AreEqual ("http://www.example.com/", rels[2].TargetUri.ToString (), "#6");
+            Assert.AreEqual (TargetMode.External, rels[1].TargetMode, "#7");
+        }
+
+        [Test]
+        public void ExternalRelationshipTest ()
+        {
+            package.CreateRelationship (new Uri ("/file2", UriKind.Relative), TargetMode.External, "RelType");
+            package.CreateRelationship (new Uri ("http://www.example.com", UriKind.Absolute), TargetMode.External, "RelType");
+        }
+
+        [Test]
+        public void InternalRelationshipTest ()
+        {
+            package.CreateRelationship (new Uri ("/file2", UriKind.Relative), TargetMode.Internal, "RelType");
+            try {
+                package.CreateRelationship (new Uri ("http://www.example.com", UriKind.Absolute), TargetMode.Internal, "RelType");
+                Assert.Fail ("Internal relationships must be relative");
+            } catch (ArgumentException) {
+            }
+        }
+
+        [Test]
         public void RemoveById ()
         {
             AddThreeRelationShips ();

@@ -63,6 +63,23 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        public void CheckContentFile ()
+        {
+            MemoryStream stream = new MemoryStream ();
+            package = Package.Open (stream, FileMode.Create, FileAccess.ReadWrite);
+            package.CreatePart (uris[0], "custom/type");
+            package.CreateRelationship (uris[1], TargetMode.External, "relType");
+
+            package.Close ();
+            package = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.Open, FileAccess.ReadWrite);
+            package.Close ();
+            package = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.Open, FileAccess.ReadWrite);
+
+            Assert.AreEqual (2, package.GetParts ().Count (), "#1");
+            Assert.AreEqual (1, package.GetRelationships ().Count (), "#2");
+        }
+
+        [Test]
         [ExpectedException (typeof (FileFormatException))]
         public void CorruptStream ()
         {
@@ -127,8 +144,12 @@ namespace System.IO.Packaging.Tests {
         public void OpenPathReadonly ()
         {
             package = Package.Open (path, FileMode.Create);
+            package.CreatePart (uris[0], contentType);
+            package.CreateRelationship (uris[1], TargetMode.External, "relType");
             package.Close ();
             package = Package.Open (path, FileMode.Open, FileAccess.Read);
+            Assert.AreEqual (2, package.GetParts ().Count (), "#1");
+            Assert.AreEqual (1, package.GetRelationships ().Count (), "#2");
             Assert.AreEqual (FileAccess.Read, package.FileOpenAccess, "Should be read access");
             try {
                 package.CreatePart (uris [0], contentType);

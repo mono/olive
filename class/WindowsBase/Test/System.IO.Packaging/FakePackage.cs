@@ -33,12 +33,14 @@ namespace System.IO.Packaging.Tests {
         Dictionary<Uri, PackagePart> Parts { get; set; }
         public List<Uri> CreatedParts { get; private set; }
         public List<Uri> DeletedParts { get; private set; }
+        public List<Uri> GotParts { get; private set; }
 
         public FakePackage (FileAccess access, bool streaming)
             : base (access, streaming)
         {
             CreatedParts = new List<Uri> ();
             DeletedParts = new List<Uri> ();
+            GotParts = new List<Uri>();
             Parts = new Dictionary<Uri, PackagePart> ();
         }
 
@@ -63,6 +65,8 @@ namespace System.IO.Packaging.Tests {
         
         protected override PackagePart GetPartCore (Uri partUri)
         {
+            if (!GotParts.Contains (partUri))
+                GotParts.Add (partUri);
             return Parts.ContainsKey(partUri) ?  Parts [partUri] : null;
         }
 

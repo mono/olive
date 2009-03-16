@@ -75,6 +75,15 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        public void CheckProperties ()
+        {
+            Assert.AreEqual (0, package.GotParts.Count, "#1");
+            object o = package.PackageProperties;
+            Assert.AreEqual (1, package.GotParts.Count, "#2");
+            Assert.AreEqual ("/_rels/.rels", package.GotParts[0].ToString (), "#3");
+        }
+
+        [Test]
         public void RelationshipPartGetRelationships ()
         {
             CheckAutomaticParts2 ();

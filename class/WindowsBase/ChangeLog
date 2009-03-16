@@ -1,3 +1,14 @@
+2009-03-16  Alan McGovern  <amcgovern@novell.com>
+
+	* Test/System.IO.Packaging/FakePackage.cs:
+	  Test/System.IO.Packaging/FakePackagePartTests.cs:
+	  Test/System.IO.Packaging/FakePackageTests.cs:
+	  Test/System.IO.Packaging/FakePartStreamTests.cs:
+	  Test/System.IO.Packaging/PackageRelationshipTests.cs:
+	  Test/System.IO.Packaging/PackageTest.cs:
+	  Test/System.IO.Packaging/PackUriHelperTests.cs:
+	  Add a bunch of extra tests to cover reported bugs.
+
 2009-02-26  Sandy Armstrong  <sanfordarmstrong@gmail.com>
 
 	* System.Windows/Rect.cs: For Rect.Empty, return Size.Empty for Size.

@@ -8,7 +8,7 @@ using System;
 using System.IO.Packaging;
 using NUnit.Framework;
 
-namespace WindowsBase {
+namespace System.IO.Packaging.Tests {
 	
     [TestFixture]
     [Category ("NotWorking")]
@@ -85,9 +85,9 @@ namespace WindowsBase {
         [Test]
         public void CreateTest ()
         {
-            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg",
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg/",
                              PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg")).ToString (), "#1");
-            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg",
+            Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg/",
                              PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"), null, null).ToString (), "#2");
             Assert.AreEqual ("pack://http:,,www.test.com,pack.pkg/main.html#frag",
                              PackUriHelper.Create (new Uri ("http://www.test.com/pack.pkg"),
@@ -268,7 +268,7 @@ namespace WindowsBase {
 
 
         [Test]
-        [ExpectedException (typeof (UriFormatException))]
+        //[ExpectedException (typeof (UriFormatException))]
         public void ResolvePartUri2 ()
         {
             Uri src = new Uri ("/1/2/3/4", UriKind.Relative);
@@ -277,6 +277,26 @@ namespace WindowsBase {
             // Can't be empty url
             Assert.AreEqual (new Uri ("/1/2/MyFile", UriKind.Relative), PackUriHelper.ResolvePartUri (src, dest), "#1");
             Assert.AreEqual (new Uri ("/1/2/3/4", UriKind.Relative), PackUriHelper.ResolvePartUri (dest, src), "#1");
+        }
+
+        [Test]
+        [ExpectedException (typeof (ArgumentException))]
+        public void ResolvePartUri3 ()
+        {
+            Uri src = new Uri ("/1/2/3/4", UriKind.Relative);
+            Uri dest = new Uri ("http://www.example.com", UriKind.Absolute);
+            PackUriHelper.ResolvePartUri (src, dest);
+        }
+
+        [Test]
+        public void ResolvePartUri4 ()
+        {
+            Uri src = new Uri ("/", UriKind.Relative);
+            Uri dest = new Uri ("word/document.xml", UriKind.Relative);
+
+            Uri result = PackUriHelper.ResolvePartUri (src, dest);
+            Assert.IsFalse(result.IsAbsoluteUri, "#1");
+            Assert.AreEqual ("/word/document.xml", result.ToString(), "#2");
         }
     }
 }
