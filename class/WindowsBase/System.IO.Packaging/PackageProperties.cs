@@ -31,7 +31,7 @@ namespace System.IO.Packaging {
 
 	public abstract class PackageProperties : IDisposable
 	{
-		internal const string NSPackageProperties = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
+		internal const string NSPackageProperties = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties";
 		internal const string PackagePropertiesContentType = "application/vnd.openxmlformats-package.core-properties+xml";
 
 
