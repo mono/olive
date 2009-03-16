@@ -39,7 +39,6 @@
   <ProjectExtensions>
     <MonoDevelop>
       <Properties>
-        <GtkDesignInfo />
         <MonoDevelop.Autotools.MakefileInfo RelativeMakefileName="Makefile">
           <BuildFilesVar Sync="true" Name="LIBRARY" />
           <DeployFilesVar />
@@ -49,7 +48,6 @@
           <AsmRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
           <ProjectRefVar Name="TEST_MCS_FLAGS" Prefix="-r:" />
         </MonoDevelop.Autotools.MakefileInfo>
-        <MonoDevelop.ChangeLogAddIn.ChangeLogInfo policy="UpdateNearestChangeLog" />
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
@@ -276,5 +274,6 @@
     <Compile Include="Test\System.Windows.Markup\DependsOnAttributeTest.cs" />
     <Compile Include="Test\System.Windows.Markup\MarkupExtensionReturnTypeAttributeTest.cs" />
     <Compile Include="Test\System.Windows.Markup\ValueSerializerTest.cs" />
+    <Compile Include="Test\System.IO.Packaging\PackUriHelperTests.cs" />
   </ItemGroup>
 </Project>

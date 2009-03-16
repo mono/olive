@@ -165,7 +165,8 @@ namespace System.IO.Packaging {
 			Check.TargetUri (targetUri);
 			
 			Check.PartUriIsValid (sourcePartUri);
-			Check.PartUriIsValid (targetUri);
+			if (targetUri.IsAbsoluteUri)
+				throw new ArgumentException ("targetUri", "Absolute URIs are not supported");
 
 			// Need to trim first 7 chars as they are: "file://"
 			return new Uri (new Uri(sourcePartUri, targetUri).OriginalString.Substring(7), UriKind.Relative);

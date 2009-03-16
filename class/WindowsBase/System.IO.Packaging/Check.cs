@@ -139,8 +139,8 @@ namespace System.IO.Packaging
 		{
 			if (sourceUri == null)
 				throw new ArgumentNullException ("sourceUri");
-			if (sourceUri.IsAbsoluteUri)
-				throw new ArgumentException ("sourceUri", "Absolute URIs are not supported");
+//			if (sourceUri.IsAbsoluteUri)
+//				throw new ArgumentException ("sourceUri", "Absolute URIs are not supported");
 			if (string.IsNullOrEmpty (sourceUri.OriginalString))
 				throw new ArgumentException ("sourceUri", "Part uri cannot be an empty string");
 		}
