@@ -273,8 +273,10 @@ namespace System.IO.Packaging {
 
 		public PackageRelationshipCollection GetRelationships ()
 		{
+			// Ensure the Relationships dict is instantiated first.
+			ICollection <PackageRelationship> rels = Relationships.Values;
 			relationshipsCollection.Relationships.Clear ();
-			relationshipsCollection.Relationships.AddRange (Relationships.Values);
+			relationshipsCollection.Relationships.AddRange (rels);
 			return relationshipsCollection;
 		}
 
@@ -301,23 +303,26 @@ namespace System.IO.Packaging {
 				XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
 				manager.AddNamespace ("rel", RelationshipNamespace);
 
-				doc.WriteTo (new XmlTextWriter (Console.Out));
-				
 				foreach (XmlNode node in doc.SelectNodes ("/rel:Relationships/*", manager))
 				{
-					
 					TargetMode mode = TargetMode.Internal;
 					if (node.Attributes["TargetMode"] != null)
 						mode = (TargetMode) Enum.Parse (typeof(TargetMode), node.Attributes ["TargetMode"].Value);
 
-					CreateRelationship (new Uri (node.Attributes ["Target"].Value.ToString(), UriKind.Relative),
+					Uri uri;
+					try {
+						uri = new Uri (node.Attributes ["Target"].Value.ToString(), UriKind.Relative);
+					} catch {
+						uri = new Uri (node.Attributes ["Target"].Value.ToString(), UriKind.Absolute);
+					}
+					CreateRelationship (uri,
 					                    mode,
 					                    node.Attributes["Type"].Value.ToString (),
 					                    node.Attributes["Id"].Value.ToString (),
 					                    true);
 				}
-	
-				foreach (PackageRelationship r in Relationships.Values) {
+				
+				foreach (PackageRelationship r in relationships.Values) {
 					if (r.RelationshipType == System.IO.Packaging.PackageProperties.NSPackageProperties) {
 						PackagePart part = GetPart (r.TargetUri);
 						packageProperties = new PackagePropertiesPart ();
@@ -460,7 +465,12 @@ namespace System.IO.Packaging {
 				XmlAttribute targetAtt = doc.CreateAttribute ("Target");
 				targetAtt.Value = relationship.TargetUri.ToString ();
 				node.Attributes.Append(targetAtt);
-				
+
+				if (relationship.TargetMode != TargetMode.Internal) {
+					XmlAttribute modeAtt = doc.CreateAttribute ("TargetMode");
+					modeAtt.Value = relationship.TargetMode.ToString ();
+					node.Attributes.Append (modeAtt);
+				}
 				XmlAttribute typeAtt = doc.CreateAttribute ("Type");
 				typeAtt.Value = relationship.RelationshipType;
 				node.Attributes.Append(typeAtt);
