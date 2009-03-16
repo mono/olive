@@ -36,8 +36,8 @@ namespace System.IO.Packaging.Tests {
     [TestFixture]
     public class PackagePartTest : TestBase {
 
-		const string PackagePropertiesType = "application/vnd.openxmlformats-package.core-properties+xml";
-		
+        const string PackagePropertiesType = "application/vnd.openxmlformats-package.core-properties+xml";
+        
         //static void Main (string [] args)
         //{
         //    PackagePartTest t = new PackagePartTest ();
@@ -86,7 +86,7 @@ namespace System.IO.Packaging.Tests {
             PackagePartCollection c2 = package.GetParts ();
             bool eq = c1 == c2;
  
-			Assert.IsNotNull (package.GetPart (new Uri (uris[0].ToString ().ToUpper (), UriKind.Relative)));
+            Assert.IsNotNull (package.GetPart (new Uri (uris[0].ToString ().ToUpper (), UriKind.Relative)));
         }
 
         [Test]
@@ -150,7 +150,7 @@ namespace System.IO.Packaging.Tests {
             Assert.AreEqual (6, package.GetParts ().Count (), "#d");
         }
 
-		[Test]
+        [Test]
         public void CheckIndividualRelationships ()
         {
             PackagePart part = package.CreatePart (uris [0], contentType);
@@ -280,15 +280,15 @@ namespace System.IO.Packaging.Tests {
             Assert.AreEqual (package.PackageProperties.Version, "version", "#20");
         }
 
-		[Test]
-		public void PackagePropertiestest2 ()
-		{
-			package.PackageProperties.Title = "TITLE";
-			package.Close ();
-			package = Package.Open (new MemoryStream (stream.ToArray ()));
-			Assert.AreEqual (null, package.PackageProperties.Category, "#1");
-		}
-		
+        [Test]
+        public void PackagePropertiestest2 ()
+        {
+            package.PackageProperties.Title = "TITLE";
+            package.Close ();
+            package = Package.Open (new MemoryStream (stream.ToArray ()));
+            Assert.AreEqual (null, package.PackageProperties.Category, "#1");
+        }
+        
         [Test]
         [ExpectedException (typeof (IOException))]
         public void PackagePropertiesReadonly ()
@@ -296,7 +296,7 @@ namespace System.IO.Packaging.Tests {
             PackagePropertiesTest ();
             package.PackageProperties.Title = "Title";
         }
-		
+        
         [Test]
         public void PartExists ()
         {
@@ -325,37 +325,14 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
-        [Category ("NotWorking")]
-        [Ignore ("Content_Type is never added as a part - need to test this indirectly")]
         public void CheckContentTypes ()
         {
             Uri contentUri = new Uri ("/[Content_Types].xml", UriKind.Relative);
             string contentNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
             AddThreeParts ();
-
+            package.Flush ();
             // FIXME: This isn't actually created as a PackagePart
-            Assert.IsTrue (package.PartExists (contentUri), "#0");
-            XmlDocument doc = new XmlDocument ();
-            XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
-            manager.AddNamespace ("content", contentNamespace);
-            doc.Load (package.GetPart (contentUri).GetStream ());
-
-            Assert.IsNotNull (doc.SelectSingleNode ("/content:Types", manager), "#1");
-
-            XmlNodeList nodes = doc.SelectNodes ("/content:Types/*", manager);
-            Assert.AreEqual (2, nodes.Count, "#2");
-
-            foreach (XmlNode node in nodes) {
-                if (node.Name == "Default") {
-                    Assert.AreEqual (node.Attributes["Extension"].Value, "png", "#3");
-                    Assert.AreEqual (node.Attributes["ContentType"].Value, "mime/type", "#4");
-                } else if (node.Name == "Override") {
-                    Assert.AreEqual (node.Attributes["PartName"].Value, "/asdasdas", "#5");
-                    Assert.AreEqual (node.Attributes["ContentType"].Value, "asa/s", "#6");
-                } else {
-                    Assert.Fail ("Invalid node found");
-                }
-            }
+            Assert.IsFalse (package.PartExists (contentUri), "#1");
         }
     }
 }
