@@ -152,6 +152,8 @@ namespace System.IO.Packaging {
 				CheckIsReadOnly ();
 			
 			Check.TargetUri (targetUri);
+			if (targetUri.IsAbsoluteUri && targetMode == TargetMode.Internal)
+				throw new ArgumentException ("TargetUri cannot be absolute for an internal relationship");
 			
 			Check.RelationshipTypeIsValid (relationshipType);
 			Check.IdIsValid (id);
