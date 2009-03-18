@@ -155,6 +155,7 @@ namespace System.IO.Packaging {
 					XmlNamespaceManager manager = new XmlNamespaceManager (doc.NameTable);
 					manager.AddNamespace ("content", ContentNamespace);
 
+					// The file names in the zip archive are not prepended with '/'
 					foreach (string file in archive.GetFiles ()) {
 						XmlNode node;
 						CompressionOption compression = archive.GetCompressionLevel (file);
@@ -165,7 +166,7 @@ namespace System.IO.Packaging {
 							continue;
 						}
 
-						string xPath = string.Format ("/content:Types/content:Override[@PartName='{0}']", file);
+						string xPath = string.Format ("/content:Types/content:Override[@PartName='/{0}']", file);
 						node = doc.SelectSingleNode (xPath, manager);
 
 						if (node == null)
@@ -206,7 +207,7 @@ namespace System.IO.Packaging {
 				contentType.Value = part.ContentType;
 				
 				XmlAttribute name = doc.CreateAttribute ("PartName");
-				name.Value = part.Uri.ToString ().Substring (1);
+				name.Value = part.Uri.ToString ();
 				
 
 				node.Attributes.Append (contentType);
