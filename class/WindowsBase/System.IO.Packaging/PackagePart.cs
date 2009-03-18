@@ -216,6 +216,13 @@ namespace System.IO.Packaging {
 
 		public Stream GetStream (FileMode mode, FileAccess access)
 		{
+			bool notAllowed = mode == FileMode.Append || mode == FileMode.CreateNew || mode == FileMode.Truncate;
+			if (access != FileAccess.Read && notAllowed)
+				throw new ArgumentException (string.Format (string.Format ("FileMode '{0}' not supported", mode)));
+
+			if (access == FileAccess.Read && (notAllowed || mode == FileMode.Create))
+				throw new IOException (string.Format ("FileMode '{0}' not allowed on a readonly stream", mode));
+			
 			return GetStreamCore (mode, access);
 		}
 

@@ -57,11 +57,14 @@ namespace System.IO.Packaging {
 		{
 			ZipPartStream zps;
 			MemoryStream stream;
-			if (Package.PartStreams.TryGetValue (Uri, out stream))
+			if (Package.PartStreams.TryGetValue (Uri, out stream)) {
+				zps = new ZipPartStream (Package, stream, access);
+				if (mode == FileMode.Create)
+					stream.SetLength (0);
 				return new ZipPartStream (Package, stream, access);
+			}
 			
 			stream = new MemoryStream ();
-
 			try
 			{
 				using (UnzipArchive archive = new UnzipArchive (Package.PackageStream)) {
@@ -86,6 +89,8 @@ namespace System.IO.Packaging {
 			}
 
 			Package.PartStreams.Add (Uri, stream);
+			if (mode == FileMode.Create)
+				stream.SetLength (0);
 			return new ZipPartStream (Package, stream, access);
 		}
 	}

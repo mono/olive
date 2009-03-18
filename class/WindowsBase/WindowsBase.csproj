@@ -275,5 +275,6 @@
     <Compile Include="Test\System.Windows.Markup\MarkupExtensionReturnTypeAttributeTest.cs" />
     <Compile Include="Test\System.Windows.Markup\ValueSerializerTest.cs" />
     <Compile Include="Test\System.IO.Packaging\PackUriHelperTests.cs" />
+    <Compile Include="Test\System.IO.Packaging\PackagePartFileTests.cs" />
   </ItemGroup>
 </Project>
