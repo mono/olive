@@ -206,7 +206,7 @@ namespace System.IO.Packaging {
 				contentType.Value = part.ContentType;
 				
 				XmlAttribute name = doc.CreateAttribute ("PartName");
-				name.Value = part.Uri.ToString ();
+				name.Value = part.Uri.ToString ().Substring (1);
 				
 
 				node.Attributes.Append (contentType);
