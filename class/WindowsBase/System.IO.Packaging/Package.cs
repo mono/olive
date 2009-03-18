@@ -323,7 +323,7 @@ namespace System.IO.Packaging {
 				}
 				
 				foreach (PackageRelationship r in relationships.Values) {
-					if (r.RelationshipType == System.IO.Packaging.PackageProperties.NSPackageProperties) {
+					if (r.RelationshipType == System.IO.Packaging.PackageProperties.NSPackagePropertiesRelation) {
 						PackagePart part = GetPart (r.TargetUri);
 						packageProperties = new PackagePropertiesPart ();
 						packageProperties.Package = this;

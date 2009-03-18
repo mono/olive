@@ -32,6 +32,7 @@ namespace System.IO.Packaging {
 	public abstract class PackageProperties : IDisposable
 	{
 		internal const string NSPackageProperties = "http://schemas.openxmlformats.org/package/2006/metadata/core-properties";
+		internal const string NSPackagePropertiesRelation = "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties";
 		internal const string PackagePropertiesContentType = "application/vnd.openxmlformats-package.core-properties+xml";
 
 
@@ -79,7 +80,7 @@ namespace System.IO.Packaging {
 				int id = System.Threading.Interlocked.Increment (ref uuid);
 				Uri uri = new Uri (string.Format ("/package/services/metadata/core-properties/{0}.psmdcp", id), UriKind.Relative);
 				Part = Package.CreatePart (uri, PackagePropertiesContentType);
-				PackageRelationship rel = Package.CreateRelationship (uri, TargetMode.Internal, NSPackageProperties);
+				PackageRelationship rel = Package.CreateRelationship (uri, TargetMode.Internal, NSPackagePropertiesRelation);
 			}
 			
 			using (Stream s = Part.GetStream ()) {
