@@ -325,18 +325,10 @@ namespace System.IO.Packaging.Tests {
         }
 
         [Test]
+        [ExpectedException (typeof (ArgumentException))]
         public void CheckContentTypes ()
         {
-            Uri contentUri = new Uri ("/[Content_Types].xml", UriKind.Relative);
-            string contentNamespace = "http://schemas.openxmlformats.org/package/2006/content-types";
-            AddThreeParts ();
-            package.Flush ();
-            // FIXME: This isn't actually created as a PackagePart
-            Assert.IsFalse (package.PartExists (contentUri), "#1");
-
-            package.Close ();
-            package = Package.Open (new MemoryStream (stream.ToArray ()), FileMode.Open, FileAccess.Read);
-            Assert.IsFalse (package.PartExists (contentUri), "#2");
+            package.PartExists(new Uri ("/[Content_Types].xml", UriKind.Relative));
         }
     }
 }

@@ -30,10 +30,12 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 
-namespace System.IO.Packaging.Tests {
+namespace System.IO.Packaging.Tests
+{
 
     [TestFixture]
-    public class FakePackageTests : TestBase {
+    public class FakePackageTests : TestBase
+    {
 
         //static void Main (string [] args)
         //{
@@ -42,105 +44,174 @@ namespace System.IO.Packaging.Tests {
         //    t.Setup ();
         //    t.RelationshipPartGetStream ();
         //}
-        
+
         private new FakePackage package;
-        public override void Setup ()
+        public override void Setup()
         {
-            package = new FakePackage (FileAccess.ReadWrite, true);
+            package = new FakePackage(FileAccess.ReadWrite, true);
         }
 
         [Test]
-        public void CheckAutomaticParts ()
+        public void CheckAutomaticParts()
         {
-            package.CreatePart (uris [0], contentType);
-            Assert.AreEqual (1, package.CreatedParts.Count (), "#1");
-            Assert.AreEqual (uris [0], package.CreatedParts [0], "#2");
-            Assert.AreEqual (0, package.DeletedParts.Count (), "#3");
-            Assert.AreEqual (1, package.GetParts ().Count (), "#4");
+            package.CreatePart(uris[0], contentType);
+            Assert.AreEqual(1, package.CreatedParts.Count(), "#1");
+            Assert.AreEqual(uris[0], package.CreatedParts[0], "#2");
+            Assert.AreEqual(0, package.DeletedParts.Count(), "#3");
+            Assert.AreEqual(1, package.GetParts().Count(), "#4");
         }
 
         [Test]
-        public void CheckAutomaticParts2 ()
+        public void CheckAutomaticParts2()
         {
-            package.CreateRelationship (uris [0], TargetMode.External, "relationship");
-            Assert.AreEqual (1, package.CreatedParts.Count (), "#1");
-            Assert.AreEqual (relationshipUri, package.CreatedParts [0], "#2");
-            Assert.AreEqual (0, package.DeletedParts.Count (), "#3");
-            Assert.AreEqual (1, package.GetParts ().Count (), "#4");
+            package.CreateRelationship(uris[0], TargetMode.External, "relationship");
+            Assert.AreEqual(1, package.CreatedParts.Count(), "#1");
+            Assert.AreEqual(relationshipUri, package.CreatedParts[0], "#2");
+            Assert.AreEqual(0, package.DeletedParts.Count(), "#3");
+            Assert.AreEqual(1, package.GetParts().Count(), "#4");
 
-            PackagePart p = package.GetPart (relationshipUri);
-            Assert.AreEqual (package, p.Package, "#5");
-            Assert.AreEqual (CompressionOption.NotCompressed, p.CompressionOption, "#6");
-            Assert.AreEqual ("application/vnd.openxmlformats-package.relationships+xml", p.ContentType, "#7");
+            PackagePart p = package.GetPart(relationshipUri);
+            Assert.AreEqual(package, p.Package, "#5");
+            Assert.AreEqual(CompressionOption.NotCompressed, p.CompressionOption, "#6");
+            Assert.AreEqual("application/vnd.openxmlformats-package.relationships+xml", p.ContentType, "#7");
         }
 
         [Test]
-        public void CheckProperties ()
+        public void CheckProperties()
         {
-            Assert.AreEqual (0, package.GotParts.Count, "#1");
+            Assert.AreEqual(0, package.GotParts.Count, "#1");
             object o = package.PackageProperties;
-            Assert.AreEqual (1, package.GotParts.Count, "#2");
-            Assert.AreEqual ("/_rels/.rels", package.GotParts[0].ToString (), "#3");
+            Assert.AreEqual(1, package.GotParts.Count, "#2");
+            Assert.AreEqual("/_rels/.rels", package.GotParts[0].ToString(), "#3");
         }
 
         [Test]
-        public void RelationshipPartGetRelationships ()
+        public void RelationshipPartGetRelationships()
         {
-            CheckAutomaticParts2 ();
-            PackagePart p = package.GetPart (relationshipUri);
+            CheckAutomaticParts2();
+            PackagePart p = package.GetPart(relationshipUri);
 
-            try {
-                p.CreateRelationship (uris[0], TargetMode.Internal, "asdas");
-                Assert.Fail ("This should fail 1");
-            } catch (InvalidOperationException) {
+            try
+            {
+                p.CreateRelationship(uris[0], TargetMode.Internal, "asdas");
+                Assert.Fail("This should fail 1");
+            }
+            catch (InvalidOperationException)
+            {
 
             }
 
-            try {
+            try
+            {
                 p.DeleteRelationship("aa");
-                Assert.Fail ("This should fail 2");
-            } catch (InvalidOperationException) {
+                Assert.Fail("This should fail 2");
+            }
+            catch (InvalidOperationException)
+            {
 
             }
 
-            try {
-                p.GetRelationship ("id");
-                Assert.Fail ("This should fail 3");
-            } catch (InvalidOperationException) {
+            try
+            {
+                p.GetRelationship("id");
+                Assert.Fail("This should fail 3");
+            }
+            catch (InvalidOperationException)
+            {
 
             }
 
-            try {
-                p.GetRelationships ();
-                Assert.Fail ("This should fail 4");
-            } catch (InvalidOperationException) {
+            try
+            {
+                p.GetRelationships();
+                Assert.Fail("This should fail 4");
+            }
+            catch (InvalidOperationException)
+            {
 
             }
 
-            try {
-                p.GetRelationshipsByType ("type");
-                Assert.Fail ("This should fail 5");
-            } catch (InvalidOperationException) {
+            try
+            {
+                p.GetRelationshipsByType("type");
+                Assert.Fail("This should fail 5");
+            }
+            catch (InvalidOperationException)
+            {
 
             }
-            
-            try {
-                p.RelationshipExists ("id");
-                Assert.Fail ("This should fail 6");
-            } catch (InvalidOperationException) {
-                
+
+            try
+            {
+                p.RelationshipExists("id");
+                Assert.Fail("This should fail 6");
+            }
+            catch (InvalidOperationException)
+            {
+
             }
         }
 
-		[Test]
-        public void TestProperties ()
+        [Test]
+        public void TestProperties()
         {
-            Assert.IsNotNull (package.PackageProperties, "#1");
+            Assert.IsNotNull(package.PackageProperties, "#1");
             package.PackageProperties.Title = "Title";
-            package.Flush ();
+            package.Flush();
 
             // the relationship part and packageproperties part
-            Assert.AreEqual (2, package.CreatedParts.Count, "#2");
+            Assert.AreEqual(2, package.CreatedParts.Count, "#2");
+        }
+
+        [Test]
+        public void TestWordDoc()
+        {
+            MemoryStream stream = new MemoryStream();
+            Package package = CreateWordDoc(stream);
+            Assert.IsTrue(package.PartExists(new Uri("/word/document.xml", UriKind.Relative)), "#1");
+            Assert.IsTrue(package.RelationshipExists("rel1"), "#2");
+            package.Close();
+            package = Package.Open(new MemoryStream(stream.ToArray()), FileMode.Open);
+            Assert.AreEqual(10, package.GetParts().Count(), "#3");
+            Assert.AreEqual (9, package.GetRelationships ().Count (), "#4");
+            Assert.IsTrue(package.PartExists(new Uri("/word/document.xml", UriKind.Relative)), "#5");
+            Assert.IsTrue(package.RelationshipExists("rel1"), "#6");
+        }
+
+        Package CreateWordDoc(Stream stream)
+        {
+            Package pack = Package.Open(stream, FileMode.Create);
+
+            // Create package parts.
+            PackagePart wordDocument = pack.CreatePart(new Uri("/word/document.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.document.main+xml");
+            PackagePart wordNumbering = pack.CreatePart(new Uri("/word/numbering.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.numbering+xml");
+            PackagePart wordStyles = pack.CreatePart(new Uri("/word/styles.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.styles+xml");
+            PackagePart docPropsApp = pack.CreatePart(new Uri("/docProps/app.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.extended-properties+xml");
+            PackagePart wordSettings = pack.CreatePart(new Uri("/word/settings.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.settings+xml");
+            PackagePart wordTheme1 = pack.CreatePart(new Uri("/word/theme/theme1.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.theme+xml");
+            PackagePart wordFontTable = pack.CreatePart(new Uri("/word/fontTable.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.fontTable+xml");
+            PackagePart wordWebSettings = pack.CreatePart(new Uri("/word/webSettings.xml", UriKind.Relative), "application/vnd.openxmlformats-officedocument.wordprocessingml.webSettings+xml");
+            PackagePart docPropsCore = pack.CreatePart(new Uri("/docProps/core.xml", UriKind.Relative), "application/vnd.openxmlformats-package.core-properties+xml");
+
+            // Create relationships for package.
+            pack.CreateRelationship(new Uri("docProps/app.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/extended-properties");
+            pack.CreateRelationship(new Uri("docProps/core.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/package/2006/relationships/metadata/core-properties");
+            pack.CreateRelationship(new Uri("word/document.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument");
+
+            // Create document relationships.
+            pack.CreateRelationship(new Uri("settings.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/settings", "rel1");
+            pack.CreateRelationship(new Uri("styles.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles", "rel2");
+            pack.CreateRelationship(new Uri("numbering.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/numbering", "rel3");
+            pack.CreateRelationship(new Uri("theme/theme1.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/theme", "rel4");
+            pack.CreateRelationship(new Uri("fontTable.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/fontTable", "rel5");
+            pack.CreateRelationship(new Uri("webSettings.xml", UriKind.Relative), TargetMode.Internal, "http://schemas.openxmlformats.org/officeDocument/2006/relationships/webSettings", "rel6");
+
+            // Load some basic data into the different parts.
+            foreach (PackagePart part in package.GetParts())
+                using (Stream s = part.GetStream())
+                    s.Write(new byte[10], 0, 10);
+            
+            return pack;
         }
     }
 }
