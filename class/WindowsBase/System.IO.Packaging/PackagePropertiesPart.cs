@@ -184,6 +184,9 @@ namespace System.IO.Packaging
 		
 		internal override void LoadFrom (Stream stream)
 		{
+			if (stream.Length == 0)
+				return;
+			
 			XmlDocument doc = new XmlDocument ();
 			doc.Load (stream);
 			
