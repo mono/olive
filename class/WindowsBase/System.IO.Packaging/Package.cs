@@ -324,7 +324,7 @@ namespace System.IO.Packaging {
 				
 				foreach (PackageRelationship r in relationships.Values) {
 					if (r.RelationshipType == System.IO.Packaging.PackageProperties.NSPackagePropertiesRelation) {
-						PackagePart part = GetPart (r.TargetUri);
+						PackagePart part = GetPart (PackUriHelper.ResolvePartUri (Uri, r.TargetUri));
 						packageProperties = new PackagePropertiesPart ();
 						packageProperties.Package = this;
 						packageProperties.Part = part;

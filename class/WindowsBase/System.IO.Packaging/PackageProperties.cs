@@ -75,6 +75,15 @@ namespace System.IO.Packaging {
 
 		internal void Flush ()
 		{
+			using (MemoryStream temp = new MemoryStream ()) {
+				using (XmlTextWriter writer = new XmlTextWriter (temp, System.Text.Encoding.UTF8)) {
+					WriteTo (writer);
+					writer.Flush ();
+					if (temp.Length == 0)
+						return;
+				}
+			}
+			
 			if (Part == null)
 			{
 				int id = System.Threading.Interlocked.Increment (ref uuid);
@@ -83,12 +92,9 @@ namespace System.IO.Packaging {
 				PackageRelationship rel = Package.CreateRelationship (uri, TargetMode.Internal, NSPackagePropertiesRelation);
 			}
 			
-			using (Stream s = Part.GetStream ()) {
-				s.SetLength (0);
-				
+			using (Stream s = Part.GetStream (FileMode.Create))
 				using (XmlTextWriter writer = new XmlTextWriter (s, System.Text.Encoding.UTF8))
 					WriteTo (writer);
-			}
 		}
 		
 		internal virtual void LoadFrom (Stream stream)
