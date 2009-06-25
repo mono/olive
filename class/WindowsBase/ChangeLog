@@ -1,3 +1,11 @@
+2009-06-25  Sandy Armstrong  <sanfordarmstrong@gmail.com>
+
+	* System.Windows/Rect.cs: Implement unimplemented ToString methods to
+	support custom and culture-based formatting. Fixes bug #516165.
+	* Test/System.Windows/RectTest.cs: Expand ToStringTest to cover above
+	changes. Add new ToString_FormatException test, currently set to
+	NotWorking category because of Mono bug #516172.
+
 2009-03-19  Alan McGovern  <amcgovern@novell.com>
 
 	* Test/System.IO.Packaging/FakePackageTests.cs:

@@ -24,6 +24,7 @@
 //
 
 using System;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Media;
 using NUnit.Framework;
@@ -260,10 +261,84 @@ namespace MonoTests.System.Windows {
 		[Test]
 		public void ToStringTest ()
 		{
-			Rect r = new Rect (1, 2, 3, 4);
-			Assert.AreEqual ("1,2,3,4", r.ToString());
+			Rect r = new Rect (1.0, 2.5, 3, 4);
 
-			Assert.AreEqual ("Empty", Rect.Empty.ToString());
+			string expectedStringOutput = "1,2.5,3,4";
+			Assert.AreEqual (expectedStringOutput, r.ToString ());
+			Assert.AreEqual (expectedStringOutput, r.ToString (null));
+			Assert.AreEqual ("Empty", Rect.Empty.ToString ());
+
+			// IFormattable.ToString
+			IFormattable rFormattable = r;
+			Assert.AreEqual (expectedStringOutput,
+				rFormattable.ToString (null, null),
+				"IFormattable.ToString with null format");
+			Assert.AreEqual (expectedStringOutput,
+				rFormattable.ToString (string.Empty, null),
+				"IFormattable.ToString with empty format");
+			Assert.AreEqual ("1.00,2.50,3.00,4.00",
+				rFormattable.ToString ("N2", null),
+				"IFormattable.ToString with N2 format");
+			Assert.AreEqual ("blah,blah,blah,blah",
+				rFormattable.ToString ("blah", null),
+				"IFormattable.ToString with blah format");
+			Assert.AreEqual (":,:,:,:",
+				rFormattable.ToString (":", null),
+				"IFormattable.ToString with : format");
+			Assert.AreEqual ("Empty",
+				((IFormattable) Rect.Empty).ToString ("blah", null),
+				"IFormattable.ToString on Rect.Empty with blah format");
+
+			foreach (CultureInfo culture in CultureInfo.GetCultures (CultureTypes.AllCultures)) {
+				if (culture.IsNeutralCulture)
+					continue;
+				string separator = ",";
+				if (culture.NumberFormat.NumberDecimalSeparator == separator)
+					separator = ";";
+				expectedStringOutput =
+					1.ToString (culture) + separator +
+					2.5.ToString (culture) + separator +
+					3.ToString (culture) + separator +
+					4.ToString (culture);
+				Assert.AreEqual (expectedStringOutput,
+					r.ToString (culture),
+					"ToString with Culture: " + culture.Name);
+				Assert.AreEqual ("Empty",
+					Rect.Empty.ToString (culture),
+					"ToString on Empty with Culture: " + culture.Name);
+
+				// IFormattable.ToString
+				Assert.AreEqual (expectedStringOutput,
+					rFormattable.ToString (null, culture),
+					"IFormattable.ToString with null format with Culture: " + culture.Name);
+				Assert.AreEqual (expectedStringOutput,
+					rFormattable.ToString (string.Empty, culture),
+					"IFormattable.ToString with empty format with Culture: " + culture.Name);
+				expectedStringOutput =
+					1.ToString ("N2", culture) + separator +
+					2.5.ToString ("N2", culture) + separator +
+					3.ToString ("N2", culture) + separator +
+					4.ToString ("N2", culture);
+				Assert.AreEqual (expectedStringOutput,
+					rFormattable.ToString ("N2", culture),
+					"IFormattable.ToString with N2 format with Culture: " + culture.Name);
+			}
+		}
+		
+		[Test]
+		[Category ("NotWorking")]
+		public void ToString_FormatException ()
+		{
+			// This test does not currently work because
+			// String.Format does not throw all necessary exceptions
+			IFormattable rFormattable = new Rect (1.0, 2.5, 3, 4);
+			bool exceptionRaised = false;
+			try {
+				rFormattable.ToString ("{", null);
+			} catch (FormatException) {
+				exceptionRaised = true;
+			}
+			Assert.IsTrue (exceptionRaised, "Expected FormatException with IFormattable.ToString (\"{\", null)");
 		}
 
 		[Test]
