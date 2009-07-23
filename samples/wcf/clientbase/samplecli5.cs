@@ -7,13 +7,23 @@ public class Tset
 {
 	public static void Main ()
 	{
-		FooProxy proxy = new FooProxy (
-			new BasicHttpBinding (),
-			new EndpointAddress ("http://localhost:8080/"));
+		var binding = new NetTcpBinding ();
+		binding.TransferMode = TransferMode.Streamed;
+		binding.Security.Mode = SecurityMode.None;
+		IFooChannel proxy = new ChannelFactory<IFooChannel> (
+			binding,
+			new EndpointAddress ("net.tcp://localhost:8080/")
+			).CreateChannel ();
 		proxy.Open ();
 		Console.WriteLine (proxy.Echo ("TEST FOR ECHO"));
+		Console.WriteLine (proxy.SessionId);
 		Console.WriteLine (proxy.Add (1000, 2000));
+		Console.WriteLine (proxy.SessionId);
 	}
+}
+
+public interface IFooChannel : IFoo, IClientChannel
+{
 }
 
 [ServiceContract]
@@ -40,6 +50,7 @@ public class FooProxy : ClientBase<IFoo>, IFoo
 
 	public uint Add (uint v1, uint v2)
 	{
+Console.WriteLine ("Calling Add()");
 		return Channel.Add (v1, v2);
 	}
 }

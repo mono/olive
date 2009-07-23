@@ -11,18 +11,19 @@ public class Tset
 	public static void Main ()
 	{
 		ServiceHost host = new ServiceHost (typeof (Foo));
-		Binding binding = new BasicHttpBinding ();
+		NetTcpBinding binding = new NetTcpBinding ();
+		binding.TransferMode = TransferMode.Streamed;
+		binding.Security.Mode = SecurityMode.None;
 		binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
 		binding.OpenTimeout = TimeSpan.FromSeconds (20);
 		host.AddServiceEndpoint ("IFoo",
-			binding, new Uri ("http://localhost:8080"));
+			binding, new Uri ("net.tcp://localhost:8080"));
 		host.Description.Behaviors.Find<ServiceBehaviorAttribute> ()
-			.ConcurrencyMode = ConcurrencyMode.Multiple;
+			.IncludeExceptionDetailInFaults = true;
 		host.Open ();
 		Console.WriteLine ("Hit [CR] key to close ...");
 		Console.ReadLine ();
 		host.Close ();
-		((IDisposable) host).Dispose ();
 	}
 }
 
@@ -41,15 +42,20 @@ class Foo : IFoo
 	public string Echo (string msg) 
 	{
 Console.WriteLine (OperationContext.Current.IncomingMessageHeaders.Action);
-Console.WriteLine (OperationContext.Current.Channel.GetType ());
+Console.WriteLine (OperationContext.Current.Channel.GetHashCode ());
+//foreach (var ch in OperationContext.Current.InstanceContext.IncomingChannels) Console.WriteLine (((IDuplexContextChannel) ch).CallbackInstance == OperationContext.Current.InstanceContext);
+Console.WriteLine (OperationContext.Current.SessionId);
+Console.Out.Flush ();
 		return msg + msg;
 		//throw new NotImplementedException ();
 	}
 
 	public uint Add (uint v1, uint v2)
 	{
-Console.WriteLine ("ADD");
-Console.WriteLine (OperationContext.Current.Channel.GetType ());
+Console.WriteLine (OperationContext.Current.IncomingMessageHeaders.Action + "/" + v1 + "/" + v2);
+Console.WriteLine (OperationContext.Current.Channel.GetHashCode ());
+//foreach (var ch in OperationContext.Current.InstanceContext.IncomingChannels) Console.WriteLine (((IDuplexContextChannel) ch).CallbackInstance);
+Console.WriteLine (OperationContext.Current.SessionId);
 		return v1 + v2;
 	}
 }
