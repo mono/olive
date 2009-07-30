@@ -1,4 +1,10 @@
-all: samplesvc.exe samplecli.exe samplesvc2.exe samplecli2.exe samplesvc3.exe samplecli3.exe samplesvc4.exe samplecli4.exe samplesvc5.exe samplecli5.exe
+all: samplesvc.exe samplecli.exe samplesvc2.exe samplecli2.exe samplesvc3.exe samplecli3.exe samplesvc4.exe samplecli4.exe samplesvc5.exe samplecli5.exe samplesvc6.exe samplecli6.exe
+
+samplesvc6.exe : samplesvc6.cs
+	gmcs -debug -pkg:wcf samplesvc6.cs
+
+samplecli6.exe : samplecli6.cs
+	gmcs -debug -pkg:wcf samplecli6.cs
 
 samplesvc5.exe : samplesvc5.cs
 	gmcs -debug -pkg:wcf samplesvc5.cs
@@ -36,4 +42,5 @@ clean:
 	rm -f samplesvc3.exe samplesvc3.exe.mdb samplecli3.exe samplecli3.exe.mdb 
 	rm -f samplesvc4.exe samplesvc4.exe.mdb samplecli4.exe samplecli4.exe.mdb 
 	rm -f samplesvc5.exe samplesvc5.exe.mdb samplecli5.exe samplecli5.exe.mdb 
+	rm -f samplesvc6.exe samplesvc6.exe.mdb samplecli6.exe samplecli6.exe.mdb 
 
