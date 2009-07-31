@@ -19,7 +19,7 @@ public class Tset
 		IFooChannel proxy = new DuplexChannelFactory<IFooChannel> (
 			new Foo (),
 			binding,
-			new EndpointAddress ("net.p2p://localhost:8080/")
+			new EndpointAddress ("net.p2p://samplemesh/SampleService")
 			).CreateChannel ();
 		proxy.Open ();
 		proxy.SendMessage ("TEST FOR ECHO");

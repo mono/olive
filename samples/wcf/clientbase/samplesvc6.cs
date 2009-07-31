@@ -41,7 +41,7 @@ public class Tset
 		binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
 		binding.OpenTimeout = TimeSpan.FromSeconds (20);
 		host.AddServiceEndpoint ("IFoo",
-			binding, new Uri ("net.p2p://localhost:8080"));
+			binding, new Uri ("net.p2p://samplemesh/SampleService"));
 		host.Description.Behaviors.Find<ServiceBehaviorAttribute> ()
 			.IncludeExceptionDetailInFaults = true;
 		host.Open ();
@@ -84,10 +84,12 @@ try {
 		//var proxy = OperationContext.Current.GetCallbackChannel<ICallbackFoo> ();
 		//proxy.CallbackFoo (msg);
 		//Console.WriteLine ("Foo callback invoked: " + proxy);
+		/*
 		foreach (var ch in OperationContext.Current.InstanceContext.IncomingChannels) {
 			ICallbackFoo cb = (ICallbackFoo) ((IDuplexContextChannel) ch).CallbackInstance.GetServiceInstance ();
 			cb.CallbackFoo ("foobar");
 		}
+		*/
 } catch (Exception ex) {
 Console.WriteLine (ex); throw;
 }
