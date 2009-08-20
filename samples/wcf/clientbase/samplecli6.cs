@@ -54,7 +54,7 @@ class Foo : IFoo, ICallbackFoo
 {
 	public void SendMessage (string msg)
 	{
-		Console.WriteLine ("SendMessage: " + msg);
+		Console.WriteLine ("*Received* SendMessage: " + msg);
 	}
 
 	public void CallbackFoo (string msg)
