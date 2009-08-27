@@ -8,6 +8,7 @@ public class Tset
 	public static void Main ()
 	{
 		var binding = new NetNamedPipeBinding ();
+		binding.TransferMode = TransferMode.Streamed;
 		binding.Security.Mode = NetNamedPipeSecurityMode.None;
 		IFooChannel proxy = new ChannelFactory<IFooChannel> (
 			binding,

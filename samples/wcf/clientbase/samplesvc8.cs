@@ -12,6 +12,7 @@ public class Tset
 	{
 		var host = new ServiceHost (typeof (Foo));
 		var binding = new NetNamedPipeBinding ();
+		binding.TransferMode = TransferMode.Streamed;
 		binding.Security.Mode = NetNamedPipeSecurityMode.None;
 		binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
 		binding.OpenTimeout = TimeSpan.FromSeconds (20);
