@@ -1,3 +1,8 @@
+2009-09-02  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplesvc2.cs, samplecli2.cs : new samples, for body style.
+	* Makefile : add above. Fix old package name.
+
 2008-03-22  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc.cs : added some more debuggy stuff.
