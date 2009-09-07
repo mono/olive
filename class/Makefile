@@ -3,7 +3,6 @@ thisdir = class
 # For now, Mono.Security.Win32 is built on Linux too.
 # However, it isn't tested on Linux, since it depends on a Win32 dll.
 net_3_0_dirs = \
-	WindowsBase			\
 	System.Workflow.ComponentModel	\
 	System.Workflow.Activities	\
 	System.Workflow.Runtime		\
