@@ -1,4 +1,8 @@
-all: samplesvc.exe samplecli.exe samplesvc2.exe samplecli2.exe
+all: samplesvc.exe samplecli.exe samplesvc2.exe samplecli2.exe \
+	ajax-jsdebug.exe
+
+ajax-jsdebug.exe : ajax-jsdebug.cs
+	gmcs -pkg:wcf ajax-jsdebug.cs
 
 samplesvc2.exe : samplesvc2.cs
 	gmcs -pkg:wcf -debug samplesvc2.cs
@@ -14,4 +18,5 @@ samplecli.exe : samplecli.cs
 
 clean:
 	rm -rf samplecli.exe samplecli.exe.mdb samplesvc.exe samplesvc.exe.mdb \
-	samplesvc2.exe samplesvc2.exe.mdb samplecli2.exe samplecli2.exe.mdb
+	samplesvc2.exe samplesvc2.exe.mdb samplecli2.exe samplecli2.exe.mdb \
+	ajax-jsdebug.exe

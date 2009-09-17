@@ -1,3 +1,9 @@
+2009-09-17  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* ajax-jsdebug.cs : new sample for WebScriptEnablingBehavior.
+	* Makefile : added above.
+	* samplecli.cs : fix [WebGet] property.
+
 2009-09-02  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* samplesvc2.cs, samplecli2.cs : new samples, for body style.

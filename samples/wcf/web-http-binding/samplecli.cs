@@ -44,8 +44,8 @@ public interface IMyService
 {
 	[OperationContract]
 	//[WebGet (RequestFormat = WebMessageFormat.Json, UriTemplate = "/{foo}/{foo}")]
-	//[WebGet (RequestFormat = WebMessageFormat.Json)]
-	[WebGet]
+	[WebGet (RequestFormat = WebMessageFormat.Json)]
+	//[WebGet]
 	string Greet (string input);
 }
 
