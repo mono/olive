@@ -1,5 +1,6 @@
 using System;
 using System.Net;
+using System.Runtime.Serialization;
 using System.ServiceModel;
 using System.ServiceModel.Activation;
 using System.ServiceModel.Description;
@@ -33,6 +34,8 @@ public class Test
 			.DownloadString (url + "/jsdebug"));
 		Console.WriteLine (new WebClient ()
 			.DownloadString (url + "/Join?s1=foo&s2=bar"));
+		Console.WriteLine (new WebClient ()
+			.DownloadString (url + "/ToComplex?real=3&unreal=4"));
 		foreach (ChannelDispatcher cd in host.ChannelDispatchers) {
 			Console.WriteLine ("BindingName: " + cd.BindingName);
 			Console.WriteLine (cd.Listener.Uri);
@@ -56,13 +59,17 @@ public interface IHogeService
 	// error -> [WebGet (BodyStyle = WebMessageBodyStyle.Wrapped)]
 	[OperationContract]
 	string Join (string s1, string s2);
+
+	[WebGet]
+	[OperationContract]
+	ComplexValue ToComplex (double real, double imaginary);
 }
 
 public interface IHogeClient : IHogeService, IClientChannel
 {
 }
 
-[ServiceBehavior (IncludeExceptionDetailInFaults = true)]
+//[ServiceBehavior (IncludeExceptionDetailInFaults = true)]
 public class HogeService : IHogeService
 {
 	public string Echo (string s)
@@ -75,4 +82,18 @@ public class HogeService : IHogeService
 		Console.WriteLine ("{0} + {1}", s1, s2);
 		return s1 + s2;
 	}
+
+	public ComplexValue ToComplex (double real, double imaginary)
+	{
+		return new ComplexValue () {Real = real, Imaginary = imaginary};
+	}
+}
+
+[DataContract]
+public class ComplexValue
+{
+	[DataMember]
+	public double Real;
+	[DataMember]
+	public double Imaginary;
 }

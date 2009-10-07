@@ -1,3 +1,10 @@
+2009-10-07  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli3.cs, samplesvc3.cs : WebScriptEnablingBehavior sample.
+	* samplecli4.cs, samplesvc4.cs : JSON wrapped sample.
+	* Makefile : add above.
+	* ajax-jsdebug.cs : add complex return value case.
+
 2009-09-17  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* ajax-jsdebug.cs : new sample for WebScriptEnablingBehavior.
