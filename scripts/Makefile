@@ -33,8 +33,8 @@ REWRITE_COMMON = sed \
 REWRITE = $(REWRITE_COMMON) -e 's,@''mono_interp@,$(mono_interp),g'
 REWRITE_DEBUG = $(REWRITE_COMMON) -e 's,@''mono_interp@,$(mono_interp) --debug,g'
 
-REWRITE3 = $(REWRITE) -e 's,@''framework_version@,3.0,g'
-REWRITE3_DEBUG = $(REWRITE_DEBUG) -e 's,@''framework_version@,3.0,g'
+REWRITE3 = $(REWRITE) -e 's,@''framework_version@,2.0,g'
+REWRITE3_DEBUG = $(REWRITE_DEBUG) -e 's,@''framework_version@,2.0,g'
 
 .PHONY: $(scripts_3_0)
 all-local:  $(scripts_3_0)

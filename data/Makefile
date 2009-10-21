@@ -3,10 +3,10 @@ SUBDIRS =
 include ../build/rules.make
 
 ifeq ($(PLATFORM), win32)
-	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/3.0')
+	olivedir := $(shell cygpath -m '$(prefix)/lib/mono/2.0')
 	olive35dir := $(shell cygpath -m '$(prefix)/lib/mono/3.5')
 else
-	olivedir   = $(prefix)/lib/mono/3.0
+	olivedir   = $(prefix)/lib/mono/2.0
 	olive35dir = $(prefix)/lib/mono/3.5
 	silverdir  = $(prefix)/lib/mono/2.1
 	net20dir   = $(prefix)/lib/mono/2.0
