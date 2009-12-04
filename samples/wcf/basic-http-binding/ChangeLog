@@ -1,3 +1,8 @@
+2009-12-04  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplesvc2.cs, samplecli2.cs : added Basic authentication sample.
+	* Makefile: updated to the latest build.
+
 2006-09-17  Atsushi Enomoto <atsushi@ximian.com>
 
 	* samplecli.cs : ChannelFactory<IRequestChannel> is a misuse.
