@@ -1,0 +1,6 @@
+2009-12-22  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* samplecli4.cs, samplecli5.cs, samplecli6.cs, samplecli7.cs
+	  samplesvc4.cs, samplesvc5.cs, samplesvc6.cs, samplesvc7.cs :
+	  moved (split) from ../clientbase.
+	* Makefile: new.

@@ -13,6 +13,7 @@ public class Tset
 		proxy.Open ();
 		Console.WriteLine (proxy.Echo ("TEST FOR ECHO"));
 		Console.WriteLine (proxy.Add (1000, 2000));
+		Console.WriteLine ("done");
 	}
 }
 
