@@ -7,6 +7,7 @@ public class Tset
 {
 	public static void Main ()
 	{
+		for (int i = 0; i < 2; i++) {
 		var binding = new NetTcpBinding ();
 		binding.Security.Mode = SecurityMode.None;
 		IFooChannel proxy = new ChannelFactory<IFooChannel> (
@@ -18,6 +19,7 @@ public class Tset
 		Console.WriteLine (proxy.SessionId);
 		Console.WriteLine (proxy.Add (1000, 2000));
 		Console.WriteLine (proxy.SessionId);
+		}
 	}
 }
 

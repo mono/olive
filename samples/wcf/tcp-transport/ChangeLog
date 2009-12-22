@@ -1,5 +1,12 @@
 2009-12-22  Atsushi Enomoto  <atsushi@ximian.com>
 
+	* samplesvc8.cs, samplecli8.cs :
+	  binary messaging + http transport case (could be used in SL3).
+	* samplecli4.cs : make it run twice, which exposed an issue.
+	* Makefile: added above.
+
+2009-12-22  Atsushi Enomoto  <atsushi@ximian.com>
+
 	* samplecli4.cs, samplecli5.cs, samplecli6.cs, samplecli7.cs
 	  samplesvc4.cs, samplesvc5.cs, samplesvc6.cs, samplesvc7.cs :
 	  moved (split) from ../clientbase.
