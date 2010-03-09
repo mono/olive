@@ -1,12 +1,17 @@
 using System;
+using System.Linq;
+using System.Text;
 using System.Xml;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 
 public class Tset
 {
-	public static void Main ()
+	static bool aspx;
+
+	public static void Main (string [] args)
 	{
+		aspx = args.FirstOrDefault (s => s == "--aspx") != null;
 		Run ("user", "right");
 		Run ("user", "wrong");
 	}
@@ -19,7 +24,7 @@ public class Tset
 		binding.Security.Transport.ClientCredentialType =
 			HttpClientCredentialType.Basic;
 		FooProxy proxy = new FooProxy (binding,
-			new EndpointAddress ("http://localhost:8080/"));
+			new EndpointAddress ("http://localhost:8080/" + (aspx ? "auth.svc" : "")));
 		proxy.ClientCredentials.UserName.UserName = user;
 		proxy.ClientCredentials.UserName.Password = pass;
 		proxy.Open ();

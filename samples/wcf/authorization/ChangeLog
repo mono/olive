@@ -1,3 +1,12 @@
+2010-03-09  Atsushi Enomoto  <atsushi@ximian.com>
+
+	* web.config, auth.svc : new, for ASP.NET testing (not fully working)
+	* samplesvc.exe.config : new, for configuration-based test (identical
+	  to web.config).
+	* Makefile : add asp.net test build.
+	* samplesvc.cs : it is now configuration based.
+	* samplecli.cs : add --aspx switch for ASP.NET client.
+
 2010-03-03  Atsushi Enomoto  <atsushi@ximian.com>
 
 	* Makefile, samplesvc.cs, samplecli.cs : initial checkin.

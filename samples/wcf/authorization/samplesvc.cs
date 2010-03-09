@@ -8,10 +8,14 @@ using System.ServiceModel.Description;
 using System.ServiceModel.Dispatcher;
 using System.ServiceModel.Security;
 
+#if !WITHOUT_DRIVER
+
 public class Tset
 {
 	public static void Main ()
 	{
+		ServiceHost host = new ServiceHost (typeof (Foo), new Uri ("http://localhost:8080/auth.svc"));
+/*
 		ServiceHost host = new ServiceHost (typeof (Foo));
 		var sc = new ServiceCredentials ();
 		sc.UserNameAuthentication.UserNamePasswordValidationMode =
@@ -27,9 +31,7 @@ public class Tset
 		binding.OpenTimeout = TimeSpan.FromSeconds (20);
 		host.AddServiceEndpoint ("IFoo",
 			binding, new Uri ("http://localhost:8080"));
-		host.Description.Behaviors.Find<ServiceBehaviorAttribute> ()
-			.ConcurrencyMode = ConcurrencyMode.Multiple;
-		host.Description.Behaviors.Add (new ServiceMetadataBehavior () { HttpGetUrl = new Uri ("http://localhost:8080/wsdl"), HttpGetEnabled = true });
+*/
 		host.Open ();
 		Console.WriteLine ("Hit [CR] key to close ...");
 		Console.ReadLine ();
@@ -37,6 +39,8 @@ public class Tset
 		((IDisposable) host).Dispose ();
 	}
 }
+
+#endif
 
 [ServiceContract]
 public interface IFoo
