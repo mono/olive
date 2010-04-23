@@ -1,3 +1,8 @@
+2010-04-23  Atsushi Enomoto <atsushi@ximian.com>
+
+	* samplesvc5.cs, samplecli5.cs, Makefile :
+	  add URL-conflicting ServiceMetadataBehavior case. It used to not work.
+
 2010-04-07  Atsushi Enomoto <atsushi@ximian.com>
 
 	* samplesvc4.cs, samplecli4.cs, Makefile :
