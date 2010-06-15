@@ -29,26 +29,43 @@ namespace System.Windows {
 
 	//[TypeConverter (typeof (ThicknessConverter))]
 	public struct Thickness : IEquatable<Thickness> {
+		double _left;
+		double _top;
+		double _right;
+		double _bottom;
+		
 		public Thickness (double left, double top, double right, double bottom)
 		{
-			Left = left;
-			Top = top;
-			Right = right;
-			Bottom = bottom;
+			_left = left;
+			_top = top;
+			_right = right;
+			_bottom = bottom;
 		}
 
 		public Thickness (double uniformLength)
 		{
-			Left =
-				Top =
-				Right =
-				Bottom = uniformLength;
+			_left =
+				_top =
+				_right =
+				_bottom = uniformLength;
 		}
 
-		public double Left { get; set; }
-		public double Top { get; set; }
-		public double Right { get; set; }
-		public double Bottom { get; set; }
+		public double Left { 
+			get { return _left; }
+			set { _left = value; }
+		}
+		public double Top { 
+			get { return _top; }
+			set { _top = value; }
+		}
+		public double Right { 
+			get { return _right; }
+			set { _right = value; }
+		}
+		public double Bottom { 
+			get { return _bottom; }
+			set { _bottom = value; }
+		}
 
 		public bool Equals (Thickness thickness)
 		{
