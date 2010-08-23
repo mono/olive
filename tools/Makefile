@@ -1,8 +1,6 @@
 thisdir = tools
 SUBDIRS = \
-	client-proxy-gen	\
-	sts			\
-	svcutil
+	sts
 
 DISTFILES=removecomments.sh
 
