@@ -8,11 +8,12 @@ public class Tset
 {
 	public static void Main ()
 	{
+		var uri = new Uri ("soap.udp://239.255.255.250:3802");
 		for (int i = 0; i < 2; i++) {
-		var binding = new UdpAnnouncementEndpoint ().Binding;
+		var binding = new UdpAnnouncementEndpoint (uri).Binding;
 		IFooChannel proxy = new ChannelFactory<IFooChannel> (
 			binding,
-			new EndpointAddress (UdpAnnouncementEndpoint.DefaultIPv4MulticastAddress)
+			new EndpointAddress (uri)
 			).CreateChannel ();
 		proxy.Open ();
 		proxy.SendMsg ("TEST FOR ECHO");

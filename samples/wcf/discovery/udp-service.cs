@@ -12,11 +12,12 @@ public class Tset
 	public static void Main ()
 	{
 		ServiceHost host = new ServiceHost (typeof (Foo));
-		var binding = new UdpAnnouncementEndpoint ().Binding;
+		var uri = new Uri ("soap.udp://239.255.255.250:3802");
+		var binding = new UdpAnnouncementEndpoint (uri).Binding;
 		binding.ReceiveTimeout = TimeSpan.FromSeconds (5);
 		binding.OpenTimeout = TimeSpan.FromSeconds (20);
 		host.AddServiceEndpoint ("IFoo",
-			binding, UdpAnnouncementEndpoint.DefaultIPv4MulticastAddress);
+			binding, uri);
 		host.Description.Behaviors.Find<ServiceBehaviorAttribute> ()
 			.IncludeExceptionDetailInFaults = true;
 		host.Open ();
