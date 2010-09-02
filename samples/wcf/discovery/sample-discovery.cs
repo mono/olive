@@ -41,14 +41,16 @@ public class Test
 		aEndpoint.Behaviors.Add (ib);
 
 		// it internally hosts an AnnouncementService
-		var host = new ServiceHost (new AnnouncementBoundDiscoveryService (aEndpoint));
-		host.AddServiceEndpoint (dEndpoint);
-		host.Description.Behaviors.Find<ServiceDebugBehavior> ()
-			.IncludeExceptionDetailInFaults = true;
-		host.Open ();
-		Console.WriteLine ("Type [CR] to quit...");
-		Console.ReadLine ();
-		host.Close ();
+		using (var inst = new AnnouncementBoundDiscoveryService (aEndpoint)) {
+			var host = new ServiceHost (inst);
+			host.AddServiceEndpoint (dEndpoint);
+			host.Description.Behaviors.Find<ServiceDebugBehavior> ()
+				.IncludeExceptionDetailInFaults = true;
+			host.Open ();
+			Console.WriteLine ("Type [CR] to quit...");
+			Console.ReadLine ();
+			host.Close ();
+		}
 	}
 }
 
