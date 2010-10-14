@@ -12,7 +12,21 @@ all: \
 	samplesvc11.exe samplecli11.exe \
 	samplesvc12.exe samplecli12.exe \
 	samplesvc13.exe samplecli13.exe \
-	samplesvc14.exe samplecli14.exe
+	samplesvc14.exe samplecli14.exe \
+	samplesvc15.exe samplecli15.exe \
+	samplesvc16.exe samplecli16.exe
+
+samplesvc16.exe : samplesvc16.cs
+	gmcs -pkg:wcf samplesvc16.cs
+
+samplecli16.exe : samplecli16.cs
+	gmcs -pkg:wcf samplecli16.cs
+
+samplesvc15.exe : samplesvc15.cs
+	gmcs -pkg:wcf samplesvc15.cs
+
+samplecli15.exe : samplecli15.cs
+	gmcs -pkg:wcf samplecli15.cs
 
 samplesvc14.exe : samplesvc14.cs
 	gmcs -pkg:wcf samplesvc14.cs
@@ -113,4 +127,6 @@ clean:
 	rm -f samplesvc12.exe samplesvc12.exe.mdb samplecli12.exe samplecli12.exe.mdb 
 	rm -f samplesvc13.exe samplesvc13.exe.mdb samplecli13.exe samplecli13.exe.mdb 
 	rm -f samplesvc14.exe samplesvc14.exe.mdb samplecli14.exe samplecli14.exe.mdb 
+	rm -f samplesvc15.exe samplesvc15.exe.mdb samplecli15.exe samplecli15.exe.mdb 
+	rm -f samplesvc16.exe samplesvc16.exe.mdb samplecli16.exe samplecli16.exe.mdb 
 
