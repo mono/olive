@@ -2,7 +2,6 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Discovery;
-using System.ServiceModel.Dispatcher;
 
 public class Test
 {
@@ -14,9 +13,7 @@ public class Test
 	static void RunCodeUnderDiscoveryHost (Uri serviceUri, Uri dHostUri, Action<Uri,AnnouncementEndpoint,DiscoveryEndpoint> action)
 	{
 		var aEndpoint = new UdpAnnouncementEndpoint (DiscoveryVersion.WSDiscoveryApril2005, new Uri ("soap.udp://239.255.255.250:3802/"));
-		var dbinding = new CustomBinding (new HttpTransportBindingElement ());
-		var dAddress = new EndpointAddress (dHostUri);
-		var dEndpoint = new DiscoveryEndpoint (dbinding, dAddress);
+		var dEndpoint = new UdpDiscoveryEndpoint (DiscoveryVersion.WSDiscoveryApril2005, new Uri ("soap.udp://239.255.255.250:3802/"));
 
 		var ib = new InspectionBehavior ();
 		ib.RequestReceived += delegate (ref Message msg, IClientChannel

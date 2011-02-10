@@ -2,21 +2,21 @@ using System;
 using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Discovery;
-using System.ServiceModel.Dispatcher;
 
 public class Test
 {
 	public static void Main ()
 	{
-		RunCodeUnderDiscoveryHost (new Uri ("http://localhost:37564"), new Uri ("http://localhost:4949"), UseCase1Core);
+		RunCodeUnderDiscoveryHost (new Uri ("http://localhost:37564"), new Uri ("http://localhost:4989"), UseCase1Core);
 	}
 
-	static void RunCodeUnderDiscoveryHost (Uri serviceUri, Uri dHostUri, Action<Uri,AnnouncementEndpoint,DiscoveryEndpoint> action)
+	static void RunCodeUnderDiscoveryHost (Uri serviceUri, Uri aHostUri, Action<Uri,AnnouncementEndpoint,DiscoveryEndpoint> action)
 	{
-		var aEndpoint = new UdpAnnouncementEndpoint (DiscoveryVersion.WSDiscoveryApril2005, new Uri ("soap.udp://239.255.255.250:3802/"));
-		var dbinding = new CustomBinding (new HttpTransportBindingElement ());
-		var dAddress = new EndpointAddress (dHostUri);
-		var dEndpoint = new DiscoveryEndpoint (dbinding, dAddress);
+		var abinding = new CustomBinding (new HttpTransportBindingElement ());
+		var aAddress = new EndpointAddress (aHostUri);
+		var aEndpoint = new AnnouncementEndpoint (abinding, aAddress);
+		var dBinding = new CustomBinding (new TextMessageEncodingBindingElement (), new TcpTransportBindingElement ());
+		var dEndpoint = new DiscoveryEndpoint (DiscoveryVersion.WSDiscovery11, ServiceDiscoveryMode.Adhoc, dBinding, new EndpointAddress ("net.tcp://localhost:9090/"));
 
 		var ib = new InspectionBehavior ();
 		ib.RequestReceived += delegate (ref Message msg, IClientChannel
@@ -31,7 +31,6 @@ channel, InstanceContext instanceContext) {
 			msg = mb.CreateMessage ();
 			Console.Error.WriteLine (mb.CreateMessage ());
 			};
-
 		dEndpoint.Behaviors.Add (ib);
 		aEndpoint.Behaviors.Add (ib);
 
@@ -40,7 +39,6 @@ channel, InstanceContext instanceContext) {
 
 	static void UseCase1Core (Uri serviceUri, AnnouncementEndpoint aEndpoint, DiscoveryEndpoint dEndpoint)
 	{
-		// actual service, announcing to 4989
 		var host = new ServiceHost (typeof (TestService));
 		var sdb = new ServiceDiscoveryBehavior ();
 		sdb.AnnouncementEndpoints.Add (aEndpoint);

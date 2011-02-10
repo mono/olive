@@ -38,6 +38,10 @@ class Foo : IFoo
 {
 	public void SendMsg (string msg) 
 	{
+		foreach (var mp in OperationContext.Current.IncomingMessageProperties)
+			if (mp.Value is RemoteEndpointMessageProperty)
+				Console.WriteLine (((RemoteEndpointMessageProperty) mp.Value).Address);
+	//		Console.WriteLine ("{0}: {1}", mp.Key, mp.Value);
 		Console.WriteLine (msg);
 	}
 }

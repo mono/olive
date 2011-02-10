@@ -3,24 +3,21 @@ using System.ServiceModel;
 using System.ServiceModel.Channels;
 using System.ServiceModel.Description;
 using System.ServiceModel.Discovery;
-using System.ServiceModel.Dispatcher;
 
 public class Test
 {
 	public static void Main ()
 	{
-		RunCodeUnderDiscoveryHost (new Uri ("http://localhost:37564"), new Uri ("http://localhost:4949"));
+		RunCodeUnderDiscoveryHost (new Uri ("http://localhost:37564"));
 	}
 
-	static void RunCodeUnderDiscoveryHost (Uri serviceUri, Uri dHostUri)
+	static void RunCodeUnderDiscoveryHost (Uri serviceUri)
 	{
 		// announcement service
 		var aEndpoint = new UdpAnnouncementEndpoint (DiscoveryVersion.WSDiscoveryApril2005, new Uri ("soap.udp://239.255.255.250:3802/"));
 		
 		// discovery service
-		var dbinding = new CustomBinding (new HttpTransportBindingElement ());
-		var dAddress = new EndpointAddress (dHostUri);
-		var dEndpoint = new DiscoveryEndpoint (dbinding, dAddress);
+		var dEndpoint = new UdpDiscoveryEndpoint (DiscoveryVersion.WSDiscoveryApril2005, new Uri ("soap.udp://239.255.255.250:3802/"));
 		// Without this, .NET rejects the host as if it had no service.
 		dEndpoint.IsSystemEndpoint = false;
 		var ib = new InspectionBehavior ();

@@ -45,6 +45,7 @@ using System.Threading;
 			ans.OfflineAnnouncementReceived += UnregisterEndpoint;
 			ahost = new ServiceHost (ans);
 			ahost.AddServiceEndpoint (aendpoint);
+			ahost.Description.Behaviors.Find<ServiceDebugBehavior> ().IncludeExceptionDetailInFaults = true;
 			ahost.Open ();
 			foreach (var cd in ahost.ChannelDispatchers)
 				TextWriter.Null.WriteLine ("AnnouncementService.ChannelDispatcher " + cd.Listener.Uri);
@@ -151,10 +152,17 @@ using System.Threading;
 
 		void Find (FindRequestContext context)
 		{
+/*
+var oc = OperationContext.Current;
+var ch = oc.GetCallbackChannel<IClientChannel> ();
+Console.Error.WriteLine ("!!! {0} {1} {2} {3}", ch.Extensions.Count, ch.InputSession, ch.RemoteAddress, ch.GetType ());
+*/
 			Console.Error.WriteLine ("Find operation: " + context);
 			foreach (var edm in endpoints) {
-				if (context.Criteria.IsMatch (edm))
+				if (context.Criteria.IsMatch (edm)) {
+					Console.Error.WriteLine ("Match: " + edm);
 					context.AddMatchingEndpoint (edm);
+				}
 				else
 					Console.Error.WriteLine ("Mismatch.");
 			}
