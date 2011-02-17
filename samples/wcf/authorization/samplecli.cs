@@ -24,7 +24,7 @@ public class Tset
 		binding.Security.Transport.ClientCredentialType =
 			HttpClientCredentialType.Basic;
 		FooProxy proxy = new FooProxy (binding,
-			new EndpointAddress ("http://localhost:8080/" + (aspx ? "auth.svc" : "")));
+			new EndpointAddress ("http://localhost:8080/auth.svc"));
 		proxy.ClientCredentials.UserName.UserName = user;
 		proxy.ClientCredentials.UserName.Password = pass;
 		proxy.Open ();
