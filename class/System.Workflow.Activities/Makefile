@@ -16,9 +16,9 @@ CYCLIC_DEP_FILES := $(RUNTIME_DEP_FILE)
 WITHOUT_RUNTIME_DEP := $(depsdir)/$(PROFILE)_$(LIBRARY).without_runtime
 WITHOUT_RUNTIME_FILE := $(wildcard $(WITHOUT_RUNTIME_DEP))
 
-LIB_MCS_FLAGS = /r:$(corlib)  /nowarn:114  /r:System.dll /r:System.Workflow.ComponentModel.dll 
+LIB_MCS_FLAGS = /r:$(corlib)  /nowarn:114  /r:System.dll /lib:../lib/net_3_0 /r:System.Workflow.ComponentModel.dll 
 
-TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) /r:System.Workflow.ComponentModel.dll  /r:System.Workflow.Activities.dll /r:System.Workflow.Runtime.dll
+TEST_MCS_FLAGS = $(LIB_MCS_FLAGS) /r:System.Workflow.Activities.dll /r:System.Workflow.Runtime.dll
 
 # This forces to recompile the library if the current version does not have the runtime dependency
 ifneq   (, $(strip $(RUNTIME_DEP_FILE)))
