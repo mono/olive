@@ -23,6 +23,8 @@
 //	Chris Toshok (toshok@novell.com)
 //
 
+#if !NET_4_0 && !NET_4_5
+
 using System;
 
 namespace System.Windows.Markup {
@@ -33,3 +35,5 @@ namespace System.Windows.Markup {
 	}
 
 }
+
+#endif
