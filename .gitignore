@@ -1,0 +1,31 @@
+# General
+*~
+
+# MD/VS
+*.userprefs
+*.suo
+
+# bin output
+class/lib/
+
+# test results
+test-results/
+
+# build
+/build/deps/
+/build/config.make
+/build/common/Consts.cs
+
+# scripts
+/scripts/client-proxy-gen
+/scripts/sts
+/scripts/svcutil
+/scripts/xamlc
+
+# tools
+/tools/sts/sts.exe
+/tools/sts/sts.exe.mdb
+
+# misc
+/data/olive.pc
+/nunit24/ClientUtilities/util/Transform.resources
