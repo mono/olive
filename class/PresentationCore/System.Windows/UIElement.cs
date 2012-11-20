@@ -840,7 +840,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual void OnRenderSizeChanged (SizeChangedInfo info)
+		protected internal virtual void OnRenderSizeChanged (SizeChangedInfo info)
 		{
 			throw new NotImplementedException ();
 		}
@@ -977,7 +977,7 @@ namespace System.Windows {
 			throw new NotImplementedException ();
 		}
 
-		protected virtual DependencyObject GetUIParentCore ()
+		protected internal virtual DependencyObject GetUIParentCore ()
 		{
 			throw new NotImplementedException ();
 		}
