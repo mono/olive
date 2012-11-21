@@ -30,6 +30,7 @@ using System.Windows.Threading;
 namespace System.Windows {
 
 	public class Application : DispatcherObject {
+		private Uri mStartUri;
 
 		[SecurityCritical]
 		public Application ()
@@ -56,6 +57,19 @@ namespace System.Windows {
 		public void Shutdown (int exitCode)
 		{
 			throw new NotImplementedException ();
+		}
+		
+		public Uri StartupUri
+		{
+			get { return mStartUri; }
+			set
+			{
+				if (value == null)
+				{
+					throw new ArgumentNullException("StartupUri");
+				}
+				mStartUri = value;
+			}
 		}
 
 		public static Application Current {
