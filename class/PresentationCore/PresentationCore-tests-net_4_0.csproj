@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{DA3B4077-B8D4-4DA8-8838-0D9A4A044F17}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\PresentationCore-tests-net_4_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>PresentationCore_test_net_4_0</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Test\PresentationCore-DependencyProperties.g.cs" />
+    <Compile Include="Test\PresentationCore-RoutedEvents.g.cs" />
+    <Compile Include="Test\System.Windows\ContentElementTest.cs" />
+    <Compile Include="Test\System.Windows\DataObjectTest.cs" />
+    <Compile Include="Test\System.Windows\DragDropTest.cs" />
+    <Compile Include="Test\System.Windows\RoutedEventArgsTest.cs" />
+    <Compile Include="Test\System.Windows\UIElementTest.cs" />
+    <Compile Include="Test\System.Windows\UIElement3DTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\BooleanAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\BooleanAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\BooleanKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\BooleanKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ByteAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ByteAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ByteAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ByteKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ByteKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\CharAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\CharAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\CharKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\CharKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ColorAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ColorAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ColorAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ColorKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ColorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DecimalAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DecimalAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DecimalAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DecimalKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DecimalKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteBooleanKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteByteKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteCharKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteColorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteDecimalKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteDoubleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteInt16KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteInt32KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteInt64KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteMatrixKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteObjectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscretePointKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteRectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteSingleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteSizeKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteStringKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DiscreteVectorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DoubleAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DoubleAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DoubleAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DoubleKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\DoubleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int16AnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int16AnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int16AnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int16KeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int16KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int32AnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int32AnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int32AnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int32KeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int32KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int64AnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int64AnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int64AnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int64KeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\Int64KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearByteKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearColorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearDecimalKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearDoubleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearInt16KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearInt32KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearInt64KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearPointKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearRectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearSingleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearSizeKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\LinearVectorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\MatrixAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\MatrixAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\MatrixKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\MatrixKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ObjectAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ObjectAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ObjectKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\ObjectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\PointAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\PointAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\PointAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\PointKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\PointKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\RectAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\RectAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\RectAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\RectKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\RectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SingleAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SingleAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SingleAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SingleKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SingleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SizeAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SizeAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SizeAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SizeKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SizeKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineByteKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineColorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineDecimalKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineDoubleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineInt16KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineInt32KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineInt64KeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplinePointKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineRectKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineSingleKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineSizeKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\SplineVectorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\StringAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\StringAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\StringKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\StringKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\VectorAnimationBaseTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\VectorAnimationTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\VectorAnimationUsingKeyFramesTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\VectorKeyFrameCollectionTest.cs" />
+    <Compile Include="Test\System.Windows.Media.Animation\VectorKeyFrameTest.cs" />
+    <Compile Include="Test\System.Windows.Input\AccessKeyManager.cs" />
+    <Compile Include="Test\System.Windows.Input\ApplicationCommands.cs" />
+    <Compile Include="Test\System.Windows.Input\CommandManager.cs" />
+    <Compile Include="Test\System.Windows.Input\FocusManager.cs" />
+    <Compile Include="Test\System.Windows.Input\InputEventArgs.cs" />
+    <Compile Include="Test\System.Windows.Input\Keyboard.cs" />
+    <Compile Include="Test\System.Windows.Input\Mouse.cs" />
+    <Compile Include="Test\System.Windows.Input\Stylus.cs" />
+    <Compile Include="Test\System.Windows.Input\TextCompositingManager.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\lib\net_4_0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PresentationCore-net_4_0.csproj">
+      <Project>{2AAA752B-CACB-451E-9FCD-2821E54C17DC}</Project>
+      <Name>PresentationCore-net_4_0</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

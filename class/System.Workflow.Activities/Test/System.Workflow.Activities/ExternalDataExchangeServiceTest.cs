@@ -22,6 +22,8 @@
 //	Copyright (C) 2006 Jordi Mas i Hernandez <jordimash@gmail.com>
 //
 
+#if RUNTIME_DEP
+
 using System;
 using System.Threading;
 using NUnit.Framework;
@@ -109,3 +111,4 @@ namespace MonoTests.System.Workflow.Activities
 
 }
 
+#endif

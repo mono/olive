@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4E968FE9-2A43-402D-9B47-21B921524881}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\PresentationFramework-net_3_5</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>PresentationFramework</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="System.Windows\Application.cs" />
+    <Compile Include="System.Windows\BaseValueSource.cs" />
+    <Compile Include="System.Windows\ColumnSpaceDistribution.cs" />
+    <Compile Include="System.Windows\DataTemplate.cs" />
+    <Compile Include="System.Windows\DependencyPropertyHelper.cs" />
+    <Compile Include="System.Windows\EventSetter.cs" />
+    <Compile Include="System.Windows\EventTrigger.cs" />
+    <Compile Include="System.Windows\ExitEventArgs.cs" />
+    <Compile Include="System.Windows\ExitEventHandler.cs" />
+    <Compile Include="System.Windows\FigureHorizontalAnchor.cs" />
+    <Compile Include="System.Windows\FigureUnitType.cs" />
+    <Compile Include="System.Windows\FigureVerticalAnchor.cs" />
+    <Compile Include="System.Windows\FrameworkContentElement.cs" />
+    <Compile Include="System.Windows\FrameworkElement.cs" />
+    <Compile Include="System.Windows\FrameworkPropertyMetadata.cs" />
+    <Compile Include="System.Windows\FrameworkPropertyMetadataOptions.cs" />
+    <Compile Include="System.Windows\FrameworkTemplate.cs" />
+    <Compile Include="System.Windows\GridUnitType.cs" />
+    <Compile Include="System.Windows\HorizontalAlignment.cs" />
+    <Compile Include="System.Windows\IFrameworkInputElement.cs" />
+    <Compile Include="System.Windows\InheritanceBehavior.cs" />
+    <Compile Include="System.Windows\LengthConverter.cs" />
+    <Compile Include="System.Windows\LineStackingStrategy.cs" />
+    <Compile Include="System.Windows\LogicalTreeHelper.cs" />
+    <Compile Include="System.Windows\MessageBoxButton.cs" />
+    <Compile Include="System.Windows\MessageBoxImage.cs" />
+    <Compile Include="System.Windows\MessageBoxOptions.cs" />
+    <Compile Include="System.Windows\MessageBoxResult.cs" />
+    <Compile Include="System.Windows\NameScope.cs" />
+    <Compile Include="System.Windows\PowerLineStatus.cs" />
+    <Compile Include="System.Windows\PropertyPath.cs" />
+    <Compile Include="System.Windows\ReasonSessionEnding.cs" />
+    <Compile Include="System.Windows\ResizeMode.cs" />
+    <Compile Include="System.Windows\ResourceDictionaryLocation.cs" />
+    <Compile Include="System.Windows\RequestBringIntoViewEventArgs.cs" />
+    <Compile Include="System.Windows\RequestBringIntoViewEventHandler.cs" />
+    <Compile Include="System.Windows\RoutedPropertyChangedEventArgs.cs" />
+    <Compile Include="System.Windows\RoutedPropertyChangedEventHandler.cs" />
+    <Compile Include="System.Windows\SessionEndingCancelEventArgs.cs" />
+    <Compile Include="System.Windows\SessionEndingCancelEventHandler.cs" />
+    <Compile Include="System.Windows\SetterBase.cs" />
+    <Compile Include="System.Windows\ShutdownMode.cs" />
+    <Compile Include="System.Windows\SizeChangedEventArgs.cs" />
+    <Compile Include="System.Windows\SizeChangedEventHandler.cs" />
+    <Compile Include="System.Windows\StartupEventArgs.cs" />
+    <Compile Include="System.Windows\StartupEventHandler.cs" />
+    <Compile Include="System.Windows\Thickness.cs" />
+    <Compile Include="System.Windows\TriggerBase.cs" />
+    <Compile Include="System.Windows\TriggerCollection.cs" />
+    <Compile Include="System.Windows\ValueSource.cs" />
+    <Compile Include="System.Windows\VerticalAlignment.cs" />
+    <Compile Include="System.Windows\Window.cs" />
+    <Compile Include="System.Windows\WindowStartupLocation.cs" />
+    <Compile Include="System.Windows\WindowState.cs" />
+    <Compile Include="System.Windows\WindowStyle.cs" />
+    <Compile Include="System.Windows\WrapDirection.cs" />
+    <Compile Include="System.Windows\ThemeInfoAttribute.cs" />
+    <Compile Include="System.Windows.Annotations\AnnotationAction.cs" />
+    <Compile Include="System.Windows.Annotations.Storage\StoreContentAction.cs" />
+    <Compile Include="System.Windows.Controls\Button.cs" />
+    <Compile Include="System.Windows.Controls\CharacterCasing.cs" />
+    <Compile Include="System.Windows.Controls\ClickMode.cs" />
+    <Compile Include="System.Windows.Controls\CleanUpVirtualizedItemEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\CleanUpVirtualizedItemEventHandler.cs" />
+    <Compile Include="System.Windows.Controls\ContentControl.cs" />
+    <Compile Include="System.Windows.Controls\ContextMenuEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\ContextMenuEventHandler.cs" />
+    <Compile Include="System.Windows.Controls\Control.cs" />
+    <Compile Include="System.Windows.Controls\ControlTemplate.cs" />
+    <Compile Include="System.Windows.Controls\DataTemplateSelector.cs" />
+    <Compile Include="System.Windows.Controls\Decorator.cs" />
+    <Compile Include="System.Windows.Controls\Dock.cs" />
+    <Compile Include="System.Windows.Controls\ExpandDirection.cs" />
+    <Compile Include="System.Windows.Controls\FlowDocumentReaderViewingMode.cs" />
+    <Compile Include="System.Windows.Controls\GridResizeBehavior.cs" />
+    <Compile Include="System.Windows.Controls\GridResizeDirection.cs" />
+    <Compile Include="System.Windows.Controls\GridViewColumnHeaderRole.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasClipboardFormat.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasEditingMode.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasGestureEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasGestureEventHandler.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasSelectionChangingEventArgs.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasSelectionChangingEventHandler.cs" />
+    <Compile Include="System.Windows.Controls\InkCanvasSelectionHitResult.cs" />
+    <Compile Include="System.Windows.Controls\MediaState.cs" />
+    <Compile Include="System.Windows.Controls\MenuItemRole.cs" />
+    <Compile Include="System.Windows.Controls\Orientation.cs" />
+    <Compile Include="System.Windows.Controls\OverflowMode.cs" />
+    <Compile Include="System.Windows.Controls\PageRangeSelection.cs" />
+    <Compile Include="System.Windows.Controls\ScrollBarVisibility.cs" />
+    <Compile Include="System.Windows.Controls\SelectionMode.cs" />
+    <Compile Include="System.Windows.Controls\SpellingReform.cs" />
+    <Compile Include="System.Windows.Controls\StickyNoteType.cs" />
+    <Compile Include="System.Windows.Controls\StretchDirection.cs" />
+    <Compile Include="System.Windows.Controls\UndoAction.cs" />
+    <Compile Include="System.Windows.Controls\ValidationErrorEventAction.cs" />
+    <Compile Include="System.Windows.Controls\ValidationStep.cs" />
+    <Compile Include="System.Windows.Controls\VirtualizationMode.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\AutoToolTipPlacement.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\ButtonBase.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\GeneratorDirection.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\GeneratorStatus.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\PlacementMode.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\PopupAnimation.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\PopupPrimaryAxis.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\ScrollEventType.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\TickBarPlacement.cs" />
+    <Compile Include="System.Windows.Controls.Primitives\TickPlacement.cs" />
+    <Compile Include="System.Windows.Data\BindingMode.cs" />
+    <Compile Include="System.Windows.Data\BindingStatus.cs" />
+    <Compile Include="System.Windows.Data\RelativeSourceMode.cs" />
+    <Compile Include="System.Windows.Data\UpdateSourceTrigger.cs" />
+    <Compile Include="System.Windows.Documents\LogicalDirection.cs" />
+    <Compile Include="System.Windows.Documents\TextPointerContext.cs" />
+    <Compile Include="System.Windows.Documents.Serialization\WritingProgressChangeLevel.cs" />
+    <Compile Include="System.Windows.Input\KeyboardNavigationMode.cs" />
+    <Compile Include="System.Windows.Markup\ArrayExtension.cs" />
+    <Compile Include="System.Windows.Markup\ComponentResourceKeyConverter.cs" />
+    <Compile Include="System.Windows.Markup\DependencyPropertyConverter.cs" />
+    <Compile Include="System.Windows.Markup\IProvideValueTarget.cs" />
+    <Compile Include="System.Windows.Markup\IStyleConnector.cs" />
+    <Compile Include="System.Windows.Markup\NamespaceMapEntry.cs" />
+    <Compile Include="System.Windows.Markup\NullExtension.cs" />
+    <Compile Include="System.Windows.Markup\ParserContext.cs" />
+    <Compile Include="System.Windows.Markup\ResourceReferenceExpressionConverter.cs" />
+    <Compile Include="System.Windows.Markup\RoutedEventConverter.cs" />
+    <Compile Include="System.Windows.Markup\StaticExtension.cs" />
+    <Compile Include="System.Windows.Markup\TemplateKeyConverter.cs" />
+    <Compile Include="System.Windows.Markup\TypeExtension.cs" />
+    <Compile Include="System.Windows.Markup\XamlDesignerSerializationManager.cs" />
+    <Compile Include="System.Windows.Markup\XamlInstanceCreator.cs" />
+    <Compile Include="System.Windows.Markup\XamlParseException.cs" />
+    <Compile Include="System.Windows.Markup\XamlReader.cs" />
+    <Compile Include="System.Windows.Markup\XamlTypeMapper.cs" />
+    <Compile Include="System.Windows.Markup\XamlWriter.cs" />
+    <Compile Include="System.Windows.Markup\XamlWriterMode.cs" />
+    <Compile Include="System.Windows.Markup\XamlWriterState.cs" />
+    <Compile Include="System.Windows.Markup\XmlAttributeProperties.cs" />
+    <Compile Include="System.Windows.Markup\XmlnsDictionary.cs" />
+    <Compile Include="System.Windows.Markup.Localizer\BamlLocalizerError.cs" />
+    <Compile Include="System.Windows.Markup.Primitives\MarkupWriter.cs" />
+    <Compile Include="System.Windows.Media.Animation\Storyboard.cs" />
+    <Compile Include="System.Windows.Navigation\FragmentNavigationEventArgs.cs" />
+    <Compile Include="System.Windows.Navigation\FragmentNavigationEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\JournalEntryPosition.cs" />
+    <Compile Include="System.Windows.Navigation\JournalOwnership.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationMode.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationUIVisibility.cs" />
+    <Compile Include="System.Windows.Navigation\LoadCompletedEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\NavigatedEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\NavigatingCancelEventArgs.cs" />
+    <Compile Include="System.Windows.Navigation\NavigatingCancelEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationEventArgs.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationFailedEventArgs.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationFailedEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationProgressEventArgs.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationProgressEventHandler.cs" />
+    <Compile Include="System.Windows.Navigation\NavigationStoppedEventHandler.cs" />
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\common\Consts.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_3_5\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore">
+      <HintPath>..\lib\net_3_5\PresentationCore.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

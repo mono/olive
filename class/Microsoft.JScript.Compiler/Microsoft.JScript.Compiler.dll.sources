@@ -15,7 +15,6 @@ Microsoft.JScript.Compiler.Tokens/NumericLiteralToken.cs
 Microsoft.JScript.Compiler.Tokens/OctalIntegerLiteralToken.cs
 Microsoft.JScript.Compiler/Parser.cs
 Microsoft.JScript.Compiler.Tokens/RegularExpressionLiteralToken.cs
-Microsoft.JScript.Compiler/SourceLocation.cs
 Microsoft.JScript.Compiler.Helpers/SplayTree.cs
 Microsoft.JScript.Compiler.Tokens/StringLiteralToken.cs
 Microsoft.JScript.Compiler.Helpers/Strings.cs

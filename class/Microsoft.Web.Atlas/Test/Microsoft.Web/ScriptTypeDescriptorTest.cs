@@ -41,7 +41,7 @@ namespace MonoTests.Microsoft.Web
 	[TestFixture]
 	public class ScriptTypeDescriptorTest
 	{
-		class ActionPoker : Action {
+		class ActionPoker : global::Microsoft.Web.Action {
 			public override string TagName {
 				get {
 					return "poker";

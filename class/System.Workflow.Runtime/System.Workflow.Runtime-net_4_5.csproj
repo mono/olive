@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{566B8008-9FF4-4024-B4F7-8FE077983A28}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\System.Workflow.Runtime-net_4_5</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>System.Workflow.Runtime</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\msfinal.pub</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="..\..\build\common\Locale.cs" />
+    <Compile Include="..\..\build\common\MonoTODOAttribute.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowQueuingService.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowQueue.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowRuntime.cs" />
+    <Compile Include="System.Workflow.Runtime.Configuration\WorkflowRuntimeSection.cs" />
+    <Compile Include="System.Workflow.Runtime.Configuration\WorkflowRuntimeServiceElement.cs" />
+    <Compile Include="System.Workflow.Runtime.Configuration\WorkflowRuntimeServiceElementCollection.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowInstance.cs" />
+    <Compile Include="System.Workflow.Hosting\WorkflowRuntimeService.cs" />
+    <Compile Include="System.Workflow.Hosting\WorkflowRuntimeServiceState.cs" />
+    <Compile Include="System.Workflow.Hosting\WorkflowLoaderService.cs" />
+    <Compile Include="System.Workflow.Hosting\DefaultWorkflowLoaderService.cs" />
+    <Compile Include="System.Workflow.Hosting\WorkflowSchedulerService.cs" />
+    <Compile Include="System.Workflow.Hosting\DefaultWorkflowSchedulerService.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowTerminatedEventArgs.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowEventArgs.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowCompletedEventArgs.cs" />
+    <Compile Include="System.Workflow.Runtime\TimerEventSubscription.cs" />
+    <Compile Include="System.Workflow.Runtime\TimerEventSubscriptionCollection.cs" />
+    <Compile Include="System.Workflow.Runtime\IPendingWork.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowProcessor.cs" />
+    <Compile Include="System.Workflow.Runtime\CorrelationProperty.cs" />
+    <Compile Include="System.Workflow.Runtime\CorrelationToken.cs" />
+    <Compile Include="System.Workflow.Runtime\CorrelationTokenEventArgs.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowPersistenceService.cs" />
+    <Compile Include="System.Workflow.Runtime\WorkflowStatus.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_5\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Workflow.Activities">
+      <HintPath>..\lib\net_4_5\System.Workflow.Activities.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Workflow.ComponentModel">
+      <HintPath>..\lib\net_4_5\System.Workflow.ComponentModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

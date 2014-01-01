@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B8D69B7D-027F-401C-B3D5-3614DB52A40A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\Microsoft.JScript.Compiler-net_4_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Microsoft.JScript.Compiler</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="..\..\build\common\Locale.cs" />
+    <Compile Include="..\..\build\common\MonoTODOAttribute.cs" />
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\BadToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Comment.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Helpers\DList.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Diagnostic.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\GlobalEnum.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\HexIntegerLiteralToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Identifier.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\IdentifierTable.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\IdentifierToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\NumericLiteralToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\OctalIntegerLiteralToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Parser.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\RegularExpressionLiteralToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Helpers\SplayTree.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\StringLiteralToken.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Helpers\Strings.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Helpers\Table.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\TextPoint.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\TextSpan.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.Tokens\Token.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Tokenizer.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ArgumentList.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ArrayLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\BinaryOperatorExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\BindingInfo.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\BlockStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\BreakOrContinueStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\CaseClause.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\CatchClause.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\DeclarationForInStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\DeclarationForStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\DefaultCaseClause.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\DoStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\Expression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ExpressionForInStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ExpressionForStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ExpressionListElement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ExpressionStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\FinallyClause.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ForInStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ForStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\FunctionDefinition.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\FunctionExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\FunctionStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\HexLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\IdentifierExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\IfStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\InitializerVariableDeclaration.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\InvocationExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\LabelStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\LoopStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\NullExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\NumericLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ObjectLiteralElement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ObjectLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\OctalLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\Parameter.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\QualifiedExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\RegularExpressionLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ReturnOrThrowStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\Statement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\StringLiteralExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\SubscriptExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\SwitchStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\TernaryOperatorExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\TryStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\UnaryOperatorExpression.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\ValueCaseClause.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\VariableDeclaration.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\VariableDeclarationListElement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\VariableDeclarationStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\WhileStatement.cs" />
+    <Compile Include="Microsoft.JScript.Compiler.ParseTree\WithStatement.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Dynamic" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Mono.Debugging, Version=0.0.0.0, Culture=neutral, PublicKeyToken=5e9ce85b0923c84f">
+      <Private>False</Private>
+      <Package>monodevelop</Package>
+    </Reference>
+  </ItemGroup>
+</Project>

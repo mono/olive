@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{11B7A79B-0574-48AD-BC5A-0D34D603FE74}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\Microsoft.JScript.Runtime-net_4_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Microsoft.JScript.Runtime</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="..\..\build\common\Locale.cs" />
+    <Compile Include="..\..\build\common\MonoTODOAttribute.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\Compiler.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\CompilerHelpers.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\IdentifierMappingTable.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\JSCompiler.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\JSCompilerOptions.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\JSTokenizerService.cs" />
+    <Compile Include="Microsoft.JScript.Compiler\RowanGenerator.cs" />
+    <Compile Include="Microsoft.JScript.Runtime\AttributedProperty.cs" />
+    <Compile Include="Microsoft.JScript.Runtime\JSContext.cs" />
+    <Compile Include="Microsoft.JScript.Runtime\JSModuleContext.cs" />
+    <Compile Include="Microsoft.JScript.Runtime\JSOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime\PropertyAttributes.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\BuiltinCallBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\CallBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\CreateInstanceBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\DeleteMemberBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\DoOperationBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\GetMemberBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\JSBinder.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Actions\SetMemberBinderHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Conversions\ConvertHelper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Conversions\DictionaryGenericWrapper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Conversions\IEnumerableOfTWrapper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Conversions\IEnumeratorOfTWrapper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Conversions\ListGenericWrapper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\ErrorCode.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\ErrorConvertor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\ErrorType.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\EvalErrorException.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\ReferenceErrorException.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\TypeErrorException.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\URIErrorException.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Errors\WrapperException.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Hosting\JSCommandLine.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Hosting\JSCompilerErrorSink.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Hosting\JSConsoleOptions.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Hosting\JSEngineOptions.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Hosting\JSOptionsParser.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\BooleanObjectOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\BooleanOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\BoundMemberTrackerOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\ConcatStringOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\DecimalOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\EnumOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\JSObjectOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\MethodGroupOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\NoneTypeOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\NumberObjectOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\NumberOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\StringOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\TypeOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Operations\UnDefinedOps.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ArgumentsObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ArrayConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ArrayObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ArrayPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ArrayWrapper.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\BooleanConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\BooleanObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\BooleanPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\BoundFunctionObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\BuiltinFunctionObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetEval.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetN.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis0.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis1.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis2.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis3.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis4.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThis5.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\CallTargetWithThisN.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ConcatString.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ConstructTargetN.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\DateConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\DateObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\DatePrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ErrorConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ErrorPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\EvalErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithRuntimeContext.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis0.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis1.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis2.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis3.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis4.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis5.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionObjectWithThis.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\FunctionPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\GlobalObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\JSObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\MathObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\Null.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\NumberConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\NumberObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\NumberPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ObjectConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ObjectPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\RangeErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ReferenceErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\RegExpConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\RegExpMatch.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\RegExpObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\RegExpPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\ScopeObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\StringConstructor.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\StringObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\StringPrototype.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\SyntaxErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\TypeErrorObject.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\UnDefined.cs" />
+    <Compile Include="Microsoft.JScript.Runtime.Types\URIErrorObject.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Microsoft.JScript.Compiler\Microsoft.JScript.Compiler-net_4_0.csproj">
+      <Project>{B8D69B7D-027F-401C-B3D5-3614DB52A40A}</Project>
+      <Name>Microsoft.JScript.Compiler-net_4_0</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+</Project>

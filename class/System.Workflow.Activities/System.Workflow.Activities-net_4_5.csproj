@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{1932BB82-B236-4BF7-B622-A38415D3FDD9}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\System.Workflow.Activities-net_4_5</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>System.Workflow.Activities</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;NET_4_5;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="..\..\build\common\Locale.cs" />
+    <Compile Include="..\..\build\common\MonoTODOAttribute.cs" />
+    <Compile Include="System.Workflow.Activities\CodeActivity.cs" />
+    <Compile Include="System.Workflow.Activities\SequentialWorkflowActivity.cs" />
+    <Compile Include="System.Workflow.Activities\SequenceActivity.cs" />
+    <Compile Include="System.Workflow.Activities\DelayActivity.cs" />
+    <Compile Include="System.Workflow.Activities\WhileActivity.cs" />
+    <Compile Include="System.Workflow.Activities\ConditionalEventArgs.cs" />
+    <Compile Include="System.Workflow.Activities\CodeCondition.cs" />
+    <Compile Include="System.Workflow.Activities\IfElseActivity.cs" />
+    <Compile Include="System.Workflow.Activities\IfElseBranchActivity.cs" />
+    <Compile Include="System.Workflow.Activities\ParallelActivity.cs" />
+    <Compile Include="System.Workflow.Activities\StateActivity.cs" />
+    <Compile Include="System.Workflow.Activities\StateFinalizationActivity.cs" />
+    <Compile Include="System.Workflow.Activities\StateInitializationActivity.cs" />
+    <Compile Include="System.Workflow.Activities\StateMachineWorkflowActivity.cs" />
+    <Compile Include="System.Workflow.Activities\SetStateActivity.cs" />
+    <Compile Include="System.Workflow.Activities\EventDrivenActivity.cs" />
+    <Compile Include="System.Workflow.Activities\IEventActivity.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleAnalysis.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleValidation.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleDefinitions.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleCondition.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleConditionCollection.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleExecution.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleSet.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\Rule.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleAction.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleSetCollection.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleExpressionCondition.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RulePathQualifier.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleConditionReference.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleExpressionWalker.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\IRuleExpression.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleExpressionResult.cs" />
+    <Compile Include="System.Workflow.Activities.Rules\RuleExpressionBinaryOperatorResolver.cs" />
+    <Compile Include="System.Workflow.Activities\ExternalDataEventArgs.cs" />
+    <Compile Include="System.Workflow.Activities\ExternalDataExchangeAttribute.cs" />
+    <Compile Include="System.Workflow.Activities\ExternalDataExchangeService.cs" />
+    <Compile Include="System.Workflow.Activities\CallExternalMethodActivity.cs" />
+    <Compile Include="System.Workflow.Activities\CorrelationParameterAttribute.cs" />
+    <Compile Include="System.Workflow.Activities\CorrelationInitializerAttribute.cs" />
+    <Compile Include="System.Workflow.Activities\CorrelationAliasAttribute.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_5\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Workflow.ComponentModel">
+      <HintPath>..\lib\net_4_5\System.Workflow.ComponentModel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>
