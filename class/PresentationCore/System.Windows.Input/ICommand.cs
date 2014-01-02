@@ -23,6 +23,8 @@
 //	Chris Toshok (toshok@ximian.com)
 //
 
+#if !NET_4_5
+
 using System;
 
 namespace System.Windows.Input {
@@ -34,3 +36,5 @@ namespace System.Windows.Input {
 	}
 
 }
+
+#endif

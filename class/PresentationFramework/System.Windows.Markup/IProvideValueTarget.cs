@@ -20,6 +20,8 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 
+#if !NET_4_0
+
 namespace System.Windows.Markup {
 
 	public interface IProvideValueTarget {
@@ -27,3 +29,5 @@ namespace System.Windows.Markup {
 		object TargetObject { get; }
 	}
 }
+
+#endif
