@@ -37,10 +37,6 @@
     <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
   </PropertyGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <ItemGroup>
-    <Compile Include="Test\System.Windows.Markup\StaticExtensionTest.cs" />
-    <Compile Include="Test\System.Windows.Markup\NullExtensionTest.cs" />
-  </ItemGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -62,8 +58,11 @@
     <Reference Include="nunit.framework">
       <HintPath>..\lib\net_4_0\nunit.framework.dll</HintPath>
     </Reference>
-    <Reference Include="System" />
-    <Reference Include="WindowsBase" />
-    <Reference Include="System.Xaml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="PresentationFramework-net_4_0.csproj">
+      <Project>{D08AB9F6-ECFD-47CD-ADF6-E3606DD97E55}</Project>
+      <Name>PresentationFramework-net_4_0</Name>
+    </ProjectReference>
   </ItemGroup>
 </Project>
