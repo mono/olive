@@ -37,53 +37,50 @@ namespace System.Windows.Data
 		: DispatcherObject, ICollectionView, IEnumerable, INotifyCollectionChanged, INotifyPropertyChanged
 	{
 		readonly IEnumerable collection;
+		readonly bool isDynamic;
+		int count;
+		bool isCountDirty;
 
 		public CollectionView (IEnumerable collection)
 		{
 			if (collection == null)
 				throw new ArgumentNullException ("collection");
 			this.collection = collection;
+			isDynamic = collection is INotifyCollectionChanged;
+			isCountDirty = true;
 		}
 
 		public virtual bool CanFilter {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return true; }
 		}
 
 		public virtual bool CanGroup {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return false; }
 		}
 
 		public virtual bool CanSort {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return false; }
 		}
 
-		public virtual IComparer Comparer
-		{
-			get {
-				throw new NotImplementedException ();
-			}
+		public virtual IComparer Comparer {
+			get { return null; }
 		}
 
 		public virtual int Count {
 			get {
-				throw new NotImplementedException ();
+				if (!isCountDirty)
+					return count;
+
+				var i = 0;
+				for (var j = GetEnumerator (); j.MoveNext (); i++) {
+				}
+				count = i;
+				isCountDirty = false;
+				return i;
 			}
 		}
 
-		public virtual CultureInfo Culture {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
-		}
+		public virtual CultureInfo Culture { get; set; }
 
 		public virtual object CurrentItem {
 			get {
@@ -97,25 +94,14 @@ namespace System.Windows.Data
 			}
 		}
 
-		public virtual Predicate<object> Filter {
-			get {
-				throw new NotImplementedException ();
-			}
-			set {
-				throw new NotImplementedException ();
-			}
-		}
+		public virtual Predicate<object> Filter { get; set; }
 
 		public virtual ObservableCollection<GroupDescription> GroupDescriptions {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return null; }
 		}
 
 		public virtual ReadOnlyObservableCollection<object> Groups {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return null; }
 		}
 
 		public virtual bool IsCurrentAfterLast {
@@ -131,9 +117,7 @@ namespace System.Windows.Data
 		}
 
 		public virtual bool IsEmpty {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return Count == 0; }
 		}
 
 		public virtual bool NeedsRefresh {
@@ -143,15 +127,11 @@ namespace System.Windows.Data
 		}
 
 		public virtual SortDescriptionCollection SortDescriptions {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return new SortDescriptionCollection (); }
 		}
 
 		public virtual IEnumerable SourceCollection {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return collection; }
 		}
 
 		protected bool IsCurrentInSync {
@@ -161,9 +141,7 @@ namespace System.Windows.Data
 		}
 
 		protected bool IsDynamic {
-			get {
-				throw new NotImplementedException ();
-			}
+			get { return isDynamic; }
 		}
 
 		protected bool IsRefreshDeferred {
@@ -180,7 +158,12 @@ namespace System.Windows.Data
 
 		public virtual bool Contains (object item)
 		{
-			throw new NotImplementedException ();
+			foreach (var obj in this) {
+				if (Equals (obj, item))
+					return true;
+			}
+
+			return false;
 		}
 
 		public virtual IDisposable DeferRefresh ()
@@ -188,14 +171,29 @@ namespace System.Windows.Data
 			throw new NotImplementedException ();
 		}
 
-		public virtual object GetItemAt (int indexer)
+		public virtual object GetItemAt (int index)
 		{
-			throw new NotImplementedException ();
+			if (index < 0)
+				throw new ArgumentOutOfRangeException ("index is less than 0.");
+
+			var i = 0;
+			foreach (var item in this) {
+				if (i++ == index)
+					return item;
+			}
+
+			return null;
 		}
 
 		public virtual int IndexOf (object item)
 		{
-			throw new NotImplementedException ();
+			var j = 0;
+			for (var i = GetEnumerator (); i.MoveNext (); j++) {
+				if (Equals (i.Current, item))
+					return j;
+			}
+
+			return -1;
 		}
 
 		public virtual bool MoveCurrentTo (object item)
@@ -230,12 +228,12 @@ namespace System.Windows.Data
 
 		public virtual bool PassesFilter (object item)
 		{
-			throw new NotImplementedException ();
+			return Filter == null || Filter (item);
 		}
 
 		public virtual void Refresh ()
 		{
-			throw new NotImplementedException ();
+			RefreshOverride ();
 		}
 
 		protected void ClearChangeLog ()
@@ -245,7 +243,10 @@ namespace System.Windows.Data
 
 		protected virtual IEnumerator GetEnumerator ()
 		{
-			throw new NotImplementedException ();
+			foreach (var item in SourceCollection) {
+				if (PassesFilter (item))
+					yield return item;
+			}
 		}
 
 		protected bool OKToChangeCurrent ()
@@ -260,7 +261,8 @@ namespace System.Windows.Data
 
 		protected virtual void OnCollectionChanged (NotifyCollectionChangedEventArgs args)
 		{
-			throw new NotImplementedException ();
+			if (CollectionChanged != null)
+				CollectionChanged (this, args);
 		}
 
 		protected void OnCollectionChanged (object sender, NotifyCollectionChangedEventArgs args)
@@ -270,22 +272,26 @@ namespace System.Windows.Data
 
 		protected virtual void OnCurrentChanged ()
 		{
-			throw new NotImplementedException ();
+			if (CurrentChanged != null)
+				CurrentChanged (this, EventArgs.Empty);
 		}
 
 		protected void OnCurrentChanging ()
 		{
-			throw new NotImplementedException ();
+			OnCurrentChanging (new CurrentChangingEventArgs (false));
+			// CurrentPosition = -1;
 		}
 
 		protected virtual void OnCurrentChanging (CurrentChangingEventArgs args)
 		{
-			throw new NotImplementedException ();
+			if (CurrentChanging != null)
+				CurrentChanging (this, args);
 		}
 
 		protected virtual void OnPropertyChanged (PropertyChangedEventArgs e)
 		{
-			throw new NotImplementedException ();
+			if (PropertyChanged != null)
+				PropertyChanged (this, e);
 		}
 
 		protected virtual void ProcessCollectionChanged (NotifyCollectionChangedEventArgs args)
@@ -309,11 +315,8 @@ namespace System.Windows.Data
 		}
 
 		public event EventHandler CurrentChanged;
-
 		public event CurrentChangingEventHandler CurrentChanging;
-
 		protected virtual event NotifyCollectionChangedEventHandler CollectionChanged;
-
 		protected virtual event PropertyChangedEventHandler PropertyChanged;
 
 		#region Explicit content

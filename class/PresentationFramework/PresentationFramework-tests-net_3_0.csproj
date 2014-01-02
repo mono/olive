@@ -58,11 +58,16 @@
     <Reference Include="nunit.framework">
       <HintPath>..\lib\net_3_0\nunit.framework.dll</HintPath>
     </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="PresentationFramework-net_3_0.csproj">
       <Project>{FB737F01-C3DB-431A-9DA8-28F5721F2E3D}</Project>
       <Name>PresentationFramework-net_3_0</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Test\System.Windows.Data\CollectionViewTest.cs" />
   </ItemGroup>
 </Project>
