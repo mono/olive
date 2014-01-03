@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D9637688-50D0-48B8-83B2-0BCFC70993F6}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\Microsoft.Web.Atlas-tests-net_4_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Microsoft.Web.Atlas_test_net_4_0</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Test\Microsoft.Web\ActionTest.cs" />
+    <Compile Include="Test\Microsoft.Web\BindingTest.cs" />
+    <Compile Include="Test\Microsoft.Web\GenericScriptComponentTest.cs" />
+    <Compile Include="Test\Microsoft.Web\InvokeMethodActionTest.cs" />
+    <Compile Include="Test\Microsoft.Web\SetPropertyActionTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptComponentBaseTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptControlTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptEventDescriptorTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptEventTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptMethodDescriptorTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptPropertyDescriptorTest.cs" />
+    <Compile Include="Test\Microsoft.Web\ScriptTypeDescriptorTest.cs" />
+    <Compile Include="Test\Microsoft.Web.Services\JavaScriptConverterTest.cs" />
+    <Compile Include="Test\Microsoft.Web.Services.Converters\DateTimeConverterTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\ClickBehaviorTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\DragDropListTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\DraggableListItemTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\DataSourceDropTargetTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\FloatingBehaviorTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\HoverBehaviorTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\LabelTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\ListViewTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\OptionTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\PropertyFilterTest.cs" />
+    <Compile Include="Test\Microsoft.Web.UI\TextBoxTest.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="nunit.framework">
+      <HintPath>..\lib\net_4_0\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="Microsoft.Web.Atlas-net_4_0.csproj">
+      <Project>{ACCDDC7F-CED6-4FD2-A925-9C4CA54B21C1}</Project>
+      <Name>Microsoft.Web.Atlas-net_4_0</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

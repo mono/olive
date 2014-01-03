@@ -10,7 +10,7 @@ net_3_0_SUBDIRS := build class tools data scripts nunit24 build
 
 -include build/config.make
 
-PROFILES = net_3_0 net_4_0
+PROFILES = net_3_0 net_3_5 net_4_0 net_4_5
 
 STD_TARGETS_OVERRIDE = all clean install uninstall test distclean
 

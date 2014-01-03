@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{01DC3084-B5EE-4A9F-BD71-B95C949FC85E}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\Microsoft.Web.Atlas-net_3_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>Microsoft.Web.Atlas</AssemblyName>
+    <TargetFrameworkVersion>v3.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="..\..\build\common\Locale.cs" />
+    <Compile Include="..\..\build\common\MonoTODOAttribute.cs" />
+    <Compile Include="Microsoft.Web\ActionCollection.cs" />
+    <Compile Include="Microsoft.Web\Action.cs" />
+    <Compile Include="Microsoft.Web\ActionMemberConverter.cs" />
+    <Compile Include="Microsoft.Web\ActionSequence.cs" />
+    <Compile Include="Microsoft.Web\ActionTargetConverter.cs" />
+    <Compile Include="Microsoft.Web\BehaviorCollection.cs" />
+    <Compile Include="Microsoft.Web\Behavior.cs" />
+    <Compile Include="Microsoft.Web\BindingCollection.cs" />
+    <Compile Include="Microsoft.Web\Binding.cs" />
+    <Compile Include="Microsoft.Web\BindingDirection.cs" />
+    <Compile Include="Microsoft.Web\GenericScriptComponent.cs" />
+    <Compile Include="Microsoft.Web\IDConverter.cs" />
+    <Compile Include="Microsoft.Web\InvokeMethodAction.cs" />
+    <Compile Include="Microsoft.Web\IScriptComponent.cs" />
+    <Compile Include="Microsoft.Web\IScriptComponentContainer.cs" />
+    <Compile Include="Microsoft.Web\IScriptObject.cs" />
+    <Compile Include="Microsoft.Web\ScriptComponentBase.cs" />
+    <Compile Include="Microsoft.Web\ScriptComponent.cs" />
+    <Compile Include="Microsoft.Web\ScriptComponentCollection.cs" />
+    <Compile Include="Microsoft.Web\ScriptControl.cs" />
+    <Compile Include="Microsoft.Web\ScriptEventCollection.cs" />
+    <Compile Include="Microsoft.Web\ScriptEvent.cs" />
+    <Compile Include="Microsoft.Web\ScriptEventDescriptor.cs" />
+    <Compile Include="Microsoft.Web\ScriptMemberDescriptor.cs" />
+    <Compile Include="Microsoft.Web\ScriptMethodDescriptor.cs" />
+    <Compile Include="Microsoft.Web\ScriptPropertyDescriptor.cs" />
+    <Compile Include="Microsoft.Web\ScriptTextWriter.cs" />
+    <Compile Include="Microsoft.Web\ScriptType.cs" />
+    <Compile Include="Microsoft.Web\ScriptTypeDescriptor.cs" />
+    <Compile Include="Microsoft.Web\SetPropertyAction.cs" />
+    <Compile Include="Microsoft.Web\TransformScriptEvent.cs" />
+    <Compile Include="Microsoft.Web\VisibilityMode.cs" />
+    <Compile Include="Microsoft.Web.Services\JavaScriptConverter.cs" />
+    <Compile Include="Microsoft.Web.Services\JavaScriptObjectDeserializer.cs" />
+    <Compile Include="Microsoft.Web.Services\ScriptHandlerFactory.cs" />
+    <Compile Include="Microsoft.Web.Services\ScriptModule.cs" />
+    <Compile Include="Microsoft.Web.Services.Converters\DateTimeConverter.cs" />
+    <Compile Include="Microsoft.Web.UI\ActivationType.cs" />
+    <Compile Include="Microsoft.Web.UI\Button.cs" />
+    <Compile Include="Microsoft.Web.UI\ClickBehavior.cs" />
+    <Compile Include="Microsoft.Web.UI\DataSourceDropTarget.cs" />
+    <Compile Include="Microsoft.Web.UI\DragDropList.cs" />
+    <Compile Include="Microsoft.Web.UI\DraggableListItem.cs" />
+    <Compile Include="Microsoft.Web.UI\DragMode.cs" />
+    <Compile Include="Microsoft.Web.UI\Filter.cs" />
+    <Compile Include="Microsoft.Web.UI\FloatingBehavior.cs" />
+    <Compile Include="Microsoft.Web.UI\HoverBehavior.cs" />
+    <Compile Include="Microsoft.Web.UI\Label.cs" />
+    <Compile Include="Microsoft.Web.UI\ListView.cs" />
+    <Compile Include="Microsoft.Web.UI\MapStyle.cs" />
+    <Compile Include="Microsoft.Web.UI\Option.cs" />
+    <Compile Include="Microsoft.Web.UI\PositioningMode.cs" />
+    <Compile Include="Microsoft.Web.UI\PropertyFilter.cs" />
+    <Compile Include="Microsoft.Web.UI\Script.cs" />
+    <Compile Include="Microsoft.Web.UI\ScriptManager.cs" />
+    <Compile Include="Microsoft.Web.UI\TextBox.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_3_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+</Project>

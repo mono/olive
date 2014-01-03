@@ -79,7 +79,7 @@ namespace MonoTests.Microsoft.Web
 #endif
 		}
 
-		class ActionPoker : Action {
+		class ActionPoker : global::Microsoft.Web.Action {
 			public StringWriter Writer;
 
 #if SPEW

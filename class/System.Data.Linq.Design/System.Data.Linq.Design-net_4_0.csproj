@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4279D15E-4D04-4DFB-A66C-91C8070D7708}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <NoWarn>1699</NoWarn>
+    <OutputPath>bin\Debug\System.Data.Linq.Design-net_4_0</OutputPath>
+    <NoConfig>True</NoConfig>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <AssemblyName>System.Data.Linq.Design</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TRACE;NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <DefineConstants>NET_2_0;NET_3_5;NET_4_0;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <!-- Set AddAdditionalExplicitAssemblyReferences to false, otherwise if targetting .NET4.0, 
+  Microsoft.NETFramework.props will force a dependency on the assembly System.Core. This
+  is a problem to compile the Mono mscorlib.dll -->
+  <PropertyGroup>
+    <AddAdditionalExplicitAssemblyReferences>false</AddAdditionalExplicitAssemblyReferences>
+  </PropertyGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Compile Include="..\..\build\common\Consts.cs" />
+    <Compile Include="Assembly\AssemblyInfo.cs" />
+    <Compile Include="System.Data.Linq.Design\DbmlExtractorFactory.cs" />
+    <Compile Include="System.Data.Linq.Design\DbSchemaCodeGeneratorFactory.cs" />
+    <Compile Include="System.Data.Linq.Design\ExtractOptions.cs" />
+    <Compile Include="System.Data.Linq.Design\ExtractTypes.cs" />
+    <Compile Include="System.Data.Linq.Design\GenerateOptions.cs" />
+    <Compile Include="System.Data.Linq.Design\GeneratorFactoryOptions.cs" />
+    <Compile Include="System.Data.Linq.Design\IDatabaseExtractor.cs" />
+    <Compile Include="System.Data.Linq.Design\IMappingCodeGenerator.cs" />
+    <Compile Include="System.Data.Linq.Design\LanguageType.cs" />
+    <Compile Include="System.Data.Linq.Design\NodeId.cs" />
+    <Compile Include="System.Data.Linq.Design\NodeType.cs" />
+    <Compile Include="System.Data.Linq.Design\ResultFile.cs" />
+    <Compile Include="System.Data.Linq.Design\Severity.cs" />
+    <Compile Include="System.Data.Linq.Design\ValidationMessage.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\Database.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbAssociation.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbColumn.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbElement.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbFunction.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbIndex.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbKeyColumn.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbObject.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbParameter.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbPrimaryKey.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbRoutine.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbRowset.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbSchema.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbStoredProcedure.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbTable.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbType.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\DbView.cs" />
+    <Compile Include="System.Data.Linq.Design.SchemaObjectModel\RelationshipKind.cs" />
+  </ItemGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+      xcopy $(TargetName).* $(ProjectDir)..\lib\net_4_0\ /Y /R /D
+    </PostBuildEvent>
+  </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System.Data" />
+  </ItemGroup>
+</Project>

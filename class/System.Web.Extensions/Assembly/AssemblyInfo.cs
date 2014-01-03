@@ -56,4 +56,4 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible (false)]
 
 [assembly: AssemblyDelaySign (true)]
-[assembly: AssemblyKeyFile("../atlas.pub")]
+[assembly: AssemblyKeyFile("../mono.pub")]
