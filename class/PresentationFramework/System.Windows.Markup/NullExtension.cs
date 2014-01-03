@@ -20,6 +20,8 @@
 // Copyright (c) 2008 Novell, Inc. (http://www.novell.com)
 //
 
+#if !NET_4_0
+
 using System;
 
 namespace System.Windows.Markup {
@@ -37,3 +39,5 @@ namespace System.Windows.Markup {
 		}
 	}
 }
+
+#endif

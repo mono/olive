@@ -36,6 +36,7 @@ using System.Security.Permissions;
 using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Windows.Input;
 using System.Windows.Markup;
 
 // General Information about the PresentationCore assembly
@@ -101,3 +102,11 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Automation")]
 [assembly: XmlnsDefinition ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Media.Effects")]
 [assembly: XmlnsDefinition ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Media.Imaging")]
+
+#if NET_4_0
+[assembly: TypeForwardedTo (typeof(IUriContext))]
+#endif
+
+#if NET_4_5
+[assembly: TypeForwardedTo (typeof(ICommand))]
+#endif

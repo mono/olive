@@ -108,3 +108,11 @@ using System.Windows.Markup;
 [assembly: XmlnsDefinition ("http://schemas.microsoft.com/xps/2005/06", "System.Windows.Media.Animation")]
 
 [assembly: XmlnsDefinition ("http://schemas.microsoft.com/xps/2005/06/documentstructure", "System.Windows.Documents.DocumentStructures")]
+
+#if NET_4_0
+[assembly: TypeForwardedTo (typeof(IProvideValueTarget))]
+[assembly: TypeForwardedTo (typeof(ArrayExtension))]
+[assembly: TypeForwardedTo (typeof(NullExtension))]
+[assembly: TypeForwardedTo (typeof(StaticExtension))]
+[assembly: TypeForwardedTo (typeof(TypeExtension))]
+#endif
