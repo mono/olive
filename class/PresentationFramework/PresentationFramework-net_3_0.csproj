@@ -149,6 +149,7 @@
     <Compile Include="System.Windows.Data\BindingMode.cs" />
     <Compile Include="System.Windows.Data\BindingStatus.cs" />
     <Compile Include="System.Windows.Data\CollectionView.cs" />
+    <Compile Include="System.Windows.Data\CollectionViewGroup.cs" />
     <Compile Include="System.Windows.Data\RelativeSourceMode.cs" />
     <Compile Include="System.Windows.Data\UpdateSourceTrigger.cs" />
     <Compile Include="System.Windows.Documents\LogicalDirection.cs" />
