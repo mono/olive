@@ -150,7 +150,9 @@
     <Compile Include="System.Windows.Data\BindingStatus.cs" />
     <Compile Include="System.Windows.Data\CollectionView.cs" />
     <Compile Include="System.Windows.Data\CollectionViewGroup.cs" />
+    <Compile Include="System.Windows.Data\GroupDescriptionSelectorCallback.cs" />
     <Compile Include="System.Windows.Data\IValueConverter.cs" />
+    <Compile Include="System.Windows.Data\ListCollectionView.cs" />
     <Compile Include="System.Windows.Data\RelativeSourceMode.cs" />
     <Compile Include="System.Windows.Data\UpdateSourceTrigger.cs" />
     <Compile Include="System.Windows.Documents\LogicalDirection.cs" />
