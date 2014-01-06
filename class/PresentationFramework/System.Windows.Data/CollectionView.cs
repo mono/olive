@@ -87,6 +87,7 @@ namespace System.Windows.Data
 			}
 		}
 
+		[TypeConverterAttribute (typeof (CultureInfoIetfLanguageTagConverter))]
 		public virtual CultureInfo Culture { get; set; }
 
 		public virtual object CurrentItem {

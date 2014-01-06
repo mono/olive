@@ -47,6 +47,7 @@
     <Compile Include="System.Windows\Clipboard.cs" />
     <Compile Include="System.Windows\ContentElement.cs" />
     <Compile Include="System.Windows\ContentOperations.cs" />
+    <Compile Include="System.Windows\CultureInfoIetfLanguageTagConverter.cs" />
     <Compile Include="System.Windows\DataFormat.cs" />
     <Compile Include="System.Windows\DataFormats.cs" />
     <Compile Include="System.Windows\DataObject.cs" />

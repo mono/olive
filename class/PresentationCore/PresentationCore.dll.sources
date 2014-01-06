@@ -7,6 +7,7 @@ System.Windows/BaselineAlignment.cs
 System.Windows/Clipboard.cs
 System.Windows/ContentElement.cs
 System.Windows/ContentOperations.cs
+System.Windows/CultureInfoIetfLanguageTagConverter.cs
 System.Windows/DataFormat.cs
 System.Windows/DataFormats.cs
 System.Windows/DataObject.cs
