@@ -40,6 +40,7 @@ namespace System.Windows.Data
 		readonly bool isDynamic;
 		int count;
 		bool isCountDirty;
+		Predicate<object> filter;
 
 		public CollectionView (IEnumerable collection)
 		{
@@ -94,7 +95,13 @@ namespace System.Windows.Data
 			}
 		}
 
-		public virtual Predicate<object> Filter { get; set; }
+		public virtual Predicate<object> Filter {
+			get { return filter; }
+			set {
+				filter = value;
+				Refresh ();
+			}
+		}
 
 		public virtual ObservableCollection<GroupDescription> GroupDescriptions {
 			get { return null; }
