@@ -108,6 +108,12 @@ System.Windows.Controls.Primitives/TickBarPlacement.cs
 System.Windows.Controls.Primitives/TickPlacement.cs
 System.Windows.Data/BindingMode.cs
 System.Windows.Data/BindingStatus.cs
+System.Windows.Data/CollectionView.cs
+System.Windows.Data/CollectionViewGroup.cs
+System.Windows.Data/GroupDescriptionSelectorCallback.cs
+System.Windows.Data/IValueConverter.cs
+System.Windows.Data/ListCollectionView.cs
+System.Windows.Data/PropertyGroupDescription.cs
 System.Windows.Data/RelativeSourceMode.cs
 System.Windows.Data/UpdateSourceTrigger.cs
 System.Windows.Documents/LogicalDirection.cs
