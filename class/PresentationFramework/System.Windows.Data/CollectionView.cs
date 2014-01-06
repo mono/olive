@@ -50,7 +50,13 @@ namespace System.Windows.Data
 			isDynamic = collection is INotifyCollectionChanged;
 			isCountDirty = true;
 		}
-
+#if NET_3_5
+		public static object NewItemPlaceholder {
+			get {
+				throw new NotImplementedException();
+			}
+		}
+#endif
 		public virtual bool CanFilter {
 			get { return true; }
 		}
